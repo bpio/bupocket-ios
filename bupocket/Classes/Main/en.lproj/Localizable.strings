@@ -1,0 +1,56 @@
+/* 
+  Localizable.strings
+  bupocket
+
+  Created by bupocket on 2018/10/17.
+  Copyright © 2018年 bupocket. All rights reserved.
+*/
+"MyTitle" = "My";
+"AssetsTitle" = "Assets";
+// Identity
+"CreateDigitalIdentity" = "Create digital identity";
+"ImmediateCreation" = "Immediate creation";
+"RestoreIdentity" = "Restore identity";
+// Terms of use
+"TermsOfUse" = "Terms of use";
+"Continue" = "Continue";
+"ReadAndAgree" = "I have read and agree to the above terms";
+// Create Identity
+"CreateIdentity" = "Create identity";
+"IdentityName" = "Please create identity name";
+"SetPassword" = "Please set the password";
+"ConfirmPassword" = "Please confirm the password again";
+"Create" = "Establish";
+"CreatePWPrompt" = "Reminder";
+"CreatePWWarn" = "Passwords are used to protect private keys, to transfer accounts, to invoke contracts, and so on, so the intensity is very important. \n small cloth pocket does not store passwords, nor can it help you find it. Please bear in mind. ";
+"CreatePWInfo" = "The length is 8~20 characters. It is recommended to mix uppercase letters and numbers.";
+"Confirm" = "Confirmation";
+"Cancel" = "Cancel";
+// RestoreIdentity
+"newWalletName" = "Please enter a new wallet name.";
+"MnemonicPrompt" = "input aid word, use space partition";
+"ConfirmRecoveryID" = "Confirm recovery ID";
+// BackUp
+"BackUpPurse" = "Back-up Purse";
+"BackupInformation" = "You can't secure your assets without a proper backup. After deleting a program or wallet, you need to back up the files to restore your wallet.";
+"BackupPrompt" = "Please make sure that no backup is available in a secure environment with no cameras.";
+"TemporaryBackup" = "Temporary backup";
+"BackupMnemonics" = "Backup mnemonics";
+"PurseCipherConfirm" = "密码确认";
+"PurseCipherPrompt" = "请填写钱包密码以确认备份";
+"PWPlaceholder" = "8-20个字符，且内容仅限字母和数字";
+"NoScreenshot" = "请勿截图";
+"MnemonicsPrompt" = "泄露助记词将导致资产丢失，请抄写下助记词并存放在安全的地方。
+";
+"MnemonicsSavePrompt" = "请按顺序记录每个词，并妥善保管";
+
+// My
+"ModifyPassword" = "modify password";
+"Feedback" = "help and feedback";
+"MultiLingual" = "multi lingual";
+"VersionNumber" = "version number";
+
+// Assets
+"TotalAssets" = "total assets（¥）";
+"MyAssets" = "My assets";
+"PleaseBackup" = "Please backup";
