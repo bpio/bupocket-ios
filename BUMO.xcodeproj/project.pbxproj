@@ -9,6 +9,14 @@
 /* Begin PBXBuildFile section */
 		1C1C8C1FA0AD4A0EB5E851C1 /* libPods-BUMOTests.a in Frameworks */ = {isa = PBXBuildFile; fileRef = EDACB208E9188C5C708B8EA8 /* libPods-BUMOTests.a */; };
 		33DCC5246F5AC45CA353188D /* libPods-BUMOUITests.a in Frameworks */ = {isa = PBXBuildFile; fileRef = F56163DAF9040F0DE0A35F2D /* libPods-BUMOUITests.a */; };
+		833799172176E1E600C222A5 /* ListTableViewCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 833799162176E1E600C222A5 /* ListTableViewCell.m */; };
+		8337991A2176E80D00C222A5 /* MultilingualViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 833799192176E80D00C222A5 /* MultilingualViewController.m */; };
+		8337991F2176FD4400C222A5 /* InfoPlist.strings in Resources */ = {isa = PBXBuildFile; fileRef = 833799212176FD4400C222A5 /* InfoPlist.strings */; };
+		833799252176FE4800C222A5 /* Localizable.strings in Resources */ = {isa = PBXBuildFile; fileRef = 833799272176FE4800C222A5 /* Localizable.strings */; };
+		8337992C2177092300C222A5 /* LanguageManager.m in Sources */ = {isa = PBXBuildFile; fileRef = 8337992B2177092300C222A5 /* LanguageManager.m */; };
+		8337992F21772E0300C222A5 /* CustomButton.m in Sources */ = {isa = PBXBuildFile; fileRef = 8337992E21772E0300C222A5 /* CustomButton.m */; };
+		833799322177305A00C222A5 /* UIView+Extension.m in Sources */ = {isa = PBXBuildFile; fileRef = 833799302177305A00C222A5 /* UIView+Extension.m */; };
+		833799382177427500C222A5 /* AssetsListViewCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 833799372177427500C222A5 /* AssetsListViewCell.m */; };
 		835A45262174C14D005BFCDD /* main.m in Sources */ = {isa = PBXBuildFile; fileRef = 835A45242174C14D005BFCDD /* main.m */; };
 		835A45272174C14D005BFCDD /* AppDelegate.m in Sources */ = {isa = PBXBuildFile; fileRef = 835A45252174C14D005BFCDD /* AppDelegate.m */; };
 		8372C8592174CB9800FF9506 /* UITextField+Extension.m in Sources */ = {isa = PBXBuildFile; fileRef = 8372C8572174CB9800FF9506 /* UITextField+Extension.m */; };
@@ -27,6 +35,10 @@
 		83B465BD21745C9400187961 /* BUMOTests.m in Sources */ = {isa = PBXBuildFile; fileRef = 83B465BC21745C9400187961 /* BUMOTests.m */; };
 		83B465C821745C9400187961 /* BUMOUITests.m in Sources */ = {isa = PBXBuildFile; fileRef = 83B465C721745C9400187961 /* BUMOUITests.m */; };
 		83B594AA2175954F009F91BA /* CreateIdentityViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 83B594A92175954F009F91BA /* CreateIdentityViewController.m */; };
+		83B594AD2175E4D9009F91BA /* RestoreIdentityViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 83B594AC2175E4D9009F91BA /* RestoreIdentityViewController.m */; };
+		83B594B12175E6FA009F91BA /* PlaceholderTextView.m in Sources */ = {isa = PBXBuildFile; fileRef = 83B594AF2175E6FA009F91BA /* PlaceholderTextView.m */; };
+		83B594B42175F46E009F91BA /* TermsOfUseViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 83B594B32175F46E009F91BA /* TermsOfUseViewController.m */; };
+		83B594B72175FC8B009F91BA /* BackupMnemonicsViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 83B594B62175FC8B009F91BA /* BackupMnemonicsViewController.m */; };
 		99C1D2A064DD1A5DA6AA3DD9 /* libPods-BUMO.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 46D8C5BAC019760EA9476525 /* libPods-BUMO.a */; };
 /* End PBXBuildFile section */
 
@@ -53,6 +65,24 @@
 		46D8C5BAC019760EA9476525 /* libPods-BUMO.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; path = "libPods-BUMO.a"; sourceTree = BUILT_PRODUCTS_DIR; };
 		47A14785E0485B48F5A66934 /* Pods-BUMOUITests.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-BUMOUITests.release.xcconfig"; path = "Pods/Target Support Files/Pods-BUMOUITests/Pods-BUMOUITests.release.xcconfig"; sourceTree = "<group>"; };
 		63EBCC7FB77633A1A5E3F9DB /* Pods-BUMOUITests.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-BUMOUITests.debug.xcconfig"; path = "Pods/Target Support Files/Pods-BUMOUITests/Pods-BUMOUITests.debug.xcconfig"; sourceTree = "<group>"; };
+		833799152176E1E600C222A5 /* ListTableViewCell.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = ListTableViewCell.h; sourceTree = "<group>"; };
+		833799162176E1E600C222A5 /* ListTableViewCell.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = ListTableViewCell.m; sourceTree = "<group>"; };
+		833799182176E80D00C222A5 /* MultilingualViewController.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = MultilingualViewController.h; sourceTree = "<group>"; };
+		833799192176E80D00C222A5 /* MultilingualViewController.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = MultilingualViewController.m; sourceTree = "<group>"; };
+		8337991B2176FCA800C222A5 /* zh-Hans */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = "zh-Hans"; path = "zh-Hans.lproj/Main.strings"; sourceTree = "<group>"; };
+		8337991C2176FCA900C222A5 /* zh-Hans */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = "zh-Hans"; path = "zh-Hans.lproj/LaunchScreen.strings"; sourceTree = "<group>"; };
+		833799202176FD4400C222A5 /* zh-Hans */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = "zh-Hans"; path = "zh-Hans.lproj/InfoPlist.strings"; sourceTree = "<group>"; };
+		833799222176FD6600C222A5 /* en */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = en; path = en.lproj/InfoPlist.strings; sourceTree = "<group>"; };
+		833799262176FE4800C222A5 /* zh-Hans */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = "zh-Hans"; path = "zh-Hans.lproj/Localizable.strings"; sourceTree = "<group>"; };
+		833799282176FE4A00C222A5 /* en */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = en; path = en.lproj/Localizable.strings; sourceTree = "<group>"; };
+		8337992A2177092300C222A5 /* LanguageManager.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = LanguageManager.h; sourceTree = "<group>"; };
+		8337992B2177092300C222A5 /* LanguageManager.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = LanguageManager.m; sourceTree = "<group>"; };
+		8337992D21772E0300C222A5 /* CustomButton.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = CustomButton.h; sourceTree = "<group>"; };
+		8337992E21772E0300C222A5 /* CustomButton.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = CustomButton.m; sourceTree = "<group>"; };
+		833799302177305A00C222A5 /* UIView+Extension.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "UIView+Extension.m"; sourceTree = "<group>"; };
+		833799312177305A00C222A5 /* UIView+Extension.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "UIView+Extension.h"; sourceTree = "<group>"; };
+		833799362177427500C222A5 /* AssetsListViewCell.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = AssetsListViewCell.h; sourceTree = "<group>"; };
+		833799372177427500C222A5 /* AssetsListViewCell.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = AssetsListViewCell.m; sourceTree = "<group>"; };
 		835A45232174C14D005BFCDD /* AppDelegate.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = AppDelegate.h; sourceTree = "<group>"; };
 		835A45242174C14D005BFCDD /* main.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = main.m; sourceTree = "<group>"; };
 		835A45252174C14D005BFCDD /* AppDelegate.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = AppDelegate.m; sourceTree = "<group>"; };
@@ -90,6 +120,14 @@
 		83B465C921745C9400187961 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		83B594A82175954F009F91BA /* CreateIdentityViewController.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = CreateIdentityViewController.h; sourceTree = "<group>"; };
 		83B594A92175954F009F91BA /* CreateIdentityViewController.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = CreateIdentityViewController.m; sourceTree = "<group>"; };
+		83B594AB2175E4D9009F91BA /* RestoreIdentityViewController.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = RestoreIdentityViewController.h; sourceTree = "<group>"; };
+		83B594AC2175E4D9009F91BA /* RestoreIdentityViewController.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = RestoreIdentityViewController.m; sourceTree = "<group>"; };
+		83B594AF2175E6FA009F91BA /* PlaceholderTextView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = PlaceholderTextView.m; sourceTree = "<group>"; };
+		83B594B02175E6FA009F91BA /* PlaceholderTextView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = PlaceholderTextView.h; sourceTree = "<group>"; };
+		83B594B22175F46E009F91BA /* TermsOfUseViewController.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = TermsOfUseViewController.h; sourceTree = "<group>"; };
+		83B594B32175F46E009F91BA /* TermsOfUseViewController.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = TermsOfUseViewController.m; sourceTree = "<group>"; };
+		83B594B52175FC8B009F91BA /* BackupMnemonicsViewController.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = BackupMnemonicsViewController.h; sourceTree = "<group>"; };
+		83B594B62175FC8B009F91BA /* BackupMnemonicsViewController.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = BackupMnemonicsViewController.m; sourceTree = "<group>"; };
 		8BAFA7A3EC4992591E7450DA /* Pods-BUMO.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-BUMO.release.xcconfig"; path = "Pods/Target Support Files/Pods-BUMO/Pods-BUMO.release.xcconfig"; sourceTree = "<group>"; };
 		A61F11E76D6541BC859B703E /* Pods-BUMO.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-BUMO.debug.xcconfig"; path = "Pods/Target Support Files/Pods-BUMO/Pods-BUMO.debug.xcconfig"; sourceTree = "<group>"; };
 		EDACB208E9188C5C708B8EA8 /* libPods-BUMOTests.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; path = "libPods-BUMOTests.a"; sourceTree = BUILT_PRODUCTS_DIR; };
@@ -124,6 +162,15 @@
 /* End PBXFrameworksBuildPhase section */
 
 /* Begin PBXGroup section */
+		833799292177091500C222A5 /* Tool */ = {
+			isa = PBXGroup;
+			children = (
+				8337992A2177092300C222A5 /* LanguageManager.h */,
+				8337992B2177092300C222A5 /* LanguageManager.m */,
+			);
+			path = Tool;
+			sourceTree = "<group>";
+		};
 		835A45202174C14D005BFCDD /* Classes */ = {
 			isa = PBXGroup;
 			children = (
@@ -148,12 +195,16 @@
 		835A45222174C14D005BFCDD /* Main */ = {
 			isa = PBXGroup;
 			children = (
+				833799292177091500C222A5 /* Tool */,
+				83B594AE2175E6FA009F91BA /* View */,
 				8372C85A2174CBF100FF9506 /* Controller */,
 				8372C8562174CB9800FF9506 /* Category */,
 				835A45232174C14D005BFCDD /* AppDelegate.h */,
 				835A45252174C14D005BFCDD /* AppDelegate.m */,
 				835A45242174C14D005BFCDD /* main.m */,
 				835A45382174C47E005BFCDD /* PrefixHeader.pch */,
+				833799212176FD4400C222A5 /* InfoPlist.strings */,
+				833799272176FE4800C222A5 /* Localizable.strings */,
 			);
 			path = Main;
 			sourceTree = "<group>";
@@ -163,8 +214,14 @@
 			children = (
 				8372C870217588D100FF9506 /* IdentityViewController.h */,
 				8372C871217588D100FF9506 /* IdentityViewController.m */,
+				83B594B22175F46E009F91BA /* TermsOfUseViewController.h */,
+				83B594B32175F46E009F91BA /* TermsOfUseViewController.m */,
 				83B594A82175954F009F91BA /* CreateIdentityViewController.h */,
 				83B594A92175954F009F91BA /* CreateIdentityViewController.m */,
+				83B594AB2175E4D9009F91BA /* RestoreIdentityViewController.h */,
+				83B594AC2175E4D9009F91BA /* RestoreIdentityViewController.m */,
+				83B594B52175FC8B009F91BA /* BackupMnemonicsViewController.h */,
+				83B594B62175FC8B009F91BA /* BackupMnemonicsViewController.m */,
 			);
 			path = Controller;
 			sourceTree = "<group>";
@@ -198,6 +255,8 @@
 			children = (
 				8372C86A2174CCB000FF9506 /* MyViewController.h */,
 				8372C86B2174CCB000FF9506 /* MyViewController.m */,
+				833799182176E80D00C222A5 /* MultilingualViewController.h */,
+				833799192176E80D00C222A5 /* MultilingualViewController.m */,
 			);
 			path = Controller;
 			sourceTree = "<group>";
@@ -212,6 +271,8 @@
 		835A45312174C212005BFCDD /* View */ = {
 			isa = PBXGroup;
 			children = (
+				833799152176E1E600C222A5 /* ListTableViewCell.h */,
+				833799162176E1E600C222A5 /* ListTableViewCell.m */,
 			);
 			path = View;
 			sourceTree = "<group>";
@@ -245,6 +306,8 @@
 		835A45352174C212005BFCDD /* View */ = {
 			isa = PBXGroup;
 			children = (
+				833799362177427500C222A5 /* AssetsListViewCell.h */,
+				833799372177427500C222A5 /* AssetsListViewCell.m */,
 			);
 			path = View;
 			sourceTree = "<group>";
@@ -256,6 +319,8 @@
 				8372C86E2174D03F00FF9506 /* UIButton+Extension.m */,
 				8372C8582174CB9800FF9506 /* UITextField+Extension.h */,
 				8372C8572174CB9800FF9506 /* UITextField+Extension.m */,
+				833799312177305A00C222A5 /* UIView+Extension.h */,
+				833799302177305A00C222A5 /* UIView+Extension.m */,
 			);
 			path = Category;
 			sourceTree = "<group>";
@@ -327,6 +392,17 @@
 				83B465C921745C9400187961 /* Info.plist */,
 			);
 			path = BUMOUITests;
+			sourceTree = "<group>";
+		};
+		83B594AE2175E6FA009F91BA /* View */ = {
+			isa = PBXGroup;
+			children = (
+				83B594B02175E6FA009F91BA /* PlaceholderTextView.h */,
+				83B594AF2175E6FA009F91BA /* PlaceholderTextView.m */,
+				8337992D21772E0300C222A5 /* CustomButton.h */,
+				8337992E21772E0300C222A5 /* CustomButton.m */,
+			);
+			path = View;
 			sourceTree = "<group>";
 		};
 		AAA27303C314FA52BBDCAB7B /* Frameworks */ = {
@@ -459,7 +535,9 @@
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				833799252176FE4800C222A5 /* Localizable.strings in Resources */,
 				83B465B021745C9400187961 /* LaunchScreen.storyboard in Resources */,
+				8337991F2176FD4400C222A5 /* InfoPlist.strings in Resources */,
 				83B465AD21745C9400187961 /* Assets.xcassets in Resources */,
 				83B465AB21745C9300187961 /* Main.storyboard in Resources */,
 			);
@@ -578,17 +656,27 @@
 			buildActionMask = 2147483647;
 			files = (
 				8372C86C2174CCB000FF9506 /* MyViewController.m in Sources */,
+				8337991A2176E80D00C222A5 /* MultilingualViewController.m in Sources */,
+				833799382177427500C222A5 /* AssetsListViewCell.m in Sources */,
+				83B594B42175F46E009F91BA /* TermsOfUseViewController.m in Sources */,
 				8372C86F2174D03F00FF9506 /* UIButton+Extension.m in Sources */,
+				8337992F21772E0300C222A5 /* CustomButton.m in Sources */,
+				83B594B12175E6FA009F91BA /* PlaceholderTextView.m in Sources */,
+				8337992C2177092300C222A5 /* LanguageManager.m in Sources */,
 				8372C8662174CC6F00FF9506 /* BaseViewController.m in Sources */,
 				835A45262174C14D005BFCDD /* main.m in Sources */,
 				8372C8622174CBF100FF9506 /* NavigationViewController.m in Sources */,
 				8372C8592174CB9800FF9506 /* UITextField+Extension.m in Sources */,
 				8372C8692174CCA000FF9506 /* AssetsViewController.m in Sources */,
+				83B594B72175FC8B009F91BA /* BackupMnemonicsViewController.m in Sources */,
+				83B594AD2175E4D9009F91BA /* RestoreIdentityViewController.m in Sources */,
 				8372C8632174CBF100FF9506 /* TabBarViewController.m in Sources */,
 				8372C872217588D100FF9506 /* IdentityViewController.m in Sources */,
 				83B594AA2175954F009F91BA /* CreateIdentityViewController.m in Sources */,
 				83B465A821745C9300187961 /* ViewController.m in Sources */,
+				833799322177305A00C222A5 /* UIView+Extension.m in Sources */,
 				835A45272174C14D005BFCDD /* AppDelegate.m in Sources */,
+				833799172176E1E600C222A5 /* ListTableViewCell.m in Sources */,
 				8372C8612174CBF100FF9506 /* GuideViewController.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -625,10 +713,29 @@
 /* End PBXTargetDependency section */
 
 /* Begin PBXVariantGroup section */
+		833799212176FD4400C222A5 /* InfoPlist.strings */ = {
+			isa = PBXVariantGroup;
+			children = (
+				833799202176FD4400C222A5 /* zh-Hans */,
+				833799222176FD6600C222A5 /* en */,
+			);
+			name = InfoPlist.strings;
+			sourceTree = "<group>";
+		};
+		833799272176FE4800C222A5 /* Localizable.strings */ = {
+			isa = PBXVariantGroup;
+			children = (
+				833799262176FE4800C222A5 /* zh-Hans */,
+				833799282176FE4A00C222A5 /* en */,
+			);
+			name = Localizable.strings;
+			sourceTree = "<group>";
+		};
 		83B465A921745C9300187961 /* Main.storyboard */ = {
 			isa = PBXVariantGroup;
 			children = (
 				83B465AA21745C9300187961 /* Base */,
+				8337991B2176FCA800C222A5 /* zh-Hans */,
 			);
 			name = Main.storyboard;
 			sourceTree = "<group>";
@@ -637,6 +744,7 @@
 			isa = PBXVariantGroup;
 			children = (
 				83B465AF21745C9400187961 /* Base */,
+				8337991C2176FCA900C222A5 /* zh-Hans */,
 			);
 			name = LaunchScreen.storyboard;
 			sourceTree = "<group>";
@@ -648,6 +756,7 @@
 			isa = XCBuildConfiguration;
 			buildSettings = {
 				ALWAYS_SEARCH_USER_PATHS = NO;
+				CLANG_ANALYZER_LOCALIZABILITY_NONLOCALIZED = YES;
 				CLANG_ANALYZER_NONNULL = YES;
 				CLANG_ANALYZER_NUMBER_OBJECT_CONVERSION = YES_AGGRESSIVE;
 				CLANG_CXX_LANGUAGE_STANDARD = "gnu++14";
@@ -707,6 +816,7 @@
 			isa = XCBuildConfiguration;
 			buildSettings = {
 				ALWAYS_SEARCH_USER_PATHS = NO;
+				CLANG_ANALYZER_LOCALIZABILITY_NONLOCALIZED = YES;
 				CLANG_ANALYZER_NONNULL = YES;
 				CLANG_ANALYZER_NUMBER_OBJECT_CONVERSION = YES_AGGRESSIVE;
 				CLANG_CXX_LANGUAGE_STANDARD = "gnu++14";
@@ -761,16 +871,21 @@
 			baseConfigurationReference = A61F11E76D6541BC859B703E /* Pods-BUMO.debug.xcconfig */;
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
+				ASSETCATALOG_COMPILER_LAUNCHIMAGE_NAME = LaunchImage;
+				CODE_SIGN_IDENTITY = "iPhone Developer";
 				CODE_SIGN_STYLE = Automatic;
+				DEVELOPMENT_TEAM = "";
 				GCC_PRECOMPILE_PREFIX_HEADER = YES;
 				GCC_PREFIX_HEADER = "$(SRCROOT)/BUMO/Classes/Main/PrefixHeader.pch";
 				INFOPLIST_FILE = BUMO/Info.plist;
+				IPHONEOS_DEPLOYMENT_TARGET = 12.0;
 				LD_RUNPATH_SEARCH_PATHS = (
 					"$(inherited)",
 					"@executable_path/Frameworks",
 				);
 				PRODUCT_BUNDLE_IDENTIFIER = bumo.bubi.com.BUMO;
 				PRODUCT_NAME = "$(TARGET_NAME)";
+				PROVISIONING_PROFILE_SPECIFIER = "";
 				TARGETED_DEVICE_FAMILY = "1,2";
 			};
 			name = Debug;
@@ -780,16 +895,21 @@
 			baseConfigurationReference = 8BAFA7A3EC4992591E7450DA /* Pods-BUMO.release.xcconfig */;
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
+				ASSETCATALOG_COMPILER_LAUNCHIMAGE_NAME = LaunchImage;
+				CODE_SIGN_IDENTITY = "iPhone Developer";
 				CODE_SIGN_STYLE = Automatic;
+				DEVELOPMENT_TEAM = "";
 				GCC_PRECOMPILE_PREFIX_HEADER = YES;
 				GCC_PREFIX_HEADER = "$(SRCROOT)/BUMO/Classes/Main/PrefixHeader.pch";
 				INFOPLIST_FILE = BUMO/Info.plist;
+				IPHONEOS_DEPLOYMENT_TARGET = 12.0;
 				LD_RUNPATH_SEARCH_PATHS = (
 					"$(inherited)",
 					"@executable_path/Frameworks",
 				);
 				PRODUCT_BUNDLE_IDENTIFIER = bumo.bubi.com.BUMO;
 				PRODUCT_NAME = "$(TARGET_NAME)";
+				PROVISIONING_PROFILE_SPECIFIER = "";
 				TARGETED_DEVICE_FAMILY = "1,2";
 			};
 			name = Release;

@@ -1,0 +1,27 @@
+/* 
+  Localizable.strings
+  BUMO
+
+  Created by bubi on 2018/10/17.
+  Copyright © 2018年 bubi. All rights reserved.
+*/
+"mainImage" = "mainImage_cn";//等号左边为代码需要调用的key，右边为对应的中文图片名称value。
+
+"MyTitle" = "我的";//等号左边为代码中需要调用的key，右边为对应的中文文本value。
+"AssetsTitle" = "资产";
+// 身份
+"CreateDigitalIdentity" = "创建数字身份";
+"ImmediateCreation" = "立即创建";
+"RestoreIdentity" = "恢复身份";
+"TermsOfUse" = "使用条款";
+"Continue" = "继续";
+"ReadAndAgree" = "我已阅读并同意以上条款内容";
+
+// 我的
+"ModifyPassword" = "修改密码";
+"Feedback" = "帮助与反馈";
+"MultiLingual" = "多语言";
+"VersionNumber" = "版本号";
+// 资产
+"TotalAssets" = "总资产（¥）";
+"MyAssets" = "我的资产";
