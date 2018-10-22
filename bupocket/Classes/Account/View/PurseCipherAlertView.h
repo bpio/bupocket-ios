@@ -19,7 +19,7 @@ typedef void (^OnSureButtonClick)(void);
 @property (nonatomic, copy) OnCancleButtonClick cancleBlock;
 @property (nonatomic, copy) OnSureButtonClick sureBlock;
 
-- (instancetype)initWithFrame:(CGRect)frame confrimBolck:(void (^)(void))confrimBlock cancelBlock:(void (^)(void))cancelBlock;
+- (instancetype)initWithConfrimBolck:(void (^)(void))confrimBlock cancelBlock:(void (^)(void))cancelBlock;
 
 @end
 

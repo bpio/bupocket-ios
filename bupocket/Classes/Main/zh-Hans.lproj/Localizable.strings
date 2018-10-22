@@ -5,8 +5,6 @@
   Created by bupocket on 2018/10/17.
   Copyright © 2018年 bupocket. All rights reserved.
 */
-"mainImage" = "mainImage_cn";//等号左边为代码需要调用的key，右边为对应的中文图片名称value。
-
 "MyTitle" = "我的";//等号左边为代码中需要调用的key，右边为对应的中文文本value。
 "AssetsTitle" = "资产";
 // 身份
@@ -42,16 +40,34 @@
 "PurseCipherPrompt" = "请填写钱包密码以确认备份";
 "PWPlaceholder" = "8-20个字符，且内容仅限字母和数字";
 "NoScreenshot" = "请勿截图";
-"MnemonicsPrompt" = "泄露助记词将导致资产丢失，请抄写下助记词并存放在安全的地方。
-";
+"MnemonicsPrompt" = "泄露助记词将导致资产丢失，请抄写下助记词并存放在安全的地方。";
 "MnemonicsSavePrompt" = "请按顺序记录每个词，并妥善保管";
 "Copied" = "我已抄好";
-
+"ConfirmMnemonic" = "确认助记词";
+"Finished" = "完成";
 // 我的
 "ModifyPassword" = "修改密码";
 "Feedback" = "帮助与反馈";
 "MultiLingual" = "多语言";
 "VersionNumber" = "版本号";
+// 我的身份
+"MyIdentity" = "我的身份";
+"IdentityNameTitle" = "身份名";
+"IdentityIDTitle" = "身份ID";
+"BackupIdentity" = "备份身份";
+"ExitCurrentIdentity" = "退出当前身份";
+// 修改密码
+"OldPassword" = "旧密码";
+"NewPassword" = "新密码";
+"ConfirmedPassword" = "确认密码";
+"PleaseEnterOldPW" = "请输入旧密码";
+"PleaseEnterNewPW" = "请输入新密码";
+// 帮助与反馈
+"QuestionsOrSuggestions" = "您遇到的问题或建议";
+"YourContact" = "您的联系方式";
+"PleaseEnterQOrS" = "请输入您遇到的问题或建议";
+"PleaseEnterContact" = "请输入您的联系方式";
+
 // 资产
 "TotalAssets" = "总资产（¥）";
 "MyAssets" = "我的资产";

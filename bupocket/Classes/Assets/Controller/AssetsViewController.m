@@ -27,11 +27,13 @@
 - (void)viewWillAppear:(BOOL)animated {
     [super viewWillAppear:animated];
     [self.navigationController setNavigationBarHidden:YES animated:animated];
+    [UIApplication sharedApplication].statusBarStyle = UIStatusBarStyleLightContent;
 }
 
 - (void)viewWillDisappear:(BOOL)animated {
     [super viewWillDisappear:animated];
     [self.navigationController setNavigationBarHidden:NO animated:animated];
+    [UIApplication sharedApplication].statusBarStyle = UIStatusBarStyleDefault;
 }
 
 - (void)viewDidLoad {
@@ -47,18 +49,29 @@
     self.tableView.delegate = self;
     self.tableView.dataSource = self;
     self.tableView.separatorInset = UIEdgeInsetsZero;
+    self.tableView.separatorStyle = UITableViewCellSeparatorStyleNone;
     [self.view addSubview:self.tableView];
     [self setupHeaderView];
 }
 - (void)setupHeaderView
 {
-    UIImageView * headerBg = [[UIImageView alloc] initWithImage:[UIImage imageNamed:@"assets_header"]];
-    headerBg.userInteractionEnabled = YES;
+    UIView * headerBg = [[UIView alloc] init];
+    UIImage * headerImage = [UIImage imageNamed:@"assets_header"];
+    CGFloat headerImageH = ScreenScale(375 * headerImage.size.height / headerImage.size.width);
+    headerBg.frame = CGRectMake(0, 0, DEVICE_WIDTH, headerImageH + MAIN_HEIGHT);
+    
+    UIImageView * headerImageView = [[UIImageView alloc] initWithImage:headerImage];
+    headerImageView.userInteractionEnabled = YES;
+    [headerBg addSubview:headerImageView];
+    [headerImageView mas_makeConstraints:^(MASConstraintMaker *make) {
+        make.left.top.right.equalTo(headerBg);
+        make.height.mas_equalTo(headerImageH);
+    }];
     
     UIImageView * userIcon = [[UIImageView alloc] initWithImage:[UIImage imageNamed:@"userIcon_placeholder"]];
     [headerBg addSubview:userIcon];
     [userIcon mas_makeConstraints:^(MASConstraintMaker *make) {
-        make.top.equalTo(headerBg.mas_top).offset(ScreenScale(50));
+        make.top.equalTo(headerBg.mas_top).offset(ScreenScale(45) + StatusBarHeight);
         make.centerX.equalTo(headerBg);
     }];
     
@@ -81,7 +94,7 @@
     [self.backup mas_makeConstraints:^(MASConstraintMaker *make) {
         make.left.equalTo(self.purseName.mas_right).offset(ScreenScale(5));
 //        make.size.mas_equalTo(CGSizeMake(ScreenScale(60), ScreenScale(20)));
-        make.height.mas_equalTo(20);
+        make.height.mas_equalTo(ScreenScale(20));
         make.centerY.equalTo(self.purseName);
     }];
     CustomButton * QRCode = [[CustomButton alloc] init];
@@ -103,7 +116,7 @@
     amount.textColor = [UIColor whiteColor];
     [headerBg addSubview:amount];
     [amount mas_makeConstraints:^(MASConstraintMaker *make) {
-        make.top.equalTo(QRCode.mas_bottom).offset(ScreenScale(25));
+        make.top.equalTo(QRCode.mas_bottom).offset(ScreenScale(20));
         make.left.equalTo(headerBg.mas_left).offset(ScreenScale(15));
     }];
     amount.text = @"≈121.00";
@@ -117,6 +130,25 @@
         make.left.equalTo(amount);
     }];
     self.totalAssets.text = Localized(@"TotalAssets");
+    
+    self.header = [[UILabel alloc] init];
+    self.header.font = FONT(15);
+    self.header.textColor = TITLE_COLOR;
+    [headerBg addSubview:self.header];
+    [self.header mas_makeConstraints:^(MASConstraintMaker *make) {
+        make.left.equalTo(headerBg.mas_left).offset(ScreenScale(10));
+        make.top.equalTo(headerImageView.mas_bottom);
+        make.bottom.equalTo(headerBg);
+    }];
+    [self setHeaderTitle];
+    
+    UIButton * addAssets = [UIButton createButtonWithNormalImage:@"addAssets" SelectedImage:@"addAssets" Target:self Selector:@selector(addAssetsAcrion)];
+    [headerBg addSubview:addAssets];
+    [addAssets mas_makeConstraints:^(MASConstraintMaker *make) {
+        make.right.equalTo(headerBg.mas_right).offset(ScreenScale(-10));
+        make.centerY.equalTo(headerImageView.mas_bottom);
+    }];
+    
     self.tableView.tableHeaderView = headerBg;
 }
 #pragma mark - backup
@@ -136,9 +168,13 @@
 {
     
 }
+- (void)addAssetsAcrion
+{
+    
+}
 - (CGFloat)tableView:(UITableView *)tableView heightForRowAtIndexPath:(NSIndexPath *)indexPath
 {
-    return ScreenScale(75);
+    return ScreenScale(85);
 }
 - (NSInteger)numberOfSectionsInTableView:(UITableView *)tableView
 {
@@ -146,12 +182,14 @@
 }
 - (CGFloat)tableView:(UITableView *)tableView heightForHeaderInSection:(NSInteger)section
 {
-    if (section == 0) {
-        return MAIN_HEIGHT;
-    } else {
-        return ScreenScale(10);
-    }
+    return CGFLOAT_MIN;
+//    if (section == 0) {
+//        return MAIN_HEIGHT;
+//    } else {
+//        return ScreenScale(10);
+//    }
 }
+/*
 - (UIView *)tableView:(UITableView *)tableView viewForHeaderInSection:(NSInteger)section
 {
     UIView * headerView = [[UIView alloc] init];
@@ -174,9 +212,10 @@
     }
     return headerView;
 }
+ */
 - (void)setHeaderTitle
 {
-    NSMutableAttributedString * attr = [[NSMutableAttributedString alloc] initWithString:[NSString stringWithFormat:@"▎%@", Localized(@"MyAssets")]];
+    NSMutableAttributedString * attr = [[NSMutableAttributedString alloc] initWithString:[NSString stringWithFormat:@"▏%@", Localized(@"MyAssets")]];
     //        NSMutableDictionary * dic = [NSMutableDictionary dictionary];
     //        dic[NSFontAttributeName] = FONT(15);
     //        dic[NSForegroundColorAttributeName] = TITLE_COLOR;

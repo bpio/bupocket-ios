@@ -89,7 +89,7 @@
 
 - (void)backupMnemonicsAction
 {
-    PurseCipherAlertView * alertView = [[PurseCipherAlertView alloc] initWithFrame:CGRectMake(0, 0, DEVICE_WIDTH - ScreenScale(60), ScreenScale(280)) confrimBolck:^{
+    PurseCipherAlertView * alertView = [[PurseCipherAlertView alloc] initWithConfrimBolck:^{
         BackupMnemonicsViewController * VC = [[BackupMnemonicsViewController alloc] init];
         [self.navigationController pushViewController:VC animated:YES];
     } cancelBlock:^{

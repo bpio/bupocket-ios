@@ -47,6 +47,7 @@
 //    title.adjustsLetterSpacingToFitWidth = YES;
     title.numberOfLines = 0;
     title.attributedText = [Encapsulation attrWithString:titleStr preFont:FONT(15) preColor:COLOR(@"FF7272") index:warnStr.length sufFont:FONT(15) sufColor:TITLE_COLOR lineSpacing:ScreenScale(5)];
+    title.lineBreakMode = NSLineBreakByWordWrapping;
     [self addSubview:title];
     [title mas_makeConstraints:^(MASConstraintMaker *make) {
         make.top.equalTo(promptBtn.mas_bottom);

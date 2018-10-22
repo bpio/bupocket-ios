@@ -63,46 +63,6 @@
 - (void)dealloc {
     [[NSNotificationCenter defaultCenter] removeObserver:self];
 }
-/*
-// 统计未读消息数
--(void)setupUnreadMessageCount
-{
-    NSArray *conversations = [[EMClient sharedClient].chatManager getAllConversations];
-    NSInteger unreadCount = 0;
-    for (EMConversation *conversation in conversations) {
-        unreadCount += conversation.unreadMessagesCount;
-    }
-    if (_chatListVC) {
-        if (unreadCount > 0) {
-            _chatListVC.tabBarItem.badgeValue = [NSString stringWithFormat:@"%i",(int)unreadCount];
-        }else{
-            _chatListVC.tabBarItem.badgeValue = nil;
-        }
-    }
-    
-    UIApplication *application = [UIApplication sharedApplication];
-    [application setApplicationIconBadgeNumber:unreadCount];
-}
-
-- (void)setupUntreatedApplyCount
-{
-//    NSInteger unreadCount = [[[ApplyViewController shareController] dataSource] count];
-//    if (_contactsVC) {
-//        if (unreadCount > 0) {
-//            _contactsVC.tabBarItem.badgeValue = [NSString stringWithFormat:@"%i",(int)unreadCount];
-//        }else{
-//            _contactsVC.tabBarItem.badgeValue = nil;
-//        }
-//    }
-//
-//    [self.contactsVC reloadApplyView];
-}
-- (void)dealloc
-{
-    [[NSNotificationCenter defaultCenter] removeObserver:self name:@"setupUntreatedApplyCount" object:nil];
-    [[NSNotificationCenter defaultCenter] removeObserver:self name:@"setupUnreadMessageCount" object:nil];
-}
- */
 - (void)didReceiveMemoryWarning {
     [super didReceiveMemoryWarning];
     // Dispose of any resources that can be recreated.

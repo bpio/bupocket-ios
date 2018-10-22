@@ -23,6 +23,7 @@
     [self setupView];
     // Do any additional setup after loading the view.
 }
+
 - (void)setupView
 {
     self.loadType = webloadLocalPath;
@@ -33,7 +34,7 @@
 //    } else if ([language isEqualToString:@"en"]) {
 //        path = [[NSBundle mainBundle] pathForResource:@"小布口袋服务协议-英文版(Translated)" ofType:@"docx"];
 //    }
-    [self loadURLPathSring:[[NSBundle mainBundle] pathForResource:Localized(@"TermsOfUse") ofType:@"docx"]];
+    [self loadURLPathSring:[[NSBundle mainBundle] pathForResource:Localized(@"TermsOfUse") ofType:@"html"]];
     self.wkWebView.height = DEVICE_HEIGHT - SafeAreaBottomH - ScreenScale(55);
     UIButton * ifReaded = [UIButton createButtonWithTitle:[NSString stringWithFormat:@"  %@", Localized(@"ReadAndAgree")] TextFont:14 TextNormalColor:COLOR(@"666666") TextSelectedColor:COLOR(@"666666") NormalImage:@"ifReaded_n" SelectedImage:@"ifReaded_s" Target:self Selector:@selector(agreeAction:)];
     ifReaded.contentEdgeInsets = UIEdgeInsetsMake(0, ScreenScale(10), 0, ScreenScale(10));

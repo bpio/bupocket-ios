@@ -7,11 +7,10 @@
 //
 
 #import "BackupMnemonicsViewController.h"
+#import "ConfirmMnemonicViewController.h"
 
 
 @interface BackupMnemonicsViewController ()
-
-@property (nonatomic, strong) UIView * tagView;
 
 @end
 
@@ -69,13 +68,26 @@
         make.left.right.equalTo(promptBg);
     }];
     NSArray * array = @[@"bestball", @"merge", @"river", @"tag", @"mnemoni"];
-    [self setupTagsViewWithArray:array];
-    [self.view addSubview:self.tagView];
-    [self.tagView mas_makeConstraints:^(MASConstraintMaker *make) {
-        make.top.equalTo(savePrompt.mas_bottom).offset(ScreenScale(15));
-        make.left.right.equalTo(promptBg);
-    }];
-    self.tagView.backgroundColor = [UIColor redColor];
+    CGFloat tagW = (DEVICE_WIDTH - ScreenScale(90)) / 4;
+    CGFloat tagH = ScreenScale(40);
+    for (NSInteger i = 0; i < array.count; i ++) {
+        UIButton * tagBtn = [UIButton createButtonWithTitle:array[i] TextFont:15 TextColor:COLOR(@"999999") Target:nil Selector:nil];
+        tagBtn.backgroundColor = COLOR(@"F5F5F5");
+        tagBtn.layer.cornerRadius = ScreenScale(2);
+        [self.view addSubview:tagBtn];
+        [tagBtn mas_makeConstraints:^(MASConstraintMaker *make) {
+            make.left.equalTo(promptBg.mas_left).offset((tagW + ScreenScale(10)) * (i % 4));
+            make.top.equalTo(savePrompt.mas_bottom).offset(ScreenScale(15) + (tagH + ScreenScale(10)) * (i / 4));
+            make.size.mas_equalTo(CGSizeMake(tagW, tagH));
+        }];
+    }
+//    [self setupTagsViewWithArray:array];
+//    [self.view addSubview:self.tagView];
+//    [self.tagView mas_makeConstraints:^(MASConstraintMaker *make) {
+//        make.top.equalTo(savePrompt.mas_bottom).offset(ScreenScale(15));
+//        make.left.right.equalTo(promptBg);
+//    }];
+//    self.tagView.backgroundColor = [UIColor redColor];
     
     UIButton * copied = [UIButton createButtonWithTitle:Localized(@"Copied") TextFont:18 TextColor:[UIColor whiteColor] Target:self Selector:@selector(copiedAction)];
     copied.layer.masksToBounds = YES;
@@ -91,8 +103,10 @@
 }
 - (void)copiedAction
 {
-    
+    ConfirmMnemonicViewController * VC = [[ConfirmMnemonicViewController alloc] init];
+    [self.navigationController pushViewController:VC animated:YES];
 }
+/*
 - (UIView *)setupTagsViewWithArray:(NSArray *)array
 {
     _tagView = [[UIView alloc] init];
@@ -132,6 +146,7 @@
     _tagView.frame = CGRectMake(0, 0, tagViewW, CGRectGetMaxY(_tagView.subviews.lastObject.frame));
     return _tagView;
 }
+ */
 /*
 #pragma mark - Navigation
 

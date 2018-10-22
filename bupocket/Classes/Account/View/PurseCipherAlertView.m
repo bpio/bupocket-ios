@@ -14,9 +14,9 @@
 
 @implementation PurseCipherAlertView
 
-- (instancetype)initWithFrame:(CGRect)frame confrimBolck:(nonnull void (^)(void))confrimBlock cancelBlock:(nonnull void (^)(void))cancelBlock
+- (instancetype)initWithConfrimBolck:(nonnull void (^)(void))confrimBlock cancelBlock:(nonnull void (^)(void))cancelBlock
 {
-    self = [super initWithFrame:frame];
+    self = [super init];
     if (self) {
         _sureBlock = confrimBlock;
         _cancleBlock = cancelBlock;
@@ -50,10 +50,13 @@
     prompt.font = FONT(14);
     prompt.textColor = COLOR(@"666666");
     prompt.text = Localized(@"PurseCipherPrompt");
+    prompt.numberOfLines = 0;
+    prompt.textAlignment = NSTextAlignmentCenter;
     [self addSubview:prompt];
     [prompt mas_makeConstraints:^(MASConstraintMaker *make) {
         make.top.equalTo(title.mas_bottom).offset(ScreenScale(10));
-        make.centerX.equalTo(self);
+        make.left.equalTo(self).offset(ScreenScale(25));
+        make.right.equalTo(self).offset(-ScreenScale(25));
     }];
     
     UITextField * PWTextField = [[UITextField alloc] init];
@@ -71,8 +74,7 @@
     [self addSubview:PWTextField];
     [PWTextField mas_makeConstraints:^(MASConstraintMaker *make) {
         make.top.equalTo(prompt.mas_bottom).offset(ScreenScale(25));
-        make.left.equalTo(self).offset(ScreenScale(25));
-        make.right.equalTo(self).offset(-ScreenScale(25));
+        make.left.right.equalTo(prompt);
         make.height.mas_equalTo(ScreenScale(50));
     }];
     
@@ -83,9 +85,12 @@
     sureBtn.backgroundColor = MAIN_COLOR;
     [sureBtn mas_makeConstraints:^(MASConstraintMaker *make) {
         make.bottom.equalTo(self.mas_bottom).offset(-ScreenScale(27));
-        make.left.right.equalTo(PWTextField);
+        make.left.right.equalTo(prompt);
         make.height.mas_equalTo(MAIN_HEIGHT);
     }];
+    
+    CGFloat height = [Encapsulation rectWithText:Localized(@"PurseCipherPrompt") fontSize:15 textWidth:DEVICE_WIDTH - ScreenScale(110)].size.height + ScreenScale(255);
+    self.bounds = CGRectMake(0, 0, DEVICE_WIDTH - ScreenScale(60), height);
 }
 
 - (void)cancleBtnClick {

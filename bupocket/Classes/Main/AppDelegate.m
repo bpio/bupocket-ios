@@ -32,7 +32,7 @@
 - (void)setRootVC
 {
     [[UIButton appearance] setExclusiveTouch:YES];
-    [UIApplication sharedApplication].statusBarStyle = UIStatusBarStyleLightContent;
+    [UIApplication sharedApplication].statusBarStyle = UIStatusBarStyleDefault;
     if (@available(iOS 11.0, *)){
         [[UIScrollView appearance] setContentInsetAdjustmentBehavior:UIScrollViewContentInsetAdjustmentNever];
         UITableView.appearance.estimatedRowHeight = 0;

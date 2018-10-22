@@ -8,7 +8,9 @@
 
 #import "MyViewController.h"
 #import "ListTableViewCell.h"
-// 多语言
+#import "MyIdentityViewController.h"
+#import "ChangePasswordViewController.h"
+#import "FeedbackViewController.h"
 #import "MultilingualViewController.h"
 
 @interface MyViewController ()<UITableViewDelegate, UITableViewDataSource>
@@ -23,11 +25,13 @@
 - (void)viewWillAppear:(BOOL)animated {
     [super viewWillAppear:animated];
     [self.navigationController setNavigationBarHidden:YES animated:animated];
+    [UIApplication sharedApplication].statusBarStyle = UIStatusBarStyleLightContent;
 }
 
 - (void)viewWillDisappear:(BOOL)animated {
     [super viewWillDisappear:animated];
     [self.navigationController setNavigationBarHidden:NO animated:animated];
+    [UIApplication sharedApplication].statusBarStyle = UIStatusBarStyleDefault;
 }
 
 - (void)viewDidLoad {
@@ -48,7 +52,8 @@
 }
 - (void)setupHeaderView
 {
-    UIImageView * headerBg = [[UIImageView alloc] initWithImage:[UIImage imageNamed:@"my_header"]];
+    UIImage * headerImage = [UIImage imageNamed:@"my_header"];
+    UIImageView * headerBg = [[UIImageView alloc] initWithImage:headerImage];
     headerBg.userInteractionEnabled = YES;
     CustomButton * userIcon = [[CustomButton alloc] init];
     userIcon.layoutMode = VerticalNormal;
@@ -56,6 +61,7 @@
     userIcon.titleLabel.font = FONT(16);
     [userIcon setTitle:@"用户名" forState:UIControlStateNormal];
     [userIcon setImage:[UIImage imageNamed:@"userIcon_placeholder"] forState:UIControlStateNormal];
+    [userIcon addTarget:self action:@selector(userIconAction) forControlEvents:UIControlEventTouchUpInside];
 //    [UIButton createButtonWithTitle:@"用户名" TextFont:16 TextNormalColor:[UIColor whiteColor] TextSelectedColor:[UIColor whiteColor] NormalImage:@"userIcon_placeholder" SelectedImage:@"userIcon_placeholder" Target:self Selector:@selector(userIconAction:)];
 //    [VerticalButton buttonWithTitle:@"用户名" titleColor:[UIColor whiteColor] titleFont:16 imageName:@"userIcon_placeholder" target:self action:@selector(userIconAction:) btnTag:0];
     [headerBg addSubview:userIcon];
@@ -63,11 +69,14 @@
         make.centerX.centerY.equalTo(headerBg);
         make.height.mas_equalTo(ScreenScale(120));
     }];
+    CGFloat headerH = ScreenScale(375 * headerImage.size.height / headerImage.size.width);
+    headerBg.bounds = CGRectMake(0, 0, DEVICE_WIDTH, headerH);
     self.tableView.tableHeaderView = headerBg;
 }
-- (void)userIconAction:(UIButton *)button
+- (void)userIconAction
 {
-    
+    MyIdentityViewController * VC = [[MyIdentityViewController alloc] init];
+    [self.navigationController pushViewController:VC animated:YES];
 }
 - (CGFloat)tableView:(UITableView *)tableView heightForRowAtIndexPath:(NSIndexPath *)indexPath
 {
@@ -125,7 +134,13 @@
 - (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath
 {
     [tableView deselectRowAtIndexPath:indexPath animated:YES];
-    if (indexPath.row == 2) {
+    if (indexPath.row == 0) {
+        ChangePasswordViewController * VC = [[ChangePasswordViewController alloc] init];
+        [self.navigationController pushViewController:VC animated:YES];
+    } else if (indexPath.row == 1) {
+        FeedbackViewController * VC = [[FeedbackViewController alloc] init];
+        [self.navigationController pushViewController:VC animated:YES];
+    } else if (indexPath.row == 2) {
         MultilingualViewController * VC = [[MultilingualViewController alloc] init];
         [self.navigationController pushViewController:VC animated:YES];
     }

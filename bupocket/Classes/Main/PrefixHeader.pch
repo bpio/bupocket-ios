@@ -18,6 +18,8 @@
 
 #import "LanguageManager.h"
 #import "Encapsulation.h"
+#import "UIView+Extension.h"
+#import "UIApplication+Extension.h"
 
 #define SERVER_COMBINE_API(API_BASE, API_INTERFACE) [NSString stringWithFormat:@"%@%@",API_BASE,API_INTERFACE]
 // 正式环境

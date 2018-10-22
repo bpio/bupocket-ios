@@ -36,20 +36,37 @@
 "BackupPrompt" = "Please make sure that no backup is available in a secure environment with no cameras.";
 "TemporaryBackup" = "Temporary backup";
 "BackupMnemonics" = "Backup mnemonics";
-"PurseCipherConfirm" = "密码确认";
-"PurseCipherPrompt" = "请填写钱包密码以确认备份";
-"PWPlaceholder" = "8-20个字符，且内容仅限字母和数字";
-"NoScreenshot" = "请勿截图";
-"MnemonicsPrompt" = "泄露助记词将导致资产丢失，请抄写下助记词并存放在安全的地方。
-";
-"MnemonicsSavePrompt" = "请按顺序记录每个词，并妥善保管";
-
+"PurseCipherConfirm" = "password confirmation";
+"PurseCipherPrompt" = "fill in the password of the purse to confirm the backup";
+"PWPlaceholder" = "8-20 characters, and the content is only alphabetic and numeric";
+"NoScreenshot" = "no screenshots";
+"MnemonicsPrompt" = "Leaking mnemonics leads to loss of assets. Copy mnemonics and store them in a safe place.";
+"MnemonicsSavePrompt" = "please record every word in order and keep it properly";
+"Copied" = "Copied";
+"ConfirmMnemonic" = "Confirm mnemonic words";
+"Finished" = "finished";
 // My
 "ModifyPassword" = "modify password";
 "Feedback" = "help and feedback";
 "MultiLingual" = "multi lingual";
 "VersionNumber" = "version number";
-
+// My Identity
+"MyIdentity" = "My identity";
+"IdentityNameTitle" = "Identity name";
+"IdentityIDTitle" = "Identity ID";
+"BackupIdentity" = "Backup identity";
+"ExitCurrentIdentity" = "Exit current identity";
+// modify password
+"OldPassword" = "Old password";
+"NewPassword" = "New password";
+"ConfirmedPassword" = "Confirmed password";
+"PleaseEnterOldPW" = "please enter old password";
+"PleaseEnterNewPW" = "please enter new password";
+// help and feedback
+"QuestionsOrSuggestions" = "problems or suggestions you have encountered";
+"YourContact" = "your way of contact";
+"PleaseEnterQOrS" = "Please input any questions or suggestions you have encountered";
+"PleaseEnterContact" = "please input your contact information";
 // Assets
 "TotalAssets" = "total assets（¥）";
 "MyAssets" = "My assets";
