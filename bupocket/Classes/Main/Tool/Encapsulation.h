@@ -2,7 +2,7 @@
 //  Encapsulation.h
 //  Game News
 //
-//  Created by 康政 on 16/2/3.
+//  Created by bupocket on 16/2/3.
 //  Copyright © 2016年 huoss. All rights reserved.
 //
 
@@ -18,5 +18,9 @@
 + (NSMutableAttributedString *)attrWithString:(NSString *)str preFont:(UIFont *)preFont preColor:(UIColor *)preColor index:(NSInteger)index sufFont:(UIFont *)sufFont sufColor:(UIColor *)sufColor lineSpacing:(CGFloat)lineSpacing;
 //计算UILabel的宽度、高度(带有行间距的情况)
 + (CGSize)getSizeSpaceLabelWithStr:(NSString *)str font:(UIFont *)font width:(CGFloat)width height:(CGFloat)height lineSpacing:(CGFloat)lineSpacing;
+
++ (UIAlertController *)alertControllerWithTitle:(NSString *)title message:(NSString*)message;
+
++ (UIButton *)showNoTransactionRecordWithSuperView:(UIView *)superView frame:(CGRect)frame;
 
 @end

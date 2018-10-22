@@ -7,8 +7,6 @@
 //
 
 #import "AppDelegate.h"
-#import "TabBarViewController.h"
-#import "NavigationViewController.h"
 #import "IdentityViewController.h"
 #import "GuideViewController.h"
 

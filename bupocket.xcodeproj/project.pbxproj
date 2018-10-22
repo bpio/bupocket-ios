@@ -40,6 +40,12 @@
 		83379A742179D62300C222A5 /* MyIdentityViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 83379A732179D62300C222A5 /* MyIdentityViewController.m */; };
 		83379A7A217B4EA700C222A5 /* AppDelegate+Extension.m in Sources */ = {isa = PBXBuildFile; fileRef = 83379A79217B4EA700C222A5 /* AppDelegate+Extension.m */; };
 		83379A80217B524D00C222A5 /* UIApplication+Extension.m in Sources */ = {isa = PBXBuildFile; fileRef = 83379A7F217B524D00C222A5 /* UIApplication+Extension.m */; };
+		83379A83217D805300C222A5 /* PurseAddressAlertView.m in Sources */ = {isa = PBXBuildFile; fileRef = 83379A82217D805300C222A5 /* PurseAddressAlertView.m */; };
+		83379A86217D9C8A00C222A5 /* AssetsDetailViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 83379A85217D9C8A00C222A5 /* AssetsDetailViewController.m */; };
+		83379A89217DA4F900C222A5 /* AssetsDetailListViewCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 83379A88217DA4F900C222A5 /* AssetsDetailListViewCell.m */; };
+		83379A8C217DB25A00C222A5 /* TransferAccountsViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 83379A8B217DB25A00C222A5 /* TransferAccountsViewController.m */; };
+		83379A8F217DC0C700C222A5 /* TransferDetailsAlertView.m in Sources */ = {isa = PBXBuildFile; fileRef = 83379A8E217DC0C700C222A5 /* TransferDetailsAlertView.m */; };
+		83379A92217DE12600C222A5 /* TransferResultsViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 83379A91217DE12600C222A5 /* TransferResultsViewController.m */; };
 		835A45262174C14D005BFCDD /* main.m in Sources */ = {isa = PBXBuildFile; fileRef = 835A45242174C14D005BFCDD /* main.m */; };
 		835A45272174C14D005BFCDD /* AppDelegate.m in Sources */ = {isa = PBXBuildFile; fileRef = 835A45252174C14D005BFCDD /* AppDelegate.m */; };
 		8372C8592174CB9800FF9506 /* UITextField+Extension.m in Sources */ = {isa = PBXBuildFile; fileRef = 8372C8572174CB9800FF9506 /* UITextField+Extension.m */; };
@@ -148,6 +154,18 @@
 		83379A79217B4EA700C222A5 /* AppDelegate+Extension.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = "AppDelegate+Extension.m"; sourceTree = "<group>"; };
 		83379A7E217B524D00C222A5 /* UIApplication+Extension.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "UIApplication+Extension.h"; sourceTree = "<group>"; };
 		83379A7F217B524D00C222A5 /* UIApplication+Extension.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "UIApplication+Extension.m"; sourceTree = "<group>"; };
+		83379A81217D805300C222A5 /* PurseAddressAlertView.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = PurseAddressAlertView.h; sourceTree = "<group>"; };
+		83379A82217D805300C222A5 /* PurseAddressAlertView.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = PurseAddressAlertView.m; sourceTree = "<group>"; };
+		83379A84217D9C8A00C222A5 /* AssetsDetailViewController.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = AssetsDetailViewController.h; sourceTree = "<group>"; };
+		83379A85217D9C8A00C222A5 /* AssetsDetailViewController.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = AssetsDetailViewController.m; sourceTree = "<group>"; };
+		83379A87217DA4F900C222A5 /* AssetsDetailListViewCell.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = AssetsDetailListViewCell.h; sourceTree = "<group>"; };
+		83379A88217DA4F900C222A5 /* AssetsDetailListViewCell.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = AssetsDetailListViewCell.m; sourceTree = "<group>"; };
+		83379A8A217DB25A00C222A5 /* TransferAccountsViewController.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = TransferAccountsViewController.h; sourceTree = "<group>"; };
+		83379A8B217DB25A00C222A5 /* TransferAccountsViewController.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = TransferAccountsViewController.m; sourceTree = "<group>"; };
+		83379A8D217DC0C700C222A5 /* TransferDetailsAlertView.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = TransferDetailsAlertView.h; sourceTree = "<group>"; };
+		83379A8E217DC0C700C222A5 /* TransferDetailsAlertView.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = TransferDetailsAlertView.m; sourceTree = "<group>"; };
+		83379A90217DE12600C222A5 /* TransferResultsViewController.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = TransferResultsViewController.h; sourceTree = "<group>"; };
+		83379A91217DE12600C222A5 /* TransferResultsViewController.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = TransferResultsViewController.m; sourceTree = "<group>"; };
 		835A45232174C14D005BFCDD /* AppDelegate.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = AppDelegate.h; sourceTree = "<group>"; };
 		835A45242174C14D005BFCDD /* main.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = main.m; sourceTree = "<group>"; };
 		835A45252174C14D005BFCDD /* AppDelegate.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = AppDelegate.m; sourceTree = "<group>"; };
@@ -402,6 +420,12 @@
 			children = (
 				8372C8672174CCA000FF9506 /* AssetsViewController.h */,
 				8372C8682174CCA000FF9506 /* AssetsViewController.m */,
+				83379A84217D9C8A00C222A5 /* AssetsDetailViewController.h */,
+				83379A85217D9C8A00C222A5 /* AssetsDetailViewController.m */,
+				83379A8A217DB25A00C222A5 /* TransferAccountsViewController.h */,
+				83379A8B217DB25A00C222A5 /* TransferAccountsViewController.m */,
+				83379A90217DE12600C222A5 /* TransferResultsViewController.h */,
+				83379A91217DE12600C222A5 /* TransferResultsViewController.m */,
 			);
 			path = Controller;
 			sourceTree = "<group>";
@@ -418,6 +442,12 @@
 			children = (
 				833799362177427500C222A5 /* AssetsListViewCell.h */,
 				833799372177427500C222A5 /* AssetsListViewCell.m */,
+				83379A81217D805300C222A5 /* PurseAddressAlertView.h */,
+				83379A82217D805300C222A5 /* PurseAddressAlertView.m */,
+				83379A87217DA4F900C222A5 /* AssetsDetailListViewCell.h */,
+				83379A88217DA4F900C222A5 /* AssetsDetailListViewCell.m */,
+				83379A8D217DC0C700C222A5 /* TransferDetailsAlertView.h */,
+				83379A8E217DC0C700C222A5 /* TransferDetailsAlertView.m */,
 			);
 			path = View;
 			sourceTree = "<group>";
@@ -789,16 +819,19 @@
 				83379A58217880C700C222A5 /* BackUpPurseViewController.m in Sources */,
 				83379A7A217B4EA700C222A5 /* AppDelegate+Extension.m in Sources */,
 				83379A80217B524D00C222A5 /* UIApplication+Extension.m in Sources */,
+				83379A8C217DB25A00C222A5 /* TransferAccountsViewController.m in Sources */,
 				8337991A2176E80D00C222A5 /* MultilingualViewController.m in Sources */,
 				833799382177427500C222A5 /* AssetsListViewCell.m in Sources */,
 				83B594B42175F46E009F91BA /* TermsOfUseViewController.m in Sources */,
 				8372C86F2174D03F00FF9506 /* UIButton+Extension.m in Sources */,
+				83379A8F217DC0C700C222A5 /* TransferDetailsAlertView.m in Sources */,
 				8337992F21772E0300C222A5 /* CustomButton.m in Sources */,
 				83B594B12175E6FA009F91BA /* PlaceholderTextView.m in Sources */,
 				8337992C2177092300C222A5 /* LanguageManager.m in Sources */,
 				83379A182178682100C222A5 /* UIView+CustomAlertView.m in Sources */,
 				8372C8662174CC6F00FF9506 /* BaseViewController.m in Sources */,
 				835A45262174C14D005BFCDD /* main.m in Sources */,
+				83379A89217DA4F900C222A5 /* AssetsDetailListViewCell.m in Sources */,
 				83379A1B21786A6800C222A5 /* Encapsulation.m in Sources */,
 				83379A742179D62300C222A5 /* MyIdentityViewController.m in Sources */,
 				8372C8622174CBF100FF9506 /* NavigationViewController.m in Sources */,
@@ -806,9 +839,12 @@
 				8372C8692174CCA000FF9506 /* AssetsViewController.m in Sources */,
 				83B594B72175FC8B009F91BA /* BackupMnemonicsViewController.m in Sources */,
 				83B594AD2175E4D9009F91BA /* RestoreIdentityViewController.m in Sources */,
+				83379A86217D9C8A00C222A5 /* AssetsDetailViewController.m in Sources */,
+				83379A92217DE12600C222A5 /* TransferResultsViewController.m in Sources */,
 				8372C8632174CBF100FF9506 /* TabBarViewController.m in Sources */,
 				8372C872217588D100FF9506 /* IdentityViewController.m in Sources */,
 				83B594AA2175954F009F91BA /* CreateIdentityViewController.m in Sources */,
+				83379A83217D805300C222A5 /* PurseAddressAlertView.m in Sources */,
 				83379A6E2179CB9E00C222A5 /* FeedbackViewController.m in Sources */,
 				83B465A821745C9300187961 /* ViewController.m in Sources */,
 				833799322177305A00C222A5 /* UIView+Extension.m in Sources */,

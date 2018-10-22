@@ -7,7 +7,6 @@
 //
 
 #import "ConfirmMnemonicViewController.h"
-#import "TabBarViewController.h"
 
 @interface ConfirmMnemonicViewController ()
 
@@ -74,7 +73,7 @@
     
     UIView * lineView = [[UIView alloc] init];
     lineView.bounds = CGRectMake(0, 0, DEVICE_WIDTH - ScreenScale(60), ScreenScale(1.5));
-    [lineView drawDashLine:lineView lineLength:ScreenScale(3) lineSpacing:ScreenScale(1) lineColor:COLOR(@"E3E3E3")];
+    [lineView drawDashLineLength:ScreenScale(3) lineSpacing:ScreenScale(1) lineColor:COLOR(@"E3E3E3")];
     [self.view addSubview:lineView];
     [lineView mas_makeConstraints:^(MASConstraintMaker *make) {
         make.left.right.equalTo(confirmPrompt);

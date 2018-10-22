@@ -8,7 +8,6 @@
 
 #import "RestoreIdentityViewController.h"
 #import "PlaceholderTextView.h"
-#import "TabBarViewController.h"
 
 @interface RestoreIdentityViewController ()<UITextFieldDelegate, UITextViewDelegate>
 
@@ -171,9 +170,7 @@
 //创建事件处理
 - (void)createAction
 {
-    UIAlertController * alertController = [UIAlertController alertControllerWithTitle:Localized(@"CreatePWPrompt") message:Localized(@"ConfirmRecoveryID") preferredStyle:UIAlertControllerStyleAlert];
-    UIAlertAction * cancelAction = [UIAlertAction actionWithTitle:Localized(@"Cancel") style:UIAlertActionStyleCancel handler:nil];
-    [alertController addAction:cancelAction];
+    UIAlertController * alertController = [Encapsulation alertControllerWithTitle:nil message:Localized(@"ConfirmRecoveryID")];
     UIAlertAction * okAction = [UIAlertAction actionWithTitle:Localized(@"Confirm") style:UIAlertActionStyleDefault handler:^(UIAlertAction * _Nonnull action) {
         [UIApplication sharedApplication].keyWindow.rootViewController = [[TabBarViewController alloc] init];
     }];

@@ -56,6 +56,7 @@
 "IdentityIDTitle" = "身份ID";
 "BackupIdentity" = "备份身份";
 "ExitCurrentIdentity" = "退出当前身份";
+"ExitCurrentIdentityPrompt" = "即将移除身份及所有已导入的钱包，请确保所有钱包已备份";
 // 修改密码
 "OldPassword" = "旧密码";
 "NewPassword" = "新密码";
@@ -72,3 +73,33 @@
 "TotalAssets" = "总资产（¥）";
 "MyAssets" = "我的资产";
 "PleaseBackup" = "请备份";
+// 钱包地址
+"PurseAddressTitle" = "钱包地址";
+"DuplicateWalletAddress" = "复制钱包地址";
+"WalletAddressQRCode" = "钱包地址二维码";
+// 资产详情
+"AssetsDetailScan" = "扫一扫";
+"TransferAccounts" = "转账";
+"RecentTransactionRecords" = "最近交易记录";
+"NoTransactionRecord" = "暂无交易记录";
+// 转账
+"ReciprocalAccount" = "对方账户（BU地址） *";
+"reciprocalAccount" = "对方账户";
+"PhoneOrAddress" = "请输入手机号/接收方地址";
+"AmountOfTransfer" = "转账数量（BU） *";
+"amountOfTransfer" = "转账数量";
+"MostOnce" = "单笔不可超过10000 BU";
+"Remarks" = "备注 ";
+"RemarksPlaceholder" = "请输入备注";
+"EstimatedMaximum" = "预估最多支付费用（BU) *";
+"estimatedMaximum" = "预估最多支付费用";
+"TransactionCostPlaceholder" = "请输交易费用";
+"Next" = "下一步";
+"ConfirmationOfTransfer" = "确认转账";
+"TransferPrompt" = "请确认转账信息是否有误";
+"Submission" = "提交";
+"TransactionCost" = "交易费";
+"TransferTime" = "转账时间";
+"TransferSuccess" = "转账成功";
+"TransferFailure" = "转账失败";
+

@@ -7,7 +7,6 @@
 //
 
 #import "BackUpPurseViewController.h"
-#import "TabBarViewController.h"
 #import "PurseCipherAlertView.h"
 #import "BackupMnemonicsViewController.h"
 

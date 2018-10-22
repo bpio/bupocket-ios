@@ -12,6 +12,7 @@
 #import <Masonry.h>
 #import <UIImageView+WebCache.h>
 #import <YYKit/YYKit.h>
+
 #import "UIButton+Extension.h"
 #import "CustomButton.h"
 #import "UITextField+Extension.h"
@@ -20,6 +21,9 @@
 #import "Encapsulation.h"
 #import "UIView+Extension.h"
 #import "UIApplication+Extension.h"
+
+#import "NavigationViewController.h"
+#import "TabBarViewController.h"
 
 #define SERVER_COMBINE_API(API_BASE, API_INTERFACE) [NSString stringWithFormat:@"%@%@",API_BASE,API_INTERFACE]
 // 正式环境
@@ -45,6 +49,7 @@
 
 // 字体
 #define FONT(F) [UIFont systemFontOfSize:ScreenScale(F)]
+#define FONT_Bold(F) [UIFont boldSystemFontOfSize:ScreenScale(F)]
 //#define FONT(F) [UIFont fontWithName:@"SourceHanSansCN-Medium" size:ScreenScale(F)]
 #define StatusBarHeight [[UIApplication sharedApplication] statusBarFrame].size.height
 #define NavBarH (StatusBarHeight + 44)

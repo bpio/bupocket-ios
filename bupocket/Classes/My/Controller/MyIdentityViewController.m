@@ -7,6 +7,9 @@
 //
 
 #import "MyIdentityViewController.h"
+#import "IdentityViewController.h"
+#import "PurseCipherAlertView.h"
+#import "BackupMnemonicsViewController.h"
 
 @interface MyIdentityViewController ()
 
@@ -97,11 +100,21 @@
 }
 - (void)backupIdentityAction
 {
-    
+    PurseCipherAlertView * alertView = [[PurseCipherAlertView alloc] initWithConfrimBolck:^{
+        [UIApplication sharedApplication].keyWindow.rootViewController = [[NavigationViewController alloc] initWithRootViewController:[[BackupMnemonicsViewController alloc] init]];
+    } cancelBlock:^{
+        
+    }];
+    [alertView showInWindowWithMode:CustomAnimationModeAlert inView:nil bgAlpha:0.2 needEffectView:NO];
 }
 - (void)exitIDAction
 {
-    
+    UIAlertController * alertController = [Encapsulation alertControllerWithTitle:Localized(@"ExitCurrentIdentity") message:Localized(@"ExitCurrentIdentityPrompt")];
+    UIAlertAction * okAction = [UIAlertAction actionWithTitle:Localized(@"Confirm") style:UIAlertActionStyleDefault handler:^(UIAlertAction * _Nonnull action) {
+        [UIApplication sharedApplication].keyWindow.rootViewController = [[NavigationViewController alloc] initWithRootViewController:[[IdentityViewController alloc] init]];
+    }];
+    [alertController addAction:okAction];
+    [self presentViewController:alertController animated:YES completion:nil];
 }
 /*
 #pragma mark - Navigation

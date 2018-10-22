@@ -26,6 +26,9 @@
 }
 - (void)setupView
 {
+    UITapGestureRecognizer *tap = [[UITapGestureRecognizer alloc] initWithTarget:self action:@selector(keyBoardHidden)];
+    [self.view addGestureRecognizer:tap];
+    
     NSArray * array = @[@[Localized(@"OldPassword"), Localized(@"NewPassword"), Localized(@"ConfirmedPassword")], @[Localized(@"PleaseEnterOldPW"), Localized(@"PleaseEnterNewPW"), Localized(@"ConfirmPassword")]];
     for (NSInteger i = 0; i < 3; i++) {
         UIView * PWView = [self setViewWithTitle:[array firstObject][i] placeholder:[array lastObject][i] index:i];
@@ -67,7 +70,7 @@
     //        dic[NSForegroundColorAttributeName] = TITLE_COLOR;
     //        [attr addAttributes:dic range:NSMakeRange(3, str.length - 3)];
     [attr addAttribute:NSForegroundColorAttributeName value:MAIN_COLOR range:NSMakeRange(0, 1)];
-    [attr addAttribute:NSFontAttributeName value:FONT(16) range:NSMakeRange(0, 0)];
+    [attr addAttribute:NSFontAttributeName value:FONT(16) range:NSMakeRange(0, 1)];
     header.attributedText = attr;
     [header mas_makeConstraints:^(MASConstraintMaker *make) {
         make.top.equalTo(viewBg.mas_top).offset(ScreenScale(33));
@@ -110,6 +113,10 @@
             break;
     }
     return viewBg;
+}
+- (void)keyBoardHidden
+{
+    [self.view endEditing:YES];
 }
 
 /*

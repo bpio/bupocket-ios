@@ -7,8 +7,6 @@
 //
 
 #import "GuideViewController.h"
-#import "TabBarViewController.h"
-#import "NavigationViewController.h"
 #import "IdentityViewController.h"
 
 @interface GuideViewController ()

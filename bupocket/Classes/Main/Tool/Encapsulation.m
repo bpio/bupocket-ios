@@ -2,7 +2,7 @@
 //  Encapsulation.m
 //  Game News
 //
-//  Created by 康政 on 16/2/3.
+//  Created by bupocket on 16/2/3.
 //  Copyright © 2016年 huoss. All rights reserved.
 //
 
@@ -69,6 +69,46 @@
                          };
     CGSize size = [str boundingRectWithSize:CGSizeMake(width, height) options:NSStringDrawingUsesLineFragmentOrigin attributes:dic context:nil].size;
     return size;
+}
+
++ (UIAlertController *)alertControllerWithTitle:(NSString *)title message:(NSString*)message
+{
+    
+    UIAlertController * alertController = [UIAlertController alertControllerWithTitle:title message:message preferredStyle:UIAlertControllerStyleAlert];
+    UIAlertAction * cancelAction = [UIAlertAction actionWithTitle:Localized(@"Cancel") style:UIAlertActionStyleCancel handler:nil];
+    [alertController addAction:cancelAction];
+//    UIAlertAction * okAction = [UIAlertAction actionWithTitle:Localized(@"Confirm") style:UIAlertActionStyleDefault handler:^(UIAlertAction * _Nonnull action) {
+//    }];
+//    [alertController addAction:okAction];
+    UIView * alertBg = alertController.view.subviews[0].subviews[0].subviews[0];
+    alertBg.backgroundColor = [UIColor whiteColor];
+    alertBg.layer.cornerRadius = ScreenScale(5);
+    if (title.length > 0) {
+        UILabel * titleLabel = alertBg.subviews[0].subviews[0].subviews[0];
+        titleLabel.height = ScreenScale(65);
+        //    NSMutableAttributedString * attrTitle = [Encapsulation attrWithString:title preFont:FONT(18) preColor:TITLE_COLOR index:0 sufFont:FONT(18) sufColor:TITLE_COLOR lineSpacing:ScreenScale(10)];
+        NSMutableAttributedString * attrTitle = [[NSMutableAttributedString alloc] initWithString:title attributes:@{NSForegroundColorAttributeName: TITLE_COLOR, NSFontAttributeName: FONT_Bold(18)}];
+        [alertController setValue:attrTitle forKey:@"attributedTitle"];
+    }
+    NSMutableAttributedString * attr = [[NSMutableAttributedString alloc] initWithString:[NSString stringWithFormat:@"\n%@", message] attributes:@{NSForegroundColorAttributeName: COLOR(@"666666"), NSFontAttributeName: FONT(15)}];
+    [alertController setValue:attr forKey:@"attributedMessage"];
+    [cancelAction setValue:COLOR(@"999999") forKey:@"titleTextColor"];
+    return alertController;
+}
+
++ (UIButton *)showNoTransactionRecordWithSuperView:(UIView *)superView frame:(CGRect)frame
+{
+    CustomButton * button = [[CustomButton alloc] init];
+    button.layoutMode = VerticalNormal;
+    [button setTitle:Localized(@"NoTransactionRecord") forState:UIControlStateNormal];
+    [button setTitleColor:COLOR(@"999999") forState:UIControlStateNormal];
+    button.titleLabel.font = FONT(15);
+    [button setImage:[UIImage imageNamed:@"NoTransactionRecord"] forState:UIControlStateNormal];
+    button.userInteractionEnabled = NO;
+    button.hidden = YES;
+    button.frame = frame;
+    [superView addSubview:button];
+    return button;
 }
 
 @end

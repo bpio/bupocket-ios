@@ -8,8 +8,9 @@
 
 #import "AssetsViewController.h"
 #import "AssetsListViewCell.h"
-#import "BackUpPurseViewController.h"
-#import "NavigationViewController.h"
+#import "MyIdentityViewController.h"
+#import "PurseAddressAlertView.h"
+#import "AssetsDetailViewController.h"
 
 @interface AssetsViewController ()<UITableViewDelegate, UITableViewDataSource>
 
@@ -154,14 +155,20 @@
 #pragma mark - backup
 - (void)backupAction:(UIButton *)button
 {
-    NavigationViewController * Nav = [[NavigationViewController alloc] initWithRootViewController:[[BackUpPurseViewController alloc] init]];
-    [Nav.navigationController setNavigationBarHidden:YES animated:YES];
-    [UIApplication sharedApplication].keyWindow.rootViewController = Nav;
+    [self.navigationController pushViewController:[[MyIdentityViewController alloc] init] animated:YES];
+//    NavigationViewController * Nav = [[NavigationViewController alloc] initWithRootViewController:[[MyIdentityViewController alloc] init]];
+//    [Nav.navigationController setNavigationBarHidden:YES animated:YES];
+//    [UIApplication sharedApplication].keyWindow.rootViewController = Nav;
 }
 #pragma mark - QRCode
 - (void)QRCodeAction:(UIButton *)button
 {
-    
+    PurseAddressAlertView * alertView = [[PurseAddressAlertView alloc] initWithPurseAddress:@"buQs9npaCq9mNFZG18qu88ZcmXYqd6bqpTU3" confrimBolck:^{
+        HSSLog(@"复制链接");
+    } cancelBlock:^{
+        
+    }];
+    [alertView showInWindowWithMode:CustomAnimationModeShare inView:nil bgAlpha:0.2 needEffectView:NO];
 }
 #pragma mark - userIcon
 - (void)userIconAction:(UIButton *)button
@@ -221,7 +228,7 @@
     //        dic[NSForegroundColorAttributeName] = TITLE_COLOR;
     //        [attr addAttributes:dic range:NSMakeRange(3, str.length - 3)];
     [attr addAttribute:NSForegroundColorAttributeName value:MAIN_COLOR range:NSMakeRange(0, 1)];
-    [attr addAttribute:NSFontAttributeName value:FONT(16) range:NSMakeRange(0, 0)];
+    [attr addAttribute:NSFontAttributeName value:FONT(16) range:NSMakeRange(0, 1)];
     self.header.attributedText = attr;
 }
 - (CGFloat)tableView:(UITableView *)tableView heightForFooterInSection:(NSInteger)section
@@ -244,6 +251,9 @@
 - (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath
 {
     [tableView deselectRowAtIndexPath:indexPath animated:YES];
+    AssetsDetailViewController * VC = [[AssetsDetailViewController alloc] init];
+    VC.navigationItem.title = self.listArray[indexPath.section];
+    [self.navigationController pushViewController:VC animated:YES];
 }
 - (void)changeLanguage
 {
