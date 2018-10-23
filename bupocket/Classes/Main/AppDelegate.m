@@ -39,11 +39,11 @@
     }
     NSUserDefaults * defaults = [NSUserDefaults standardUserDefaults];
 //    if ([defaults boolForKey:NotFirst]) {
-        if (CurrentUserToken == nil) {
-            self.window.rootViewController = [[NavigationViewController alloc] initWithRootViewController:[[IdentityViewController alloc] init]];
-        } else {
+//        if (CurrentUserToken == nil) {
+//            self.window.rootViewController = [[NavigationViewController alloc] initWithRootViewController:[[IdentityViewController alloc] init]];
+//        } else {
             self.window.rootViewController = [[TabBarViewController alloc] init];
-        }
+//        }
 //    } else {
 //        self.window.rootViewController = [[GuideViewController alloc] init];
 //    }

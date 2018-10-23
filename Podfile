@@ -19,9 +19,17 @@ target 'bupocket' do
 
 pod 'Masonry'
 pod 'AFNetworking'
+pod 'MJExtension'
 pod 'SDWebImage'
+pod 'MJRefresh'
 pod 'MBProgressHUD'
 pod 'MJRefresh'
 pod 'YYKit'
+pod 'IQKeyboardManager'
+pod 'FMDB'
+pod 'XHToast'
+
+pod 'JSONModel'
+pod 'QCloudCOSXML'
 
 end

@@ -9,6 +9,7 @@
 #import "AssetsDetailViewController.h"
 #import "AssetsDetailListViewCell.h"
 #import "TransferAccountsViewController.h"
+#import "OrderDetailsViewController.h"
 
 @interface AssetsDetailViewController ()<UITableViewDelegate, UITableViewDataSource>
 
@@ -45,7 +46,7 @@
 
 - (void)setupView
 {
-    self.tableView = [[UITableView alloc] initWithFrame:CGRectMake(0, 0, DEVICE_WIDTH, DEVICE_HEIGHT) style:UITableViewStyleGrouped];
+    self.tableView = [[UITableView alloc] initWithFrame:CGRectMake(0, NavBarH, DEVICE_WIDTH, DEVICE_HEIGHT - NavBarH) style:UITableViewStyleGrouped];
     self.tableView.delegate = self;
     self.tableView.dataSource = self;
     self.tableView.separatorInset = UIEdgeInsetsZero;
@@ -65,27 +66,35 @@
 - (void)setupHeaderView
 {
     UIView * headerBg = [[UIView alloc] init];
-    UIImage * headerImage = [UIImage imageNamed:@"assets_header"];
-    CGFloat headerImageH = ScreenScale(375 * headerImage.size.height / headerImage.size.width);
-    headerBg.frame = CGRectMake(0, 0, DEVICE_WIDTH, headerImageH + MAIN_HEIGHT);
-    
-    UIImageView * headerImageView = [[UIImageView alloc] initWithImage:headerImage];
-    headerImageView.userInteractionEnabled = YES;
-    [headerBg addSubview:headerImageView];
-    [headerImageView mas_makeConstraints:^(MASConstraintMaker *make) {
+//    UIImage * headerImage = [UIImage imageNamed:@"assets_header"];
+//    CGFloat headerImageH = ScreenScale(375 * headerImage.size.height / headerImage.size.width);
+    headerBg.frame = CGRectMake(0, 0, DEVICE_WIDTH, ScreenScale(240) + MAIN_HEIGHT);
+    UIView * headerView = [[UIView alloc] init];
+    headerView.backgroundColor = [UIColor whiteColor];
+    [headerBg addSubview:headerView];
+    [headerView mas_makeConstraints:^(MASConstraintMaker *make) {
         make.left.top.right.equalTo(headerBg);
-        make.height.mas_equalTo(headerImageH);
+        make.height.mas_equalTo(ScreenScale(240));
     }];
+
+    
+//    UIImageView * headerImageView = [[UIImageView alloc] initWithImage:headerImage];
+//    headerImageView.userInteractionEnabled = YES;
+//    [headerBg addSubview:headerImageView];
+//    [headerImageView mas_makeConstraints:^(MASConstraintMaker *make) {
+//        make.left.top.right.equalTo(headerBg);
+//        make.height.mas_equalTo(headerImageH);
+//    }];
     
     UIImageView * assetsIcon = [[UIImageView alloc] initWithImage:[UIImage imageNamed:@"BU"]];
     [headerBg addSubview:assetsIcon];
     [assetsIcon mas_makeConstraints:^(MASConstraintMaker *make) {
-        make.top.equalTo(headerBg.mas_top).offset(ScreenScale(15) + NavBarH);
+        make.top.equalTo(headerBg.mas_top).offset(ScreenScale(20));
         make.centerX.equalTo(headerBg);
     }];
     
     self.assets = [[UILabel alloc] init];
-    self.assets.textColor = [UIColor whiteColor];
+    self.assets.textColor = TITLE_COLOR;
     self.assets.font = FONT_Bold(24);
     self.assets.text = @"58.00347BU";
     [headerBg addSubview:self.assets];
@@ -96,7 +105,7 @@
     
     self.amount = [[UILabel alloc] init];
     self.amount.font = FONT(15);
-    self.amount.textColor = [UIColor whiteColor];
+    self.amount.textColor = COLOR(@"999999");
     [headerBg addSubview:self.amount];
     [self.amount mas_makeConstraints:^(MASConstraintMaker *make) {
         make.top.equalTo(self.assets.mas_bottom).offset(ScreenScale(15));
@@ -107,7 +116,7 @@
     CGFloat btnW = (DEVICE_WIDTH - ScreenScale(34)) / 2;
     CustomButton * scanBtn = [[CustomButton alloc] init];
     scanBtn.layoutMode = HorizontalNormal;
-    [scanBtn setTitleColor:MAIN_COLOR forState:UIControlStateNormal];
+    [scanBtn setTitleColor:[UIColor whiteColor] forState:UIControlStateNormal];
     scanBtn.titleLabel.font = FONT(14);
     [scanBtn setTitle:Localized(@"AssetsDetailScan") forState:UIControlStateNormal];
     [scanBtn setImage:[UIImage imageNamed:@"assetsDetail_scan"] forState:UIControlStateNormal];
@@ -115,7 +124,7 @@
     //    .titleLabel.lineBreakMode = NSLineBreakByTruncatingTail;
     [headerBg addSubview: scanBtn];
     [scanBtn setViewSize:CGSizeMake(btnW, MAIN_HEIGHT) borderWidth:0 borderColor:nil borderRadius:ScreenScale(3)];
-    scanBtn.backgroundColor = [UIColor whiteColor];
+    scanBtn.backgroundColor = COLOR(@"5745C3");
     [scanBtn mas_makeConstraints:^(MASConstraintMaker *make) {
         make.top.equalTo(self.amount.mas_bottom).offset(ScreenScale(25));
         make.left.equalTo(headerBg.mas_left).offset(ScreenScale(12));
@@ -143,7 +152,7 @@
     [headerBg addSubview:self.header];
     [self.header mas_makeConstraints:^(MASConstraintMaker *make) {
         make.left.equalTo(headerBg.mas_left).offset(ScreenScale(10));
-        make.top.equalTo(headerImageView.mas_bottom);
+        make.top.equalTo(headerView.mas_bottom);
         make.bottom.equalTo(headerBg);
     }];
     [self setHeaderTitle];
@@ -230,6 +239,8 @@
 - (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath
 {
     [tableView deselectRowAtIndexPath:indexPath animated:YES];
+    OrderDetailsViewController * VC = [[OrderDetailsViewController alloc] init];
+    [self.navigationController pushViewController:VC animated:YES];
 }
 
 

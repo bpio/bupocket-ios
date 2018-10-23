@@ -46,6 +46,19 @@
 		83379A8C217DB25A00C222A5 /* TransferAccountsViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 83379A8B217DB25A00C222A5 /* TransferAccountsViewController.m */; };
 		83379A8F217DC0C700C222A5 /* TransferDetailsAlertView.m in Sources */ = {isa = PBXBuildFile; fileRef = 83379A8E217DC0C700C222A5 /* TransferDetailsAlertView.m */; };
 		83379A92217DE12600C222A5 /* TransferResultsViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 83379A91217DE12600C222A5 /* TransferResultsViewController.m */; };
+		83379A95217EB08600C222A5 /* DetailListViewCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 83379A94217EB08600C222A5 /* DetailListViewCell.m */; };
+		83379A98217EB79B00C222A5 /* RequestTimeoutViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 83379A97217EB79B00C222A5 /* RequestTimeoutViewController.m */; };
+		83379A9B217EC01900C222A5 /* OrderDetailsViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 83379A9A217EC01900C222A5 /* OrderDetailsViewController.m */; };
+		83379AA9217F006600C222A5 /* HTTPManager.m in Sources */ = {isa = PBXBuildFile; fileRef = 83379AA7217F006600C222A5 /* HTTPManager.m */; };
+		83379AAA217F006600C222A5 /* HttpTool.m in Sources */ = {isa = PBXBuildFile; fileRef = 83379AA8217F006600C222A5 /* HttpTool.m */; };
+		83379AAD217F025D00C222A5 /* HTTPSessionManager.m in Sources */ = {isa = PBXBuildFile; fileRef = 83379AAC217F025D00C222A5 /* HTTPSessionManager.m */; };
+		83379AB0217F058B00C222A5 /* NetworkingManager.m in Sources */ = {isa = PBXBuildFile; fileRef = 83379AAF217F058B00C222A5 /* NetworkingManager.m */; };
+		83379AB6217F337100C222A5 /* URLRequestSerialization.m in Sources */ = {isa = PBXBuildFile; fileRef = 83379AB5217F337100C222A5 /* URLRequestSerialization.m */; };
+		83379AB9217F33CA00C222A5 /* HTTPRequestOperationManager.m in Sources */ = {isa = PBXBuildFile; fileRef = 83379AB8217F33CA00C222A5 /* HTTPRequestOperationManager.m */; };
+		83379ABC217F342000C222A5 /* NetWork.m in Sources */ = {isa = PBXBuildFile; fileRef = 83379ABB217F342000C222A5 /* NetWork.m */; };
+		83379ABF217F34A100C222A5 /* NetWorkManager.m in Sources */ = {isa = PBXBuildFile; fileRef = 83379ABE217F34A100C222A5 /* NetWorkManager.m */; };
+		83379AC3217F3F3000C222A5 /* BaseModel.m in Sources */ = {isa = PBXBuildFile; fileRef = 83379AC2217F3F3000C222A5 /* BaseModel.m */; };
+		83379AC6217F3F4200C222A5 /* AssetsListModel.m in Sources */ = {isa = PBXBuildFile; fileRef = 83379AC5217F3F4200C222A5 /* AssetsListModel.m */; };
 		835A45262174C14D005BFCDD /* main.m in Sources */ = {isa = PBXBuildFile; fileRef = 835A45242174C14D005BFCDD /* main.m */; };
 		835A45272174C14D005BFCDD /* AppDelegate.m in Sources */ = {isa = PBXBuildFile; fileRef = 835A45252174C14D005BFCDD /* AppDelegate.m */; };
 		8372C8592174CB9800FF9506 /* UITextField+Extension.m in Sources */ = {isa = PBXBuildFile; fileRef = 8372C8572174CB9800FF9506 /* UITextField+Extension.m */; };
@@ -166,6 +179,33 @@
 		83379A8E217DC0C700C222A5 /* TransferDetailsAlertView.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = TransferDetailsAlertView.m; sourceTree = "<group>"; };
 		83379A90217DE12600C222A5 /* TransferResultsViewController.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = TransferResultsViewController.h; sourceTree = "<group>"; };
 		83379A91217DE12600C222A5 /* TransferResultsViewController.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = TransferResultsViewController.m; sourceTree = "<group>"; };
+		83379A93217EB08600C222A5 /* DetailListViewCell.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = DetailListViewCell.h; sourceTree = "<group>"; };
+		83379A94217EB08600C222A5 /* DetailListViewCell.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = DetailListViewCell.m; sourceTree = "<group>"; };
+		83379A96217EB79B00C222A5 /* RequestTimeoutViewController.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = RequestTimeoutViewController.h; sourceTree = "<group>"; };
+		83379A97217EB79B00C222A5 /* RequestTimeoutViewController.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = RequestTimeoutViewController.m; sourceTree = "<group>"; };
+		83379A99217EC01900C222A5 /* OrderDetailsViewController.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = OrderDetailsViewController.h; sourceTree = "<group>"; };
+		83379A9A217EC01900C222A5 /* OrderDetailsViewController.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = OrderDetailsViewController.m; sourceTree = "<group>"; };
+		83379AA4217EF79500C222A5 /* URLMacros.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = URLMacros.h; sourceTree = "<group>"; };
+		83379AA5217F006600C222A5 /* HTTPManager.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = HTTPManager.h; sourceTree = "<group>"; };
+		83379AA6217F006600C222A5 /* HttpTool.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = HttpTool.h; sourceTree = "<group>"; };
+		83379AA7217F006600C222A5 /* HTTPManager.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = HTTPManager.m; sourceTree = "<group>"; };
+		83379AA8217F006600C222A5 /* HttpTool.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = HttpTool.m; sourceTree = "<group>"; };
+		83379AAB217F025D00C222A5 /* HTTPSessionManager.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = HTTPSessionManager.h; sourceTree = "<group>"; };
+		83379AAC217F025D00C222A5 /* HTTPSessionManager.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = HTTPSessionManager.m; sourceTree = "<group>"; };
+		83379AAE217F058B00C222A5 /* NetworkingManager.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = NetworkingManager.h; sourceTree = "<group>"; };
+		83379AAF217F058B00C222A5 /* NetworkingManager.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = NetworkingManager.m; sourceTree = "<group>"; };
+		83379AB4217F337100C222A5 /* URLRequestSerialization.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = URLRequestSerialization.h; sourceTree = "<group>"; };
+		83379AB5217F337100C222A5 /* URLRequestSerialization.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = URLRequestSerialization.m; sourceTree = "<group>"; };
+		83379AB7217F33CA00C222A5 /* HTTPRequestOperationManager.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = HTTPRequestOperationManager.h; sourceTree = "<group>"; };
+		83379AB8217F33CA00C222A5 /* HTTPRequestOperationManager.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = HTTPRequestOperationManager.m; sourceTree = "<group>"; };
+		83379ABA217F342000C222A5 /* NetWork.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = NetWork.h; sourceTree = "<group>"; };
+		83379ABB217F342000C222A5 /* NetWork.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = NetWork.m; sourceTree = "<group>"; };
+		83379ABD217F34A100C222A5 /* NetWorkManager.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = NetWorkManager.h; sourceTree = "<group>"; };
+		83379ABE217F34A100C222A5 /* NetWorkManager.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = NetWorkManager.m; sourceTree = "<group>"; };
+		83379AC1217F3F3000C222A5 /* BaseModel.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = BaseModel.h; sourceTree = "<group>"; };
+		83379AC2217F3F3000C222A5 /* BaseModel.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = BaseModel.m; sourceTree = "<group>"; };
+		83379AC4217F3F4200C222A5 /* AssetsListModel.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = AssetsListModel.h; sourceTree = "<group>"; };
+		83379AC5217F3F4200C222A5 /* AssetsListModel.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = AssetsListModel.m; sourceTree = "<group>"; };
 		835A45232174C14D005BFCDD /* AppDelegate.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = AppDelegate.h; sourceTree = "<group>"; };
 		835A45242174C14D005BFCDD /* main.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = main.m; sourceTree = "<group>"; };
 		835A45252174C14D005BFCDD /* AppDelegate.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = AppDelegate.m; sourceTree = "<group>"; };
@@ -248,6 +288,7 @@
 		833799292177091500C222A5 /* Tool */ = {
 			isa = PBXGroup;
 			children = (
+				83379A9C217EF20100C222A5 /* NetWork */,
 				83379A1921786A6800C222A5 /* Encapsulation.h */,
 				83379A1A21786A6800C222A5 /* Encapsulation.m */,
 				8337992A2177092300C222A5 /* LanguageManager.h */,
@@ -281,6 +322,39 @@
 			path = launchImages;
 			sourceTree = "<group>";
 		};
+		83379A9C217EF20100C222A5 /* NetWork */ = {
+			isa = PBXGroup;
+			children = (
+				83379AA4217EF79500C222A5 /* URLMacros.h */,
+				83379AB4217F337100C222A5 /* URLRequestSerialization.h */,
+				83379AB5217F337100C222A5 /* URLRequestSerialization.m */,
+				83379AB7217F33CA00C222A5 /* HTTPRequestOperationManager.h */,
+				83379AB8217F33CA00C222A5 /* HTTPRequestOperationManager.m */,
+				83379ABA217F342000C222A5 /* NetWork.h */,
+				83379ABB217F342000C222A5 /* NetWork.m */,
+				83379ABD217F34A100C222A5 /* NetWorkManager.h */,
+				83379ABE217F34A100C222A5 /* NetWorkManager.m */,
+				83379AAB217F025D00C222A5 /* HTTPSessionManager.h */,
+				83379AAC217F025D00C222A5 /* HTTPSessionManager.m */,
+				83379AAE217F058B00C222A5 /* NetworkingManager.h */,
+				83379AAF217F058B00C222A5 /* NetworkingManager.m */,
+				83379AA6217F006600C222A5 /* HttpTool.h */,
+				83379AA8217F006600C222A5 /* HttpTool.m */,
+				83379AA5217F006600C222A5 /* HTTPManager.h */,
+				83379AA7217F006600C222A5 /* HTTPManager.m */,
+			);
+			path = NetWork;
+			sourceTree = "<group>";
+		};
+		83379AC0217F3F1E00C222A5 /* Model */ = {
+			isa = PBXGroup;
+			children = (
+				83379AC1217F3F3000C222A5 /* BaseModel.h */,
+				83379AC2217F3F3000C222A5 /* BaseModel.m */,
+			);
+			path = Model;
+			sourceTree = "<group>";
+		};
 		835A45202174C14D005BFCDD /* Classes */ = {
 			isa = PBXGroup;
 			children = (
@@ -311,6 +385,7 @@
 				83B594AE2175E6FA009F91BA /* View */,
 				8372C85A2174CBF100FF9506 /* Controller */,
 				8372C8562174CB9800FF9506 /* Category */,
+				83379AC0217F3F1E00C222A5 /* Model */,
 				835A45232174C14D005BFCDD /* AppDelegate.h */,
 				835A45252174C14D005BFCDD /* AppDelegate.m */,
 				83379A78217B4EA600C222A5 /* AppDelegate+Extension.h */,
@@ -426,6 +501,10 @@
 				83379A8B217DB25A00C222A5 /* TransferAccountsViewController.m */,
 				83379A90217DE12600C222A5 /* TransferResultsViewController.h */,
 				83379A91217DE12600C222A5 /* TransferResultsViewController.m */,
+				83379A96217EB79B00C222A5 /* RequestTimeoutViewController.h */,
+				83379A97217EB79B00C222A5 /* RequestTimeoutViewController.m */,
+				83379A99217EC01900C222A5 /* OrderDetailsViewController.h */,
+				83379A9A217EC01900C222A5 /* OrderDetailsViewController.m */,
 			);
 			path = Controller;
 			sourceTree = "<group>";
@@ -433,6 +512,8 @@
 		835A45342174C212005BFCDD /* Model */ = {
 			isa = PBXGroup;
 			children = (
+				83379AC4217F3F4200C222A5 /* AssetsListModel.h */,
+				83379AC5217F3F4200C222A5 /* AssetsListModel.m */,
 			);
 			path = Model;
 			sourceTree = "<group>";
@@ -448,6 +529,8 @@
 				83379A88217DA4F900C222A5 /* AssetsDetailListViewCell.m */,
 				83379A8D217DC0C700C222A5 /* TransferDetailsAlertView.h */,
 				83379A8E217DC0C700C222A5 /* TransferDetailsAlertView.m */,
+				83379A93217EB08600C222A5 /* DetailListViewCell.h */,
+				83379A94217EB08600C222A5 /* DetailListViewCell.m */,
 			);
 			path = View;
 			sourceTree = "<group>";
@@ -771,12 +854,14 @@
 			);
 			inputPaths = (
 				"${SRCROOT}/Pods/Target Support Files/Pods-bupocket/Pods-bupocket-resources.sh",
+				"${PODS_ROOT}/IQKeyboardManager/IQKeyboardManager/Resources/IQKeyboardManager.bundle",
 				"${PODS_ROOT}/MJRefresh/MJRefresh/MJRefresh.bundle",
 			);
 			name = "[CP] Copy Pods Resources";
 			outputFileListPaths = (
 			);
 			outputPaths = (
+				"${TARGET_BUILD_DIR}/${UNLOCALIZED_RESOURCES_FOLDER_PATH}/IQKeyboardManager.bundle",
 				"${TARGET_BUILD_DIR}/${UNLOCALIZED_RESOURCES_FOLDER_PATH}/MJRefresh.bundle",
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -816,38 +901,51 @@
 				83379A15217862AF00C222A5 /* CreatePromptAlertView.m in Sources */,
 				83379A6B2179C1D500C222A5 /* ChangePasswordViewController.m in Sources */,
 				8372C86C2174CCB000FF9506 /* MyViewController.m in Sources */,
+				83379AAD217F025D00C222A5 /* HTTPSessionManager.m in Sources */,
+				83379ABC217F342000C222A5 /* NetWork.m in Sources */,
 				83379A58217880C700C222A5 /* BackUpPurseViewController.m in Sources */,
 				83379A7A217B4EA700C222A5 /* AppDelegate+Extension.m in Sources */,
 				83379A80217B524D00C222A5 /* UIApplication+Extension.m in Sources */,
+				83379ABF217F34A100C222A5 /* NetWorkManager.m in Sources */,
 				83379A8C217DB25A00C222A5 /* TransferAccountsViewController.m in Sources */,
 				8337991A2176E80D00C222A5 /* MultilingualViewController.m in Sources */,
 				833799382177427500C222A5 /* AssetsListViewCell.m in Sources */,
+				83379A95217EB08600C222A5 /* DetailListViewCell.m in Sources */,
 				83B594B42175F46E009F91BA /* TermsOfUseViewController.m in Sources */,
+				83379AAA217F006600C222A5 /* HttpTool.m in Sources */,
 				8372C86F2174D03F00FF9506 /* UIButton+Extension.m in Sources */,
 				83379A8F217DC0C700C222A5 /* TransferDetailsAlertView.m in Sources */,
 				8337992F21772E0300C222A5 /* CustomButton.m in Sources */,
 				83B594B12175E6FA009F91BA /* PlaceholderTextView.m in Sources */,
+				83379AB0217F058B00C222A5 /* NetworkingManager.m in Sources */,
+				83379AA9217F006600C222A5 /* HTTPManager.m in Sources */,
 				8337992C2177092300C222A5 /* LanguageManager.m in Sources */,
 				83379A182178682100C222A5 /* UIView+CustomAlertView.m in Sources */,
 				8372C8662174CC6F00FF9506 /* BaseViewController.m in Sources */,
 				835A45262174C14D005BFCDD /* main.m in Sources */,
+				83379AB9217F33CA00C222A5 /* HTTPRequestOperationManager.m in Sources */,
 				83379A89217DA4F900C222A5 /* AssetsDetailListViewCell.m in Sources */,
+				83379A9B217EC01900C222A5 /* OrderDetailsViewController.m in Sources */,
 				83379A1B21786A6800C222A5 /* Encapsulation.m in Sources */,
 				83379A742179D62300C222A5 /* MyIdentityViewController.m in Sources */,
 				8372C8622174CBF100FF9506 /* NavigationViewController.m in Sources */,
 				8372C8592174CB9800FF9506 /* UITextField+Extension.m in Sources */,
+				83379AC6217F3F4200C222A5 /* AssetsListModel.m in Sources */,
 				8372C8692174CCA000FF9506 /* AssetsViewController.m in Sources */,
 				83B594B72175FC8B009F91BA /* BackupMnemonicsViewController.m in Sources */,
 				83B594AD2175E4D9009F91BA /* RestoreIdentityViewController.m in Sources */,
+				83379AB6217F337100C222A5 /* URLRequestSerialization.m in Sources */,
 				83379A86217D9C8A00C222A5 /* AssetsDetailViewController.m in Sources */,
 				83379A92217DE12600C222A5 /* TransferResultsViewController.m in Sources */,
 				8372C8632174CBF100FF9506 /* TabBarViewController.m in Sources */,
+				83379AC3217F3F3000C222A5 /* BaseModel.m in Sources */,
 				8372C872217588D100FF9506 /* IdentityViewController.m in Sources */,
 				83B594AA2175954F009F91BA /* CreateIdentityViewController.m in Sources */,
 				83379A83217D805300C222A5 /* PurseAddressAlertView.m in Sources */,
 				83379A6E2179CB9E00C222A5 /* FeedbackViewController.m in Sources */,
 				83B465A821745C9300187961 /* ViewController.m in Sources */,
 				833799322177305A00C222A5 /* UIView+Extension.m in Sources */,
+				83379A98217EB79B00C222A5 /* RequestTimeoutViewController.m in Sources */,
 				835A45272174C14D005BFCDD /* AppDelegate.m in Sources */,
 				833799172176E1E600C222A5 /* ListTableViewCell.m in Sources */,
 				83379A5B2178825300C222A5 /* PurseCipherAlertView.m in Sources */,

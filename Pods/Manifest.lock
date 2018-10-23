@@ -14,41 +14,74 @@ PODS:
   - AFNetworking/Serialization (3.2.1)
   - AFNetworking/UIKit (3.2.1):
     - AFNetworking/NSURLSession
+  - FMDB (2.7.5):
+    - FMDB/standard (= 2.7.5)
+  - FMDB/standard (2.7.5)
+  - IQKeyboardManager (6.2.0)
+  - JSONModel (1.8.0)
   - Masonry (1.1.0)
   - MBProgressHUD (1.1.0)
+  - MJExtension (3.0.15.1)
   - MJRefresh (3.1.15.7)
+  - QCloudCore (5.5.6)
+  - QCloudCOSXML (5.5.6):
+    - QCloudCore (= 5.5.6)
+    - QCloudCOSXML/Transfer (= 5.5.6)
+  - QCloudCOSXML/Transfer (5.5.6):
+    - QCloudCore (= 5.5.6)
   - SDWebImage (4.4.2):
     - SDWebImage/Core (= 4.4.2)
   - SDWebImage/Core (4.4.2)
+  - XHToast (1.4.0)
   - YYKit (1.0.9):
     - YYKit/no-arc (= 1.0.9)
   - YYKit/no-arc (1.0.9)
 
 DEPENDENCIES:
   - AFNetworking
+  - FMDB
+  - IQKeyboardManager
+  - JSONModel
   - Masonry
   - MBProgressHUD
+  - MJExtension
   - MJRefresh
+  - QCloudCOSXML
   - SDWebImage
+  - XHToast
   - YYKit
 
 SPEC REPOS:
   https://github.com/cocoapods/specs.git:
     - AFNetworking
+    - FMDB
+    - IQKeyboardManager
+    - JSONModel
     - Masonry
     - MBProgressHUD
+    - MJExtension
     - MJRefresh
+    - QCloudCore
+    - QCloudCOSXML
     - SDWebImage
+    - XHToast
     - YYKit
 
 SPEC CHECKSUMS:
   AFNetworking: b6f891fdfaed196b46c7a83cf209e09697b94057
+  FMDB: 2ce00b547f966261cd18927a3ddb07cb6f3db82a
+  IQKeyboardManager: 6194101620b73af5e67900b8f89707a99de0b804
+  JSONModel: 02ab723958366a3fd27da57ea2af2113658762e9
   Masonry: 678fab65091a9290e40e2832a55e7ab731aad201
   MBProgressHUD: e7baa36a220447d8aeb12769bf0585582f3866d9
+  MJExtension: 19bc33ce2eee2d319760f5622562cf581a6ff756
   MJRefresh: 697f8ec75ebdbe9207767bb682cf0f51b0d8a41f
+  QCloudCore: 8d18cd7f162018555c3a3cd30411fd0ebb877f68
+  QCloudCOSXML: c353bef1f295ec384a5a4920e328b2034b185b79
   SDWebImage: 624d6e296c69b244bcede364c72ae0430ac14681
+  XHToast: 3b354766d56d9df8fef8e64387bbd25c90d71a86
   YYKit: 7cda43304a8dc3696c449041e2cb3107b4e236e7
 
-PODFILE CHECKSUM: f138fd015d13eafa3b8edbb0f71f506f3af7c6fb
+PODFILE CHECKSUM: 804fab0ed6a77b3e0fae3c274d5a2825be4e4788
 
 COCOAPODS: 1.5.3

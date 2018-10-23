@@ -19,5 +19,226 @@
             landmarkType = "7">
          </BreakpointContent>
       </BreakpointProxy>
+      <BreakpointProxy
+         BreakpointExtensionID = "Xcode.Breakpoint.FileBreakpoint">
+         <BreakpointContent
+            shouldBeEnabled = "Yes"
+            ignoreCount = "0"
+            continueAfterRunningActions = "No"
+            filePath = "bupocket/Classes/Main/Tool/NetWork/NetworkingManager.m"
+            timestampString = "561987081.781866"
+            startingColumnNumber = "9223372036854775807"
+            endingColumnNumber = "9223372036854775807"
+            startingLineNumber = "135"
+            endingLineNumber = "135"
+            landmarkName = "-getDataWithSuccessHandler:failureHandler:"
+            landmarkType = "7">
+            <Locations>
+               <Location
+                  shouldBeEnabled = "Yes"
+                  ignoreCount = "0"
+                  continueAfterRunningActions = "No"
+                  symbolName = "__62-[NetworkingManager getDataWithSuccessHandler:failureHandler:]_block_invoke_2"
+                  moduleName = "bupocket"
+                  usesParentBreakpointCondition = "Yes"
+                  urlString = "file:///Users/bubi/Desktop/bupocket/bupocket/Classes/Main/Tool/NetWork/NetworkingManager.m"
+                  timestampString = "561989572.881806"
+                  startingColumnNumber = "9223372036854775807"
+                  endingColumnNumber = "9223372036854775807"
+                  startingLineNumber = "135"
+                  endingLineNumber = "135"
+                  offsetFromSymbolStart = "524">
+               </Location>
+               <Location
+                  shouldBeEnabled = "Yes"
+                  ignoreCount = "0"
+                  continueAfterRunningActions = "No"
+                  symbolName = "__copy_helper_block_"
+                  moduleName = "bupocket"
+                  usesParentBreakpointCondition = "Yes"
+                  urlString = "file:///Users/bubi/Desktop/bupocket/bupocket/Classes/Main/Tool/NetWork/NetworkingManager.m"
+                  timestampString = "561989572.886682"
+                  startingColumnNumber = "9223372036854775807"
+                  endingColumnNumber = "9223372036854775807"
+                  startingLineNumber = "124"
+                  endingLineNumber = "124"
+                  offsetFromSymbolStart = "24">
+               </Location>
+               <Location
+                  shouldBeEnabled = "Yes"
+                  ignoreCount = "0"
+                  continueAfterRunningActions = "No"
+                  symbolName = "__62-[NetworkingManager getDataWithSuccessHandler:failureHandler:]_block_invoke.115"
+                  moduleName = "bupocket"
+                  usesParentBreakpointCondition = "Yes"
+                  urlString = "file:///Users/bubi/Desktop/bupocket/bupocket/Classes/Main/Tool/NetWork/NetworkingManager.m"
+                  timestampString = "561989572.892048"
+                  startingColumnNumber = "9223372036854775807"
+                  endingColumnNumber = "9223372036854775807"
+                  startingLineNumber = "136"
+                  endingLineNumber = "136"
+                  offsetFromSymbolStart = "96">
+               </Location>
+            </Locations>
+         </BreakpointContent>
+      </BreakpointProxy>
+      <BreakpointProxy
+         BreakpointExtensionID = "Xcode.Breakpoint.FileBreakpoint">
+         <BreakpointContent
+            shouldBeEnabled = "Yes"
+            ignoreCount = "0"
+            continueAfterRunningActions = "No"
+            filePath = "bupocket/Classes/Main/Tool/NetWork/NetworkingManager.m"
+            timestampString = "561987081.78193"
+            startingColumnNumber = "9223372036854775807"
+            endingColumnNumber = "9223372036854775807"
+            startingLineNumber = "124"
+            endingLineNumber = "124"
+            landmarkName = "-getDataWithSuccessHandler:failureHandler:"
+            landmarkType = "7">
+            <Locations>
+               <Location
+                  shouldBeEnabled = "Yes"
+                  ignoreCount = "0"
+                  continueAfterRunningActions = "No"
+                  symbolName = "-[NetworkingManager getDataWithSuccessHandler:failureHandler:]"
+                  moduleName = "bupocket"
+                  usesParentBreakpointCondition = "Yes"
+                  urlString = "file:///Users/bubi/Desktop/bupocket/bupocket/Classes/Main/Tool/NetWork/NetworkingManager.m"
+                  timestampString = "561989573.012689"
+                  startingColumnNumber = "9223372036854775807"
+                  endingColumnNumber = "9223372036854775807"
+                  startingLineNumber = "124"
+                  endingLineNumber = "124"
+                  offsetFromSymbolStart = "876">
+               </Location>
+               <Location
+                  shouldBeEnabled = "Yes"
+                  ignoreCount = "0"
+                  continueAfterRunningActions = "No"
+                  symbolName = "__62-[NetworkingManager getDataWithSuccessHandler:failureHandler:]_block_invoke"
+                  moduleName = "bupocket"
+                  usesParentBreakpointCondition = "Yes"
+                  urlString = "file:///Users/bubi/Desktop/bupocket/bupocket/Classes/Main/Tool/NetWork/NetworkingManager.m"
+                  timestampString = "561989573.016291"
+                  startingColumnNumber = "9223372036854775807"
+                  endingColumnNumber = "9223372036854775807"
+                  startingLineNumber = "124"
+                  endingLineNumber = "124"
+                  offsetFromSymbolStart = "56">
+               </Location>
+               <Location
+                  shouldBeEnabled = "Yes"
+                  ignoreCount = "0"
+                  continueAfterRunningActions = "No"
+                  symbolName = "__62-[NetworkingManager getDataWithSuccessHandler:failureHandler:]_block_invoke_2"
+                  moduleName = "bupocket"
+                  usesParentBreakpointCondition = "Yes"
+                  urlString = "file:///Users/bubi/Desktop/bupocket/bupocket/Classes/Main/Tool/NetWork/NetworkingManager.m"
+                  timestampString = "561989573.018975"
+                  startingColumnNumber = "9223372036854775807"
+                  endingColumnNumber = "9223372036854775807"
+                  startingLineNumber = "125"
+                  endingLineNumber = "125"
+                  offsetFromSymbolStart = "88">
+               </Location>
+               <Location
+                  shouldBeEnabled = "Yes"
+                  ignoreCount = "0"
+                  continueAfterRunningActions = "No"
+                  symbolName = "__destroy_helper_block_"
+                  moduleName = "bupocket"
+                  usesParentBreakpointCondition = "Yes"
+                  urlString = "file:///Users/bubi/Desktop/bupocket/bupocket/Classes/Main/Tool/NetWork/NetworkingManager.m"
+                  timestampString = "561989573.0230581"
+                  startingColumnNumber = "9223372036854775807"
+                  endingColumnNumber = "9223372036854775807"
+                  startingLineNumber = "124"
+                  endingLineNumber = "124"
+                  offsetFromSymbolStart = "20">
+               </Location>
+            </Locations>
+         </BreakpointContent>
+      </BreakpointProxy>
+      <BreakpointProxy
+         BreakpointExtensionID = "Xcode.Breakpoint.FileBreakpoint">
+         <BreakpointContent
+            shouldBeEnabled = "Yes"
+            ignoreCount = "0"
+            continueAfterRunningActions = "No"
+            filePath = "bupocket/Classes/Main/Tool/NetWork/NetworkingManager.m"
+            timestampString = "561987081.781975"
+            startingColumnNumber = "9223372036854775807"
+            endingColumnNumber = "9223372036854775807"
+            startingLineNumber = "125"
+            endingLineNumber = "125"
+            landmarkName = "-getDataWithSuccessHandler:failureHandler:"
+            landmarkType = "7">
+         </BreakpointContent>
+      </BreakpointProxy>
+      <BreakpointProxy
+         BreakpointExtensionID = "Xcode.Breakpoint.FileBreakpoint">
+         <BreakpointContent
+            shouldBeEnabled = "Yes"
+            ignoreCount = "0"
+            continueAfterRunningActions = "No"
+            filePath = "bupocket/Classes/Main/Tool/NetWork/HTTPManager.m"
+            timestampString = "561987081.7820179"
+            startingColumnNumber = "9223372036854775807"
+            endingColumnNumber = "9223372036854775807"
+            startingLineNumber = "75"
+            endingLineNumber = "75"
+            landmarkName = "+getDataWithSuccess:failure:"
+            landmarkType = "7">
+         </BreakpointContent>
+      </BreakpointProxy>
+      <BreakpointProxy
+         BreakpointExtensionID = "Xcode.Breakpoint.FileBreakpoint">
+         <BreakpointContent
+            shouldBeEnabled = "Yes"
+            ignoreCount = "0"
+            continueAfterRunningActions = "No"
+            filePath = "bupocket/Classes/Main/Tool/NetWork/HTTPManager.m"
+            timestampString = "561987081.782063"
+            startingColumnNumber = "9223372036854775807"
+            endingColumnNumber = "9223372036854775807"
+            startingLineNumber = "76"
+            endingLineNumber = "76"
+            landmarkName = "+getDataWithSuccess:failure:"
+            landmarkType = "7">
+         </BreakpointContent>
+      </BreakpointProxy>
+      <BreakpointProxy
+         BreakpointExtensionID = "Xcode.Breakpoint.FileBreakpoint">
+         <BreakpointContent
+            shouldBeEnabled = "Yes"
+            ignoreCount = "0"
+            continueAfterRunningActions = "No"
+            filePath = "bupocket/Classes/Main/Tool/NetWork/HTTPRequestOperationManager.m"
+            timestampString = "561987081.782107"
+            startingColumnNumber = "9223372036854775807"
+            endingColumnNumber = "9223372036854775807"
+            startingLineNumber = "72"
+            endingLineNumber = "72"
+            landmarkName = "-setTaskWithSuccess:failure:"
+            landmarkType = "7">
+         </BreakpointContent>
+      </BreakpointProxy>
+      <BreakpointProxy
+         BreakpointExtensionID = "Xcode.Breakpoint.FileBreakpoint">
+         <BreakpointContent
+            shouldBeEnabled = "Yes"
+            ignoreCount = "0"
+            continueAfterRunningActions = "No"
+            filePath = "bupocket/Classes/Main/Tool/NetWork/HTTPRequestOperationManager.m"
+            timestampString = "561987081.782148"
+            startingColumnNumber = "9223372036854775807"
+            endingColumnNumber = "9223372036854775807"
+            startingLineNumber = "63"
+            endingLineNumber = "63"
+            landmarkName = "-setBody"
+            landmarkType = "7">
+         </BreakpointContent>
+      </BreakpointProxy>
    </Breakpoints>
 </Bucket>

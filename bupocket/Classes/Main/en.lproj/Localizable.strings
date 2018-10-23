@@ -101,3 +101,12 @@
 "TransferTime" = "转账时间";
 "TransferSuccess" = "转账成功";
 "TransferFailure" = "转账失败";
+"RequestTimeout" = "请求超时";
+"IGotIt" = "我知道了";
+// 订单详情
+"OrderDetails" = "订单详情";
+"Success" = "成功";
+"Failure" = "失败";
+"OriginatorAdress" = "发送方地址";
+"RecipientAddress" = "接收方地址";
+"SendingTime" = "发送时间";

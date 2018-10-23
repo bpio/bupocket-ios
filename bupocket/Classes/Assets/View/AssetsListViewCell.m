@@ -53,6 +53,16 @@ static NSString * const AssetsCellID = @"AssetsCellID";
     }];
     [self setViewSize:CGSizeMake(DEVICE_WIDTH - ScreenScale(20), ScreenScale(75)) borderWidth:0 borderColor:nil borderRadius:ScreenScale(5)];
 }
+- (void)setListModel:(AssetsListModel *)listModel
+{
+    _listModel = listModel;
+    [self.listImage sd_setImageWithURL:[NSURL URLWithString:listModel.icon] placeholderImage:[UIImage imageNamed:@"BU"]];
+    self.title.text = listModel.assetCode;
+    //    cell.listImage.image = [UIImage imageNamed:self.listArray[indexPath.section]];
+    //    cell.title.text = self.listArray[indexPath.section];
+    self.detailTitle.text = listModel.amount;
+    self.infoTitle.text = [listModel.assetAmount isEqualToString:@"~"] ? listModel.assetAmount : [NSString stringWithFormat:@"≈￥%@", listModel.assetAmount];
+}
 - (UIImageView *)listImage
 {
     if (!_listImage) {

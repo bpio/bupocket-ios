@@ -10,6 +10,7 @@
 #import "PurseCipherAlertView.h"
 #import "TransferDetailsAlertView.h"
 #import "TransferResultsViewController.h"
+#import "RequestTimeoutViewController.h"
 
 @interface TransferAccountsViewController ()
 
@@ -67,8 +68,12 @@
         HSSLog(@"确认转账");
         dispatch_after(dispatch_time(DISPATCH_TIME_NOW, (int64_t)(0.5 * NSEC_PER_SEC)), dispatch_get_main_queue(), ^{
             PurseCipherAlertView * alertView = [[PurseCipherAlertView alloc] initWithConfrimBolck:^{
+                // 交易成功、失败
                 TransferResultsViewController * VC = [[TransferResultsViewController alloc] init];
                 [self.navigationController pushViewController:VC animated:YES];
+                // 请求超时
+//                RequestTimeoutViewController * VC = [[RequestTimeoutViewController alloc] init];
+//                [self.navigationController pushViewController:VC animated:YES];
             } cancelBlock:^{
                 
             }];

@@ -7,6 +7,7 @@
 //
 
 #import "TransferResultsViewController.h"
+#import "DetailListViewCell.h"
 
 @interface TransferResultsViewController ()<UITableViewDelegate, UITableViewDataSource>
 
@@ -40,9 +41,13 @@ static NSString * const TransferResultsCellID = @"TransferResultsCellID";
     [transferResults setTitleColor:COLOR(@"666666") forState:UIControlStateNormal];
     transferResults.titleLabel.font = FONT(16);
     [transferResults setImage:[UIImage imageNamed:@"TransferSuccess"] forState:UIControlStateNormal];
-    transferResults.bounds = CGRectMake(0, 0, DEVICE_WIDTH, ScreenScale(110));
+    transferResults.bounds = CGRectMake(0, 0, DEVICE_WIDTH, ScreenScale(120));
     transferResults.backgroundColor = [UIColor whiteColor];
     self.tableView.tableHeaderView = transferResults;
+}
+- (CGFloat)tableView:(UITableView *)tableView heightForHeaderInSection:(NSInteger)section
+{
+    return ScreenScale(10);
 }
 - (CGFloat)tableView:(UITableView *)tableView heightForRowAtIndexPath:(NSIndexPath *)indexPath
 {
@@ -62,6 +67,11 @@ static NSString * const TransferResultsCellID = @"TransferResultsCellID";
 }
 - (UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath
 {
+    DetailListViewCell * cell = [DetailListViewCell cellWithTableView:tableView];
+    cell.title.text = self.listArray[0][indexPath.row];
+    cell.infoTitle.text = self.listArray[1][indexPath.row];
+    return cell;
+    /*
     UITableViewCell * cell = [tableView dequeueReusableCellWithIdentifier:TransferResultsCellID];
     if (!cell) {
         cell = [[UITableViewCell alloc] initWithStyle:UITableViewCellStyleValue1 reuseIdentifier:TransferResultsCellID];;
@@ -73,8 +83,10 @@ static NSString * const TransferResultsCellID = @"TransferResultsCellID";
     cell.detailTextLabel.textColor = COLOR(@"666666");
     cell.detailTextLabel.textAlignment = NSTextAlignmentRight;
     cell.detailTextLabel.preferredMaxLayoutWidth = ScreenScale(205);
+    
     cell.detailTextLabel.text = self.listArray[1][indexPath.row];
     return cell;
+     */
 }
 - (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath
 {
