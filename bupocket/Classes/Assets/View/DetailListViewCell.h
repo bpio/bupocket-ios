@@ -12,8 +12,9 @@ NS_ASSUME_NONNULL_BEGIN
 
 @interface DetailListViewCell : UITableViewCell
 
-+ (instancetype)cellWithTableView:(UITableView *)tableView;
++ (instancetype)cellWithTableView:(UITableView *)tableView identifier:(NSString *)identifier;
 
+@property (nonatomic, strong) UIView * detailBg;
 @property (nonatomic, strong) UILabel * title;
 @property (nonatomic, strong) UILabel * infoTitle;
 

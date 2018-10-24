@@ -29,9 +29,11 @@
 #import <XHToast.h>
 #import <MJRefresh.h>
 #import <MJExtension.h>
+//#import <MBProgressHUD.h>
 
-#import "NetWorkManager.h"
-#import "NetworkingManager.h"
+#import "HTTPManager.h"
+#import "MBProgressHUD+WBAddtional.h"
+//#import "MBProgressHUD+JDragon.h"
 
 #define UserID @"txt_userid"
 #define UserToken @"txt_usertoken"

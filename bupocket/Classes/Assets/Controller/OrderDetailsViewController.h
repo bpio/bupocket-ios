@@ -7,10 +7,14 @@
 //
 
 #import "BaseViewController.h"
+#import "AssetsDetailModel.h"
 
 NS_ASSUME_NONNULL_BEGIN
 
 @interface OrderDetailsViewController : BaseViewController
+
+@property (nonatomic, strong) AssetsDetailModel * listModel;
+@property (nonatomic, copy) NSString * assetCode;
 
 @end
 

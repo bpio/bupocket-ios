@@ -20,5 +20,11 @@
 
 // Assets
 #define Assets_List @"wallet/token/list"
+#define Transaction_Record @"wallet/token/tx/list"
+// BU
+#define Transaction_Record_BU @"wallet/user/tx/list"
+// OrderDetails
+#define Order_Details @"wallet/tx/detail"
+//#define Assets_Detail @"wallet/query/token"
 
 #endif /* URLMacros_h */

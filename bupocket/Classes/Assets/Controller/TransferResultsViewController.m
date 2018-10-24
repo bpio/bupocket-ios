@@ -67,7 +67,7 @@ static NSString * const TransferResultsCellID = @"TransferResultsCellID";
 }
 - (UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath
 {
-    DetailListViewCell * cell = [DetailListViewCell cellWithTableView:tableView];
+    DetailListViewCell * cell = [DetailListViewCell cellWithTableView:tableView identifier:TransferResultsCellID];
     cell.title.text = self.listArray[0][indexPath.row];
     cell.infoTitle.text = self.listArray[1][indexPath.row];
     return cell;

@@ -11,12 +11,13 @@
 @implementation DetailListViewCell
 
 static NSString * const DetailListCellID = @"DetailListCellID";
+static NSString * const OrderDetailsCellID = @"OrderDetailsCellID";
 
-+ (instancetype)cellWithTableView:(UITableView *)tableView
++ (instancetype)cellWithTableView:(UITableView *)tableView identifier:(NSString *)identifier
 {
-    DetailListViewCell * cell = [tableView dequeueReusableCellWithIdentifier:DetailListCellID];
+    DetailListViewCell * cell = [tableView dequeueReusableCellWithIdentifier:identifier];
     if (cell == nil) {
-        cell = [[DetailListViewCell alloc] initWithStyle:UITableViewCellStyleValue1 reuseIdentifier:DetailListCellID];
+        cell = [[DetailListViewCell alloc] initWithStyle:UITableViewCellStyleValue1 reuseIdentifier:identifier];
     }
     return cell;
 }
@@ -24,22 +25,56 @@ static NSString * const DetailListCellID = @"DetailListCellID";
 - (instancetype)initWithStyle:(UITableViewCellStyle)style reuseIdentifier:(NSString *)reuseIdentifier
 {
     if (self = [super initWithStyle:style reuseIdentifier:reuseIdentifier]) {
-        [self.contentView addSubview:self.title];
-        [self.contentView addSubview:self.infoTitle];
+        if ([reuseIdentifier isEqualToString:DetailListCellID]) {
+            [self.contentView addSubview:self.title];
+            [self.contentView addSubview:self.infoTitle];
+        } else {
+            [self.contentView addSubview:self.detailBg];
+            [self.detailBg addSubview:self.title];
+            [self.detailBg addSubview:self.infoTitle];
+        }
     }
     return self;
 }
 - (void)layoutSubviews
 {
     [super layoutSubviews];
-    [self.title mas_makeConstraints:^(MASConstraintMaker *make) {
-        make.left.equalTo(self.contentView.mas_left).offset(ScreenScale(10));
-        make.top.equalTo(self.contentView.mas_top).offset(ScreenScale(15));
-    }];
-    [self.infoTitle mas_makeConstraints:^(MASConstraintMaker *make) {
-        make.right.equalTo(self.contentView.mas_right).offset(-ScreenScale(10));
-        make.top.equalTo(self.title);
-    }];
+    if ([self.reuseIdentifier isEqualToString:DetailListCellID]) {
+        [self.title mas_makeConstraints:^(MASConstraintMaker *make) {
+            make.left.equalTo(self.contentView.mas_left).offset(ScreenScale(10));
+            make.top.equalTo(self.contentView.mas_top).offset(ScreenScale(15));
+        }];
+        _infoTitle.textAlignment = NSTextAlignmentRight;
+        _infoTitle.preferredMaxLayoutWidth = DEVICE_WIDTH - ScreenScale(180);
+        [self.infoTitle mas_makeConstraints:^(MASConstraintMaker *make) {
+            make.right.equalTo(self.contentView.mas_right).offset(-ScreenScale(10));
+            make.top.equalTo(self.title);
+        }];
+    } else {
+        [self.detailBg mas_makeConstraints:^(MASConstraintMaker *make) {
+            make.left.equalTo(self.contentView.mas_left).offset(ScreenScale(10));
+            make.right.equalTo(self.contentView.mas_right).offset(-ScreenScale(10));
+            make.top.equalTo(self.contentView);
+        }];
+        [self.title mas_makeConstraints:^(MASConstraintMaker *make) {
+            make.left.equalTo(self.detailBg.mas_left).offset(ScreenScale(10));
+            make.top.equalTo(self.detailBg.mas_top).offset(ScreenScale(15));
+        }];
+        [self.infoTitle mas_makeConstraints:^(MASConstraintMaker *make) {
+            make.left.equalTo(self.title);
+            make.right.equalTo(self.detailBg.mas_right).offset(-ScreenScale(10));
+            make.top.equalTo(self.title.mas_bottom).offset(ScreenScale(10));
+            make.bottom.equalTo(self.detailBg.mas_bottom).offset(-ScreenScale(10));
+        }];
+    }
+}
+- (UIView *)detailBg
+{
+    if (!_detailBg) {
+        _detailBg = [[UIView alloc] init];
+        _detailBg.backgroundColor = COLOR(@"F8F8F8");
+    }
+    return _detailBg;
 }
 - (UILabel *)title
 {
@@ -57,8 +92,6 @@ static NSString * const DetailListCellID = @"DetailListCellID";
         _infoTitle.font = FONT(15);
         _infoTitle.textColor = COLOR(@"666666");
         _infoTitle.numberOfLines = 0;
-        _infoTitle.textAlignment = NSTextAlignmentRight;
-        _infoTitle.preferredMaxLayoutWidth = ScreenScale(200);
     }
     return _infoTitle;
 }

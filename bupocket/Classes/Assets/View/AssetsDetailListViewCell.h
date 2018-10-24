@@ -7,6 +7,7 @@
 //
 
 #import <UIKit/UIKit.h>
+#import "AssetsDetailModel.h"
 
 NS_ASSUME_NONNULL_BEGIN
 
@@ -18,6 +19,9 @@ NS_ASSUME_NONNULL_BEGIN
 @property (nonatomic, strong) UILabel * date;
 @property (nonatomic, strong) UILabel * assets;
 @property (nonatomic, strong) UILabel * state;
+
+@property (nonatomic, strong) AssetsDetailModel * listModel;
+@property (nonatomic, copy) NSString * assetCode;
 
 @end
 

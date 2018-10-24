@@ -22,5 +22,7 @@
 + (UIAlertController *)alertControllerWithTitle:(NSString *)title message:(NSString*)message;
 
 + (UIButton *)showNoTransactionRecordWithSuperView:(UIView *)superView frame:(CGRect)frame;
+// 时间戳转时间
++ (NSString *)getDateStringWithTimeStr:(NSString *)str;
 
 @end

@@ -12,8 +12,7 @@
 #import "PurseAddressAlertView.h"
 #import "AssetsDetailViewController.h"
 #import "AssetsListModel.h"
-//#import "NetWorkManager.h"
-//#import "HTTPManager.h"
+//#import "NetWorkManager.h"\
 
 @interface AssetsViewController ()<UITableViewDelegate, UITableViewDataSource>
 
@@ -54,67 +53,52 @@
     [super viewDidLoad];
     [self setupView];
 //    self.listArray = @[@"BU", @"BU1", @"BU2"];
-    [self loadData];
+    [self setupRefresh];
     // Do any additional setup after loading the view.
 }
-
+- (void)setupRefresh
+{
+    self.tableView.mj_header = [MJRefreshNormalHeader headerWithRefreshingTarget:self refreshingAction:@selector(loadNewData)];
+    self.tableView.mj_header.automaticallyChangeAlpha = YES;
+    [self.tableView.mj_header beginRefreshing];
+//    self.tableView.mj_footer = [MJRefreshAutoNormalFooter footerWithRefreshingTarget:self refreshingAction:@selector(loadMoreData)];
+    //    self.userTableView.mj_footer.hidden = YES;
+}
+- (void)loadNewData
+{
+    [self loadData];
+}
 - (void)loadData
 {
-//    [NetWorkManager getDataWithSuccess:^(id  _Nonnull responseObject) {
-//
-//    } failure:^(NSError * _Nonnull error) {
-//
-//    }];
-    
-    NSString * url = SERVER_COMBINE_API(URLPREFIX, Assets_List);
-    //    NSArray * tokenList = @[@{@"assetCode":@"CLB", @"issuer":@"buQWESXjdgXSFFajEZfkwi5H4fuAyTGgzkje"}];
-    NSArray * tokenList = [NSArray array];
-    //HTTP请求体
-    NSDictionary * body = @{@"address":@"buQWESXjdgXSFFajEZfkwi5H4fuAyTGgzkje",
-                        @"currencyType":@"UD",
-                        @"tokenList": tokenList,
-                        @"assetCode": @"",
-                        @"issuer=":@""};
-    
-    AFURLSessionManager *manager = [[AFURLSessionManager alloc] initWithSessionConfiguration:[NSURLSessionConfiguration defaultSessionConfiguration]];
-    
-    NSMutableURLRequest *request = [[AFJSONRequestSerializer serializer] requestWithMethod:@"POST" URLString:url parameters:body error:nil];
-    request.timeoutInterval = 10.f;
-    [request setValue:@"application/json" forHTTPHeaderField:@"Content-Type"];
-    [request setValue:@"application/json" forHTTPHeaderField:@"Accept"];
-    [[[NSURLSession sharedSession] dataTaskWithRequest:request completionHandler:^(NSData * _Nullable data, NSURLResponse * _Nullable response, NSError * _Nullable error) {
-        NSDictionary *dic = [NSJSONSerialization JSONObjectWithData:data options:kNilOptions error:nil];
-        NSString * message = [dic objectForKey:@"msg"];
-        NSInteger code = [[dic objectForKey:@"errCode"] integerValue];
+    [HTTPManager getAssetsDataWithAddress:@"buQWESXjdgXSFFajEZfkwi5H4fuAyTGgzkje" currencyType:@"USD" tokenList:[NSArray array] success:^(id responseObject) {
+        //        NSDictionary * dic = [NSJSONSerialization JSONObjectWithData:data options:kNilOptions error:nil];
+        NSString * message = [responseObject objectForKey:@"msg"];
+        NSInteger code = [[responseObject objectForKey:@"errCode"] integerValue];
         if (code == 0) {
             // 请求成功数据处理
-            NSArray * listArray = [AssetsListModel mj_objectArrayWithKeyValuesArray:[dic[@"data"] objectForKey:@"tokenList"]];
-//            if (pageindex == 1) {
-//                // 清除所有旧数据
-//                [self.informationArray removeAllObjects];
-//                self.pageindex = 1;
-//            }
-            // 添加到当前用户对应的用户数组中
-            [self.listArray addObjectsFromArray:listArray];
-            self.amount.text = [NSString stringWithFormat:@"≈%@", dic[@"data"][@"totalAmount"]];
-//            self.pageindex = self.pageindex + 1;
+            self.listArray = [AssetsListModel mj_objectArrayWithKeyValuesArray:responseObject[@"data"] [@"tokenList"]];
+            //            if (pageindex == 1) {
+            //                // 清除所有旧数据
+            //                [self.informationArray removeAllObjects];
+            //                self.pageindex = 1;
+            //            }
+            NSString * amountStr = responseObject[@"data"][@"totalAmount"];
+            self.amount.text = [amountStr isEqualToString:@"~"] ? amountStr : [NSString stringWithFormat:@"≈%@", amountStr];
+            //            self.pageindex = self.pageindex + 1;
             [self.tableView reloadData];
-//            if (listArray.count < 10) {
-//                [self.tableView.mj_footer endRefreshingWithNoMoreData];
-//            } else {
-//                [self.tableView.mj_footer endRefreshing];
-//            }
+            //            if (listArray.count < 10) {
+            //                [self.tableView.mj_footer endRefreshingWithNoMoreData];
+            //            } else {
+            //                [self.tableView.mj_footer endRefreshing];
+            //            }
         } else {
-            NSLog(@"请求失败error=%@", error);
+            [MBProgressHUD wb_showInfo:message];
         }
+        [self.tableView.mj_header endRefreshing];
+    } failure:^(NSError *error) {
+        [self.tableView.mj_header endRefreshing];
         
-    }] resume];
-    
-//    [HTTPManager getDataWithSuccess:^(id responseObject) {
-//
-//    } failure:^(NSError *error) {
-//
-//    }];
+    }];
 //    [[NetworkingManager sharedManager] getDataWithSuccessHandler:^(NSString * _Nonnull msg, id  _Nonnull data) {
 ////        for (NSDictionary *dic in (NSArray *)data) {
 ////            BYExchangePairModel *itemModel = [[BYExchangePairModel alloc] initWithDictionary:dic error:nil];
@@ -208,7 +192,7 @@
     self.totalAssets.textColor = [UIColor whiteColor];
     [headerBg addSubview:self.totalAssets];
     [self.totalAssets mas_makeConstraints:^(MASConstraintMaker *make) {
-        make.top.equalTo(self.amount.mas_bottom).offset(ScreenScale(10));
+        make.bottom.equalTo(headerImageView.mas_bottom).offset(-ScreenScale(20));
         make.left.equalTo(self.amount);
     }];
     self.totalAssets.text = Localized(@"TotalAssets");
@@ -220,7 +204,7 @@
     [self.header mas_makeConstraints:^(MASConstraintMaker *make) {
         make.left.equalTo(headerBg.mas_left).offset(ScreenScale(10));
         make.top.equalTo(headerImageView.mas_bottom);
-        make.bottom.equalTo(headerBg);
+        make.bottom.equalTo(headerBg.mas_bottom).offset(ScreenScale(5));
     }];
     [self setHeaderTitle];
     
@@ -304,13 +288,13 @@
  */
 - (void)setHeaderTitle
 {
-    NSMutableAttributedString * attr = [[NSMutableAttributedString alloc] initWithString:[NSString stringWithFormat:@"▏%@", Localized(@"MyAssets")]];
+    NSMutableAttributedString * attr = [[NSMutableAttributedString alloc] initWithString:[NSString stringWithFormat:@"| %@", Localized(@"MyAssets")]];
     //        NSMutableDictionary * dic = [NSMutableDictionary dictionary];
     //        dic[NSFontAttributeName] = FONT(15);
     //        dic[NSForegroundColorAttributeName] = TITLE_COLOR;
     //        [attr addAttributes:dic range:NSMakeRange(3, str.length - 3)];
     [attr addAttribute:NSForegroundColorAttributeName value:MAIN_COLOR range:NSMakeRange(0, 1)];
-    [attr addAttribute:NSFontAttributeName value:FONT(16) range:NSMakeRange(0, 1)];
+    [attr addAttribute:NSFontAttributeName value:FONT_Bold(18) range:NSMakeRange(0, 1)];
     self.header.attributedText = attr;
 }
 - (CGFloat)tableView:(UITableView *)tableView heightForFooterInSection:(NSInteger)section
@@ -331,8 +315,7 @@
 {
     [tableView deselectRowAtIndexPath:indexPath animated:YES];
     AssetsDetailViewController * VC = [[AssetsDetailViewController alloc] init];
-    AssetsListModel * listModel = self.listArray[indexPath.section];
-    VC.navigationItem.title = listModel.assetCode;
+    VC.listModel = self.listArray[indexPath.section];
     [self.navigationController pushViewController:VC animated:YES];
 }
 - (void)changeLanguage

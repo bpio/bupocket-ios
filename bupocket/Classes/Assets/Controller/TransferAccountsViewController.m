@@ -91,14 +91,14 @@
     header.font = FONT(16);
     header.textColor = COLOR(@"999999");
     [viewBg addSubview:header];
-    NSMutableAttributedString * attr = [[NSMutableAttributedString alloc] initWithString:[NSString stringWithFormat:@"▏%@", title]];
+    NSMutableAttributedString * attr = [[NSMutableAttributedString alloc] initWithString:[NSString stringWithFormat:@"| %@", title]];
     //        NSMutableDictionary * dic = [NSMutableDictionary dictionary];
     //        dic[NSFontAttributeName] = FONT(15);
     //        dic[NSForegroundColorAttributeName] = TITLE_COLOR;
     //        [attr addAttributes:dic range:NSMakeRange(3, str.length - 3)];
     [attr addAttribute:NSForegroundColorAttributeName value:MAIN_COLOR range:NSMakeRange(0, 1)];
     [attr addAttribute:NSForegroundColorAttributeName value:[UIColor redColor] range:NSMakeRange(attr.length - 1, 1)];
-    [attr addAttribute:NSFontAttributeName value:FONT(16) range:NSMakeRange(0, 1)];
+    [attr addAttribute:NSFontAttributeName value:FONT_Bold(18) range:NSMakeRange(0, 1)];
     header.attributedText = attr;
     [header mas_makeConstraints:^(MASConstraintMaker *make) {
         make.top.equalTo(viewBg.mas_top).offset(ScreenScale(33));

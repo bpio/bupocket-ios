@@ -8,20 +8,89 @@
 
 #import "HttpTool.h"
 #import <AFNetworking.h>
-#import <MBProgressHUD.h>
+
+//#import <MBProgressHUD.h>
 //#import <Reachability.h>
+
+@interface HttpTool()
+
+@property (nonatomic, strong) AFURLSessionManager * sessionManager;
+
+@end
 
 @implementation HttpTool
 
-+ (HttpTool *)shareTool
+static HttpTool *__shareTool = nil;
++ (instancetype)shareTool
 {
-    __strong static HttpTool * shareTool;
     static dispatch_once_t onceToken;
     dispatch_once(&onceToken, ^{
-        shareTool = [[HttpTool alloc]init];
+        if (!__shareTool) {
+            __shareTool = [[HttpTool alloc] init];
+             NSURLSessionConfiguration * sessionConfiguration = [NSURLSessionConfiguration defaultSessionConfiguration];
+             sessionConfiguration.timeoutIntervalForRequest = 30.f;
+             sessionConfiguration.requestCachePolicy = NSURLRequestReloadIgnoringCacheData;//NSURLRequestUseProtocolCachePolicy;
+             /*
+             [sessionManager addDeviceInfoHeader];
+             sessionManager.responseSerializer.acceptableContentTypes = [NSSet setWithObjects:@"application/json", @"text/json", @"text/plain", @"text/html", nil];
+             NSString *agentString = nil;
+             NSString *channel = nil;
+             //liaoai;liaoai_lwm;liaoai_biwei;liaoai_lizhen;liaoai_teyue;liaoai_liaopai
+             agentString = @"dianzhuan_ios";
+             channel = @"dianzhuan_ios";
+             
+             NSString *userAgent = [NSString stringWithFormat:@"%@;%@;%@;%@;%@;%@", agentString,[[[NSBundle mainBundle] infoDictionary] objectForKey:@"CFBundleShortVersionString"], [[UIDevice currentDevice] model], [[UIDevice currentDevice] systemVersion], [[UIDevice currentDevice] machineModelName],channel];
+             if (userAgent) {
+             if (![userAgent canBeConvertedToEncoding:NSASCIIStringEncoding]) {
+             NSMutableString *mutableUserAgent = [userAgent mutableCopy];
+             if (CFStringTransform((__bridge CFMutableStringRef)(mutableUserAgent), NULL, (__bridge CFStringRef)@"Any-Latin; Latin-ASCII; [:^ASCII:] Remove", false)) {
+             userAgent = mutableUserAgent;
+             }
+             }
+             [sessionManager.requestSerializer setValue:userAgent forHTTPHeaderField:@"User-Agent"];
+             }
+             */
+//            sessionTool.responseSerializer = [AFHTTPResponseSerializer serializer];
+            //    sessionTool.requestSerializer = [AFJSONRequestSerializer serializer];
+            //    [sessionTool.requestSerializer setValue:@"application/json;charset=utf-8" forHTTPHeaderField:@"Content-Type"];
+            //    sessionTool.responseSerializer.acceptableContentTypes = [NSSet setWithObjects:@"application/json", @"text/json", @"text/javascript",@"text/html", nil];
+            __shareTool.sessionManager = [[AFURLSessionManager alloc] initWithSessionConfiguration:sessionConfiguration];
+//            __shareTool.sessionManager.responseSerializer.acceptableContentTypes = [NSSet setWithObjects:@"application/json", @"text/json", @"text/javascript", @"text/html",@"image/jpeg",@"text/plain", nil];
+//            __shareTool.currentStatus = AFNetworkReachabilityStatusUnknown;
+//            [__shareTool.sessionManager.reachabilityManager startMonitoring];
+            //            __defaultManager.initialModel = [[DZInitialModel alloc] init];
+            //            NSString *cachedJson = [[NSUserDefaults standardUserDefaults] objectForKey:@"reviewStatus"];
+            //            __defaultManager.initialModel.review_type = cachedJson;
+            
+            [__shareTool.sessionManager.reachabilityManager setReachabilityStatusChangeBlock:^(AFNetworkReachabilityStatus status) {
+                switch (status) {
+                    case AFNetworkReachabilityStatusUnknown: {
+                    }
+                        break;
+                    case AFNetworkReachabilityStatusNotReachable: {
+                    }
+                        break;
+                    case AFNetworkReachabilityStatusReachableViaWWAN:
+                    {
+                        [[NSNotificationCenter defaultCenter] postNotificationName:@"netAppNotification"object:nil];
+                    }
+                        break;
+                    case AFNetworkReachabilityStatusReachableViaWiFi:
+                    {
+                        [[NSNotificationCenter defaultCenter] postNotificationName:@"netAppNotification"object:nil];
+                    }
+                        break;
+                    default:
+                        break;
+                }
+            }];
+            [__shareTool.sessionManager.reachabilityManager startMonitoring];
+        }
     });
-    return shareTool;
+    return __shareTool;
 }
+
+
 + (void)GET:(NSString *)URLString parameters:(NSDictionary *)parameters success:(void (^)(id))success failure:(void (^)(NSError *))failure
 {
 //    [SVProgressHUD setDefaultMaskType:SVProgressHUDMaskTypeBlack];
@@ -33,30 +102,62 @@
     [manager GET:URLString parameters:parameters progress:^(NSProgress * _Nonnull downloadProgress) {
         
     } success:^(NSURLSessionDataTask * _Nonnull task, id  _Nullable responseObject) {
+//        [MBProgressHUD hideHUD];
         if (success) {
 //            [SVProgressHUD dismiss];
-//            [MBProgressHUD hideHUD];
             success(responseObject);
         }
     } failure:^(NSURLSessionDataTask * _Nullable task, NSError * _Nonnull error) {
+//        [MBProgressHUD hideHUD];
         if (failure) {
             failure(error);
 //            [SVProgressHUD dismiss];
 //            [SVProgressHUD showErrorWithStatus:error.localizedDescription];
-//            [MBProgressHUD hideHUD];
 //            [MBProgressHUD showErrorMessage:error.localizedDescription];
-            if (error.code != -1009) {
-            }
         }
     }];
 //    [reachability stopNotifier];
 }
-+ (void)POST:(NSString *)URLString parameters:(NSDictionary *)parameters success:(void (^)(id))success failure:(void (^)(NSError *))failure
+- (void)POST:(NSString *)URLString parameters:(NSDictionary *)parameters success:(void (^)(id))success failure:(void (^)(NSError *))failure
 {
+    NSMutableURLRequest * request = [[AFJSONRequestSerializer serializer] requestWithMethod:@"POST" URLString:URLString parameters:nil error:nil];
+    [request setValue:@"application/json" forHTTPHeaderField:@"Content-Type"];
+    [request setValue:@"application/json" forHTTPHeaderField:@"Accept"];
+    NSData *jsonData = [NSJSONSerialization dataWithJSONObject:parameters options:NSJSONWritingPrettyPrinted error:nil];
+    NSString * jsonString;
+    if (jsonData && [jsonData length] > 0) {
+        jsonString = [[NSString alloc]initWithData:jsonData encoding:NSUTF8StringEncoding];
+    }
+    // 关键! 转化为NSaData作为HTTPBody
+    [request setHTTPBody:[jsonString dataUsingEncoding:NSUTF8StringEncoding]];
+    [MBProgressHUD wb_showActivity];
+//    [MBProgressHUD showActivityMessageInWindow:nil];
+    [[self.sessionManager dataTaskWithRequest:request uploadProgress:^(NSProgress * _Nonnull uploadProgress) {
+        
+    } downloadProgress:^(NSProgress * _Nonnull downloadProgress) {
+        
+    } completionHandler:^(NSURLResponse * _Nonnull response, id  _Nullable responseObject, NSError * _Nullable error) {
+        if (!error) {
+            [MBProgressHUD wb_hideHUD];
+            if ([responseObject isKindOfClass:[NSDictionary class]]) {
+                if (success) {
+                    success(responseObject);
+                }
+            }
+        } else {
+            [MBProgressHUD wb_hideHUD];
+            if (failure) {
+                failure(error);
+                [MBProgressHUD wb_showError:error.localizedDescription completion:nil];
+            }
+        }
+    }] resume];
+    
 //    Reachability * reachability = [Reachability reachabilityWithHostname:@""];
 //    [SVProgressHUD setDefaultMaskType:SVProgressHUDMaskTypeBlack];
 //    [SVProgressHUD showWithStatus:@"加载中, 请稍后..."];
 //    [MBProgressHUD showActivityMessageInWindow:nil];
+    /*
     AFHTTPSessionManager * manager = [AFHTTPSessionManager manager];
     [manager.requestSerializer setTimeoutInterval:30.0];
     [manager POST:URLString parameters:parameters progress:^(NSProgress * _Nonnull uploadProgress) {
@@ -78,6 +179,7 @@
         }
     }];
 //    [reachability stopNotifier];
+     */
 }
 
 + (void)POSTHtml:(NSString *)URLString parameters:(NSDictionary *)parameters success:(void (^)(id))success failure:(void (^)(NSError *))failure

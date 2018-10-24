@@ -10,7 +10,7 @@
 
 @interface HttpTool : NSObject
 
-+ (HttpTool *)shareTool;
++ (instancetype)shareTool;
 /**
  *  发送一个get请求
  *
@@ -31,7 +31,7 @@
  *  @param success    成功后的回调
  *  @param failure    失败后的回调
  */
-+ (void)POST:(NSString *)URLString
+- (void)POST:(NSString *)URLString
   parameters:(NSDictionary *)parameters
      success:(void(^)(id responseObject))success
      failure:(void(^)(NSError * error))failure;
