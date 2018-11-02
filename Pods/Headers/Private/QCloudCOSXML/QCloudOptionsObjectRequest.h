@@ -1,1 +1,0 @@
-../../../QCloudCOSXML/QCloudCOSXML/Classes/Manager/request/QCloudOptionsObjectRequest.h
