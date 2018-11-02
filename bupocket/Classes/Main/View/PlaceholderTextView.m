@@ -30,7 +30,7 @@
     NSMutableDictionary * attrs = [NSMutableDictionary dictionary];
     attrs[NSFontAttributeName] = self.font;
     attrs[NSForegroundColorAttributeName] = self.placeholderColor;
-    CGFloat x = ScreenScale(12);
+    CGFloat x = Margin_12;
     CGFloat w = ScreenScale(rect.size.width - 2 * x);
     CGFloat y = ScreenScale(8);
     CGFloat h = ScreenScale(rect.size.height - 2 * y);

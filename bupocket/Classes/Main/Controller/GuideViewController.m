@@ -50,12 +50,12 @@
 }
 - (void)enterTap
 {
-    [[NSUserDefaults standardUserDefaults] setBool:YES forKey:NotFirst];
-    if (CurrentUserToken == nil) {
-        self.view.window.rootViewController = [[NavigationViewController alloc] initWithRootViewController:[[IdentityViewController alloc] init]];
-    } else {
-        self.view.window.rootViewController = [[TabBarViewController alloc] init];
-    }
+//    [[NSUserDefaults standardUserDefaults] setBool:YES forKey:NotFirst];
+//    if (CurrentUserToken == nil) {
+//        self.view.window.rootViewController = [[NavigationViewController alloc] initWithRootViewController:[[IdentityViewController alloc] init]];
+//    } else {
+//        self.view.window.rootViewController = [[TabBarViewController alloc] init];
+//    }
 }
 - (void)didReceiveMemoryWarning {
     [super didReceiveMemoryWarning];

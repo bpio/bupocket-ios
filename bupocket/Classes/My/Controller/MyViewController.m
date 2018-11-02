@@ -59,7 +59,7 @@
     userIcon.layoutMode = VerticalNormal;
     [userIcon setTitleColor:[UIColor whiteColor] forState:UIControlStateNormal];
     userIcon.titleLabel.font = FONT(16);
-    [userIcon setTitle:@"用户名" forState:UIControlStateNormal];
+    [userIcon setTitle:[AccountTool account].identityName forState:UIControlStateNormal];
     [userIcon setImage:[UIImage imageNamed:@"userIcon_placeholder"] forState:UIControlStateNormal];
     [userIcon addTarget:self action:@selector(userIconAction) forControlEvents:UIControlEventTouchUpInside];
 //    [UIButton createButtonWithTitle:@"用户名" TextFont:16 TextNormalColor:[UIColor whiteColor] TextSelectedColor:[UIColor whiteColor] NormalImage:@"userIcon_placeholder" SelectedImage:@"userIcon_placeholder" Target:self Selector:@selector(userIconAction:)];
@@ -114,13 +114,13 @@
     [cell.imageView mas_makeConstraints:^(MASConstraintMaker *make) {
         make.left.equalTo(cell.contentView.mas_left).offset(ScreenScale(15));
         make.centerY.equalTo(cell.contentView);
-        make.width.height.mas_equalTo(ScreenScale(20));
+        make.width.height.mas_equalTo(Margin_20);
     }];// 
     cell.textLabel.text = self.listArray[0][indexPath.row];
     cell.textLabel.font = FONT(15);
-    cell.textLabel.textColor = COLOR(@"666666");
+    cell.textLabel.textColor = COLOR_6;
     cell.detailTextLabel.font = FONT(15);
-    cell.detailTextLabel.textColor = COLOR(@"666666");
+    cell.detailTextLabel.textColor = COLOR_6;
     if (indexPath.section == 0 && indexPath.row == [[self.listArray firstObject] count] - 1) {
         cell.accessoryType = UITableViewCellAccessoryNone;
         NSString * currentVersion = [NSBundle mainBundle].infoDictionary[@"CFBundleVersion"];

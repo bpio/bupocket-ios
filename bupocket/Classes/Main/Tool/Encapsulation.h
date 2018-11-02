@@ -22,7 +22,8 @@
 + (UIAlertController *)alertControllerWithTitle:(NSString *)title message:(NSString*)message;
 
 + (UIButton *)showNoTransactionRecordWithSuperView:(UIView *)superView frame:(CGRect)frame;
-// 时间戳转时间
-+ (NSString *)getDateStringWithTimeStr:(NSString *)str;
+
+#pragma mark 连接服务器失败
++ (UIView *)showNoNetWorkWithSuperView:(UIView *)superView target:(id)target action:(SEL)action;
 
 @end

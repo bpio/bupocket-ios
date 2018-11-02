@@ -38,8 +38,8 @@
     [self.view addSubview:self.feedbackText];
     [self.feedbackText mas_makeConstraints:^(MASConstraintMaker *make) {
         make.top.equalTo(self.view.mas_top).offset(NavBarH + ScreenScale(15) + MAIN_HEIGHT);
-        make.left.equalTo(self.view.mas_left).offset(ScreenScale(12));
-        make.right.equalTo(self.view.mas_right).offset(-ScreenScale(12));
+        make.left.equalTo(self.view.mas_left).offset(Margin_12);
+        make.right.equalTo(self.view.mas_right).offset(-Margin_12);
         make.height.mas_equalTo(ScreenScale(120));
     }];
     UIView * lineView = [[UIView alloc] init];
@@ -49,7 +49,7 @@
         make.top.equalTo(self.feedbackText.mas_bottom);
         make.left.equalTo(self.view.mas_left).offset(ScreenScale(22));
         make.right.equalTo(self.view.mas_right).offset(-ScreenScale(22));
-        make.height.mas_equalTo(ScreenScale(0.5));
+        make.height.mas_equalTo(LINE_WIDTH);
     }];
     
     UITextField * textField = [[UITextField alloc] init];
@@ -62,9 +62,9 @@
     [self.view addSubview:textField];
     [textField mas_makeConstraints:^(MASConstraintMaker *make) {
         make.top.equalTo(lineView.mas_bottom).offset(ScreenScale(55));
-        make.left.equalTo(self.view.mas_left).offset(ScreenScale(30));
-        make.right.equalTo(self.view.mas_right).offset(-ScreenScale(30));
-        make.height.mas_equalTo(ScreenScale(40));
+        make.left.equalTo(self.view.mas_left).offset(Margin_30);
+        make.right.equalTo(self.view.mas_right).offset(-Margin_30);
+        make.height.mas_equalTo(Margin_40);
     }];
     UIView * line = [[UIView alloc] init];
     line.backgroundColor = COLOR(@"E3E3E3");
@@ -72,7 +72,7 @@
     [line mas_makeConstraints:^(MASConstraintMaker *make) {
         make.top.equalTo(textField.mas_bottom);
         make.left.right.equalTo(lineView);
-        make.height.mas_equalTo(ScreenScale(0.5));
+        make.height.mas_equalTo(LINE_WIDTH);
     }];
     UIButton * submit = [UIButton createButtonWithTitle:Localized(@"Submit") TextFont:18 TextColor:[UIColor whiteColor] Target:self Selector:@selector(submitAction)];
     submit.layer.masksToBounds = YES;
@@ -81,7 +81,7 @@
     submit.backgroundColor = MAIN_COLOR;
     [self.view addSubview:submit];
     [submit mas_makeConstraints:^(MASConstraintMaker *make) {
-        make.bottom.equalTo(self.view.mas_bottom).offset(-ScreenScale(30) - SafeAreaBottomH);
+        make.bottom.equalTo(self.view.mas_bottom).offset(-Margin_30 - SafeAreaBottomH);
         make.left.right.equalTo(self.feedbackText);
         make.height.mas_equalTo(MAIN_HEIGHT);
     }];
@@ -95,7 +95,7 @@
     if (!_feedbackText) {
         _feedbackText = [[PlaceholderTextView alloc] init];
         _feedbackText.font = FONT(15);
-        _feedbackText.textColor = COLOR(@"666666");
+        _feedbackText.textColor = COLOR_6;
         _feedbackText.placeholderColor = COLOR(@"B2B2B2");
         _feedbackText.placeholder = Localized(@"PleaseEnterQOrS");
         _feedbackText.delegate = self;
@@ -116,7 +116,7 @@
     UIView * viewBg = [[UIView alloc] init];
     UILabel * header = [[UILabel alloc] init];
     header.font = FONT(16);
-    header.textColor = COLOR(@"999999");
+    header.textColor = COLOR_9;
     [viewBg addSubview:header];
     NSMutableAttributedString * attr = [[NSMutableAttributedString alloc] initWithString:[NSString stringWithFormat:@"| %@", title]];
     //        NSMutableDictionary * dic = [NSMutableDictionary dictionary];

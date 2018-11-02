@@ -40,7 +40,7 @@
     NSMutableParagraphStyle *paraStyle = [[NSMutableParagraphStyle alloc] init];
     paraStyle.lineBreakMode =NSLineBreakByCharWrapping;
     paraStyle.alignment =NSTextAlignmentLeft;
-    paraStyle.lineSpacing = lineSpacing; //设置行间距
+    paraStyle.lineSpacing = ScreenScale(lineSpacing); //设置行间距
     paraStyle.hyphenationFactor = 1.0;
     paraStyle.firstLineHeadIndent =0.0;
     paraStyle.paragraphSpacingBefore =0.0;
@@ -49,7 +49,7 @@
 //    paraStyleDic[NSFontAttributeName] = FONT(14);
     paraStyleDic[NSParagraphStyleAttributeName] = paraStyle;
     //设置字间距 NSKernAttributeName:@1.5f
-    paraStyleDic[NSKernAttributeName] = @1.0f;
+//    paraStyleDic[NSKernAttributeName] = @1.0f;
     [attr addAttributes:paraStyleDic range:NSMakeRange(0, str.length)];
     return attr;
 }
@@ -86,13 +86,13 @@
     if (title.length > 0) {
         UILabel * titleLabel = alertBg.subviews[0].subviews[0].subviews[0];
         titleLabel.height = ScreenScale(65);
-        //    NSMutableAttributedString * attrTitle = [Encapsulation attrWithString:title preFont:FONT(18) preColor:TITLE_COLOR index:0 sufFont:FONT(18) sufColor:TITLE_COLOR lineSpacing:ScreenScale(10)];
+        //    NSMutableAttributedString * attrTitle = [Encapsulation attrWithString:title preFont:FONT(18) preColor:TITLE_COLOR index:0 sufFont:FONT(18) sufColor:TITLE_COLOR lineSpacing:Margin_10];
         NSMutableAttributedString * attrTitle = [[NSMutableAttributedString alloc] initWithString:title attributes:@{NSForegroundColorAttributeName: TITLE_COLOR, NSFontAttributeName: FONT_Bold(18)}];
         [alertController setValue:attrTitle forKey:@"attributedTitle"];
     }
-    NSMutableAttributedString * attr = [[NSMutableAttributedString alloc] initWithString:[NSString stringWithFormat:@"\n%@", message] attributes:@{NSForegroundColorAttributeName: COLOR(@"666666"), NSFontAttributeName: FONT(15)}];
+    NSMutableAttributedString * attr = [[NSMutableAttributedString alloc] initWithString:[NSString stringWithFormat:@"\n%@", message] attributes:@{NSForegroundColorAttributeName: COLOR_6, NSFontAttributeName: FONT(15)}];
     [alertController setValue:attr forKey:@"attributedMessage"];
-    [cancelAction setValue:COLOR(@"999999") forKey:@"titleTextColor"];
+    [cancelAction setValue:COLOR_9 forKey:@"titleTextColor"];
     return alertController;
 }
 
@@ -101,7 +101,7 @@
     CustomButton * button = [[CustomButton alloc] init];
     button.layoutMode = VerticalNormal;
     [button setTitle:Localized(@"NoTransactionRecord") forState:UIControlStateNormal];
-    [button setTitleColor:COLOR(@"999999") forState:UIControlStateNormal];
+    [button setTitleColor:COLOR_9 forState:UIControlStateNormal];
     button.titleLabel.font = FONT(15);
     [button setImage:[UIImage imageNamed:@"NoTransactionRecord"] forState:UIControlStateNormal];
     button.userInteractionEnabled = NO;
@@ -111,47 +111,45 @@
     return button;
 }
 
-+ (NSString *)getDateStringWithTimeStr:(NSString *)str
+#pragma mark 连接服务器失败
++ (UIView *)showNoNetWorkWithSuperView:(UIView *)superView target:(id)target action:(SEL)action
 {
-    if (str.length < 3) return nil;
-    NSTimeInterval interval = [[str substringToIndex:str.length - 3] doubleValue] / 1000.0;
-    NSDate * date = [NSDate dateWithTimeIntervalSince1970:interval];
-    NSDateFormatter *formatter = [[NSDateFormatter alloc] init];
-    [formatter setDateFormat:@"YYYY-MM-dd HH:mm:ss SS"];
-    return [formatter stringFromDate:date];
+    UIView * noNetWork = [[UIView alloc] init];
+    [superView addSubview:noNetWork];
+    [noNetWork mas_makeConstraints:^(MASConstraintMaker *make) {
+        make.edges.equalTo(superView);
+    }];
+    UIImageView * noNetWorkImage = [[UIImageView alloc] initWithImage:[UIImage imageNamed:@"noNetWork"]];
+    [noNetWork addSubview:noNetWorkImage];
+    [noNetWorkImage mas_makeConstraints:^(MASConstraintMaker *make) {
+        make.centerX.equalTo(noNetWork);
+        make.bottom.equalTo(noNetWork.mas_centerY);
+        //        make.top.equalTo(self.noNetWork).offset(StatusBarHeight + ScreenScale(115));
+    }];
     
-    /*
-     NSDateFormatter * formatter = [[NSDateFormatter alloc] init];
-     formatter.dateFormat = @"EEE yyyy MMM dd HH:mm:ss Z yyyy";
-     // 真机调试的时候，必须加上这句
-     formatter.locale = [[NSLocale alloc] initWithLocaleIdentifier:@"en_US"];
-     // 获得具体时间
-     NSDate *createDate = [formatter dateFromString:_txTime];
-     
-     // 判断是否为今年
-     if (createDate.isThisYear) {
-     if (createDate.isToday) { // 今天
-     NSDateComponents *cmps = [createDate deltaWithNow];
-     if (cmps.hour >= 1) { // 至少是1小时前
-     return [NSString stringWithFormat:@"%zd小时前", cmps.hour];
-     } else if (cmps.minute >= 1) { // 1~59分钟之前
-     return [NSString stringWithFormat:@"%zd分钟前", cmps.minute];
-     } else { // 1分钟内
-     return @"刚刚";
-     }
-     } else if (createDate.isYesterday) { // 昨天
-     formatter.dateFormat = @"昨天 HH:mm";
-     return [formatter stringFromDate:createDate];
-     } else { // 至少是前天
-     formatter.dateFormat = @"MM-dd HH:mm";
-     return [formatter stringFromDate:createDate];
-     }
-     } else { // 非今年
-     formatter.dateFormat = @"yyyy-MM-dd";
-     return [formatter stringFromDate:createDate];
-     }
-     */
+    UILabel * titleLabel = [[UILabel alloc] init];
+    titleLabel.font = FONT(15);
+    titleLabel.textColor = COLOR_9;
+    titleLabel.text = Localized(@"NoNetWork");
+    [noNetWork addSubview:titleLabel];
+    [titleLabel mas_makeConstraints:^(MASConstraintMaker *make) {
+        make.centerX.equalTo(noNetWork);
+        make.top.equalTo(noNetWorkImage.mas_bottom).offset(ScreenScale(50));
+    }];
+    
+    UIButton * reloadBtn = [UIButton createButtonWithTitle:Localized(@"Reload") TextFont:18 TextColor:[UIColor whiteColor] Target:target Selector:action];
+    reloadBtn.layer.masksToBounds = YES;
+    reloadBtn.clipsToBounds = YES;
+    reloadBtn.layer.cornerRadius = ScreenScale(4);
+    reloadBtn.backgroundColor = MAIN_COLOR;
+    [noNetWork addSubview:reloadBtn];
+    [reloadBtn mas_makeConstraints:^(MASConstraintMaker *make) {
+        make.top.equalTo(titleLabel.mas_bottom).offset(Margin_40);
+        make.centerX.equalTo(noNetWork);
+        make.size.mas_equalTo(CGSizeMake(ScreenScale(170), MAIN_HEIGHT));
+    }];
+    noNetWork.hidden = YES;
+    return noNetWork;
 }
-
 
 @end

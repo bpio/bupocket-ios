@@ -55,7 +55,7 @@
     [identityBg addSubview:titleLabel];
     [titleLabel mas_makeConstraints:^(MASConstraintMaker *make) {
         make.centerX.equalTo(identityBg);
-        make.top.equalTo(logoImage.mas_bottom).offset(ScreenScale(25));
+        make.top.equalTo(logoImage.mas_bottom).offset(Margin_25);
     }];
     UIButton * createIdentity = [UIButton createButtonWithTitle:Localized(@"ImmediateCreation") TextFont:18 TextColor:[UIColor whiteColor] Target:self Selector:@selector(createAction)];
     createIdentity.layer.masksToBounds = YES;
@@ -65,8 +65,8 @@
     [identityBg addSubview:createIdentity];
     [createIdentity mas_makeConstraints:^(MASConstraintMaker *make) {
         make.top.equalTo(titleLabel.mas_bottom).offset(ScreenScale(90));
-        make.left.equalTo(identityBg.mas_left).offset(ScreenScale(30));
-        make.right.equalTo(identityBg.mas_right).offset(-ScreenScale(30));
+        make.left.equalTo(identityBg.mas_left).offset(Margin_30);
+        make.right.equalTo(identityBg.mas_right).offset(-Margin_30);
         make.height.mas_equalTo(MAIN_HEIGHT);
 //        make.centerX.equalTo(identityBg);
 //        make.size.mas_equalTo(CGSizeMake(ScreenScale(300), ScreenScale(55)));

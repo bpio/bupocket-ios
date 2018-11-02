@@ -45,7 +45,7 @@
     _identityName = [UITextField textFieldWithplaceholder:Localized(@"IdentityName") margin:30 height:35 font:15];
     _identityName.delegate = self;
     [_identityName addTarget:self action:@selector(textChange:) forControlEvents:UIControlEventEditingChanged];
-    _identityName.keyboardType = UIKeyboardTypeNumbersAndPunctuation;
+//    _identityName.keyboardType = UIKeyboardTypeNumbersAndPunctuation;
     _identityName.enablesReturnKeyAutomatically = YES;
     [self.view addSubview:_identityName];
     
@@ -64,26 +64,26 @@
     [self.view addSubview:_createIdentity];
     
     [_identityName mas_makeConstraints:^(MASConstraintMaker *make) {
-        make.top.equalTo(self.view).offset(NavBarH + ScreenScale(40));
-        make.left.equalTo(self.view.mas_left).offset(ScreenScale(30));
-        make.right.equalTo(self.view.mas_right).offset(-ScreenScale(30));
+        make.top.equalTo(self.view).offset(NavBarH + Margin_40);
+        make.left.equalTo(self.view.mas_left).offset(Margin_30);
+        make.right.equalTo(self.view.mas_right).offset(-Margin_30);
         make.height.mas_equalTo(35);
     }];
     [_identityPassword mas_makeConstraints:^(MASConstraintMaker *make) {
-        make.top.equalTo(self.identityName.mas_bottom).offset(ScreenScale(25));
+        make.top.equalTo(self.identityName.mas_bottom).offset(Margin_25);
         make.left.right.height.equalTo(self.identityName);
     }];
     
     [_confirmPassword mas_makeConstraints:^(MASConstraintMaker *make) {
-        make.top.equalTo(self.identityPassword.mas_bottom).offset(ScreenScale(25));
+        make.top.equalTo(self.identityPassword.mas_bottom).offset(Margin_25);
         make.left.right.height.equalTo(self.identityName);
     }];
     
     [_createIdentity mas_makeConstraints:^(MASConstraintMaker *make) {
         make.top.equalTo(self.confirmPassword.mas_bottom).offset(ScreenScale(48));
-        make.left.equalTo(self.view.mas_left).offset(ScreenScale(30));
-        make.right.equalTo(self.view.mas_right).offset(-ScreenScale(30));
-        make.height.mas_equalTo(ScreenScale(45));
+        make.left.equalTo(self.view.mas_left).offset(Margin_30);
+        make.right.equalTo(self.view.mas_right).offset(-Margin_30);
+        make.height.mas_equalTo(MAIN_HEIGHT);
     }];
 }
 - (UITextField *)setupPWPlaceholder:(NSString *)placeholder
@@ -131,7 +131,20 @@
     }
     return YES;
 }
-
+- (BOOL)textField:(UITextField *)textField shouldChangeCharactersInRange:(NSRange)range replacementString:(NSString *)string
+{
+    NSString * str = [textField.text stringByReplacingCharactersInRange:range withString:string];
+    if (string.length == 0) {
+        return YES;
+    }
+    if (str.length > MAX_LENGTH) {
+        textField.text = [str substringToIndex:MAX_LENGTH];
+        return NO;
+    } else {
+        return YES;
+    }
+    return YES;
+}
 - (void)viewWillAppear:(BOOL)animated
 {
     [super viewWillAppear:animated];
@@ -139,13 +152,92 @@
     
     [alertView showInWindowWithMode:CustomAnimationModeAlert inView:nil bgAlpha:0.2 needEffectView:NO];
 }
+- (void)setData
+{
+    //创建比特数组
+    NSMutableData *random = [NSMutableData dataWithLength: 16];
+    //生成随机data
+    int status = SecRandomCopyBytes(kSecRandomDefault, random.length, random.mutableBytes);
+    if (status == 0) {
+        [HTTPManager setAccountDataWithRandom:random password:self.identityPassword.text identityName:self.identityName.text success:^(id responseObject) {
+            [MBProgressHUD wb_showSuccess:@"身份创建成功"];
+            NSUserDefaults * defaults = [NSUserDefaults standardUserDefaults];
+            [defaults setBool:YES forKey:ifCreated];
+            [defaults synchronize];
+            BackUpPurseViewController * VC = [[BackUpPurseViewController alloc] init];
+            VC.mnemonicArray = responseObject;
+            [self.navigationController pushViewController:VC animated:YES];
+        } failure:^(NSError *error) {
+            
+        }];
+        /*
+        // 随机数 -> 生成助记词
+        NSArray * words = [Mnemonic generateMnemonicCode: [random copy]];
+        NSLog(@"%@", [words componentsJoinedByString:@" "]);
+        // 身份账户、钱包账户
+        NSMutableArray * hdPaths = [NSMutableArray arrayWithObjects:@"M/44H/526H/0H/0/0", @"M/44H/526H/1H/0/0", nil];
+        NSArray *privateKeys = [Mnemonic generatePrivateKeys: words : hdPaths];
+        NSLog(@"%@", privateKeys);
+        // 随机数data -> 随机数字符串
+//        NSString * randomNumber  = [Tools dataToHexStr: random];
+        // 存储随机数、身份账户、钱包账户、创建身份成功
+        NSString * randomKey = [NSString generateKeyStoreWithPW:self.identityPassword.text randomKey:random];
+        // 私钥 -> 地址
+        NSString * identityAddress = [Keypair getEncAddress : [Keypair getEncPublicKey: [privateKeys firstObject]]];
+        NSString * identityKey = [NSString generateKeyStoreWithPW:self.identityPassword.text key:[privateKeys firstObject]];
+        NSString * purseAddress = [Keypair getEncAddress : [Keypair getEncPublicKey: [privateKeys lastObject]]];
+        NSString * purseKey = [NSString generateKeyStoreWithPW:self.identityPassword.text key:[privateKeys lastObject]];
+        if (randomKey == nil) {
+            [MBProgressHUD wb_showError:@"随机数keyStore生成失败"];
+        } else if (identityKey == nil) {
+            [MBProgressHUD wb_showError:@"身份账户keyStore生成失败"];
+        } else if (purseKey == nil) {
+            [MBProgressHUD wb_showError:@"钱包账户keyStore生成失败"];
+        } else {
+            AccountModel * account = [[AccountModel alloc] init];
+            account.identityName = self.identityName.text;
+            account.randomNumber = randomKey;
+            account.identityAccount = identityAddress;
+            account.purseAccount = purseAddress;
+            account.identityKey = identityKey;
+            account.purseKey = purseKey;
+            // 存储帐号模型
+            [AccountTool save:account];
+            [MBProgressHUD wb_hideHUD];
+            
+            //            [defaults setObject:randomKey forKey:RandomNumber];
+            //            [defaults setObject:[NSString generateKeyStoreWithPW:self.identityPassword.text key:[privateKeys firstObject]] forKey:IdentityAccount];
+            //            [defaults setObject:[NSString generateKeyStoreWithPW:self.identityPassword.text key:[privateKeys firstObject]] forKey:PurseAccount];
+            NSUserDefaults * defaults = [NSUserDefaults standardUserDefaults];
+            [defaults setBool:YES forKey:ifCreated];
+            [defaults synchronize];
+            BackUpPurseViewController * VC = [[BackUpPurseViewController alloc] init];
+            VC.mnemonicArray = words;
+            [self.navigationController pushViewController:VC animated:YES];
+        }
+         */
+    } else {
+        [MBProgressHUD wb_showError:@"随机数生成失败"];
+    }
+}
+
 
 //创建事件处理
 - (void)createAction
 {
-    
-    BackUpPurseViewController * VC = [[BackUpPurseViewController alloc] init];
-    [self.navigationController pushViewController:VC animated:YES];
+    if ([RegexPatternTool validateUserName:_identityName.text] == NO) {
+        [MBProgressHUD wb_showInfo:@"身份名只允许输入字母、汉字、数字、下划线，并且长度不能超过20个字符"];
+        return;
+    }
+    if ([RegexPatternTool validatePassword:_identityPassword.text] == NO) {
+        [MBProgressHUD wb_showInfo:@"密码长度为8~20个字符，且内容仅限字母和数字"];
+        return;
+    }
+    if (![_confirmPassword.text isEqualToString:_identityPassword.text]) {
+        [MBProgressHUD wb_showInfo:@"密码与确认密码不一致"];
+        return;
+    }
+    [self setData];
     /*
      [UIApplication sharedApplication].keyWindow.rootViewController = [[TabBarViewController alloc] init];
      if (self.usernameField.text.length == 0) {

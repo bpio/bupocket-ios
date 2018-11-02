@@ -35,7 +35,7 @@
     [promptBtn setImage:[UIImage imageNamed:@"CreatePrompt"] forState:UIControlStateNormal];
     [self addSubview:promptBtn];
     [promptBtn mas_makeConstraints:^(MASConstraintMaker *make) {
-        make.top.equalTo(self.mas_top).offset(ScreenScale(10));
+        make.top.equalTo(self.mas_top).offset(Margin_10);
         make.centerX.equalTo(self);
         make.height.mas_equalTo(ScreenScale(120));
     }];
@@ -46,13 +46,13 @@
     UILabel * title = [UILabel new];
 //    title.adjustsLetterSpacingToFitWidth = YES;
     title.numberOfLines = 0;
-    title.attributedText = [Encapsulation attrWithString:titleStr preFont:FONT(15) preColor:COLOR(@"FF7272") index:warnStr.length sufFont:FONT(15) sufColor:TITLE_COLOR lineSpacing:ScreenScale(5)];
+    title.attributedText = [Encapsulation attrWithString:titleStr preFont:FONT(15) preColor:COLOR(@"FF7272") index:warnStr.length sufFont:FONT(15) sufColor:TITLE_COLOR lineSpacing:5];
     title.lineBreakMode = NSLineBreakByWordWrapping;
     [self addSubview:title];
     [title mas_makeConstraints:^(MASConstraintMaker *make) {
         make.top.equalTo(promptBtn.mas_bottom);
-        make.left.equalTo(self).offset(ScreenScale(25));
-        make.right.equalTo(self).offset(-ScreenScale(25));
+        make.left.equalTo(self).offset(Margin_25);
+        make.right.equalTo(self).offset(-Margin_25);
     }];
     
     UIButton * sureBtn = [UIButton createButtonWithTitle:Localized(@"Confirm") TextFont:18 TextColor:[UIColor whiteColor] Target:self Selector:@selector(sureBtnClick)];

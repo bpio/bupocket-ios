@@ -23,19 +23,14 @@ PODS:
   - MBProgressHUD (1.1.0)
   - MJExtension (3.0.15.1)
   - MJRefresh (3.1.15.7)
-  - QCloudCore (5.5.6)
-  - QCloudCOSXML (5.5.6):
-    - QCloudCore (= 5.5.6)
-    - QCloudCOSXML/Transfer (= 5.5.6)
-  - QCloudCOSXML/Transfer (5.5.6):
-    - QCloudCore (= 5.5.6)
   - SDWebImage (4.4.2):
     - SDWebImage/Core (= 4.4.2)
   - SDWebImage/Core (4.4.2)
+  - Socket.IO-Client-Swift (13.3.1):
+    - Starscream (~> 3.0.2)
+  - SocketRocket (0.5.1)
+  - Starscream (3.0.6)
   - XHToast (1.4.0)
-  - YYKit (1.0.9):
-    - YYKit/no-arc (= 1.0.9)
-  - YYKit/no-arc (1.0.9)
 
 DEPENDENCIES:
   - AFNetworking
@@ -46,10 +41,10 @@ DEPENDENCIES:
   - MBProgressHUD
   - MJExtension
   - MJRefresh
-  - QCloudCOSXML
   - SDWebImage
+  - Socket.IO-Client-Swift
+  - SocketRocket
   - XHToast
-  - YYKit
 
 SPEC REPOS:
   https://github.com/cocoapods/specs.git:
@@ -61,11 +56,11 @@ SPEC REPOS:
     - MBProgressHUD
     - MJExtension
     - MJRefresh
-    - QCloudCore
-    - QCloudCOSXML
     - SDWebImage
+    - Socket.IO-Client-Swift
+    - SocketRocket
+    - Starscream
     - XHToast
-    - YYKit
 
 SPEC CHECKSUMS:
   AFNetworking: b6f891fdfaed196b46c7a83cf209e09697b94057
@@ -76,12 +71,12 @@ SPEC CHECKSUMS:
   MBProgressHUD: e7baa36a220447d8aeb12769bf0585582f3866d9
   MJExtension: 19bc33ce2eee2d319760f5622562cf581a6ff756
   MJRefresh: 697f8ec75ebdbe9207767bb682cf0f51b0d8a41f
-  QCloudCore: 8d18cd7f162018555c3a3cd30411fd0ebb877f68
-  QCloudCOSXML: c353bef1f295ec384a5a4920e328b2034b185b79
   SDWebImage: 624d6e296c69b244bcede364c72ae0430ac14681
+  Socket.IO-Client-Swift: 79f8f85fa44881838175a20f9bd2c32bef2c9d37
+  SocketRocket: d57c7159b83c3c6655745cd15302aa24b6bae531
+  Starscream: ef3ece99d765eeccb67de105bfa143f929026cf5
   XHToast: 3b354766d56d9df8fef8e64387bbd25c90d71a86
-  YYKit: 7cda43304a8dc3696c449041e2cb3107b4e236e7
 
-PODFILE CHECKSUM: 804fab0ed6a77b3e0fae3c274d5a2825be4e4788
+PODFILE CHECKSUM: b9c9dda58883b1edf86dc0b24c2d7d80ec90dfd1
 
 COCOAPODS: 1.5.3

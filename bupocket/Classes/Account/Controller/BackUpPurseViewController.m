@@ -29,15 +29,15 @@
     
     UILabel * titleLabel = [[UILabel alloc] init];
     titleLabel.font = FONT(15);
-    titleLabel.textColor = COLOR(@"666666");
+    titleLabel.textColor = COLOR_6;
     titleLabel.numberOfLines = 0;
     titleLabel.textAlignment = NSTextAlignmentCenter;
     titleLabel.text = Localized(@"BackupInformation");
     [self.view addSubview:titleLabel];
     [titleLabel mas_makeConstraints:^(MASConstraintMaker *make) {
         //        make.centerX.equalTo(self.view);
-        make.left.equalTo(self.view.mas_left).offset(ScreenScale(30));
-        make.right.equalTo(self.view.mas_right).offset(-ScreenScale(30));
+        make.left.equalTo(self.view.mas_left).offset(Margin_30);
+        make.right.equalTo(self.view.mas_right).offset(-Margin_30);
         make.centerY.equalTo(self.view);
     }];
     
@@ -50,7 +50,7 @@
     
     UILabel * infoLabel = [[UILabel alloc] init];
     infoLabel.font = FONT(14);
-    infoLabel.textColor = COLOR(@"999999");
+    infoLabel.textColor = COLOR_9;
     infoLabel.numberOfLines = 0;
     infoLabel.textAlignment = NSTextAlignmentCenter;
     infoLabel.text = Localized(@"BackupPrompt");
@@ -66,7 +66,7 @@
     temporaryBackup.clipsToBounds = YES;
     temporaryBackup.layer.cornerRadius = ScreenScale(4);
     temporaryBackup.layer.borderColor = MAIN_COLOR.CGColor;
-    temporaryBackup.layer.borderWidth = ScreenScale(0.5);
+    temporaryBackup.layer.borderWidth = LINE_WIDTH;
     [self.view addSubview:temporaryBackup];
     [temporaryBackup mas_makeConstraints:^(MASConstraintMaker *make) {
         make.bottom.equalTo(self.view.mas_bottom).offset(- (SafeAreaBottomH + ScreenScale(55)));
@@ -81,20 +81,34 @@
     backupMnemonics.backgroundColor = MAIN_COLOR;
     [self.view addSubview:backupMnemonics];
     [backupMnemonics mas_makeConstraints:^(MASConstraintMaker *make) {
-        make.bottom.equalTo(temporaryBackup.mas_top).offset(-ScreenScale(20));
+        make.bottom.equalTo(temporaryBackup.mas_top).offset(-Margin_20);
         make.left.right.height.equalTo(temporaryBackup);
     }];
 }
 
 - (void)backupMnemonicsAction
 {
-    PurseCipherAlertView * alertView = [[PurseCipherAlertView alloc] initWithConfrimBolck:^{
+    if (self.mnemonicArray.count > 0) {
         BackupMnemonicsViewController * VC = [[BackupMnemonicsViewController alloc] init];
+        VC.mnemonicArray = self.mnemonicArray;
         [self.navigationController pushViewController:VC animated:YES];
-    } cancelBlock:^{
-        
-    }];
-    [alertView showInWindowWithMode:CustomAnimationModeAlert inView:nil bgAlpha:0.2 needEffectView:NO];
+    } else {
+        PurseCipherAlertView * alertView = [[PurseCipherAlertView alloc] initWithConfrimBolck:^(NSString * _Nonnull password) {
+            NSData * random = [NSString decipherKeyStoreWithPW:password randomKeyStoreValueStr:[AccountTool account].randomNumber];
+            // 随机数 -> 生成助记词
+//            NSArray * words = [Mnemonic generateMnemonicCode: [random copy]];
+//            NSLog(@"%@", [words componentsJoinedByString:@" "]);
+//            NSString * randomNumber = [NSString decipherKeyStoreWithPW:password keyStoreValueStr:[AccountTool account].randomNumber];
+//            NSString * randomNumber = [NSString decipherKeyStoreWithPW:password keyStoreValueStr:CurrentRandomNumber];
+//            NSArray * words = [Mnemonic generateMnemonicCode: [Tools hexStrToData:randomNumber]];
+            NSArray * words = [Mnemonic generateMnemonicCode: random];
+            BackupMnemonicsViewController * VC = [[BackupMnemonicsViewController alloc] init];
+            VC.mnemonicArray = words;
+            [self.navigationController pushViewController:VC animated:YES];
+        } cancelBlock:^{
+        }];
+        [alertView showInWindowWithMode:CustomAnimationModeAlert inView:nil bgAlpha:0.2 needEffectView:NO];
+    }
 }
 - (void)temporaryBackupAction
 {

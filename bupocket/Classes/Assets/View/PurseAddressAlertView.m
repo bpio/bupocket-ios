@@ -7,6 +7,7 @@
 //
 
 #import "PurseAddressAlertView.h"
+#import "HMScannerController.h"
 
 @interface PurseAddressAlertView()
 
@@ -31,6 +32,12 @@
         _cancleBlock = cancelBlock;
         [self setupView];
         self.purseAddress.text = purseAddress;
+//        NSString *cardName = @"天涯刀哥 - 傅红雪";
+//        UIImage *avatar = [UIImage imageNamed:@"avatar"];
+        
+        [HMScannerController cardImageWithCardName:purseAddress avatar:nil scale:0.2 completion:^(UIImage *image) {
+            self.QRCodeImage.image = image;
+        }];
     }
     return self;
 }
@@ -67,16 +74,16 @@
     
     [self.closeBtn mas_makeConstraints:^(MASConstraintMaker *make) {
         make.top.right.equalTo(self);
-        make.size.mas_equalTo(CGSizeMake(ScreenScale(45), 45));
+        make.size.mas_equalTo(CGSizeMake(MAIN_HEIGHT, MAIN_HEIGHT));
     }];
     
     [self.purseAddressTitle mas_makeConstraints:^(MASConstraintMaker *make) {
         make.top.equalTo(self).offset(ScreenScale(42));
-        make.left.equalTo(self).offset(ScreenScale(20));
+        make.left.equalTo(self).offset(Margin_20);
     }];
     
     [self.purseAddress mas_makeConstraints:^(MASConstraintMaker *make) {
-        make.top.equalTo(self.purseAddressTitle.mas_bottom).offset(ScreenScale(10));
+        make.top.equalTo(self.purseAddressTitle.mas_bottom).offset(Margin_10);
         make.left.equalTo(self.mas_left).offset(ScreenScale(15));
         make.right.equalTo(self.mas_right).offset(-ScreenScale(15));
     }];
@@ -101,7 +108,7 @@
     
     [self.QRCodeTitle mas_makeConstraints:^(MASConstraintMaker *make) {
         make.centerX.equalTo(self);
-        make.top.equalTo(self.QRCodeImage.mas_bottom).offset(ScreenScale(10));
+        make.top.equalTo(self.QRCodeImage.mas_bottom).offset(Margin_10);
     }];
 }
 - (UIButton *)closeBtn
@@ -115,7 +122,7 @@
 {
     if (!_purseAddressTitle) {
         _purseAddressTitle = [[UILabel alloc] init];
-        _purseAddressTitle.textColor = COLOR(@"999999");
+        _purseAddressTitle.textColor = COLOR_9;
         _purseAddressTitle.font = FONT(16);
         _purseAddressTitle.text = Localized(@"PurseAddressTitle");
     }
@@ -144,8 +151,8 @@
 {
     if (!_lineView) {
         _lineView = [[UIView alloc] init];
-        _lineView.bounds = CGRectMake(0, 0, DEVICE_WIDTH - ScreenScale(30), ScreenScale(0.5));
-        [_lineView drawDashLineLength:ScreenScale(3) lineSpacing:ScreenScale(1) lineColor:COLOR(@"E3E3E3")];
+        _lineView.bounds = CGRectMake(0, 0, DEVICE_WIDTH - Margin_30, LINE_WIDTH);
+        [_lineView drawDashLine];
     }
     return _lineView;
 }
@@ -154,7 +161,7 @@
     if (!_QRCodeImage) {
         _QRCodeImage = [[UIImageView alloc] init];
         _QRCodeImage.image = [UIImage imageNamed:@"placeholder"];
-        [_QRCodeImage setViewSize:CGSizeMake(ScreenScale(178), ScreenScale(178)) borderWidth:0.5 borderColor:MAIN_COLOR borderRadius:ScreenScale(4)];
+//        [_QRCodeImage setViewSize:CGSizeMake(ScreenScale(178), ScreenScale(178)) borderWidth:0.5 borderColor:MAIN_COLOR borderRadius:ScreenScale(4)];
     }
     return _QRCodeImage;
 }

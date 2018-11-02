@@ -36,8 +36,8 @@
 //    }
     [self loadURLPathSring:[[NSBundle mainBundle] pathForResource:Localized(@"TermsOfUse") ofType:@"html"]];
     self.wkWebView.height = DEVICE_HEIGHT - SafeAreaBottomH - ScreenScale(55);
-    UIButton * ifReaded = [UIButton createButtonWithTitle:[NSString stringWithFormat:@"  %@", Localized(@"ReadAndAgree")] TextFont:14 TextNormalColor:COLOR(@"666666") TextSelectedColor:COLOR(@"666666") NormalImage:@"ifReaded_n" SelectedImage:@"ifReaded_s" Target:self Selector:@selector(agreeAction:)];
-    ifReaded.contentEdgeInsets = UIEdgeInsetsMake(0, ScreenScale(10), 0, ScreenScale(10));
+    UIButton * ifReaded = [UIButton createButtonWithTitle:[NSString stringWithFormat:@"  %@", Localized(@"ReadAndAgree")] TextFont:14 TextNormalColor:COLOR_6 TextSelectedColor:COLOR_6 NormalImage:@"ifReaded_n" SelectedImage:@"ifReaded_s" Target:self Selector:@selector(agreeAction:)];
+    ifReaded.contentEdgeInsets = UIEdgeInsetsMake(0, Margin_10, 0, Margin_10);
     ifReaded.backgroundColor = COLOR(@"FAFAFA");
     [self.view addSubview:ifReaded];
     [ifReaded mas_makeConstraints:^(MASConstraintMaker *make) {

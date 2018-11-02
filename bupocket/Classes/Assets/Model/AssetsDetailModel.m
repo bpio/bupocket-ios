@@ -7,7 +7,6 @@
 //
 
 #import "AssetsDetailModel.h"
-#import "NSDate+Extension.h"
 
 @implementation AssetsDetailModel
 

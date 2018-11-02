@@ -35,28 +35,28 @@ static NSString * const AssetsCellID = @"AssetsCellID";
 {
     [super layoutSubviews];
     [self.listImage mas_makeConstraints:^(MASConstraintMaker *make) {
-        make.left.equalTo(self.contentView.mas_left).offset(ScreenScale(10));
+        make.left.equalTo(self.contentView.mas_left).offset(Margin_10);
         make.centerY.equalTo(self.contentView);
-        make.width.height.mas_equalTo(ScreenScale(40));
+        make.width.height.mas_equalTo(Margin_40);
     }];
     [self.title mas_makeConstraints:^(MASConstraintMaker *make) {
-        make.left.equalTo(self.listImage.mas_right).offset(ScreenScale(10));
+        make.left.equalTo(self.listImage.mas_right).offset(Margin_10);
         make.centerY.equalTo(self.contentView);
     }];
     [self.detailTitle mas_makeConstraints:^(MASConstraintMaker *make) {
-        make.right.equalTo(self.contentView.mas_right).offset(-ScreenScale(10));
+        make.right.equalTo(self.contentView.mas_right).offset(-Margin_10);
         make.top.equalTo(self.listImage);
     }];
     [self.infoTitle mas_makeConstraints:^(MASConstraintMaker *make) {
         make.right.equalTo(self.detailTitle);
         make.bottom.equalTo(self.listImage);
     }];
-    [self setViewSize:CGSizeMake(DEVICE_WIDTH - ScreenScale(20), ScreenScale(75)) borderWidth:0 borderColor:nil borderRadius:ScreenScale(5)];
+    [self setViewSize:CGSizeMake(DEVICE_WIDTH - Margin_20, ScreenScale(75)) borderWidth:0 borderColor:nil borderRadius:ScreenScale(5)];
 }
 - (void)setListModel:(AssetsListModel *)listModel
 {
     _listModel = listModel;
-    [self.listImage sd_setImageWithURL:[NSURL URLWithString:listModel.icon] placeholderImage:[UIImage imageNamed:@"BU"]];
+    [self.listImage sd_setImageWithURL:[NSURL URLWithString:listModel.icon] placeholderImage:[UIImage imageNamed:@"placeholder"]];
     self.title.text = listModel.assetCode;
     //    cell.listImage.image = [UIImage imageNamed:self.listArray[indexPath.section]];
     //    cell.title.text = self.listArray[indexPath.section];
@@ -93,7 +93,7 @@ static NSString * const AssetsCellID = @"AssetsCellID";
     if (!_infoTitle) {
         _infoTitle = [[UILabel alloc] init];
         _infoTitle.font = FONT(14);
-        _infoTitle.textColor = COLOR(@"999999");
+        _infoTitle.textColor = COLOR_9;
     }
     return _infoTitle;
 }

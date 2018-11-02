@@ -13,6 +13,7 @@
 @property (nonatomic, strong) UITextField * PWOld;
 @property (nonatomic, strong) UITextField * PWNew;
 @property (nonatomic, strong) UITextField * PWConfirm;
+@property (nonatomic, strong) UIButton * confirm;
 
 @end
 
@@ -40,29 +41,42 @@
         }];
     }
     
-    UIButton * confirm = [UIButton createButtonWithTitle:Localized(@"Confirm") TextFont:18 TextColor:[UIColor whiteColor] Target:self Selector:@selector(confirmAction)];
-    confirm.layer.masksToBounds = YES;
-    confirm.clipsToBounds = YES;
-    confirm.layer.cornerRadius = ScreenScale(4);
-    confirm.backgroundColor = MAIN_COLOR;
-    [self.view addSubview:confirm];
-    [confirm mas_makeConstraints:^(MASConstraintMaker *make) {
-        make.bottom.equalTo(self.view.mas_bottom).offset(-ScreenScale(30) - SafeAreaBottomH);
-        make.left.equalTo(self.view.mas_left).offset(ScreenScale(12));
-        make.right.equalTo(self.view.mas_right).offset(-ScreenScale(12));
+    _confirm = [UIButton createButtonWithTitle:Localized(@"Confirm") TextFont:18 TextColor:[UIColor whiteColor] Target:self Selector:@selector(confirmAction)];
+    _confirm.layer.masksToBounds = YES;
+    _confirm.clipsToBounds = YES;
+    _confirm.layer.cornerRadius = ScreenScale(4);
+    _confirm.enabled = NO;
+    _confirm.backgroundColor = COLOR(@"9AD9FF");
+    [self.view addSubview:_confirm];
+    [_confirm mas_makeConstraints:^(MASConstraintMaker *make) {
+        make.bottom.equalTo(self.view.mas_bottom).offset(-Margin_30 - SafeAreaBottomH);
+        make.left.equalTo(self.view.mas_left).offset(Margin_12);
+        make.right.equalTo(self.view.mas_right).offset(-Margin_12);
         make.height.mas_equalTo(MAIN_HEIGHT);
     }];
 }
 - (void)confirmAction
 {
-    
+    NSData * random = [NSString decipherKeyStoreWithPW:_PWOld.text randomKeyStoreValueStr:[AccountTool account].randomNumber];
+    if (random) {
+        [HTTPManager setAccountDataWithRandom:random password:self.PWNew.text identityName:[AccountTool account].identityName success:^(id responseObject) {
+            [MBProgressHUD wb_showSuccess:@"修改密码成功"];
+            [self.navigationController popViewControllerAnimated:YES];
+        } failure:^(NSError *error) {
+            
+        }];
+    } else {
+        [MBProgressHUD wb_showError:@"旧密码不正确，请重新输入"];
+    }
+//    NSArray * words = [Mnemonic generateMnemonicCode: random];
+//    NSData * random = [Mnemonic randomFromMnemonicCode: words];
 }
 - (UIView *)setViewWithTitle:(NSString *)title placeholder:(NSString *)placeholder index:(NSInteger)index
 {
     UIView * viewBg = [[UIView alloc] init];
     UILabel * header = [[UILabel alloc] init];
     header.font = FONT(16);
-    header.textColor = COLOR(@"999999");
+    header.textColor = COLOR_9;
     [viewBg addSubview:header];
     NSMutableAttributedString * attr = [[NSMutableAttributedString alloc] initWithString:[NSString stringWithFormat:@"| %@", title]];
     //        NSMutableDictionary * dic = [NSMutableDictionary dictionary];
@@ -85,10 +99,11 @@
     textField.secureTextEntry = YES;
     textField.clearButtonMode = UITextFieldViewModeWhileEditing;
     [viewBg addSubview:textField];
+    [textField addTarget:self action:@selector(textChange:) forControlEvents:UIControlEventEditingChanged];
     [textField mas_makeConstraints:^(MASConstraintMaker *make) {
         make.top.equalTo(header.mas_bottom).offset(ScreenScale(5));
-        make.left.equalTo(viewBg.mas_left).offset(ScreenScale(30));
-        make.right.equalTo(viewBg.mas_right).offset(-ScreenScale(30));
+        make.left.equalTo(viewBg.mas_left).offset(Margin_30);
+        make.right.equalTo(viewBg.mas_right).offset(-Margin_30);
         make.height.mas_equalTo(ScreenScale(39));
     }];
     UIView * lineView = [[UIView alloc] init];
@@ -97,7 +112,7 @@
     [lineView mas_makeConstraints:^(MASConstraintMaker *make) {
         make.top.equalTo(textField.mas_bottom);
         make.left.right.equalTo(header);
-        make.height.mas_equalTo(ScreenScale(0.5));
+        make.height.mas_equalTo(LINE_WIDTH);
     }];
     switch (index) {
         case 0:
@@ -118,7 +133,21 @@
 {
     [self.view endEditing:YES];
 }
-
+- (void)textChange:(UITextField *)textField
+{
+    if (_PWOld.text.length == 0 || _PWNew.text.length == 0 || _PWConfirm.text.length == 0 || _PWNew.text != _PWConfirm.text || _PWOld.text == _PWNew.text) {
+        _confirm.enabled = NO;
+        _confirm.backgroundColor = COLOR(@"9AD9FF");
+        if (_PWOld.text == _PWNew.text) {
+            [MBProgressHUD wb_showError:@"请输入与旧密码不同的新密码"];
+        } else if (_PWNew.text != _PWConfirm.text) {
+            [MBProgressHUD wb_showError:@"新密码与确认密码不一致，请重新输入"];
+        }
+    } else {
+        _confirm.enabled = YES;
+        _confirm.backgroundColor = MAIN_COLOR;
+    }
+}
 /*
 #pragma mark - Navigation
 

@@ -79,7 +79,7 @@
     CGSize maxSize = [leftText boundingRectWithSize:CGSizeMake(MAXFLOAT, titleFieldHeight) options:NSStringDrawingUsesLineFragmentOrigin attributes:@{NSFontAttributeName:[UIFont systemFontOfSize:14]} context:nil].size;
     left.frame = CGRectMake(0, 0, ScreenScale(maxSize.width + 40), ScreenScale(titleFieldHeight));
     textField.leftView = left;
-    textField.rightView = [[UIView alloc] initWithFrame:CGRectMake(0, 0, ScreenScale(40), ScreenScale(titleFieldHeight))];
+    textField.rightView = [[UIView alloc] initWithFrame:CGRectMake(0, 0, Margin_40, ScreenScale(titleFieldHeight))];
     UIView * lineView = [[UIView alloc]init];
     lineView.backgroundColor = LINE_COLOR;
     lineView.hidden = lineViewHidden;
@@ -109,12 +109,12 @@
     UIButton * button = [UIButton createButtonWithTitle:title TextFont:14 TextNormalColor:TITLE_COLOR TextSelectedColor:TITLE_COLOR NormalImage:normalImage SelectedImage:SelectedImage Target:target Selector:selector];
     if (title && normalImage == nil) {
         button.contentHorizontalAlignment = UIControlContentHorizontalAlignmentRight;
-        button.contentEdgeInsets = UIEdgeInsetsMake(0, 0, 0, ScreenScale(12));
+        button.contentEdgeInsets = UIEdgeInsetsMake(0, 0, 0, Margin_12);
         button.frame = CGRectMake(0, 0, ScreenScale(90), ScreenScale(titleFieldHeight));
     } else if (title.length == 0 && normalImage) {
-        button.frame = CGRectMake(0, 0, ScreenScale(40), ScreenScale(titleFieldHeight));
+        button.frame = CGRectMake(0, 0, Margin_40, ScreenScale(titleFieldHeight));
     } else {
-        button.frame = CGRectMake(0, 0, ScreenScale(12), ScreenScale(titleFieldHeight));
+        button.frame = CGRectMake(0, 0, Margin_12, ScreenScale(titleFieldHeight));
     }
     textField.rightView = button;
     
@@ -156,10 +156,10 @@
     if (title) {
         button.frame = CGRectMake(0, 0, ScreenScale(60), ScreenScale(titleFieldHeight));
         if (title.length == 1) {
-            button.frame = CGRectMake(0, 0, ScreenScale(40), ScreenScale(titleFieldHeight));
+            button.frame = CGRectMake(0, 0, Margin_40, ScreenScale(titleFieldHeight));
         }
     } else {
-        button.frame = CGRectMake(0, 0, ScreenScale(40), ScreenScale(titleFieldHeight));
+        button.frame = CGRectMake(0, 0, Margin_40, ScreenScale(titleFieldHeight));
     }
     textField.rightView = button;
     

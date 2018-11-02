@@ -41,7 +41,7 @@ static NSString * const AssetsDetailCellID = @"AssetsDetailCellID";
 {
     [super layoutSubviews];
     [self.purseAddress mas_makeConstraints:^(MASConstraintMaker *make) {
-        make.left.equalTo(self.contentView.mas_left).offset(ScreenScale(10));
+        make.left.equalTo(self.contentView.mas_left).offset(Margin_10);
         make.top.equalTo(self.contentView.mas_top).offset(ScreenScale(15));
     }];
     [self.date mas_makeConstraints:^(MASConstraintMaker *make) {
@@ -50,13 +50,13 @@ static NSString * const AssetsDetailCellID = @"AssetsDetailCellID";
     }];
     [self.assets mas_makeConstraints:^(MASConstraintMaker *make) {
         make.centerY.equalTo(self.purseAddress);
-        make.right.equalTo(self.contentView.mas_right).offset(-ScreenScale(10));
+        make.right.equalTo(self.contentView.mas_right).offset(-Margin_10);
     }];
     [self.state mas_makeConstraints:^(MASConstraintMaker *make) {
         make.centerY.equalTo(self.date);
         make.right.equalTo(self.assets);
     }];
-    [self setViewSize:CGSizeMake(DEVICE_WIDTH - ScreenScale(20), ScreenScale(75)) borderWidth:0 borderColor:nil borderRadius:ScreenScale(5)];
+    [self setViewSize:CGSizeMake(DEVICE_WIDTH - Margin_20, ScreenScale(75)) borderWidth:0 borderColor:nil borderRadius:ScreenScale(5)];
 }
 
 - (void)setListModel:(AssetsDetailModel *)listModel
@@ -73,8 +73,10 @@ static NSString * const AssetsDetailCellID = @"AssetsDetailCellID";
         addressStr = listModel.fromAddress;
         outOrIn = @"+";
     }
-    self.purseAddress.text = [NSString stringWithFormat:@"%@***%@", [addressStr substringToIndex:10], [addressStr substringFromIndex:addressStr.length - 10]];
-    self.date.text = [Encapsulation getDateStringWithTimeStr:listModel.txTime];
+    if (addressStr.length > 10) {
+        self.purseAddress.text = [NSString stringEllipsisWithStr:addressStr];
+    }
+    self.date.text = [DateTool getDateProcessingWithTimeStr:listModel.txTime];
     self.assets.text = [listModel.amount isEqualToString:@"~"] ? listModel.amount : [NSString stringWithFormat:@"%@%@%@", outOrIn, listModel.amount, self.assetCode];
     self.state.text = (listModel.txStatus == 0) ? Localized(@"Success") : Localized(@"Failure");
 }
@@ -92,7 +94,7 @@ static NSString * const AssetsDetailCellID = @"AssetsDetailCellID";
     if (!_purseAddress) {
         _purseAddress = [[UILabel alloc] init];
         _purseAddress.font = FONT(14);
-        _purseAddress.textColor = COLOR(@"666666");
+        _purseAddress.textColor = COLOR_6;
     }
     return _purseAddress;
 }
@@ -101,7 +103,7 @@ static NSString * const AssetsDetailCellID = @"AssetsDetailCellID";
     if (!_date) {
         _date = [[UILabel alloc] init];
         _date.font = FONT(12);
-        _date.textColor = COLOR(@"999999");
+        _date.textColor = COLOR_9;
     }
     return _date;
 }
@@ -119,7 +121,7 @@ static NSString * const AssetsDetailCellID = @"AssetsDetailCellID";
     if (!_state) {
         _state = [[UILabel alloc] init];
         _state.font = FONT(12);
-        _state.textColor = COLOR(@"999999");
+        _state.textColor = COLOR_9;
     }
     return _state;
 }

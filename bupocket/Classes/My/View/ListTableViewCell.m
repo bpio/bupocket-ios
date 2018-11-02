@@ -38,10 +38,10 @@ static NSString * const ListCellID = @"ListCellID";
     [self.listImage mas_makeConstraints:^(MASConstraintMaker *make) {
         make.left.equalTo(self.contentView.mas_left).offset(ScreenScale(15));
         make.centerY.equalTo(self.contentView);
-        make.width.height.mas_equalTo(ScreenScale(20));
+        make.width.height.mas_equalTo(Margin_20);
     }];
     [self.title mas_makeConstraints:^(MASConstraintMaker *make) {
-        make.left.equalTo(self.listImage.mas_right).offset(ScreenScale(10));
+        make.left.equalTo(self.listImage.mas_right).offset(Margin_10);
         make.centerY.equalTo(self.contentView);
     }];
     [self.detailImage mas_makeConstraints:^(MASConstraintMaker *make) {
@@ -55,7 +55,7 @@ static NSString * const ListCellID = @"ListCellID";
 //    [self.line mas_makeConstraints:^(MASConstraintMaker *make) {
 //        make.left.right.equalTo(self.contentView);
 //        make.bottom.equalTo(self.contentView);
-//        make.height.mas_equalTo(ScreenScale(0.5));
+//        make.height.mas_equalTo(LINE_WIDTH);
 //    }];
 }
 - (UIImageView *)listImage
@@ -71,7 +71,7 @@ static NSString * const ListCellID = @"ListCellID";
     if (!_title) {
         _title = [[UILabel alloc] init];
         _title.font = FONT(15);
-        _title.textColor = COLOR(@"666666");
+        _title.textColor = COLOR_6;
     }
     return _title;
 }
@@ -80,7 +80,7 @@ static NSString * const ListCellID = @"ListCellID";
     if (!_detailTitle) {
         _detailTitle = [[UILabel alloc] init];
         _detailTitle.font = FONT(15);
-        _detailTitle.textColor = COLOR(@"666666");
+        _detailTitle.textColor = COLOR_6;
     }
     return _detailTitle;
 }

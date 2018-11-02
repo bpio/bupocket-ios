@@ -12,14 +12,14 @@
 NS_ASSUME_NONNULL_BEGIN
 
 typedef void (^OnCancleButtonClick)(void);
-typedef void (^OnSureButtonClick)(void);
+typedef void (^ConfirmButtonClick)(void);
 
 @interface TransferDetailsAlertView : UIView
 
 @property (nonatomic, copy) OnCancleButtonClick cancleBlock;
-@property (nonatomic, copy) OnSureButtonClick sureBlock;
+@property (nonatomic, copy) ConfirmButtonClick sureBlock;
 
-- (instancetype)initWithConfrimBolck:(nonnull void (^)(void))confrimBlock cancelBlock:(nonnull void (^)(void))cancelBlock;
+- (instancetype)initWithTransferInfoArray:(NSArray *)transferInfoArray confrimBolck:(nonnull void (^)(void))confrimBlock cancelBlock:(nonnull void (^)(void))cancelBlock;
 
 @end
 

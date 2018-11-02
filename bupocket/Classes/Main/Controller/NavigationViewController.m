@@ -17,19 +17,21 @@
 
 + (void)initialize
 {
-//    UINavigationBar * bar = [UINavigationBar appearance];
+    UINavigationBar * bar = [UINavigationBar appearance];
 //    NSMutableDictionary * attr = [NSMutableDictionary dictionary];
 //    attr[NSFontAttributeName] = FONT(18);
 //    attr[NSForegroundColorAttributeName] = MAIN_COLOR;
 //    [bar setTitleTextAttributes:attr];
 ////    bar.barTintColor =
 //    bar.barStyle = UIStatusBarStyleLightContent;
+    bar.shadowImage = [[UIImage alloc] init];
+    bar.barTintColor = [UIColor whiteColor];
 }
 - (void)pushViewController:(UIViewController *)viewController animated:(BOOL)animated
 {
     if (self.childViewControllers.count > 0) {
         UIButton * backButton = [UIButton createButtonWithNormalImage:@"nav_goback_n" SelectedImage:@"nav_goback_n" Target:self Selector:@selector(back)];
-        backButton.frame = CGRectMake(0, 0, ScreenScale(44), ScreenScale(30));
+        backButton.frame = CGRectMake(0, 0, ScreenScale(44), Margin_30);
         backButton.contentHorizontalAlignment = UIControlContentHorizontalAlignmentLeft;
         viewController.navigationItem.leftBarButtonItem = [[UIBarButtonItem alloc]initWithCustomView:backButton];
         viewController.hidesBottomBarWhenPushed = YES;

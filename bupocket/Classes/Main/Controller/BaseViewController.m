@@ -10,7 +10,7 @@
 
 @interface BaseViewController ()
 
-@property (nonatomic, strong) UIView * noNetWork;
+//@property (nonatomic, strong) UIView * noNetWork;
 
 @end
 
@@ -18,12 +18,23 @@
 
 - (void)viewDidLoad {
     [super viewDidLoad];
-    [self setupNoNetWork];
-    self.noNetWork.hidden = YES;
+//    [self setupNoNetWork];
+//    self.noNetWork.hidden = YES;
     self.view.backgroundColor = [UIColor whiteColor];
     //注册通知，用于接收改变语言的通知
     [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(changeLanguage) name:ChangeLanguageNotificationName object:nil];
     // Do any additional setup after loading the view.
+}
+- (void)popToRootVC
+{
+    UIButton * backButton = [UIButton createButtonWithNormalImage:@"nav_goback_n" SelectedImage:@"nav_goback_n" Target:self Selector:@selector(back)];
+    backButton.frame = CGRectMake(0, 0, ScreenScale(44), Margin_30);
+    backButton.contentHorizontalAlignment = UIControlContentHorizontalAlignmentLeft;
+    self.navigationItem.leftBarButtonItem = [[UIBarButtonItem alloc]initWithCustomView:backButton];
+}
+- (void)back
+{
+    [self.navigationController popToRootViewControllerAnimated:YES];
 }
 - (void)changeLanguage
 {
@@ -32,6 +43,7 @@
 - (void)dealloc {
     [[NSNotificationCenter defaultCenter] removeObserver:self];
 }
+/*
 - (void)setupNoNetWork
 {
     _noNetWork = [[UIView alloc] init];
@@ -49,26 +61,27 @@
     
     UILabel * titleLabel = [[UILabel alloc] init];
     titleLabel.font = FONT(15);
-    titleLabel.textColor = COLOR(@"999999");
-    titleLabel.text = @"您的网络好像不太给力，请稍后再试";
+    titleLabel.textColor = COLOR_9;
+    titleLabel.text = Localized(@"NoNetWork");
     [_noNetWork addSubview:titleLabel];
     [titleLabel mas_makeConstraints:^(MASConstraintMaker *make) {
         make.centerX.equalTo(self.noNetWork);
         make.top.equalTo(noNetWorkImage.mas_bottom).offset(ScreenScale(50));
     }];
     
-    UIButton * reloadBtn = [UIButton createButtonWithTitle:@"重新加载" TextFont:18 TextColor:[UIColor whiteColor] Target:nil Selector:nil];
+    UIButton * reloadBtn = [UIButton createButtonWithTitle:Localized(@"Reload") TextFont:18 TextColor:[UIColor whiteColor] Target:nil Selector:nil];
     reloadBtn.layer.masksToBounds = YES;
     reloadBtn.clipsToBounds = YES;
     reloadBtn.layer.cornerRadius = ScreenScale(4);
     reloadBtn.backgroundColor = MAIN_COLOR;
     [_noNetWork addSubview:reloadBtn];
     [reloadBtn mas_makeConstraints:^(MASConstraintMaker *make) {
-        make.top.equalTo(titleLabel.mas_bottom).offset(ScreenScale(40));
+        make.top.equalTo(titleLabel.mas_bottom).offset(Margin_40);
         make.centerX.equalTo(self.noNetWork);
-        make.size.mas_equalTo(CGSizeMake(ScreenScale(170), ScreenScale(45)));
+        make.size.mas_equalTo(CGSizeMake(ScreenScale(170), MAIN_HEIGHT));
     }];
 }
+ */
 /*
 #pragma mark - Navigation
 

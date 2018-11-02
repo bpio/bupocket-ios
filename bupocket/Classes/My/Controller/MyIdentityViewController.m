@@ -9,6 +9,7 @@
 #import "MyIdentityViewController.h"
 #import "IdentityViewController.h"
 #import "PurseCipherAlertView.h"
+//#import "BackUpPurseViewController.h"
 #import "BackupMnemonicsViewController.h"
 
 @interface MyIdentityViewController ()
@@ -27,31 +28,31 @@
 - (void)setupView
 {
     self.view.backgroundColor = COLOR(@"F2F2F2");
-    UIView * myIdentityBg = [[UIView alloc] initWithFrame:CGRectMake(ScreenScale(12), NavBarH + ScreenScale(10), DEVICE_WIDTH - ScreenScale(24), ScreenScale(110))];
+    UIView * myIdentityBg = [[UIView alloc] initWithFrame:CGRectMake(Margin_12, NavBarH + Margin_10, DEVICE_WIDTH - Margin_24, ScreenScale(110))];
     myIdentityBg.backgroundColor = [UIColor whiteColor];
     [myIdentityBg setViewSize:myIdentityBg.size borderWidth:0 borderColor:nil borderRadius:ScreenScale(5)];
     [self.view addSubview:myIdentityBg];
     
     UILabel * IDNameTitle = [[UILabel alloc] init];
     IDNameTitle.font = FONT(15);
-    IDNameTitle.textColor = COLOR(@"999999");
+    IDNameTitle.textColor = COLOR_9;
     IDNameTitle.text = Localized(@"IdentityNameTitle");
     [myIdentityBg addSubview:IDNameTitle];
     [IDNameTitle mas_makeConstraints:^(MASConstraintMaker *make) {
         //        make.centerX.equalTo(self.view);
         make.top.equalTo(myIdentityBg.mas_top).offset(ScreenScale(17));
-        make.left.equalTo(myIdentityBg.mas_left).offset(ScreenScale(10));
+        make.left.equalTo(myIdentityBg.mas_left).offset(Margin_10);
     }];
     
     UILabel * IDName = [[UILabel alloc] init];
     IDName.font = FONT(15);
-    IDName.textColor = COLOR(@"666666");
+    IDName.textColor = COLOR_6;
     IDName.text = @"会飞的猪"; // Localized(@"IdentityName");
     [myIdentityBg addSubview:IDName];
     [IDName mas_makeConstraints:^(MASConstraintMaker *make) {
         //        make.centerX.equalTo(self.view);
         make.top.equalTo(IDNameTitle);
-        make.right.equalTo(myIdentityBg.mas_right).offset(-ScreenScale(10));
+        make.right.equalTo(myIdentityBg.mas_right).offset(-Margin_10);
     }];
     
     UILabel * IdentityIDTitle = [[UILabel alloc] init];
@@ -61,7 +62,7 @@
     [myIdentityBg addSubview:IdentityIDTitle];
     [IdentityIDTitle mas_makeConstraints:^(MASConstraintMaker *make) {
         //        make.centerX.equalTo(self.view);
-        make.top.equalTo(IDNameTitle.mas_bottom).offset(ScreenScale(25));
+        make.top.equalTo(IDNameTitle.mas_bottom).offset(Margin_25);
         make.left.equalTo(IDNameTitle);
     }];
     
@@ -79,7 +80,7 @@
         make.width.mas_equalTo(ScreenScale(200));
     }];
     
-    CGSize btnSize = CGSizeMake(DEVICE_WIDTH - ScreenScale(24), MAIN_HEIGHT);
+    CGSize btnSize = CGSizeMake(DEVICE_WIDTH - Margin_24, MAIN_HEIGHT);
     UIButton * exitID = [UIButton createButtonWithTitle:Localized(@"ExitCurrentIdentity") TextFont:18 TextColor:COLOR(@"FF6363") Target:self Selector:@selector(exitIDAction)];
     [exitID setViewSize:btnSize borderWidth:0 borderColor:nil borderRadius:ScreenScale(4)];
     exitID.backgroundColor = [UIColor whiteColor];
@@ -94,14 +95,18 @@
     backupIdentity.backgroundColor = MAIN_COLOR;
     [self.view addSubview:backupIdentity];
     [backupIdentity mas_makeConstraints:^(MASConstraintMaker *make) {
-        make.bottom.equalTo(exitID.mas_top).offset(- ScreenScale(20));
+        make.bottom.equalTo(exitID.mas_top).offset(- Margin_20);
         make.size.centerX.equalTo(exitID);
     }];
 }
 - (void)backupIdentityAction
 {
-    PurseCipherAlertView * alertView = [[PurseCipherAlertView alloc] initWithConfrimBolck:^{
-        [UIApplication sharedApplication].keyWindow.rootViewController = [[NavigationViewController alloc] initWithRootViewController:[[BackupMnemonicsViewController alloc] init]];
+    PurseCipherAlertView * alertView = [[PurseCipherAlertView alloc] initWithConfrimBolck:^(NSString * _Nonnull password) {
+        NSData * random = [NSString decipherKeyStoreWithPW:password randomKeyStoreValueStr:[AccountTool account].randomNumber];
+        NSArray * words = [Mnemonic generateMnemonicCode: random];
+        BackupMnemonicsViewController * VC = [[BackupMnemonicsViewController alloc] init];
+        VC.mnemonicArray = words;
+        [UIApplication sharedApplication].keyWindow.rootViewController = [[NavigationViewController alloc] initWithRootViewController:VC];
     } cancelBlock:^{
         
     }];
@@ -111,7 +116,16 @@
 {
     UIAlertController * alertController = [Encapsulation alertControllerWithTitle:Localized(@"ExitCurrentIdentity") message:Localized(@"ExitCurrentIdentityPrompt")];
     UIAlertAction * okAction = [UIAlertAction actionWithTitle:Localized(@"Confirm") style:UIAlertActionStyleDefault handler:^(UIAlertAction * _Nonnull action) {
-        [UIApplication sharedApplication].keyWindow.rootViewController = [[NavigationViewController alloc] initWithRootViewController:[[IdentityViewController alloc] init]];
+        BOOL ifClearData = [AccountTool clearCache];
+        if (ifClearData) {
+            NSUserDefaults *defaults =[NSUserDefaults standardUserDefaults];
+            [defaults removeObjectForKey:ifCreated];
+            [defaults removeObjectForKey:ifBackup];
+            [MBProgressHUD wb_showSuccess:@"退出当前身份成功"];
+            [UIApplication sharedApplication].keyWindow.rootViewController = [[NavigationViewController alloc] initWithRootViewController:[[IdentityViewController alloc] init]];
+        } else {
+            [MBProgressHUD wb_showError:@"移除身份及所有已导入的钱包失败"];
+        }
     }];
     [alertController addAction:okAction];
     [self presentViewController:alertController animated:YES completion:nil];

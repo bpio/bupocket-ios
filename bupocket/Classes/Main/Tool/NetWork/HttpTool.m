@@ -7,7 +7,7 @@
 //
 
 #import "HttpTool.h"
-#import <AFNetworking.h>
+#import "AFNetworking.h"
 
 //#import <MBProgressHUD.h>
 //#import <Reachability.h>
@@ -123,14 +123,9 @@ static HttpTool *__shareTool = nil;
     NSMutableURLRequest * request = [[AFJSONRequestSerializer serializer] requestWithMethod:@"POST" URLString:URLString parameters:nil error:nil];
     [request setValue:@"application/json" forHTTPHeaderField:@"Content-Type"];
     [request setValue:@"application/json" forHTTPHeaderField:@"Accept"];
-    NSData *jsonData = [NSJSONSerialization dataWithJSONObject:parameters options:NSJSONWritingPrettyPrinted error:nil];
-    NSString * jsonString;
-    if (jsonData && [jsonData length] > 0) {
-        jsonString = [[NSString alloc]initWithData:jsonData encoding:NSUTF8StringEncoding];
-    }
-    // 关键! 转化为NSaData作为HTTPBody
-    [request setHTTPBody:[jsonString dataUsingEncoding:NSUTF8StringEncoding]];
-    [MBProgressHUD wb_showActivity];
+    // NSaData -> HTTPBody
+    [request setHTTPBody:[[JsonTool JSONStringWithDictionaryOrArray:parameters] dataUsingEncoding:NSUTF8StringEncoding]];
+//    [MBProgressHUD wb_showActivity];
 //    [MBProgressHUD showActivityMessageInWindow:nil];
     [[self.sessionManager dataTaskWithRequest:request uploadProgress:^(NSProgress * _Nonnull uploadProgress) {
         
@@ -138,17 +133,17 @@ static HttpTool *__shareTool = nil;
         
     } completionHandler:^(NSURLResponse * _Nonnull response, id  _Nullable responseObject, NSError * _Nullable error) {
         if (!error) {
-            [MBProgressHUD wb_hideHUD];
+//            [MBProgressHUD wb_hideHUD];
             if ([responseObject isKindOfClass:[NSDictionary class]]) {
                 if (success) {
                     success(responseObject);
                 }
             }
         } else {
-            [MBProgressHUD wb_hideHUD];
+//            [MBProgressHUD wb_hideHUD];
             if (failure) {
                 failure(error);
-                [MBProgressHUD wb_showError:error.localizedDescription completion:nil];
+//                [MBProgressHUD wb_showError:error.localizedDescription completion:nil];
             }
         }
     }] resume];

@@ -8,6 +8,13 @@
 
 #import <UIKit/UIKit.h>
 
+typedef NS_ENUM(NSInteger, UIViewBorderLineType) {
+    UIViewBorderLineTypeTop,
+    UIViewBorderLineTypeRight,
+    UIViewBorderLineTypeBottom,
+    UIViewBorderLineTypeLeft,
+};
+
 @interface UIView (Extension)
 
 @property (nonatomic, assign) CGSize size;
@@ -29,6 +36,9 @@
  ** lineColor:      虚线的颜色
  **/
 
-- (void)drawDashLineLength:(int)lineLength lineSpacing:(int)lineSpacing lineColor:(UIColor *)lineColor;
+- (void)drawDashLine;
+
+// UIView 分开设置边框
+- (void)setViewBorder:(UIView *)view color:(UIColor *)color border:(float)border type:(UIViewBorderLineType)borderLineType;
 
 @end

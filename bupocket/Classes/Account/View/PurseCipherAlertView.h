@@ -12,14 +12,14 @@
 NS_ASSUME_NONNULL_BEGIN
 
 typedef void (^OnCancleButtonClick)(void);
-typedef void (^OnSureButtonClick)(void);
+typedef void (^OnSureButtonClick)(NSString * password);
 
 @interface PurseCipherAlertView : UIView
 
 @property (nonatomic, copy) OnCancleButtonClick cancleBlock;
 @property (nonatomic, copy) OnSureButtonClick sureBlock;
 
-- (instancetype)initWithConfrimBolck:(void (^)(void))confrimBlock cancelBlock:(void (^)(void))cancelBlock;
+- (instancetype)initWithConfrimBolck:(void (^)(NSString * password))confrimBlock cancelBlock:(void (^)(void))cancelBlock;
 
 @end
 

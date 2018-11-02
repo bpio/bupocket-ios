@@ -18,12 +18,13 @@
 
 @implementation TransferResultsViewController
 
-static NSString * const TransferResultsCellID = @"TransferResultsCellID";
+static NSString * const TransferResultsCellID = @"DetailListCellID";
+
 
 - (void)viewDidLoad {
     [super viewDidLoad];
     [self setupView];
-    self.listArray = @[@[Localized(@"reciprocalAccount"), Localized(@"amountOfTransfer"), Localized(@"TransactionCost"), Localized(@"Remarks"), Localized(@"TransferTime")], @[@"buQs9npaCq9mNFZG18qu88ZcmXYqd6bqpTU3", @"100 BU", @"0.01 BU", @"转账", @"2018-09-08 14:22"]];
+    self.listArray = @[@[Localized(@"reciprocalAccount"), Localized(@"amountOfTransfer"), Localized(@"TransactionCost"), Localized(@"Remarks"), Localized(@"TransferTime")], self.transferInfoArray];
     // Do any additional setup after loading the view.
 }
 - (void)setupView
@@ -36,25 +37,29 @@ static NSString * const TransferResultsCellID = @"TransferResultsCellID";
     [self.view addSubview:self.tableView];
     CustomButton * transferResults = [[CustomButton alloc] init];
     transferResults.layoutMode = VerticalNormal;
-    [transferResults setTitle:Localized(@"TransferSuccess") forState:UIControlStateNormal];
-    // TransferFailure
-    [transferResults setTitleColor:COLOR(@"666666") forState:UIControlStateNormal];
+    [transferResults setTitleColor:COLOR_6 forState:UIControlStateNormal];
     transferResults.titleLabel.font = FONT(16);
-    [transferResults setImage:[UIImage imageNamed:@"TransferSuccess"] forState:UIControlStateNormal];
+    if (self.state == YES) {
+        [transferResults setTitle:Localized(@"TransferSuccess") forState:UIControlStateNormal];
+        [transferResults setImage:[UIImage imageNamed:@"TransferSuccess"] forState:UIControlStateNormal];
+    } else {
+        [transferResults setTitle:Localized(@"TransferFailure") forState:UIControlStateNormal];
+        [transferResults setImage:[UIImage imageNamed:@"TransferFailure"] forState:UIControlStateNormal];
+    }
     transferResults.bounds = CGRectMake(0, 0, DEVICE_WIDTH, ScreenScale(120));
     transferResults.backgroundColor = [UIColor whiteColor];
     self.tableView.tableHeaderView = transferResults;
 }
 - (CGFloat)tableView:(UITableView *)tableView heightForHeaderInSection:(NSInteger)section
 {
-    return ScreenScale(10);
+    return Margin_10;
 }
 - (CGFloat)tableView:(UITableView *)tableView heightForRowAtIndexPath:(NSIndexPath *)indexPath
 {
     if (indexPath.row == 0) {
         return ScreenScale(70);
     } else {
-        return ScreenScale(40);
+        return MAIN_HEIGHT;
     }
 }
 - (NSInteger)numberOfSectionsInTableView:(UITableView *)tableView
@@ -69,7 +74,13 @@ static NSString * const TransferResultsCellID = @"TransferResultsCellID";
 {
     DetailListViewCell * cell = [DetailListViewCell cellWithTableView:tableView identifier:TransferResultsCellID];
     cell.title.text = self.listArray[0][indexPath.row];
-    cell.infoTitle.text = self.listArray[1][indexPath.row];
+    if (indexPath.row == [self.listArray[0] count] - 2) {
+        cell.infoTitle.text = ([self.listArray[0] count] != [self.listArray[1] count]) ? @"" : self.listArray[1][indexPath.row];
+    } else if (indexPath.row == [self.listArray[0] count] - 1) {
+        cell.infoTitle.text = [self.listArray[1] lastObject];
+    } else {
+        cell.infoTitle.text = self.listArray[1][indexPath.row];
+    }
     return cell;
     /*
     UITableViewCell * cell = [tableView dequeueReusableCellWithIdentifier:TransferResultsCellID];
@@ -78,9 +89,9 @@ static NSString * const TransferResultsCellID = @"TransferResultsCellID";
     }
     cell.textLabel.text = self.listArray[0][indexPath.row];
     cell.textLabel.font = FONT(15);
-    cell.textLabel.textColor = COLOR(@"999999");
+    cell.textLabel.textColor = COLOR_9;
     cell.detailTextLabel.font = FONT(15);
-    cell.detailTextLabel.textColor = COLOR(@"666666");
+    cell.detailTextLabel.textColor = COLOR_6;
     cell.detailTextLabel.textAlignment = NSTextAlignmentRight;
     cell.detailTextLabel.preferredMaxLayoutWidth = ScreenScale(205);
     

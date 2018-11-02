@@ -5,6 +5,8 @@
   Created by bupocket on 2018/10/17.
   Copyright © 2018年 bupocket. All rights reserved.
 */
+"NoNetWork" = "您的网络好像不太给力，请稍后再试";
+"Reload" = "重新加载";
 "MyTitle" = "My";
 "AssetsTitle" = "Assets";
 // Identity
@@ -44,6 +46,8 @@
 "MnemonicsSavePrompt" = "please record every word in order and keep it properly";
 "Copied" = "Copied";
 "ConfirmMnemonic" = "Confirm mnemonic words";
+"ConfirmMnemonicPrompt" = "请按顺序点击助记词，以确认您正确备份。";
+"Skip" = "skip";
 "Finished" = "finished";
 // My
 "ModifyPassword" = "modify password";
@@ -76,6 +80,9 @@
 "PurseAddressTitle" = "钱包地址";
 "DuplicateWalletAddress" = "复制钱包地址";
 "WalletAddressQRCode" = "钱包地址二维码";
+// 添加资产
+"AddAssets" = "添加资产";
+"Add" = "添加";
 // 资产详情
 "AssetsDetailScan" = "扫一扫";
 "TransferAccounts" = "转账";
@@ -87,6 +94,7 @@
 "PhoneOrAddress" = "请输入手机号/接收方地址";
 "AmountOfTransfer" = "转账数量（BU） *";
 "amountOfTransfer" = "转账数量";
+"AvailableBalance" = "可用余额";
 "MostOnce" = "单笔不可超过10000 BU";
 "Remarks" = "备注 ";
 "RemarksPlaceholder" = "请输入备注";
@@ -110,3 +118,38 @@
 "OriginatorAdress" = "发送方地址";
 "RecipientAddress" = "接收方地址";
 "SendingTime" = "发送时间";
+// 发行资产
+// 登记资产确认
+"ConfirmationOfRegisteredAssets" = "登记资产确认";
+"ConfirmRegistrationInformation" = "请确认以下登记资产信息";
+"ConfirmationOfRegistration" = "确认登记";
+"RegistrationSuccess" = "登记成功";
+"RegistrationFailure" = "登记失败";
+"RegistrationTimeout" = "登记超时";
+//"DistributionMode" = "发行方式";
+//"OneTimeIssue" = "一次性发行";
+//"IncrementalIssue" = "增量发行";
+"UnrestrictedIssue" = "无限制";
+// 发行资产确认
+"IssueAssetsConfirmation" = "发行资产确认";
+"ConfirmAssetInformation" = "请确认以下发行资产信息";
+"TokenName" = "资产名称";
+"TokenCode" = "资产代码";
+"TheIssueVolume" = "本次发行量";
+"CumulativeCirculation" = "累计发行量";
+"RemainingUnissuedVolume" = "剩余未发行量";
+"TotalAmountOfToken" = "资产总量";
+"TotalAmountOfDistribution" = "发行总量";
+"DistributionCost" = "预估交易费";
+"ConfirmationOfDistribution" = "确认发行";
+"DistributionSuccess" = "发行成功";
+"DistributionFailure" = "发行失败";
+"DistributionTimeout" = "发行超时";
+"DistributionPrompt" = "请复制下方哈希地址，前往BUMO浏览器中查询发行结果";
+"TokenDecimalDigits" = "资产小数位数";
+"ATPVersion" = "ATP版本";
+"TokenDescription" = "资产描述";
+"IssuerAddress" = "发行方地址";
+"Hash" = "哈希";
+
+

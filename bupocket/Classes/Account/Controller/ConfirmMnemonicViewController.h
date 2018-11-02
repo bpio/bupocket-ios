@@ -12,6 +12,8 @@ NS_ASSUME_NONNULL_BEGIN
 
 @interface ConfirmMnemonicViewController : BaseViewController
 
+@property (nonatomic, strong) NSArray * mnemonicArray;
+
 @end
 
 NS_ASSUME_NONNULL_END

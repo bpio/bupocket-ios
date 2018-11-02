@@ -10,11 +10,13 @@
 
 @interface PurseCipherAlertView()<UITextFieldDelegate>
 
+@property (nonatomic, strong) UITextField * PWTextField;
+
 @end
 
 @implementation PurseCipherAlertView
 
-- (instancetype)initWithConfrimBolck:(nonnull void (^)(void))confrimBlock cancelBlock:(nonnull void (^)(void))cancelBlock
+- (instancetype)initWithConfrimBolck:(void (^)(NSString * password))confrimBlock cancelBlock:(void (^)(void))cancelBlock
 {
     self = [super init];
     if (self) {
@@ -33,7 +35,7 @@
     [self addSubview:closeBtn];
     [closeBtn mas_makeConstraints:^(MASConstraintMaker *make) {
         make.top.right.equalTo(self);
-        make.size.mas_equalTo(CGSizeMake(ScreenScale(45), 45));
+        make.size.mas_equalTo(CGSizeMake(MAIN_HEIGHT, MAIN_HEIGHT));
     }];
     
     UILabel * title = [UILabel new];
@@ -48,15 +50,15 @@
     
     UILabel * prompt = [UILabel new];
     prompt.font = FONT(14);
-    prompt.textColor = COLOR(@"666666");
+    prompt.textColor = COLOR_6;
     prompt.text = Localized(@"PurseCipherPrompt");
     prompt.numberOfLines = 0;
     prompt.textAlignment = NSTextAlignmentCenter;
     [self addSubview:prompt];
     [prompt mas_makeConstraints:^(MASConstraintMaker *make) {
-        make.top.equalTo(title.mas_bottom).offset(ScreenScale(10));
-        make.left.equalTo(self).offset(ScreenScale(25));
-        make.right.equalTo(self).offset(-ScreenScale(25));
+        make.top.equalTo(title.mas_bottom).offset(Margin_10);
+        make.left.equalTo(self).offset(Margin_25);
+        make.right.equalTo(self).offset(-Margin_25);
     }];
     
     UITextField * PWTextField = [[UITextField alloc] init];
@@ -66,17 +68,19 @@
     PWTextField.placeholder = Localized(@"PWPlaceholder");
     PWTextField.layer.cornerRadius = ScreenScale(3);
     PWTextField.layer.borderColor = COLOR(@"E3E3E3").CGColor;
-    PWTextField.layer.borderWidth = ScreenScale(0.5);
-    PWTextField.leftView = [[UIView alloc] initWithFrame:CGRectMake(0, 0, ScreenScale(10), ScreenScale(50))];
+    PWTextField.layer.borderWidth = LINE_WIDTH;
+    PWTextField.secureTextEntry = YES;
+    PWTextField.leftView = [[UIView alloc] initWithFrame:CGRectMake(0, 0, Margin_10, ScreenScale(50))];
     PWTextField.leftViewMode = UITextFieldViewModeAlways;
-    PWTextField.rightView = [[UIView alloc] initWithFrame:CGRectMake(0, 0, ScreenScale(10), ScreenScale(50))];
+    PWTextField.rightView = [[UIView alloc] initWithFrame:CGRectMake(0, 0, Margin_10, ScreenScale(50))];
     PWTextField.rightViewMode = UITextFieldViewModeAlways;
     [self addSubview:PWTextField];
     [PWTextField mas_makeConstraints:^(MASConstraintMaker *make) {
-        make.top.equalTo(prompt.mas_bottom).offset(ScreenScale(25));
+        make.top.equalTo(prompt.mas_bottom).offset(Margin_25);
         make.left.right.equalTo(prompt);
         make.height.mas_equalTo(ScreenScale(50));
     }];
+    self.PWTextField = PWTextField;
     
     UIButton * sureBtn = [UIButton createButtonWithTitle:Localized(@"Confirm") TextFont:18 TextColor:[UIColor whiteColor] Target:self Selector:@selector(sureBtnClick)];
     [self addSubview:sureBtn];
@@ -101,8 +105,12 @@
 }
 - (void)sureBtnClick {
     [self hideView];
+    if ([RegexPatternTool validatePassword:self.PWTextField.text] == NO) {
+        [MBProgressHUD wb_showInfo:@"密码长度为8~20个字符，且内容仅限字母和数字"];
+        return;
+    }
     if (_sureBlock) {
-        _sureBlock();
+        _sureBlock(self.PWTextField.text);
     }
 }
 /*

@@ -11,6 +11,7 @@
 #import "TransferDetailsAlertView.h"
 #import "TransferResultsViewController.h"
 #import "RequestTimeoutViewController.h"
+#import "HMScannerController.h"
 
 @interface TransferAccountsViewController ()
 
@@ -20,9 +21,19 @@
 @property (nonatomic, strong) UITextField * transactionCosts;
 @property (nonatomic, strong) UIButton * next;
 
+@property (nonatomic, strong) NSMutableArray * transferInfoArray;
+
 @end
 
 @implementation TransferAccountsViewController
+
+- (NSMutableArray *)transferInfoArray
+{
+    if (!_transferInfoArray) {
+        _transferInfoArray = [NSMutableArray array];
+    }
+    return _transferInfoArray;
+}
 
 - (void)viewDidLoad {
     [super viewDidLoad];
@@ -49,12 +60,13 @@
     self.next.layer.masksToBounds = YES;
     self.next.clipsToBounds = YES;
     self.next.layer.cornerRadius = ScreenScale(4);
-    self.next.backgroundColor = MAIN_COLOR;
     [self.view addSubview:self.next];
+    self.next.enabled = NO;
+    self.next.backgroundColor = COLOR(@"9AD9FF");
     [self.next mas_makeConstraints:^(MASConstraintMaker *make) {
-        make.bottom.equalTo(self.view.mas_bottom).offset(-ScreenScale(30) - SafeAreaBottomH);
-        make.left.equalTo(self.view.mas_left).offset(ScreenScale(12));
-        make.right.equalTo(self.view.mas_right).offset(-ScreenScale(12));
+        make.bottom.equalTo(self.view.mas_bottom).offset(-Margin_30 - SafeAreaBottomH);
+        make.left.equalTo(self.view.mas_left).offset(Margin_12);
+        make.right.equalTo(self.view.mas_right).offset(-Margin_12);
         make.height.mas_equalTo(MAIN_HEIGHT);
     }];
 }
@@ -64,16 +76,23 @@
 }
 - (void)nextAction
 {
-    TransferDetailsAlertView * transferDetailsAlertView = [[TransferDetailsAlertView alloc] initWithConfrimBolck:^{
-        HSSLog(@"确认转账");
+    CGFloat cost = [self.transactionCosts.text floatValue];
+    if (cost < TransactionCost_MIN) {
+        [MBProgressHUD wb_showWarning:@"最多支付交易费用不可少于0.01 BU"];
+        return;
+    } else if (cost > TransactionCost_MAX) {
+        [MBProgressHUD wb_showWarning:@"最多支付交易费用不可超过10 BU"];
+        return;
+    }
+    self.transferInfoArray = [NSMutableArray arrayWithObjects:self.amountOfTransfer.text, [NSString stringAppendingBUWithStr:self.mostOnce.text], [NSString stringAppendingBUWithStr:self.transactionCosts.text], nil];
+    if ([_remarks hasText]) {
+        [self.transferInfoArray addObject:_remarks.text];
+    }
+    TransferDetailsAlertView * transferDetailsAlertView = [[TransferDetailsAlertView alloc] initWithTransferInfoArray:self.transferInfoArray confrimBolck:^{
         dispatch_after(dispatch_time(DISPATCH_TIME_NOW, (int64_t)(0.5 * NSEC_PER_SEC)), dispatch_get_main_queue(), ^{
-            PurseCipherAlertView * alertView = [[PurseCipherAlertView alloc] initWithConfrimBolck:^{
-                // 交易成功、失败
-                TransferResultsViewController * VC = [[TransferResultsViewController alloc] init];
-                [self.navigationController pushViewController:VC animated:YES];
-                // 请求超时
-//                RequestTimeoutViewController * VC = [[RequestTimeoutViewController alloc] init];
-//                [self.navigationController pushViewController:VC animated:YES];
+            PurseCipherAlertView * alertView = [[PurseCipherAlertView alloc] initWithConfrimBolck:^(NSString * _Nonnull password) {
+                HSSLog(@"确认转账");
+                [self getDataWithPassword:password];
             } cancelBlock:^{
                 
             }];
@@ -84,12 +103,36 @@
     }];
     [transferDetailsAlertView showInWindowWithMode:CustomAnimationModeShare inView:nil bgAlpha:0.2 needEffectView:NO];
 }
+
+// 转账数据解析
+- (void)getDataWithPassword:(NSString *)password
+{
+    [HTTPManager setTransferDataWithPassword:password destAddress:_amountOfTransfer.text BUAmount:_mostOnce.text feeLimit:_transactionCosts.text notes:_remarks.text success:^(TransactionResultModel *resultModel) {
+        [self.transferInfoArray addObject:[DateTool getDateStringWithTimeStr:[NSString stringWithFormat:@"%lld", resultModel.transactionTime]]];
+        // 交易成功、失败
+        TransferResultsViewController * VC = [[TransferResultsViewController alloc] init];
+        if (resultModel.errorCode == 0) { // 成功
+            VC.state = YES;
+        } else {
+            // 直接失败
+            VC.state = NO;
+            [MBProgressHUD wb_showError:resultModel.errorDesc];
+        }
+        VC.transferInfoArray = self.transferInfoArray;
+        [self.navigationController pushViewController:VC animated:YES];
+    } failure:^(TransactionResultModel *resultModel) {
+        // 请求超时
+        RequestTimeoutViewController * VC = [[RequestTimeoutViewController alloc] init];
+        [self.navigationController pushViewController:VC animated:YES];
+    }];
+}
+
 - (UIView *)setViewWithTitle:(NSString *)title placeholder:(NSString *)placeholder index:(NSInteger)index
 {
     UIView * viewBg = [[UIView alloc] init];
     UILabel * header = [[UILabel alloc] init];
     header.font = FONT(16);
-    header.textColor = COLOR(@"999999");
+    header.textColor = COLOR_9;
     [viewBg addSubview:header];
     NSMutableAttributedString * attr = [[NSMutableAttributedString alloc] initWithString:[NSString stringWithFormat:@"| %@", title]];
     //        NSMutableDictionary * dic = [NSMutableDictionary dictionary];
@@ -101,9 +144,9 @@
     [attr addAttribute:NSFontAttributeName value:FONT_Bold(18) range:NSMakeRange(0, 1)];
     header.attributedText = attr;
     [header mas_makeConstraints:^(MASConstraintMaker *make) {
-        make.top.equalTo(viewBg.mas_top).offset(ScreenScale(33));
-        make.left.equalTo(viewBg.mas_left).offset(ScreenScale(22));
-        make.right.equalTo(viewBg.mas_right).offset(-ScreenScale(22));
+        make.top.equalTo(viewBg.mas_top).offset(Margin_30);
+        make.left.equalTo(viewBg.mas_left).offset(Margin_15);
+        make.right.equalTo(viewBg.mas_right).offset(-Margin_15);
         //        make.height.mas_equalTo(MAIN_HEIGHT);
     }];
     UITextField * textField = [[UITextField alloc] init];
@@ -116,9 +159,9 @@
     [textField addTarget:self action:@selector(textChange:) forControlEvents:UIControlEventEditingChanged];
     [textField mas_makeConstraints:^(MASConstraintMaker *make) {
         make.top.equalTo(header.mas_bottom).offset(ScreenScale(5));
-        make.left.equalTo(viewBg.mas_left).offset(ScreenScale(30));
-        make.right.equalTo(viewBg.mas_right).offset(-ScreenScale(30));
-        make.height.mas_equalTo(ScreenScale(39));
+        make.left.equalTo(viewBg.mas_left).offset(Margin_15);
+        make.right.equalTo(viewBg.mas_right).offset(-Margin_15);
+        make.height.mas_equalTo(Margin_40);
     }];
     UIView * lineView = [[UIView alloc] init];
     lineView.backgroundColor = COLOR(@"E3E3E3");
@@ -126,25 +169,29 @@
     [lineView mas_makeConstraints:^(MASConstraintMaker *make) {
         make.top.equalTo(textField.mas_bottom);
         make.left.right.equalTo(header);
-        make.height.mas_equalTo(ScreenScale(0.5));
+        make.height.mas_equalTo(LINE_WIDTH);
     }];
     if (index == 0) {
         self.amountOfTransfer = textField;
         UIButton * scan = [UIButton createButtonWithNormalImage:@"TransferAccounts_scan" SelectedImage:@"TransferAccounts_scan" Target:self Selector:@selector(scanAction)];
-        scan.bounds = CGRectMake(0, 0, ScreenScale(20), ScreenScale(39));
+        scan.contentHorizontalAlignment = UIControlContentHorizontalAlignmentRight;
+        scan.bounds = CGRectMake(0, 0, Margin_30, Margin_40);
         textField.rightViewMode = UITextFieldViewModeAlways;
         textField.rightView = scan;
         
     } else if (index == 1) {
         UILabel * availableBalance = [[UILabel alloc] init];
-        availableBalance.textColor = MAIN_COLOR;
-        availableBalance.font = FONT(12);
+//        availableBalance.textColor = MAIN_COLOR;
+//        availableBalance.font = FONT(12);
+        availableBalance.numberOfLines = 0;
         [header addSubview:availableBalance];
-        NSMutableAttributedString * balanceAttr = [[NSMutableAttributedString alloc] initWithString:@"可用余额1000 BU"];
-        [balanceAttr addAttribute:NSForegroundColorAttributeName value:COLOR(@"666666") range:NSMakeRange(0, 4)];
-        availableBalance.attributedText = balanceAttr;
+//        NSMutableAttributedString * balanceAttr = [[NSMutableAttributedString alloc] initWithString:@"可用余额\n1000 BU"];
+//        [balanceAttr addAttribute:NSForegroundColorAttributeName value:COLOR_6 range:NSMakeRange(0, 4)];
+//        availableBalance.attributedText = balanceAttr;
+        availableBalance.attributedText = [Encapsulation attrWithString:[NSString stringWithFormat:@"%@\n%@ BU", Localized(@"AvailableBalance"), self.listModel.amount] preFont:FONT(12) preColor:COLOR_6 index:4 sufFont:FONT(12) sufColor:MAIN_COLOR lineSpacing:10];
+        availableBalance.textAlignment = NSTextAlignmentRight;
         [availableBalance mas_makeConstraints:^(MASConstraintMaker *make) {
-            make.right.centerY.equalTo(header);
+            make.right.top.equalTo(header);
         }];
         self.mostOnce = textField;
     } else if (index == 2) {
@@ -167,7 +214,11 @@
 }
 - (void)scanAction
 {
-    
+    HMScannerController *scanner = [HMScannerController scannerWithCardName:nil avatar:nil completion:^(NSString *stringValue) {
+        self.amountOfTransfer.text = stringValue;
+    }];
+    [scanner setTitleColor:[UIColor whiteColor] tintColor:MAIN_COLOR];
+    [self showDetailViewController:scanner sender:nil];
 }
 /*
 #pragma mark - Navigation

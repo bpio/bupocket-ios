@@ -7,8 +7,9 @@
 //
 
 #import "AppDelegate.h"
-#import "IdentityViewController.h"
 #import "GuideViewController.h"
+#import "IdentityViewController.h"
+#import "BackUpPurseViewController.h"
 
 @interface AppDelegate ()
 
@@ -39,11 +40,15 @@
     }
     NSUserDefaults * defaults = [NSUserDefaults standardUserDefaults];
 //    if ([defaults boolForKey:NotFirst]) {
-//        if (CurrentUserToken == nil) {
-//            self.window.rootViewController = [[NavigationViewController alloc] initWithRootViewController:[[IdentityViewController alloc] init]];
-//        } else {
-            self.window.rootViewController = [[TabBarViewController alloc] init];
-//        }
+        if ([defaults boolForKey:ifCreated]) {
+            if ([defaults boolForKey:ifBackup]) {
+                self.window.rootViewController = [[TabBarViewController alloc] init];
+            } else {
+                self.window.rootViewController = [[NavigationViewController alloc] initWithRootViewController:[[BackUpPurseViewController alloc] init]];
+            }
+        } else {
+            self.window.rootViewController = [[NavigationViewController alloc] initWithRootViewController:[[IdentityViewController alloc] init]];
+        }
 //    } else {
 //        self.window.rootViewController = [[GuideViewController alloc] init];
 //    }

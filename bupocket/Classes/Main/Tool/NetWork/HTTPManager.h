@@ -7,10 +7,16 @@
 //
 
 #import <Foundation/Foundation.h>
+#import "RegisteredModel.h"
+#import "TransactionResultModel.h"
+//#import "DistributionModel.h"
 
 @interface HTTPManager : NSObject
 
 + (HTTPManager *)shareManager;
+
++ (int64_t)getAccountBalance;
++ (int64_t) getBlockFees;
 
 // Assets
 + (void)getAssetsDataWithAddress:(NSString *)address
@@ -29,5 +35,40 @@
 + (void)getOrderDetailsDataWithHash:(NSString *)hash
                             success:(void (^)(id responseObject))success
                             failure:(void (^)(NSError *error))failure;
+
+
+// 身份账号数据
++ (void)setAccountDataWithRandom:(NSData *)random
+                        password:(NSString *)password
+                    identityName:(NSString *)identityName
+                         success:(void (^)(id responseObject))success
+                         failure:(void (^)(NSError *error))failure;
+// 转账
++ (void)setTransferDataWithPassword:(NSString *)password
+                        destAddress:(NSString *)destAddress
+                           BUAmount:(NSString *)BUAmount
+                           feeLimit:(NSString *)feeLimit
+                              notes:(NSString *)notes
+                            success:(void (^)(TransactionResultModel * resultModel))success
+                            failure:(void (^)(TransactionResultModel * resultModel))failure;
+
+// 登记/发行资产
++ (void)getRegisteredORDistributionDataWithAssetCode:(NSString *)assetCode
+                                        issueAddress:(NSString *)issueAddress
+                                             success:(void (^)(id responseObject))success
+                                             failure:(void (^)(NSError *error))failure;
+
+// 登记
++ (void)getRegisteredDataWithPassword:(NSString *)password
+                      registeredModel:(RegisteredModel *)registeredModel
+                              success:(void (^)(TransactionResultModel * resultModel))success
+                              failure:(void (^)(TransactionResultModel * resultModel))failure;
+// 发行
++ (void)getIssueAssetDataWithPassword:(NSString *)password
+                            assetCode:(NSString *)assetCode
+                          assetAmount:(NSString *)assetAmount
+                             decimals:(NSInteger)decimals
+                              success:(void (^)(TransactionResultModel * resultModel))success
+                              failure:(void (^)(TransactionResultModel * resultModel))failure;
 
 @end

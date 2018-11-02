@@ -1,6 +1,5 @@
 # Uncomment the next line to define a global platform for your project
 # platform :ios, '9.0'
-
 target 'bupocket' do
   # Uncomment the next line if you're using Swift or would like to use dynamic frameworks
   # use_frameworks!
@@ -24,12 +23,18 @@ pod 'SDWebImage'
 pod 'MJRefresh'
 pod 'MBProgressHUD'
 pod 'MJRefresh'
-pod 'YYKit'
+#pod 'YYKit'
 pod 'IQKeyboardManager'
+#pod 'HMQRCodeScanner'
 pod 'FMDB'
 pod 'XHToast'
+pod 'SocketRocket'
+
 
 pod 'JSONModel'
-pod 'QCloudCOSXML'
+#pod 'QCloudCOSXML'
+
+use_frameworks!
+pod 'Socket.IO-Client-Swift'
 
 end

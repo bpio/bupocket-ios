@@ -12,6 +12,7 @@
 
 static NSString * const DetailListCellID = @"DetailListCellID";
 static NSString * const OrderDetailsCellID = @"OrderDetailsCellID";
+static NSString * const DistributionDetailCellID = @"DistributionDetailCellID";
 
 + (instancetype)cellWithTableView:(UITableView *)tableView identifier:(NSString *)identifier
 {
@@ -25,13 +26,13 @@ static NSString * const OrderDetailsCellID = @"OrderDetailsCellID";
 - (instancetype)initWithStyle:(UITableViewCellStyle)style reuseIdentifier:(NSString *)reuseIdentifier
 {
     if (self = [super initWithStyle:style reuseIdentifier:reuseIdentifier]) {
-        if ([reuseIdentifier isEqualToString:DetailListCellID]) {
-            [self.contentView addSubview:self.title];
-            [self.contentView addSubview:self.infoTitle];
-        } else {
+        if ([reuseIdentifier isEqualToString:OrderDetailsCellID] ) {
             [self.contentView addSubview:self.detailBg];
             [self.detailBg addSubview:self.title];
             [self.detailBg addSubview:self.infoTitle];
+        } else {
+            [self.contentView addSubview:self.title];
+            [self.contentView addSubview:self.infoTitle];
         }
     }
     return self;
@@ -39,33 +40,43 @@ static NSString * const OrderDetailsCellID = @"OrderDetailsCellID";
 - (void)layoutSubviews
 {
     [super layoutSubviews];
-    if ([self.reuseIdentifier isEqualToString:DetailListCellID]) {
-        [self.title mas_makeConstraints:^(MASConstraintMaker *make) {
-            make.left.equalTo(self.contentView.mas_left).offset(ScreenScale(10));
-            make.top.equalTo(self.contentView.mas_top).offset(ScreenScale(15));
-        }];
-        _infoTitle.textAlignment = NSTextAlignmentRight;
-        _infoTitle.preferredMaxLayoutWidth = DEVICE_WIDTH - ScreenScale(180);
-        [self.infoTitle mas_makeConstraints:^(MASConstraintMaker *make) {
-            make.right.equalTo(self.contentView.mas_right).offset(-ScreenScale(10));
-            make.top.equalTo(self.title);
-        }];
-    } else {
+    if ([self.reuseIdentifier isEqualToString:OrderDetailsCellID]) {
         [self.detailBg mas_makeConstraints:^(MASConstraintMaker *make) {
-            make.left.equalTo(self.contentView.mas_left).offset(ScreenScale(10));
-            make.right.equalTo(self.contentView.mas_right).offset(-ScreenScale(10));
+            make.left.equalTo(self.contentView.mas_left).offset(Margin_10);
+            make.right.equalTo(self.contentView.mas_right).offset(-Margin_10);
             make.top.equalTo(self.contentView);
         }];
         [self.title mas_makeConstraints:^(MASConstraintMaker *make) {
-            make.left.equalTo(self.detailBg.mas_left).offset(ScreenScale(10));
+            make.left.equalTo(self.detailBg.mas_left).offset(Margin_10);
             make.top.equalTo(self.detailBg.mas_top).offset(ScreenScale(15));
         }];
         [self.infoTitle mas_makeConstraints:^(MASConstraintMaker *make) {
             make.left.equalTo(self.title);
-            make.right.equalTo(self.detailBg.mas_right).offset(-ScreenScale(10));
-            make.top.equalTo(self.title.mas_bottom).offset(ScreenScale(10));
-            make.bottom.equalTo(self.detailBg.mas_bottom).offset(-ScreenScale(10));
+            make.right.equalTo(self.detailBg.mas_right).offset(-Margin_10);
+            make.top.equalTo(self.title.mas_bottom).offset(Margin_10);
+            make.bottom.equalTo(self.detailBg.mas_bottom).offset(-Margin_10);
         }];
+    } else {
+        [self.title mas_makeConstraints:^(MASConstraintMaker *make) {
+            make.left.equalTo(self.contentView.mas_left).offset(Margin_10);
+            make.top.equalTo(self.contentView.mas_top).offset(ScreenScale(15));
+        }];
+        [self.infoTitle mas_makeConstraints:^(MASConstraintMaker *make) {
+            make.right.equalTo(self.contentView.mas_right).offset(-Margin_10);
+        }];
+        if ([self.reuseIdentifier isEqualToString:DetailListCellID]) {
+            self.infoTitle.textAlignment = NSTextAlignmentRight;
+            self.infoTitle.preferredMaxLayoutWidth = DEVICE_WIDTH - ScreenScale(180);
+            [self.infoTitle mas_makeConstraints:^(MASConstraintMaker *make) {
+                make.top.equalTo(self.title);
+            }];
+        } else {
+            
+            [self.infoTitle mas_makeConstraints:^(MASConstraintMaker *make) {
+                make.top.equalTo(self.title.mas_bottom).offset(Margin_10);
+                make.left.equalTo(self.title);
+            }];
+        }
     }
 }
 - (UIView *)detailBg
@@ -81,7 +92,9 @@ static NSString * const OrderDetailsCellID = @"OrderDetailsCellID";
     if (!_title) {
         _title = [[UILabel alloc] init];
         _title.font = FONT(15);
-        _title.textColor = COLOR(@"999999");
+        _title.textColor = COLOR_9;
+        _title.numberOfLines = 0;
+//        _title.preferredMaxLayoutWidth = DEVICE_WIDTH - Margin_40;
     }
     return _title;
 }
@@ -90,7 +103,7 @@ static NSString * const OrderDetailsCellID = @"OrderDetailsCellID";
     if (!_infoTitle) {
         _infoTitle = [[UILabel alloc] init];
         _infoTitle.font = FONT(15);
-        _infoTitle.textColor = COLOR(@"666666");
+        _infoTitle.textColor = COLOR_6;
         _infoTitle.numberOfLines = 0;
     }
     return _infoTitle;

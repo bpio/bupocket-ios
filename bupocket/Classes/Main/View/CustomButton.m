@@ -39,13 +39,13 @@
             break;
     case VerticalNormal:
             self.titleLabel.textAlignment = NSTextAlignmentCenter;
-            self.imageView.frame = CGRectMake((buttonW - imageW) / 2, ScreenScale(10), imageW, imageH);
-            self.titleLabel.frame = CGRectMake(0, imageH + ScreenScale(10), buttonW, buttonH - imageH - ScreenScale(10));
+            self.imageView.frame = CGRectMake((buttonW - imageW) / 2, Margin_10, imageW, imageH);
+            self.titleLabel.frame = CGRectMake(0, imageH + Margin_10, buttonW, buttonH - imageH - Margin_10);
             break;
     case VerticalInverted:
             self.titleLabel.textAlignment = NSTextAlignmentCenter;
-            self.titleLabel.frame = CGRectMake(0, ScreenScale(10), buttonW, titleH);
-            self.imageView.frame = CGRectMake((buttonW - imageW) / 2, titleH + ScreenScale(10), imageW, buttonH - titleH - ScreenScale(10));
+            self.titleLabel.frame = CGRectMake(0, Margin_10, buttonW, titleH);
+            self.imageView.frame = CGRectMake((buttonW - imageW) / 2, titleH + Margin_10, imageW, buttonH - titleH - Margin_10);
             break;
     }
 }

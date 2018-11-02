@@ -14,6 +14,8 @@ NS_ASSUME_NONNULL_BEGIN
 
 - (void)changeLanguage;
 
+- (void)popToRootVC;
+
 @end
 
 NS_ASSUME_NONNULL_END

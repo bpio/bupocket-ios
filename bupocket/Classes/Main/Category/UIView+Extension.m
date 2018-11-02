@@ -97,6 +97,7 @@
     [self.layer insertSublayer:borderLayer atIndex:0];
     [self.layer setMask:maskLayer];
 }
+
 // 通过CAShapeLayer 方式绘制虚线
 /**
  ** lineView:      需要绘制成虚线的view
@@ -105,20 +106,20 @@
  ** lineColor:      虚线的颜色
  **/
 
-- (void)drawDashLineLength:(int)lineLength lineSpacing:(int)lineSpacing lineColor:(UIColor *)lineColor
-
+//- (void)drawDashLineLength:(int)lineLength lineSpacing:(int)lineSpacing lineColor:(UIColor *)lineColor
+- (void)drawDashLine
 {
     CAShapeLayer *shapeLayer = [CAShapeLayer layer];
     [shapeLayer setBounds:self.bounds];
     [shapeLayer setPosition:CGPointMake(CGRectGetWidth(self.frame) / 2, CGRectGetHeight(self.frame))];
     [shapeLayer setFillColor:[UIColor clearColor].CGColor];
     //  设置虚线颜色
-    [shapeLayer setStrokeColor:lineColor.CGColor];
+    [shapeLayer setStrokeColor:COLOR(@"D4D4D4").CGColor];
     //  设置虚线宽度
     [shapeLayer setLineWidth:CGRectGetHeight(self.frame)];
     [shapeLayer setLineJoin:kCALineJoinRound];
     //  设置线宽，线间距
-    [shapeLayer setLineDashPattern:[NSArray arrayWithObjects:[NSNumber numberWithInt:lineLength], [NSNumber numberWithInt:lineSpacing], nil]];
+    [shapeLayer setLineDashPattern:[NSArray arrayWithObjects:[NSNumber numberWithInt:3], [NSNumber numberWithInt:2], nil]];
     //  设置路径
     CGMutablePathRef path = CGPathCreateMutable();
     CGPathMoveToPoint(path, NULL, 0, 0);
@@ -127,6 +128,36 @@
     CGPathRelease(path);
     //  把绘制好的虚线添加上来
     [self.layer addSublayer:shapeLayer];
+}
+// UIView 分开设置边框
+- (void)setViewBorder:(UIView *)view color:(UIColor *)color border:(float)border type:(UIViewBorderLineType)borderLineType
+{
+    CALayer *lineLayer = [CALayer layer];
+    lineLayer.backgroundColor = color.CGColor;
+    switch (borderLineType) {
+        case UIViewBorderLineTypeTop:{
+            lineLayer.frame = CGRectMake(0, 0, view.frame.size.width, border);
+            break;
+        }
+        case UIViewBorderLineTypeRight:{
+            lineLayer.frame = CGRectMake(view.frame.size.width, 0, border, view.frame.size.height);
+            break;
+        }
+        case UIViewBorderLineTypeBottom:{
+            lineLayer.frame = CGRectMake(0, view.frame.size.height, view.frame.size.width,border);
+            break;
+        }
+        case UIViewBorderLineTypeLeft:{
+            lineLayer.frame = CGRectMake(0, 0, border, view.frame.size.height);
+            break;
+        }
+            
+        default:{
+            lineLayer.frame = CGRectMake(0, 0, view.frame.size.width-42, border);
+            break;
+        }
+    }
+    [view.layer addSublayer:lineLayer];
 }
 
 @end

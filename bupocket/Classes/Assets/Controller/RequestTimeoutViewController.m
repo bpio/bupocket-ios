@@ -25,7 +25,7 @@
     requestTimeout.layoutMode = VerticalNormal;
     [requestTimeout setTitle:Localized(@"RequestTimeout") forState:UIControlStateNormal];
     // TransferFailure
-    [requestTimeout setTitleColor:COLOR(@"666666") forState:UIControlStateNormal];
+    [requestTimeout setTitleColor:COLOR_6 forState:UIControlStateNormal];
     requestTimeout.titleLabel.font = FONT(16);
     [requestTimeout setImage:[UIImage imageNamed:@"RequestTimeout"] forState:UIControlStateNormal];
     [self.view addSubview:requestTimeout];
@@ -41,8 +41,8 @@
     [self.view addSubview:gotIt];
     [gotIt mas_makeConstraints:^(MASConstraintMaker *make) {
         make.top.equalTo(requestTimeout.mas_bottom).offset(ScreenScale(15));
-        make.left.equalTo(self.view.mas_left).offset(ScreenScale(30));
-        make.right.equalTo(self.view.mas_right).offset(-ScreenScale(30));
+        make.left.equalTo(self.view.mas_left).offset(Margin_30);
+        make.right.equalTo(self.view.mas_right).offset(-Margin_30);
         make.height.mas_equalTo(MAIN_HEIGHT);
     }];
 }

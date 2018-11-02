@@ -12,6 +12,8 @@ NS_ASSUME_NONNULL_BEGIN
 
 @interface BackupMnemonicsViewController : BaseViewController
 
+@property (nonatomic, copy) NSArray * mnemonicArray;
+
 @end
 
 NS_ASSUME_NONNULL_END
