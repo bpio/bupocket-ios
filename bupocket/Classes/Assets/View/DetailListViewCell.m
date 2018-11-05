@@ -66,7 +66,7 @@ static NSString * const DistributionDetailCellID = @"DistributionDetailCellID";
         }];
         if ([self.reuseIdentifier isEqualToString:DetailListCellID]) {
             self.infoTitle.textAlignment = NSTextAlignmentRight;
-            self.infoTitle.preferredMaxLayoutWidth = DEVICE_WIDTH - ScreenScale(180);
+            self.infoTitle.preferredMaxLayoutWidth = Info_Width_Max;
             [self.infoTitle mas_makeConstraints:^(MASConstraintMaker *make) {
                 make.top.equalTo(self.title);
             }];

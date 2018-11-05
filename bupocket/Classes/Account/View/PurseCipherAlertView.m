@@ -11,17 +11,19 @@
 @interface PurseCipherAlertView()<UITextFieldDelegate>
 
 @property (nonatomic, strong) UITextField * PWTextField;
+@property (nonatomic, assign) PurseCipherType purseCipherType;
 
 @end
 
 @implementation PurseCipherAlertView
 
-- (instancetype)initWithConfrimBolck:(void (^)(NSString * password))confrimBlock cancelBlock:(void (^)(void))cancelBlock
+- (instancetype)initWithType:(PurseCipherType)type confrimBolck:(void (^)(NSString * _Nonnull))confrimBlock cancelBlock:(void (^)(void))cancelBlock
 {
     self = [super init];
     if (self) {
         _sureBlock = confrimBlock;
         _cancleBlock = cancelBlock;
+        _purseCipherType = type;
         [self setupView];
     }
     return self;
@@ -49,36 +51,41 @@
     }];
     
     UILabel * prompt = [UILabel new];
-    prompt.font = FONT(14);
-    prompt.textColor = COLOR_6;
-    prompt.text = Localized(@"PurseCipherPrompt");
+    prompt.font = TITLE_FONT;
+    if (_purseCipherType == PurseCipherWarnType) {
+        prompt.textColor = WARNING_COLOR;
+        prompt.text = Localized(@"PurseCipherWarning");
+    } else {
+        prompt.textColor = COLOR_6;
+        prompt.text = Localized(@"PurseCipherPrompt");
+    }
     prompt.numberOfLines = 0;
     prompt.textAlignment = NSTextAlignmentCenter;
     [self addSubview:prompt];
     [prompt mas_makeConstraints:^(MASConstraintMaker *make) {
         make.top.equalTo(title.mas_bottom).offset(Margin_10);
-        make.left.equalTo(self).offset(Margin_25);
-        make.right.equalTo(self).offset(-Margin_25);
+        make.left.equalTo(self).offset(Margin_20);
+        make.right.equalTo(self).offset(-Margin_20);
     }];
     
     UITextField * PWTextField = [[UITextField alloc] init];
     PWTextField.delegate = self;
     PWTextField.textColor = TITLE_COLOR;
-    PWTextField.font = FONT(14);
+    PWTextField.font = TITLE_FONT;
     PWTextField.placeholder = Localized(@"PWPlaceholder");
     PWTextField.layer.cornerRadius = ScreenScale(3);
     PWTextField.layer.borderColor = COLOR(@"E3E3E3").CGColor;
     PWTextField.layer.borderWidth = LINE_WIDTH;
     PWTextField.secureTextEntry = YES;
-    PWTextField.leftView = [[UIView alloc] initWithFrame:CGRectMake(0, 0, Margin_10, ScreenScale(50))];
+    PWTextField.leftView = [[UIView alloc] initWithFrame:CGRectMake(0, 0, Margin_10, MAIN_HEIGHT)];
     PWTextField.leftViewMode = UITextFieldViewModeAlways;
-    PWTextField.rightView = [[UIView alloc] initWithFrame:CGRectMake(0, 0, Margin_10, ScreenScale(50))];
+    PWTextField.rightView = [[UIView alloc] initWithFrame:CGRectMake(0, 0, Margin_10, MAIN_HEIGHT)];
     PWTextField.rightViewMode = UITextFieldViewModeAlways;
     [self addSubview:PWTextField];
     [PWTextField mas_makeConstraints:^(MASConstraintMaker *make) {
         make.top.equalTo(prompt.mas_bottom).offset(Margin_25);
         make.left.right.equalTo(prompt);
-        make.height.mas_equalTo(ScreenScale(50));
+        make.height.mas_equalTo(MAIN_HEIGHT);
     }];
     self.PWTextField = PWTextField;
     
@@ -88,13 +95,13 @@
     sureBtn.layer.cornerRadius = ScreenScale(4);
     sureBtn.backgroundColor = MAIN_COLOR;
     [sureBtn mas_makeConstraints:^(MASConstraintMaker *make) {
-        make.bottom.equalTo(self.mas_bottom).offset(-ScreenScale(27));
+        make.bottom.equalTo(self.mas_bottom).offset(-Margin_25);
         make.left.right.equalTo(prompt);
         make.height.mas_equalTo(MAIN_HEIGHT);
     }];
     
     CGFloat height = [Encapsulation rectWithText:Localized(@"PurseCipherPrompt") fontSize:15 textWidth:DEVICE_WIDTH - ScreenScale(110)].size.height + ScreenScale(255);
-    self.bounds = CGRectMake(0, 0, DEVICE_WIDTH - ScreenScale(60), height);
+    self.bounds = CGRectMake(0, 0, DEVICE_WIDTH - Margin_60, height);
 }
 
 - (void)cancleBtnClick {
@@ -106,7 +113,7 @@
 - (void)sureBtnClick {
     [self hideView];
     if ([RegexPatternTool validatePassword:self.PWTextField.text] == NO) {
-        [MBProgressHUD wb_showInfo:@"密码长度为8~20个字符，且内容仅限字母和数字"];
+        [MBProgressHUD showInfoMessage:Localized(@"CryptographicFormat")];
         return;
     }
     if (_sureBlock) {

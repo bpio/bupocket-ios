@@ -8,6 +8,7 @@
 
 #import "AddAssetsViewController.h"
 #import "AddAssetsViewCell.h"
+#import "SearchAssetsModel.h"
 
 @interface AddAssetsViewController ()<UISearchControllerDelegate, UISearchResultsUpdating, UISearchBarDelegate, UITableViewDelegate, UITableViewDataSource>
 
@@ -16,6 +17,8 @@
 @property (nonatomic, strong) UISearchController * searchController;
 // 搜索结果数组
 @property (nonatomic, strong) NSMutableArray *results;
+@property (nonatomic, strong) UIView * noData;
+@property (nonatomic, assign) NSInteger pageindex;
 //@property (nonatomic, strong) UIButton * emptyBtn;
 
 @end
@@ -41,10 +44,59 @@ static NSString * const SearchID = @"SearchID";
     [super viewDidLoad];
     self.navigationItem.title = Localized(@"AddAssets");
     //    self.navigationItem.titleView = self.searchBar;
-    self.listArray = [NSMutableArray array];
-    [self.listArray addObjectsFromArray:@[@"a", @"ab", @"bc"]];
     [self setupView];
+    self.pageindex = 1;
+//    [self setupRefresh];
     // Do any additional setup after loading the view.
+}
+- (void)setupRefresh
+{
+    self.tableView.mj_header = [MJRefreshNormalHeader headerWithRefreshingTarget:self refreshingAction:@selector(loadNewData)];
+    self.tableView.mj_header.automaticallyChangeAlpha = YES;
+    [self.tableView.mj_header beginRefreshing];
+    self.tableView.mj_footer = [MJRefreshAutoNormalFooter footerWithRefreshingTarget:self refreshingAction:@selector(loadMoreData)];
+    self.tableView.mj_footer.hidden = YES;
+}
+- (void)loadNewData
+{
+    [self getDataWithPageindex:1];
+}
+- (void)loadMoreData
+{
+    [self getDataWithPageindex:self.pageindex];
+}
+- (void)getDataWithPageindex:(NSInteger)pageindex
+{
+    [HTTPManager getSearchAssetsDataWithAssetCode:_searchController.searchBar.text pageIndex:1 success:^(id responseObject) {
+        NSString * message = [responseObject objectForKey:@"msg"];
+        NSInteger code = [[responseObject objectForKey:@"errCode"] integerValue];
+        if (code == 0) {
+            // 请求成功数据处理
+            NSArray * listArray = [SearchAssetsModel mj_objectArrayWithKeyValuesArray:responseObject[@"data"] [@"tokenList"]];
+            if (pageindex == 1) {
+                // 清除所有旧数据
+                [self.results removeAllObjects];
+                self.pageindex = 1;
+            }
+            self.pageindex = self.pageindex + 1;
+            [self.results addObjectsFromArray:listArray];
+            if (listArray.count < 10) {
+                [self.tableView.mj_footer endRefreshingWithNoMoreData];
+            } else {
+                [self.tableView.mj_footer endRefreshing];
+            }
+            [self.tableView reloadData];
+        } else {
+            [MBProgressHUD showErrorMessage:message];
+        }
+        [self.tableView.mj_header endRefreshing];
+        (self.results.count > 0) ? (self.tableView.tableFooterView = [UIView new]) : (self.tableView.tableFooterView = self.noData);
+//        self.noNetWork.hidden = YES;
+    } failure:^(NSError *error) {
+        [self.tableView.mj_header endRefreshing];
+        [self.tableView.mj_footer endRefreshing];
+//        self.noNetWork.hidden = NO;
+    }];
 }
 /*
 - (void)getDataWithKey:(NSString *)key
@@ -86,9 +138,9 @@ static NSString * const SearchID = @"SearchID";
         // 因为在当前控制器展示结果, 所以不需要这个透明视图
         _searchController.dimsBackgroundDuringPresentation = NO;
         _searchController.hidesNavigationBarDuringPresentation = NO;
-        _searchController.searchBar.placeholder = @"请输入完整的TOKEN名称";
+        _searchController.searchBar.placeholder = Localized(@"InputAssetName");
         //改变取消按钮字体颜色
-        _searchController.searchBar.tintColor = MAIN_COLOR;
+//        _searchController.searchBar.tintColor = MAIN_COLOR;
         //包着搜索框外层的颜色
         _searchController.searchBar.tintColor = [UIColor whiteColor];
         //    _searchController.searchBar.barTintColor = [UIColor groupTableViewBackgroundColor];
@@ -96,7 +148,10 @@ static NSString * const SearchID = @"SearchID";
         //        _searchController.searchBar.backgroundImage = [UIImage imageNamed:@"workbench_positionDetailBg"];
         //去掉searchController.searchBar的上下边框（黑线）
         UIImageView *barImageView = [[[_searchController.searchBar.subviews firstObject] subviews] firstObject];
-        [barImageView setViewBorder:barImageView color:COLOR(@"E3E3E3") border:LINE_WIDTH type:UIViewBorderLineTypeBottom];
+        barImageView.layer.borderColor = LINE_COLOR.CGColor;
+        barImageView.layer.borderWidth = LINE_WIDTH;
+//        [barImageView setViewBorder:barImageView color:COLOR(@"E3E3E3") border:LINE_WIDTH type:UIViewBorderLineTypeBottom];
+//        _searchController.searchBar.backgroundImage = barImageView;
         //改变searchController背景颜色
         _searchController.searchBar.barTintColor = [UIColor whiteColor];
         //搜索时，背景变暗色
@@ -126,19 +181,19 @@ static NSString * const SearchID = @"SearchID";
     [_searchController.searchBar setShowsCancelButton:YES animated:YES];
     UIButton * cancelButton = [self.searchController.searchBar valueForKey:@"cancelButton"];
     if (cancelButton) {
-        [cancelButton setTitle:@"取消" forState:UIControlStateNormal];
+        [cancelButton setTitle:Localized(@"Cancel") forState:UIControlStateNormal];
         [cancelButton setTitleColor:MAIN_COLOR forState:UIControlStateNormal];
     }
     NSString *inputStr = _searchController.searchBar.text ;
     if (self.results.count > 0) {
         [self.results removeAllObjects];
     }
-    for (NSString *str in self.listArray) {
-        if ([str.lowercaseString rangeOfString:inputStr.lowercaseString options:NSLiteralSearch].location != NSNotFound) {
-            [self.results addObject:str];
-        }
-    }
-    [self.tableView reloadData];
+//    for (NSString *str in self.listArray) {
+//        if ([str.lowercaseString rangeOfString:inputStr.lowercaseString options:NSLiteralSearch].location != NSNotFound) {
+//            [self.results addObject:str];
+//        }
+//    }
+//    [self.tableView reloadData];
 }
 #pragma mark - UISearchBarDelegate
 - (void)searchBarTextDidBeginEditing:(UISearchBar *)searchBar {
@@ -150,6 +205,7 @@ static NSString * const SearchID = @"SearchID";
 - (void)searchBarSearchButtonClicked:(UISearchBar *)searchBar
 {
     [searchBar resignFirstResponder];
+    [self setupRefresh];
 //    [self getDataWithKey:searchBar.text];
 }
 - (void)searchBarCancelButtonClicked:(UISearchBar *)searchBar
@@ -165,11 +221,19 @@ static NSString * const SearchID = @"SearchID";
     self.tableView.delegate = self;
     self.tableView.dataSource = self;
 //    self.tableView.backgroundColor = VIEW_BG_COLOR;
-    self.tableView.estimatedSectionHeaderHeight = 0;
-    self.tableView.estimatedSectionFooterHeight = 0;
     self.tableView.tableHeaderView = self.searchController.searchBar;
     [self.view addSubview:self.tableView];
     //    self.tableView.tableFooterView = self.emptyBtn;
+}
+- (UIView *)noData
+{
+    if (!_noData) {
+        _noData = [[UIView alloc] initWithFrame:CGRectMake(0, 0, DEVICE_WIDTH, ScreenScale(270))];
+        UIButton * noDataBtn = [Encapsulation showNoDataWithTitle:Localized(@"NoSearchResults") imageName:@"noSearchResults" superView:self.noData frame:CGRectMake(0, Margin_50, DEVICE_WIDTH, ScreenScale(160))];
+        noDataBtn.hidden = NO;
+        [_noData addSubview:noDataBtn];
+    }
+    return _noData;
 }
 /*
 - (UIButton *)emptyBtn
@@ -197,42 +261,10 @@ static NSString * const SearchID = @"SearchID";
 - (CGFloat)tableView:(UITableView *)tableView heightForHeaderInSection:(NSInteger)section
 {
     return CGFLOAT_MIN;
-    /*
-    if (self.searchController.active) {
-        return CGFLOAT_MIN;
-    } else {
-        return MAIN_HEIGHT;
-    }*/
 }
-/*
-- (UIView *)tableView:(UITableView *)tableView viewForHeaderInSection:(NSInteger)section
-{
-    if (self.searchController.active) {
-        return nil;
-    } else {
-        id label = [tableView dequeueReusableHeaderFooterViewWithIdentifier:@"headerView"];
-        if (!label) {
-            label = [[UILabel alloc] init];
-            [label setFont:FONT(14)];
-            [label setTextColor:TITLE_COLOR];
-            [label setBackgroundColor:VIEW_BG_COLOR];
-        }
-        [label setText:@"    最近搜索"];
-        return label;
-    }
-}
- */
 - (CGFloat)tableView:(UITableView *)tableView heightForFooterInSection:(NSInteger)section
 {
-//    if (self.searchController.active) {
-        return CGFLOAT_MIN;
-//    } else {
-//        if (self.listArray.count > 0) {
-//            return MAIN_HEIGHT;
-//        } else {
-//            return CGFLOAT_MIN;
-//        }
-//    }
+    return CGFLOAT_MIN;
 }
 /*
 - (UIView *)tableView:(UITableView *)tableView viewForFooterInSection:(NSInteger)section
@@ -254,6 +286,7 @@ static NSString * const SearchID = @"SearchID";
 - (UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath
 {
     AddAssetsViewCell * cell = [AddAssetsViewCell cellWithTableView:tableView];
+    cell.searchAssetsModel = self.results[indexPath.row];
     return cell;
 }
 - (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath {

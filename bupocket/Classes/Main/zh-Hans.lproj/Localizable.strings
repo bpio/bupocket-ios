@@ -40,6 +40,7 @@
 "BackupMnemonics" = "备份助记词";
 "PurseCipherConfirm" = "密码确认";
 "PurseCipherPrompt" = "请填写钱包密码以确认备份";
+"PurseCipherWarning" = "警告：若未妥善备份，退出后将无法找回钱包，请慎重处理该操作";
 "PWPlaceholder" = "8-20个字符，且内容仅限字母和数字";
 "NoScreenshot" = "请勿截图";
 "MnemonicsPrompt" = "泄露助记词将导致资产丢失，请抄写下助记词并存放在安全的地方。";
@@ -54,6 +55,7 @@
 "Feedback" = "帮助与反馈";
 "MultiLingual" = "多语言";
 "VersionNumber" = "版本号";
+"Save" = "保存";
 // 我的身份
 "MyIdentity" = "我的身份";
 "IdentityNameTitle" = "身份名";
@@ -84,16 +86,19 @@
 // 添加资产
 "AddAssets" = "添加资产";
 "Add" = "添加";
+"Delete" = "删除";
+"InputAssetName" = "请输入完整的资产名称";
+"NoSearchResults" = "未找到搜索结果";
 // 资产详情
 "AssetsDetailScan" = "扫一扫";
 "TransferAccounts" = "转账";
 "RecentTransactionRecords" = "最近交易记录";
 "NoTransactionRecord" = "暂无交易记录";
 // 转账
-"ReciprocalAccount" = "对方账户（BU地址） *";
+"ReciprocalAccount" = "对方账户（BU地址）*";
 "reciprocalAccount" = "对方账户";
 "PhoneOrAddress" = "请输入手机号/接收方地址";
-"AmountOfTransfer" = "转账数量（BU） *";
+"AmountOfTransfer" = "转账数量（BU）*";
 "amountOfTransfer" = "转账数量";
 "AvailableBalance" = "可用余额";
 "MostOnce" = "单笔不可超过10000 BU";
@@ -124,6 +129,7 @@
 "ConfirmationOfRegisteredAssets" = "登记资产确认";
 "ConfirmRegistrationInformation" = "请确认以下登记资产信息";
 "ConfirmationOfRegistration" = "确认登记";
+"RegisteredAssetsDetail" = "资产登记详情";
 "RegistrationSuccess" = "登记成功";
 "RegistrationFailure" = "登记失败";
 "RegistrationTimeout" = "登记超时";
@@ -131,6 +137,7 @@
 //"OneTimeIssue" = "一次性发行";
 //"IncrementalIssue" = "增量发行";
 "UnrestrictedIssue" = "无限制";
+"RegisteredAddress" = "登记方地址";
 // 发行资产确认
 "IssueAssetsConfirmation" = "发行资产确认";
 "ConfirmAssetInformation" = "请确认以下发行资产信息";
@@ -142,7 +149,9 @@
 "TotalAmountOfToken" = "资产总量";
 "TotalAmountOfDistribution" = "发行总量";
 "DistributionCost" = "预估交易费";
+"ActualTransactionCost" = "实际交易费";
 "ConfirmationOfDistribution" = "确认发行";
+"DistributionAssetsDetail" = "资产发行详情";
 "DistributionSuccess" = "发行成功";
 "DistributionFailure" = "发行失败";
 "DistributionTimeout" = "发行超时";
@@ -153,6 +162,47 @@
 "IssuerAddress" = "发行方地址";
 "Hash" = "哈希";
 
+// alert Massage
+// SDK
+"RandomGenerationFailure" = "随机数生成失败";
+"IdentityFailure" = "身份账户生成失败";
+"WalletAccountFailure" = "钱包账户生成失败";
+"IssueNumberIsIncorrect" = "发行数量有误";
+// Accout
+"IDNameFormatIncorrect" = "身份名只允许输入字母、汉字、数字、下划线，并且长度不能超过20个字符";
+"WalletNameFormatIncorrect" = "钱包名只允许输入字母、汉字、数字、下划线，并且长度不能超过20个字符";
+"PasswordIsDifferent" = "密码与确认密码不一致";
+"MnemonicIsIncorrect" = "助记词输入有误，请重新输入";
+// registered
+"RegisteredAsset" = "您已登记过该资产！";
+"TemporarilyRegisteredAssets" = "您所发行的资产代码：AG 暂未登记，无法发行！";
+"IssuedAssets" = "您已发行过该资产！";
+"RegisteredNotSufficientFunds" = "您的BU余额不足，无法登记资产，请充值!";
+"DistributionNotSufficientFunds" = "您的BU余额不足，无法发行资产，请充值!";
+"CirculationDoesNotMatch" = "您的资产发行量与登记总量不符";
+"CirculationExceeded" = "您的资产发行量超过了登记总量";
+
+// My
+"CryptographicFormat" = "密码长度为8~20个字符，且内容仅限字母和数字";
+"NewPasswordIsDifferent" = "新密码与确认新密码不一致，请重新输入";
+"OldPasswordIncorrect" = "旧密码不正确，请重新输入";
+"PasswordModifiedSuccessfully" = "密码修改成功";
+
+"PasswordIsIncorrect" = "密码不正确，请重新输入";
+// 转账
+"BUAddressIsIncorrect" = "BU地址不正确，请重新输入";
+"SendingQuantityIsIncorrect" = "发送数量格式有误，请重新输入";
+"SendingQuantityMin" = "转账数量单笔不可少于0.00000001 BU";
+"SendingQuantityMax" = "转账数量单笔不可超过10000 BU";
+"NotSufficientFunds" = "可用余额不足";
+"TransactionCostIsIncorrect" = "最多支付交易费用格式有误，请重新输入";
+"TransactionCostMin" = "最多支付交易费用不可少于0.01 BU";
+"TransactionCostMax" = "最多支付交易费用不可超过10 BU";
+"ExtraLongNotes" = "备注信息不能超过20个字";
+// 帮助反馈
+"SuggestionsContentOverlength" = "问题或建议内容过长，不能超过100个字";
+"ContactOverlength" = "联系方式内容过长，不能超过20个字";
+"SubmissionOfSuccess" = "提交成功";
 
 
 

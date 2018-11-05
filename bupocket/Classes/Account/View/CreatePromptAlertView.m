@@ -46,7 +46,7 @@
     UILabel * title = [UILabel new];
 //    title.adjustsLetterSpacingToFitWidth = YES;
     title.numberOfLines = 0;
-    title.attributedText = [Encapsulation attrWithString:titleStr preFont:FONT(15) preColor:COLOR(@"FF7272") index:warnStr.length sufFont:FONT(15) sufColor:TITLE_COLOR lineSpacing:5];
+    title.attributedText = [Encapsulation attrWithString:titleStr preFont:FONT(15) preColor:WARNING_COLOR index:warnStr.length sufFont:FONT(15) sufColor:TITLE_COLOR lineSpacing:5];
     title.lineBreakMode = NSLineBreakByWordWrapping;
     [self addSubview:title];
     [title mas_makeConstraints:^(MASConstraintMaker *make) {
@@ -67,7 +67,7 @@
     }];
     
     CGFloat height = [Encapsulation getSizeSpaceLabelWithStr:titleStr font:FONT(15) width:(DEVICE_WIDTH - ScreenScale(110)) height:CGFLOAT_MAX lineSpacing:ScreenScale(5)].height + ScreenScale(230);
-    self.bounds = CGRectMake(0, 0, DEVICE_WIDTH - ScreenScale(60), height);
+    self.bounds = CGRectMake(0, 0, DEVICE_WIDTH - Margin_60, height);
 }
 
 - (void)sureBtnClick {

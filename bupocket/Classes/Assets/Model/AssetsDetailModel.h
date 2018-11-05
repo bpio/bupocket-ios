@@ -14,7 +14,7 @@ NS_ASSUME_NONNULL_BEGIN
 
 @property (nonatomic, copy) NSString * fromAddress;
 @property (nonatomic, copy) NSString * ledger;
-@property (nonatomic, copy) NSString * outinType;
+@property (nonatomic, assign) NSInteger outinType;
 @property (nonatomic, copy) NSString * toAddress;
 @property (nonatomic, copy) NSString * amount;
 @property (nonatomic, assign) NSInteger txStatus;

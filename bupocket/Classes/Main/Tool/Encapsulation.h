@@ -19,9 +19,9 @@
 //计算UILabel的宽度、高度(带有行间距的情况)
 + (CGSize)getSizeSpaceLabelWithStr:(NSString *)str font:(UIFont *)font width:(CGFloat)width height:(CGFloat)height lineSpacing:(CGFloat)lineSpacing;
 
-+ (UIAlertController *)alertControllerWithTitle:(NSString *)title message:(NSString*)message;
++ (UIAlertController *)alertControllerWithCancelTitle:(NSString *)cancelTitle title:(NSString *)title message:(NSString*)message;
 
-+ (UIButton *)showNoTransactionRecordWithSuperView:(UIView *)superView frame:(CGRect)frame;
++ (UIButton *)showNoDataWithTitle:(NSString *)title imageName:(NSString *)imageName superView:(UIView *)superView frame:(CGRect)frame;
 
 #pragma mark 连接服务器失败
 + (UIView *)showNoNetWorkWithSuperView:(UIView *)superView target:(id)target action:(SEL)action;

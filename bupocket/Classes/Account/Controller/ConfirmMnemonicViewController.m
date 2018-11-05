@@ -42,7 +42,7 @@
 - (void)viewDidLoad {
     [super viewDidLoad];
     self.navigationItem.title = Localized(@"ConfirmMnemonic");
-    self.navigationItem.rightBarButtonItem = [[UIBarButtonItem alloc] initWithCustomView:[UIButton createButtonWithTitle:Localized(@"Skip") TextFont:16 TextColor:COLOR(@"5745C3") Target:self Selector:@selector(skipAction)]];
+    self.navigationItem.rightBarButtonItem = [[UIBarButtonItem alloc] initWithCustomView:[UIButton createButtonWithTitle:Localized(@"Skip") TextFont:16 TextColor:NAVITEM_COLOR Target:self Selector:@selector(skipAction)]];
     [self setupView];
     // Do any additional setup after loading the view.
 }
@@ -55,7 +55,7 @@
 {
     // 请按顺序点击助记词，以确认您正确备份。
     UILabel * confirmPrompt = [[UILabel alloc] init];
-    confirmPrompt.font = FONT(14);
+    confirmPrompt.font = TITLE_FONT;
     confirmPrompt.textColor = COLOR_9;
     confirmPrompt.text = Localized(@"ConfirmMnemonicPrompt");
     [self.view addSubview:confirmPrompt];
@@ -76,7 +76,7 @@
     }];
     
     UIView * lineView = [[UIView alloc] init];
-    lineView.bounds = CGRectMake(0, 0, DEVICE_WIDTH - ScreenScale(60), LINE_WIDTH);
+    lineView.bounds = CGRectMake(0, 0, DEVICE_WIDTH - Margin_60, LINE_WIDTH);
     [lineView drawDashLine];
     [self.view addSubview:lineView];
     [lineView mas_makeConstraints:^(MASConstraintMaker *make) {
@@ -118,7 +118,7 @@
     finish.layer.masksToBounds = YES;
     finish.clipsToBounds = YES;
     finish.layer.cornerRadius = ScreenScale(4);
-    finish.backgroundColor = COLOR(@"9AD9FF");
+    finish.backgroundColor = DISABLED_COLOR;
     finish.enabled = NO;
     [self.view addSubview:finish];
     [finish mas_makeConstraints:^(MASConstraintMaker *make) {
@@ -162,7 +162,7 @@
         self.finish.backgroundColor = MAIN_COLOR;
         self.finish.enabled = YES;
     } else {
-        self.finish.backgroundColor = COLOR(@"9AD9FF");
+        self.finish.backgroundColor = DISABLED_COLOR;
         self.finish.enabled = NO;
     }
 }
@@ -203,7 +203,7 @@
  - (UIView *)setupTagsViewWithArray:(NSArray *)array
  {
  _tagView = [[UIView alloc] init];
- CGFloat tagViewW = (DEVICE_WIDTH - ScreenScale(60));
+ CGFloat tagViewW = (DEVICE_WIDTH - Margin_60);
  CGFloat currentX = 0;
  CGFloat currentY = 0;
  CGFloat countRow = 0;

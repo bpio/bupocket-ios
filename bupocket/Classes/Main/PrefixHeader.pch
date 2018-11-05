@@ -25,7 +25,7 @@
 //#import <MBProgressHUD.h>
 
 #import "HTTPManager.h"
-#import "MBProgressHUD+WBAddtional.h"
+#import "MBProgressHUD+JDragon.h"
 #import "JsonTool.h"
 #import "DateTool.h"
 //#import "MBProgressHUD+JDragon.h"

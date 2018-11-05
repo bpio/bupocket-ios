@@ -30,6 +30,8 @@
 #define Margin_15 ScreenScale(15)
 #define Margin_40 ScreenScale(40)
 #define Margin_50 ScreenScale(50)
+#define Margin_60 ScreenScale(60)
+#define Info_Width_Max DEVICE_WIDTH - ScreenScale(155)
 // 颜色
 #define COLOR_6 COLOR(@"666666")
 #define COLOR_9 COLOR(@"999999")
@@ -38,6 +40,8 @@
 // 字体
 #define FONT(F) [UIFont systemFontOfSize:ScreenScale(F)]
 #define FONT_Bold(F) [UIFont boldSystemFontOfSize:ScreenScale(F)]
+#define TITLE_FONT FONT(14)
+
 //#define FONT(F) [UIFont fontWithName:@"SourceHanSansCN-Medium" size:ScreenScale(F)]
 #define StatusBarHeight [[UIApplication sharedApplication] statusBarFrame].size.height
 #define NavBarH (StatusBarHeight + 44)
@@ -48,9 +52,12 @@
 #define COLOR(HexString)  [UIColor colorWithHexString:HexString]
 // 随机色
 #define RandomColor [UIColor colorWithRed:arc4random_uniform(255) / 255.0 green:arc4random_uniform(255) / 255.0 blue:arc4random_uniform(255) / 255.0 alpha:1.0]
+#define NAVITEM_COLOR COLOR(@"5745C3")
 #define LINE_COLOR COLOR(@"E3E3E3")
 #define TITLE_COLOR COLOR(@"333333")
 #define MAIN_COLOR COLOR(@"36B3FF")
+#define WARNING_COLOR COLOR(@"FF7272")
+#define DISABLED_COLOR COLOR(@"9AD9FF")
 
 // 程序将根据第一个参数去对应语言的文件中取对应的值，第二个参数将转化为字符串文件里的注释，可以传nil，也可以传空字符串@""。
 

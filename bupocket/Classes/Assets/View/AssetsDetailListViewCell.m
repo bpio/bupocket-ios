@@ -93,7 +93,7 @@ static NSString * const AssetsDetailCellID = @"AssetsDetailCellID";
 {
     if (!_purseAddress) {
         _purseAddress = [[UILabel alloc] init];
-        _purseAddress.font = FONT(14);
+        _purseAddress.font = TITLE_FONT;
         _purseAddress.textColor = COLOR_6;
     }
     return _purseAddress;

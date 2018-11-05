@@ -20,7 +20,9 @@ PODS:
   - IQKeyboardManager (6.2.0)
   - JSONModel (1.8.0)
   - Masonry (1.1.0)
-  - MBProgressHUD (1.1.0)
+  - MBProgressHUD (0.9.2)
+  - "MBProgressHUD+JDragon (0.0.4)":
+    - MBProgressHUD (~> 0.9.2)
   - MJExtension (3.0.15.1)
   - MJRefresh (3.1.15.7)
   - SDWebImage (4.4.2):
@@ -38,7 +40,7 @@ DEPENDENCIES:
   - IQKeyboardManager
   - JSONModel
   - Masonry
-  - MBProgressHUD
+  - "MBProgressHUD+JDragon"
   - MJExtension
   - MJRefresh
   - SDWebImage
@@ -54,6 +56,7 @@ SPEC REPOS:
     - JSONModel
     - Masonry
     - MBProgressHUD
+    - "MBProgressHUD+JDragon"
     - MJExtension
     - MJRefresh
     - SDWebImage
@@ -68,7 +71,8 @@ SPEC CHECKSUMS:
   IQKeyboardManager: 6194101620b73af5e67900b8f89707a99de0b804
   JSONModel: 02ab723958366a3fd27da57ea2af2113658762e9
   Masonry: 678fab65091a9290e40e2832a55e7ab731aad201
-  MBProgressHUD: e7baa36a220447d8aeb12769bf0585582f3866d9
+  MBProgressHUD: 1569cf7ace17a8bac47aabfbb8580a49690386d1
+  "MBProgressHUD+JDragon": 51958736b3a9f97adc176371544ffa257a0ba058
   MJExtension: 19bc33ce2eee2d319760f5622562cf581a6ff756
   MJRefresh: 697f8ec75ebdbe9207767bb682cf0f51b0d8a41f
   SDWebImage: 624d6e296c69b244bcede364c72ae0430ac14681
@@ -77,6 +81,6 @@ SPEC CHECKSUMS:
   Starscream: ef3ece99d765eeccb67de105bfa143f929026cf5
   XHToast: 3b354766d56d9df8fef8e64387bbd25c90d71a86
 
-PODFILE CHECKSUM: b9c9dda58883b1edf86dc0b24c2d7d80ec90dfd1
+PODFILE CHECKSUM: 10231f9ccf32eed5f5ecf1e7deb26be3949a44ba
 
 COCOAPODS: 1.5.3

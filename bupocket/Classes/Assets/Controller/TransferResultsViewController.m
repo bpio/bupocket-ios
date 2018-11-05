@@ -25,6 +25,7 @@ static NSString * const TransferResultsCellID = @"DetailListCellID";
     [super viewDidLoad];
     [self setupView];
     self.listArray = @[@[Localized(@"reciprocalAccount"), Localized(@"amountOfTransfer"), Localized(@"TransactionCost"), Localized(@"Remarks"), Localized(@"TransferTime")], self.transferInfoArray];
+    [self popToRootVC];
     // Do any additional setup after loading the view.
 }
 - (void)setupView
@@ -81,23 +82,8 @@ static NSString * const TransferResultsCellID = @"DetailListCellID";
     } else {
         cell.infoTitle.text = self.listArray[1][indexPath.row];
     }
+    cell.selectionStyle = UITableViewCellSelectionStyleNone;
     return cell;
-    /*
-    UITableViewCell * cell = [tableView dequeueReusableCellWithIdentifier:TransferResultsCellID];
-    if (!cell) {
-        cell = [[UITableViewCell alloc] initWithStyle:UITableViewCellStyleValue1 reuseIdentifier:TransferResultsCellID];;
-    }
-    cell.textLabel.text = self.listArray[0][indexPath.row];
-    cell.textLabel.font = FONT(15);
-    cell.textLabel.textColor = COLOR_9;
-    cell.detailTextLabel.font = FONT(15);
-    cell.detailTextLabel.textColor = COLOR_6;
-    cell.detailTextLabel.textAlignment = NSTextAlignmentRight;
-    cell.detailTextLabel.preferredMaxLayoutWidth = ScreenScale(205);
-    
-    cell.detailTextLabel.text = self.listArray[1][indexPath.row];
-    return cell;
-     */
 }
 - (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath
 {

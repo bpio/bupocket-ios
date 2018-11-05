@@ -14,6 +14,7 @@ NS_ASSUME_NONNULL_BEGIN
 @interface TransferAccountsViewController : BaseViewController
 
 @property (nonatomic, strong) AssetsListModel * listModel;
+@property (nonatomic, strong) NSString * address;
 
 @end
 

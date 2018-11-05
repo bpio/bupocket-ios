@@ -22,8 +22,9 @@
 #define Transaction_Record @"wallet/token/tx/list"
 #define Transaction_Record_BU @"wallet/user/tx/list"
 #define Order_Details @"wallet/tx/detail"
-//#define Assets_Detail @"wallet/query/token"
-#define Registered_AND_Distribution @"wallet/token/detail"
+#define Assets_Search @"wallet/query/token"
+#define Registered_And_Distribution @"wallet/token/detail"
+#define Help_And_Feedback @"user/feedback"
 
 
 #endif /* URLMacros_h */

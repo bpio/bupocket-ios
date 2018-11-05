@@ -147,7 +147,7 @@
     if (!_transferPrompt) {
         _transferPrompt = [[UILabel alloc] init];
         _transferPrompt.textColor = COLOR_6;
-        _transferPrompt.font = FONT(14);
+        _transferPrompt.font = TITLE_FONT;
         _transferPrompt.numberOfLines = 0;
         _transferPrompt.text = Localized(@"TransferPrompt");
         _transferPrompt.textAlignment = NSTextAlignmentCenter;

@@ -46,7 +46,7 @@
     paraStyle.paragraphSpacingBefore =0.0;
     paraStyle.headIndent = 0;
     paraStyle.tailIndent = 0;
-//    paraStyleDic[NSFontAttributeName] = FONT(14);
+//    paraStyleDic[NSFontAttributeName] = TITLE_FONT;
     paraStyleDic[NSParagraphStyleAttributeName] = paraStyle;
     //设置字间距 NSKernAttributeName:@1.5f
 //    paraStyleDic[NSKernAttributeName] = @1.0f;
@@ -71,11 +71,11 @@
     return size;
 }
 
-+ (UIAlertController *)alertControllerWithTitle:(NSString *)title message:(NSString*)message
++ (UIAlertController *)alertControllerWithCancelTitle:(NSString *)cancelTitle title:(NSString *)title message:(NSString*)message
 {
     
     UIAlertController * alertController = [UIAlertController alertControllerWithTitle:title message:message preferredStyle:UIAlertControllerStyleAlert];
-    UIAlertAction * cancelAction = [UIAlertAction actionWithTitle:Localized(@"Cancel") style:UIAlertActionStyleCancel handler:nil];
+    UIAlertAction * cancelAction = [UIAlertAction actionWithTitle:cancelTitle style:UIAlertActionStyleCancel handler:nil];
     [alertController addAction:cancelAction];
 //    UIAlertAction * okAction = [UIAlertAction actionWithTitle:Localized(@"Confirm") style:UIAlertActionStyleDefault handler:^(UIAlertAction * _Nonnull action) {
 //    }];
@@ -95,15 +95,24 @@
     [cancelAction setValue:COLOR_9 forKey:@"titleTextColor"];
     return alertController;
 }
+//+ (void)showAlertControllerWithMessage:(NSString *)message btnText:(NSString *)btnText handler:(void(^)(UIAlertAction * action))handle
+//{
+//    UIAlertController * alertController = [UIAlertController alertControllerWithTitle:nil message:message preferredStyle:UIAlertControllerStyleAlert];
+//    UIAlertAction * cancelAction = [UIAlertAction actionWithTitle:Localized(@"IGotIt") style:UIAlertActionStyleCancel handler:^(UIAlertAction * _Nonnull action) {
+//        [self.navigationController popViewControllerAnimated:YES];
+//    }];
+//    [alertController addAction:cancelAction];
+//    [self presentViewController:alertController animated:YES completion:nil];
+//}
 
-+ (UIButton *)showNoTransactionRecordWithSuperView:(UIView *)superView frame:(CGRect)frame
++ (UIButton *)showNoDataWithTitle:(NSString *)title imageName:(NSString *)imageName superView:(UIView *)superView frame:(CGRect)frame
 {
     CustomButton * button = [[CustomButton alloc] init];
     button.layoutMode = VerticalNormal;
-    [button setTitle:Localized(@"NoTransactionRecord") forState:UIControlStateNormal];
+    [button setTitle:title forState:UIControlStateNormal];
     [button setTitleColor:COLOR_9 forState:UIControlStateNormal];
     button.titleLabel.font = FONT(15);
-    [button setImage:[UIImage imageNamed:@"NoTransactionRecord"] forState:UIControlStateNormal];
+    [button setImage:[UIImage imageNamed:imageName] forState:UIControlStateNormal];
     button.userInteractionEnabled = NO;
     button.hidden = YES;
     button.frame = frame;

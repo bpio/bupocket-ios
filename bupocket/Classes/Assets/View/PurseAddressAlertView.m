@@ -89,7 +89,7 @@
     }];
     
     [self.copyBtn mas_makeConstraints:^(MASConstraintMaker *make) {
-        make.top.equalTo(self.purseAddressTitle.mas_bottom).offset(ScreenScale(60));
+        make.top.equalTo(self.purseAddressTitle.mas_bottom).offset(Margin_60);
         make.centerX.equalTo(self);
         make.size.mas_equalTo(CGSizeMake(ScreenScale(210), MAIN_HEIGHT));
     }];
@@ -183,7 +183,6 @@
     }
 }
 - (void)copyClick {
-    [self hideView];
     if (_sureBlock) {
         _sureBlock();
     }

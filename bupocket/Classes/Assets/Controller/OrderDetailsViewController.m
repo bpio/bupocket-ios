@@ -74,7 +74,7 @@ static NSString * const OrderDetailsCellID = @"OrderDetailsCellID";
 //            self.amount.text = [amountStr isEqualToString:@"~"] ? amountStr : [NSString stringWithFormat:@"≈%@", amountStr];
             [self.tableView reloadData];
         } else {
-            [MBProgressHUD wb_showInfo:message];
+            [MBProgressHUD showErrorMessage:message];
         }
         [self.tableView.mj_header endRefreshing];
         self.noNetWork.hidden = YES;
@@ -189,7 +189,7 @@ static NSString * const OrderDetailsCellID = @"OrderDetailsCellID";
 //
 //        [orderResults setTitle:assets forState:UIControlStateNormal];
         UILabel * state = [[UILabel alloc] init];
-        state.font = FONT(14);
+        state.font = TITLE_FONT;
         state.textColor = COLOR_6;
         [headerView addSubview:state];
         [state mas_makeConstraints:^(MASConstraintMaker *make) {
@@ -206,7 +206,7 @@ static NSString * const OrderDetailsCellID = @"OrderDetailsCellID";
     if (section == 0) {
         return Margin_10;
     } else {
-        return ScreenScale(60);
+        return Margin_60;
     }
 }
 - (CGFloat)tableView:(UITableView *)tableView heightForFooterInSection:(NSInteger)section
@@ -257,10 +257,10 @@ static NSString * const OrderDetailsCellID = @"OrderDetailsCellID";
         return MAIN_HEIGHT;
     } else if (indexPath.section == 1 && indexPath.row > 6) {
         CGFloat bottomH = indexPath.row % 2 ? 0 : Margin_10;
-        CGFloat rowHeight = [Encapsulation rectWithText:self.infoArray[indexPath.section][indexPath.row] fontSize:15 textWidth: DEVICE_WIDTH - ScreenScale(60)].size.height + ScreenScale(50) + bottomH;
+        CGFloat rowHeight = [Encapsulation rectWithText:self.infoArray[indexPath.section][indexPath.row] fontSize:15 textWidth: DEVICE_WIDTH - Margin_60].size.height + ScreenScale(50) + bottomH;
         return rowHeight;
     } else {
-        CGFloat rowHeight = [Encapsulation rectWithText:self.infoArray[indexPath.section][indexPath.row] fontSize:15 textWidth: DEVICE_WIDTH - ScreenScale(180)].size.height + Margin_30;
+        CGFloat rowHeight = [Encapsulation rectWithText:self.infoArray[indexPath.section][indexPath.row] fontSize:15 textWidth: Info_Width_Max].size.height + Margin_30;
         return rowHeight;
     }
 //    if (indexPath.section == 0) {
@@ -302,23 +302,8 @@ static NSString * const OrderDetailsCellID = @"OrderDetailsCellID";
     } else {
         cell.infoTitle.text = self.infoArray[indexPath.section][indexPath.row];
     }
+    cell.selectionStyle = UITableViewCellSelectionStyleNone;
     return cell;
-    /*
-     UITableViewCell * cell = [tableView dequeueReusableCellWithIdentifier:TransferResultsCellID];
-     if (!cell) {
-     cell = [[UITableViewCell alloc] initWithStyle:UITableViewCellStyleValue1 reuseIdentifier:TransferResultsCellID];;
-     }
-     cell.textLabel.text = self.listArray[0][indexPath.row];
-     cell.textLabel.font = FONT(15);
-     cell.textLabel.textColor = COLOR_9;
-     cell.detailTextLabel.font = FONT(15);
-     cell.detailTextLabel.textColor = COLOR_6;
-     cell.detailTextLabel.textAlignment = NSTextAlignmentRight;
-     cell.detailTextLabel.preferredMaxLayoutWidth = ScreenScale(205);
-     
-     cell.detailTextLabel.text = self.listArray[1][indexPath.row];
-     return cell;
-     */
 }
 - (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath
 {

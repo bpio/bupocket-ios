@@ -21,6 +21,14 @@
 
 @end
 
+static NSString * const Issue_Join = @"token.issue.join";
+static NSString * const Issue_ScanSuccess = @"token.issue.scanSuccess";
+static NSString * const Issue_Processing = @"token.issue.processing";
+static NSString * const Issue_Success = @"token.issue.success";
+static NSString * const Issue_Failure = @"token.issue.failure";
+static NSString * const Issue_Timeout = @"token.issue.timeout";
+static NSString * const Issue_Cancel = @"token.issue.Cancel";
+
 @implementation DistributionOfAssetsViewController
 
 - (NSMutableArray *)distributionArray
@@ -36,42 +44,27 @@
     self.navigationItem.title = Localized(@"IssueAssetsConfirmation");
     [self setupView];
     [self connectSocket];
+    UIButton * backButton = [UIButton createButtonWithNormalImage:@"nav_goback_n" SelectedImage:@"nav_goback_n" Target:self Selector:@selector(cancelAction)];
+    backButton.frame = CGRectMake(0, 0, ScreenScale(44), Margin_30);
+    backButton.contentHorizontalAlignment = UIControlContentHorizontalAlignmentLeft;
+    self.navigationItem.leftBarButtonItem = [[UIBarButtonItem alloc]initWithCustomView:backButton];
     // Do any additional setup after loading the view.
 }
 - (void)connectSocket
 {
     NSURL* url = [[NSURL alloc] initWithString:URLPREFIX_Socket];
-    //使用给定的url初始化一个socketIOClient，后面的config是对这个socket的一些配置，比如log设置为YES，控制台会打印连接时的日志等
     self.manager = [[SocketManager alloc] initWithSocketURL:url config:@{@"log": @YES, @"compress": @YES}];
     self.socket = self.manager.defaultSocket;
-    
     __weak typeof(self) weakself = self;
-    //监听是否连接上服务器，正确连接走后面的回调
     [self.socket on:@"connect" callback:^(NSArray* data, SocketAckEmitter* ack) {
-        NSLog(@"socket connected");
-        [[weakself.socket emitWithAck:@"join" with:@[@{@"uuID": weakself.uuid}]] timingOutAfter:0 callback:^(NSArray* data) {
-            
-            
-            //            [socket emit:@"update" with:@[@{@"amount": @(cur + 2.50)}]];
-        }];
+        [weakself.socket emit:Issue_Join with:@[weakself.uuid]];
+    }];
+    [self.socket on:Issue_Join callback:^(NSArray* data, SocketAckEmitter* ack) {
+        [weakself.socket emit:Issue_ScanSuccess with:@[]];
+    }];
+    [self.socket on:Issue_ScanSuccess callback:^(NSArray* data, SocketAckEmitter* ack) {
         
-        // 私钥验证
-        //        [weakself.socket emit:@"processing" with:@[@"测试"]];
-        //        [weakself.socket emit:@"releaseSuccess" with:@[@"测试"]];
-        //            NSLog(@"连接成功：%@", data);
-        //            [socket disconnect];
     }];
-    
-    //监听new message，这是socketIO官网提供的一个测试用例，大家都可以试试。如果成功连接，会收到data内容。
-    [self.socket on:@"join" callback:^(NSArray* data, SocketAckEmitter* ack) {
-        NSLog(@"连接成功：%@", data);
-        [weakself.socket emit:@"scanSuccess" with:@[@"测试"]];
-        //                    double cur = [[data objectAtIndex:0] floatValue];
-        //
-        //
-        //                    [ack with:@[@"Got your currentAmount, ", @"dude"]];
-    }];
-    
     [self.socket connect];
 }
 - (void)setupView
@@ -90,7 +83,7 @@
     
     CustomButton * confirmationPrompt = [[CustomButton alloc] init];
     confirmationPrompt.layoutMode = VerticalNormal;
-    confirmationPrompt.titleLabel.font = FONT(14);
+    confirmationPrompt.titleLabel.font = TITLE_FONT;
     [confirmationPrompt setTitle:Localized(@"ConfirmAssetInformation") forState:UIControlStateNormal];
     [confirmationPrompt setTitleColor:COLOR_9 forState:UIControlStateNormal];
     [confirmationPrompt setImage:[UIImage imageNamed:@"AssetsConfirmation"] forState:UIControlStateNormal];
@@ -156,20 +149,23 @@
 
 - (void)confirmationAction
 {
-    int64_t balance = [HTTPManager getAccountBalance];
-    NSInteger amount = balance - [HTTPManager getBlockFees] - [Tools BU2MO:Distribution_Cost];
+    int64_t amount = [HTTPManager getDataWithBalanceJudgmentWithCost:Distribution_Cost];
     if (amount < 0) {
-        [MBProgressHUD wb_showInfo:@"您的余额不足，发行资产失败!"];
+        [MBProgressHUD showInfoMessage:Localized(@"DistributionNotSufficientFunds")];
+        return;
+    }
+    if ([self.distributionModel.totalSupply longLongValue] == 0 && self.registeredModel.amount != [self.distributionModel.totalSupply longLongValue]) {
+        [MBProgressHUD showInfoMessage:Localized(@"CirculationDoesNotMatch")];
         return;
     }
     // 已登记
     CGFloat isOverFlow = [self.distributionModel.totalSupply floatValue] - [self.distributionModel.actualSupply floatValue] - self.registeredModel.amount;
     if (isOverFlow < 0) {
-        [MBProgressHUD wb_showInfo:@"您发行Token的总量与登记总量不符"];
+        [MBProgressHUD showInfoMessage:Localized(@"CirculationExceeded")];
         return;
     }
-    [self.socket emit:@"token.issue.processing" with:@[]];
-    PurseCipherAlertView * alertView = [[PurseCipherAlertView alloc] initWithConfrimBolck:^(NSString * _Nonnull password) {
+    [self.socket emit:Issue_Processing with:@[]];
+    PurseCipherAlertView * alertView = [[PurseCipherAlertView alloc] initWithType:PurseCipherNormalType confrimBolck:^(NSString * _Nonnull password) {
         [self getIssueAssetDataWithPassword:password];
     } cancelBlock:^{
     }];
@@ -186,14 +182,20 @@
         if (resultModel.errorCode == 0) { // 成功
             VC.state = 0;
             NSString * json = [self setResultDataWithCode:0 message:@"issue success" hash: resultModel.transactionHash];
-            [self.socket emit:@"token.issue.success" with:@[json]];
+            [self.socket emit:Issue_Success with:@[json]];
         } else {
             // 直接失败
             VC.state = 1;
             NSString * json = [self setResultDataWithCode:1 message:@"issue failure" hash: resultModel.transactionHash];
-            [self.socket emit:@"token.issue.failure" with:@[json]];
-            [MBProgressHUD wb_showError:resultModel.errorDesc];
+            [self.socket emit:Issue_Failure with:@[json]];
+            [MBProgressHUD showErrorMessage:resultModel.errorDesc];
         }
+        [self.socket on:Issue_Success callback:^(NSArray* data, SocketAckEmitter* ack) {
+            [self.socket disconnect];
+        }];
+        [self.socket on:Issue_Failure callback:^(NSArray* data, SocketAckEmitter* ack) {
+            [self.socket disconnect];
+        }];
         VC.registeredModel = self.registeredModel;
         VC.distributionModel = self.distributionModel;
         [self.navigationController pushViewController:VC animated:YES];
@@ -201,7 +203,10 @@
         DistributionResultsViewController * VC = [[DistributionResultsViewController alloc] init];
          VC.state = 2;
         NSString * json = [self setResultDataWithCode:2 message:@"issue timeout" hash: resultModel.transactionHash];
-        [self.socket emit:@"token.issue.timeout" with:@[json]];
+        [self.socket emit:Issue_Timeout with:@[json]];
+        [self.socket on:Issue_Timeout callback:^(NSArray* data, SocketAckEmitter* ack) {
+            [self.socket disconnect];
+        }];
         VC.registeredModel = self.registeredModel;
         VC.distributionModel = self.distributionModel;
         [self.navigationController pushViewController:VC animated:YES];
@@ -236,7 +241,11 @@
 }
 - (void)cancelAction
 {
-    [self.socket emit:@"token.issue.cancel" with:@[Localized(@"Cancel")]];
+    [self.socket emit:Issue_Cancel with:@[Localized(@"Cancel")]];
+    [self.socket on:Issue_Cancel callback:^(NSArray* data, SocketAckEmitter* ack) {
+        [self.socket disconnect];
+    }];
+    [self.navigationController popViewControllerAnimated:YES];
 }
 - (UIView *)setAssetInfoWithTitle:(NSString *)title info:(NSString *)info
 {

@@ -93,30 +93,23 @@ static HttpTool *__shareTool = nil;
 
 + (void)GET:(NSString *)URLString parameters:(NSDictionary *)parameters success:(void (^)(id))success failure:(void (^)(NSError *))failure
 {
-//    [SVProgressHUD setDefaultMaskType:SVProgressHUDMaskTypeBlack];
-//    [SVProgressHUD showWithStatus:@"加载中, 请稍后..."];
-//    [MBProgressHUD showActivityMessageInWindow:nil];
-//    Reachability * reachability = [Reachability reachabilityWithHostname:@""];
+//    [MBProgressHUD wb_showActivity];
+    [MBProgressHUD showActivityMessageInWindow:nil];
     AFHTTPSessionManager * manager = [AFHTTPSessionManager manager];
     [manager.requestSerializer setTimeoutInterval:30.0];
     [manager GET:URLString parameters:parameters progress:^(NSProgress * _Nonnull downloadProgress) {
         
     } success:^(NSURLSessionDataTask * _Nonnull task, id  _Nullable responseObject) {
-//        [MBProgressHUD hideHUD];
+        [MBProgressHUD hideHUD];
         if (success) {
-//            [SVProgressHUD dismiss];
             success(responseObject);
         }
     } failure:^(NSURLSessionDataTask * _Nullable task, NSError * _Nonnull error) {
-//        [MBProgressHUD hideHUD];
+        [MBProgressHUD hideHUD];
         if (failure) {
             failure(error);
-//            [SVProgressHUD dismiss];
-//            [SVProgressHUD showErrorWithStatus:error.localizedDescription];
-//            [MBProgressHUD showErrorMessage:error.localizedDescription];
         }
     }];
-//    [reachability stopNotifier];
 }
 - (void)POST:(NSString *)URLString parameters:(NSDictionary *)parameters success:(void (^)(id))success failure:(void (^)(NSError *))failure
 {
@@ -125,58 +118,29 @@ static HttpTool *__shareTool = nil;
     [request setValue:@"application/json" forHTTPHeaderField:@"Accept"];
     // NSaData -> HTTPBody
     [request setHTTPBody:[[JsonTool JSONStringWithDictionaryOrArray:parameters] dataUsingEncoding:NSUTF8StringEncoding]];
-//    [MBProgressHUD wb_showActivity];
-//    [MBProgressHUD showActivityMessageInWindow:nil];
+    [MBProgressHUD showActivityMessageInWindow:@""];
     [[self.sessionManager dataTaskWithRequest:request uploadProgress:^(NSProgress * _Nonnull uploadProgress) {
         
     } downloadProgress:^(NSProgress * _Nonnull downloadProgress) {
         
     } completionHandler:^(NSURLResponse * _Nonnull response, id  _Nullable responseObject, NSError * _Nullable error) {
         if (!error) {
-//            [MBProgressHUD wb_hideHUD];
+            [MBProgressHUD hideHUD];
             if ([responseObject isKindOfClass:[NSDictionary class]]) {
                 if (success) {
                     success(responseObject);
                 }
             }
         } else {
-//            [MBProgressHUD wb_hideHUD];
+            [MBProgressHUD hideHUD];
             if (failure) {
                 failure(error);
-//                [MBProgressHUD wb_showError:error.localizedDescription completion:nil];
+                [MBProgressHUD showErrorMessage:error.localizedDescription];
             }
         }
     }] resume];
-    
-//    Reachability * reachability = [Reachability reachabilityWithHostname:@""];
-//    [SVProgressHUD setDefaultMaskType:SVProgressHUDMaskTypeBlack];
-//    [SVProgressHUD showWithStatus:@"加载中, 请稍后..."];
-//    [MBProgressHUD showActivityMessageInWindow:nil];
-    /*
-    AFHTTPSessionManager * manager = [AFHTTPSessionManager manager];
-    [manager.requestSerializer setTimeoutInterval:30.0];
-    [manager POST:URLString parameters:parameters progress:^(NSProgress * _Nonnull uploadProgress) {
-    } success:^(NSURLSessionDataTask * _Nonnull task, id  _Nullable responseObject) {
-        if (success) {
-//            [SVProgressHUD dismiss];
-//            [MBProgressHUD hideHUD];
-            success(responseObject);
-        }
-    } failure:^(NSURLSessionDataTask * _Nullable task, NSError * _Nonnull error) {
-        if (failure) {
-            failure(error);
-//            [MBProgressHUD hideHUD];
-//            [MBProgressHUD showErrorMessage:error.localizedDescription];
-//            [SVProgressHUD dismiss];
-//            [SVProgressHUD showErrorWithStatus:error.localizedDescription];
-            if (error.code != -1009) {
-            }
-        }
-    }];
-//    [reachability stopNotifier];
-     */
 }
-
+/*
 + (void)POSTHtml:(NSString *)URLString parameters:(NSDictionary *)parameters success:(void (^)(id))success failure:(void (^)(NSError *))failure
 {
 //    Reachability * reachability = [Reachability reachabilityWithHostname:@""];
@@ -199,5 +163,5 @@ static HttpTool *__shareTool = nil;
     }];
 //    [reachability startNotifier];
 }
-
+*/
 @end

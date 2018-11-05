@@ -46,7 +46,7 @@
     _confirm.clipsToBounds = YES;
     _confirm.layer.cornerRadius = ScreenScale(4);
     _confirm.enabled = NO;
-    _confirm.backgroundColor = COLOR(@"9AD9FF");
+    _confirm.backgroundColor = DISABLED_COLOR;
     [self.view addSubview:_confirm];
     [_confirm mas_makeConstraints:^(MASConstraintMaker *make) {
         make.bottom.equalTo(self.view.mas_bottom).offset(-Margin_30 - SafeAreaBottomH);
@@ -57,20 +57,41 @@
 }
 - (void)confirmAction
 {
+    if ([RegexPatternTool validatePassword:_PWOld.text] == NO) {
+        [self showAlertControllerWithMessage:Localized(@"CryptographicFormat") handler:nil];
+        return;
+    }
+    if ([RegexPatternTool validatePassword:_PWNew.text] == NO) {
+        [self showAlertControllerWithMessage:Localized(@"CryptographicFormat") handler:nil];
+        return;
+    }
+    if (![_PWNew.text isEqualToString:_PWConfirm.text]) {
+        [self showAlertControllerWithMessage:Localized(@"NewPasswordIsDifferent") handler:nil];
+        return;
+    }
     NSData * random = [NSString decipherKeyStoreWithPW:_PWOld.text randomKeyStoreValueStr:[AccountTool account].randomNumber];
     if (random) {
         [HTTPManager setAccountDataWithRandom:random password:self.PWNew.text identityName:[AccountTool account].identityName success:^(id responseObject) {
-            [MBProgressHUD wb_showSuccess:@"修改密码成功"];
-            [self.navigationController popViewControllerAnimated:YES];
+            [self showAlertControllerWithMessage:Localized(@"PasswordModifiedSuccessfully") handler:^(UIAlertAction *action) {
+                [self.navigationController popViewControllerAnimated:YES];
+            }];
         } failure:^(NSError *error) {
             
         }];
     } else {
-        [MBProgressHUD wb_showError:@"旧密码不正确，请重新输入"];
+        [self showAlertControllerWithMessage:Localized(@"OldPasswordIncorrect") handler:nil];
     }
 //    NSArray * words = [Mnemonic generateMnemonicCode: random];
 //    NSData * random = [Mnemonic randomFromMnemonicCode: words];
 }
+- (void)showAlertControllerWithMessage:(NSString *)message handler:(void(^)(UIAlertAction * action))handle
+{
+    UIAlertController * alertController = [UIAlertController alertControllerWithTitle:nil message:message preferredStyle:UIAlertControllerStyleAlert];
+    UIAlertAction * cancelAction = [UIAlertAction actionWithTitle:Localized(@"IGotIt") style:UIAlertActionStyleCancel handler:handle];
+    [alertController addAction:cancelAction];
+    [self presentViewController:alertController animated:YES completion:nil];
+}
+
 - (UIView *)setViewWithTitle:(NSString *)title placeholder:(NSString *)placeholder index:(NSInteger)index
 {
     UIView * viewBg = [[UIView alloc] init];
@@ -135,17 +156,12 @@
 }
 - (void)textChange:(UITextField *)textField
 {
-    if (_PWOld.text.length == 0 || _PWNew.text.length == 0 || _PWConfirm.text.length == 0 || _PWNew.text != _PWConfirm.text || _PWOld.text == _PWNew.text) {
-        _confirm.enabled = NO;
-        _confirm.backgroundColor = COLOR(@"9AD9FF");
-        if (_PWOld.text == _PWNew.text) {
-            [MBProgressHUD wb_showError:@"请输入与旧密码不同的新密码"];
-        } else if (_PWNew.text != _PWConfirm.text) {
-            [MBProgressHUD wb_showError:@"新密码与确认密码不一致，请重新输入"];
-        }
-    } else {
+    if (_PWOld.text.length > 0 && _PWNew.text.length > 0 && _PWConfirm.text.length > 0) {
         _confirm.enabled = YES;
         _confirm.backgroundColor = MAIN_COLOR;
+    } else {
+        _confirm.enabled = NO;
+        _confirm.backgroundColor = DISABLED_COLOR;
     }
 }
 /*

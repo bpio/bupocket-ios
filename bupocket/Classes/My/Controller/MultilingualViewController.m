@@ -31,7 +31,26 @@
     [self setupView];
     self.listArray = @[@"简体中文", @"English"];
     
+    self.navigationItem.rightBarButtonItem = [[UIBarButtonItem alloc] initWithCustomView:[UIButton createButtonWithTitle:Localized(@"Save") TextFont:16 TextColor:NAVITEM_COLOR Target:self Selector:@selector(saveAction)]];
+    
     // Do any additional setup after loading the view.
+}
+- (void)saveAction
+{
+    NSUserDefaults * defaults = [NSUserDefaults standardUserDefaults];
+    //中文
+    if(_index == 0){
+        [defaults setObject:@"zh-Hans" forKey:@"appLanguage"];//App语言设置为中文
+        [defaults synchronize];
+        [kLanguageManager setUserlanguage:@"zh-Hans"];
+    }
+    //英文
+    if(_index == 1){
+        [defaults setObject:@"en" forKey:@"appLanguage"];//App语言设置为英文
+        [defaults synchronize];
+        [kLanguageManager setUserlanguage:@"en"];
+    }
+    [self.navigationController popViewControllerAnimated:YES];
 }
 - (void)setupView
 {
@@ -39,6 +58,7 @@
     self.tableView.delegate = self;
     self.tableView.dataSource = self;
     self.tableView.separatorInset = UIEdgeInsetsZero;
+    self.tableView.separatorStyle = UITableViewCellSeparatorStyleNone;
     [self.view addSubview:self.tableView];
 }
 - (CGFloat)tableView:(UITableView *)tableView heightForRowAtIndexPath:(NSIndexPath *)indexPath
@@ -81,20 +101,8 @@
     ListTableViewCell * cell = [tableView cellForRowAtIndexPath:indexPath];
     cell.detailImage.hidden = NO;
     _index = indexPath.row;
-    NSUserDefaults * defaults = [NSUserDefaults standardUserDefaults];
-    //中文
-    if(indexPath.row == 0){
-        [defaults setObject:@"zh-Hans" forKey:@"appLanguage"];//App语言设置为中文
-        [defaults synchronize];
-        [kLanguageManager setUserlanguage:@"zh-Hans"];
-    }
-    //英文
-    if(indexPath.row == 1){
-        [defaults setObject:@"en" forKey:@"appLanguage"];//App语言设置为英文
-        [defaults synchronize];
-        [kLanguageManager setUserlanguage:@"en"];
-    }
 }
+
 /*
 #pragma mark - Navigation
 

@@ -7,12 +7,15 @@
 //
 
 #import <UIKit/UIKit.h>
+#import "SearchAssetsModel.h"
 
 NS_ASSUME_NONNULL_BEGIN
 
 @interface AddAssetsViewCell : UITableViewCell
 
 + (instancetype)cellWithTableView:(UITableView *)tableView;
+
+@property (nonatomic, strong) SearchAssetsModel * searchAssetsModel;
 
 @property (nonatomic, strong) UIImageView * listImage;
 @property (nonatomic, strong) UILabel * title;

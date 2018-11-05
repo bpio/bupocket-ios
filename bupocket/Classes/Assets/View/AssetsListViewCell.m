@@ -92,7 +92,7 @@ static NSString * const AssetsCellID = @"AssetsCellID";
 {
     if (!_infoTitle) {
         _infoTitle = [[UILabel alloc] init];
-        _infoTitle.font = FONT(14);
+        _infoTitle.font = TITLE_FONT;
         _infoTitle.textColor = COLOR_9;
     }
     return _infoTitle;

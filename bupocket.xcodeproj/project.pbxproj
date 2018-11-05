@@ -20,8 +20,6 @@
 		833799322177305A00C222A5 /* UIView+Extension.m in Sources */ = {isa = PBXBuildFile; fileRef = 833799302177305A00C222A5 /* UIView+Extension.m */; };
 		833799382177427500C222A5 /* AssetsListViewCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 833799372177427500C222A5 /* AssetsListViewCell.m */; };
 		83379A092178509300C222A5 /* WKWebViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 83379A082178509300C222A5 /* WKWebViewController.m */; };
-		83379A1121785F8A00C222A5 /* 使用条款.docx in Resources */ = {isa = PBXBuildFile; fileRef = 83379A0F21785F8A00C222A5 /* 使用条款.docx */; };
-		83379A1221785F8A00C222A5 /* Terms of use.docx in Resources */ = {isa = PBXBuildFile; fileRef = 83379A1021785F8A00C222A5 /* Terms of use.docx */; };
 		83379A15217862AF00C222A5 /* CreatePromptAlertView.m in Sources */ = {isa = PBXBuildFile; fileRef = 83379A14217862AF00C222A5 /* CreatePromptAlertView.m */; };
 		83379A182178682100C222A5 /* UIView+CustomAlertView.m in Sources */ = {isa = PBXBuildFile; fileRef = 83379A172178682100C222A5 /* UIView+CustomAlertView.m */; };
 		83379A1B21786A6800C222A5 /* Encapsulation.m in Sources */ = {isa = PBXBuildFile; fileRef = 83379A1A21786A6800C222A5 /* Encapsulation.m */; };
@@ -55,10 +53,6 @@
 		83379AAA217F006600C222A5 /* HttpTool.m in Sources */ = {isa = PBXBuildFile; fileRef = 83379AA8217F006600C222A5 /* HttpTool.m */; };
 		83379AC3217F3F3000C222A5 /* BaseModel.m in Sources */ = {isa = PBXBuildFile; fileRef = 83379AC2217F3F3000C222A5 /* BaseModel.m */; };
 		83379AC6217F3F4200C222A5 /* AssetsListModel.m in Sources */ = {isa = PBXBuildFile; fileRef = 83379AC5217F3F4200C222A5 /* AssetsListModel.m */; };
-		83379ACE2180140000C222A5 /* MBProgressHUD+JDragon.bundle in Resources */ = {isa = PBXBuildFile; fileRef = 83379ACC2180140000C222A5 /* MBProgressHUD+JDragon.bundle */; };
-		83379ACF2180140000C222A5 /* MBProgressHUD+JDragon.m in Sources */ = {isa = PBXBuildFile; fileRef = 83379ACD2180140000C222A5 /* MBProgressHUD+JDragon.m */; };
-		83379AD5218021CC00C222A5 /* MBProgressHUD+WBAddtional.m in Sources */ = {isa = PBXBuildFile; fileRef = 83379AD1218021CC00C222A5 /* MBProgressHUD+WBAddtional.m */; };
-		83379AD6218021CC00C222A5 /* MBProgressHUD.bundle in Resources */ = {isa = PBXBuildFile; fileRef = 83379AD4218021CC00C222A5 /* MBProgressHUD.bundle */; };
 		83379AD921802FA900C222A5 /* AssetsDetailModel.m in Sources */ = {isa = PBXBuildFile; fileRef = 83379AD821802FA900C222A5 /* AssetsDetailModel.m */; };
 		83379ADC2180509600C222A5 /* NSDate+Extension.m in Sources */ = {isa = PBXBuildFile; fileRef = 83379ADB2180509600C222A5 /* NSDate+Extension.m */; };
 		83379AE22180630300C222A5 /* TxDetailModel.m in Sources */ = {isa = PBXBuildFile; fileRef = 83379AE12180630300C222A5 /* TxDetailModel.m */; };
@@ -109,6 +103,7 @@
 		83D5BCCE2182A87B00BF1FF1 /* AccountModel.m in Sources */ = {isa = PBXBuildFile; fileRef = 83D5BCCD2182A87B00BF1FF1 /* AccountModel.m */; };
 		83D5BCD12182AB8200BF1FF1 /* AccountTool.m in Sources */ = {isa = PBXBuildFile; fileRef = 83D5BCD02182AB8200BF1FF1 /* AccountTool.m */; };
 		83EE39422181633A0017CDE5 /* AddAssetsViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 83EE39412181633A0017CDE5 /* AddAssetsViewController.m */; };
+		83FB4423219035B700D68569 /* SearchAssetsModel.m in Sources */ = {isa = PBXBuildFile; fileRef = 83FB4422219035B700D68569 /* SearchAssetsModel.m */; };
 		C78AA58ABD5C4F75C67B6250 /* Pods_bupocketTests.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 248F98B6791F2F7C55E77E0E /* Pods_bupocketTests.framework */; };
 		E0A64C5CAFFFD9486B7713D7 /* Pods_bupocket.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = EB267DD938A42BAD30A164A2 /* Pods_bupocket.framework */; };
 /* End PBXBuildFile section */
@@ -187,8 +182,6 @@
 		833799372177427500C222A5 /* AssetsListViewCell.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = AssetsListViewCell.m; sourceTree = "<group>"; };
 		83379A072178509300C222A5 /* WKWebViewController.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = WKWebViewController.h; sourceTree = "<group>"; };
 		83379A082178509300C222A5 /* WKWebViewController.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = WKWebViewController.m; sourceTree = "<group>"; };
-		83379A0F21785F8A00C222A5 /* 使用条款.docx */ = {isa = PBXFileReference; lastKnownFileType = file; path = "使用条款.docx"; sourceTree = "<group>"; };
-		83379A1021785F8A00C222A5 /* Terms of use.docx */ = {isa = PBXFileReference; lastKnownFileType = file; path = "Terms of use.docx"; sourceTree = "<group>"; };
 		83379A13217862AF00C222A5 /* CreatePromptAlertView.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = CreatePromptAlertView.h; sourceTree = "<group>"; };
 		83379A14217862AF00C222A5 /* CreatePromptAlertView.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = CreatePromptAlertView.m; sourceTree = "<group>"; };
 		83379A162178682100C222A5 /* UIView+CustomAlertView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "UIView+CustomAlertView.h"; sourceTree = "<group>"; };
@@ -254,13 +247,6 @@
 		83379AC2217F3F3000C222A5 /* BaseModel.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = BaseModel.m; sourceTree = "<group>"; };
 		83379AC4217F3F4200C222A5 /* AssetsListModel.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = AssetsListModel.h; sourceTree = "<group>"; };
 		83379AC5217F3F4200C222A5 /* AssetsListModel.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = AssetsListModel.m; sourceTree = "<group>"; };
-		83379ACB2180140000C222A5 /* MBProgressHUD+JDragon.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "MBProgressHUD+JDragon.h"; sourceTree = "<group>"; };
-		83379ACC2180140000C222A5 /* MBProgressHUD+JDragon.bundle */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.plug-in"; path = "MBProgressHUD+JDragon.bundle"; sourceTree = "<group>"; };
-		83379ACD2180140000C222A5 /* MBProgressHUD+JDragon.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "MBProgressHUD+JDragon.m"; sourceTree = "<group>"; };
-		83379AD1218021CC00C222A5 /* MBProgressHUD+WBAddtional.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "MBProgressHUD+WBAddtional.m"; sourceTree = "<group>"; };
-		83379AD2218021CC00C222A5 /* MBProgressHUD+WBHUDExtension.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "MBProgressHUD+WBHUDExtension.h"; sourceTree = "<group>"; };
-		83379AD3218021CC00C222A5 /* MBProgressHUD+WBAddtional.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "MBProgressHUD+WBAddtional.h"; sourceTree = "<group>"; };
-		83379AD4218021CC00C222A5 /* MBProgressHUD.bundle */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.plug-in"; path = MBProgressHUD.bundle; sourceTree = "<group>"; };
 		83379AD721802FA900C222A5 /* AssetsDetailModel.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = AssetsDetailModel.h; sourceTree = "<group>"; };
 		83379AD821802FA900C222A5 /* AssetsDetailModel.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = AssetsDetailModel.m; sourceTree = "<group>"; };
 		83379ADA2180509600C222A5 /* NSDate+Extension.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = "NSDate+Extension.h"; sourceTree = "<group>"; };
@@ -363,6 +349,8 @@
 		83D5BCD02182AB8200BF1FF1 /* AccountTool.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = AccountTool.m; sourceTree = "<group>"; };
 		83EE39402181633A0017CDE5 /* AddAssetsViewController.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = AddAssetsViewController.h; sourceTree = "<group>"; };
 		83EE39412181633A0017CDE5 /* AddAssetsViewController.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = AddAssetsViewController.m; sourceTree = "<group>"; };
+		83FB4421219035B700D68569 /* SearchAssetsModel.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = SearchAssetsModel.h; sourceTree = "<group>"; };
+		83FB4422219035B700D68569 /* SearchAssetsModel.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = SearchAssetsModel.m; sourceTree = "<group>"; };
 		8BAFA7A3EC4992591E7450DA /* Pods-bupocket.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-bupocket.release.xcconfig"; path = "Pods/Target Support Files/Pods-bupocket/Pods-bupocket.release.xcconfig"; sourceTree = "<group>"; };
 		9D915F385F1A78B38EC83B6E /* Pods_bupocketUITests.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_bupocketUITests.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		A61F11E76D6541BC859B703E /* Pods-bupocket.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-bupocket.debug.xcconfig"; path = "Pods/Target Support Files/Pods-bupocket/Pods-bupocket.debug.xcconfig"; sourceTree = "<group>"; };
@@ -418,9 +406,7 @@
 			isa = PBXGroup;
 			children = (
 				831786122189A714003B5731 /* Framework */,
-				83379AD0218021CC00C222A5 /* MBProgressHUDWBAddtional */,
 				83A66A0B218B199E00E071B9 /* QRCode */,
-				83379ACA2180140000C222A5 /* MBProgressHud */,
 				83379A9C217EF20100C222A5 /* NetWork */,
 				83379A1921786A6800C222A5 /* Encapsulation.h */,
 				83379A1A21786A6800C222A5 /* Encapsulation.m */,
@@ -439,8 +425,6 @@
 			children = (
 				83379A5D21796BFC00C222A5 /* 使用条款.html */,
 				83379A5C21796BFC00C222A5 /* Terms of use.html */,
-				83379A0F21785F8A00C222A5 /* 使用条款.docx */,
-				83379A1021785F8A00C222A5 /* Terms of use.docx */,
 			);
 			path = Resource;
 			sourceTree = "<group>";
@@ -480,27 +464,6 @@
 				83379AC2217F3F3000C222A5 /* BaseModel.m */,
 			);
 			path = Model;
-			sourceTree = "<group>";
-		};
-		83379ACA2180140000C222A5 /* MBProgressHud */ = {
-			isa = PBXGroup;
-			children = (
-				83379ACB2180140000C222A5 /* MBProgressHUD+JDragon.h */,
-				83379ACC2180140000C222A5 /* MBProgressHUD+JDragon.bundle */,
-				83379ACD2180140000C222A5 /* MBProgressHUD+JDragon.m */,
-			);
-			path = MBProgressHud;
-			sourceTree = "<group>";
-		};
-		83379AD0218021CC00C222A5 /* MBProgressHUDWBAddtional */ = {
-			isa = PBXGroup;
-			children = (
-				83379AD1218021CC00C222A5 /* MBProgressHUD+WBAddtional.m */,
-				83379AD2218021CC00C222A5 /* MBProgressHUD+WBHUDExtension.h */,
-				83379AD3218021CC00C222A5 /* MBProgressHUD+WBAddtional.h */,
-				83379AD4218021CC00C222A5 /* MBProgressHUD.bundle */,
-			);
-			path = MBProgressHUDWBAddtional;
 			sourceTree = "<group>";
 		};
 		835A45202174C14D005BFCDD /* Classes */ = {
@@ -678,6 +641,8 @@
 			children = (
 				83379AC4217F3F4200C222A5 /* AssetsListModel.h */,
 				83379AC5217F3F4200C222A5 /* AssetsListModel.m */,
+				83FB4421219035B700D68569 /* SearchAssetsModel.h */,
+				83FB4422219035B700D68569 /* SearchAssetsModel.m */,
 				83379AD721802FA900C222A5 /* AssetsDetailModel.h */,
 				83379AD821802FA900C222A5 /* AssetsDetailModel.m */,
 				83379AE6218066FE00C222A5 /* BlockInfoModel.h */,
@@ -998,18 +963,14 @@
 				83A66A1D218B199E00E071B9 /* HMScanner.bundle in Resources */,
 				83379A5521787F2500C222A5 /* Default-896h@3x.png in Resources */,
 				83379A5F21796BFC00C222A5 /* 使用条款.html in Resources */,
-				83379AD6218021CC00C222A5 /* MBProgressHUD.bundle in Resources */,
 				83379A5321787F2500C222A5 /* Default-812h@3x.png in Resources */,
-				83379ACE2180140000C222A5 /* MBProgressHUD+JDragon.bundle in Resources */,
 				83379A4F21787F2500C222A5 /* Default-iPhone6.png in Resources */,
-				83379A1121785F8A00C222A5 /* 使用条款.docx in Resources */,
 				83379A5021787F2500C222A5 /* Default@2x.png in Resources */,
 				83B465B021745C9400187961 /* LaunchScreen.storyboard in Resources */,
 				83379A5421787F2500C222A5 /* Default.png in Resources */,
 				8337991F2176FD4400C222A5 /* InfoPlist.strings in Resources */,
 				83B465AD21745C9400187961 /* Assets.xcassets in Resources */,
 				83379A5121787F2500C222A5 /* Default-iPhone6Plus.png in Resources */,
-				83379A1221785F8A00C222A5 /* Terms of use.docx in Resources */,
 				83B465AB21745C9300187961 /* Main.storyboard in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -1089,6 +1050,7 @@
 				"${BUILT_PRODUCTS_DIR}/IQKeyboardManager/IQKeyboardManager.framework",
 				"${BUILT_PRODUCTS_DIR}/JSONModel/JSONModel.framework",
 				"${BUILT_PRODUCTS_DIR}/MBProgressHUD/MBProgressHUD.framework",
+				"${BUILT_PRODUCTS_DIR}/MBProgressHUD+JDragon/MBProgressHUD_JDragon.framework",
 				"${BUILT_PRODUCTS_DIR}/MJExtension/MJExtension.framework",
 				"${BUILT_PRODUCTS_DIR}/MJRefresh/MJRefresh.framework",
 				"${BUILT_PRODUCTS_DIR}/Masonry/Masonry.framework",
@@ -1107,6 +1069,7 @@
 				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/IQKeyboardManager.framework",
 				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/JSONModel.framework",
 				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/MBProgressHUD.framework",
+				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/MBProgressHUD_JDragon.framework",
 				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/MJExtension.framework",
 				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/MJRefresh.framework",
 				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/Masonry.framework",
@@ -1169,14 +1132,13 @@
 				83379A8F217DC0C700C222A5 /* TransferDetailsAlertView.m in Sources */,
 				83D5B1EB2181741200BF1FF1 /* AddAssetsViewCell.m in Sources */,
 				8395AF22218725D20082EA30 /* RegisteredAssetsViewController.m in Sources */,
-				83379AD5218021CC00C222A5 /* MBProgressHUD+WBAddtional.m in Sources */,
 				8337992F21772E0300C222A5 /* CustomButton.m in Sources */,
 				83B594B12175E6FA009F91BA /* PlaceholderTextView.m in Sources */,
 				8395AF312189496E0082EA30 /* DistributionModel.m in Sources */,
 				83379AA9217F006600C222A5 /* HTTPManager.m in Sources */,
 				83A66A1A218B199E00E071B9 /* HMScannerMaskView.m in Sources */,
-				83379ACF2180140000C222A5 /* MBProgressHUD+JDragon.m in Sources */,
 				83A66A1C218B199E00E071B9 /* HMScanner.m in Sources */,
+				83FB4423219035B700D68569 /* SearchAssetsModel.m in Sources */,
 				8337992C2177092300C222A5 /* LanguageManager.m in Sources */,
 				831786112189A6EE003B5731 /* RegexPatternTool.m in Sources */,
 				83379A182178682100C222A5 /* UIView+CustomAlertView.m in Sources */,

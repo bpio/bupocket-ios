@@ -47,7 +47,7 @@
     UILabel * IDName = [[UILabel alloc] init];
     IDName.font = FONT(15);
     IDName.textColor = COLOR_6;
-    IDName.text = @"会飞的猪"; // Localized(@"IdentityName");
+    IDName.text = [AccountTool account].identityName; // Localized(@"IdentityName");
     [myIdentityBg addSubview:IDName];
     [IDName mas_makeConstraints:^(MASConstraintMaker *make) {
         //        make.centerX.equalTo(self.view);
@@ -69,7 +69,7 @@
     UILabel * IdentityID = [[UILabel alloc] init];
     IdentityID.font = IDName.font;
     IdentityID.textColor = IDName.textColor;
-    IdentityID.text = @"buQs9npaCq9mNFZG18qu88ZcmXYqd6bqpTU3"; // Localized(@"IdentityID");
+    IdentityID.text = [AccountTool account].identityAccount;
     IdentityID.numberOfLines = 0;
     IdentityID.textAlignment = NSTextAlignmentRight;
     [myIdentityBg addSubview:IdentityID];
@@ -101,7 +101,7 @@
 }
 - (void)backupIdentityAction
 {
-    PurseCipherAlertView * alertView = [[PurseCipherAlertView alloc] initWithConfrimBolck:^(NSString * _Nonnull password) {
+    PurseCipherAlertView * alertView = [[PurseCipherAlertView alloc] initWithType:PurseCipherNormalType confrimBolck:^(NSString * _Nonnull password) {
         NSData * random = [NSString decipherKeyStoreWithPW:password randomKeyStoreValueStr:[AccountTool account].randomNumber];
         NSArray * words = [Mnemonic generateMnemonicCode: random];
         BackupMnemonicsViewController * VC = [[BackupMnemonicsViewController alloc] init];
@@ -114,18 +114,30 @@
 }
 - (void)exitIDAction
 {
-    UIAlertController * alertController = [Encapsulation alertControllerWithTitle:Localized(@"ExitCurrentIdentity") message:Localized(@"ExitCurrentIdentityPrompt")];
+    UIAlertController * alertController = [Encapsulation alertControllerWithCancelTitle:Localized(@"Cancel") title:Localized(@"ExitCurrentIdentity") message:Localized(@"ExitCurrentIdentityPrompt")];
     UIAlertAction * okAction = [UIAlertAction actionWithTitle:Localized(@"Confirm") style:UIAlertActionStyleDefault handler:^(UIAlertAction * _Nonnull action) {
-        BOOL ifClearData = [AccountTool clearCache];
-        if (ifClearData) {
-            NSUserDefaults *defaults =[NSUserDefaults standardUserDefaults];
-            [defaults removeObjectForKey:ifCreated];
-            [defaults removeObjectForKey:ifBackup];
-            [MBProgressHUD wb_showSuccess:@"退出当前身份成功"];
-            [UIApplication sharedApplication].keyWindow.rootViewController = [[NavigationViewController alloc] initWithRootViewController:[[IdentityViewController alloc] init]];
-        } else {
-            [MBProgressHUD wb_showError:@"移除身份及所有已导入的钱包失败"];
-        }
+        PurseCipherAlertView * alertView = [[PurseCipherAlertView alloc] initWithType:PurseCipherWarnType confrimBolck:^(NSString * _Nonnull password) {
+            NSString * privateKey = [NSString decipherKeyStoreWithPW:password keyStoreValueStr:[AccountTool account].purseKey];
+            if ([Tools isEmpty:privateKey]) {
+                [MBProgressHUD showWarnMessage:Localized(@"PasswordIsIncorrect")];
+                return;
+            }
+            BOOL ifClearData = [AccountTool clearCache];
+            if (ifClearData) {
+                NSUserDefaults *defaults =[NSUserDefaults standardUserDefaults];
+                [defaults removeObjectForKey:ifCreated];
+                [defaults removeObjectForKey:ifBackup];
+//                [MBProgressHUD wb_showSuccess:@"退出当前身份成功"];
+                [UIApplication sharedApplication].keyWindow.rootViewController = [[NavigationViewController alloc] initWithRootViewController:[[IdentityViewController alloc] init]];
+            } else {
+//                [MBProgressHUD wb_showError:@"移除身份及所有已导入的钱包失败"];
+            }
+        } cancelBlock:^{
+            
+        }];
+        [alertView showInWindowWithMode:CustomAnimationModeAlert inView:nil bgAlpha:0.2 needEffectView:NO];
+        
+        
     }];
     [alertController addAction:okAction];
     [self presentViewController:alertController animated:YES completion:nil];

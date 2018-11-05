@@ -13,7 +13,7 @@
 #import "RequestTimeoutViewController.h"
 #import "HMScannerController.h"
 
-@interface TransferAccountsViewController ()
+@interface TransferAccountsViewController ()<UITextFieldDelegate>
 
 @property (nonatomic, strong) UITextField * amountOfTransfer;
 @property (nonatomic, strong) UITextField * mostOnce;
@@ -38,6 +38,9 @@
 - (void)viewDidLoad {
     [super viewDidLoad];
     [self setupView];
+    self.navigationItem.title = @"BU转账";
+//    double amount = [Tools MO2BU:[HTTPManager getAccountBalance]];
+//    self.availableBalance.attributedText = [Encapsulation attrWithString:[NSString stringWithFormat:@"%@\n%f BU", Localized(@"AvailableBalance"), amount] preFont:FONT(12) preColor:COLOR_6 index:4 sufFont:FONT(12) sufColor:MAIN_COLOR lineSpacing:10];
     // Do any additional setup after loading the view.
 }
 - (void)setupView
@@ -62,7 +65,7 @@
     self.next.layer.cornerRadius = ScreenScale(4);
     [self.view addSubview:self.next];
     self.next.enabled = NO;
-    self.next.backgroundColor = COLOR(@"9AD9FF");
+    self.next.backgroundColor = DISABLED_COLOR;
     [self.next mas_makeConstraints:^(MASConstraintMaker *make) {
         make.bottom.equalTo(self.view.mas_bottom).offset(-Margin_30 - SafeAreaBottomH);
         make.left.equalTo(self.view.mas_left).offset(Margin_12);
@@ -76,22 +79,50 @@
 }
 - (void)nextAction
 {
-    CGFloat cost = [self.transactionCosts.text floatValue];
-    if (cost < TransactionCost_MIN) {
-        [MBProgressHUD wb_showWarning:@"最多支付交易费用不可少于0.01 BU"];
-        return;
-    } else if (cost > TransactionCost_MAX) {
-        [MBProgressHUD wb_showWarning:@"最多支付交易费用不可超过10 BU"];
+    if (![Keypair isAddressValid: self.amountOfTransfer.text]) {
+        [MBProgressHUD showInfoMessage:Localized(@"BUAddressIsIncorrect")];
         return;
     }
+    double sendingQuantity = [self.mostOnce.text doubleValue];
+    RegexPatternTool * regex = [[RegexPatternTool alloc] init];
+    if ([regex validateIsPositiveFloatingPoint:self.mostOnce.text] == NO) {
+        [MBProgressHUD showInfoMessage:Localized(@"SendingQuantityIsIncorrect")];
+        return;
+    } else if (sendingQuantity < SendingQuantity_MIN) {
+        [MBProgressHUD showInfoMessage:Localized(@"SendingQuantityMin")];
+        return;
+    } else if (sendingQuantity > SendingQuantity_MAX) {
+        [MBProgressHUD showInfoMessage:Localized(@"SendingQuantityMax")];
+        return;
+    }
+    if (_remarks.text.length > MAX_LENGTH) {
+        [MBProgressHUD showInfoMessage:Localized(@"ExtraLongNotes")];
+        return;
+    }
+    double cost = [self.transactionCosts.text doubleValue];
+    if ([regex validateIsPositiveFloatingPoint:self.transactionCosts.text] == NO) {
+        [MBProgressHUD showInfoMessage:Localized(@"TransactionCostIsIncorrect")];
+        return;
+    } else if (cost < TransactionCost_MIN) {
+        [MBProgressHUD showInfoMessage:Localized(@"TransactionCostMin")];
+        return;
+    } else if (cost > TransactionCost_MAX) {
+        [MBProgressHUD showInfoMessage:Localized(@"TransactionCostMax")];
+        return;
+    }
+    int64_t amount = [HTTPManager getDataWithBalanceJudgmentWithCost:sendingQuantity + cost];
+    if (amount < 0) {
+        [MBProgressHUD showInfoMessage:Localized(@"NotSufficientFunds")];
+        return;
+    }
+    
     self.transferInfoArray = [NSMutableArray arrayWithObjects:self.amountOfTransfer.text, [NSString stringAppendingBUWithStr:self.mostOnce.text], [NSString stringAppendingBUWithStr:self.transactionCosts.text], nil];
     if ([_remarks hasText]) {
         [self.transferInfoArray addObject:_remarks.text];
     }
     TransferDetailsAlertView * transferDetailsAlertView = [[TransferDetailsAlertView alloc] initWithTransferInfoArray:self.transferInfoArray confrimBolck:^{
         dispatch_after(dispatch_time(DISPATCH_TIME_NOW, (int64_t)(0.5 * NSEC_PER_SEC)), dispatch_get_main_queue(), ^{
-            PurseCipherAlertView * alertView = [[PurseCipherAlertView alloc] initWithConfrimBolck:^(NSString * _Nonnull password) {
-                HSSLog(@"确认转账");
+            PurseCipherAlertView * alertView = [[PurseCipherAlertView alloc] initWithType:PurseCipherNormalType confrimBolck:^(NSString * _Nonnull password) {
                 [self getDataWithPassword:password];
             } cancelBlock:^{
                 
@@ -116,7 +147,7 @@
         } else {
             // 直接失败
             VC.state = NO;
-            [MBProgressHUD wb_showError:resultModel.errorDesc];
+            [MBProgressHUD showErrorMessage:resultModel.errorDesc];
         }
         VC.transferInfoArray = self.transferInfoArray;
         [self.navigationController pushViewController:VC animated:YES];
@@ -173,6 +204,9 @@
     }];
     if (index == 0) {
         self.amountOfTransfer = textField;
+        if (self.address.length > 0) {
+            self.amountOfTransfer.text = self.address;
+        }
         UIButton * scan = [UIButton createButtonWithNormalImage:@"TransferAccounts_scan" SelectedImage:@"TransferAccounts_scan" Target:self Selector:@selector(scanAction)];
         scan.contentHorizontalAlignment = UIControlContentHorizontalAlignmentRight;
         scan.bounds = CGRectMake(0, 0, Margin_30, Margin_40);
@@ -196,6 +230,7 @@
         self.mostOnce = textField;
     } else if (index == 2) {
         self.remarks = textField;
+        self.remarks.delegate = self;
     } else if (index == 3) {
         self.transactionCosts = textField;
     }
@@ -209,8 +244,24 @@
         self.next.backgroundColor = MAIN_COLOR;
     } else {
         self.next.enabled = NO;
-        self.next.backgroundColor = COLOR(@"9AD9FF");
+        self.next.backgroundColor = DISABLED_COLOR;
     }
+}
+- (BOOL)textField:(UITextField *)textField shouldChangeCharactersInRange:(NSRange)range replacementString:(NSString *)string
+{
+    NSString * str = [textField.text stringByReplacingCharactersInRange:range withString:string];
+    if (string.length == 0) {
+        return YES;
+    }
+    if (textField == _remarks) {
+        if (str.length > MAX_LENGTH) {
+            textField.text = [str substringToIndex:MAX_LENGTH];
+            return NO;
+        } else {
+            return YES;
+        }
+    }
+    return YES;
 }
 - (void)scanAction
 {

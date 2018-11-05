@@ -17,6 +17,8 @@
 
 + (int64_t)getAccountBalance;
 + (int64_t) getBlockFees;
+// 余额是否足够
++ (int64_t)getDataWithBalanceJudgmentWithCost:(double)cost;
 
 // Assets
 + (void)getAssetsDataWithAddress:(NSString *)address
@@ -24,6 +26,11 @@
                        tokenList:(NSArray *)tokenList
                          success:(void (^)(id responseObject))success
                          failure:(void (^)(NSError *error))failure;
+// SearchAssets
++ (void)getSearchAssetsDataWithAssetCode:(NSString *)assetCode
+                               pageIndex:(NSInteger)pageIndex
+                                 success:(void (^)(id responseObject))success
+                                 failure:(void (^)(NSError *error))failure;
 // AssetsDetail Transaction_Record
 + (void)getAssetsDetailDataWithAssetCode:(NSString *)assetCode
                                   issuer:(NSString *)issuer
@@ -70,5 +77,9 @@
                              decimals:(NSInteger)decimals
                               success:(void (^)(TransactionResultModel * resultModel))success
                               failure:(void (^)(TransactionResultModel * resultModel))failure;
++ (void)getFeedbackDataWithContent:(NSString *)content
+                           contact:(NSString *)contact
+                           success:(void (^)(id responseObject))success
+                           failure:(void (^)(NSError *error))failure;
 
 @end

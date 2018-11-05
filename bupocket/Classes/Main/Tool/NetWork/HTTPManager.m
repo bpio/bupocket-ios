@@ -26,14 +26,17 @@
 
 // 查询余额
 + (int64_t)getAccountBalance {
+    [MBProgressHUD showActivityMessageInWindow:@""];
     AccountService *accountService = [[[SDK sharedInstance] setUrl:URL_SDK] getAccountService];
     AccountGetBalanceRequest * request = [AccountGetBalanceRequest new];
     [request setAddress : [AccountTool account].purseAccount];
     AccountGetBalanceResponse *response = [accountService getBalance : request];
     if (response.errorCode == 0) {
+        [MBProgressHUD hideHUD];
         return response.result.balance;
     } else {
-        NSLog(@"%@", response.errorDesc);
+        [MBProgressHUD hideHUD];
+        [MBProgressHUD showErrorMessage:response.errorDesc];
         return 0;
     }
 }
@@ -47,12 +50,38 @@
     if (response.errorCode == 0) {
         return response.result.fees.baseReserve;
     } else {
-        NSLog(@"error: %@", response.errorDesc);
+        [MBProgressHUD showErrorMessage:response.errorDesc];
         return 0;
     }
 }
-
-
+// 余额是否足够
++ (int64_t)getDataWithBalanceJudgmentWithCost:(double)cost
+{
+    [MBProgressHUD showActivityMessageInWindow:@""];
+    int64_t balance = 0;
+    int64_t baseReserve = 0;
+    AccountService *accountService = [[[SDK sharedInstance] setUrl:URL_SDK] getAccountService];
+    AccountGetBalanceRequest * request = [AccountGetBalanceRequest new];
+    [request setAddress : [AccountTool account].purseAccount];
+    AccountGetBalanceResponse *response = [accountService getBalance : request];
+    [MBProgressHUD hideHUD];
+    if (response.errorCode == 0) {
+        balance = response.result.balance;
+        BlockGetFeesRequest *request = [BlockGetFeesRequest new];
+        [request setBlockNumber: 617247];
+        BlockService *service = [[[SDK sharedInstance] setUrl: URL_SDK] getBlockService];
+        BlockGetFeesResponse * feesResponse = [service getFees: request];
+        if (response.errorCode == 0) {
+            baseReserve = feesResponse.result.fees.baseReserve;
+        } else {
+//            [MBProgressHUD showErrorMessage:feesResponse.errorDesc];
+        }
+    } else {
+//        [MBProgressHUD showErrorMessage:response.errorDesc];
+    }
+    int64_t amount = balance - baseReserve - [Tools BU2MO:cost];
+    return amount;
+}
 // Assets
 + (void)getAssetsDataWithAddress:(NSString *)address
                     currencyType:(NSString *)currencyType
@@ -77,67 +106,28 @@
             failure(error);
         }
     }];
-    
-    /*
-    
-    
-    //请求体转换成字典
-//    NSDictionary * parameters = [[HTTPManager shareManager] parametersWithHTTPBody:body];
-//    NSError * error;
-    NSData * jsonData = [NSJSONSerialization dataWithJSONObject:parmenters options:NSJSONWritingPrettyPrinted error:nil];
-     NSDictionary *dict = [NSJSONSerialization JSONObjectWithData:data options:kNilOptions error:nil];
-    NSString * jsonString;
-    if (jsonData && [jsonData length] > 0) {
-        jsonString = [[NSString alloc] initWithData:jsonData encoding:NSUTF8StringEncoding];
-    }
-    AFURLSessionManager * manager = [[AFURLSessionManager alloc] initWithSessionConfiguration:[NSURLSessionConfiguration defaultSessionConfiguration]];
-//    manager.responseSerializer.acceptableContentTypes = [NSSet setWithObjects:@"text/html", nil];
-    //创建请求request
-    NSMutableURLRequest *request = [[AFJSONRequestSerializer serializer] requestWithMethod:@"POST" URLString:url parameters:nil error:nil];
-    [request setValue:@"application/json" forHTTPHeaderField:@"Content-Type"];
-    [request setValue:@"application/json" forHTTPHeaderField:@"Accept"];
-    // 转NSData作为HTTPBody
-    [request setHTTPBody:[jsonString dataUsingEncoding:NSUTF8StringEncoding]];
-    [[manager dataTaskWithRequest:request uploadProgress:^(NSProgress * _Nonnull uploadProgress) {
-        
-    } downloadProgress:^(NSProgress * _Nonnull downloadProgress) {
-        
-    } completionHandler:^(NSURLResponse * _Nonnull response, id  _Nullable responseObject, NSError * _Nullable error) {
-        if (!error) {
-            if (success) {
-                success(responseObject);
-            }
-        } else {
-            if (failure) {
-                failure(error);
-            }
+}
+// SearchAssets
++ (void)getSearchAssetsDataWithAssetCode:(NSString *)assetCode
+                               pageIndex:(NSInteger)pageIndex
+                                 success:(void (^)(id responseObject))success
+                                 failure:(void (^)(NSError *error))failure
+{
+    NSString * url = SERVER_COMBINE_API(URLPREFIX, Assets_Search);
+    NSDictionary * parmenters = @{@"assetCode" : assetCode,
+                                  @"startPage" : @(pageIndex),
+                                  @"pageSize" : @(PageSize_Max)};
+    [[HttpTool shareTool] POST:url parameters:parmenters success:^(id responseObject) {
+        if(success != nil)
+        {
+            success(responseObject);
         }
-        
-    }] resume];
-     */
-    
-//    [NSMutableURLRequest requestWithURL:[NSURL URLWithString:url] cachePolicy:0 timeoutInterval:30];
-//
-//    //设置请求方式为POST
-//    request.HTTPMethod = @"POST";
-//    //设置请求内容格式
-////    [request setValue:@"application/json;charset=utf-8" forHTTPHeaderField:@"Content-Type"];
-//    request.HTTPBody = data;
-//
-//    AFHTTPSessionManager * manager = [AFHTTPSessionManager manager];
-//    manager.responseSerializer = [AFHTTPResponseSerializer serializer];
-//    manager.requestSerializer = [AFJSONRequestSerializer serializer];
-//    [manager.requestSerializer setValue:@"application/json;charset=utf-8" forHTTPHeaderField:@"Content-Type"];
-//    manager.responseSerializer.acceptableContentTypes = [NSSet setWithObjects:@"application/json", @"text/json", @"text/javascript", @"text/html",@"image/jpeg",@"text/plain", nil];
-//    [manager.requestSerializer setTimeoutInterval:30.0];
-//    NSURLSessionDataTask *dataTask =[manager dataTaskWithRequest:request completionHandler:^(NSURLResponse * _Nonnull response, id  _Nullable responseObject, NSError * _Nullable error) {
-//        //8.解析数据
-//        NSDictionary *dict = [NSJSONSerialization JSONObjectWithData:data options:kNilOptions error:nil];
-//        NSLog(@"%@",dict);
-//
-//    }];
-//    //7.执行任务
-//    [dataTask resume];
+    } failure:^(NSError *error) {
+        if(failure != nil)
+        {
+            failure(error);
+        }
+    }];
 }
 // AssetsDetail Transaction_Record
 + (void)getAssetsDetailDataWithAssetCode:(NSString *)assetCode
@@ -150,7 +140,7 @@
     NSString * url;
     NSMutableDictionary * parmenters = [NSMutableDictionary dictionary];
     [parmenters addEntriesFromDictionary:@{@"startPage" : @(pageIndex),
-                                           @"pageSize" : @(10)}];
+                                           @"pageSize" : @(PageSize_Max)}];
     if ([assetCode isEqualToString:@"BU"]) {
         url = SERVER_COMBINE_API(URLPREFIX, Transaction_Record_BU);
         [parmenters setObject:address forKey:@"walletAddress"];
@@ -199,7 +189,7 @@
                          success:(void (^)(id responseObject))success
                          failure:(void (^)(NSError *error))failure
 {
-    [MBProgressHUD wb_showActivity];
+    [MBProgressHUD showActivityMessageInWindow:@""];
     // 随机数 -> 生成助记词
     NSArray * words = [Mnemonic generateMnemonicCode: [random copy]];
     NSLog(@"%@", [words componentsJoinedByString:@" "]);
@@ -217,13 +207,14 @@
     NSString * purseAddress = [Keypair getEncAddress : [Keypair getEncPublicKey: [privateKeys lastObject]]];
     NSString * purseKey = [NSString generateKeyStoreWithPW:password key:[privateKeys lastObject]];
     if (randomKey == nil) {
-        [MBProgressHUD wb_showError:@"随机数keyStore生成失败"];
+        [MBProgressHUD showErrorMessage:Localized(@"RandomGenerationFailure")];
     } else if (identityKey == nil) {
-        [MBProgressHUD wb_showError:@"身份账户keyStore生成失败"];
+        [MBProgressHUD showErrorMessage:@"IdentityFailure"];
     } else if (purseKey == nil) {
-        [MBProgressHUD wb_showError:@"钱包账户keyStore生成失败"];
+        [MBProgressHUD showErrorMessage:Localized(@"WalletAccountFailure")];
     } else {
-        [MBProgressHUD wb_hideHUD];
+        // SDK
+        [MBProgressHUD hideHUD];
         if(success != nil)
         {
             AccountModel * account = [[AccountModel alloc] init];
@@ -270,7 +261,7 @@
     NSString * privateKey = [NSString decipherKeyStoreWithPW:password keyStoreValueStr:[AccountTool account].purseKey];
 //    NSString *address = [Keypair getEncAddress : [Keypair getEncPublicKey: privateKey]]; // 钱包地址
     if ([Tools isEmpty:privateKey]) {
-        [MBProgressHUD wb_showInfo:@"密码输入有误"];
+        [MBProgressHUD showWarnMessage:Localized(@"PasswordIsIncorrect")];
         return;
     }
     int64_t gasPrice = 1000;
@@ -294,7 +285,7 @@
     AtpProperty * atpProperty = [[AtpProperty alloc] init];
     int64_t total = registeredModel.amount * pow(10, registeredModel.decimals);
     if (registeredModel.amount != 0 && total < 1) {
-        [MBProgressHUD wb_showInfo:@"发行数量有误"];
+        [MBProgressHUD showErrorMessage:Localized(@"IssueNumberIsIncorrect")];
         return;
     }
     atpProperty.name = registeredModel.name;
@@ -303,7 +294,7 @@
     atpProperty.decimals = registeredModel.decimals;
     atpProperty.Description = registeredModel.desc;
     atpProperty.icon = @"";
-    atpProperty.version = @"1.0";
+    atpProperty.version = ATP_Version;
     NSString * value = [atpProperty yy_modelToJSONString];
     AccountSetMetadataOperation *operation = [AccountSetMetadataOperation new];
     [operation setSourceAddress : sourceAddress];
@@ -314,7 +305,7 @@
     // Build blob, sign and submit transaction
     NSString * privateKey = [NSString decipherKeyStoreWithPW:password keyStoreValueStr:[AccountTool account].purseKey];
     if ([Tools isEmpty:privateKey]) {
-        [MBProgressHUD wb_showInfo:@"密码输入有误"];
+        [MBProgressHUD showWarnMessage:Localized(@"PasswordIsIncorrect")];
         return;
     }
     int64_t gasPrice = 1000;
@@ -339,7 +330,7 @@
     // Asset amount
     int64_t amount = [assetAmount longLongValue] * powl(10, decimals); // 本次发行量
     if (amount < 1) {
-        [MBProgressHUD wb_showInfo:@"发行数量有误"];
+        [MBProgressHUD showWarnMessage:Localized(@"IssueNumberIsIncorrect")];
         return;
     }
     AssetIssueOperation *operation = [AssetIssueOperation new];
@@ -350,7 +341,7 @@
     // Build blob, sign and submit transaction
     NSString * privateKey = [NSString decipherKeyStoreWithPW:password keyStoreValueStr:[AccountTool account].purseKey];
     if ([Tools isEmpty:privateKey]) {
-        [MBProgressHUD wb_showInfo:@"密码输入有误"];
+        [MBProgressHUD showWarnMessage:Localized(@"PasswordIsIncorrect")];
         return;
     }
     int64_t gasPrice = 1000;
@@ -373,7 +364,7 @@
         //NSLog(@"%@", [response.result yy_modelToJSONString]);
         nonce = response.result.nonce;
     } else {
-        [MBProgressHUD wb_showError:response.errorDesc];
+        [MBProgressHUD showErrorMessage:response.errorDesc];
     }
     return nonce;
 }
@@ -395,7 +386,7 @@
         NSLog(@"blob: %@, hash: %@", buildBlobResponse.result.transactionBlob, buildBlobResponse.result.transactionHash);
         hash = buildBlobResponse.result.transactionHash;
     } else {
-        [MBProgressHUD wb_showError:buildBlobResponse.errorDesc];
+        [MBProgressHUD showErrorMessage:buildBlobResponse.errorDesc];
         return nil;
     }
     
@@ -407,7 +398,7 @@
     if (signResponse.errorCode == 0) {
         NSLog(@"sign response: %@", [signResponse yy_modelToJSONString]);
     } else {
-        [MBProgressHUD wb_showError:signResponse.errorDesc];
+        [MBProgressHUD showErrorMessage:signResponse.errorDesc];
         return nil;
     }
     // 提交交易
@@ -419,7 +410,7 @@
         //NSLog(@"submit response: %@", [submitResponse yy_modelToJSONString]);
 //        hash = submitResponse.result.transactionHash;
     } else {
-        [MBProgressHUD wb_showError:submitResponse.errorDesc];
+        [MBProgressHUD showErrorMessage:submitResponse.errorDesc];
     }
     return hash;
 }
@@ -429,7 +420,7 @@
                          success:(void (^)(TransactionResultModel * resultModel))success
                          failure:(void (^)(TransactionResultModel * resultModel))failure
 {
-    [MBProgressHUD wb_showActivity];
+    [MBProgressHUD showActivityMessageInWindow:@""];
     __block TransactionGetInfoResponse *response = [TransactionGetInfoResponse new];
 //    __block TransactionHistory *history = [TransactionHistory new];
     __block TransactionResultModel * resultModel = [[TransactionResultModel alloc] init];
@@ -454,7 +445,8 @@
                 //NSLog(@"%@", [response.result yy_modelToJSONString]);
 //                resultModel.history = response.result.transactions[0];
                 // 请求成功发送信号量(+1)
-                 dispatch_semaphore_signal(semaphore);
+                dispatch_semaphore_signal(semaphore);
+                break;
             } else {
                 // 失败也请求成功发送信号量(+1)
                 dispatch_semaphore_signal(semaphore); // 循环调用，判断超时
@@ -471,7 +463,7 @@
         if (state == 20) {
             // 返回主线程进行界面上的修改
             dispatch_async(dispatch_get_main_queue(), ^{
-                [MBProgressHUD wb_hideHUD];
+                [MBProgressHUD hideHUD];
                 if(failure != nil)
                 {
                     resultModel.errorCode = response.errorCode;
@@ -483,7 +475,7 @@
             });
         } else {
             dispatch_async(dispatch_get_main_queue(), ^{
-                [MBProgressHUD wb_hideHUD];
+                [MBProgressHUD hideHUD];
                 if(success != nil)
                 {
                     TransactionHistory * history = response.result.transactions[0];
@@ -503,11 +495,35 @@
                                              success:(void (^)(id responseObject))success
                                              failure:(void (^)(NSError *error))failure
 {
-    NSString * url = SERVER_COMBINE_API(URLPREFIX, Registered_AND_Distribution);
+    NSString * url = SERVER_COMBINE_API(URLPREFIX, Registered_And_Distribution);
     //HTTP请求体
     NSDictionary * parmenters = @{
                                   @"assetCode": assetCode,
                                   @"issueAddress": issueAddress
+                                  };
+    [[HttpTool shareTool] POST:url parameters:parmenters success:^(id responseObject) {
+        if(success != nil)
+        {
+            success(responseObject);
+        }
+    } failure:^(NSError *error) {
+        if(failure != nil)
+        {
+            failure(error);
+        }
+    }];
+}
+
++ (void)getFeedbackDataWithContent:(NSString *)content
+                           contact:(NSString *)contact
+                           success:(void (^)(id responseObject))success
+                           failure:(void (^)(NSError *error))failure
+{
+    NSString * url = SERVER_COMBINE_API(URLPREFIX, Help_And_Feedback);
+    //HTTP请求体
+    NSDictionary * parmenters = @{
+                                  @"content": content,
+                                  @"contact": contact
                                   };
     [[HttpTool shareTool] POST:url parameters:parmenters success:^(id responseObject) {
         if(success != nil)

@@ -38,8 +38,8 @@
     
     CustomButton * noScreenshot = [[CustomButton alloc] init];
     [noScreenshot setTitle:Localized(@"NoScreenshot") forState:UIControlStateNormal];
-    [noScreenshot setTitleColor:COLOR(@"FF7272") forState:UIControlStateNormal];
-    noScreenshot.titleLabel.font = FONT(14);
+    [noScreenshot setTitleColor:WARNING_COLOR forState:UIControlStateNormal];
+    noScreenshot.titleLabel.font = TITLE_FONT;
     [noScreenshot setImage:[UIImage imageNamed:@"noScreenshot"] forState:UIControlStateNormal];
     [promptBg addSubview:noScreenshot];
     [noScreenshot mas_makeConstraints:^(MASConstraintMaker *make) {
@@ -48,8 +48,8 @@
         make.height.mas_equalTo(Margin_30);
     }];
     UILabel * prompt = [[UILabel alloc] init];
-    prompt.font = FONT(14);
-    prompt.textColor = COLOR(@"FF7272");
+    prompt.font = TITLE_FONT;
+    prompt.textColor = WARNING_COLOR;
     prompt.numberOfLines = 0;
     prompt.text = Localized(@"MnemonicsPrompt");
     [promptBg addSubview:prompt];
@@ -59,7 +59,7 @@
         make.top.equalTo(noScreenshot.mas_bottom);
     }];
     UILabel * savePrompt = [[UILabel alloc] init];
-    savePrompt.font = FONT(14);
+    savePrompt.font = TITLE_FONT;
     savePrompt.textColor = COLOR_9;
     savePrompt.text = Localized(@"MnemonicsSavePrompt");
     [self.view addSubview:savePrompt];
@@ -110,7 +110,7 @@
 - (UIView *)setupTagsViewWithArray:(NSArray *)array
 {
     _tagView = [[UIView alloc] init];
-    CGFloat tagViewW = (DEVICE_WIDTH - ScreenScale(60));
+    CGFloat tagViewW = (DEVICE_WIDTH - Margin_60);
     CGFloat currentX = 0;
     CGFloat currentY = 0;
     CGFloat countRow = 0;

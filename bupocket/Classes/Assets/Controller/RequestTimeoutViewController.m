@@ -17,6 +17,7 @@
 - (void)viewDidLoad {
     [super viewDidLoad];
     [self setupView];
+    [self popToRootVC];
     // Do any additional setup after loading the view.
 }
 - (void)setupView
@@ -36,7 +37,7 @@
     }];
     // IGotIt
     UIButton * gotIt = [UIButton createButtonWithTitle:Localized(@"IGotIt") TextFont:18 TextColor:[UIColor whiteColor] Target:self Selector:@selector(gotItAction)];
-    [gotIt setViewSize:CGSizeMake(DEVICE_WIDTH - ScreenScale(60), MAIN_HEIGHT) borderWidth:0 borderColor:nil borderRadius:ScreenScale(4)];
+    [gotIt setViewSize:CGSizeMake(DEVICE_WIDTH - Margin_60, MAIN_HEIGHT) borderWidth:0 borderColor:nil borderRadius:ScreenScale(4)];
     gotIt.backgroundColor = MAIN_COLOR;
     [self.view addSubview:gotIt];
     [gotIt mas_makeConstraints:^(MASConstraintMaker *make) {
@@ -48,7 +49,7 @@
 }
 - (void)gotItAction
 {
-    
+    [self.navigationController popToRootViewControllerAnimated:YES];
 }
 /*
 #pragma mark - Navigation

@@ -36,20 +36,20 @@ static NSString * const AddAssetsCellID = @"AddAssetsCellID";
 {
     [super layoutSubviews];
     [self.listImage mas_makeConstraints:^(MASConstraintMaker *make) {
-        make.left.equalTo(self.contentView.mas_left).offset(ScreenScale(22));
-        make.top.equalTo(self.contentView.mas_top).offset(ScreenScale(17));
+        make.left.equalTo(self.contentView.mas_left).offset(Margin_15);
+        make.top.equalTo(self.contentView.mas_top).offset(Margin_15);
         make.width.height.mas_equalTo(Margin_40);
     }];
     [self.title mas_makeConstraints:^(MASConstraintMaker *make) {
         make.top.equalTo(self.contentView.mas_top).offset(Margin_20);
-        make.left.equalTo(self.listImage.mas_right).offset(ScreenScale(13));
+        make.left.equalTo(self.listImage.mas_right).offset(Margin_15);
     }];
     [self.detailTitle mas_makeConstraints:^(MASConstraintMaker *make) {
-        make.top.equalTo(self.title.mas_bottom).offset(ScreenScale(8));
+        make.top.equalTo(self.title.mas_bottom).offset(Margin_10);
         make.left.equalTo(self.title);
     }];
     [self.infoTitle mas_makeConstraints:^(MASConstraintMaker *make) {
-        make.top.equalTo(self.detailTitle.mas_bottom).offset(8);
+        make.top.equalTo(self.detailTitle.mas_bottom).offset(Margin_10);
         make.left.equalTo(self.title);
     }];
     CGSize size = CGSizeMake(ScreenScale(52), Margin_25);
@@ -59,9 +59,15 @@ static NSString * const AddAssetsCellID = @"AddAssetsCellID";
         make.right.equalTo(self.contentView.mas_right).offset(-ScreenScale(22));
         make.size.mas_equalTo(size);
     }];
-    _title.text = @"MMDA";
-    _detailTitle.text = @"MYMiuDieAdmin";
-    _infoTitle.text = @"buIos78HSY2jdyiokmssD2w";
+}
+- (void)setSearchAssetsModel:(SearchAssetsModel *)searchAssetsModel
+{
+    _searchAssetsModel = searchAssetsModel;
+    [_listImage sd_setImageWithURL:[NSURL URLWithString:searchAssetsModel.icon] placeholderImage:[UIImage imageNamed:@"placeholder"]];
+    _title.text = searchAssetsModel.assetCode;
+    _detailTitle.text = searchAssetsModel.assetName;
+    _infoTitle.text = searchAssetsModel.issuer;
+    _addBtn.hidden = searchAssetsModel.recommend;
 }
 //- (void)setListModel:(AssetsListModel *)listModel
 //{
@@ -87,6 +93,7 @@ static NSString * const AddAssetsCellID = @"AddAssetsCellID";
         _title = [[UILabel alloc] init];
         _title.font = FONT(18);
         _title.textColor = TITLE_COLOR;
+        _title.preferredMaxLayoutWidth = DEVICE_WIDTH - ScreenScale(80);
     }
     return _title;
 }
@@ -96,6 +103,7 @@ static NSString * const AddAssetsCellID = @"AddAssetsCellID";
         _detailTitle = [[UILabel alloc] init];
         _detailTitle.font = FONT(16);
         _detailTitle.textColor = TITLE_COLOR;
+        _detailTitle.preferredMaxLayoutWidth = _title.preferredMaxLayoutWidth;
     }
     return _detailTitle;
 }
@@ -103,8 +111,9 @@ static NSString * const AddAssetsCellID = @"AddAssetsCellID";
 {
     if (!_infoTitle) {
         _infoTitle = [[UILabel alloc] init];
-        _infoTitle.font = FONT(14);
+        _infoTitle.font = TITLE_FONT;
         _infoTitle.textColor = COLOR_9;
+        _infoTitle.preferredMaxLayoutWidth = _title.preferredMaxLayoutWidth;
     }
     return _infoTitle;
 }
@@ -112,14 +121,15 @@ static NSString * const AddAssetsCellID = @"AddAssetsCellID";
 {
     if (!_addBtn) {
         _addBtn = [UIButton createButtonWithTitle:Localized(@"Add") TextFont:14 TextColor:[UIColor whiteColor] Target:self Selector:@selector(addAction:)];
-        [_addBtn setImage:[UIImage imageNamed:@"alreadyAdded"] forState:UIControlStateDisabled];
+        [_addBtn setTitle:Localized(@"Delete") forState:UIControlStateSelected];
+//        [_addBtn setImage:[UIImage imageNamed:@"alreadyAdded"] forState:UIControlStateDisabled];
         _addBtn.backgroundColor = MAIN_COLOR;
     }
     return _addBtn;
 }
 - (void)addAction:(UIButton *)button
 {
-    
+    button.selected = !button.selected;
 }
 - (void)awakeFromNib {
     [super awakeFromNib];

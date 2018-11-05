@@ -59,7 +59,7 @@
     _createIdentity.layer.masksToBounds = YES;
     _createIdentity.clipsToBounds = YES;
     _createIdentity.layer.cornerRadius = ScreenScale(4);
-    _createIdentity.backgroundColor = COLOR(@"9AD9FF");
+    _createIdentity.backgroundColor = DISABLED_COLOR;
     _createIdentity.enabled = NO;
     [self.view addSubview:_createIdentity];
     
@@ -105,7 +105,7 @@
         _createIdentity.backgroundColor = MAIN_COLOR;
     } else {
         _createIdentity.enabled = NO;
-        _createIdentity.backgroundColor = COLOR(@"9AD9FF");
+        _createIdentity.backgroundColor = DISABLED_COLOR;
     }
 }
 - (void)keyBoardHidden
@@ -160,7 +160,6 @@
     int status = SecRandomCopyBytes(kSecRandomDefault, random.length, random.mutableBytes);
     if (status == 0) {
         [HTTPManager setAccountDataWithRandom:random password:self.identityPassword.text identityName:self.identityName.text success:^(id responseObject) {
-            [MBProgressHUD wb_showSuccess:@"身份创建成功"];
             NSUserDefaults * defaults = [NSUserDefaults standardUserDefaults];
             [defaults setBool:YES forKey:ifCreated];
             [defaults synchronize];
@@ -217,7 +216,7 @@
         }
          */
     } else {
-        [MBProgressHUD wb_showError:@"随机数生成失败"];
+        [MBProgressHUD showErrorMessage:Localized(@"RandomGenerationFailure")];
     }
 }
 
@@ -226,15 +225,15 @@
 - (void)createAction
 {
     if ([RegexPatternTool validateUserName:_identityName.text] == NO) {
-        [MBProgressHUD wb_showInfo:@"身份名只允许输入字母、汉字、数字、下划线，并且长度不能超过20个字符"];
+        [MBProgressHUD showInfoMessage:Localized(@"IDNameFormatIncorrect")];
         return;
     }
     if ([RegexPatternTool validatePassword:_identityPassword.text] == NO) {
-        [MBProgressHUD wb_showInfo:@"密码长度为8~20个字符，且内容仅限字母和数字"];
+        [MBProgressHUD showInfoMessage:Localized(@"CryptographicFormat")];
         return;
     }
     if (![_confirmPassword.text isEqualToString:_identityPassword.text]) {
-        [MBProgressHUD wb_showInfo:@"密码与确认密码不一致"];
+        [MBProgressHUD showInfoMessage:Localized(@"PasswordIsDifferent")];
         return;
     }
     [self setData];

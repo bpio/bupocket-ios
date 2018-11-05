@@ -22,6 +22,14 @@
 
 @end
 
+static NSString * const Register_Join = @"token.register.join";
+static NSString * const Register_ScanSuccess = @"token.register.scanSuccess";
+static NSString * const Register_Processing = @"token.register.processing";
+static NSString * const Register_Success = @"token.register.success";
+static NSString * const Register_Failure = @"token.register.failure";
+static NSString * const Register_Timeout = @"token.register.timeout";
+static NSString * const Register_Cancel = @"token.register.Cancel";
+
 @implementation RegisteredAssetsViewController
 
 - (NSMutableArray *)registeredArray
@@ -37,6 +45,10 @@
     self.navigationItem.title = Localized(@"ConfirmationOfRegisteredAssets");
     [self setupView];
     [self connectSocket];
+    UIButton * backButton = [UIButton createButtonWithNormalImage:@"nav_goback_n" SelectedImage:@"nav_goback_n" Target:self Selector:@selector(cancelAction)];
+    backButton.frame = CGRectMake(0, 0, ScreenScale(44), Margin_30);
+    backButton.contentHorizontalAlignment = UIControlContentHorizontalAlignmentLeft;
+    self.navigationItem.leftBarButtonItem = [[UIBarButtonItem alloc]initWithCustomView:backButton];
     // Do any additional setup after loading the view.
 }
 
@@ -47,13 +59,12 @@
     self.socket = self.manager.defaultSocket;
     __weak typeof(self) weakself = self;
     [self.socket on:@"connect" callback:^(NSArray* data, SocketAckEmitter* ack) {
-        NSLog(@"socket connected");
-        [weakself.socket emit:@"token.register.join" with:@[weakself.uuid]];
+        [weakself.socket emit:Register_Join with:@[weakself.uuid]];
     }];
-    [self.socket on:@"token.register.join" callback:^(NSArray* data, SocketAckEmitter* ack) {
-        [weakself.socket emit:@"token.register.scanSuccess" with:@[]];
+    [self.socket on:Register_Join callback:^(NSArray* data, SocketAckEmitter* ack) {
+        [weakself.socket emit:Register_ScanSuccess with:@[]];
     }];
-    [self.socket on:@"token.register.scanSuccess" callback:^(NSArray* data, SocketAckEmitter* ack) {
+    [self.socket on:Register_ScanSuccess callback:^(NSArray* data, SocketAckEmitter* ack) {
         
     }];
     [self.socket connect];
@@ -74,7 +85,7 @@
     
     CustomButton * confirmationPrompt = [[CustomButton alloc] init];
     confirmationPrompt.layoutMode = VerticalNormal;
-    confirmationPrompt.titleLabel.font = FONT(14);
+    confirmationPrompt.titleLabel.font = TITLE_FONT;
     [confirmationPrompt setTitle:Localized(@"ConfirmRegistrationInformation") forState:UIControlStateNormal];
     [confirmationPrompt setTitleColor:COLOR_9 forState:UIControlStateNormal];
     [confirmationPrompt setImage:[UIImage imageNamed:@"AssetsConfirmation"] forState:UIControlStateNormal];
@@ -86,17 +97,12 @@
     }];
     
     self.registeredArray = [NSMutableArray arrayWithArray:@[@{Localized(@"TokenName"): self.registeredModel.name}, @{Localized(@"TokenCode"): self.registeredModel.code}, @{Localized(@"DistributionCost"): Registered_CostBU}]];
-//    NSInteger type = self.registeredModel.type;
     NSString * amount = [NSString stringWithFormat:@"%zd", self.registeredModel.amount];
-//    NSString * typeName;
     if (self.registeredModel.amount == 0) {
         [self.registeredArray insertObject:@{Localized(@"TotalAmountOfToken"): Localized(@"UnrestrictedIssue")} atIndex:2];
     } else {
-//        typeName = Localized(@"IncrementalIssue");
         [self.registeredArray insertObject:@{Localized(@"TotalAmountOfToken"): amount} atIndex:2];
     }
-//    [self.registeredArray insertObject:@{Localized(@"DistributionMode"): typeName} atIndex:2];
-//  @[@[Localized(@"TokenName"), Localized(@"TokenCode"), Localized(@"DistributionMode"), Localized(@"TotalAmountOfToken"), Localized(@"DistributionCost")], @[self.scanDic[@"data"][@"name"], self.scanDic[@"data"][@"code"], typeName, self.assetsDic[@"totalSupply"], @"0.01 BU"]];
     
     CGFloat assetInfoBgH = Margin_10 + [self.registeredArray count] * Margin_40;
     
@@ -111,32 +117,6 @@
         make.centerX.mas_equalTo(0);
         make.size.mas_equalTo(size);
     }];
-   
-//    // 登记资产确认
-//    "ConfirmationOfRegisteredAssets" = "登记资产确认";
-//    "ConfirmRegistrationInformation" = "请确认以下登记资产信息";
-//    "ConfirmationOfRegistration" = "确认登记";
-//    "RegistrationSuccess" = "登记成功";
-//    "RegistrationFailure" = "登记失败";
-//    "RegistrationTimeout" = "登记超时";
-//    "DistributionMode" = "发行方式";
-//    // 发行资产确认
-//    "IssueAssetsConfirmation" = "发行资产确认";
-//    "ConfirmAssetInformation" = "请确认以下发行资产信息";
-//    "TokenName" = "Token 名称";
-//    "TokenCode" = "Token 代码";
-//    "TotalAmountOfToken" = "Token 总量";
-//    "DistributionCost" = "发行费用";
-//    "ConfirmationOfDistribution" = "确认发行";
-//    "DistributionSuccess" = "发行成功";
-//    "DistributionFailure" = "发行失败";
-//    "DistributionTimeout" = "发行超时";
-//    "DistributionPrompt" = "请复制下方哈希地址，前往BUMO浏览器中查询发行结果";
-//    "TokenDecimalDigits" = "Token小数位数";
-//    "ATPVersion" = "ATP版本";
-//    "TokenDescription" = "Token描述";
-//    "IssuerAddress" = "发行方地址";
-//    "Hash" = "哈希";
     for (NSInteger i = 0; i < [self.registeredArray count]; i++) {
         NSString * titleStr = [[self.registeredArray[i] allKeys] firstObject];
         UIView * assetInfo = [self setAssetInfoWithTitle:titleStr info:self.registeredArray[i][titleStr]];
@@ -173,14 +153,13 @@
 
 - (void)confirmationAction
 {
-    int64_t balance = [HTTPManager getAccountBalance];
-    NSInteger amount = balance - [HTTPManager getBlockFees] - [Tools BU2MO:Registered_Cost];
+    int64_t amount = [HTTPManager getDataWithBalanceJudgmentWithCost:Registered_Cost];
     if (amount < 0) {
-        [MBProgressHUD wb_showInfo:@"您的余额不足，发行资产失败!"];
+        [MBProgressHUD showInfoMessage:Localized(@"RegisteredNotSufficientFunds")];
         return;
     }
-    [self.socket emit:@"token.register.processing" with:@[]];
-    PurseCipherAlertView * alertView = [[PurseCipherAlertView alloc] initWithConfrimBolck:^(NSString * _Nonnull password) {
+    [self.socket emit:Register_Processing with:@[]];
+    PurseCipherAlertView * alertView = [[PurseCipherAlertView alloc] initWithType:PurseCipherNormalType confrimBolck:^(NSString * _Nonnull password) {
         [self getRegisteredDataWithPassword:password];
     } cancelBlock:^{
     }];
@@ -194,13 +173,19 @@
         if (resultModel.errorCode == 0) {
             VC.state = 0;
             NSString * json = [self setResultDataWithCode:0 message:@"register success" hash: resultModel.transactionHash];
-            [self.socket emit:@"token.register.success" with:@[json]];
+            [self.socket emit:Register_Success with:@[json]];
         } else {
             VC.state = 1;
             NSString * json = [self setResultDataWithCode:1 message:@"register failure" hash: resultModel.transactionHash];
-            [self.socket emit:@"token.register.failure" with:@[json]];
-            [MBProgressHUD wb_showError:resultModel.errorDesc];
+            [self.socket emit:Register_Failure with:@[json]];
+            [MBProgressHUD showErrorMessage:resultModel.errorDesc];
         }
+        [self.socket on:Register_Success callback:^(NSArray* data, SocketAckEmitter* ack) {
+            [self.socket disconnect];
+        }];
+        [self.socket on:Register_Failure callback:^(NSArray* data, SocketAckEmitter* ack) {
+            [self.socket disconnect];
+        }];
         VC.registeredModel = self.registeredModel;
 //        [VC.listArray addObject:self.registeredArray];
         [self.navigationController pushViewController:VC animated:YES];
@@ -208,7 +193,10 @@
         RegisteredResultViewController * VC = [[RegisteredResultViewController alloc] init];
         VC.state = 2;
         NSString * json = [self setResultDataWithCode:2 message:@"register timeout" hash: resultModel.transactionHash];
-        [self.socket emit:@"token.register.timeout" with:@[json]];
+        [self.socket emit:Register_Timeout with:@[json]];
+        [self.socket on:Register_Timeout callback:^(NSArray* data, SocketAckEmitter* ack) {
+            [self.socket disconnect];
+        }];
         VC.registeredModel = self.registeredModel;
 //        [VC.listArray addObject:self.registeredArray];
         [self.navigationController pushViewController:VC animated:YES];
@@ -222,7 +210,7 @@
 //                           @"type": @(self.registeredModel.type),
                            @"total": @(self.registeredModel.amount),
                            @"decimals": @(self.registeredModel.decimals),
-                           @"version": @"1.0",
+                           @"version": ATP_Version,
                            @"desc": self.registeredModel.desc,
                            
                            @"fee": Registered_CostBU,
@@ -239,7 +227,11 @@
 }
 - (void)cancelAction
 {
-    [self.socket emit:@"token.register.cancel" with:@[Localized(@"Cancel")]];
+    [self.socket emit:Register_Cancel with:@[Localized(@"Cancel")]];
+    [self.socket on:Register_Cancel callback:^(NSArray* data, SocketAckEmitter* ack) {
+        [self.socket disconnect];
+    }];
+    [self.navigationController popViewControllerAnimated:YES];
 }
 - (UIView *)setAssetInfoWithTitle:(NSString *)title info:(NSString *)info
 {

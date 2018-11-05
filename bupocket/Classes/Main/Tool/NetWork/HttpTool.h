@@ -43,9 +43,10 @@
  *  @param success    成功后的回调
  *  @param failure    失败后的回调
  */
+/*
 + (void)POSTHtml:(NSString *)URLString
       parameters:(NSDictionary *)parameters
          success:(void(^)(id responseObject))success
          failure:(void(^)(NSError * error))failure;
-
+*/
 @end

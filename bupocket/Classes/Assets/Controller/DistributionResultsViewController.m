@@ -17,8 +17,6 @@
 //@property (nonatomic, strong) NSDictionary * dataDic;
 //@property (nonatomic, strong) NSMutableArray * infoArray;
 
-@property (nonatomic, strong) UIView * noNetWork;
-
 @end
 
 @implementation DistributionResultsViewController
@@ -36,6 +34,16 @@ static NSString * const DistributionDetailCellID = @"DistributionDetailCellID";
 
 - (void)viewDidLoad {
     [super viewDidLoad];
+    self.navigationItem.title = Localized(@"DistributionAssetsDetail");
+    
+    [self getData];
+    [self setupView];
+    [self popToRootVC];
+//    [self setupRefresh];
+    // Do any additional setup after loading the view.
+}
+- (void)getData
+{
     NSString * amount = [NSString stringWithFormat:@"%zd", self.registeredModel.amount];
     NSString * decimal  = [NSString stringWithFormat:@"%zd", self.distributionModel.decimals];
     // 发行成功失败
@@ -67,100 +75,11 @@ static NSString * const DistributionDetailCellID = @"DistributionDetailCellID";
     [self.listArray addObject:array];
     if (self.state != 2) {
         // 发行超时不显示
-        NSArray * transactionArray = @[@{Localized(@"DistributionCost"): Distribution_CostBU}, @{Localized(@"IssuerAddress"): [AccountTool account].purseAccount}, @{Localized(@"Hash"): self.distributionModel.transactionHash}];
+        NSArray * transactionArray = @[@{Localized(@"ActualTransactionCost"): Distribution_CostBU}, @{Localized(@"IssuerAddress"): [AccountTool account].purseAccount}, @{Localized(@"Hash"): self.distributionModel.transactionHash}];
         [self.listArray addObject:transactionArray];
     }
-    [self setupView];
-    [self popToRootVC];
-//    [self setupRefresh];
-    // Do any additional setup after loading the view.
-}
-- (void)setupRefresh
-{
-    self.tableView.mj_header = [MJRefreshNormalHeader headerWithRefreshingTarget:self refreshingAction:@selector(loadNewData)];
-    self.tableView.mj_header.automaticallyChangeAlpha = YES;
-    [self.tableView.mj_header beginRefreshing];
-    //    self.tableView.mj_footer = [MJRefreshAutoNormalFooter footerWithRefreshingTarget:self refreshingAction:@selector(loadMoreData)];
-    //    self.userTableView.mj_footer.hidden = YES;
-}
-- (void)loadNewData
-{
-//    [self loadData];
-}
-/*
-- (void)loadData
-{
-    [HTTPManager getOrderDetailsDataWithHash:self.listModel.txHash success:^(id responseObject) {
-        NSString * message = [responseObject objectForKey:@"msg"];
-        NSInteger code = [[responseObject objectForKey:@"errCode"] integerValue];
-        if (code == 0) {
-            self.tableView.tableHeaderView = self.headerView;
-            self.blockInfoModel = [BlockInfoModel mj_objectWithKeyValues:responseObject[@"data"][@"blockInfoRespBo"]];
-            self.txDetailModel = [TxDetailModel mj_objectWithKeyValues:responseObject[@"data"][@"txDeatilRespBo"]];
-            self.txInfoModel = [TxInfoModel mj_objectWithKeyValues:responseObject[@"data"][@"txInfoRespBo"]];
-            [self setListData];
-            //            self.listArray = [AssetsListModel mj_objectArrayWithKeyValuesArray:responseObject[@"data"] [@"tokenList"]];
-            //            NSString * amountStr = responseObject[@"data"][@"totalAmount"];
-            //            self.amount.text = [amountStr isEqualToString:@"~"] ? amountStr : [NSString stringWithFormat:@"≈%@", amountStr];
-            [self.tableView reloadData];
-        } else {
-            [MBProgressHUD wb_showInfo:message];
-        }
-        [self.tableView.mj_header endRefreshing];
-        self.noNetWork.hidden = YES;
-    } failure:^(NSError *error) {
-        [self.tableView.mj_header endRefreshing];
-        self.noNetWork.hidden = NO;
-        
-    }];
 }
 
-- (void)setListData
-{
-    NSMutableArray * infoTitleArray = [NSMutableArray arrayWithObjects:@"TX Hash", @"Source Address", @"Dest Address", @"Amount", @"TX Fee", @"Ledger Seq", @"Transaction Signature", nil];
-    
-    //
-    // , @"Public Key", @"Singed Data", @"Public Key", @"Singed Data"
-    self.infoArray = [NSMutableArray array];
-    NSMutableArray * detailArray = [NSMutableArray array];
-    // 转出方地址
-    [detailArray addObject:self.txDetailModel.sourceAddress];
-    // 转入方地址
-    [detailArray addObject:self.txDetailModel.destAddress];
-    [detailArray addObject:[NSString stringAppendingBUWithStr: self.txDetailModel.fee]];
-    [detailArray addObject:[DateTool getDateStringWithTimeStr:self.txDetailModel.applyTimeDate]];
-    [detailArray addObject:self.txDetailModel.originalMetadata];
-    [self.infoArray addObject:detailArray];
-    // TX Info
-    NSMutableArray * infoArray = [NSMutableArray array];
-    [infoArray addObject:self.txInfoModel.hashStr];
-    [infoArray addObject:self.txInfoModel.sourceAddress];
-    [infoArray addObject:self.txInfoModel.destAddress];
-    [infoArray addObject:[NSString stringAppendingBUWithStr:self.txInfoModel.amount]];
-    [infoArray addObject:[NSString stringAppendingBUWithStr:self.txInfoModel.fee]];
-    [infoArray addObject:self.txInfoModel.ledgerSeq];
-    [infoArray addObject:@"Transaction Signature"];
-    NSArray * signatureArray = [JsonTool dictionaryOrArrayWithJSONSString: self.txInfoModel.signatureStr];
-    for (NSInteger i = 0; i < signatureArray.count; i ++) {
-        [infoTitleArray addObject:@"Public Key"];
-        [infoArray addObject:signatureArray[i][@"publicKey"]];
-        [infoTitleArray addObject:@"Singed Data"];
-        [infoArray addObject:signatureArray[i][@"signData"]];
-    }
-    [self.infoArray addObject:infoArray];
-    
-    // Block Info
-    NSMutableArray * blockInfoArray = [NSMutableArray array];
-    [blockInfoArray addObject:self.blockInfoModel.seq];
-    [blockInfoArray addObject:self.blockInfoModel.hashStr];
-    [blockInfoArray addObject:self.blockInfoModel.previousHash];
-    [blockInfoArray addObject:self.blockInfoModel.txCount];
-    [blockInfoArray addObject:self.blockInfoModel.validatorsHash];
-    [blockInfoArray addObject:[DateTool getDateStringWithTimeStr:self.blockInfoModel.closeTimeDate]];
-    [self.infoArray addObject:blockInfoArray];
-    
-    self.listArray = @[@[Localized(@"OriginatorAdress"), Localized(@"RecipientAddress"), Localized(@"TransactionCost"), Localized(@"SendingTime"), Localized(@"Remarks")], infoTitleArray, @[@"Block Height", @"Block Hash", @"Prev Block Hash", @"TX Count", @"Validators Hash", @"Consensus Time"]];
-} */
 - (void)setupView
 {
     self.tableView = [[UITableView alloc] initWithFrame:CGRectMake(0, 0, DEVICE_WIDTH, DEVICE_HEIGHT) style:UITableViewStyleGrouped];
@@ -171,7 +90,6 @@ static NSString * const DistributionDetailCellID = @"DistributionDetailCellID";
     self.tableView.contentInset = UIEdgeInsetsMake(NavBarH, 0, SafeAreaBottomH, 0);
     //    [self.tableView registerClass:[DetailListViewCell class] forCellReuseIdentifier:@"CellID"];
     [self.view addSubview:self.tableView];
-    self.noNetWork = [Encapsulation showNoNetWorkWithSuperView:self.view target:self action:@selector(setupRefresh)];
     //    transferResults.bounds = CGRectMake(0, 0, DEVICE_WIDTH, ScreenScale(120));
     //    transferResults.backgroundColor = [UIColor whiteColor];
     self.tableView.tableHeaderView = self.headerView;
@@ -194,7 +112,7 @@ static NSString * const DistributionDetailCellID = @"DistributionDetailCellID";
             imageName = @"AssetsTimeout";
             result = Localized(@"DistributionTimeout");
             UILabel * prompt = [[UILabel alloc] init];
-            prompt.font = FONT(14);
+            prompt.font = TITLE_FONT;
             prompt.textColor = COLOR_9;
             prompt.numberOfLines = 0;
             prompt.textAlignment = NSTextAlignmentCenter;
@@ -266,6 +184,7 @@ static NSString * const DistributionDetailCellID = @"DistributionDetailCellID";
     DetailListViewCell * cell = [DetailListViewCell cellWithTableView:tableView identifier:cellID];
     cell.title.text = [[self.listArray[indexPath.section][indexPath.row] allKeys] firstObject];
     cell.infoTitle.text = [[self.listArray[indexPath.section][indexPath.row] allValues] firstObject];
+    cell.selectionStyle = UITableViewCellSelectionStyleNone;
     return cell;
 }
 - (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath

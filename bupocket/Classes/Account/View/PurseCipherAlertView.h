@@ -9,6 +9,11 @@
 #import <UIKit/UIKit.h>
 #import "UIView+CustomAlertView.h"
 
+typedef NS_ENUM(NSInteger, PurseCipherType) {
+    PurseCipherNormalType,
+    PurseCipherWarnType
+};
+
 NS_ASSUME_NONNULL_BEGIN
 
 typedef void (^OnCancleButtonClick)(void);
@@ -19,7 +24,7 @@ typedef void (^OnSureButtonClick)(NSString * password);
 @property (nonatomic, copy) OnCancleButtonClick cancleBlock;
 @property (nonatomic, copy) OnSureButtonClick sureBlock;
 
-- (instancetype)initWithConfrimBolck:(void (^)(NSString * password))confrimBlock cancelBlock:(void (^)(void))cancelBlock;
+- (instancetype)initWithType:(PurseCipherType)type confrimBolck:(void (^)(NSString * password))confrimBlock cancelBlock:(void (^)(void))cancelBlock;
 
 @end
 

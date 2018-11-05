@@ -16,6 +16,7 @@
 #import "HMScannerController.h"
 #import "RegisteredAssetsViewController.h"
 #import "DistributionOfAssetsViewController.h"
+#import "TransferAccountsViewController.h"
 
 #import "RegisteredModel.h"
 #import "DistributionModel.h"
@@ -108,7 +109,7 @@
             //                [self.tableView.mj_footer endRefreshing];
             //            }
         } else {
-            [MBProgressHUD wb_showInfo:message];
+            [MBProgressHUD showErrorMessage:message];
         }
         [self.tableView.mj_header endRefreshing];
         self.noNetWork.hidden = YES;
@@ -164,6 +165,8 @@
             make.right.equalTo(headerBg.mas_right).offset(- Margin_15);
         }];
         UIImageView * userIcon = [[UIImageView alloc] initWithImage:[UIImage imageNamed:@"userIcon_placeholder"]];
+        [userIcon addGestureRecognizer:[[UITapGestureRecognizer alloc] initWithTarget:self action:@selector(userIconAction)]];
+        userIcon.userInteractionEnabled = YES;
         [headerBg addSubview:userIcon];
         [userIcon mas_makeConstraints:^(MASConstraintMaker *make) {
             make.top.equalTo(headerBg.mas_top).offset(MAIN_HEIGHT + StatusBarHeight);
@@ -269,12 +272,24 @@
 {
 //    __weak typeof (self) weakself = self;
     HMScannerController *scanner = [HMScannerController scannerWithCardName:nil avatar:nil completion:^(NSString *stringValue) {
-        self.scanDic = [JsonTool dictionaryOrArrayWithJSONSString:[NSString dencode:stringValue]];
-        if (self.scanDic) {
-            self.registeredModel = [RegisteredModel mj_objectWithKeyValues:self.scanDic[@"data"]];
-            [self getAssetsStateData];
+        // 判断是否是钱包地址
+        if ([Keypair isAddressValid: stringValue]) {
+            TransferAccountsViewController * VC = [[TransferAccountsViewController alloc] init];
+            for (AssetsListModel * listModel in self.listArray) {
+                if ([listModel.assetCode isEqualToString:@"BU"]) {
+                    VC.listModel = listModel;
+                }
+            }
+            VC.address = stringValue;
+            [self.navigationController pushViewController:VC animated:YES];
         } else {
-            [MBProgressHUD wb_showWarning:@"扫描结果无效"];
+            self.scanDic = [JsonTool dictionaryOrArrayWithJSONSString:[NSString dencode:stringValue]];
+            if (self.scanDic) {
+                self.registeredModel = [RegisteredModel mj_objectWithKeyValues:self.scanDic[@"data"]];
+                [self getAssetsStateData];
+            } else {
+                [MBProgressHUD showWarnMessage:@"扫描结果无效"];
+            }
         }
     }];
     [scanner setTitleColor:[UIColor whiteColor] tintColor:MAIN_COLOR];
@@ -291,7 +306,7 @@
         if ([self.scanDic[@"action"] isEqualToString:@"token.register"]) {
             if (code == 0) {
                 // 已登记
-                [MBProgressHUD wb_showInfo:@"您已登记过该资产！"];
+                [self alertViewWithMessage:Localized(@"RegisteredAsset")];
             } else {
                 // 未登记
                 RegisteredAssetsViewController * VC = [[RegisteredAssetsViewController alloc] init];
@@ -300,25 +315,35 @@
                 [self.navigationController pushViewController:VC animated:YES];
             }
         } else if ([self.scanDic[@"action"] isEqualToString:@"token.issue"]) {
-            CGFloat isOverFlow = [self.distributionModel.totalSupply floatValue] - [self.distributionModel.actualSupply floatValue] - self.registeredModel.amount;
-            if (isOverFlow > 0) {
-                if (code == 0) {
+            if (code == 0) {
+                CGFloat isOverFlow = [self.distributionModel.totalSupply floatValue] - [self.distributionModel.actualSupply floatValue] - self.registeredModel.amount;
+                if ([self.distributionModel.totalSupply floatValue] != 0 && isOverFlow < 0) {
+                    // 已发行
+                    [self alertViewWithMessage:Localized(@"IssuedAssets")];
+                } else {
+                    // 已登记
                     DistributionOfAssetsViewController * VC = [[DistributionOfAssetsViewController alloc] init];
                     VC.uuid = self.scanDic[@"uuID"];
                     VC.distributionModel = self.distributionModel;
                     VC.registeredModel = self.registeredModel;
                     [self.navigationController pushViewController:VC animated:YES];
-                } else {
-                    // 未登记
-                    [MBProgressHUD wb_showInfo:@"您所发行的Token代码：AG 暂未登记无法发行"];
                 }
             } else {
-                [MBProgressHUD wb_showInfo:@"您已发行过该资产！"];
+                // 未登记
+                [self alertViewWithMessage:Localized(@"TemporarilyRegisteredAssets")];
             }
         }
     } failure:^(NSError *error) {
         
     }];
+}
+- (void)alertViewWithMessage:(NSString *)message
+{
+    UIAlertController * alertController = [UIAlertController alertControllerWithTitle:nil message:message preferredStyle:UIAlertControllerStyleAlert];
+    UIAlertAction * cancelAction = [UIAlertAction actionWithTitle:Localized(@"IGotIt") style:UIAlertActionStyleCancel handler:nil];
+    [alertController addAction:cancelAction];
+//    UIAlertController * alertController = [Encapsulation alertControllerWithCancelTitle:Localized(@"IGotIt") title:nil message:message];
+    [self presentViewController:alertController animated:YES completion:nil];
 }
 #pragma mark - backup
 - (void)backupAction:(UIButton *)button
@@ -334,7 +359,7 @@
     NSString * address = [AccountTool account].purseAccount;
     PurseAddressAlertView * alertView = [[PurseAddressAlertView alloc] initWithPurseAddress:address confrimBolck:^{
         [[UIPasteboard generalPasteboard] setString:address];
-        [MBProgressHUD wb_showMessage:@"已复制"];
+        [MBProgressHUD showTipMessageInWindow:@"已复制"];
     } cancelBlock:^{
         
     }];
@@ -343,9 +368,9 @@
     
 
 #pragma mark - userIcon
-- (void)userIconAction:(UIButton *)button
+- (void)userIconAction
 {
-    
+    [self.navigationController pushViewController:[[MyIdentityViewController alloc] init] animated:YES];
 }
 - (void)addAssetsAcrion
 {

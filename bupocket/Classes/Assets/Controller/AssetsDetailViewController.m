@@ -54,6 +54,7 @@
     [super viewDidLoad];
     self.navigationItem.title = self.listModel.assetCode;
     [self setupView];
+    self.pageindex = 1;
     [self setupRefresh];
     // Do any additional setup after loading the view.
 }
@@ -83,7 +84,7 @@
             self.tableView.tableHeaderView = self.headerBg;
              self.assets.text = [NSString stringWithFormat:@"%@%@", responseObject[@"data"][@"tokenBalance"], self.listModel.assetCode];
             NSString * amountStr = responseObject[@"data"][@"assetAmount"];
-            self.amount.text = [amountStr isEqualToString:@"~"] ? amountStr : [NSString stringWithFormat:@"≈￥%@", amountStr];;
+            self.amount.text = [amountStr isEqualToString:@"~"] ? amountStr : [NSString stringWithFormat:@"≈￥%@", amountStr];
             NSArray * listArray = [AssetsDetailModel mj_objectArrayWithKeyValuesArray:responseObject[@"data"] [@"txRecord"]];
             if (pageindex == 1) {
                 // 清除所有旧数据
@@ -99,7 +100,7 @@
             }
             [self.tableView reloadData];
         } else {
-            [MBProgressHUD wb_showInfo:message];
+            [MBProgressHUD showErrorMessage:message];
         }
         [self.tableView.mj_header endRefreshing];
         (self.listArray.count > 0) ? (self.tableView.tableFooterView = [UIView new]) : (self.tableView.tableFooterView = self.noData);
@@ -129,7 +130,7 @@
 {
     if (!_noData) {
         _noData = [[UIView alloc] initWithFrame:CGRectMake(0, 0, DEVICE_WIDTH, ScreenScale(250))];
-        UIButton * noDataBtn = [Encapsulation showNoTransactionRecordWithSuperView:self.noData frame:CGRectMake(0, Margin_40, DEVICE_WIDTH, ScreenScale(160))];
+        UIButton * noDataBtn = [Encapsulation showNoDataWithTitle:Localized(@"NoTransactionRecord") imageName:@"NoTransactionRecord" superView:self.noData frame:CGRectMake(0, Margin_40, DEVICE_WIDTH, ScreenScale(160))];
         noDataBtn.hidden = NO;
         [_noData addSubview:noDataBtn];
     }
@@ -189,14 +190,14 @@
         CustomButton * scanBtn = [[CustomButton alloc] init];
         scanBtn.layoutMode = HorizontalNormal;
         [scanBtn setTitleColor:[UIColor whiteColor] forState:UIControlStateNormal];
-        scanBtn.titleLabel.font = FONT(14);
+        scanBtn.titleLabel.font = TITLE_FONT;
         [scanBtn setTitle:Localized(@"AssetsDetailScan") forState:UIControlStateNormal];
         [scanBtn setImage:[UIImage imageNamed:@"assetsDetail_scan"] forState:UIControlStateNormal];
         [scanBtn addTarget:self action:@selector(scanAction:) forControlEvents:UIControlEventTouchUpInside];
         //    .titleLabel.lineBreakMode = NSLineBreakByTruncatingTail;
         [headerBg addSubview: scanBtn];
         [scanBtn setViewSize:CGSizeMake(btnW, MAIN_HEIGHT) borderWidth:0 borderColor:nil borderRadius:ScreenScale(3)];
-        scanBtn.backgroundColor = COLOR(@"5745C3");
+        scanBtn.backgroundColor = NAVITEM_COLOR;
         [scanBtn mas_makeConstraints:^(MASConstraintMaker *make) {
             make.bottom.equalTo(headerView.mas_bottom).offset(-ScreenScale(18));
             make.left.equalTo(headerBg.mas_left).offset(Margin_12);
@@ -205,7 +206,7 @@
         CustomButton * transferAccounts = [[CustomButton alloc] init];
         transferAccounts.layoutMode = HorizontalNormal;
         [transferAccounts setTitleColor:[UIColor whiteColor] forState:UIControlStateNormal];
-        transferAccounts.titleLabel.font = FONT(14);
+        transferAccounts.titleLabel.font = TITLE_FONT;
         [transferAccounts setTitle:Localized(@"TransferAccounts") forState:UIControlStateNormal];
         [transferAccounts setImage:[UIImage imageNamed:@"TransferAccounts"] forState:UIControlStateNormal];
         [transferAccounts addTarget:self action:@selector(transferAccountsAction:) forControlEvents:UIControlEventTouchUpInside];
@@ -236,8 +237,10 @@
 - (void)scanAction:(UIButton *)button
 {
     HMScannerController *scanner = [HMScannerController scannerWithCardName:nil avatar:nil completion:^(NSString *stringValue) {
-        [MBProgressHUD wb_showMessage:[NSString stringWithFormat:@"扫描结果:%@", stringValue]];
-                NSLog(@"%@", stringValue);
+        TransferAccountsViewController * VC = [[TransferAccountsViewController alloc] init];
+        VC.listModel = self.listModel;
+        VC.address = stringValue;
+        [self.navigationController pushViewController:VC animated:YES];
 //        if ([stringValue hasPrefix:@"hyck:"]) {
 //            [self getDataWithURL:Interface_ScanningPayment type:0 vaule:[stringValue substringFromIndex:5] pageindex:0];
 //        } else {
@@ -262,7 +265,6 @@
 {
     TransferAccountsViewController * VC = [[TransferAccountsViewController alloc] init];
     VC.listModel = self.listModel;
-    VC.navigationItem.title = @"BU转账";
     [self.navigationController pushViewController:VC animated:YES];
 }
 

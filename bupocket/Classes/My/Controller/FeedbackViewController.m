@@ -12,6 +12,8 @@
 @interface FeedbackViewController ()<UITextViewDelegate, UITextFieldDelegate>
 
 @property (nonatomic, strong) PlaceholderTextView * feedbackText;
+@property (nonatomic, strong) UITextField * contactField;
+@property (nonatomic, strong) UIButton * submit;
 
 @end
 
@@ -59,6 +61,7 @@
     textField.clearButtonMode = UITextFieldViewModeWhileEditing;
     textField.keyboardType = UIKeyboardTypePhonePad;
     textField.delegate = self;
+    [textField addTarget:self action:@selector(textChange:) forControlEvents:UIControlEventEditingChanged];
     [self.view addSubview:textField];
     [textField mas_makeConstraints:^(MASConstraintMaker *make) {
         make.top.equalTo(lineView.mas_bottom).offset(ScreenScale(55));
@@ -66,6 +69,7 @@
         make.right.equalTo(self.view.mas_right).offset(-Margin_30);
         make.height.mas_equalTo(Margin_40);
     }];
+    self.contactField = textField;
     UIView * line = [[UIView alloc] init];
     line.backgroundColor = COLOR(@"E3E3E3");
     [self.view addSubview:line];
@@ -74,21 +78,47 @@
         make.left.right.equalTo(lineView);
         make.height.mas_equalTo(LINE_WIDTH);
     }];
-    UIButton * submit = [UIButton createButtonWithTitle:Localized(@"Submit") TextFont:18 TextColor:[UIColor whiteColor] Target:self Selector:@selector(submitAction)];
+    UIButton * submit = [UIButton createButtonWithTitle:Localized(@"Submission") TextFont:18 TextColor:[UIColor whiteColor] Target:self Selector:@selector(submitAction)];
     submit.layer.masksToBounds = YES;
     submit.clipsToBounds = YES;
     submit.layer.cornerRadius = ScreenScale(4);
-    submit.backgroundColor = MAIN_COLOR;
     [self.view addSubview:submit];
     [submit mas_makeConstraints:^(MASConstraintMaker *make) {
         make.bottom.equalTo(self.view.mas_bottom).offset(-Margin_30 - SafeAreaBottomH);
         make.left.right.equalTo(self.feedbackText);
         make.height.mas_equalTo(MAIN_HEIGHT);
     }];
+    self.submit = submit;
+    self.submit.enabled = NO;
+    self.submit.backgroundColor = DISABLED_COLOR;
 }
+
+
 - (void)submitAction
 {
-    
+    if (self.feedbackText.text.length > SuggestionsContent_MAX) {
+        [MBProgressHUD showInfoMessage:Localized(@"SuggestionsContentOverlength")];
+        return;
+    }
+    if (self.contactField.text.length > MAX_LENGTH) {
+        [MBProgressHUD showInfoMessage:Localized(@"ContactOverlength")];
+        return;
+    }
+    [self getData];
+}
+- (void)getData
+{
+    [HTTPManager getFeedbackDataWithContent:self.feedbackText.text contact:self.contactField.text success:^(id responseObject) {
+        NSString * message = [responseObject objectForKey:@"msg"];
+        NSInteger code = [[responseObject objectForKey:@"errCode"] integerValue];
+        if (code == 0) {
+            [MBProgressHUD showSuccessMessage:Localized(@"SubmissionOfSuccess")];
+        } else {
+            [MBProgressHUD showErrorMessage:message];
+        }
+    } failure:^(NSError *error) {
+        
+    }];
 }
 - (PlaceholderTextView *)feedbackText
 {
@@ -111,6 +141,29 @@
     }
     return _feedbackText;
 }
+- (void)textViewDidChange:(UITextView *)textView
+{
+    [self judgeHasText];
+    NSString * content = textView.text;
+    if (content.length > SuggestionsContent_MAX) {
+        NSString * contentText = [content substringToIndex:SuggestionsContent_MAX];
+        [textView setText:contentText];
+    }
+}
+- (void)textChange:(UITextField *)textField
+{
+    [self judgeHasText];
+}
+- (void)judgeHasText
+{
+    if (self.contactField.hasText && self.feedbackText.hasText) {
+        self.submit.enabled = YES;
+        self.submit.backgroundColor = MAIN_COLOR;
+    } else {
+        self.submit.enabled = NO;
+        self.submit.backgroundColor = DISABLED_COLOR;
+    }
+}
 - (UIView *)setViewWithTitle:(NSString *)title
 {
     UIView * viewBg = [[UIView alloc] init];
@@ -132,6 +185,22 @@
         make.right.equalTo(viewBg.mas_right).offset(-ScreenScale(22));
     }];
     return viewBg;
+}
+- (BOOL)textField:(UITextField *)textField shouldChangeCharactersInRange:(NSRange)range replacementString:(NSString *)string
+{
+    NSString * str = [textField.text stringByReplacingCharactersInRange:range withString:string];
+    if (string.length == 0) {
+        return YES;
+    }
+    if (textField == _contactField) {
+        if (str.length > MAX_LENGTH) {
+            textField.text = [str substringToIndex:MAX_LENGTH];
+            return NO;
+        } else {
+            return YES;
+        }
+    }
+    return YES;
 }
 /*
 #pragma mark - Navigation

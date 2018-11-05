@@ -66,7 +66,7 @@
     _createIdentity.clipsToBounds = YES;
     _createIdentity.layer.cornerRadius = ScreenScale(4);
     _createIdentity.enabled = NO;
-    _createIdentity.backgroundColor = COLOR(@"9AD9FF");
+    _createIdentity.backgroundColor = DISABLED_COLOR;
     [self.view addSubview:_createIdentity];
     
     [_purseName mas_makeConstraints:^(MASConstraintMaker *make) {
@@ -96,7 +96,7 @@
 {
     if (!_memorizingWords) {
         _memorizingWords = [[PlaceholderTextView alloc] init];
-        _memorizingWords.font = FONT(14);
+        _memorizingWords.font = TITLE_FONT;
         _memorizingWords.textColor = COLOR_6;
         _memorizingWords.placeholderColor = COLOR(@"B2B2B2");
         _memorizingWords.placeholder = Localized(@"MnemonicPrompt");
@@ -145,7 +145,7 @@
         _createIdentity.backgroundColor = MAIN_COLOR;
     } else {
         _createIdentity.enabled = NO;
-        _createIdentity.backgroundColor = COLOR(@"9AD9FF");
+        _createIdentity.backgroundColor = DISABLED_COLOR;
     }
 }
 - (void)secureAction:(UIButton *)button
@@ -184,9 +184,12 @@
 - (void)setData
 {
     NSArray * words = [_memorizingWords.text componentsSeparatedByString:@" "];
+    if (words.count != NumberOf_MnemonicWords) {
+        [MBProgressHUD showInfoMessage:Localized(@"MnemonicIsIncorrect")];
+        return;
+    }
     NSData * random = [Mnemonic randomFromMnemonicCode: words];
     [HTTPManager setAccountDataWithRandom:random password:self.pursePassword.text identityName:self.purseName.text success:^(id responseObject) {
-        [MBProgressHUD wb_showSuccess:@"身份恢复成功"];
         [UIApplication sharedApplication].keyWindow.rootViewController = [[TabBarViewController alloc] init];
         NSUserDefaults * defaults = [NSUserDefaults standardUserDefaults];
         [defaults setBool:YES forKey:ifCreated];
@@ -241,18 +244,18 @@
 - (void)confirmUpdate
 {
     if ([RegexPatternTool validateUserName:_purseName.text] == NO) {
-        [MBProgressHUD wb_showInfo:@"钱包名只允许输入字母、汉字、数字、下划线，并且长度不能超过20个字符"];
+        [MBProgressHUD showInfoMessage:Localized(@"WalletNameFormatIncorrect")];
         return;
     }
     if ([RegexPatternTool validatePassword:_pursePassword.text] == NO) {
-        [MBProgressHUD wb_showInfo:@"密码长度为8~20个字符，且内容仅限字母和数字"];
+        [MBProgressHUD showInfoMessage:Localized(@"CryptographicFormat")];
         return;
     }
-    if (![_confirmPassword.text isEqualToString:_confirmPassword.text]) {
-        [MBProgressHUD wb_showInfo:@"密码与确认密码不一致"];
+    if (![_pursePassword.text isEqualToString:_confirmPassword.text]) {
+        [MBProgressHUD showInfoMessage:Localized(@"PasswordIsDifferent")];
         return;
     }
-    UIAlertController * alertController = [Encapsulation alertControllerWithTitle:nil message:Localized(@"ConfirmRecoveryID")];
+    UIAlertController * alertController = [Encapsulation alertControllerWithCancelTitle:Localized(@"Cancel") title:nil message:Localized(@"ConfirmRecoveryID")];
     UIAlertAction * okAction = [UIAlertAction actionWithTitle:Localized(@"Confirm") style:UIAlertActionStyleDefault handler:^(UIAlertAction * _Nonnull action) {
         [self setData];
     }];

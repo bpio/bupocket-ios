@@ -49,7 +49,7 @@
     }];
     
     UILabel * infoLabel = [[UILabel alloc] init];
-    infoLabel.font = FONT(14);
+    infoLabel.font = TITLE_FONT;
     infoLabel.textColor = COLOR_9;
     infoLabel.numberOfLines = 0;
     infoLabel.textAlignment = NSTextAlignmentCenter;
@@ -93,7 +93,7 @@
         VC.mnemonicArray = self.mnemonicArray;
         [self.navigationController pushViewController:VC animated:YES];
     } else {
-        PurseCipherAlertView * alertView = [[PurseCipherAlertView alloc] initWithConfrimBolck:^(NSString * _Nonnull password) {
+        PurseCipherAlertView * alertView = [[PurseCipherAlertView alloc] initWithType:PurseCipherNormalType confrimBolck:^(NSString * _Nonnull password) {
             NSData * random = [NSString decipherKeyStoreWithPW:password randomKeyStoreValueStr:[AccountTool account].randomNumber];
             // 随机数 -> 生成助记词
 //            NSArray * words = [Mnemonic generateMnemonicCode: [random copy]];
