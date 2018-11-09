@@ -22,7 +22,9 @@ NS_ASSUME_NONNULL_BEGIN
 @property (nonatomic, assign) NSInteger isOverFlow;
 @property (nonatomic, copy) NSString * tokenDescription;
 @property (nonatomic, copy) NSString * version;
+
 @property (nonatomic, copy) NSString * transactionHash;
+@property (nonatomic, copy) NSString * distributionFee;
 
 @end
 

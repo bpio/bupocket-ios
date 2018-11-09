@@ -32,14 +32,14 @@
         UIView * titleView = [self setViewWithTitle:array[i]];
         [self.view addSubview:titleView];
         [titleView mas_makeConstraints:^(MASConstraintMaker *make) {
-            make.top.equalTo(self.view.mas_top).offset(NavBarH + ScreenScale(15) + (ScreenScale(170) * i));
+            make.top.equalTo(self.view.mas_top).offset(Margin_15 + (ScreenScale(170) * i));
             make.left.right.equalTo(self.view);
             make.height.mas_equalTo(MAIN_HEIGHT);
         }];
     }
     [self.view addSubview:self.feedbackText];
     [self.feedbackText mas_makeConstraints:^(MASConstraintMaker *make) {
-        make.top.equalTo(self.view.mas_top).offset(NavBarH + ScreenScale(15) + MAIN_HEIGHT);
+        make.top.equalTo(self.view.mas_top).offset(Margin_15 + MAIN_HEIGHT);
         make.left.equalTo(self.view.mas_left).offset(Margin_12);
         make.right.equalTo(self.view.mas_right).offset(-Margin_12);
         make.height.mas_equalTo(ScreenScale(120));
@@ -78,10 +78,7 @@
         make.left.right.equalTo(lineView);
         make.height.mas_equalTo(LINE_WIDTH);
     }];
-    UIButton * submit = [UIButton createButtonWithTitle:Localized(@"Submission") TextFont:18 TextColor:[UIColor whiteColor] Target:self Selector:@selector(submitAction)];
-    submit.layer.masksToBounds = YES;
-    submit.clipsToBounds = YES;
-    submit.layer.cornerRadius = ScreenScale(4);
+    UIButton * submit = [UIButton createButtonWithTitle:Localized(@"Submission") isEnabled:NO Target:self Selector:@selector(submitAction)];
     [self.view addSubview:submit];
     [submit mas_makeConstraints:^(MASConstraintMaker *make) {
         make.bottom.equalTo(self.view.mas_bottom).offset(-Margin_30 - SafeAreaBottomH);
@@ -89,32 +86,30 @@
         make.height.mas_equalTo(MAIN_HEIGHT);
     }];
     self.submit = submit;
-    self.submit.enabled = NO;
-    self.submit.backgroundColor = DISABLED_COLOR;
 }
 
 
 - (void)submitAction
 {
     if (self.feedbackText.text.length > SuggestionsContent_MAX) {
-        [MBProgressHUD showInfoMessage:Localized(@"SuggestionsContentOverlength")];
+        [MBProgressHUD showTipMessageInWindow:Localized(@"SuggestionsContentOverlength")];
         return;
     }
     if (self.contactField.text.length > MAX_LENGTH) {
-        [MBProgressHUD showInfoMessage:Localized(@"ContactOverlength")];
+        [MBProgressHUD showTipMessageInWindow:Localized(@"ContactOverlength")];
         return;
     }
     [self getData];
 }
 - (void)getData
 {
-    [HTTPManager getFeedbackDataWithContent:self.feedbackText.text contact:self.contactField.text success:^(id responseObject) {
+    [[HTTPManager shareManager] getFeedbackDataWithContent:self.feedbackText.text contact:self.contactField.text success:^(id responseObject) {
         NSString * message = [responseObject objectForKey:@"msg"];
         NSInteger code = [[responseObject objectForKey:@"errCode"] integerValue];
         if (code == 0) {
             [MBProgressHUD showSuccessMessage:Localized(@"SubmissionOfSuccess")];
         } else {
-            [MBProgressHUD showErrorMessage:message];
+            [MBProgressHUD showTipMessageInWindow:message];
         }
     } failure:^(NSError *error) {
         
@@ -124,18 +119,8 @@
 {
     if (!_feedbackText) {
         _feedbackText = [[PlaceholderTextView alloc] init];
-        _feedbackText.font = FONT(15);
-        _feedbackText.textColor = COLOR_6;
-        _feedbackText.placeholderColor = COLOR(@"B2B2B2");
         _feedbackText.placeholder = Localized(@"PleaseEnterQOrS");
         _feedbackText.delegate = self;
-        CGFloat xMargin = ScreenScale(8), yMargin = ScreenScale(8);
-        // 使用textContainerInset设置top、left、right
-        _feedbackText.textContainerInset = UIEdgeInsetsMake(yMargin, xMargin, 0, xMargin);
-        //当光标在最后一行时，始终显示低边距，需使用contentInset设置bottom.
-        _feedbackText.contentInset = UIEdgeInsetsMake(0, 0, yMargin, 0);
-        //防止在拼音打字时抖动
-        _feedbackText.layoutManager.allowsNonContiguousLayout = NO;
 //        _feedbackText.layer.masksToBounds = YES;
 //        _feedbackText.layer.cornerRadius = ScreenScale(5);
     }
@@ -168,17 +153,8 @@
 {
     UIView * viewBg = [[UIView alloc] init];
     UILabel * header = [[UILabel alloc] init];
-    header.font = FONT(16);
-    header.textColor = COLOR_9;
     [viewBg addSubview:header];
-    NSMutableAttributedString * attr = [[NSMutableAttributedString alloc] initWithString:[NSString stringWithFormat:@"| %@", title]];
-    //        NSMutableDictionary * dic = [NSMutableDictionary dictionary];
-    //        dic[NSFontAttributeName] = FONT(15);
-    //        dic[NSForegroundColorAttributeName] = TITLE_COLOR;
-    //        [attr addAttributes:dic range:NSMakeRange(3, str.length - 3)];
-    [attr addAttribute:NSForegroundColorAttributeName value:MAIN_COLOR range:NSMakeRange(0, 1)];
-    [attr addAttribute:NSFontAttributeName value:FONT_Bold(18) range:NSMakeRange(0, 1)];
-    header.attributedText = attr;
+    header.attributedText = [Encapsulation attrTitle:title ifRequired:NO];
     [header mas_makeConstraints:^(MASConstraintMaker *make) {
         make.top.bottom.equalTo(viewBg);
         make.left.equalTo(viewBg.mas_left).offset(ScreenScale(22));

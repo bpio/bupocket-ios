@@ -109,8 +109,8 @@
     
     [self.transferPrompt mas_makeConstraints:^(MASConstraintMaker *make) {
         make.top.equalTo(self.confirmationOfTransfer.mas_bottom).offset(ScreenScale(18));
-        make.left.equalTo(self.mas_left).offset(ScreenScale(15));
-        make.right.equalTo(self.mas_right).offset(-ScreenScale(15));
+        make.left.equalTo(self.mas_left).offset(Margin_15);
+        make.right.equalTo(self.mas_right).offset(-Margin_15);
     }];
     
     [self.lineView mas_makeConstraints:^(MASConstraintMaker *make) {
@@ -166,9 +166,8 @@
 - (UIButton *)submission
 {
     if (!_submission) {
-        _submission = [UIButton createButtonWithTitle:Localized(@"Submission") TextFont:18 TextColor:[UIColor whiteColor] Target:self Selector:@selector(submissionClick)];
-        [_submission setViewSize:CGSizeMake(DEVICE_WIDTH - Margin_40, MAIN_HEIGHT) borderWidth:0 borderColor:nil borderRadius:ScreenScale(4)];
-        _submission.backgroundColor = MAIN_COLOR;
+        _submission = [UIButton createButtonWithTitle:Localized(@"Submission") isEnabled:YES Target:self Selector:@selector(submissionClick)];
+//        [_submission setViewSize:CGSizeMake(DEVICE_WIDTH - Margin_40, MAIN_HEIGHT) borderWidth:0 borderColor:nil borderRadius:MAIN_FILLET];
     }
     return _submission;
 }

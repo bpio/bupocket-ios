@@ -21,11 +21,14 @@
 
 #import "XHToast.h"
 #import "MJRefresh.h"
+#import "CustomRefreshHeader.h"
 #import "MJExtension.h"
 //#import <MBProgressHUD.h>
 
 #import "HTTPManager.h"
+//#import <MBProgressHUD+JDragon.h>
 #import "MBProgressHUD+JDragon.h"
+
 #import "JsonTool.h"
 #import "DateTool.h"
 //#import "MBProgressHUD+JDragon.h"

@@ -28,6 +28,7 @@ static NSString * const Issue_Success = @"token.issue.success";
 static NSString * const Issue_Failure = @"token.issue.failure";
 static NSString * const Issue_Timeout = @"token.issue.timeout";
 static NSString * const Issue_Cancel = @"token.issue.Cancel";
+static NSString * const Issue_Leave = @"leaveRoomForApp";
 
 @implementation DistributionOfAssetsViewController
 
@@ -52,7 +53,7 @@ static NSString * const Issue_Cancel = @"token.issue.Cancel";
 }
 - (void)connectSocket
 {
-    NSURL* url = [[NSURL alloc] initWithString:URLPREFIX_Socket];
+    NSURL* url = [[NSURL alloc] initWithString:[HTTPManager shareManager].pushMessageSocketUrl];
     self.manager = [[SocketManager alloc] initWithSocketURL:url config:@{@"log": @YES, @"compress": @YES}];
     self.socket = self.manager.defaultSocket;
     __weak typeof(self) weakself = self;
@@ -74,8 +75,8 @@ static NSString * const Issue_Cancel = @"token.issue.Cancel";
 //    self.scrollView.showsHorizontalScrollIndicator = YES;
 //    self.scrollView.showsVerticalScrollIndicator = YES;
 //    scrollView.contentSize = imageView.image.size;
-    self.scrollView.contentInset = UIEdgeInsetsMake(NavBarH, 0, SafeAreaBottomH, 0);
-    self.scrollView.scrollsToTop = NO;
+    self.scrollView.contentInset = UIEdgeInsetsMake(0, 0, SafeAreaBottomH + NavBarH + Margin_10, 0);
+//    self.scrollView.scrollsToTop = NO;
 //    self.scrollView.delegate = self;
     [self.view addSubview:self.scrollView];
 //    self.noDataBtn = [Encapsulation showNoDataWithSuperView:self.view frame:self.view.frame];
@@ -125,9 +126,8 @@ static NSString * const Issue_Cancel = @"token.issue.Cancel";
     }
     
     CGSize btnSize = CGSizeMake(DEVICE_WIDTH - Margin_24, MAIN_HEIGHT);
-    UIButton * confirmation = [UIButton createButtonWithTitle:Localized(@"ConfirmationOfDistribution") TextFont:18 TextColor:[UIColor whiteColor] Target:self Selector:@selector(confirmationAction)];
-    [confirmation setViewSize:btnSize borderWidth:0 borderColor:nil borderRadius:ScreenScale(4)];
-    confirmation.backgroundColor = MAIN_COLOR;
+    UIButton * confirmation = [UIButton createButtonWithTitle:Localized(@"ConfirmationOfDistribution") isEnabled:YES Target:self Selector:@selector(confirmationAction)];
+//    [confirmation setViewSize:btnSize borderWidth:0 borderColor:nil borderRadius:MAIN_FILLET];
     [self.scrollView addSubview:confirmation];
     [confirmation mas_makeConstraints:^(MASConstraintMaker *make) {
 //        make.top.mas_equalTo(DEVICE_HEIGHT - ScreenScale(145) - SafeAreaBottomH - NavBarH);
@@ -135,8 +135,8 @@ static NSString * const Issue_Cancel = @"token.issue.Cancel";
         make.centerX.mas_equalTo(0);
         make.size.mas_equalTo(btnSize);
     }];
-    UIButton * cancel = [UIButton createButtonWithTitle:Localized(@"Cancel") TextFont:18 TextColor:[UIColor whiteColor] Target:self Selector:@selector(cancelAction)];
-    [cancel setViewSize:btnSize borderWidth:0 borderColor:nil borderRadius:ScreenScale(4)];
+    UIButton * cancel = [UIButton createButtonWithTitle:Localized(@"Cancel") isEnabled:YES Target:self Selector:@selector(cancelAction)];
+//    [cancel setViewSize:btnSize borderWidth:0 borderColor:nil borderRadius:MAIN_FILLET];
     cancel.backgroundColor = COLOR(@"A4A8CE");
     [self.scrollView addSubview:cancel];
     [cancel mas_makeConstraints:^(MASConstraintMaker *make) {
@@ -149,21 +149,23 @@ static NSString * const Issue_Cancel = @"token.issue.Cancel";
 
 - (void)confirmationAction
 {
-    int64_t amount = [HTTPManager getDataWithBalanceJudgmentWithCost:Distribution_Cost];
+    int64_t amount = [[HTTPManager shareManager] getDataWithBalanceJudgmentWithCost:Distribution_Cost];
     if (amount < 0) {
-        [MBProgressHUD showInfoMessage:Localized(@"DistributionNotSufficientFunds")];
+        [MBProgressHUD showTipMessageInWindow:Localized(@"DistributionNotSufficientFunds")];
         return;
     }
+    /*
     if ([self.distributionModel.totalSupply longLongValue] == 0 && self.registeredModel.amount != [self.distributionModel.totalSupply longLongValue]) {
-        [MBProgressHUD showInfoMessage:Localized(@"CirculationDoesNotMatch")];
+        [MBProgressHUD showTipMessageInWindow:Localized(@"CirculationDoesNotMatch")];
         return;
     }
     // 已登记
     CGFloat isOverFlow = [self.distributionModel.totalSupply floatValue] - [self.distributionModel.actualSupply floatValue] - self.registeredModel.amount;
     if (isOverFlow < 0) {
-        [MBProgressHUD showInfoMessage:Localized(@"CirculationExceeded")];
+        [MBProgressHUD showTipMessageInWindow:Localized(@"CirculationExceeded")];
         return;
     }
+     */
     [self.socket emit:Issue_Processing with:@[]];
     PurseCipherAlertView * alertView = [[PurseCipherAlertView alloc] initWithType:PurseCipherNormalType confrimBolck:^(NSString * _Nonnull password) {
         [self getIssueAssetDataWithPassword:password];
@@ -174,45 +176,62 @@ static NSString * const Issue_Cancel = @"token.issue.Cancel";
 - (void)getIssueAssetDataWithPassword:(NSString *)password
 {
     NSString * amount = [NSString stringWithFormat:@"%zd", self.registeredModel.amount];
-    [HTTPManager getIssueAssetDataWithPassword:password assetCode: self.registeredModel.code assetAmount:amount decimals:self.distributionModel.decimals success:^(TransactionResultModel *resultModel) {
+    [[HTTPManager shareManager] getIssueAssetDataWithPassword:password assetCode: self.registeredModel.code assetAmount:amount decimals:self.distributionModel.decimals success:^(TransactionResultModel *resultModel) {
         self.distributionModel.transactionHash = resultModel.transactionHash;
-        // 发行成功、失败
-        DistributionResultsViewController * VC = [[DistributionResultsViewController alloc] init];
-        // 0 失败  1 成功  2 超时
-        if (resultModel.errorCode == 0) { // 成功
-            VC.state = 0;
-            NSString * json = [self setResultDataWithCode:0 message:@"issue success" hash: resultModel.transactionHash];
-            [self.socket emit:Issue_Success with:@[json]];
-        } else {
-            // 直接失败
-            VC.state = 1;
-            NSString * json = [self setResultDataWithCode:1 message:@"issue failure" hash: resultModel.transactionHash];
-            [self.socket emit:Issue_Failure with:@[json]];
-            [MBProgressHUD showErrorMessage:resultModel.errorDesc];
-        }
-        [self.socket on:Issue_Success callback:^(NSArray* data, SocketAckEmitter* ack) {
-            [self.socket disconnect];
-        }];
-        [self.socket on:Issue_Failure callback:^(NSArray* data, SocketAckEmitter* ack) {
-            [self.socket disconnect];
-        }];
-        VC.registeredModel = self.registeredModel;
-        VC.distributionModel = self.distributionModel;
-        [self.navigationController pushViewController:VC animated:YES];
+        self.distributionModel.distributionFee = resultModel.actualFee;
+        [self loadDataWithIsOvertime:NO resultModel:resultModel];
     } failure:^(TransactionResultModel *resultModel) {
-        DistributionResultsViewController * VC = [[DistributionResultsViewController alloc] init];
-         VC.state = 2;
-        NSString * json = [self setResultDataWithCode:2 message:@"issue timeout" hash: resultModel.transactionHash];
-        [self.socket emit:Issue_Timeout with:@[json]];
-        [self.socket on:Issue_Timeout callback:^(NSArray* data, SocketAckEmitter* ack) {
-            [self.socket disconnect];
-        }];
-        VC.registeredModel = self.registeredModel;
-        VC.distributionModel = self.distributionModel;
-        [self.navigationController pushViewController:VC animated:YES];
+        self.distributionModel.transactionHash = resultModel.transactionHash;
+        self.distributionModel.distributionFee = resultModel.actualFee;
+        [self loadDataWithIsOvertime:YES resultModel:resultModel];
     }];
 }
-- (NSString *)setResultDataWithCode:(NSInteger)code message:(NSString *)message hash:(NSString *)hash
+
+- (void)loadDataWithIsOvertime:(BOOL)overtime resultModel:(TransactionResultModel *)resultModel
+{
+    [[HTTPManager shareManager] getOrderDetailsDataWithHash:self.distributionModel.transactionHash success:^(id responseObject) {
+        NSString * message = [responseObject objectForKey:@"msg"];
+        NSInteger code = [[responseObject objectForKey:@"errCode"] integerValue];
+        if (code == 0) {
+            self.distributionModel.distributionFee = responseObject[@"data"][@"txDeatilRespBo"][@"fee"];
+            DistributionResultsViewController * VC = [[DistributionResultsViewController alloc] init];
+            if (overtime == NO) {
+                // 0 失败  1 成功  2 超时
+                if (resultModel.errorCode == 0) { // 成功
+                    VC.state = 0;
+                    NSString * json = [self setResultDataWithCode:0 message:@"issue success"];
+                    [self.socket emit:Issue_Success with:@[json]];
+                    [self.socket on:Issue_Success callback:^(NSArray* data, SocketAckEmitter* ack) {
+                        [self.socket disconnect];
+                    }];
+                } else {
+                    // 直接失败
+                    VC.state = 1;
+                    NSString * json = [self setResultDataWithCode:1 message:@"issue failure"];
+                    [self.socket emit:Issue_Failure with:@[json]];
+                    [self.socket on:Issue_Failure callback:^(NSArray* data, SocketAckEmitter* ack) {
+                        [self.socket disconnect];
+                    }];
+                    [MBProgressHUD showTipMessageInWindow:resultModel.errorDesc];
+                }
+            } else {
+                VC.state = 2;
+                NSString * json = [self setResultDataWithCode:2 message:@"issue timeout"];
+                [self.socket emit:Issue_Timeout with:@[json]];
+                [self.socket on:Issue_Timeout callback:^(NSArray* data, SocketAckEmitter* ack) {
+                    [self.socket disconnect];
+                }];
+            }
+            VC.registeredModel = self.registeredModel;
+            VC.distributionModel = self.distributionModel;
+            [self.navigationController pushViewController:VC animated:YES];
+        } else {
+            [MBProgressHUD showTipMessageInWindow:message];
+        }
+    } failure:^(NSError *error) {
+    }];
+}
+- (NSString *)setResultDataWithCode:(NSInteger)code message:(NSString *)message
 {
     NSMutableDictionary * dic = [NSMutableDictionary dictionary];
     [dic setDictionary:@{
@@ -223,8 +242,8 @@ static NSString * const Issue_Cancel = @"token.issue.Cancel";
                          @"decimals": @(self.distributionModel.decimals),
                          @"version": self.distributionModel.version,
                          
-                         @"fee": Distribution_CostBU,
-                         @"hash": hash,
+                         @"fee": self.distributionModel.distributionFee,
+                         @"hash": self.distributionModel.transactionHash,
                          @"address": [AccountTool account].purseAccount,
                          @"issueTotal": @(self.registeredModel.amount)
                          }];
@@ -243,6 +262,9 @@ static NSString * const Issue_Cancel = @"token.issue.Cancel";
 {
     [self.socket emit:Issue_Cancel with:@[Localized(@"Cancel")]];
     [self.socket on:Issue_Cancel callback:^(NSArray* data, SocketAckEmitter* ack) {
+        [self.socket emit:Issue_Leave with:@[self.uuid]];
+    }];
+    [self.socket on:Issue_Leave callback:^(NSArray* data, SocketAckEmitter* ack) {
         [self.socket disconnect];
     }];
     [self.navigationController popViewControllerAnimated:YES];

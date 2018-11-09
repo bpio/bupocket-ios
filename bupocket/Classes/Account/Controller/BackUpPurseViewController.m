@@ -12,6 +12,8 @@
 
 @interface BackUpPurseViewController ()
 
+@property (nonatomic, strong) UIScrollView * scrollView;
+
 @end
 
 @implementation BackUpPurseViewController
@@ -20,32 +22,36 @@
     [super viewDidLoad];
     self.navigationItem.title = Localized(@"BackUpPurse");
     [self setupView];
+    
     // Do any additional setup after loading the view.
 }
+
 - (void)setupView
 {
+    self.scrollView = [[UIScrollView alloc] initWithFrame:CGRectMake(0, 0, DEVICE_WIDTH, DEVICE_HEIGHT)];
+    self.scrollView.contentInset = UIEdgeInsetsMake(0, 0, SafeAreaBottomH + NavBarH + Margin_10, 0);
+    //    self.scrollView.scrollsToTop = NO;
+    //    self.scrollView.delegate = self;
+    self.scrollView.keyboardDismissMode = UIScrollViewKeyboardDismissModeOnDrag;
+    [self.view addSubview:self.scrollView];
     UIImageView * wallet = [[UIImageView alloc] initWithImage:[UIImage imageNamed:@"wallet"]];
-    [self.view addSubview:wallet];
+    [self.scrollView addSubview:wallet];
     
+    [wallet mas_makeConstraints:^(MASConstraintMaker *make) {
+        make.centerX.mas_equalTo(0);
+        make.top.mas_equalTo(ScreenScale(Margin_60));
+    }];
     UILabel * titleLabel = [[UILabel alloc] init];
     titleLabel.font = FONT(15);
     titleLabel.textColor = COLOR_6;
     titleLabel.numberOfLines = 0;
     titleLabel.textAlignment = NSTextAlignmentCenter;
     titleLabel.text = Localized(@"BackupInformation");
-    [self.view addSubview:titleLabel];
+    [self.scrollView addSubview:titleLabel];
     [titleLabel mas_makeConstraints:^(MASConstraintMaker *make) {
-        //        make.centerX.equalTo(self.view);
-        make.left.equalTo(self.view.mas_left).offset(Margin_30);
-        make.right.equalTo(self.view.mas_right).offset(-Margin_30);
-        make.centerY.equalTo(self.view);
-    }];
-    
-    [wallet mas_makeConstraints:^(MASConstraintMaker *make) {
-        make.centerX.equalTo(self.view);
-        make.bottom.equalTo(titleLabel.mas_top).offset(ScreenScale(-30));
-        //        make.bottom.equalTo(self.view.mas_centerY);
-        //        make.top.equalTo(self.noNetWork).offset(StatusBarHeight + ScreenScale(115));
+        make.top.equalTo(wallet.mas_bottom).offset(Margin_30);
+        make.left.mas_equalTo(Margin_30);
+        make.width.mas_equalTo(DEVICE_WIDTH - Margin_60);
     }];
     
     UILabel * infoLabel = [[UILabel alloc] init];
@@ -54,36 +60,32 @@
     infoLabel.numberOfLines = 0;
     infoLabel.textAlignment = NSTextAlignmentCenter;
     infoLabel.text = Localized(@"BackupPrompt");
-    [self.view addSubview:infoLabel];
+    [self.scrollView addSubview:infoLabel];
     [infoLabel mas_makeConstraints:^(MASConstraintMaker *make) {
-        //        make.centerX.equalTo(self.view);
-        make.top.equalTo(titleLabel.mas_bottom).offset(ScreenScale(35));
-        make.left.right.equalTo(titleLabel);
+        make.top.equalTo(titleLabel.mas_bottom).offset(Margin_30);
+        make.left.width.equalTo(titleLabel);
     }];
     
-    UIButton * temporaryBackup = [UIButton createButtonWithTitle:Localized(@"TemporaryBackup") TextFont:18 TextColor:MAIN_COLOR Target:self Selector:@selector(temporaryBackupAction)];
-    temporaryBackup.layer.masksToBounds = YES;
-    temporaryBackup.clipsToBounds = YES;
-    temporaryBackup.layer.cornerRadius = ScreenScale(4);
-    temporaryBackup.layer.borderColor = MAIN_COLOR.CGColor;
-    temporaryBackup.layer.borderWidth = LINE_WIDTH;
-    [self.view addSubview:temporaryBackup];
-    [temporaryBackup mas_makeConstraints:^(MASConstraintMaker *make) {
-        make.bottom.equalTo(self.view.mas_bottom).offset(- (SafeAreaBottomH + ScreenScale(55)));
-        make.left.right.equalTo(titleLabel);
+    UIButton * backupMnemonics = [UIButton createButtonWithTitle:Localized(@"BackupMnemonics") isEnabled:YES Target:self Selector:@selector(backupMnemonicsAction)];
+    [self.scrollView addSubview:backupMnemonics];
+    [backupMnemonics mas_makeConstraints:^(MASConstraintMaker *make) {
+        make.top.equalTo(infoLabel.mas_bottom).offset(MAIN_HEIGHT);
+        make.left.width.equalTo(titleLabel);
         make.height.mas_equalTo(MAIN_HEIGHT);
     }];
     
-    UIButton * backupMnemonics = [UIButton createButtonWithTitle:Localized(@"BackupMnemonics") TextFont:18 TextColor:[UIColor whiteColor] Target:self Selector:@selector(backupMnemonicsAction)];
-    backupMnemonics.layer.masksToBounds = YES;
-    backupMnemonics.clipsToBounds = YES;
-    backupMnemonics.layer.cornerRadius = ScreenScale(4);
-    backupMnemonics.backgroundColor = MAIN_COLOR;
-    [self.view addSubview:backupMnemonics];
-    [backupMnemonics mas_makeConstraints:^(MASConstraintMaker *make) {
-        make.bottom.equalTo(temporaryBackup.mas_top).offset(-Margin_20);
-        make.left.right.height.equalTo(temporaryBackup);
+    UIButton * temporaryBackup = [UIButton createButtonWithTitle:Localized(@"TemporaryBackup") isEnabled:YES Target:self Selector:@selector(temporaryBackupAction)];
+    [temporaryBackup setTitleColor:MAIN_COLOR forState:UIControlStateNormal];
+    temporaryBackup.layer.borderColor = MAIN_COLOR.CGColor;
+    temporaryBackup.layer.borderWidth = LINE_WIDTH;
+    temporaryBackup.backgroundColor = [UIColor whiteColor];
+    [self.scrollView addSubview:temporaryBackup];
+    [temporaryBackup mas_makeConstraints:^(MASConstraintMaker *make) {
+        make.top.equalTo(backupMnemonics.mas_bottom).offset(Margin_20);
+        make.left.width.height.equalTo(backupMnemonics);
     }];
+    [self.view layoutIfNeeded];
+    self.scrollView.contentSize = CGSizeMake(DEVICE_WIDTH, CGRectGetMaxY(temporaryBackup.frame) + Margin_50);
 }
 
 - (void)backupMnemonicsAction
@@ -95,16 +97,14 @@
     } else {
         PurseCipherAlertView * alertView = [[PurseCipherAlertView alloc] initWithType:PurseCipherNormalType confrimBolck:^(NSString * _Nonnull password) {
             NSData * random = [NSString decipherKeyStoreWithPW:password randomKeyStoreValueStr:[AccountTool account].randomNumber];
-            // 随机数 -> 生成助记词
-//            NSArray * words = [Mnemonic generateMnemonicCode: [random copy]];
-//            NSLog(@"%@", [words componentsJoinedByString:@" "]);
-//            NSString * randomNumber = [NSString decipherKeyStoreWithPW:password keyStoreValueStr:[AccountTool account].randomNumber];
-//            NSString * randomNumber = [NSString decipherKeyStoreWithPW:password keyStoreValueStr:CurrentRandomNumber];
-//            NSArray * words = [Mnemonic generateMnemonicCode: [Tools hexStrToData:randomNumber]];
-            NSArray * words = [Mnemonic generateMnemonicCode: random];
-            BackupMnemonicsViewController * VC = [[BackupMnemonicsViewController alloc] init];
-            VC.mnemonicArray = words;
-            [self.navigationController pushViewController:VC animated:YES];
+            if (random) {
+                NSArray * words = [Mnemonic generateMnemonicCode: random];
+                BackupMnemonicsViewController * VC = [[BackupMnemonicsViewController alloc] init];
+                VC.mnemonicArray = words;
+                [self.navigationController pushViewController:VC animated:YES];
+            } else {
+                [MBProgressHUD showTipMessageInWindow:Localized(@"PasswordIsIncorrect")];
+            }
         } cancelBlock:^{
         }];
         [alertView showInWindowWithMode:CustomAnimationModeAlert inView:nil bgAlpha:0.2 needEffectView:NO];

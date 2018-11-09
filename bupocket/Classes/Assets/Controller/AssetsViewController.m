@@ -21,11 +21,16 @@
 #import "RegisteredModel.h"
 #import "DistributionModel.h"
 
+#import "UINavigationController+Extension.h"
+
 
 @interface AssetsViewController ()<UITableViewDelegate, UITableViewDataSource>
 
 @property (nonatomic, strong) UITableView * tableView;
 @property (nonatomic, strong) UIView * headerBg;
+@property (nonatomic, strong) UIImageView * headerImageView;
+@property (nonatomic, strong) UIButton * addAssets;
+@property (nonatomic, assign) CGFloat headerViewH;
 @property (nonatomic, strong) NSMutableArray * listArray;
 @property (nonatomic, strong) UILabel * totalAssets;
 @property (nonatomic, strong) UILabel * header;
@@ -39,7 +44,7 @@
 @property (nonatomic, strong) DistributionModel * distributionModel;
 @property (nonatomic, strong) NSDictionary * scanDic;
 
-//@property (nonatomic, strong) NSDictionary * assetsDic;
+@property (nonatomic, assign) UIStatusBarStyle statusBarStyle;
 
 @end
 
@@ -56,60 +61,62 @@
 - (void)viewWillAppear:(BOOL)animated {
     [super viewWillAppear:animated];
     [self.navigationController setNavigationBarHidden:YES animated:animated];
-    [UIApplication sharedApplication].statusBarStyle = UIStatusBarStyleLightContent;
+    [self loadData];
 }
 
 - (void)viewWillDisappear:(BOOL)animated {
     [super viewWillDisappear:animated];
     [self.navigationController setNavigationBarHidden:NO animated:animated];
-    [UIApplication sharedApplication].statusBarStyle = UIStatusBarStyleDefault;
 }
-
+- (UIStatusBarStyle)preferredStatusBarStyle{
+    return _statusBarStyle;
+} 
 - (void)viewDidLoad {
     [super viewDidLoad];
-//    self.listArray = @[@"BU", @"BU1", @"BU2"];
-    [self setupRefresh];
+    _statusBarStyle = UIStatusBarStyleLightContent;
+    UIImage * headerImage = [UIImage imageNamed:@"assets_header"];
+    _headerViewH = ScreenScale(375 * headerImage.size.height / headerImage.size.width) + MAIN_HEIGHT;
     [self.view addSubview:self.tableView];
-    self.noNetWork = [Encapsulation showNoNetWorkWithSuperView:self.view target:self action:@selector(setupRefresh)];
+    [self.tableView mas_makeConstraints:^(MASConstraintMaker *make) {
+        make.edges.mas_equalTo(0);
+    }];
+   
+//    self.tableView.tableHeaderView = self.headerBg;
+    self.noNetWork = [Encapsulation showNoNetWorkWithSuperView:self.view target:self action:@selector(loadData)];
+    [self setupRefresh];
     // Do any additional setup after loading the view.
 }
 - (void)setupRefresh
 {
-    self.tableView.mj_header = [MJRefreshNormalHeader headerWithRefreshingTarget:self refreshingAction:@selector(loadNewData)];
+//    MJRefreshNormalHeader * header = [MJRefreshNormalHeader headerWithRefreshingTarget:self refreshingAction:@selector(loadData)];
+//    header.lastUpdatedTimeLabel.hidden = YES;
+////    header.activityIndicatorViewStyle
+//    self.tableView.mj_header = header;
+//    self.tableView.mj_header.lastUpdatedTime.hidden = YES;
+    self.tableView.mj_header = [CustomRefreshHeader headerWithRefreshingTarget:self refreshingAction:@selector(loadData)];
     self.tableView.mj_header.automaticallyChangeAlpha = YES;
-    [self.tableView.mj_header beginRefreshing];
-//    self.tableView.mj_footer = [MJRefreshAutoNormalFooter footerWithRefreshingTarget:self refreshingAction:@selector(loadMoreData)];
-    //    self.userTableView.mj_footer.hidden = YES;
-}
-- (void)loadNewData
-{
-    [self loadData];
+    self.tableView.mj_header.ignoredScrollViewContentInsetTop = _headerViewH;
+//    [self.tableView.mj_header beginRefreshing];
 }
 - (void)loadData
 {
-    [HTTPManager getAssetsDataWithAddress:[[AccountTool account] purseAccount] currencyType:@"CNY" tokenList:[NSArray array] success:^(id responseObject) {
+    NSArray * assetsArray = [[NSUserDefaults standardUserDefaults] objectForKey:AddAssets];
+    if (!assetsArray) {
+        assetsArray = [NSArray array];
+    }
+    [[HTTPManager shareManager] getAssetsDataWithAddress:[[AccountTool account] purseAccount] currencyType:@"CNY" tokenList:assetsArray success:^(id responseObject) {
         NSString * message = [responseObject objectForKey:@"msg"];
         NSInteger code = [[responseObject objectForKey:@"errCode"] integerValue];
         if (code == 0) {
-            self.tableView.tableHeaderView = self.headerBg;
-            // 请求成功数据处理
+//            [self.view addSubview:self.headerBg];
+            [self.tableView addSubview:self.headerBg];
+            [self.tableView insertSubview:self.headerBg atIndex:0];
             self.listArray = [AssetsListModel mj_objectArrayWithKeyValuesArray:responseObject[@"data"] [@"tokenList"]];
-            //            if (pageindex == 1) {
-            //                // 清除所有旧数据
-            //                [self.informationArray removeAllObjects];
-            //                self.pageindex = 1;
-            //            }
             NSString * amountStr = responseObject[@"data"][@"totalAmount"];
             self.amount.text = [amountStr isEqualToString:@"~"] ? amountStr : [NSString stringWithFormat:@"≈%@", amountStr];
-            //            self.pageindex = self.pageindex + 1;
             [self.tableView reloadData];
-            //            if (listArray.count < 10) {
-            //                [self.tableView.mj_footer endRefreshingWithNoMoreData];
-            //            } else {
-            //                [self.tableView.mj_footer endRefreshing];
-            //            }
         } else {
-            [MBProgressHUD showErrorMessage:message];
+            [MBProgressHUD showTipMessageInWindow:message];
         }
         [self.tableView.mj_header endRefreshing];
         self.noNetWork.hidden = YES;
@@ -117,45 +124,88 @@
         [self.tableView.mj_header endRefreshing];
         self.noNetWork.hidden = NO;
     }];
-//    [[NetworkingManager sharedManager] getDataWithSuccessHandler:^(NSString * _Nonnull msg, id  _Nonnull data) {
-////        for (NSDictionary *dic in (NSArray *)data) {
-////            BYExchangePairModel *itemModel = [[BYExchangePairModel alloc] initWithDictionary:dic error:nil];
-////            [self.selectedArray addObject:itemModel];
-////        }
-////        [BYMarketSelectedManager shareInstance].marketSelectedArray = self.selectedArray;
-//    } failureHandler:^(NSError * _Nonnull failure) {
-//
-//    }];
 }
-
+- (void)getAssetsStateData
+{
+    [[HTTPManager shareManager] getRegisteredORDistributionDataWithAssetCode:self.registeredModel.code issueAddress:[[AccountTool account] purseAccount] success:^(id responseObject) {
+        NSInteger code = [[responseObject objectForKey:@"errCode"] integerValue];
+        self.distributionModel = [DistributionModel mj_objectWithKeyValues:[responseObject objectForKey:@"data"]];
+        if ([self.scanDic[@"action"] isEqualToString:@"token.register"]) {
+            if (code == 0) {
+                // 已登记
+                [self alertViewWithMessage:Localized(@"RegisteredAsset")];
+            } else {
+                // 未登记
+                RegisteredAssetsViewController * VC = [[RegisteredAssetsViewController alloc] init];
+                VC.uuid = self.scanDic[@"uuID"];
+                VC.registeredModel = self.registeredModel;
+                [self.navigationController pushViewController:VC animated:YES];
+            }
+        } else if ([self.scanDic[@"action"] isEqualToString:@"token.issue"]) {
+            if (code == 0) {
+                // 已登记
+                if ([self.distributionModel.totalSupply floatValue] == 0) {
+                    // 无限制
+                    [self pushDistributionVC];
+                } else {
+                    // 有限制
+                    CGFloat isOverFlow = [self.distributionModel.totalSupply floatValue] - [self.distributionModel.actualSupply floatValue] - self.registeredModel.amount;
+                    if ([self.distributionModel.totalSupply floatValue] == [self.distributionModel.actualSupply floatValue]) {
+                        // 您已发行过该资产
+                        [self alertViewWithMessage:Localized(@"IssuedAssets")];
+                    } else if (isOverFlow < 0) {
+                        // 您的资产发行量超过了登记总量
+                        [self alertViewWithMessage:Localized(@"CirculationExceeded")];
+                    } else {
+                        [self pushDistributionVC];
+                    }
+                }
+            } else {
+                // 未登记
+                [self alertViewWithMessage:[NSString stringWithFormat:@"%@%@ %@", Localized(@"TemporarilyRegisteredAssets"), self.registeredModel.code, Localized(@"InabilityToIssue")]];
+            }
+        }
+    } failure:^(NSError *error) {
+        
+    }];
+}
+// 发行资产
+- (void)pushDistributionVC
+{
+    DistributionOfAssetsViewController * VC = [[DistributionOfAssetsViewController alloc] init];
+    VC.uuid = self.scanDic[@"uuID"];
+    VC.distributionModel = self.distributionModel;
+    VC.registeredModel = self.registeredModel;
+    [self.navigationController pushViewController:VC animated:YES];
+}
 - (UITableView *)tableView
 {
     if (!_tableView) {
-        _tableView = [[UITableView alloc] initWithFrame:CGRectMake(0, 0, DEVICE_WIDTH, DEVICE_HEIGHT - TabBarH) style:UITableViewStyleGrouped];
+        _tableView = [[UITableView alloc] initWithFrame:CGRectMake(0, 0, DEVICE_WIDTH, DEVICE_HEIGHT - TabBarH - SafeAreaBottomH) style:UITableViewStyleGrouped];
         _tableView.delegate = self;
         _tableView.dataSource = self;
         _tableView.separatorInset = UIEdgeInsetsZero;
         _tableView.separatorStyle = UITableViewCellSeparatorStyleNone;
+        _tableView.contentInset = UIEdgeInsetsMake(_headerViewH, 0, 0, 0);
+        _tableView.scrollIndicatorInsets = _tableView.contentInset;
     }
     return _tableView;
 }
+
 - (UIView *)headerBg
 {
     if (!_headerBg) {
         UIView * headerBg = [[UIView alloc] init];
-        UIImage * headerImage = [UIImage imageNamed:@"assets_header"];
-        CGFloat headerImageH = ScreenScale(375 * headerImage.size.height / headerImage.size.width);
-        headerBg.frame = CGRectMake(0, 0, DEVICE_WIDTH, headerImageH + MAIN_HEIGHT);
+        headerBg.frame = CGRectMake(0, -_headerViewH, DEVICE_WIDTH, _headerViewH);
         
-        UIImageView * headerImageView = [[UIImageView alloc] initWithImage:headerImage];
-        headerImageView.userInteractionEnabled = YES;
-        [headerBg addSubview:headerImageView];
-        [headerImageView mas_makeConstraints:^(MASConstraintMaker *make) {
-            make.left.top.right.equalTo(headerBg);
-            make.height.mas_equalTo(headerImageH);
-        }];
+        _headerImageView = [[UIImageView alloc] init];
+        _headerImageView.image = [UIImage imageNamed:@"assets_header"];
+        _headerImageView.frame = CGRectMake(0, 0, DEVICE_WIDTH, _headerViewH - MAIN_HEIGHT);
+        _headerImageView.userInteractionEnabled = YES;
+        _headerImageView.contentMode = UIViewContentModeScaleAspectFill;
+        _headerImageView.clipsToBounds = YES;
+        [headerBg addSubview:_headerImageView];
         
-        // 扫描登记、发行资产
         UIButton * issueBtn = [UIButton createButtonWithNormalImage:@"nav_scan" SelectedImage:@"nav_scan" Target:self Selector:@selector(issueAction)];
         issueBtn.contentHorizontalAlignment = UIControlContentHorizontalAlignmentRight;
         [headerBg addSubview:issueBtn];
@@ -172,7 +222,6 @@
             make.top.equalTo(headerBg.mas_top).offset(MAIN_HEIGHT + StatusBarHeight);
             make.centerX.equalTo(headerBg);
         }];
-        
         UIView * userBg = [[UIView alloc] init];
         [headerBg addSubview:userBg];
         [userBg mas_makeConstraints:^(MASConstraintMaker *make) {
@@ -186,7 +235,6 @@
         _purseName.text = [AccountTool account].identityName;
         [userBg addSubview:self.purseName];
         [_purseName mas_makeConstraints:^(MASConstraintMaker *make) {
-//            make.top.equalTo(userIcon.mas_bottom).offset(ScreenScale(15));
             make.left.centerY.equalTo(userBg);
         }];
         NSUserDefaults * defaults = [NSUserDefaults standardUserDefaults];
@@ -195,7 +243,7 @@
             _backup.layer.cornerRadius = Margin_10;
             _backup.layer.borderColor = COLOR(@"FFB134").CGColor;
             _backup.layer.borderWidth = LINE_WIDTH;
-            _backup.contentEdgeInsets = UIEdgeInsetsMake(0, ScreenScale(8), 0, ScreenScale(8));
+            _backup.contentEdgeInsets = UIEdgeInsetsMake(0, EDGEINSET_WIDTH, 0, EDGEINSET_WIDTH);
             [userBg addSubview:self.backup];
             if (_purseName.text.length > 0) {
                 [_backup mas_makeConstraints:^(MASConstraintMaker *make) {
@@ -221,58 +269,94 @@
         [QRCode setTitle:[NSString stringEllipsisWithStr:[AccountTool account].purseAccount] forState:UIControlStateNormal];
         [QRCode setImage:[UIImage imageNamed:@"QRCode"] forState:UIControlStateNormal];
         [QRCode addTarget:self action:@selector(QRCodeAction:) forControlEvents:UIControlEventTouchUpInside];
-        //    .titleLabel.lineBreakMode = NSLineBreakByTruncatingTail;
         [headerBg addSubview: QRCode];
         [QRCode mas_makeConstraints:^(MASConstraintMaker *make) {
-            make.top.equalTo(userBg.mas_bottom).offset(ScreenScale(14));
+            make.top.equalTo(userBg.mas_bottom).offset(Margin_15);
             make.centerX.equalTo(headerBg);
-//            make.width.mas_equalTo(DEVICE_WIDTH - ScreenScale(200));
         }];
         self.amount = [[UILabel alloc] init];
         self.amount.font = FONT(32);
         self.amount.textColor = [UIColor whiteColor];
         [headerBg addSubview:self.amount];
         [self.amount mas_makeConstraints:^(MASConstraintMaker *make) {
-            make.top.equalTo(QRCode.mas_bottom).offset(Margin_20);
-            make.left.equalTo(headerBg.mas_left).offset(ScreenScale(15));
+            make.top.equalTo(QRCode.mas_bottom).offset(Margin_15);
+            make.left.equalTo(headerBg.mas_left).offset(Margin_15);
         }];
         
         self.totalAssets = [[UILabel alloc] init];
         self.totalAssets.font = FONT(15);
         self.totalAssets.textColor = [UIColor whiteColor];
+        self.totalAssets.text = Localized(@"TotalAssets");
         [headerBg addSubview:self.totalAssets];
         [self.totalAssets mas_makeConstraints:^(MASConstraintMaker *make) {
-            make.bottom.equalTo(headerImageView.mas_bottom).offset(-Margin_20);
+            make.top.equalTo(self.amount.mas_bottom).offset(Margin_10);
             make.left.equalTo(self.amount);
         }];
-        self.totalAssets.text = Localized(@"TotalAssets");
         
-        self.header = [[UILabel alloc] init];
-        self.header.font = FONT(15);
-        self.header.textColor = TITLE_COLOR;
+        self.header = [[UILabel alloc] initWithFrame:CGRectMake(Margin_10, _headerImageView.height + ScreenScale(5), DEVICE_WIDTH - Margin_20, Margin_40)];
         [headerBg addSubview:self.header];
-        [self.header mas_makeConstraints:^(MASConstraintMaker *make) {
-            make.left.equalTo(headerBg.mas_left).offset(Margin_10);
-            make.top.equalTo(headerImageView.mas_bottom);
-            make.bottom.equalTo(headerBg.mas_bottom).offset(ScreenScale(5));
-        }];
-        [self setHeaderTitle];
+        self.header.attributedText = [Encapsulation attrTitle:Localized(@"MyAssets") ifRequired:NO];
         
-        UIButton * addAssets = [UIButton createButtonWithNormalImage:@"addAssets" SelectedImage:@"addAssets" Target:self Selector:@selector(addAssetsAcrion)];
-        [headerBg addSubview:addAssets];
-        [addAssets mas_makeConstraints:^(MASConstraintMaker *make) {
-            make.right.equalTo(headerBg.mas_right).offset(ScreenScale(-10));
-            make.centerY.equalTo(headerImageView.mas_bottom);
+        self.addAssets = [UIButton createButtonWithNormalImage:@"addAssets" SelectedImage:@"addAssets" Target:self Selector:@selector(addAssetsAcrion)];
+        [headerBg addSubview:self.addAssets];
+//        _addAssets.centerY = CGRectGetMaxY(_headerImageView.frame);
+//        self.addAssets.x = DEVICE_WIDTH - ScreenScale(65);
+//        self.addAssets.size = CGSizeMake(ScreenScale(55), ScreenScale(55));
+        [self.addAssets mas_makeConstraints:^(MASConstraintMaker *make) {
+            make.right.equalTo(headerBg.mas_right).offset(-Margin_10);
+            make.centerY.equalTo(self.headerImageView.mas_bottom);
         }];
         _headerBg = headerBg;
     }
     return _headerBg;
 }
+- (void)scrollViewDidScroll:(UIScrollView *)scrollView
+{
+    CGFloat offsetY = scrollView.contentOffset.y;
+    if (offsetY <= -_headerViewH) {
+        _headerBg.y = offsetY;
+        _headerBg.height = - offsetY;
+        _headerImageView.alpha = 1.0;
+    } else {
+        CGFloat min = - _headerViewH;
+        CGFloat progress = (offsetY / min);
+        _headerImageView.alpha = progress;
+        _statusBarStyle = (progress < 0.5) ? UIStatusBarStyleDefault : UIStatusBarStyleLightContent;
+        [self.navigationController setNeedsStatusBarAppearanceUpdate];
+    }
+    _headerImageView.frame = CGRectMake(0, 0, DEVICE_WIDTH, _headerBg.height - MAIN_HEIGHT);
+    _header.y = _headerImageView.height + ScreenScale(5);
+    _addAssets.centerY = CGRectGetMaxY(_headerImageView.frame);
+    /*
+     CGFloat offset = scrollView.contentOffset.y + scrollView.contentInset.top;
+     if (offset <= 0) {
+     _headerBg.y = 0;
+     _headerBg.height = _headerViewH - offset;
+     _headerImageView.alpha = 1.0;
+     } else {
+     _headerBg.height = _headerViewH;
+     CGFloat min = _headerViewH - NavBarH;
+     _headerBg.y = - MIN(min, offset);
+     CGFloat progress = 1 - (offset / min);
+     _headerImageView.alpha = progress;
+     _statusBarStyle = (progress < 0.5) ? UIStatusBarStyleDefault : UIStatusBarStyleLightContent;
+     [self.navigationController setNeedsStatusBarAppearanceUpdate];
+     }
+     _headerImageView.height = _headerBg.height - MAIN_HEIGHT;
+     _header.y = _headerImageView.height;
+     */
+}
+- (void)alertViewWithMessage:(NSString *)message
+{
+    UIAlertController * alertController = [UIAlertController alertControllerWithTitle:nil message:message preferredStyle:UIAlertControllerStyleAlert];
+    UIAlertAction * cancelAction = [UIAlertAction actionWithTitle:Localized(@"IGotIt") style:UIAlertActionStyleCancel handler:nil];
+    [alertController addAction:cancelAction];
+    [self presentViewController:alertController animated:YES completion:nil];
+}
 - (void)issueAction
 {
 //    __weak typeof (self) weakself = self;
     HMScannerController *scanner = [HMScannerController scannerWithCardName:nil avatar:nil completion:^(NSString *stringValue) {
-        // 判断是否是钱包地址
         if ([Keypair isAddressValid: stringValue]) {
             TransferAccountsViewController * VC = [[TransferAccountsViewController alloc] init];
             for (AssetsListModel * listModel in self.listArray) {
@@ -288,70 +372,20 @@
                 self.registeredModel = [RegisteredModel mj_objectWithKeyValues:self.scanDic[@"data"]];
                 [self getAssetsStateData];
             } else {
-                [MBProgressHUD showWarnMessage:@"扫描结果无效"];
+                [MBProgressHUD showWarnMessage:Localized(@"ScanFailure")];
             }
         }
     }];
     [scanner setTitleColor:[UIColor whiteColor] tintColor:MAIN_COLOR];
-    [self showDetailViewController:scanner sender:nil];
+    scanner.modalPresentationStyle = UIModalPresentationOverCurrentContext;
+    [self presentViewController:scanner animated:YES completion:nil];
+//    [self showDetailViewController:scanner sender:nil];
 }
 
-- (void)getAssetsStateData
-{
-    [HTTPManager getRegisteredORDistributionDataWithAssetCode:self.registeredModel.code issueAddress:[[AccountTool account] purseAccount] success:^(id responseObject) {
-        NSString * message = [responseObject objectForKey:@"msg"];
-        NSInteger code = [[responseObject objectForKey:@"errCode"] integerValue];
-        self.distributionModel = [DistributionModel mj_objectWithKeyValues:[responseObject objectForKey:@"data"]];
-//        NSDictionary * assetsDic = [responseObject objectForKey:@"data"];
-        if ([self.scanDic[@"action"] isEqualToString:@"token.register"]) {
-            if (code == 0) {
-                // 已登记
-                [self alertViewWithMessage:Localized(@"RegisteredAsset")];
-            } else {
-                // 未登记
-                RegisteredAssetsViewController * VC = [[RegisteredAssetsViewController alloc] init];
-                VC.uuid = self.scanDic[@"uuID"];
-                VC.registeredModel = self.registeredModel;
-                [self.navigationController pushViewController:VC animated:YES];
-            }
-        } else if ([self.scanDic[@"action"] isEqualToString:@"token.issue"]) {
-            if (code == 0) {
-                CGFloat isOverFlow = [self.distributionModel.totalSupply floatValue] - [self.distributionModel.actualSupply floatValue] - self.registeredModel.amount;
-                if ([self.distributionModel.totalSupply floatValue] != 0 && isOverFlow < 0) {
-                    // 已发行
-                    [self alertViewWithMessage:Localized(@"IssuedAssets")];
-                } else {
-                    // 已登记
-                    DistributionOfAssetsViewController * VC = [[DistributionOfAssetsViewController alloc] init];
-                    VC.uuid = self.scanDic[@"uuID"];
-                    VC.distributionModel = self.distributionModel;
-                    VC.registeredModel = self.registeredModel;
-                    [self.navigationController pushViewController:VC animated:YES];
-                }
-            } else {
-                // 未登记
-                [self alertViewWithMessage:Localized(@"TemporarilyRegisteredAssets")];
-            }
-        }
-    } failure:^(NSError *error) {
-        
-    }];
-}
-- (void)alertViewWithMessage:(NSString *)message
-{
-    UIAlertController * alertController = [UIAlertController alertControllerWithTitle:nil message:message preferredStyle:UIAlertControllerStyleAlert];
-    UIAlertAction * cancelAction = [UIAlertAction actionWithTitle:Localized(@"IGotIt") style:UIAlertActionStyleCancel handler:nil];
-    [alertController addAction:cancelAction];
-//    UIAlertController * alertController = [Encapsulation alertControllerWithCancelTitle:Localized(@"IGotIt") title:nil message:message];
-    [self presentViewController:alertController animated:YES completion:nil];
-}
 #pragma mark - backup
 - (void)backupAction:(UIButton *)button
 {
     [self.navigationController pushViewController:[[MyIdentityViewController alloc] init] animated:YES];
-//    NavigationViewController * Nav = [[NavigationViewController alloc] initWithRootViewController:[[MyIdentityViewController alloc] init]];
-//    [Nav.navigationController setNavigationBarHidden:YES animated:YES];
-//    [UIApplication sharedApplication].keyWindow.rootViewController = Nav;
 }
 #pragma mark - QRCode
 - (void)QRCodeAction:(UIButton *)button
@@ -359,7 +393,7 @@
     NSString * address = [AccountTool account].purseAccount;
     PurseAddressAlertView * alertView = [[PurseAddressAlertView alloc] initWithPurseAddress:address confrimBolck:^{
         [[UIPasteboard generalPasteboard] setString:address];
-        [MBProgressHUD showTipMessageInWindow:@"已复制"];
+        [MBProgressHUD showTipMessageInWindow:Localized(@"Replicating")];
     } cancelBlock:^{
         
     }];
@@ -388,11 +422,6 @@
 - (CGFloat)tableView:(UITableView *)tableView heightForHeaderInSection:(NSInteger)section
 {
     return CGFLOAT_MIN;
-//    if (section == 0) {
-//        return MAIN_HEIGHT;
-//    } else {
-//        return Margin_10;
-//    }
 }
 /*
 - (UIView *)tableView:(UITableView *)tableView viewForHeaderInSection:(NSInteger)section
@@ -418,20 +447,14 @@
     return headerView;
 }
  */
-- (void)setHeaderTitle
-{
-    NSMutableAttributedString * attr = [[NSMutableAttributedString alloc] initWithString:[NSString stringWithFormat:@"| %@", Localized(@"MyAssets")]];
-    //        NSMutableDictionary * dic = [NSMutableDictionary dictionary];
-    //        dic[NSFontAttributeName] = FONT(15);
-    //        dic[NSForegroundColorAttributeName] = TITLE_COLOR;
-    //        [attr addAttributes:dic range:NSMakeRange(3, str.length - 3)];
-    [attr addAttribute:NSForegroundColorAttributeName value:MAIN_COLOR range:NSMakeRange(0, 1)];
-    [attr addAttribute:NSFontAttributeName value:FONT_Bold(18) range:NSMakeRange(0, 1)];
-    self.header.attributedText = attr;
-}
+
 - (CGFloat)tableView:(UITableView *)tableView heightForFooterInSection:(NSInteger)section
 {
-    return CGFLOAT_MIN;
+    if (section == self.listArray.count - 1) {
+        return TabBarH + NavBarH + Margin_10;
+    } else {
+        return CGFLOAT_MIN;
+    }
 }
 - (NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section
 {
@@ -441,6 +464,7 @@
 {
     AssetsListViewCell * cell = [AssetsListViewCell cellWithTableView:tableView];
     cell.listModel = self.listArray[indexPath.section];
+    cell.selectionStyle = UITableViewCellSelectionStyleNone;
     return cell;
 }
 - (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath
@@ -450,11 +474,12 @@
     VC.listModel = self.listArray[indexPath.section];
     [self.navigationController pushViewController:VC animated:YES];
 }
+
 - (void)changeLanguage
 {
     self.totalAssets.text = Localized(@"TotalAssets");
     [self.backup setTitle:Localized(@"PleaseBackup") forState:UIControlStateNormal];
-    [self setHeaderTitle];
+    self.header.attributedText = [Encapsulation attrTitle:Localized(@"MyAssets") ifRequired:NO];
 }
 
 /*

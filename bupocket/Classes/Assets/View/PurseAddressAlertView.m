@@ -84,8 +84,8 @@
     
     [self.purseAddress mas_makeConstraints:^(MASConstraintMaker *make) {
         make.top.equalTo(self.purseAddressTitle.mas_bottom).offset(Margin_10);
-        make.left.equalTo(self.mas_left).offset(ScreenScale(15));
-        make.right.equalTo(self.mas_right).offset(-ScreenScale(15));
+        make.left.equalTo(self.mas_left).offset(Margin_15);
+        make.right.equalTo(self.mas_right).offset(-Margin_15);
     }];
     
     [self.copyBtn mas_makeConstraints:^(MASConstraintMaker *make) {
@@ -141,9 +141,8 @@
 - (UIButton *)copyBtn
 {
     if (!_copyBtn) {
-        _copyBtn = [UIButton createButtonWithTitle:Localized(@"DuplicateWalletAddress") TextFont:18 TextColor:[UIColor whiteColor] Target:self Selector:@selector(copyClick)];
-        [_copyBtn setViewSize:CGSizeMake(ScreenScale(210), MAIN_HEIGHT) borderWidth:0 borderColor:nil borderRadius:ScreenScale(4)];
-        _copyBtn.backgroundColor = MAIN_COLOR;
+        _copyBtn = [UIButton createButtonWithTitle:Localized(@"DuplicateWalletAddress") isEnabled:YES Target:self Selector:@selector(copyClick)];
+//        [_copyBtn setViewSize:CGSizeMake(ScreenScale(210), MAIN_HEIGHT) borderWidth:0 borderColor:nil borderRadius:MAIN_FILLET];
     }
     return _copyBtn;
 }
@@ -161,7 +160,7 @@
     if (!_QRCodeImage) {
         _QRCodeImage = [[UIImageView alloc] init];
         _QRCodeImage.image = [UIImage imageNamed:@"placeholder"];
-//        [_QRCodeImage setViewSize:CGSizeMake(ScreenScale(178), ScreenScale(178)) borderWidth:0.5 borderColor:MAIN_COLOR borderRadius:ScreenScale(4)];
+//        [_QRCodeImage setViewSize:CGSizeMake(ScreenScale(178), ScreenScale(178)) borderWidth:0.5 borderColor:MAIN_COLOR borderRadius:MAIN_FILLET];
     }
     return _QRCodeImage;
 }

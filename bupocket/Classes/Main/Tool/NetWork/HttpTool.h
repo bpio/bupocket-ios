@@ -2,7 +2,7 @@
 //  HttpTool.h
 //  TheImperialPalaceMuseum
 //
-//  Created by 霍双双 on 17/2/25.
+//  Created by bupocket on 17/2/25.
 //  Copyright © 2017年 hss. All rights reserved.
 //
 

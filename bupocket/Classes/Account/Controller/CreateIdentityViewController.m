@@ -42,10 +42,9 @@
     UITapGestureRecognizer *tap = [[UITapGestureRecognizer alloc] initWithTarget:self action:@selector(keyBoardHidden)];
     [self.view addGestureRecognizer:tap];
     
-    _identityName = [UITextField textFieldWithplaceholder:Localized(@"IdentityName") margin:30 height:35 font:15];
+    _identityName = [UITextField textFieldWithplaceholder:Localized(@"IdentityName")];
     _identityName.delegate = self;
     [_identityName addTarget:self action:@selector(textChange:) forControlEvents:UIControlEventEditingChanged];
-//    _identityName.keyboardType = UIKeyboardTypeNumbersAndPunctuation;
     _identityName.enablesReturnKeyAutomatically = YES;
     [self.view addSubview:_identityName];
     
@@ -55,19 +54,14 @@
     _confirmPassword = [self setupPWPlaceholder:Localized(@"ConfirmPassword")];
     [self.view addSubview:_confirmPassword];
     
-    _createIdentity = [UIButton createButtonWithTitle:Localized(@"Create") TextFont:18 TextColor:[UIColor whiteColor] Target:self Selector:@selector(createAction)];
-    _createIdentity.layer.masksToBounds = YES;
-    _createIdentity.clipsToBounds = YES;
-    _createIdentity.layer.cornerRadius = ScreenScale(4);
-    _createIdentity.backgroundColor = DISABLED_COLOR;
-    _createIdentity.enabled = NO;
+    _createIdentity = [UIButton createButtonWithTitle:Localized(@"Create") isEnabled:NO Target:self Selector:@selector(createAction)];
     [self.view addSubview:_createIdentity];
     
     [_identityName mas_makeConstraints:^(MASConstraintMaker *make) {
-        make.top.equalTo(self.view).offset(NavBarH + Margin_40);
+        make.top.equalTo(self.view).offset(Margin_30);
         make.left.equalTo(self.view.mas_left).offset(Margin_30);
         make.right.equalTo(self.view.mas_right).offset(-Margin_30);
-        make.height.mas_equalTo(35);
+        make.height.mas_equalTo(TEXTFIELD_HEIGHT);
     }];
     [_identityPassword mas_makeConstraints:^(MASConstraintMaker *make) {
         make.top.equalTo(self.identityName.mas_bottom).offset(Margin_25);
@@ -80,19 +74,18 @@
     }];
     
     [_createIdentity mas_makeConstraints:^(MASConstraintMaker *make) {
-        make.top.equalTo(self.confirmPassword.mas_bottom).offset(ScreenScale(48));
-        make.left.equalTo(self.view.mas_left).offset(Margin_30);
-        make.right.equalTo(self.view.mas_right).offset(-Margin_30);
+        make.top.equalTo(self.confirmPassword.mas_bottom).offset(MAIN_HEIGHT);
+        make.left.right.equalTo(self.identityName);
         make.height.mas_equalTo(MAIN_HEIGHT);
     }];
 }
 - (UITextField *)setupPWPlaceholder:(NSString *)placeholder
 {
-    UITextField * textField = [UITextField textFieldWithplaceholder:placeholder margin:30 height:35 font:15];
+    UITextField * textField = [UITextField textFieldWithplaceholder:placeholder];
     textField.secureTextEntry = YES;
     textField.delegate = self;
     UIButton * ifSecure = [UIButton createButtonWithNormalImage:@"password_ciphertext" SelectedImage:@"password_visual" Target:self Selector:@selector(secureAction:)];
-    ifSecure.frame = CGRectMake(0, 0, 20, MAIN_HEIGHT);
+    ifSecure.frame = CGRectMake(0, 0, Margin_20, TEXTFIELD_HEIGHT);
     textField.rightViewMode = UITextFieldViewModeAlways;
     textField.rightView = ifSecure;
     [textField addTarget:self action:@selector(textChange:) forControlEvents:UIControlEventEditingChanged];
@@ -155,11 +148,11 @@
 - (void)setData
 {
     //创建比特数组
-    NSMutableData *random = [NSMutableData dataWithLength: 16];
+    NSMutableData *random = [NSMutableData dataWithLength: Random_Length];
     //生成随机data
     int status = SecRandomCopyBytes(kSecRandomDefault, random.length, random.mutableBytes);
     if (status == 0) {
-        [HTTPManager setAccountDataWithRandom:random password:self.identityPassword.text identityName:self.identityName.text success:^(id responseObject) {
+        [[HTTPManager shareManager] setAccountDataWithRandom:random password:self.identityPassword.text identityName:self.identityName.text success:^(id responseObject) {
             NSUserDefaults * defaults = [NSUserDefaults standardUserDefaults];
             [defaults setBool:YES forKey:ifCreated];
             [defaults synchronize];
@@ -169,54 +162,8 @@
         } failure:^(NSError *error) {
             
         }];
-        /*
-        // 随机数 -> 生成助记词
-        NSArray * words = [Mnemonic generateMnemonicCode: [random copy]];
-        NSLog(@"%@", [words componentsJoinedByString:@" "]);
-        // 身份账户、钱包账户
-        NSMutableArray * hdPaths = [NSMutableArray arrayWithObjects:@"M/44H/526H/0H/0/0", @"M/44H/526H/1H/0/0", nil];
-        NSArray *privateKeys = [Mnemonic generatePrivateKeys: words : hdPaths];
-        NSLog(@"%@", privateKeys);
-        // 随机数data -> 随机数字符串
-//        NSString * randomNumber  = [Tools dataToHexStr: random];
-        // 存储随机数、身份账户、钱包账户、创建身份成功
-        NSString * randomKey = [NSString generateKeyStoreWithPW:self.identityPassword.text randomKey:random];
-        // 私钥 -> 地址
-        NSString * identityAddress = [Keypair getEncAddress : [Keypair getEncPublicKey: [privateKeys firstObject]]];
-        NSString * identityKey = [NSString generateKeyStoreWithPW:self.identityPassword.text key:[privateKeys firstObject]];
-        NSString * purseAddress = [Keypair getEncAddress : [Keypair getEncPublicKey: [privateKeys lastObject]]];
-        NSString * purseKey = [NSString generateKeyStoreWithPW:self.identityPassword.text key:[privateKeys lastObject]];
-        if (randomKey == nil) {
-            [MBProgressHUD wb_showError:@"随机数keyStore生成失败"];
-        } else if (identityKey == nil) {
-            [MBProgressHUD wb_showError:@"身份账户keyStore生成失败"];
-        } else if (purseKey == nil) {
-            [MBProgressHUD wb_showError:@"钱包账户keyStore生成失败"];
-        } else {
-            AccountModel * account = [[AccountModel alloc] init];
-            account.identityName = self.identityName.text;
-            account.randomNumber = randomKey;
-            account.identityAccount = identityAddress;
-            account.purseAccount = purseAddress;
-            account.identityKey = identityKey;
-            account.purseKey = purseKey;
-            // 存储帐号模型
-            [AccountTool save:account];
-            [MBProgressHUD wb_hideHUD];
-            
-            //            [defaults setObject:randomKey forKey:RandomNumber];
-            //            [defaults setObject:[NSString generateKeyStoreWithPW:self.identityPassword.text key:[privateKeys firstObject]] forKey:IdentityAccount];
-            //            [defaults setObject:[NSString generateKeyStoreWithPW:self.identityPassword.text key:[privateKeys firstObject]] forKey:PurseAccount];
-            NSUserDefaults * defaults = [NSUserDefaults standardUserDefaults];
-            [defaults setBool:YES forKey:ifCreated];
-            [defaults synchronize];
-            BackUpPurseViewController * VC = [[BackUpPurseViewController alloc] init];
-            VC.mnemonicArray = words;
-            [self.navigationController pushViewController:VC animated:YES];
-        }
-         */
     } else {
-        [MBProgressHUD showErrorMessage:Localized(@"RandomGenerationFailure")];
+        [MBProgressHUD showTipMessageInWindow:Localized(@"RandomGenerationFailure")];
     }
 }
 
@@ -225,44 +172,18 @@
 - (void)createAction
 {
     if ([RegexPatternTool validateUserName:_identityName.text] == NO) {
-        [MBProgressHUD showInfoMessage:Localized(@"IDNameFormatIncorrect")];
+        [MBProgressHUD showTipMessageInWindow:Localized(@"IDNameFormatIncorrect")];
         return;
     }
     if ([RegexPatternTool validatePassword:_identityPassword.text] == NO) {
-        [MBProgressHUD showInfoMessage:Localized(@"CryptographicFormat")];
+        [MBProgressHUD showTipMessageInWindow:Localized(@"CryptographicFormat")];
         return;
     }
     if (![_confirmPassword.text isEqualToString:_identityPassword.text]) {
-        [MBProgressHUD showInfoMessage:Localized(@"PasswordIsDifferent")];
+        [MBProgressHUD showTipMessageInWindow:Localized(@"PasswordIsDifferent")];
         return;
     }
     [self setData];
-    /*
-     [UIApplication sharedApplication].keyWindow.rootViewController = [[TabBarViewController alloc] init];
-     if (self.usernameField.text.length == 0) {
-     [MBProgressHUD showError:@"请输入账号"];
-     return;
-     }
-     if (self.passwordField.text.length == 0) {
-     [MBProgressHUD showError:@"请输入密码"];
-     return;
-     }
-     [HTTPManager getAccountLoginDataWithtxt_usernum:self.usernameField.text txt_passnum:self.passwordField.text txt_type:1 success:^(id responseObject) {
-     NSString * message = [responseObject objectForKey:@"txt_other"];
-     NSInteger status =[[responseObject objectForKey:@"txt_code"] integerValue];
-     if (status == 0){
-     NSDictionary * userDic = responseObject[@"txt_mydata"];
-     NSUserDefaults * defaults = [NSUserDefaults standardUserDefaults];
-     //            [defaults setObject: forKey:UserID];
-     //            [defaults setObject: forKey:UserToken];
-     [defaults synchronize];
-     [UIApplication sharedApplication].keyWindow.rootViewController = [[TabBarViewController alloc] init];
-     NSLog(@"%@", responseObject);
-     }
-     } failure:^(NSError *error) {
-     
-     }];
-     */
 }
 - (void)didReceiveMemoryWarning
 {

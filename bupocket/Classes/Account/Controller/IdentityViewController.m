@@ -8,7 +8,6 @@
 
 #import "IdentityViewController.h"
 #import "TermsOfUseViewController.h"
-//#import "CreateIdentityViewController.h"
 #import "RestoreIdentityViewController.h"
 
 @interface IdentityViewController ()
@@ -27,6 +26,9 @@
     [super viewWillDisappear:animated];
     [self.navigationController setNavigationBarHidden:NO animated:animated];
     [UIApplication sharedApplication].statusBarStyle = UIStatusBarStyleDefault;
+}
+- (UIStatusBarStyle)preferredStatusBarStyle {
+    return UIStatusBarStyleLightContent;
 }
 - (void)viewDidLoad
 {
@@ -57,26 +59,18 @@
         make.centerX.equalTo(identityBg);
         make.top.equalTo(logoImage.mas_bottom).offset(Margin_25);
     }];
-    UIButton * createIdentity = [UIButton createButtonWithTitle:Localized(@"ImmediateCreation") TextFont:18 TextColor:[UIColor whiteColor] Target:self Selector:@selector(createAction)];
-    createIdentity.layer.masksToBounds = YES;
-    createIdentity.clipsToBounds = YES;
-    createIdentity.layer.cornerRadius = ScreenScale(4);
-    createIdentity.backgroundColor = MAIN_COLOR;
+    UIButton * createIdentity = [UIButton createButtonWithTitle:Localized(@"ImmediateCreation") isEnabled:YES Target:self Selector:@selector(createAction)];
     [identityBg addSubview:createIdentity];
     [createIdentity mas_makeConstraints:^(MASConstraintMaker *make) {
         make.top.equalTo(titleLabel.mas_bottom).offset(ScreenScale(90));
         make.left.equalTo(identityBg.mas_left).offset(Margin_30);
         make.right.equalTo(identityBg.mas_right).offset(-Margin_30);
         make.height.mas_equalTo(MAIN_HEIGHT);
-//        make.centerX.equalTo(identityBg);
-//        make.size.mas_equalTo(CGSizeMake(ScreenScale(300), ScreenScale(55)));
     }];
     
-    UIButton * restoreIdentity = [UIButton createButtonWithTitle:Localized(@"RestoreIdentity") TextFont:18 TextColor:[UIColor colorWithHexString:@"5745C3"] Target:self Selector:@selector(restoreAction)];
-    restoreIdentity.layer.masksToBounds = YES;
-    restoreIdentity.clipsToBounds = YES;
-    restoreIdentity.layer.cornerRadius = ScreenScale(4);
+    UIButton * restoreIdentity = [UIButton createButtonWithTitle:Localized(@"RestoreIdentity") isEnabled:YES Target:self Selector:@selector(restoreAction)];
     restoreIdentity.backgroundColor = [UIColor whiteColor];
+    [restoreIdentity setTitleColor:NAVITEM_COLOR forState:UIControlStateNormal];
     [identityBg addSubview:restoreIdentity];
     [restoreIdentity mas_makeConstraints:^(MASConstraintMaker *make) {
         make.top.equalTo(createIdentity.mas_bottom).offset(ScreenScale(35));
@@ -87,8 +81,6 @@
 {
     TermsOfUseViewController * VC = [[TermsOfUseViewController alloc] init];
     [self.navigationController pushViewController:VC animated:YES];
-//    CreateIdentityViewController * VC = [[CreateIdentityViewController alloc] init];
-//    [self.navigationController pushViewController:VC animated:YES];
 }
 - (void)restoreAction
 {

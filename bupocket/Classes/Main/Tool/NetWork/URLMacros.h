@@ -12,10 +12,22 @@
 #define SERVER_COMBINE_API(API_BASE, API_INTERFACE) [NSString stringWithFormat:@"%@%@",API_BASE,API_INTERFACE]
 
 //#define URLPREFIX @"http://api-bp.bumotest.io/"
+//#define URLPREFIX_Socket @"ws-tools.bumotest.io"
+/*
+// 开发环境
 #define URLPREFIX @"http://52.80.218.114:8081/"
-#define URLPREFIX_Socket @"http://192.168.6.98:3100"
 // SDK
 #define URL_SDK @"http://seed1.bumotest.io:26002"
+// Socket
+#define URLPREFIX_Socket @"http://192.168.6.98:3100"
+ */
+
+// 测试网环境
+#define WEB_SERVER_DOMAIN @"http://api-bp.bumotest.io/"
+// SDK
+#define BUMO_NODE_URL @"http://wallet-node.bumotest.io"
+// Socket
+#define PUSH_MESSAGE_SOCKET_URL @"https://ws-tools.bumotest.io";
 
 
 #define Assets_List @"wallet/token/list"

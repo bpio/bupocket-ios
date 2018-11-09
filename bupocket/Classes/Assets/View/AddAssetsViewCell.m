@@ -32,6 +32,13 @@ static NSString * const AddAssetsCellID = @"AddAssetsCellID";
     }
     return self;
 }
+- (NSMutableArray *)addAssetsArray
+{
+    if (!_addAssetsArray) {
+        _addAssetsArray = [NSMutableArray array];
+    }
+    return _addAssetsArray;
+}
 - (void)layoutSubviews
 {
     [super layoutSubviews];
@@ -41,7 +48,8 @@ static NSString * const AddAssetsCellID = @"AddAssetsCellID";
         make.width.height.mas_equalTo(Margin_40);
     }];
     [self.title mas_makeConstraints:^(MASConstraintMaker *make) {
-        make.top.equalTo(self.contentView.mas_top).offset(Margin_20);
+//        make.top.equalTo(self.contentView.mas_top).offset(Margin_20);
+        make.top.equalTo(self.listImage);
         make.left.equalTo(self.listImage.mas_right).offset(Margin_15);
     }];
     [self.detailTitle mas_makeConstraints:^(MASConstraintMaker *make) {
@@ -55,7 +63,7 @@ static NSString * const AddAssetsCellID = @"AddAssetsCellID";
     CGSize size = CGSizeMake(ScreenScale(52), Margin_25);
     [self.addBtn setViewSize:size borderWidth:0 borderColor:nil borderRadius:ScreenScale(2)];
     [self.addBtn mas_makeConstraints:^(MASConstraintMaker *make) {
-        make.centerY.equalTo(self.contentView);
+        make.centerY.equalTo(self.detailTitle);
         make.right.equalTo(self.contentView.mas_right).offset(-ScreenScale(22));
         make.size.mas_equalTo(size);
     }];
@@ -67,23 +75,24 @@ static NSString * const AddAssetsCellID = @"AddAssetsCellID";
     _title.text = searchAssetsModel.assetCode;
     _detailTitle.text = searchAssetsModel.assetName;
     _infoTitle.text = searchAssetsModel.issuer;
-    _addBtn.hidden = searchAssetsModel.recommend;
+    _addBtn.hidden = !searchAssetsModel.recommend;
+    if (searchAssetsModel.recommend) {
+        NSArray * assetsArray = [[NSUserDefaults standardUserDefaults] objectForKey:AddAssets];
+        for (NSDictionary * dic in assetsArray) {
+            if ([searchAssetsModel.assetCode isEqualToString:dic[@"assetCode"]] && [searchAssetsModel.issuer isEqualToString:dic[@"issuer"]]) {
+                _addBtn.selected = YES;
+            } else {
+                _addBtn.selected = NO;
+            }
+        }
+    }
 }
-//- (void)setListModel:(AssetsListModel *)listModel
-//{
-//    _listModel = listModel;
-//    [self.listImage sd_setImageWithURL:[NSURL URLWithString:listModel.icon] placeholderImage:[UIImage imageNamed:@"BU"]];
-//    self.title.text = listModel.assetCode;
-//    //    cell.listImage.image = [UIImage imageNamed:self.listArray[indexPath.section]];
-//    //    cell.title.text = self.listArray[indexPath.section];
-//    self.detailTitle.text = listModel.amount;
-//    self.infoTitle.text = [listModel.assetAmount isEqualToString:@"~"] ? listModel.assetAmount : [NSString stringWithFormat:@"≈￥%@", listModel.assetAmount];
-//}
 - (UIImageView *)listImage
 {
     if (!_listImage) {
         _listImage = [[UIImageView alloc] init];
         _listImage.image = [UIImage imageNamed:@"placeholder"];
+        [_listImage setViewSize:CGSizeMake(Margin_40, Margin_40) borderWidth:LINE_WIDTH borderColor:LINE_COLOR borderRadius:Margin_20];
     }
     return _listImage;
 }
@@ -103,7 +112,7 @@ static NSString * const AddAssetsCellID = @"AddAssetsCellID";
         _detailTitle = [[UILabel alloc] init];
         _detailTitle.font = FONT(16);
         _detailTitle.textColor = TITLE_COLOR;
-        _detailTitle.preferredMaxLayoutWidth = _title.preferredMaxLayoutWidth;
+        _detailTitle.preferredMaxLayoutWidth = DEVICE_WIDTH - ScreenScale(150);
     }
     return _detailTitle;
 }
@@ -113,7 +122,8 @@ static NSString * const AddAssetsCellID = @"AddAssetsCellID";
         _infoTitle = [[UILabel alloc] init];
         _infoTitle.font = TITLE_FONT;
         _infoTitle.textColor = COLOR_9;
-        _infoTitle.preferredMaxLayoutWidth = _title.preferredMaxLayoutWidth;
+        _infoTitle.preferredMaxLayoutWidth = DEVICE_WIDTH - ScreenScale(80);
+        _infoTitle.numberOfLines = 0;
     }
     return _infoTitle;
 }
@@ -130,6 +140,20 @@ static NSString * const AddAssetsCellID = @"AddAssetsCellID";
 - (void)addAction:(UIButton *)button
 {
     button.selected = !button.selected;
+    NSDictionary * assetsDic = @{
+                                 @"assetCode" : _searchAssetsModel.assetCode,
+                                 @"issuer" : _searchAssetsModel.issuer
+                                 };
+    NSUserDefaults * defaults = [NSUserDefaults standardUserDefaults];
+    self.addAssetsArray = [NSMutableArray arrayWithArray:[defaults objectForKey:AddAssets]];
+    if (button.selected == YES) {
+        [self.addAssetsArray addObject:assetsDic];
+    } else {
+        [self.addAssetsArray removeObject:assetsDic];
+    }
+    [defaults setObject:self.addAssetsArray forKey:AddAssets];
+    [defaults synchronize];
+    
 }
 - (void)awakeFromNib {
     [super awakeFromNib];

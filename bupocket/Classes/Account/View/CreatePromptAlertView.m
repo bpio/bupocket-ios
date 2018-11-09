@@ -26,7 +26,7 @@
 
 - (void)setupView {
     self.backgroundColor = [UIColor whiteColor];
-    self.layer.cornerRadius = ScreenScale(5);
+    self.layer.cornerRadius = MAIN_FILLET;
     CustomButton * promptBtn = [[CustomButton alloc] init];
     promptBtn.layoutMode = VerticalNormal;
     promptBtn.titleLabel.font = FONT(21);
@@ -44,24 +44,20 @@
     NSString * infoStr = Localized(@"CreatePWInfo");
     NSString * titleStr = [NSString stringWithFormat:@"%@\n%@", warnStr, infoStr];
     UILabel * title = [UILabel new];
-//    title.adjustsLetterSpacingToFitWidth = YES;
     title.numberOfLines = 0;
     title.attributedText = [Encapsulation attrWithString:titleStr preFont:FONT(15) preColor:WARNING_COLOR index:warnStr.length sufFont:FONT(15) sufColor:TITLE_COLOR lineSpacing:5];
     title.lineBreakMode = NSLineBreakByWordWrapping;
     [self addSubview:title];
     [title mas_makeConstraints:^(MASConstraintMaker *make) {
         make.top.equalTo(promptBtn.mas_bottom);
-        make.left.equalTo(self).offset(Margin_25);
-        make.right.equalTo(self).offset(-Margin_25);
+        make.left.equalTo(self).offset(Margin_20);
+        make.right.equalTo(self).offset(-Margin_20);
     }];
     
-    UIButton * sureBtn = [UIButton createButtonWithTitle:Localized(@"Confirm") TextFont:18 TextColor:[UIColor whiteColor] Target:self Selector:@selector(sureBtnClick)];
+    UIButton * sureBtn = [UIButton createButtonWithTitle:Localized(@"Confirm") isEnabled:YES Target:self Selector:@selector(sureBtnClick)];
     [self addSubview:sureBtn];
-    sureBtn.layer.masksToBounds = YES;
-    sureBtn.layer.cornerRadius = ScreenScale(4);
-    sureBtn.backgroundColor = MAIN_COLOR;
     [sureBtn mas_makeConstraints:^(MASConstraintMaker *make) {
-        make.bottom.equalTo(self.mas_bottom).offset(-ScreenScale(22));
+        make.bottom.equalTo(self.mas_bottom).offset(-Margin_20);
         make.left.right.equalTo(title);
         make.height.mas_equalTo(MAIN_HEIGHT);
     }];

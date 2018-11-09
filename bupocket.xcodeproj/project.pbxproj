@@ -32,8 +32,8 @@
 		83379A5521787F2500C222A5 /* Default-896h@3x.png in Resources */ = {isa = PBXBuildFile; fileRef = 83379A4621787F2500C222A5 /* Default-896h@3x.png */; };
 		83379A58217880C700C222A5 /* BackUpPurseViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 83379A57217880C700C222A5 /* BackUpPurseViewController.m */; };
 		83379A5B2178825300C222A5 /* PurseCipherAlertView.m in Sources */ = {isa = PBXBuildFile; fileRef = 83379A5A2178825300C222A5 /* PurseCipherAlertView.m */; };
-		83379A5E21796BFC00C222A5 /* Terms of use.html in Resources */ = {isa = PBXBuildFile; fileRef = 83379A5C21796BFC00C222A5 /* Terms of use.html */; };
-		83379A5F21796BFC00C222A5 /* 使用条款.html in Resources */ = {isa = PBXBuildFile; fileRef = 83379A5D21796BFC00C222A5 /* 使用条款.html */; };
+		83379A5E21796BFC00C222A5 /* BU Pocket Service Agreement.html in Resources */ = {isa = PBXBuildFile; fileRef = 83379A5C21796BFC00C222A5 /* BU Pocket Service Agreement.html */; };
+		83379A5F21796BFC00C222A5 /* 小布口袋服务协议.html in Resources */ = {isa = PBXBuildFile; fileRef = 83379A5D21796BFC00C222A5 /* 小布口袋服务协议.html */; };
 		83379A6221797BDD00C222A5 /* ConfirmMnemonicViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 83379A6121797BDD00C222A5 /* ConfirmMnemonicViewController.m */; };
 		83379A6B2179C1D500C222A5 /* ChangePasswordViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 83379A6A2179C1D500C222A5 /* ChangePasswordViewController.m */; };
 		83379A6E2179CB9E00C222A5 /* FeedbackViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 83379A6D2179CB9E00C222A5 /* FeedbackViewController.m */; };
@@ -58,6 +58,8 @@
 		83379AE22180630300C222A5 /* TxDetailModel.m in Sources */ = {isa = PBXBuildFile; fileRef = 83379AE12180630300C222A5 /* TxDetailModel.m */; };
 		83379AE52180631200C222A5 /* TxInfoModel.m in Sources */ = {isa = PBXBuildFile; fileRef = 83379AE42180631200C222A5 /* TxInfoModel.m */; };
 		83379AE8218066FE00C222A5 /* BlockInfoModel.m in Sources */ = {isa = PBXBuildFile; fileRef = 83379AE7218066FE00C222A5 /* BlockInfoModel.m */; };
+		834695552192D93E007B9AA3 /* MBProgressHUD+JDragon.bundle in Resources */ = {isa = PBXBuildFile; fileRef = 834695532192D93D007B9AA3 /* MBProgressHUD+JDragon.bundle */; };
+		834695562192D93E007B9AA3 /* MBProgressHUD+JDragon.m in Sources */ = {isa = PBXBuildFile; fileRef = 834695542192D93D007B9AA3 /* MBProgressHUD+JDragon.m */; };
 		835A45262174C14D005BFCDD /* main.m in Sources */ = {isa = PBXBuildFile; fileRef = 835A45242174C14D005BFCDD /* main.m */; };
 		835A45272174C14D005BFCDD /* AppDelegate.m in Sources */ = {isa = PBXBuildFile; fileRef = 835A45252174C14D005BFCDD /* AppDelegate.m */; };
 		8369BCED218B3DF5002F8903 /* AtpProperty.m in Sources */ = {isa = PBXBuildFile; fileRef = 8369BCEC218B3DF5002F8903 /* AtpProperty.m */; };
@@ -96,6 +98,7 @@
 		83D5BCCE2182A87B00BF1FF1 /* AccountModel.m in Sources */ = {isa = PBXBuildFile; fileRef = 83D5BCCD2182A87B00BF1FF1 /* AccountModel.m */; };
 		83D5BCD12182AB8200BF1FF1 /* AccountTool.m in Sources */ = {isa = PBXBuildFile; fileRef = 83D5BCD02182AB8200BF1FF1 /* AccountTool.m */; };
 		83EE39422181633A0017CDE5 /* AddAssetsViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 83EE39412181633A0017CDE5 /* AddAssetsViewController.m */; };
+		83F94D6921927F47004E981A /* CustomRefreshHeader.m in Sources */ = {isa = PBXBuildFile; fileRef = 83F94D6821927F47004E981A /* CustomRefreshHeader.m */; };
 		83FB4423219035B700D68569 /* SearchAssetsModel.m in Sources */ = {isa = PBXBuildFile; fileRef = 83FB4422219035B700D68569 /* SearchAssetsModel.m */; };
 		83FB443421904AA400D68569 /* HMScannerBorder.m in Sources */ = {isa = PBXBuildFile; fileRef = 83FB442821904AA300D68569 /* HMScannerBorder.m */; };
 		83FB443521904AA400D68569 /* HMScannerMaskView.m in Sources */ = {isa = PBXBuildFile; fileRef = 83FB442A21904AA300D68569 /* HMScannerMaskView.m */; };
@@ -104,6 +107,8 @@
 		83FB443821904AA400D68569 /* HMScanner.bundle in Resources */ = {isa = PBXBuildFile; fileRef = 83FB442E21904AA300D68569 /* HMScanner.bundle */; };
 		83FB443921904AA400D68569 /* HMScanerCardViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 83FB442F21904AA300D68569 /* HMScanerCardViewController.m */; };
 		83FB443A21904AA400D68569 /* HMScannerController.m in Sources */ = {isa = PBXBuildFile; fileRef = 83FB443121904AA300D68569 /* HMScannerController.m */; };
+		83FB4443219131EC00D68569 /* UINavigationController+Extension.m in Sources */ = {isa = PBXBuildFile; fileRef = 83FB4442219131EC00D68569 /* UINavigationController+Extension.m */; };
+		83FB4448219191CE00D68569 /* MyCustomTableHeader.m in Sources */ = {isa = PBXBuildFile; fileRef = 83FB4446219191CD00D68569 /* MyCustomTableHeader.m */; };
 		C78AA58ABD5C4F75C67B6250 /* Pods_bupocketTests.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 248F98B6791F2F7C55E77E0E /* Pods_bupocketTests.framework */; };
 		E0A64C5CAFFFD9486B7713D7 /* Pods_bupocket.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = EB267DD938A42BAD30A164A2 /* Pods_bupocket.framework */; };
 /* End PBXBuildFile section */
@@ -206,8 +211,8 @@
 		83379A57217880C700C222A5 /* BackUpPurseViewController.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = BackUpPurseViewController.m; sourceTree = "<group>"; };
 		83379A592178825300C222A5 /* PurseCipherAlertView.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = PurseCipherAlertView.h; sourceTree = "<group>"; };
 		83379A5A2178825300C222A5 /* PurseCipherAlertView.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = PurseCipherAlertView.m; sourceTree = "<group>"; };
-		83379A5C21796BFC00C222A5 /* Terms of use.html */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.html; path = "Terms of use.html"; sourceTree = "<group>"; };
-		83379A5D21796BFC00C222A5 /* 使用条款.html */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.html; path = "使用条款.html"; sourceTree = "<group>"; };
+		83379A5C21796BFC00C222A5 /* BU Pocket Service Agreement.html */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.html; path = "BU Pocket Service Agreement.html"; sourceTree = "<group>"; };
+		83379A5D21796BFC00C222A5 /* 小布口袋服务协议.html */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.html; path = "小布口袋服务协议.html"; sourceTree = "<group>"; };
 		83379A6021797BDD00C222A5 /* ConfirmMnemonicViewController.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = ConfirmMnemonicViewController.h; sourceTree = "<group>"; };
 		83379A6121797BDD00C222A5 /* ConfirmMnemonicViewController.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = ConfirmMnemonicViewController.m; sourceTree = "<group>"; };
 		83379A692179C1D500C222A5 /* ChangePasswordViewController.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = ChangePasswordViewController.h; sourceTree = "<group>"; };
@@ -257,6 +262,9 @@
 		83379AE42180631200C222A5 /* TxInfoModel.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = TxInfoModel.m; sourceTree = "<group>"; };
 		83379AE6218066FE00C222A5 /* BlockInfoModel.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = BlockInfoModel.h; sourceTree = "<group>"; };
 		83379AE7218066FE00C222A5 /* BlockInfoModel.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = BlockInfoModel.m; sourceTree = "<group>"; };
+		834695522192D93D007B9AA3 /* MBProgressHUD+JDragon.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "MBProgressHUD+JDragon.h"; sourceTree = "<group>"; };
+		834695532192D93D007B9AA3 /* MBProgressHUD+JDragon.bundle */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.plug-in"; path = "MBProgressHUD+JDragon.bundle"; sourceTree = "<group>"; };
+		834695542192D93D007B9AA3 /* MBProgressHUD+JDragon.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "MBProgressHUD+JDragon.m"; sourceTree = "<group>"; };
 		835A45232174C14D005BFCDD /* AppDelegate.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = AppDelegate.h; sourceTree = "<group>"; };
 		835A45242174C14D005BFCDD /* main.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = main.m; sourceTree = "<group>"; };
 		835A45252174C14D005BFCDD /* AppDelegate.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = AppDelegate.m; sourceTree = "<group>"; };
@@ -336,6 +344,8 @@
 		83D5BCD02182AB8200BF1FF1 /* AccountTool.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = AccountTool.m; sourceTree = "<group>"; };
 		83EE39402181633A0017CDE5 /* AddAssetsViewController.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = AddAssetsViewController.h; sourceTree = "<group>"; };
 		83EE39412181633A0017CDE5 /* AddAssetsViewController.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = AddAssetsViewController.m; sourceTree = "<group>"; };
+		83F94D6721927F47004E981A /* CustomRefreshHeader.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = CustomRefreshHeader.h; sourceTree = "<group>"; };
+		83F94D6821927F47004E981A /* CustomRefreshHeader.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = CustomRefreshHeader.m; sourceTree = "<group>"; };
 		83FB4421219035B700D68569 /* SearchAssetsModel.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = SearchAssetsModel.h; sourceTree = "<group>"; };
 		83FB4422219035B700D68569 /* SearchAssetsModel.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = SearchAssetsModel.m; sourceTree = "<group>"; };
 		83FB442721904AA300D68569 /* HMScanner.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = HMScanner.h; sourceTree = "<group>"; };
@@ -351,6 +361,10 @@
 		83FB443121904AA300D68569 /* HMScannerController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = HMScannerController.m; sourceTree = "<group>"; };
 		83FB443221904AA300D68569 /* HMScannerBorder.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = HMScannerBorder.h; sourceTree = "<group>"; };
 		83FB443321904AA300D68569 /* HMScannerViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = HMScannerViewController.h; sourceTree = "<group>"; };
+		83FB4441219131EC00D68569 /* UINavigationController+Extension.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = "UINavigationController+Extension.h"; sourceTree = "<group>"; };
+		83FB4442219131EC00D68569 /* UINavigationController+Extension.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = "UINavigationController+Extension.m"; sourceTree = "<group>"; };
+		83FB4446219191CD00D68569 /* MyCustomTableHeader.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = MyCustomTableHeader.m; sourceTree = "<group>"; };
+		83FB4447219191CE00D68569 /* MyCustomTableHeader.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = MyCustomTableHeader.h; sourceTree = "<group>"; };
 		8BAFA7A3EC4992591E7450DA /* Pods-bupocket.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-bupocket.release.xcconfig"; path = "Pods/Target Support Files/Pods-bupocket/Pods-bupocket.release.xcconfig"; sourceTree = "<group>"; };
 		9D915F385F1A78B38EC83B6E /* Pods_bupocketUITests.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_bupocketUITests.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		A61F11E76D6541BC859B703E /* Pods-bupocket.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-bupocket.debug.xcconfig"; path = "Pods/Target Support Files/Pods-bupocket/Pods-bupocket.debug.xcconfig"; sourceTree = "<group>"; };
@@ -405,6 +419,8 @@
 		833799292177091500C222A5 /* Tool */ = {
 			isa = PBXGroup;
 			children = (
+				834695512192D93D007B9AA3 /* MBProgressHUD+JDragon */,
+				83F94D6621927EFE004E981A /* Refresh */,
 				83FB442621904AA300D68569 /* QRCode */,
 				831786122189A714003B5731 /* Framework */,
 				83379A9C217EF20100C222A5 /* NetWork */,
@@ -416,6 +432,8 @@
 				83D5B1F321819CCB00BF1FF1 /* DateTool.m */,
 				8317860F2189A6EE003B5731 /* RegexPatternTool.h */,
 				831786102189A6EE003B5731 /* RegexPatternTool.m */,
+				83FB4447219191CE00D68569 /* MyCustomTableHeader.h */,
+				83FB4446219191CD00D68569 /* MyCustomTableHeader.m */,
 			);
 			path = Tool;
 			sourceTree = "<group>";
@@ -423,8 +441,8 @@
 		83379A0A2178588800C222A5 /* Resource */ = {
 			isa = PBXGroup;
 			children = (
-				83379A5D21796BFC00C222A5 /* 使用条款.html */,
-				83379A5C21796BFC00C222A5 /* Terms of use.html */,
+				83379A5D21796BFC00C222A5 /* 小布口袋服务协议.html */,
+				83379A5C21796BFC00C222A5 /* BU Pocket Service Agreement.html */,
 			);
 			path = Resource;
 			sourceTree = "<group>";
@@ -464,6 +482,16 @@
 				83379AC2217F3F3000C222A5 /* BaseModel.m */,
 			);
 			path = Model;
+			sourceTree = "<group>";
+		};
+		834695512192D93D007B9AA3 /* MBProgressHUD+JDragon */ = {
+			isa = PBXGroup;
+			children = (
+				834695522192D93D007B9AA3 /* MBProgressHUD+JDragon.h */,
+				834695532192D93D007B9AA3 /* MBProgressHUD+JDragon.bundle */,
+				834695542192D93D007B9AA3 /* MBProgressHUD+JDragon.m */,
+			);
+			path = "MBProgressHUD+JDragon";
 			sourceTree = "<group>";
 		};
 		835A45202174C14D005BFCDD /* Classes */ = {
@@ -701,6 +729,8 @@
 				83D5B1ED21818F7700BF1FF1 /* NSString+Extension.m */,
 				83D5BCC52181BF9500BF1FF1 /* UIColor+Extension.h */,
 				83D5BCC62181BF9500BF1FF1 /* UIColor+Extension.m */,
+				83FB4441219131EC00D68569 /* UINavigationController+Extension.h */,
+				83FB4442219131EC00D68569 /* UINavigationController+Extension.m */,
 			);
 			path = Category;
 			sourceTree = "<group>";
@@ -785,6 +815,15 @@
 				8337992E21772E0300C222A5 /* CustomButton.m */,
 			);
 			path = View;
+			sourceTree = "<group>";
+		};
+		83F94D6621927EFE004E981A /* Refresh */ = {
+			isa = PBXGroup;
+			children = (
+				83F94D6721927F47004E981A /* CustomRefreshHeader.h */,
+				83F94D6821927F47004E981A /* CustomRefreshHeader.m */,
+			);
+			path = Refresh;
 			sourceTree = "<group>";
 		};
 		83FB442621904AA300D68569 /* QRCode */ = {
@@ -956,15 +995,16 @@
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				83379A5E21796BFC00C222A5 /* Terms of use.html in Resources */,
+				83379A5E21796BFC00C222A5 /* BU Pocket Service Agreement.html in Resources */,
 				833799252176FE4800C222A5 /* Localizable.strings in Resources */,
 				83379A5221787F2500C222A5 /* Default-568h@2x.png in Resources */,
 				83379A5521787F2500C222A5 /* Default-896h@3x.png in Resources */,
-				83379A5F21796BFC00C222A5 /* 使用条款.html in Resources */,
+				83379A5F21796BFC00C222A5 /* 小布口袋服务协议.html in Resources */,
 				83379A5321787F2500C222A5 /* Default-812h@3x.png in Resources */,
 				83379A4F21787F2500C222A5 /* Default-iPhone6.png in Resources */,
 				83379A5021787F2500C222A5 /* Default@2x.png in Resources */,
 				83B465B021745C9400187961 /* LaunchScreen.storyboard in Resources */,
+				834695552192D93E007B9AA3 /* MBProgressHUD+JDragon.bundle in Resources */,
 				83379A5421787F2500C222A5 /* Default.png in Resources */,
 				83FB443821904AA400D68569 /* HMScanner.bundle in Resources */,
 				8337991F2176FD4400C222A5 /* InfoPlist.strings in Resources */,
@@ -1049,7 +1089,6 @@
 				"${BUILT_PRODUCTS_DIR}/IQKeyboardManager/IQKeyboardManager.framework",
 				"${BUILT_PRODUCTS_DIR}/JSONModel/JSONModel.framework",
 				"${BUILT_PRODUCTS_DIR}/MBProgressHUD/MBProgressHUD.framework",
-				"${BUILT_PRODUCTS_DIR}/MBProgressHUD+JDragon/MBProgressHUD_JDragon.framework",
 				"${BUILT_PRODUCTS_DIR}/MJExtension/MJExtension.framework",
 				"${BUILT_PRODUCTS_DIR}/MJRefresh/MJRefresh.framework",
 				"${BUILT_PRODUCTS_DIR}/Masonry/Masonry.framework",
@@ -1068,7 +1107,6 @@
 				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/IQKeyboardManager.framework",
 				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/JSONModel.framework",
 				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/MBProgressHUD.framework",
-				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/MBProgressHUD_JDragon.framework",
 				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/MJExtension.framework",
 				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/MJRefresh.framework",
 				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/Masonry.framework",
@@ -1119,6 +1157,7 @@
 				83379A7A217B4EA700C222A5 /* AppDelegate+Extension.m in Sources */,
 				83379A80217B524D00C222A5 /* UIApplication+Extension.m in Sources */,
 				83379AE52180631200C222A5 /* TxInfoModel.m in Sources */,
+				834695562192D93E007B9AA3 /* MBProgressHUD+JDragon.m in Sources */,
 				83379A8C217DB25A00C222A5 /* TransferAccountsViewController.m in Sources */,
 				83FB443621904AA400D68569 /* HMScannerViewController.m in Sources */,
 				8337991A2176E80D00C222A5 /* MultilingualViewController.m in Sources */,
@@ -1145,8 +1184,10 @@
 				8372C8662174CC6F00FF9506 /* BaseViewController.m in Sources */,
 				835A45262174C14D005BFCDD /* main.m in Sources */,
 				83379AD921802FA900C222A5 /* AssetsDetailModel.m in Sources */,
+				83FB4448219191CE00D68569 /* MyCustomTableHeader.m in Sources */,
 				83379A89217DA4F900C222A5 /* AssetsDetailListViewCell.m in Sources */,
 				83D5B1EE21818F7700BF1FF1 /* NSString+Extension.m in Sources */,
+				83FB4443219131EC00D68569 /* UINavigationController+Extension.m in Sources */,
 				83379A9B217EC01900C222A5 /* OrderDetailsViewController.m in Sources */,
 				83379A1B21786A6800C222A5 /* Encapsulation.m in Sources */,
 				83379A742179D62300C222A5 /* MyIdentityViewController.m in Sources */,
@@ -1161,6 +1202,7 @@
 				83B594AD2175E4D9009F91BA /* RestoreIdentityViewController.m in Sources */,
 				83FB443A21904AA400D68569 /* HMScannerController.m in Sources */,
 				83379AE8218066FE00C222A5 /* BlockInfoModel.m in Sources */,
+				83F94D6921927F47004E981A /* CustomRefreshHeader.m in Sources */,
 				838DC7682186AFFB002FF276 /* DistributionResultsViewController.m in Sources */,
 				83379A86217D9C8A00C222A5 /* AssetsDetailViewController.m in Sources */,
 				83379A92217DE12600C222A5 /* TransferResultsViewController.m in Sources */,

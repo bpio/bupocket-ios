@@ -18,6 +18,7 @@
 
 @property (nonatomic, strong) UITableView * tableView;
 @property (nonatomic, strong) UIView * headerBg;
+@property (nonatomic, assign) CGFloat headerViewH;
 @property (nonatomic, strong) NSMutableArray * listArray;
 @property (nonatomic, strong) UILabel * assets;
 @property (nonatomic, strong) UILabel * amount;
@@ -38,30 +39,30 @@
     return _listArray;
 }
 
-//- (void)viewWillAppear:(BOOL)animated {
-//    [super viewWillAppear:animated];
-////    [self.navigationController setNavigationBarHidden:YES animated:animated];
-//    [UIApplication sharedApplication].statusBarStyle = UIStatusBarStyleLightContent;
-//}
-//
-//- (void)viewWillDisappear:(BOOL)animated {
-//    [super viewWillDisappear:animated];
-////    [self.navigationController setNavigationBarHidden:NO animated:animated];
-//    [UIApplication sharedApplication].statusBarStyle = UIStatusBarStyleDefault;
-//}
-
 - (void)viewDidLoad {
     [super viewDidLoad];
     self.navigationItem.title = self.listModel.assetCode;
-    [self setupView];
+    _headerViewH = ScreenScale(240);
     self.pageindex = 1;
+    [self setupView];
+    self.noNetWork = [Encapsulation showNoNetWorkWithSuperView:self.view target:self action:@selector(loadNewData)];
     [self setupRefresh];
     // Do any additional setup after loading the view.
 }
+- (void)viewWillAppear:(BOOL)animated
+{
+    [super viewWillAppear:animated];
+    if (@available(iOS 11.0, *)) {
+        [self.navigationController.navigationBar setPrefersLargeTitles:NO];
+    } else {
+        // Fallback on earlier versions
+    }
+}
 - (void)setupRefresh
 {
-    self.tableView.mj_header = [MJRefreshNormalHeader headerWithRefreshingTarget:self refreshingAction:@selector(loadNewData)];
+    self.tableView.mj_header = [CustomRefreshHeader headerWithRefreshingTarget:self refreshingAction:@selector(loadNewData)];
     self.tableView.mj_header.automaticallyChangeAlpha = YES;
+    self.tableView.mj_header.ignoredScrollViewContentInsetTop = _headerViewH;
     [self.tableView.mj_header beginRefreshing];
     self.tableView.mj_footer = [MJRefreshAutoNormalFooter footerWithRefreshingTarget:self refreshingAction:@selector(loadMoreData)];
     self.tableView.mj_footer.hidden = YES;
@@ -76,12 +77,14 @@
 }
 - (void)getDataWithPageindex:(NSInteger)pageindex
 {
-    [HTTPManager getAssetsDetailDataWithAssetCode:self.listModel.assetCode issuer:self.listModel.issuer address:[AccountTool account].purseAccount pageIndex:pageindex success:^(id responseObject) {
+    [[HTTPManager shareManager] getAssetsDetailDataWithAssetCode:self.listModel.assetCode issuer:self.listModel.issuer address:[AccountTool account].purseAccount pageIndex:pageindex success:^(id responseObject) {
         NSString * message = [responseObject objectForKey:@"msg"];
         NSInteger code = [[responseObject objectForKey:@"errCode"] integerValue];
         if (code == 0) {
             // 请求成功数据处理
-            self.tableView.tableHeaderView = self.headerBg;
+//            self.tableView.tableHeaderView = self.headerBg;
+            [self.tableView addSubview:self.headerBg];
+            [self.tableView insertSubview:self.headerBg atIndex:0];
              self.assets.text = [NSString stringWithFormat:@"%@%@", responseObject[@"data"][@"tokenBalance"], self.listModel.assetCode];
             NSString * amountStr = responseObject[@"data"][@"assetAmount"];
             self.amount.text = [amountStr isEqualToString:@"~"] ? amountStr : [NSString stringWithFormat:@"≈￥%@", amountStr];
@@ -100,7 +103,7 @@
             }
             [self.tableView reloadData];
         } else {
-            [MBProgressHUD showErrorMessage:message];
+            [MBProgressHUD showTipMessageInWindow:message];
         }
         [self.tableView.mj_header endRefreshing];
         (self.listArray.count > 0) ? (self.tableView.tableFooterView = [UIView new]) : (self.tableView.tableFooterView = self.noData);
@@ -113,19 +116,15 @@
 }
 - (void)setupView
 {
-    self.tableView = [[UITableView alloc] initWithFrame:CGRectMake(0, NavBarH, DEVICE_WIDTH, DEVICE_HEIGHT - NavBarH) style:UITableViewStyleGrouped];
+    self.tableView = [[UITableView alloc] initWithFrame:self.view.frame style:UITableViewStyleGrouped];
     self.tableView.delegate = self;
     self.tableView.dataSource = self;
     self.tableView.separatorInset = UIEdgeInsetsZero;
     self.tableView.separatorStyle = UITableViewCellSeparatorStyleNone;
+    self.tableView.contentInset = UIEdgeInsetsMake(_headerViewH, 0, 0, 0);
     [self.view addSubview:self.tableView];
-    self.noNetWork = [Encapsulation showNoNetWorkWithSuperView:self.view target:self action:@selector(setupRefresh)];
-//    [noDataBtn mas_makeConstraints:^(MASConstraintMaker *make) {
-//        make.centerX.centerY.equalTo(self.noData);
-//    }];
-//    UIButton * noDataBtn = [Encapsulation showNoTransactionRecordWithSuperView:nil frame:CGRectMake(0, 0, DEVICE_WIDTH, ScreenScale(250))];
-//    self.noData.hidden = NO;
 }
+
 - (UIView *)noData
 {
     if (!_noData) {
@@ -140,26 +139,8 @@
 {
     if (!_headerBg) {
         UIView * headerBg = [[UIView alloc] init];
-        //    UIImage * headerImage = [UIImage imageNamed:@"assets_header"];
-        //    CGFloat headerImageH = ScreenScale(375 * headerImage.size.height / headerImage.size.width);
-        headerBg.frame = CGRectMake(0, 0, DEVICE_WIDTH, ScreenScale(240) + MAIN_HEIGHT);
-        UIView * headerView = [[UIView alloc] init];
-        headerView.backgroundColor = [UIColor whiteColor];
-        [headerBg addSubview:headerView];
-        [headerView mas_makeConstraints:^(MASConstraintMaker *make) {
-            make.left.top.right.equalTo(headerBg);
-            make.height.mas_equalTo(ScreenScale(240));
-        }];
-        
-        
-        //    UIImageView * headerImageView = [[UIImageView alloc] initWithImage:headerImage];
-        //    headerImageView.userInteractionEnabled = YES;
-        //    [headerBg addSubview:headerImageView];
-        //    [headerImageView mas_makeConstraints:^(MASConstraintMaker *make) {
-        //        make.left.top.right.equalTo(headerBg);
-        //        make.height.mas_equalTo(headerImageH);
-        //    }];
-        
+        headerBg.backgroundColor = [UIColor whiteColor];
+        headerBg.frame = CGRectMake(0, -_headerViewH, DEVICE_WIDTH, _headerViewH);
         UIImageView * assetsIcon = [[UIImageView alloc] init];
         [assetsIcon sd_setImageWithURL:[NSURL URLWithString:self.listModel.icon] placeholderImage:[UIImage imageNamed:@"placeholder"]];
         [headerBg addSubview:assetsIcon];
@@ -182,7 +163,7 @@
         self.amount.textColor = COLOR_9;
         [headerBg addSubview:self.amount];
         [self.amount mas_makeConstraints:^(MASConstraintMaker *make) {
-            make.top.equalTo(self.assets.mas_bottom).offset(ScreenScale(15));
+            make.top.equalTo(self.assets.mas_bottom).offset(Margin_15);
             make.centerX.equalTo(headerBg);
         }];
         
@@ -199,7 +180,7 @@
         [scanBtn setViewSize:CGSizeMake(btnW, MAIN_HEIGHT) borderWidth:0 borderColor:nil borderRadius:ScreenScale(3)];
         scanBtn.backgroundColor = NAVITEM_COLOR;
         [scanBtn mas_makeConstraints:^(MASConstraintMaker *make) {
-            make.bottom.equalTo(headerView.mas_bottom).offset(-ScreenScale(18));
+            make.top.equalTo(self.amount.mas_bottom).offset(Margin_25);
             make.left.equalTo(headerBg.mas_left).offset(Margin_12);
             make.size.mas_equalTo(CGSizeMake(btnW, MAIN_HEIGHT));
         }];
@@ -212,26 +193,23 @@
         [transferAccounts addTarget:self action:@selector(transferAccountsAction:) forControlEvents:UIControlEventTouchUpInside];
         //    .titleLabel.lineBreakMode = NSLineBreakByTruncatingTail;
         [headerBg addSubview: transferAccounts];
-        [transferAccounts setViewSize:CGSizeMake(btnW, MAIN_HEIGHT) borderWidth:0 borderColor:nil borderRadius:ScreenScale(3)];
+        [transferAccounts setViewSize:CGSizeMake(btnW, MAIN_HEIGHT) borderWidth:0 borderColor:nil borderRadius:MAIN_FILLET];
         transferAccounts.backgroundColor = MAIN_COLOR;
         [transferAccounts mas_makeConstraints:^(MASConstraintMaker *make) {
             make.right.equalTo(headerBg.mas_right).offset(-Margin_12);
-            make.size.bottom.equalTo(scanBtn);
+            make.size.top.equalTo(scanBtn);
         }];
-        
-        self.header = [[UILabel alloc] init];
-        self.header.font = FONT(15);
-        self.header.textColor = TITLE_COLOR;
-        [headerBg addSubview:self.header];
-        [self.header mas_makeConstraints:^(MASConstraintMaker *make) {
-            make.left.equalTo(headerBg.mas_left).offset(Margin_10);
-            make.top.equalTo(headerView.mas_bottom);
-            make.bottom.equalTo(headerBg.mas_bottom).offset(ScreenScale(5));
-        }];
-        [self setHeaderTitle];
         _headerBg = headerBg;
     }
     return _headerBg;
+}
+- (void)scrollViewDidScroll:(UIScrollView *)scrollView
+{
+    CGFloat offsetY = scrollView.contentOffset.y;
+    if (offsetY <= -_headerViewH) {
+        _headerBg.y = offsetY;
+        _headerBg.height = - offsetY;
+    }
 }
 #pragma mark - scanAction
 - (void)scanAction:(UIButton *)button
@@ -241,24 +219,9 @@
         VC.listModel = self.listModel;
         VC.address = stringValue;
         [self.navigationController pushViewController:VC animated:YES];
-//        if ([stringValue hasPrefix:@"hyck:"]) {
-//            [self getDataWithURL:Interface_ScanningPayment type:0 vaule:[stringValue substringFromIndex:5] pageindex:0];
-//        } else {
-//            [MBProgressHUD showWarnMessage:@"扫描结果无效"];
-//        }
     }];
     [scanner setTitleColor:[UIColor whiteColor] tintColor:MAIN_COLOR];
     [self showDetailViewController:scanner sender:nil];
-//#if TARGET_OS_SIMULATOR
-//    HSSLog(@"模拟器不支持扫一扫");
-//#elif TARGET_OS_IPHONE
-//    ScanningViewController * VC = [[ScanningViewController alloc] init];
-////    VC.type = 1;
-//    VC.block = ^(NSString * str) {
-////        refereeField.text = str;
-//    };
-//    [self.navigationController pushViewController:VC animated:YES];
-//#endif
 }
 #pragma mark - transferAccountsAction
 - (void)transferAccountsAction:(UIButton *)button
@@ -278,51 +241,36 @@
 }
 - (CGFloat)tableView:(UITableView *)tableView heightForHeaderInSection:(NSInteger)section
 {
-    return CGFLOAT_MIN;
-//    if (section == 0) {
-//        return MAIN_HEIGHT;
-//    } else {
-//        return Margin_10;
-//    }
+    if (section == 0) {
+        return MAIN_HEIGHT;
+    } else {
+        return CGFLOAT_MIN;
+    }
 }
-/*
+
  - (UIView *)tableView:(UITableView *)tableView viewForHeaderInSection:(NSInteger)section
  {
      UIView * headerView = [[UIView alloc] init];
      if (section == 0) {
-         //        CustomButton * header = [[CustomButton alloc] init];
-         //        header.layoutMode = HorizontalNormal;
-         //        [header setImage:[UIImage imageNamed:@"ifReaded_n"] forState:UIControlStateNormal];
-         //        [header setTitle:@"我的资产" forState:UIControlStateNormal];
-         //        [header setTitleColor:TITLE_COLOR forState:UIControlStateNormal];
-         //        header.titleLabel.font = FONT(15);
          self.header = [[UILabel alloc] init];
-         self.header.font = FONT(15);
-         self.header.textColor = TITLE_COLOR;
          [headerView addSubview:self.header];
          [self.header mas_makeConstraints:^(MASConstraintMaker *make) {
              make.left.equalTo(headerView.mas_left).offset(Margin_10);
-             make.centerY.equalTo(headerView);
+             make.bottom.equalTo(headerView);
+             make.top.equalTo(headerView.mas_top).offset(ScreenScale(5));
          }];
-         [self setHeaderTitle];
+         self.header.attributedText = [Encapsulation attrTitle:Localized(@"RecentTransactionRecords") ifRequired:NO];
      }
      return headerView;
  }
- */
-- (void)setHeaderTitle
-{
-    NSMutableAttributedString * attr = [[NSMutableAttributedString alloc] initWithString:[NSString stringWithFormat:@"| %@", Localized(@"RecentTransactionRecords")]];
-    //        NSMutableDictionary * dic = [NSMutableDictionary dictionary];
-    //        dic[NSFontAttributeName] = FONT(15);
-    //        dic[NSForegroundColorAttributeName] = TITLE_COLOR;
-    //        [attr addAttributes:dic range:NSMakeRange(3, str.length - 3)];
-    [attr addAttribute:NSForegroundColorAttributeName value:MAIN_COLOR range:NSMakeRange(0, 1)];
-    [attr addAttribute:NSFontAttributeName value:FONT_Bold(18) range:NSMakeRange(0, 1)];
-    self.header.attributedText = attr;
-}
+
 - (CGFloat)tableView:(UITableView *)tableView heightForFooterInSection:(NSInteger)section
 {
-    return CGFLOAT_MIN;
+    if (section == self.listArray.count - 1) {
+        return SafeAreaBottomH + NavBarH + Margin_10;
+    } else {
+        return CGFLOAT_MIN;        
+    }
 }
 - (NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section
 {
@@ -333,6 +281,7 @@
     AssetsDetailListViewCell * cell = [AssetsDetailListViewCell cellWithTableView:tableView];
     cell.assetCode = self.listModel.assetCode;
     cell.listModel = self.listArray[indexPath.section];
+    cell.selectionStyle = UITableViewCellSelectionStyleNone;
     return cell;
 }
 - (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath

@@ -2,7 +2,7 @@
 //  UITextField+Extension.m
 //  ArtBridge
 //
-//  Created by 霍双双 on 17/7/7.
+//  Created by bupocket on 17/7/7.
 //  Copyright © 2017年 xinghe.li. All rights reserved.
 //
 
@@ -32,7 +32,7 @@
     titleLabel.font = TITLE_FONT;
     titleLabel.textColor = TITLE_COLOR;
     textField.leftView = titleLabel;
-    textField.rightView = [[UIView alloc] initWithFrame:CGRectMake(0, 0, ScreenScale(15), ScreenScale(titleLabelHeight))];
+    textField.rightView = [[UIView alloc] initWithFrame:CGRectMake(0, 0, Margin_15, ScreenScale(titleLabelHeight))];
     UIView * lineView = [[UIView alloc]init];
     lineView.backgroundColor = LINE_COLOR;
     lineView.hidden = lineViewHidden;
@@ -174,11 +174,11 @@
     return textField;
 }
 
-+ (UITextField *)textFieldWithplaceholder:(NSString *)placeholder margin:(CGFloat)margin height:(CGFloat)height font:(CGFloat)font
++ (UITextField *)textFieldWithplaceholder:(NSString *)placeholder
 {
-    UITextField * textField = [[UITextField alloc] initWithFrame:CGRectMake(ScreenScale(margin), 0, DEVICE_WIDTH - ScreenScale(margin * 2), ScreenScale(height))];
+    UITextField * textField = [[UITextField alloc] initWithFrame:CGRectMake(Margin_30, 0, DEVICE_WIDTH - Margin_30 * 2, TEXTFIELD_HEIGHT)];
     textField.placeholder = placeholder;
-    textField.font = FONT(font);
+    textField.font = FONT(15);
     textField.textColor = TITLE_COLOR;
     textField.clearButtonMode = UITextFieldViewModeWhileEditing;
     textField.rightViewMode = UITextFieldViewModeAlways;

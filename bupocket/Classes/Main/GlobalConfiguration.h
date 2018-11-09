@@ -20,6 +20,10 @@
 // DEVICE_HEIGHT / 667
 #define MAIN_HEIGHT ScreenScale(45)
 #define LINE_WIDTH ScreenScale(0.5)
+#define MAIN_FILLET ScreenScale(4)
+#define TAG_FILLET ScreenScale(2)
+#define TEXTFIELD_HEIGHT ScreenScale(35)
+#define EDGEINSET_WIDTH ScreenScale(8)
 // 间距
 #define Margin_10 ScreenScale(10)
 #define Margin_20 ScreenScale(20)
@@ -32,9 +36,6 @@
 #define Margin_50 ScreenScale(50)
 #define Margin_60 ScreenScale(60)
 #define Info_Width_Max DEVICE_WIDTH - ScreenScale(155)
-// 颜色
-#define COLOR_6 COLOR(@"666666")
-#define COLOR_9 COLOR(@"999999")
 
 
 // 字体
@@ -58,6 +59,10 @@
 #define MAIN_COLOR COLOR(@"36B3FF")
 #define WARNING_COLOR COLOR(@"FF7272")
 #define DISABLED_COLOR COLOR(@"9AD9FF")
+#define VIEWBG_COLOR COLOR(@"F5F5F5")
+// 颜色
+#define COLOR_6 COLOR(@"666666")
+#define COLOR_9 COLOR(@"999999")
 
 // 程序将根据第一个参数去对应语言的文件中取对应的值，第二个参数将转化为字符串文件里的注释，可以传nil，也可以传空字符串@""。
 

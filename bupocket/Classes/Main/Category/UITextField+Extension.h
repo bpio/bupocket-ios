@@ -2,7 +2,7 @@
 //  UITextField+Extension.h
 //  ArtBridge
 //
-//  Created by 霍双双 on 17/7/7.
+//  Created by bupocket on 17/7/7.
 //  Copyright © 2017年 xinghe.li. All rights reserved.
 //
 
@@ -19,6 +19,6 @@
 
 + (UITextField *)textFieldTitleLabel:(UILabel *)titleLabel text:(NSString *)text titleLabelHeight:(CGFloat)titleLabelHeight lineViewHidden:(BOOL)lineViewHidden;
 
-+ (UITextField *)textFieldWithplaceholder:(NSString *)placeholder margin:(CGFloat)margin height:(CGFloat)height font:(CGFloat)font;
++ (UITextField *)textFieldWithplaceholder:(NSString *)placeholder;
 
 @end

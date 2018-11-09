@@ -28,7 +28,7 @@
 - (void)setupView
 {
     self.view.backgroundColor = COLOR(@"F2F2F2");
-    UIView * myIdentityBg = [[UIView alloc] initWithFrame:CGRectMake(Margin_12, NavBarH + Margin_10, DEVICE_WIDTH - Margin_24, ScreenScale(110))];
+    UIView * myIdentityBg = [[UIView alloc] initWithFrame:CGRectMake(Margin_12, Margin_10, DEVICE_WIDTH - Margin_24, ScreenScale(110))];
     myIdentityBg.backgroundColor = [UIColor whiteColor];
     [myIdentityBg setViewSize:myIdentityBg.size borderWidth:0 borderColor:nil borderRadius:ScreenScale(5)];
     [self.view addSubview:myIdentityBg];
@@ -81,8 +81,9 @@
     }];
     
     CGSize btnSize = CGSizeMake(DEVICE_WIDTH - Margin_24, MAIN_HEIGHT);
-    UIButton * exitID = [UIButton createButtonWithTitle:Localized(@"ExitCurrentIdentity") TextFont:18 TextColor:COLOR(@"FF6363") Target:self Selector:@selector(exitIDAction)];
-    [exitID setViewSize:btnSize borderWidth:0 borderColor:nil borderRadius:ScreenScale(4)];
+    UIButton * exitID = [UIButton createButtonWithTitle:Localized(@"ExitCurrentIdentity") isEnabled:YES Target:self Selector:@selector(exitIDAction)];
+//    [exitID setViewSize:btnSize borderWidth:0 borderColor:nil borderRadius:MAIN_FILLET];
+    [exitID setTitleColor:COLOR(@"FF6363") forState:UIControlStateNormal];
     exitID.backgroundColor = [UIColor whiteColor];
     [self.view addSubview:exitID];
     [exitID mas_makeConstraints:^(MASConstraintMaker *make) {
@@ -90,9 +91,8 @@
         make.centerX.equalTo(self.view);
         make.size.mas_equalTo(btnSize);
     }];
-    UIButton * backupIdentity = [UIButton createButtonWithTitle:Localized(@"BackupIdentity") TextFont:18 TextColor:[UIColor whiteColor] Target:self Selector:@selector(backupIdentityAction)];
-    [backupIdentity setViewSize:btnSize borderWidth:0 borderColor:nil borderRadius:ScreenScale(4)];
-    backupIdentity.backgroundColor = MAIN_COLOR;
+    UIButton * backupIdentity = [UIButton createButtonWithTitle:Localized(@"BackupIdentity") isEnabled:YES Target:self Selector:@selector(backupIdentityAction)];
+//    [backupIdentity setViewSize:btnSize borderWidth:0 borderColor:nil borderRadius:MAIN_FILLET];
     [self.view addSubview:backupIdentity];
     [backupIdentity mas_makeConstraints:^(MASConstraintMaker *make) {
         make.bottom.equalTo(exitID.mas_top).offset(- Margin_20);
@@ -103,10 +103,14 @@
 {
     PurseCipherAlertView * alertView = [[PurseCipherAlertView alloc] initWithType:PurseCipherNormalType confrimBolck:^(NSString * _Nonnull password) {
         NSData * random = [NSString decipherKeyStoreWithPW:password randomKeyStoreValueStr:[AccountTool account].randomNumber];
-        NSArray * words = [Mnemonic generateMnemonicCode: random];
-        BackupMnemonicsViewController * VC = [[BackupMnemonicsViewController alloc] init];
-        VC.mnemonicArray = words;
-        [UIApplication sharedApplication].keyWindow.rootViewController = [[NavigationViewController alloc] initWithRootViewController:VC];
+        if (random) {
+            NSArray * words = [Mnemonic generateMnemonicCode: random];
+            BackupMnemonicsViewController * VC = [[BackupMnemonicsViewController alloc] init];
+            VC.mnemonicArray = words;
+            [UIApplication sharedApplication].keyWindow.rootViewController = [[NavigationViewController alloc] initWithRootViewController:VC];
+        } else {
+            [MBProgressHUD showTipMessageInWindow:Localized(@"PasswordIsIncorrect")];
+        }
     } cancelBlock:^{
         
     }];

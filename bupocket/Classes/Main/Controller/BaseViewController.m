@@ -21,8 +21,17 @@
 //    [self setupNoNetWork];
 //    self.noNetWork.hidden = YES;
     self.view.backgroundColor = [UIColor whiteColor];
+    self.edgesForExtendedLayout = UIRectEdgeNone;
     //注册通知，用于接收改变语言的通知
     [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(changeLanguage) name:ChangeLanguageNotificationName object:nil];
+    if (@available(iOS 11.0, *)) {
+        [self.navigationController.navigationBar setPrefersLargeTitles:YES];
+//        self.navigationController.navigationItem.largeTitleDisplayMode = UINavigationItemLargeTitleDisplayModeAlways;
+        //为大标题添加富文本属性
+//        [self.navigationController.navigationBar setLargeTitleTextAttributes:[NSDictionary dictionaryWithObjectsAndKeys:[UIColor redColor],NSForegroundColorAttributeName,[UIFont systemFontOfSize:20.f],NSFontAttributeName,nil]];
+    } else {
+        // Fallback on earlier versions
+    }
     // Do any additional setup after loading the view.
 }
 - (void)popToRootVC
@@ -72,7 +81,7 @@
     UIButton * reloadBtn = [UIButton createButtonWithTitle:Localized(@"Reload") TextFont:18 TextColor:[UIColor whiteColor] Target:nil Selector:nil];
     reloadBtn.layer.masksToBounds = YES;
     reloadBtn.clipsToBounds = YES;
-    reloadBtn.layer.cornerRadius = ScreenScale(4);
+    reloadBtn.layer.cornerRadius = MAIN_FILLET;
     reloadBtn.backgroundColor = MAIN_COLOR;
     [_noNetWork addSubview:reloadBtn];
     [reloadBtn mas_makeConstraints:^(MASConstraintMaker *make) {

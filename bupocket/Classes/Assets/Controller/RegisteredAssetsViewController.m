@@ -29,6 +29,7 @@ static NSString * const Register_Success = @"token.register.success";
 static NSString * const Register_Failure = @"token.register.failure";
 static NSString * const Register_Timeout = @"token.register.timeout";
 static NSString * const Register_Cancel = @"token.register.Cancel";
+static NSString * const Register_Leave = @"leaveRoomForApp";
 
 @implementation RegisteredAssetsViewController
 
@@ -54,7 +55,7 @@ static NSString * const Register_Cancel = @"token.register.Cancel";
 
 - (void)connectSocket
 {
-    NSURL* url = [[NSURL alloc] initWithString:URLPREFIX_Socket];
+    NSURL* url = [[NSURL alloc] initWithString:[HTTPManager shareManager].pushMessageSocketUrl];
     self.manager = [[SocketManager alloc] initWithSocketURL:url config:@{@"log": @YES, @"compress": @YES}];
     self.socket = self.manager.defaultSocket;
     __weak typeof(self) weakself = self;
@@ -72,12 +73,8 @@ static NSString * const Register_Cancel = @"token.register.Cancel";
 - (void)setupView
 {
     self.scrollView = [[UIScrollView alloc] initWithFrame:CGRectMake(0, 0, DEVICE_WIDTH, DEVICE_HEIGHT)];
-    //    self.scrollView.pagingEnabled = YES;
-    //    self.scrollView.showsHorizontalScrollIndicator = YES;
-    //    self.scrollView.showsVerticalScrollIndicator = YES;
-    //    scrollView.contentSize = imageView.image.size;
-    self.scrollView.contentInset = UIEdgeInsetsMake(NavBarH, 0, SafeAreaBottomH, 0);
-    self.scrollView.scrollsToTop = NO;
+    self.scrollView.contentInset = UIEdgeInsetsMake(0, 0, SafeAreaBottomH + NavBarH + Margin_10, 0);
+//    self.scrollView.scrollsToTop = NO;
     //    self.scrollView.delegate = self;
     [self.view addSubview:self.scrollView];
     //    self.noDataBtn = [Encapsulation showNoDataWithSuperView:self.view frame:self.view.frame];
@@ -129,9 +126,8 @@ static NSString * const Register_Cancel = @"token.register.Cancel";
     }
     
     CGSize btnSize = CGSizeMake(DEVICE_WIDTH - Margin_24, MAIN_HEIGHT);
-    UIButton * confirmation = [UIButton createButtonWithTitle:Localized(@"ConfirmationOfRegistration") TextFont:18 TextColor:[UIColor whiteColor] Target:self Selector:@selector(confirmationAction)];
-    [confirmation setViewSize:btnSize borderWidth:0 borderColor:nil borderRadius:ScreenScale(4)];
-    confirmation.backgroundColor = MAIN_COLOR;
+    UIButton * confirmation = [UIButton createButtonWithTitle:Localized(@"ConfirmationOfRegistration") isEnabled:YES Target:self Selector:@selector(confirmationAction)];
+//    [confirmation setViewSize:btnSize borderWidth:0 borderColor:nil borderRadius:MAIN_FILLET];
     [self.scrollView addSubview:confirmation];
     [confirmation mas_makeConstraints:^(MASConstraintMaker *make) {
 //        make.top.mas_equalTo(DEVICE_HEIGHT - ScreenScale(145) - SafeAreaBottomH - NavBarH);
@@ -139,8 +135,8 @@ static NSString * const Register_Cancel = @"token.register.Cancel";
         make.centerX.mas_equalTo(0);
         make.size.mas_equalTo(btnSize);
     }];
-    UIButton * cancel = [UIButton createButtonWithTitle:Localized(@"Cancel") TextFont:18 TextColor:[UIColor whiteColor] Target:self Selector:@selector(cancelAction)];
-    [cancel setViewSize:btnSize borderWidth:0 borderColor:nil borderRadius:ScreenScale(4)];
+    UIButton * cancel = [UIButton createButtonWithTitle:Localized(@"Cancel")isEnabled:YES Target:self Selector:@selector(cancelAction)];
+//    [cancel setViewSize:btnSize borderWidth:0 borderColor:nil borderRadius:MAIN_FILLET];
     cancel.backgroundColor = COLOR(@"A4A8CE");
     [self.scrollView addSubview:cancel];
     [cancel mas_makeConstraints:^(MASConstraintMaker *make) {
@@ -153,9 +149,9 @@ static NSString * const Register_Cancel = @"token.register.Cancel";
 
 - (void)confirmationAction
 {
-    int64_t amount = [HTTPManager getDataWithBalanceJudgmentWithCost:Registered_Cost];
+    int64_t amount = [[HTTPManager shareManager] getDataWithBalanceJudgmentWithCost:Registered_Cost];
     if (amount < 0) {
-        [MBProgressHUD showInfoMessage:Localized(@"RegisteredNotSufficientFunds")];
+        [MBProgressHUD showTipMessageInWindow:Localized(@"RegisteredNotSufficientFunds")];
         return;
     }
     [self.socket emit:Register_Processing with:@[]];
@@ -167,42 +163,60 @@ static NSString * const Register_Cancel = @"token.register.Cancel";
 }
 - (void)getRegisteredDataWithPassword:(NSString *)password
 {
-    [HTTPManager getRegisteredDataWithPassword:password registeredModel:self.registeredModel success:^(TransactionResultModel *resultModel) {
+    [[HTTPManager shareManager] getRegisteredDataWithPassword:password registeredModel:self.registeredModel success:^(TransactionResultModel *resultModel) {
         self.registeredModel.transactionHash = resultModel.transactionHash;
-        RegisteredResultViewController * VC = [[RegisteredResultViewController alloc] init];
-        if (resultModel.errorCode == 0) {
-            VC.state = 0;
-            NSString * json = [self setResultDataWithCode:0 message:@"register success" hash: resultModel.transactionHash];
-            [self.socket emit:Register_Success with:@[json]];
-        } else {
-            VC.state = 1;
-            NSString * json = [self setResultDataWithCode:1 message:@"register failure" hash: resultModel.transactionHash];
-            [self.socket emit:Register_Failure with:@[json]];
-            [MBProgressHUD showErrorMessage:resultModel.errorDesc];
-        }
-        [self.socket on:Register_Success callback:^(NSArray* data, SocketAckEmitter* ack) {
-            [self.socket disconnect];
-        }];
-        [self.socket on:Register_Failure callback:^(NSArray* data, SocketAckEmitter* ack) {
-            [self.socket disconnect];
-        }];
-        VC.registeredModel = self.registeredModel;
-//        [VC.listArray addObject:self.registeredArray];
-        [self.navigationController pushViewController:VC animated:YES];
+        self.registeredModel.registeredFee = resultModel.actualFee;
+        [self loadDataWithIsOvertime:NO resultModel:resultModel];
     } failure:^(TransactionResultModel *resultModel) {
-        RegisteredResultViewController * VC = [[RegisteredResultViewController alloc] init];
-        VC.state = 2;
-        NSString * json = [self setResultDataWithCode:2 message:@"register timeout" hash: resultModel.transactionHash];
-        [self.socket emit:Register_Timeout with:@[json]];
-        [self.socket on:Register_Timeout callback:^(NSArray* data, SocketAckEmitter* ack) {
-            [self.socket disconnect];
-        }];
-        VC.registeredModel = self.registeredModel;
-//        [VC.listArray addObject:self.registeredArray];
-        [self.navigationController pushViewController:VC animated:YES];
+        self.registeredModel.transactionHash = resultModel.transactionHash;
+        self.registeredModel.registeredFee = resultModel.actualFee;
+        [self loadDataWithIsOvertime:YES resultModel:resultModel];
     }];
 }
-- (NSString *)setResultDataWithCode:(NSInteger)code message:(NSString *)message hash:(NSString *)hash
+
+- (void)loadDataWithIsOvertime:(BOOL)overtime resultModel:(TransactionResultModel *)resultModel
+{
+    [[HTTPManager shareManager] getOrderDetailsDataWithHash:self.registeredModel.transactionHash success:^(id responseObject) {
+        NSString * message = [responseObject objectForKey:@"msg"];
+        NSInteger code = [[responseObject objectForKey:@"errCode"] integerValue];
+        if (code == 0) {
+            self.registeredModel.registeredFee = responseObject[@"data"][@"txDeatilRespBo"][@"fee"];
+            RegisteredResultViewController * VC = [[RegisteredResultViewController alloc] init];
+            if (overtime == NO) {
+                if (resultModel.errorCode == 0) {
+                    VC.state = 0;
+                    NSString * json = [self setResultDataWithCode:0 message:@"register success"];
+                    [self.socket emit:Register_Success with:@[json]];
+                    [self.socket on:Register_Success callback:^(NSArray* data, SocketAckEmitter* ack) {
+                        [self.socket disconnect];
+                    }];
+                } else {
+                    VC.state = 1;
+                    NSString * json = [self setResultDataWithCode:1 message:@"register failure"];
+                    [self.socket emit:Register_Failure with:@[json]];
+                    [self.socket on:Register_Failure callback:^(NSArray* data, SocketAckEmitter* ack) {
+                        [self.socket disconnect];
+                    }];
+                    [MBProgressHUD showTipMessageInWindow:resultModel.errorDesc];
+                }
+            } else {
+                VC.state = 2;
+                NSString * json = [self setResultDataWithCode:2 message:@"register timeout"];
+                [self.socket emit:Register_Timeout with:@[json]];
+                [self.socket on:Register_Timeout callback:^(NSArray* data, SocketAckEmitter* ack) {
+                    [self.socket disconnect];
+                }];
+            }
+            VC.registeredModel = self.registeredModel;
+            [self.navigationController pushViewController:VC animated:YES];
+        } else {
+            [MBProgressHUD showTipMessageInWindow:message];
+        }
+    } failure:^(NSError *error) {
+    }];
+}
+
+- (NSString *)setResultDataWithCode:(NSInteger)code message:(NSString *)message
 {
     NSDictionary * dic = @{
                            @"name": self.registeredModel.name,
@@ -213,8 +227,8 @@ static NSString * const Register_Cancel = @"token.register.Cancel";
                            @"version": ATP_Version,
                            @"desc": self.registeredModel.desc,
                            
-                           @"fee": Registered_CostBU,
-                           @"hash": hash,
+                           @"fee": self.registeredModel.registeredFee,
+                           @"hash": self.registeredModel.transactionHash,
                            @"address": [AccountTool account].purseAccount,
                            };
     NSDictionary * data = @{
@@ -229,6 +243,9 @@ static NSString * const Register_Cancel = @"token.register.Cancel";
 {
     [self.socket emit:Register_Cancel with:@[Localized(@"Cancel")]];
     [self.socket on:Register_Cancel callback:^(NSArray* data, SocketAckEmitter* ack) {
+        [self.socket emit:Register_Leave with:@[self.uuid]];
+    }];
+    [self.socket on:Register_Leave callback:^(NSArray* data, SocketAckEmitter* ack) {
         [self.socket disconnect];
     }];
     [self.navigationController popViewControllerAnimated:YES];

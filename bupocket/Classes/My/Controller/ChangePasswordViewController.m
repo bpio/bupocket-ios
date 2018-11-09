@@ -35,18 +35,13 @@
         UIView * PWView = [self setViewWithTitle:[array firstObject][i] placeholder:[array lastObject][i] index:i];
         [self.view addSubview:PWView];
         [PWView mas_makeConstraints:^(MASConstraintMaker *make) {
-            make.top.equalTo(self.view.mas_top).offset(NavBarH + ScreenScale(15) + (ScreenScale(95) * i));
+            make.top.equalTo(self.view.mas_top).offset((ScreenScale(95) * i));
             make.left.right.equalTo(self.view);
             make.height.mas_equalTo(ScreenScale(95));
         }];
     }
     
-    _confirm = [UIButton createButtonWithTitle:Localized(@"Confirm") TextFont:18 TextColor:[UIColor whiteColor] Target:self Selector:@selector(confirmAction)];
-    _confirm.layer.masksToBounds = YES;
-    _confirm.clipsToBounds = YES;
-    _confirm.layer.cornerRadius = ScreenScale(4);
-    _confirm.enabled = NO;
-    _confirm.backgroundColor = DISABLED_COLOR;
+    _confirm = [UIButton createButtonWithTitle:Localized(@"Confirm") isEnabled:NO Target:self Selector:@selector(confirmAction)];
     [self.view addSubview:_confirm];
     [_confirm mas_makeConstraints:^(MASConstraintMaker *make) {
         make.bottom.equalTo(self.view.mas_bottom).offset(-Margin_30 - SafeAreaBottomH);
@@ -71,7 +66,7 @@
     }
     NSData * random = [NSString decipherKeyStoreWithPW:_PWOld.text randomKeyStoreValueStr:[AccountTool account].randomNumber];
     if (random) {
-        [HTTPManager setAccountDataWithRandom:random password:self.PWNew.text identityName:[AccountTool account].identityName success:^(id responseObject) {
+        [[HTTPManager shareManager] setAccountDataWithRandom:random password:self.PWNew.text identityName:[AccountTool account].identityName success:^(id responseObject) {
             [self showAlertControllerWithMessage:Localized(@"PasswordModifiedSuccessfully") handler:^(UIAlertAction *action) {
                 [self.navigationController popViewControllerAnimated:YES];
             }];
@@ -96,22 +91,12 @@
 {
     UIView * viewBg = [[UIView alloc] init];
     UILabel * header = [[UILabel alloc] init];
-    header.font = FONT(16);
-    header.textColor = COLOR_9;
     [viewBg addSubview:header];
-    NSMutableAttributedString * attr = [[NSMutableAttributedString alloc] initWithString:[NSString stringWithFormat:@"| %@", title]];
-    //        NSMutableDictionary * dic = [NSMutableDictionary dictionary];
-    //        dic[NSFontAttributeName] = FONT(15);
-    //        dic[NSForegroundColorAttributeName] = TITLE_COLOR;
-    //        [attr addAttributes:dic range:NSMakeRange(3, str.length - 3)];
-    [attr addAttribute:NSForegroundColorAttributeName value:MAIN_COLOR range:NSMakeRange(0, 1)];
-    [attr addAttribute:NSFontAttributeName value:FONT_Bold(18) range:NSMakeRange(0, 1)];
-    header.attributedText = attr;
+    header.attributedText = [Encapsulation attrTitle:title ifRequired:NO];
     [header mas_makeConstraints:^(MASConstraintMaker *make) {
         make.top.equalTo(viewBg.mas_top).offset(ScreenScale(33));
         make.left.equalTo(viewBg.mas_left).offset(ScreenScale(22));
         make.right.equalTo(viewBg.mas_right).offset(-ScreenScale(22));
-//        make.height.mas_equalTo(MAIN_HEIGHT);
     }];
     UITextField * textField = [[UITextField alloc] init];
     textField.textColor = TITLE_COLOR;

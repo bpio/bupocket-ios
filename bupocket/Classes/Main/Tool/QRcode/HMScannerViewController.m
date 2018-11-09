@@ -163,7 +163,7 @@
     // 1> 提示标签
     tipLabel = [[UILabel alloc] init];
     
-    tipLabel.text = @"将二维码/条码放入框中，即可自动扫描";
+    tipLabel.text = Localized(@"ScanPrompt");
     tipLabel.font = [UIFont systemFontOfSize:12];
     tipLabel.textColor = [UIColor whiteColor];
     tipLabel.textAlignment = NSTextAlignmentCenter;
@@ -212,11 +212,11 @@
     self.navigationController.navigationBar.shadowImage = [[UIImage alloc] init];
     
     // 2> 标题
-    self.title = @"扫一扫";
+    self.title = Localized(@"AssetsDetailScan");
     
     // 3> 左右按钮
-    self.navigationItem.leftBarButtonItem = [[UIBarButtonItem alloc] initWithTitle:@"关闭" style:UIBarButtonItemStylePlain target:self action:@selector(clickCloseButton)];
-    self.navigationItem.rightBarButtonItem = [[UIBarButtonItem alloc] initWithTitle:@"相册" style:UIBarButtonItemStylePlain target:self action:@selector(clickAlbumButton)];
+    self.navigationItem.leftBarButtonItem = [[UIBarButtonItem alloc] initWithTitle:Localized(@"Close") style:UIBarButtonItemStylePlain target:self action:@selector(clickCloseButton)];
+    self.navigationItem.rightBarButtonItem = [[UIBarButtonItem alloc] initWithTitle:Localized(@"Album") style:UIBarButtonItemStylePlain target:self action:@selector(clickAlbumButton)];
 }
 
 @end

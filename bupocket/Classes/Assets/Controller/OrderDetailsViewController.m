@@ -16,6 +16,7 @@
 
 @property (nonatomic, strong) UITableView * tableView;
 @property (nonatomic, strong) UIView * headerView;
+@property (nonatomic, assign) CGFloat headerViewH;
 @property (nonatomic, strong) NSDictionary * dataDic;
 @property (nonatomic, strong) NSArray * listArray;
 @property (nonatomic, strong) NSMutableArray * infoArray;
@@ -42,14 +43,26 @@ static NSString * const OrderDetailsCellID = @"OrderDetailsCellID";
 - (void)viewDidLoad {
     [super viewDidLoad];
     self.navigationItem.title = Localized(@"OrderDetails");
+    _headerViewH = ScreenScale(200);
     [self setupView];
     [self setupRefresh];
+    self.noNetWork = [Encapsulation showNoNetWorkWithSuperView:self.view target:self action:@selector(loadNewData)];
     // Do any additional setup after loading the view.
+}
+- (void)viewWillAppear:(BOOL)animated
+{
+    [super viewWillAppear:animated];
+    if (@available(iOS 11.0, *)) {
+        [self.navigationController.navigationBar setPrefersLargeTitles:NO];
+    } else {
+        // Fallback on earlier versions
+    }
 }
 - (void)setupRefresh
 {
-    self.tableView.mj_header = [MJRefreshNormalHeader headerWithRefreshingTarget:self refreshingAction:@selector(loadNewData)];
+    self.tableView.mj_header = [CustomRefreshHeader headerWithRefreshingTarget:self refreshingAction:@selector(loadNewData)];
     self.tableView.mj_header.automaticallyChangeAlpha = YES;
+    self.tableView.mj_header.ignoredScrollViewContentInsetTop = _headerViewH;
     [self.tableView.mj_header beginRefreshing];
     //    self.tableView.mj_footer = [MJRefreshAutoNormalFooter footerWithRefreshingTarget:self refreshingAction:@selector(loadMoreData)];
     //    self.userTableView.mj_footer.hidden = YES;
@@ -60,11 +73,13 @@ static NSString * const OrderDetailsCellID = @"OrderDetailsCellID";
 }
 - (void)loadData
 {
-    [HTTPManager getOrderDetailsDataWithHash:self.listModel.txHash success:^(id responseObject) {
+    [[HTTPManager shareManager] getOrderDetailsDataWithHash:self.listModel.txHash success:^(id responseObject) {
         NSString * message = [responseObject objectForKey:@"msg"];
         NSInteger code = [[responseObject objectForKey:@"errCode"] integerValue];
         if (code == 0) {
-            self.tableView.tableHeaderView = self.headerView;
+//            self.tableView.tableHeaderView = self.headerView;
+            [self.tableView addSubview:self.headerView];
+            [self.tableView insertSubview:self.headerView atIndex:0];
             self.blockInfoModel = [BlockInfoModel mj_objectWithKeyValues:responseObject[@"data"][@"blockInfoRespBo"]];
             self.txDetailModel = [TxDetailModel mj_objectWithKeyValues:responseObject[@"data"][@"txDeatilRespBo"]];
             self.txInfoModel = [TxInfoModel mj_objectWithKeyValues:responseObject[@"data"][@"txInfoRespBo"]];
@@ -74,7 +89,7 @@ static NSString * const OrderDetailsCellID = @"OrderDetailsCellID";
 //            self.amount.text = [amountStr isEqualToString:@"~"] ? amountStr : [NSString stringWithFormat:@"≈%@", amountStr];
             [self.tableView reloadData];
         } else {
-            [MBProgressHUD showErrorMessage:message];
+            [MBProgressHUD showTipMessageInWindow:message];
         }
         [self.tableView.mj_header endRefreshing];
         self.noNetWork.hidden = YES;
@@ -133,21 +148,21 @@ static NSString * const OrderDetailsCellID = @"OrderDetailsCellID";
 
 - (void)setupView
 {
-    self.tableView = [[UITableView alloc] initWithFrame:CGRectMake(0, NavBarH, DEVICE_WIDTH, DEVICE_HEIGHT - NavBarH) style:UITableViewStyleGrouped];
+    self.tableView = [[UITableView alloc] initWithFrame:self.view.frame style:UITableViewStyleGrouped];
     self.tableView.delegate = self;
     self.tableView.dataSource = self;
     self.tableView.separatorInset = UIEdgeInsetsZero;
     self.tableView.separatorStyle = UITableViewCellSeparatorStyleNone;
+    self.tableView.contentInset = UIEdgeInsetsMake(_headerViewH, 0, 0, 0);
 //    [self.tableView registerClass:[DetailListViewCell class] forCellReuseIdentifier:@"CellID"];
     [self.view addSubview:self.tableView];
-    self.noNetWork = [Encapsulation showNoNetWorkWithSuperView:self.view target:self action:@selector(setupRefresh)];
 //    transferResults.bounds = CGRectMake(0, 0, DEVICE_WIDTH, ScreenScale(120));
 //    transferResults.backgroundColor = [UIColor whiteColor];
 }
 - (UIView *)headerView
 {
     if (!_headerView) {
-        UIView * headerView = [[UIView alloc] initWithFrame:CGRectMake(0, 0, DEVICE_WIDTH, ScreenScale(200))];
+        UIView * headerView = [[UIView alloc] initWithFrame:CGRectMake(0, -_headerViewH, DEVICE_WIDTH, _headerViewH)];
         headerView.backgroundColor = [UIColor whiteColor];
         NSString * imageName = (self.listModel.txStatus == 0) ? @"OrderSuccess" : @"OrderFailure";
         UIImageView * stateImage = [[UIImageView alloc] initWithImage:[UIImage imageNamed:imageName]];
@@ -193,13 +208,21 @@ static NSString * const OrderDetailsCellID = @"OrderDetailsCellID";
         state.textColor = COLOR_6;
         [headerView addSubview:state];
         [state mas_makeConstraints:^(MASConstraintMaker *make) {
-            make.bottom.equalTo(headerView.mas_bottom).offset(-Margin_20);
+            make.top.equalTo(orderResults.mas_bottom).offset(Margin_10);
             make.centerX.equalTo(headerView);
         }];
         state.text = (self.listModel.txStatus == 0) ? Localized(@"Success") : Localized(@"Failure");
         _headerView = headerView;
     }
     return _headerView;
+}
+- (void)scrollViewDidScroll:(UIScrollView *)scrollView
+{
+    CGFloat offsetY = scrollView.contentOffset.y;
+    if (offsetY <= -_headerViewH) {
+        _headerView.y = offsetY;
+        _headerView.height = - offsetY;
+    }
 }
 - (CGFloat)tableView:(UITableView *)tableView heightForHeaderInSection:(NSInteger)section
 {
@@ -211,7 +234,11 @@ static NSString * const OrderDetailsCellID = @"OrderDetailsCellID";
 }
 - (CGFloat)tableView:(UITableView *)tableView heightForFooterInSection:(NSInteger)section
 {
-    return CGFLOAT_MIN;
+    if (section == self.listArray.count - 1) {
+        return SafeAreaBottomH + NavBarH + Margin_10;
+    } else {
+        return CGFLOAT_MIN;
+    }
 }
 - (UIView *)tableView:(UITableView *)tableView viewForHeaderInSection:(NSInteger)section
 {
@@ -263,23 +290,6 @@ static NSString * const OrderDetailsCellID = @"OrderDetailsCellID";
         CGFloat rowHeight = [Encapsulation rectWithText:self.infoArray[indexPath.section][indexPath.row] fontSize:15 textWidth: Info_Width_Max].size.height + Margin_30;
         return rowHeight;
     }
-//    if (indexPath.section == 0) {
-//        if (indexPath.row == 0 || indexPath.row == 1) {
-//            return ScreenScale(70);
-//        } else {
-//            return Margin_40;
-//        }
-//    } else if (indexPath.section == 1) {
-//        if (indexPath.row < 3) {
-//            return ScreenScale(70);
-//        } else {
-//            return Margin_40;
-//        }
-//    } else {
-//        if (indexPath == 1 || indexPath.row == 2 || indexPath.row == 4) {
-//
-//        }
-//    }
 }
 - (NSInteger)numberOfSectionsInTableView:(UITableView *)tableView
 {

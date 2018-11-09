@@ -22,6 +22,7 @@ NS_ASSUME_NONNULL_BEGIN
 
 //@property (nonatomic, assign) NSInteger type;
 @property (nonatomic, copy) NSString * transactionHash;
+@property (nonatomic, copy) NSString * registeredFee;
 
 @end
 

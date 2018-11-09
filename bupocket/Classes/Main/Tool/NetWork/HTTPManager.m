@@ -2,7 +2,7 @@
 //  HTTPManager.m
 //  TheImperialPalaceMuseum
 //
-//  Created by 霍双双 on 17/2/25.
+//  Created by bupocket on 17/2/25.
 //  Copyright © 2017年 hss. All rights reserved.
 //
 
@@ -14,20 +14,28 @@
 
 @implementation HTTPManager
 
-+ (HTTPManager *)shareManager
+static NSString * _webServerDomain;
+static NSString * _bumoNodeUrl;
+static NSInteger _assetsStateCount = 0;
+
++ (instancetype)shareManager
 {
-    __strong static HTTPManager * shareManager;
+    static HTTPManager * _shareManager = nil;
     static dispatch_once_t onceToken;
     dispatch_once(&onceToken, ^{
-        shareManager = [[HTTPManager alloc]init];
+        if (!_shareManager) {
+            _shareManager = [[HTTPManager alloc]init];
+            _webServerDomain = WEB_SERVER_DOMAIN;
+            _bumoNodeUrl = BUMO_NODE_URL;
+            _shareManager.pushMessageSocketUrl = PUSH_MESSAGE_SOCKET_URL;
+        }
     });
-    return shareManager;
+    return _shareManager;
 }
-
 // 查询余额
-+ (int64_t)getAccountBalance {
-    [MBProgressHUD showActivityMessageInWindow:@""];
-    AccountService *accountService = [[[SDK sharedInstance] setUrl:URL_SDK] getAccountService];
+- (int64_t)getAccountBalance {
+    [MBProgressHUD showActivityMessageInWindow:Localized(@"Loading")];
+    AccountService *accountService = [[[SDK sharedInstance] setUrl:_bumoNodeUrl] getAccountService];
     AccountGetBalanceRequest * request = [AccountGetBalanceRequest new];
     [request setAddress : [AccountTool account].purseAccount];
     AccountGetBalanceResponse *response = [accountService getBalance : request];
@@ -36,60 +44,73 @@
         return response.result.balance;
     } else {
         [MBProgressHUD hideHUD];
-        [MBProgressHUD showErrorMessage:response.errorDesc];
+        [MBProgressHUD showTipMessageInWindow:response.errorDesc];
         return 0;
     }
 }
 
 // 查询费用标准
-+ (int64_t) getBlockFees {
+- (int64_t) getBlockFees {
+    [MBProgressHUD showActivityMessageInWindow:Localized(@"Loading")];
     BlockGetFeesRequest *request = [BlockGetFeesRequest new];
     [request setBlockNumber: 617247];
-    BlockService *service = [[[SDK sharedInstance] setUrl: URL_SDK] getBlockService];
+    BlockService *service = [[[SDK sharedInstance] setUrl: _bumoNodeUrl] getBlockService];
     BlockGetFeesResponse *response = [service getFees: request];
     if (response.errorCode == 0) {
+        [MBProgressHUD hideHUD];
         return response.result.fees.baseReserve;
     } else {
-        [MBProgressHUD showErrorMessage:response.errorDesc];
+        [MBProgressHUD hideHUD];
+        [MBProgressHUD showTipMessageInWindow:response.errorDesc];
         return 0;
     }
 }
 // 余额是否足够
-+ (int64_t)getDataWithBalanceJudgmentWithCost:(double)cost
+- (int64_t)getDataWithBalanceJudgmentWithCost:(double)cost
 {
-    [MBProgressHUD showActivityMessageInWindow:@""];
+    dispatch_async(dispatch_get_main_queue(), ^{
+        [MBProgressHUD showActivityMessageInWindow:Localized(@"Loading")];
+    });
     int64_t balance = 0;
     int64_t baseReserve = 0;
-    AccountService *accountService = [[[SDK sharedInstance] setUrl:URL_SDK] getAccountService];
+    AccountService *accountService = [[[SDK sharedInstance] setUrl:_bumoNodeUrl] getAccountService];
     AccountGetBalanceRequest * request = [AccountGetBalanceRequest new];
     [request setAddress : [AccountTool account].purseAccount];
     AccountGetBalanceResponse *response = [accountService getBalance : request];
-    [MBProgressHUD hideHUD];
     if (response.errorCode == 0) {
         balance = response.result.balance;
         BlockGetFeesRequest *request = [BlockGetFeesRequest new];
         [request setBlockNumber: 617247];
-        BlockService *service = [[[SDK sharedInstance] setUrl: URL_SDK] getBlockService];
+        BlockService *service = [[[SDK sharedInstance] setUrl: _bumoNodeUrl] getBlockService];
         BlockGetFeesResponse * feesResponse = [service getFees: request];
         if (response.errorCode == 0) {
+            dispatch_async(dispatch_get_main_queue(), ^{
+                [MBProgressHUD hideHUD];
+            });
             baseReserve = feesResponse.result.fees.baseReserve;
         } else {
+            dispatch_async(dispatch_get_main_queue(), ^{
+                [MBProgressHUD hideHUD];
+            });
 //            [MBProgressHUD showErrorMessage:feesResponse.errorDesc];
         }
     } else {
+        dispatch_async(dispatch_get_main_queue(), ^{
+            [MBProgressHUD hideHUD];
+        });
 //        [MBProgressHUD showErrorMessage:response.errorDesc];
     }
     int64_t amount = balance - baseReserve - [Tools BU2MO:cost];
     return amount;
 }
 // Assets
-+ (void)getAssetsDataWithAddress:(NSString *)address
+- (void)getAssetsDataWithAddress:(NSString *)address
                     currencyType:(NSString *)currencyType
                        tokenList:(NSArray *)tokenList
                          success:(void (^)(id responseObject))success
                          failure:(void (^)(NSError *error))failure
 {
-    NSString * url = SERVER_COMBINE_API(URLPREFIX, Assets_List);
+    NSString * url = SERVER_COMBINE_API(_webServerDomain, Assets_List);
     //HTTP请求体
     NSDictionary * parmenters = @{@"address": address,
                                   @"currencyType": currencyType,
@@ -108,12 +129,12 @@
     }];
 }
 // SearchAssets
-+ (void)getSearchAssetsDataWithAssetCode:(NSString *)assetCode
+- (void)getSearchAssetsDataWithAssetCode:(NSString *)assetCode
                                pageIndex:(NSInteger)pageIndex
                                  success:(void (^)(id responseObject))success
                                  failure:(void (^)(NSError *error))failure
 {
-    NSString * url = SERVER_COMBINE_API(URLPREFIX, Assets_Search);
+    NSString * url = SERVER_COMBINE_API(_webServerDomain, Assets_Search);
     NSDictionary * parmenters = @{@"assetCode" : assetCode,
                                   @"startPage" : @(pageIndex),
                                   @"pageSize" : @(PageSize_Max)};
@@ -130,7 +151,7 @@
     }];
 }
 // AssetsDetail Transaction_Record
-+ (void)getAssetsDetailDataWithAssetCode:(NSString *)assetCode
+- (void)getAssetsDetailDataWithAssetCode:(NSString *)assetCode
                                   issuer:(NSString *)issuer
                                  address:(NSString *)address
                                pageIndex:(NSInteger)pageIndex
@@ -142,10 +163,10 @@
     [parmenters addEntriesFromDictionary:@{@"startPage" : @(pageIndex),
                                            @"pageSize" : @(PageSize_Max)}];
     if ([assetCode isEqualToString:@"BU"]) {
-        url = SERVER_COMBINE_API(URLPREFIX, Transaction_Record_BU);
+        url = SERVER_COMBINE_API(_webServerDomain, Transaction_Record_BU);
         [parmenters setObject:address forKey:@"walletAddress"];
     } else {
-        url = SERVER_COMBINE_API(URLPREFIX, Transaction_Record);
+        url = SERVER_COMBINE_API(_webServerDomain, Transaction_Record);
         [parmenters addEntriesFromDictionary:@{@"assetCode" : assetCode,
                                                @"issuer" : issuer,
                                                @"address" : address}];
@@ -164,11 +185,11 @@
 }
 
 // OrderDetails
-+ (void)getOrderDetailsDataWithHash:(NSString *)hash
+- (void)getOrderDetailsDataWithHash:(NSString *)hash
                             success:(void (^)(id responseObject))success
                             failure:(void (^)(NSError *error))failure
 {
-    NSString * url = SERVER_COMBINE_API(URLPREFIX, Order_Details);
+    NSString * url = SERVER_COMBINE_API(_webServerDomain, Order_Details);
     NSDictionary * parmenters = @{@"Hash" : hash};
     [[HttpTool shareTool] POST:url parameters:parmenters success:^(id responseObject) {
         if(success != nil)
@@ -183,13 +204,13 @@
     }];
 }
 // 身份账号数据
-+ (void)setAccountDataWithRandom:(NSData *)random
+- (void)setAccountDataWithRandom:(NSData *)random
                         password:(NSString *)password
                     identityName:(NSString *)identityName
                          success:(void (^)(id responseObject))success
                          failure:(void (^)(NSError *error))failure
 {
-    [MBProgressHUD showActivityMessageInWindow:@""];
+    [MBProgressHUD showActivityMessageInWindow:Localized(@"Loading")];
     // 随机数 -> 生成助记词
     NSArray * words = [Mnemonic generateMnemonicCode: [random copy]];
     NSLog(@"%@", [words componentsJoinedByString:@" "]);
@@ -207,11 +228,11 @@
     NSString * purseAddress = [Keypair getEncAddress : [Keypair getEncPublicKey: [privateKeys lastObject]]];
     NSString * purseKey = [NSString generateKeyStoreWithPW:password key:[privateKeys lastObject]];
     if (randomKey == nil) {
-        [MBProgressHUD showErrorMessage:Localized(@"RandomGenerationFailure")];
+        [MBProgressHUD showTipMessageInWindow:Localized(@"RandomGenerationFailure")];
     } else if (identityKey == nil) {
-        [MBProgressHUD showErrorMessage:@"IdentityFailure"];
+        [MBProgressHUD showTipMessageInWindow:@"IdentityFailure"];
     } else if (purseKey == nil) {
-        [MBProgressHUD showErrorMessage:Localized(@"WalletAccountFailure")];
+        [MBProgressHUD showTipMessageInWindow:Localized(@"WalletAccountFailure")];
     } else {
         // SDK
         [MBProgressHUD hideHUD];
@@ -235,7 +256,7 @@
     }
 }
 // 转账
-+ (void)setTransferDataWithPassword:(NSString *)password
+- (void)setTransferDataWithPassword:(NSString *)password
                         destAddress:(NSString *)destAddress
                            BUAmount:(NSString *)BUAmount
                            feeLimit:(NSString *)feeLimit
@@ -266,15 +287,15 @@
     }
     int64_t gasPrice = 1000;
     int64_t fee = [Tools BU2MO: [feeLimit doubleValue]]; // 支付费用
-    int64_t nonce = [HTTPManager getAccountNonce: sourceAddress] + 1;
+    int64_t nonce = [[HTTPManager shareManager] getAccountNonce: sourceAddress] + 1;
     if (nonce == 0) return;
-    NSString * hash = [HTTPManager buildBlobAndSignAndSubmit:privateKey :sourceAddress :nonce :gasPrice :fee :operation :notes];
+    NSString * hash = [[HTTPManager shareManager] buildBlobAndSignAndSubmit:privateKey :sourceAddress :nonce :gasPrice :fee :operation :notes];
     if (![Tools isEmpty: hash]) {
-        [HTTPManager getTransactionStatusHash:hash success:success failure:failure];
+        [[HTTPManager shareManager] getTransactionStatusHash:hash success:success failure:failure];
     }
 }
 // 登记
-+ (void)getRegisteredDataWithPassword:(NSString *)password
+- (void)getRegisteredDataWithPassword:(NSString *)password
                       registeredModel:(RegisteredModel *)registeredModel
                               success:(void (^)(TransactionResultModel * resultModel))success
                               failure:(void (^)(TransactionResultModel * resultModel))failure
@@ -285,7 +306,7 @@
     AtpProperty * atpProperty = [[AtpProperty alloc] init];
     int64_t total = registeredModel.amount * pow(10, registeredModel.decimals);
     if (registeredModel.amount != 0 && total < 1) {
-        [MBProgressHUD showErrorMessage:Localized(@"IssueNumberIsIncorrect")];
+        [MBProgressHUD showTipMessageInWindow:Localized(@"IssueNumberIsIncorrect")];
         return;
     }
     atpProperty.name = registeredModel.name;
@@ -310,15 +331,15 @@
     }
     int64_t gasPrice = 1000;
     int64_t feeLimit = [Tools BU2MO: Registered_Cost];
-    int64_t nonce = [HTTPManager getAccountNonce: sourceAddress] + 1; // 序列号
+    int64_t nonce = [[HTTPManager shareManager] getAccountNonce: sourceAddress] + 1; // 序列号
     if (nonce == 0) return;
-    NSString * hash = [HTTPManager buildBlobAndSignAndSubmit:privateKey :sourceAddress :nonce :gasPrice :feeLimit :operation :nil];
+    NSString * hash = [[HTTPManager shareManager] buildBlobAndSignAndSubmit:privateKey :sourceAddress :nonce :gasPrice :feeLimit :operation :nil];
     if (![Tools isEmpty: hash]) {
-        [HTTPManager getTransactionStatusHash:hash success:success failure:failure];
+        [[HTTPManager shareManager] getTransactionStatusHash:hash success:success failure:failure];
     }
 }
 // 发行
-+ (void)getIssueAssetDataWithPassword:(NSString *)password
+- (void)getIssueAssetDataWithPassword:(NSString *)password
                             assetCode:(NSString *)assetCode
                            assetAmount:(NSString *)assetAmount
                              decimals:(NSInteger)decimals
@@ -346,17 +367,18 @@
     }
     int64_t gasPrice = 1000;
     int64_t feeLimit = [Tools BU2MO: Distribution_Cost];
-    int64_t nonce = [HTTPManager getAccountNonce: sourceAddress] + 1;
+    int64_t nonce = [[HTTPManager shareManager] getAccountNonce: sourceAddress] + 1;
     if (nonce == 0) return;
-    NSString * hash = [HTTPManager buildBlobAndSignAndSubmit:privateKey :sourceAddress :nonce :gasPrice :feeLimit :operation :nil];
+    NSString * hash = [[HTTPManager shareManager] buildBlobAndSignAndSubmit:privateKey :sourceAddress :nonce :gasPrice :feeLimit :operation :nil];
     if (![Tools isEmpty: hash]) {
-        [HTTPManager getTransactionStatusHash:hash success:success failure:failure];
+        [[HTTPManager shareManager] getTransactionStatusHash:hash success:success failure:failure];
     }
 }
-+ (int64_t) getAccountNonce: (NSString *)address {
+
+- (int64_t) getAccountNonce: (NSString *)address {
     //NSString *address = @"buQnnUEBREw2hB6pWHGPzwanX7d28xk6KVcp";
     int64_t nonce = -1;
-    AccountService *accountService = [[[SDK sharedInstance] setUrl:URL_SDK] getAccountService];
+    AccountService *accountService = [[[SDK sharedInstance] setUrl:_bumoNodeUrl] getAccountService];
     AccountGetNonceRequest * request = [AccountGetNonceRequest new];
     [request setAddress : address];
     AccountGetNonceResponse *response = [accountService getNonce : request];
@@ -364,12 +386,12 @@
         //NSLog(@"%@", [response.result yy_modelToJSONString]);
         nonce = response.result.nonce;
     } else {
-        [MBProgressHUD showErrorMessage:response.errorDesc];
+        [MBProgressHUD showTipMessageInWindow:response.errorDesc];
     }
     return nonce;
 }
 
-+ (NSString *) buildBlobAndSignAndSubmit : (NSString *) privateKey : (NSString *) sourceAddress : (int64_t) nonce : (int64_t) gasPrice : (int64_t) feeLimit : (BaseOperation *)operation : (NSString *) notes {
+- (NSString *) buildBlobAndSignAndSubmit : (NSString *) privateKey : (NSString *) sourceAddress : (int64_t) nonce : (int64_t) gasPrice : (int64_t) feeLimit : (BaseOperation *)operation : (NSString *) notes {
     TransactionBuildBlobRequest *buildBlobRequest = [TransactionBuildBlobRequest new];
     [buildBlobRequest setSourceAddress : sourceAddress];
     [buildBlobRequest setNonce : nonce];
@@ -379,14 +401,14 @@
     [buildBlobRequest setMetadata: notes];
     
     // 序列化交易
-    TransactionService *transactionServer = [[[SDK sharedInstance] setUrl:URL_SDK] getTransactionService];
+    TransactionService *transactionServer = [[[SDK sharedInstance] setUrl:_bumoNodeUrl] getTransactionService];
     TransactionBuildBlobResponse *buildBlobResponse = [transactionServer buildBlob : buildBlobRequest];
     NSString *hash = nil;
     if (buildBlobResponse.errorCode == 0) {
         NSLog(@"blob: %@, hash: %@", buildBlobResponse.result.transactionBlob, buildBlobResponse.result.transactionHash);
         hash = buildBlobResponse.result.transactionHash;
     } else {
-        [MBProgressHUD showErrorMessage:buildBlobResponse.errorDesc];
+        [MBProgressHUD showTipMessageInWindow:buildBlobResponse.errorDesc];
         return nil;
     }
     
@@ -398,7 +420,7 @@
     if (signResponse.errorCode == 0) {
         NSLog(@"sign response: %@", [signResponse yy_modelToJSONString]);
     } else {
-        [MBProgressHUD showErrorMessage:signResponse.errorDesc];
+        [MBProgressHUD showTipMessageInWindow:signResponse.errorDesc];
         return nil;
     }
     // 提交交易
@@ -410,17 +432,18 @@
         //NSLog(@"submit response: %@", [submitResponse yy_modelToJSONString]);
 //        hash = submitResponse.result.transactionHash;
     } else {
-        [MBProgressHUD showErrorMessage:submitResponse.errorDesc];
+        [MBProgressHUD showTipMessageInWindow:submitResponse.errorDesc];
+        return nil;
     }
     return hash;
 }
 
 // 判断转账/登记/发行是否成功
-+ (void)getTransactionStatusHash: (NSString *)hash
+- (void)getTransactionStatusHash:(NSString *)hash
                          success:(void (^)(TransactionResultModel * resultModel))success
                          failure:(void (^)(TransactionResultModel * resultModel))failure
 {
-    [MBProgressHUD showActivityMessageInWindow:@""];
+    [MBProgressHUD showActivityMessageInWindow:Localized(@"Loading")];
     __block TransactionGetInfoResponse *response = [TransactionGetInfoResponse new];
 //    __block TransactionHistory *history = [TransactionHistory new];
     __block TransactionResultModel * resultModel = [[TransactionResultModel alloc] init];
@@ -439,7 +462,7 @@
             TransactionGetInfoRequest *request = [TransactionGetInfoRequest new];
             [request setHash: hash];
             
-            TransactionService *service = [[[SDK sharedInstance] setUrl: URL_SDK] getTransactionService];
+            TransactionService *service = [[[SDK sharedInstance] setUrl: _bumoNodeUrl] getTransactionService];
             response = [service getInfo: request];
             if (response.errorCode == 0) {
                 //NSLog(@"%@", [response.result yy_modelToJSONString]);
@@ -480,6 +503,7 @@
                 {
                     TransactionHistory * history = response.result.transactions[0];
                     resultModel.transactionTime = history.closeTime;
+                    resultModel.actualFee = history.actualFee;
                     resultModel.errorCode = history.errorCode;
                     resultModel.errorDesc = history.errorDesc;
                     success(resultModel);
@@ -490,12 +514,12 @@
 }
 
 // 登记/发行资产
-+ (void)getRegisteredORDistributionDataWithAssetCode:(NSString *)assetCode
+- (void)getRegisteredORDistributionDataWithAssetCode:(NSString *)assetCode
                                         issueAddress:(NSString *)issueAddress
                                              success:(void (^)(id responseObject))success
                                              failure:(void (^)(NSError *error))failure
 {
-    NSString * url = SERVER_COMBINE_API(URLPREFIX, Registered_And_Distribution);
+    NSString * url = SERVER_COMBINE_API(_webServerDomain, Registered_And_Distribution);
     //HTTP请求体
     NSDictionary * parmenters = @{
                                   @"assetCode": assetCode,
@@ -514,12 +538,12 @@
     }];
 }
 
-+ (void)getFeedbackDataWithContent:(NSString *)content
+- (void)getFeedbackDataWithContent:(NSString *)content
                            contact:(NSString *)contact
                            success:(void (^)(id responseObject))success
                            failure:(void (^)(NSError *error))failure
 {
-    NSString * url = SERVER_COMBINE_API(URLPREFIX, Help_And_Feedback);
+    NSString * url = SERVER_COMBINE_API(_webServerDomain, Help_And_Feedback);
     //HTTP请求体
     NSDictionary * parmenters = @{
                                   @"content": content,

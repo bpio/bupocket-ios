@@ -41,10 +41,5 @@
     [aCoder encodeObject:self.purseAccount forKey:@"purseAccount"];
     [aCoder encodeObject:self.purseKey forKey:@"purseKey"];
 }
-//- (void)setRandomNumber:(NSString *)randomNumber
-//{
-//    _randomNumber = [randomNumber copy];
-//
-//}
 
 @end

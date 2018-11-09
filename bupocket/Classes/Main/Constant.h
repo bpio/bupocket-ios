@@ -15,10 +15,15 @@
 // 是否已成功备份助记词
 #define ifBackup @"ifBackup"
 
+// 添加资产数组
+#define AddAssets @"AddAssets"
+
 // 分页数据条数
 #define PageSize_Max 10
 // 助记词个数
 #define NumberOf_MnemonicWords 12
+// 随机数长度
+#define Random_Length 16
 
 // 登记费用
 #define Registered_CostBU @"0.02 BU"

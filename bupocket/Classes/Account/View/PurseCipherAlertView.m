@@ -31,7 +31,7 @@
 
 - (void)setupView {
     self.backgroundColor = [UIColor whiteColor];
-    self.layer.cornerRadius = ScreenScale(5);
+    self.layer.cornerRadius = MAIN_FILLET;
     
     UIButton * closeBtn = [UIButton createButtonWithNormalImage:@"close" SelectedImage:@"close" Target:self Selector:@selector(cancleBtnClick)];
     [self addSubview:closeBtn];
@@ -41,7 +41,7 @@
     }];
     
     UILabel * title = [UILabel new];
-    title.font = FONT(27);
+    title.font = FONT(25);
     title.textColor = TITLE_COLOR;
     title.text = Localized(@"PurseCipherConfirm");
     [self addSubview:title];
@@ -89,13 +89,10 @@
     }];
     self.PWTextField = PWTextField;
     
-    UIButton * sureBtn = [UIButton createButtonWithTitle:Localized(@"Confirm") TextFont:18 TextColor:[UIColor whiteColor] Target:self Selector:@selector(sureBtnClick)];
+    UIButton * sureBtn = [UIButton createButtonWithTitle:Localized(@"Confirm") isEnabled:YES Target:self Selector:@selector(sureBtnClick)];
     [self addSubview:sureBtn];
-    sureBtn.layer.masksToBounds = YES;
-    sureBtn.layer.cornerRadius = ScreenScale(4);
-    sureBtn.backgroundColor = MAIN_COLOR;
     [sureBtn mas_makeConstraints:^(MASConstraintMaker *make) {
-        make.bottom.equalTo(self.mas_bottom).offset(-Margin_25);
+        make.bottom.equalTo(self.mas_bottom).offset(-Margin_20);
         make.left.right.equalTo(prompt);
         make.height.mas_equalTo(MAIN_HEIGHT);
     }];
@@ -113,7 +110,7 @@
 - (void)sureBtnClick {
     [self hideView];
     if ([RegexPatternTool validatePassword:self.PWTextField.text] == NO) {
-        [MBProgressHUD showInfoMessage:Localized(@"CryptographicFormat")];
+        [MBProgressHUD showTipMessageInWindow:Localized(@"CryptographicFormat")];
         return;
     }
     if (_sureBlock) {

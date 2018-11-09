@@ -53,6 +53,25 @@
     [attr addAttributes:paraStyleDic range:NSMakeRange(0, str.length)];
     return attr;
 }
+// 设置标题属性文字
++ (NSMutableAttributedString *)attrTitle:(NSString *)title ifRequired:(BOOL)ifRequired
+{
+    NSMutableAttributedString * attr = [[NSMutableAttributedString alloc] initWithString:[NSString stringWithFormat:@"| %@", title]];
+    NSMutableDictionary * titleDic = [NSMutableDictionary dictionary];
+//    titleDic[NSFontAttributeName] = FONT_Bold(16);
+//    titleDic[NSForegroundColorAttributeName] = COLOR_9;
+    titleDic[NSFontAttributeName] = FONT(15);
+    titleDic[NSForegroundColorAttributeName] = TITLE_COLOR;
+    [attr addAttributes:titleDic range:NSMakeRange(1, attr.length - 1)];
+    NSMutableDictionary * dic = [NSMutableDictionary dictionary];
+    dic[NSFontAttributeName] = FONT_Bold(18);
+    dic[NSForegroundColorAttributeName] = MAIN_COLOR;
+    [attr addAttributes:dic range:NSMakeRange(0, 1)];
+    if (ifRequired == YES) {
+        [attr addAttribute:NSForegroundColorAttributeName value:WARNING_COLOR range:NSMakeRange(attr.length - 1, 1)];
+    }
+    return attr;
+}
 //计算UILabel的高度(带有行间距的情况)
 + (CGSize)getSizeSpaceLabelWithStr:(NSString *)str font:(UIFont *)font width:(CGFloat)width height:(CGFloat)height lineSpacing:(CGFloat)lineSpacing
 {
@@ -65,8 +84,7 @@
     paraStyle.paragraphSpacingBefore =0.0;
     paraStyle.headIndent = 0;
     paraStyle.tailIndent = 0;
-    NSDictionary *dic =@{NSFontAttributeName:font,NSParagraphStyleAttributeName:paraStyle,NSKernAttributeName:@1.0f
-                         };
+    NSDictionary * dic = @{NSFontAttributeName:font,NSParagraphStyleAttributeName:paraStyle,NSKernAttributeName:@1.0f};
     CGSize size = [str boundingRectWithSize:CGSizeMake(width, height) options:NSStringDrawingUsesLineFragmentOrigin attributes:dic context:nil].size;
     return size;
 }
@@ -124,6 +142,7 @@
 + (UIView *)showNoNetWorkWithSuperView:(UIView *)superView target:(id)target action:(SEL)action
 {
     UIView * noNetWork = [[UIView alloc] init];
+    noNetWork.backgroundColor = [UIColor whiteColor];
     [superView addSubview:noNetWork];
     [noNetWork mas_makeConstraints:^(MASConstraintMaker *make) {
         make.edges.equalTo(superView);
@@ -149,7 +168,7 @@
     UIButton * reloadBtn = [UIButton createButtonWithTitle:Localized(@"Reload") TextFont:18 TextColor:[UIColor whiteColor] Target:target Selector:action];
     reloadBtn.layer.masksToBounds = YES;
     reloadBtn.clipsToBounds = YES;
-    reloadBtn.layer.cornerRadius = ScreenScale(4);
+    reloadBtn.layer.cornerRadius = MAIN_FILLET;
     reloadBtn.backgroundColor = MAIN_COLOR;
     [noNetWork addSubview:reloadBtn];
     [reloadBtn mas_makeConstraints:^(MASConstraintMaker *make) {

@@ -41,14 +41,14 @@
         if (date.isToday) { // 今天
             NSDateComponents *cmps = [date deltaWithNow];
             if (cmps.hour >= 1) { // 至少是1小时前
-                return [NSString stringWithFormat:@"%zd小时前", cmps.hour];
+                return [NSString stringWithFormat:@"%zd%@", cmps.hour, Localized(@"HoursAgo")];
             } else if (cmps.minute >= 1) { // 1~59分钟之前
-                return [NSString stringWithFormat:@"%zd分钟前", cmps.minute];
+                return [NSString stringWithFormat:@"%zd%@", cmps.minute, Localized(@"MinutesAgo")];
             } else { // 1分钟内
-                return @"刚刚";
+                return Localized(@"Just");
             }
         } else if (date.isYesterday) { // 昨天
-            formatter.dateFormat = @"昨天 HH:mm:ss";
+            formatter.dateFormat = [NSString stringWithFormat:@"%@ HH:mm:ss", Localized(@"Yesterday")];
             return [formatter stringFromDate:date];
         } else { // 至少是前天
             formatter.dateFormat = @"MM.dd HH:mm:ss";

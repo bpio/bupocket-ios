@@ -38,6 +38,7 @@
         UITableView.appearance.estimatedSectionFooterHeight = 0;
         UITableView.appearance.estimatedSectionHeaderHeight = 0;
     }
+    //             self.automaticallyAdjustsScrollViewInsets = NO;
     NSUserDefaults * defaults = [NSUserDefaults standardUserDefaults];
 //    if ([defaults boolForKey:NotFirst]) {
         if ([defaults boolForKey:ifCreated]) {
@@ -54,24 +55,35 @@
 //    }
 }
 
+
 - (void)setDefaultLocale
 {
-    //在Appdelegate.m中添加系统语言检测与赋值
-    
-    NSArray *languages = [NSLocale preferredLanguages];
-    
-    NSString *language = [languages objectAtIndex:0];
+    // 系统语言检测与赋值
     NSUserDefaults * defaults = [NSUserDefaults standardUserDefaults];
-    if ([language hasPrefix:@"zh"]) {//检测开头匹配，是否为中文
+    NSString * language = [[NSUserDefaults standardUserDefaults] objectForKey:@"appLanguage"];
+    if (!language) {
+        NSArray *languages = [NSLocale preferredLanguages];
+        language = [languages objectAtIndex:0];
+    }
+    if ([language isEqualToString:@"zh-Hans"]) {
         [defaults setObject:@"zh-Hans" forKey:@"appLanguage"];//App语言设置为中文
         [defaults synchronize];
         [kLanguageManager setUserlanguage:@"zh-Hans"];
-    } else {//其他语言
+    } else if ([language isEqualToString:@"en"]) {
         [defaults setObject:@"en" forKey:@"appLanguage"];//App语言设置为英文
         [defaults synchronize];
         [kLanguageManager setUserlanguage:@"en"];
+    } else {
+        
     }
+    /*
+    if ([language hasPrefix:@"zh"]) {//检测开头匹配，是否为中文
+        
+    } else {//其他语言
+       
+    }*/
 }
+
 
 - (void)applicationWillResignActive:(UIApplication *)application {
     // Sent when the application is about to move from active to inactive state. This can occur for certain types of temporary interruptions (such as an incoming phone call or SMS message) or when the user quits the application and it begins the transition to the background state.

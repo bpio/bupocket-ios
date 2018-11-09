@@ -31,7 +31,7 @@
     [self setupView];
     self.listArray = @[@"简体中文", @"English"];
     
-    self.navigationItem.rightBarButtonItem = [[UIBarButtonItem alloc] initWithCustomView:[UIButton createButtonWithTitle:Localized(@"Save") TextFont:16 TextColor:NAVITEM_COLOR Target:self Selector:@selector(saveAction)]];
+    self.navigationItem.rightBarButtonItem = [[UIBarButtonItem alloc] initWithCustomView:[UIButton createNavButtonWithTitle:Localized(@"Save") Target:self Selector:@selector(saveAction)]];
     
     // Do any additional setup after loading the view.
 }
@@ -54,7 +54,7 @@
 }
 - (void)setupView
 {
-    self.tableView = [[UITableView alloc] initWithFrame:CGRectMake(0, NavBarH, DEVICE_WIDTH, DEVICE_HEIGHT - NavBarH) style:UITableViewStyleGrouped];
+    self.tableView = [[UITableView alloc] initWithFrame:self.view.frame style:UITableViewStyleGrouped];
     self.tableView.delegate = self;
     self.tableView.dataSource = self;
     self.tableView.separatorInset = UIEdgeInsetsZero;
@@ -69,6 +69,10 @@
 {
     return CGFLOAT_MIN;
 }
+- (CGFloat)tableView:(UITableView *)tableView heightForFooterInSection:(NSInteger)section
+{
+    return SafeAreaBottomH + NavBarH + Margin_10;
+}
 - (NSInteger)numberOfSectionsInTableView:(UITableView *)tableView
 {
     return 1;
@@ -80,6 +84,7 @@
 - (UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath
 {
     ListTableViewCell * cell = [ListTableViewCell cellWithTableView:tableView];
+    cell.selectionStyle = UITableViewCellSelectionStyleNone;
     cell.listImage.image = [UIImage imageNamed:[NSString stringWithFormat:@"multilingual_list_%zd", indexPath.row]];
     cell.detailImage.image = [UIImage imageNamed:@"multilingual_checked"];
     cell.title.text = self.listArray[indexPath.row];

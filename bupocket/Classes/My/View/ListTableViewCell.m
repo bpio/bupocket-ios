@@ -36,7 +36,7 @@ static NSString * const ListCellID = @"ListCellID";
 {
     [super layoutSubviews];
     [self.listImage mas_makeConstraints:^(MASConstraintMaker *make) {
-        make.left.equalTo(self.contentView.mas_left).offset(ScreenScale(15));
+        make.left.equalTo(self.contentView.mas_left).offset(Margin_15);
         make.centerY.equalTo(self.contentView);
         make.width.height.mas_equalTo(Margin_20);
     }];
@@ -45,11 +45,11 @@ static NSString * const ListCellID = @"ListCellID";
         make.centerY.equalTo(self.contentView);
     }];
     [self.detailImage mas_makeConstraints:^(MASConstraintMaker *make) {
-        make.right.equalTo(self.contentView.mas_right).offset(-ScreenScale(15));
+        make.right.equalTo(self.contentView.mas_right).offset(-Margin_15);
         make.centerY.equalTo(self.contentView);
     }];
     [self.detailTitle mas_makeConstraints:^(MASConstraintMaker *make) {
-        make.right.equalTo(self.contentView.mas_right).offset(-ScreenScale(15));
+        make.right.equalTo(self.contentView.mas_right).offset(-Margin_15);
         make.centerY.equalTo(self.contentView);
     }];
 //    [self.line mas_makeConstraints:^(MASConstraintMaker *make) {

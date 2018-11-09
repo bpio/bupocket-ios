@@ -2,7 +2,7 @@
 //  HttpTool.m
 //  TheImperialPalaceMuseum
 //
-//  Created by 霍双双 on 17/2/25.
+//  Created by bupocket on 17/2/25.
 //  Copyright © 2017年 hss. All rights reserved.
 //
 
@@ -94,7 +94,7 @@ static HttpTool *__shareTool = nil;
 + (void)GET:(NSString *)URLString parameters:(NSDictionary *)parameters success:(void (^)(id))success failure:(void (^)(NSError *))failure
 {
 //    [MBProgressHUD wb_showActivity];
-    [MBProgressHUD showActivityMessageInWindow:nil];
+    [MBProgressHUD showActivityMessageInWindow:Localized(@"Loading")];
     AFHTTPSessionManager * manager = [AFHTTPSessionManager manager];
     [manager.requestSerializer setTimeoutInterval:30.0];
     [manager GET:URLString parameters:parameters progress:^(NSProgress * _Nonnull downloadProgress) {
@@ -118,7 +118,7 @@ static HttpTool *__shareTool = nil;
     [request setValue:@"application/json" forHTTPHeaderField:@"Accept"];
     // NSaData -> HTTPBody
     [request setHTTPBody:[[JsonTool JSONStringWithDictionaryOrArray:parameters] dataUsingEncoding:NSUTF8StringEncoding]];
-    [MBProgressHUD showActivityMessageInWindow:@""];
+    [MBProgressHUD showActivityMessageInWindow:Localized(@"Loading")];
     [[self.sessionManager dataTaskWithRequest:request uploadProgress:^(NSProgress * _Nonnull uploadProgress) {
         
     } downloadProgress:^(NSProgress * _Nonnull downloadProgress) {
@@ -135,7 +135,7 @@ static HttpTool *__shareTool = nil;
             [MBProgressHUD hideHUD];
             if (failure) {
                 failure(error);
-                [MBProgressHUD showErrorMessage:error.localizedDescription];
+                [MBProgressHUD showTipMessageInWindow:error.localizedDescription];
             }
         }
     }] resume];

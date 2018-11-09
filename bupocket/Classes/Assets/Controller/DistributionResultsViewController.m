@@ -35,14 +35,14 @@ static NSString * const DistributionDetailCellID = @"DistributionDetailCellID";
 - (void)viewDidLoad {
     [super viewDidLoad];
     self.navigationItem.title = Localized(@"DistributionAssetsDetail");
-    
-    [self getData];
+    [self setData];
     [self setupView];
     [self popToRootVC];
 //    [self setupRefresh];
     // Do any additional setup after loading the view.
 }
-- (void)getData
+
+- (void)setData
 {
     NSString * amount = [NSString stringWithFormat:@"%zd", self.registeredModel.amount];
     NSString * decimal  = [NSString stringWithFormat:@"%zd", self.distributionModel.decimals];
@@ -75,19 +75,19 @@ static NSString * const DistributionDetailCellID = @"DistributionDetailCellID";
     [self.listArray addObject:array];
     if (self.state != 2) {
         // 发行超时不显示
-        NSArray * transactionArray = @[@{Localized(@"ActualTransactionCost"): Distribution_CostBU}, @{Localized(@"IssuerAddress"): [AccountTool account].purseAccount}, @{Localized(@"Hash"): self.distributionModel.transactionHash}];
+        NSArray * transactionArray = @[@{Localized(@"ActualTransactionCost"): [NSString stringAppendingBUWithStr:self.distributionModel.distributionFee]}, @{Localized(@"IssuerAddress"): [AccountTool account].purseAccount}, @{Localized(@"Hash"): self.distributionModel.transactionHash}];
         [self.listArray addObject:transactionArray];
     }
 }
 
 - (void)setupView
 {
-    self.tableView = [[UITableView alloc] initWithFrame:CGRectMake(0, 0, DEVICE_WIDTH, DEVICE_HEIGHT) style:UITableViewStyleGrouped];
+    self.tableView = [[UITableView alloc] initWithFrame:self.view.frame style:UITableViewStyleGrouped];
     self.tableView.delegate = self;
     self.tableView.dataSource = self;
     self.tableView.separatorInset = UIEdgeInsetsZero;
     self.tableView.separatorStyle = UITableViewCellSeparatorStyleNone;
-    self.tableView.contentInset = UIEdgeInsetsMake(NavBarH, 0, SafeAreaBottomH, 0);
+//    self.tableView.contentInset = UIEdgeInsetsMake(NavBarH, 0, SafeAreaBottomH, 0);
     //    [self.tableView registerClass:[DetailListViewCell class] forCellReuseIdentifier:@"CellID"];
     [self.view addSubview:self.tableView];
     //    transferResults.bounds = CGRectMake(0, 0, DEVICE_WIDTH, ScreenScale(120));
@@ -155,7 +155,11 @@ static NSString * const DistributionDetailCellID = @"DistributionDetailCellID";
 }
 - (CGFloat)tableView:(UITableView *)tableView heightForFooterInSection:(NSInteger)section
 {
-    return CGFLOAT_MIN;
+    if (section == self.listArray.count - 1) {
+        return SafeAreaBottomH + NavBarH + Margin_10;
+    } else {
+        return CGFLOAT_MIN;
+    }
 }
 
 - (CGFloat)tableView:(UITableView *)tableView heightForRowAtIndexPath:(NSIndexPath *)indexPath

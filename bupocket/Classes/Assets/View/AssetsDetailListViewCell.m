@@ -42,11 +42,11 @@ static NSString * const AssetsDetailCellID = @"AssetsDetailCellID";
     [super layoutSubviews];
     [self.purseAddress mas_makeConstraints:^(MASConstraintMaker *make) {
         make.left.equalTo(self.contentView.mas_left).offset(Margin_10);
-        make.top.equalTo(self.contentView.mas_top).offset(ScreenScale(15));
+        make.top.equalTo(self.contentView.mas_top).offset(Margin_15);
     }];
     [self.date mas_makeConstraints:^(MASConstraintMaker *make) {
         make.left.equalTo(self.purseAddress);
-        make.bottom.equalTo(self.contentView.mas_bottom).offset(-ScreenScale(15));
+        make.bottom.equalTo(self.contentView.mas_bottom).offset(-Margin_15);
     }];
     [self.assets mas_makeConstraints:^(MASConstraintMaker *make) {
         make.centerY.equalTo(self.purseAddress);

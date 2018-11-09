@@ -48,7 +48,7 @@ static NSString * const DistributionDetailCellID = @"DistributionDetailCellID";
         }];
         [self.title mas_makeConstraints:^(MASConstraintMaker *make) {
             make.left.equalTo(self.detailBg.mas_left).offset(Margin_10);
-            make.top.equalTo(self.detailBg.mas_top).offset(ScreenScale(15));
+            make.top.equalTo(self.detailBg.mas_top).offset(Margin_15);
         }];
         [self.infoTitle mas_makeConstraints:^(MASConstraintMaker *make) {
             make.left.equalTo(self.title);
@@ -59,7 +59,7 @@ static NSString * const DistributionDetailCellID = @"DistributionDetailCellID";
     } else {
         [self.title mas_makeConstraints:^(MASConstraintMaker *make) {
             make.left.equalTo(self.contentView.mas_left).offset(Margin_10);
-            make.top.equalTo(self.contentView.mas_top).offset(ScreenScale(15));
+            make.top.equalTo(self.contentView.mas_top).offset(Margin_15);
         }];
         [self.infoTitle mas_makeConstraints:^(MASConstraintMaker *make) {
             make.right.equalTo(self.contentView.mas_right).offset(-Margin_10);

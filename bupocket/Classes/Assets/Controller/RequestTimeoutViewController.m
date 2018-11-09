@@ -20,6 +20,15 @@
     [self popToRootVC];
     // Do any additional setup after loading the view.
 }
+- (void)viewWillAppear:(BOOL)animated
+{
+    [super viewWillAppear:animated];
+    if (@available(iOS 11.0, *)) {
+        [self.navigationController.navigationBar setPrefersLargeTitles:NO];
+    } else {
+        // Fallback on earlier versions
+    }
+}
 - (void)setupView
 {
     CustomButton * requestTimeout = [[CustomButton alloc] init];
@@ -36,12 +45,11 @@
         make.height.mas_equalTo(ScreenScale(120));
     }];
     // IGotIt
-    UIButton * gotIt = [UIButton createButtonWithTitle:Localized(@"IGotIt") TextFont:18 TextColor:[UIColor whiteColor] Target:self Selector:@selector(gotItAction)];
-    [gotIt setViewSize:CGSizeMake(DEVICE_WIDTH - Margin_60, MAIN_HEIGHT) borderWidth:0 borderColor:nil borderRadius:ScreenScale(4)];
-    gotIt.backgroundColor = MAIN_COLOR;
+    UIButton * gotIt = [UIButton createButtonWithTitle:Localized(@"IGotIt") isEnabled:YES Target:self Selector:@selector(gotItAction)];
+//    [gotIt setViewSize:CGSizeMake(DEVICE_WIDTH - Margin_60, MAIN_HEIGHT) borderWidth:0 borderColor:nil borderRadius:MAIN_FILLET];
     [self.view addSubview:gotIt];
     [gotIt mas_makeConstraints:^(MASConstraintMaker *make) {
-        make.top.equalTo(requestTimeout.mas_bottom).offset(ScreenScale(15));
+        make.top.equalTo(requestTimeout.mas_bottom).offset(Margin_15);
         make.left.equalTo(self.view.mas_left).offset(Margin_30);
         make.right.equalTo(self.view.mas_right).offset(-Margin_30);
         make.height.mas_equalTo(MAIN_HEIGHT);

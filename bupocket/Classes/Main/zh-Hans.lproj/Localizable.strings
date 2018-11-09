@@ -14,7 +14,7 @@
 "ImmediateCreation" = "立即创建";
 "RestoreIdentity" = "恢复身份";
 // 使用条款
-"TermsOfUse" = "使用条款";
+"TermsOfUse" = "小布口袋服务协议";
 "Continue" = "继续";
 "ReadAndAgree" = "我已阅读并同意以上条款内容";
 // 创建身份
@@ -161,8 +161,18 @@
 "TokenDescription" = "资产描述";
 "IssuerAddress" = "发行方地址";
 "Hash" = "哈希";
+// scan
+"Close" = "关闭";
+"Album" = "相册";
+"ScanPrompt" = "将二维码/条码放入框中，即可自动扫描";
+// date
+"HoursAgo" = "小时前";
+"MinutesAgo" = "分钟前";
+"Just" = "刚刚";
+"Yesterday" = "昨天";
 
 // alert Massage
+"Loading" = "加载中...";
 // SDK
 "RandomGenerationFailure" = "随机数生成失败";
 "IdentityFailure" = "身份账户生成失败";
@@ -173,13 +183,17 @@
 "WalletNameFormatIncorrect" = "钱包名只允许输入字母、汉字、数字、下划线，并且长度不能超过20个字符";
 "PasswordIsDifferent" = "密码与确认密码不一致";
 "MnemonicIsIncorrect" = "助记词输入有误，请重新输入";
+// Assets
+"Replicating" = "已复制";
 // registered
+"ScanFailure" = "扫描结果无效";
 "RegisteredAsset" = "您已登记过该资产！";
-"TemporarilyRegisteredAssets" = "您所发行的资产代码：AG 暂未登记，无法发行！";
+"TemporarilyRegisteredAssets" = "您所发行的资产代码：";
+"InabilityToIssue" = "暂未登记，无法发行！";
 "IssuedAssets" = "您已发行过该资产！";
 "RegisteredNotSufficientFunds" = "您的BU余额不足，无法登记资产，请充值!";
 "DistributionNotSufficientFunds" = "您的BU余额不足，无法发行资产，请充值!";
-"CirculationDoesNotMatch" = "您的资产发行量与登记总量不符";
+//"CirculationDoesNotMatch" = "您的资产发行量与登记总量不符";
 "CirculationExceeded" = "您的资产发行量超过了登记总量";
 
 // My

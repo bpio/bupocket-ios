@@ -2,14 +2,14 @@
 //  NavigationViewController.m
 //  OA
 //
-//  Created by 霍双双 on 2017/9/12.
-//  Copyright © 2017年 霍双双. All rights reserved.
+//  Created by bupocket on 2017/9/12.
+//  Copyright © 2017年 bupocket. All rights reserved.
 //
 
 #import "NavigationViewController.h"
 #import "MyViewController.h"
 
-@interface NavigationViewController ()
+@interface NavigationViewController ()<UINavigationControllerDelegate>
 
 @end
 
@@ -43,11 +43,20 @@
 {
     [self popViewControllerAnimated:YES];
 }
+
 - (void)viewDidLoad {
     [super viewDidLoad];
+//    self.delegate = self;
     // Do any additional setup after loading the view.
 }
-
+- (void)navigationController:(UINavigationController *)navigationController willShowViewController:(UIViewController *)viewController animated:(BOOL)animated
+{
+    [viewController viewWillAppear:animated];
+}
+- (void)navigationController:(UINavigationController *)navigationController didShowViewController:(UIViewController *)viewController animated:(BOOL)animated
+{
+    [viewController viewDidAppear:animated];
+}
 - (void)didReceiveMemoryWarning {
     [super didReceiveMemoryWarning];
     // Dispose of any resources that can be recreated.

@@ -51,7 +51,7 @@ static void *WkwebBrowserContext = &WkwebBrowserContext;
         if (_isNavHidden == YES) {
             _progressView.frame = CGRectMake(0, 0, self.view.bounds.size.width, 3);
         }else{
-            _progressView.frame = CGRectMake(0, NavBarH, self.view.bounds.size.width, 3);
+            _progressView.frame = CGRectMake(0, 0, self.view.bounds.size.width, 3);
         }
         // 设置进度条的色彩
         [_progressView setTrackTintColor:[UIColor colorWithRed:240.0/255 green:240.0/255 blue:240.0/255 alpha:1.0]];
@@ -272,7 +272,7 @@ static void *WkwebBrowserContext = &WkwebBrowserContext;
 
 //服务器开始请求的时候调用
 - (void)webView:(WKWebView *)webView decidePolicyForNavigationAction:(WKNavigationAction *)navigationAction decisionHandler:(void (^)(WKNavigationActionPolicy))decisionHandler {
-    NSURL *url = [navigationAction.request URL];
+//    NSURL *url = [navigationAction.request URL];
     
 //    NSString *urlStr = [url.absoluteString stringByReplacingPercentEscapesUsingEncoding:NSUTF8StringEncoding];
     
@@ -373,6 +373,7 @@ static void *WkwebBrowserContext = &WkwebBrowserContext;
 
 // js 信息的交流
 -(void)webView:(WKWebView *)webView runJavaScriptConfirmPanelWithMessage:(NSString *)message initiatedByFrame:(WKFrameInfo *)frame completionHandler:(void (^)(BOOL))completionHandler{
+    /*
     UIAlertController *alert = [UIAlertController alertControllerWithTitle:@"提示" message:message preferredStyle:UIAlertControllerStyleAlert];
     [alert addAction:[UIAlertAction actionWithTitle:@"确定" style:UIAlertActionStyleDefault handler:^(UIAlertAction * _Nonnull action) {
         completionHandler(YES);
@@ -381,6 +382,7 @@ static void *WkwebBrowserContext = &WkwebBrowserContext;
         completionHandler(NO);
     }]];
     [self presentViewController:alert animated:YES completion:NULL];
+     */
 }
 
 // 交互。可输入的文本。
@@ -482,7 +484,7 @@ static void *WkwebBrowserContext = &WkwebBrowserContext;
 
 - (UIBarButtonItem*)closeButtonItem{
     if (!_closeButtonItem) {
-        _closeButtonItem = [[UIBarButtonItem alloc] initWithTitle:@"关闭" style:UIBarButtonItemStylePlain target:self action:@selector(closeItemClicked)];
+        _closeButtonItem = [[UIBarButtonItem alloc] initWithTitle:Localized(@"Close") style:UIBarButtonItemStylePlain target:self action:@selector(closeItemClicked)];
     }
     return _closeButtonItem;
 }
@@ -503,11 +505,8 @@ static void *WkwebBrowserContext = &WkwebBrowserContext;
 //注意，观察的移除
 - (void)dealloc
 {
-//    [self.wkWebView removeObserver:self forKeyPath:NSStringFromSelector(@selector(estimatedProgress))];
+    [self.wkWebView removeObserver:self forKeyPath:NSStringFromSelector(@selector(estimatedProgress))];
 }
-
-
-
 
 //
 #pragma mark    分享

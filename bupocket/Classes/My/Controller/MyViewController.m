@@ -12,6 +12,7 @@
 #import "ChangePasswordViewController.h"
 #import "FeedbackViewController.h"
 #import "MultilingualViewController.h"
+#import "UINavigationController+Extension.h"
 
 @interface MyViewController ()<UITableViewDelegate, UITableViewDataSource>
 
@@ -25,14 +26,17 @@
 - (void)viewWillAppear:(BOOL)animated {
     [super viewWillAppear:animated];
     [self.navigationController setNavigationBarHidden:YES animated:animated];
-    [UIApplication sharedApplication].statusBarStyle = UIStatusBarStyleLightContent;
+//    [UIApplication sharedApplication].statusBarStyle = UIStatusBarStyleLightContent;
 }
 
 - (void)viewWillDisappear:(BOOL)animated {
     [super viewWillDisappear:animated];
     [self.navigationController setNavigationBarHidden:NO animated:animated];
-    [UIApplication sharedApplication].statusBarStyle = UIStatusBarStyleDefault;
+//    [UIApplication sharedApplication].statusBarStyle = UIStatusBarStyleDefault;
 }
+- (UIStatusBarStyle)preferredStatusBarStyle {
+    return UIStatusBarStyleLightContent;
+} 
 
 - (void)viewDidLoad {
     [super viewDidLoad];
@@ -49,6 +53,7 @@
     self.tableView.separatorInset = UIEdgeInsetsZero;
     self.tableView.separatorStyle = UITableViewCellSeparatorStyleNone;
     [self.view addSubview:self.tableView];
+    self.tableView.bounces = NO;
     [self setupHeaderView];
 }
 - (void)setupHeaderView
@@ -79,10 +84,19 @@
     MyIdentityViewController * VC = [[MyIdentityViewController alloc] init];
     [self.navigationController pushViewController:VC animated:YES];
 }
+- (CGFloat)tableView:(UITableView *)tableView heightForHeaderInSection:(NSInteger)section
+{
+    return CGFLOAT_MIN;
+}
+- (CGFloat)tableView:(UITableView *)tableView heightForFooterInSection:(NSInteger)section
+{
+    return SafeAreaBottomH + NavBarH + Margin_10;
+}
 - (CGFloat)tableView:(UITableView *)tableView heightForRowAtIndexPath:(NSIndexPath *)indexPath
 {
     return ScreenScale(50);
 }
+
 - (NSInteger)numberOfSectionsInTableView:(UITableView *)tableView
 {
     return 1;
@@ -97,6 +111,7 @@
     cell.listImage.image = [UIImage imageNamed:[NSString stringWithFormat:@"my_list_%zd", indexPath.row]];
     cell.detailImage.image = [UIImage imageNamed:@"list_arrow"];
     cell.title.text = self.listArray[indexPath.row];
+    cell.selectionStyle = UITableViewCellSelectionStyleNone;
     if (indexPath.section == 0 && indexPath.row == self.listArray.count - 1) {
         cell.detailImage.hidden = YES;
         NSString * currentVersion = [NSBundle mainBundle].infoDictionary[@"CFBundleVersion"];
@@ -113,7 +128,7 @@
     cell.imageView.image = [UIImage imageNamed:[NSString stringWithFormat:@"my_list_%zd", indexPath.row]];
     cell.imageView.contentMode = UIViewContentModeScaleAspectFit;
     [cell.imageView mas_makeConstraints:^(MASConstraintMaker *make) {
-        make.left.equalTo(cell.contentView.mas_left).offset(ScreenScale(15));
+        make.left.equalTo(cell.contentView.mas_left).offset(Margin_15);
         make.centerY.equalTo(cell.contentView);
         make.width.height.mas_equalTo(Margin_20);
     }];// 

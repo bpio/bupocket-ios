@@ -2,8 +2,8 @@
 //  UIButton+Extension.m
 //  ArtBridge
 //
-//  Created by 霍双双 on 17/7/14.
-//  Copyright © 2017年 霍双双. All rights reserved.
+//  Created by bupocket on 17/7/14.
+//  Copyright © 2017年 bupocket. All rights reserved.
 //
 
 #import "UIButton+Extension.h"
@@ -63,6 +63,37 @@ static NSString *_title;
     [button addTarget:target action:selector forControlEvents:UIControlEventTouchUpInside];
     return button;
 }
+// Button
++ (UIButton *)createButtonWithTitle:(NSString *)title isEnabled:(BOOL)isEnabled Target:(id)target Selector:(SEL)selector
+{
+    UIButton * button = [UIButton buttonWithType:UIButtonTypeCustom];
+    [button setTitle:title forState:UIControlStateNormal];
+    button.titleLabel.font = FONT(18);
+    [button setTitleColor:[UIColor whiteColor] forState:UIControlStateNormal];
+    [button addTarget:target action:selector forControlEvents:UIControlEventTouchUpInside];
+    button.layer.masksToBounds = YES;
+    button.clipsToBounds = YES;
+    button.layer.cornerRadius = MAIN_FILLET;
+    if (isEnabled == YES) {
+        button.backgroundColor = MAIN_COLOR;
+    } else {
+        button.backgroundColor = DISABLED_COLOR;
+    }
+    button.enabled = isEnabled;
+    return button;
+}
+// Nav_Button
++ (UIButton *)createNavButtonWithTitle:(NSString *)title Target:(id)target Selector:(SEL)selector
+{
+    UIButton * button = [UIButton buttonWithType:UIButtonTypeCustom];
+    [button setTitle:title forState:UIControlStateNormal];
+    button.titleLabel.font = FONT(16);
+    button.contentHorizontalAlignment = UIControlContentHorizontalAlignmentRight;
+    button.bounds = CGRectMake(0, 0, ScreenScale(50), ScreenScale(44));
+    [button setTitleColor:NAVITEM_COLOR forState:UIControlStateNormal];
+    [button addTarget:target action:selector forControlEvents:UIControlEventTouchUpInside];
+    return button;
+}
 + (UIButton *)createButtonWithTitle:(NSString *)title TextFont:(CGFloat)textFont TextColor:(UIColor *)textColor BackgroundImage:(NSString *)backgroundImage
 {
     UIButton * button = [UIButton buttonWithType:UIButtonTypeCustom];
@@ -74,6 +105,7 @@ static NSString *_title;
     [button setBackgroundImage:[UIImage imageNamed:backgroundImage] forState:UIControlStateNormal];
     return button;
 }
+
 - (void)beginCountDownWithDuration:(NSTimeInterval)duration {
     _title = self.titleLabel.text;
     _count = duration;
