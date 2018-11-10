@@ -242,12 +242,12 @@
 - (void)setupLayers {
     
     if (self.parentView == nil) {
-        NSLog(@"父视图不存在");
+//        NSLog(@"父视图不存在");
         return;
     }
     
     if (session == nil) {
-        NSLog(@"拍摄会话不存在");
+//        NSLog(@"拍摄会话不存在");
         return;
     }
     

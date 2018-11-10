@@ -110,7 +110,7 @@ static NSString * const DistributionDetailCellID = @"DistributionDetailCellID";
 }
 - (void)setFrame:(CGRect)frame
 {
-    CGFloat margin = ScreenScale(5);
+    CGFloat margin = Margin_5;
     frame.origin.x = margin * 2;
     frame.size.width -= margin * 4;
 //    frame.origin.y += margin;

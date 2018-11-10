@@ -56,17 +56,20 @@
 // 设置标题属性文字
 + (NSMutableAttributedString *)attrTitle:(NSString *)title ifRequired:(BOOL)ifRequired
 {
-    NSMutableAttributedString * attr = [[NSMutableAttributedString alloc] initWithString:[NSString stringWithFormat:@"| %@", title]];
+    NSMutableAttributedString * attr = [[NSMutableAttributedString alloc] initWithString:[NSString stringWithFormat:@"%@", title]];
     NSMutableDictionary * titleDic = [NSMutableDictionary dictionary];
+//    NSMutableAttributedString * attr = [[NSMutableAttributedString alloc] initWithString:[NSString stringWithFormat:@"| %@", title]];
 //    titleDic[NSFontAttributeName] = FONT_Bold(16);
 //    titleDic[NSForegroundColorAttributeName] = COLOR_9;
     titleDic[NSFontAttributeName] = FONT(15);
     titleDic[NSForegroundColorAttributeName] = TITLE_COLOR;
-    [attr addAttributes:titleDic range:NSMakeRange(1, attr.length - 1)];
+    [attr addAttributes:titleDic range:NSMakeRange(0, attr.length)];
+    /*
     NSMutableDictionary * dic = [NSMutableDictionary dictionary];
     dic[NSFontAttributeName] = FONT_Bold(18);
     dic[NSForegroundColorAttributeName] = MAIN_COLOR;
     [attr addAttributes:dic range:NSMakeRange(0, 1)];
+     */
     if (ifRequired == YES) {
         [attr addAttribute:NSForegroundColorAttributeName value:WARNING_COLOR range:NSMakeRange(attr.length - 1, 1)];
     }
@@ -100,7 +103,7 @@
 //    [alertController addAction:okAction];
     UIView * alertBg = alertController.view.subviews[0].subviews[0].subviews[0];
     alertBg.backgroundColor = [UIColor whiteColor];
-    alertBg.layer.cornerRadius = ScreenScale(5);
+    alertBg.layer.cornerRadius = BG_CORNER;
     if (title.length > 0) {
         UILabel * titleLabel = alertBg.subviews[0].subviews[0].subviews[0];
         titleLabel.height = ScreenScale(65);
@@ -168,7 +171,7 @@
     UIButton * reloadBtn = [UIButton createButtonWithTitle:Localized(@"Reload") TextFont:18 TextColor:[UIColor whiteColor] Target:target Selector:action];
     reloadBtn.layer.masksToBounds = YES;
     reloadBtn.clipsToBounds = YES;
-    reloadBtn.layer.cornerRadius = MAIN_FILLET;
+    reloadBtn.layer.cornerRadius = MAIN_CORNER;
     reloadBtn.backgroundColor = MAIN_COLOR;
     [noNetWork addSubview:reloadBtn];
     [reloadBtn mas_makeConstraints:^(MASConstraintMaker *make) {

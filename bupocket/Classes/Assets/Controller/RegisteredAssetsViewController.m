@@ -105,8 +105,8 @@ static NSString * const Register_Leave = @"leaveRoomForApp";
     
     UIView * assetInfoBg = [[UIView alloc] init];
     [self.scrollView addSubview:assetInfoBg];
-    CGSize size = CGSizeMake(DEVICE_WIDTH - Margin_24, assetInfoBgH);
-    [assetInfoBg setViewSize:size borderWidth:LINE_WIDTH borderColor:COLOR(@"E3E3E3") borderRadius:ScreenScale(5)];
+    CGSize size = CGSizeMake(DEVICE_WIDTH - Margin_20, assetInfoBgH);
+    [assetInfoBg setViewSize:size borderWidth:LINE_WIDTH borderColor:COLOR(@"E3E3E3") borderRadius:BG_CORNER];
     [assetInfoBg mas_makeConstraints:^(MASConstraintMaker *make) {
         make.top.equalTo(confirmationPrompt.mas_bottom).offset(Margin_20);
         //        make.left.mas_equalTo(Margin_12);
@@ -119,15 +119,15 @@ static NSString * const Register_Leave = @"leaveRoomForApp";
         UIView * assetInfo = [self setAssetInfoWithTitle:titleStr info:self.registeredArray[i][titleStr]];
         [assetInfoBg addSubview:assetInfo];
         [assetInfo mas_makeConstraints:^(MASConstraintMaker *make) {
-            make.top.equalTo(assetInfoBg.mas_top).offset(ScreenScale(5) + Margin_40 * i);
+            make.top.equalTo(assetInfoBg.mas_top).offset(Margin_5 + Margin_40 * i);
             make.left.right.equalTo(assetInfoBg);
             make.height.mas_equalTo(Margin_40);
         }];
     }
     
-    CGSize btnSize = CGSizeMake(DEVICE_WIDTH - Margin_24, MAIN_HEIGHT);
+    CGSize btnSize = CGSizeMake(DEVICE_WIDTH - Margin_20, MAIN_HEIGHT);
     UIButton * confirmation = [UIButton createButtonWithTitle:Localized(@"ConfirmationOfRegistration") isEnabled:YES Target:self Selector:@selector(confirmationAction)];
-//    [confirmation setViewSize:btnSize borderWidth:0 borderColor:nil borderRadius:MAIN_FILLET];
+//    [confirmation setViewSize:btnSize borderWidth:0 borderColor:nil borderRadius:MAIN_CORNER];
     [self.scrollView addSubview:confirmation];
     [confirmation mas_makeConstraints:^(MASConstraintMaker *make) {
 //        make.top.mas_equalTo(DEVICE_HEIGHT - ScreenScale(145) - SafeAreaBottomH - NavBarH);
@@ -136,7 +136,7 @@ static NSString * const Register_Leave = @"leaveRoomForApp";
         make.size.mas_equalTo(btnSize);
     }];
     UIButton * cancel = [UIButton createButtonWithTitle:Localized(@"Cancel")isEnabled:YES Target:self Selector:@selector(cancelAction)];
-//    [cancel setViewSize:btnSize borderWidth:0 borderColor:nil borderRadius:MAIN_FILLET];
+//    [cancel setViewSize:btnSize borderWidth:0 borderColor:nil borderRadius:MAIN_CORNER];
     cancel.backgroundColor = COLOR(@"A4A8CE");
     [self.scrollView addSubview:cancel];
     [cancel mas_makeConstraints:^(MASConstraintMaker *make) {
@@ -144,12 +144,12 @@ static NSString * const Register_Leave = @"leaveRoomForApp";
         make.size.centerX.equalTo(confirmation);
     }];
     [self.view layoutIfNeeded];
-    self.scrollView.contentSize = CGSizeMake(DEVICE_WIDTH, CGRectGetMaxY(cancel.frame) + Margin_50);
+    self.scrollView.contentSize = CGSizeMake(0, CGRectGetMaxY(cancel.frame) + Margin_50);
 }
 
 - (void)confirmationAction
 {
-    int64_t amount = [[HTTPManager shareManager] getDataWithBalanceJudgmentWithCost:Registered_Cost];
+    int64_t amount = [[HTTPManager shareManager] getDataWithBalanceJudgmentWithCost:Registered_Cost ifShowLoading:YES];
     if (amount < 0) {
         [MBProgressHUD showTipMessageInWindow:Localized(@"RegisteredNotSufficientFunds")];
         return;
@@ -259,8 +259,8 @@ static NSString * const Register_Leave = @"leaveRoomForApp";
     titleLabel.text = title;
     [assetInfo addSubview:titleLabel];
     [titleLabel mas_makeConstraints:^(MASConstraintMaker *make) {
-        make.left.mas_equalTo(Margin_12);
-        make.top.mas_equalTo(Margin_12);
+        make.left.mas_equalTo(Margin_10);
+        make.top.mas_equalTo(Margin_10);
     }];
     UILabel * detailLabel = [[UILabel alloc] init];
     detailLabel.textColor = COLOR_6;
@@ -268,7 +268,7 @@ static NSString * const Register_Leave = @"leaveRoomForApp";
     detailLabel.text = info;
     [assetInfo addSubview:detailLabel];
     [detailLabel mas_makeConstraints:^(MASConstraintMaker *make) {
-        make.right.mas_equalTo(-Margin_12);
+        make.right.mas_equalTo(-Margin_10);
         make.centerY.equalTo(titleLabel);
     }];
     return assetInfo;

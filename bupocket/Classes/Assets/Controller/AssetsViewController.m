@@ -28,7 +28,9 @@
 
 @property (nonatomic, strong) UITableView * tableView;
 @property (nonatomic, strong) UIView * headerBg;
+@property (nonatomic, strong) UIView * headerViewBg;
 @property (nonatomic, strong) UIImageView * headerImageView;
+
 @property (nonatomic, strong) UIButton * addAssets;
 @property (nonatomic, assign) CGFloat headerViewH;
 @property (nonatomic, strong) NSMutableArray * listArray;
@@ -61,7 +63,7 @@
 - (void)viewWillAppear:(BOOL)animated {
     [super viewWillAppear:animated];
     [self.navigationController setNavigationBarHidden:YES animated:animated];
-    [self loadData];
+    [self.tableView.mj_header beginRefreshing];
 }
 
 - (void)viewWillDisappear:(BOOL)animated {
@@ -80,11 +82,16 @@
     [self.tableView mas_makeConstraints:^(MASConstraintMaker *make) {
         make.edges.mas_equalTo(0);
     }];
-   
+   [self setupRefresh];
 //    self.tableView.tableHeaderView = self.headerBg;
-    self.noNetWork = [Encapsulation showNoNetWorkWithSuperView:self.view target:self action:@selector(loadData)];
-    [self setupRefresh];
+    self.noNetWork = [Encapsulation showNoNetWorkWithSuperView:self.view target:self action:@selector(reloadData)];
+//    [self setupRefresh];
     // Do any additional setup after loading the view.
+}
+- (void)reloadData
+{
+    self.noNetWork.hidden = YES;
+    [self.tableView.mj_header beginRefreshing];
 }
 - (void)setupRefresh
 {
@@ -96,7 +103,7 @@
     self.tableView.mj_header = [CustomRefreshHeader headerWithRefreshingTarget:self refreshingAction:@selector(loadData)];
     self.tableView.mj_header.automaticallyChangeAlpha = YES;
     self.tableView.mj_header.ignoredScrollViewContentInsetTop = _headerViewH;
-//    [self.tableView.mj_header beginRefreshing];
+    [self.tableView.mj_header beginRefreshing];
 }
 - (void)loadData
 {
@@ -119,10 +126,14 @@
             [MBProgressHUD showTipMessageInWindow:message];
         }
         [self.tableView.mj_header endRefreshing];
-        self.noNetWork.hidden = YES;
+//        self.noNetWork.hidden = YES;
+        self.statusBarStyle = UIStatusBarStyleLightContent;
+        [self.navigationController setNeedsStatusBarAppearanceUpdate];
     } failure:^(NSError *error) {
         [self.tableView.mj_header endRefreshing];
         self.noNetWork.hidden = NO;
+        self.statusBarStyle = UIStatusBarStyleDefault;
+        [self.navigationController setNeedsStatusBarAppearanceUpdate];
     }];
 }
 - (void)getAssetsStateData
@@ -206,29 +217,25 @@
         _headerImageView.clipsToBounds = YES;
         [headerBg addSubview:_headerImageView];
         
+        _headerViewBg = [[UIView alloc] initWithFrame:CGRectMake(0, 0, DEVICE_WIDTH, _headerViewH)];
+        [headerBg addSubview:_headerViewBg];
+        
         UIButton * issueBtn = [UIButton createButtonWithNormalImage:@"nav_scan" SelectedImage:@"nav_scan" Target:self Selector:@selector(issueAction)];
         issueBtn.contentHorizontalAlignment = UIControlContentHorizontalAlignmentRight;
-        [headerBg addSubview:issueBtn];
+        [_headerViewBg addSubview:issueBtn];
         [issueBtn mas_makeConstraints:^(MASConstraintMaker *make) {
-            make.top.equalTo(headerBg.mas_top).offset(StatusBarHeight);
+            make.top.equalTo(self.headerViewBg.mas_top).offset(StatusBarHeight);
             make.size.mas_equalTo(CGSizeMake(ScreenScale(44), Margin_30));
-            make.right.equalTo(headerBg.mas_right).offset(- Margin_15);
+            make.right.equalTo(self.headerViewBg.mas_right).offset(- Margin_20);
         }];
         UIImageView * userIcon = [[UIImageView alloc] initWithImage:[UIImage imageNamed:@"userIcon_placeholder"]];
         [userIcon addGestureRecognizer:[[UITapGestureRecognizer alloc] initWithTarget:self action:@selector(userIconAction)]];
         userIcon.userInteractionEnabled = YES;
-        [headerBg addSubview:userIcon];
-        [userIcon mas_makeConstraints:^(MASConstraintMaker *make) {
-            make.top.equalTo(headerBg.mas_top).offset(MAIN_HEIGHT + StatusBarHeight);
-            make.centerX.equalTo(headerBg);
-        }];
+        [self.headerViewBg addSubview:userIcon];
+        
         UIView * userBg = [[UIView alloc] init];
-        [headerBg addSubview:userBg];
-        [userBg mas_makeConstraints:^(MASConstraintMaker *make) {
-            make.top.equalTo(userIcon.mas_bottom).offset(Margin_10);
-            make.height.mas_equalTo(Margin_20);
-            make.centerX.equalTo(headerBg);
-        }];
+        [self.headerViewBg addSubview:userBg];
+        
         _purseName = [[UILabel alloc] init];
         _purseName.textColor = [UIColor whiteColor];
         _purseName.font = FONT(16);
@@ -247,7 +254,7 @@
             [userBg addSubview:self.backup];
             if (_purseName.text.length > 0) {
                 [_backup mas_makeConstraints:^(MASConstraintMaker *make) {
-                    make.left.equalTo(self.purseName.mas_right).offset(ScreenScale(5));
+                    make.left.equalTo(self.purseName.mas_right).offset(Margin_5);
                 }];
             } else {
                 [_backup mas_makeConstraints:^(MASConstraintMaker *make) {
@@ -269,42 +276,58 @@
         [QRCode setTitle:[NSString stringEllipsisWithStr:[AccountTool account].purseAccount] forState:UIControlStateNormal];
         [QRCode setImage:[UIImage imageNamed:@"QRCode"] forState:UIControlStateNormal];
         [QRCode addTarget:self action:@selector(QRCodeAction:) forControlEvents:UIControlEventTouchUpInside];
-        [headerBg addSubview: QRCode];
-        [QRCode mas_makeConstraints:^(MASConstraintMaker *make) {
-            make.top.equalTo(userBg.mas_bottom).offset(Margin_15);
-            make.centerX.equalTo(headerBg);
-        }];
+        [self.headerViewBg addSubview: QRCode];
+        
         self.amount = [[UILabel alloc] init];
         self.amount.font = FONT(32);
         self.amount.textColor = [UIColor whiteColor];
-        [headerBg addSubview:self.amount];
-        [self.amount mas_makeConstraints:^(MASConstraintMaker *make) {
-            make.top.equalTo(QRCode.mas_bottom).offset(Margin_15);
-            make.left.equalTo(headerBg.mas_left).offset(Margin_15);
-        }];
+        [self.headerViewBg addSubview:self.amount];
         
         self.totalAssets = [[UILabel alloc] init];
         self.totalAssets.font = FONT(15);
         self.totalAssets.textColor = [UIColor whiteColor];
         self.totalAssets.text = Localized(@"TotalAssets");
-        [headerBg addSubview:self.totalAssets];
+        [self.headerViewBg addSubview:self.totalAssets];
         [self.totalAssets mas_makeConstraints:^(MASConstraintMaker *make) {
-            make.top.equalTo(self.amount.mas_bottom).offset(Margin_10);
-            make.left.equalTo(self.amount);
+//            make.top.equalTo(self.amount.mas_bottom).offset(Margin_10);
+            make.bottom.equalTo(self.headerViewBg.mas_bottom).offset(-MAIN_HEIGHT - Margin_20);
+            make.left.equalTo(self.headerViewBg.mas_left).offset(Margin_20);
+           
+        }];
+        [self.amount mas_makeConstraints:^(MASConstraintMaker *make) {
+            make.bottom.equalTo(self.totalAssets.mas_top).offset(-Margin_10);
+            make.left.equalTo(self.totalAssets);
+        }];
+        [QRCode mas_makeConstraints:^(MASConstraintMaker *make) {
+//            make.top.equalTo(userBg.mas_bottom).offset(Margin_15);
+            make.bottom.equalTo(self.amount.mas_top).offset(-Margin_20);
+            make.centerX.equalTo(self.headerViewBg);
+        }];
+        [userBg mas_makeConstraints:^(MASConstraintMaker *make) {
+            make.bottom.equalTo(QRCode.mas_top).offset(-Margin_15);
+            make.height.mas_equalTo(Margin_20);
+            make.centerX.equalTo(self.headerViewBg);
         }];
         
-        self.header = [[UILabel alloc] initWithFrame:CGRectMake(Margin_10, _headerImageView.height + ScreenScale(5), DEVICE_WIDTH - Margin_20, Margin_40)];
-        [headerBg addSubview:self.header];
+        [userIcon mas_makeConstraints:^(MASConstraintMaker *make) {
+//            make.top.equalTo(self.headerViewBg.mas_top).offset(MAIN_HEIGHT + StatusBarHeight);
+            make.bottom.equalTo(userBg.mas_top).offset(-Margin_15);
+            make.centerX.equalTo(self.headerViewBg);
+        }];
+        self.header = [[UILabel alloc] initWithFrame:CGRectMake(Margin_10, _headerImageView.height + Margin_5, DEVICE_WIDTH - Margin_20, Margin_40)];
+        [self.headerViewBg addSubview:self.header];
         self.header.attributedText = [Encapsulation attrTitle:Localized(@"MyAssets") ifRequired:NO];
         
         self.addAssets = [UIButton createButtonWithNormalImage:@"addAssets" SelectedImage:@"addAssets" Target:self Selector:@selector(addAssetsAcrion)];
-        [headerBg addSubview:self.addAssets];
+        [self.headerViewBg addSubview:self.addAssets];
 //        _addAssets.centerY = CGRectGetMaxY(_headerImageView.frame);
 //        self.addAssets.x = DEVICE_WIDTH - ScreenScale(65);
 //        self.addAssets.size = CGSizeMake(ScreenScale(55), ScreenScale(55));
         [self.addAssets mas_makeConstraints:^(MASConstraintMaker *make) {
-            make.right.equalTo(headerBg.mas_right).offset(-Margin_10);
-            make.centerY.equalTo(self.headerImageView.mas_bottom);
+            make.right.equalTo(self.headerViewBg.mas_right).offset(-Margin_10);
+            make.centerY.equalTo(self.header);
+            make.size.mas_equalTo(CGSizeMake(Margin_30, Margin_30));
+//            make.centerY.equalTo(self.headerImageView.mas_bottom);
         }];
         _headerBg = headerBg;
     }
@@ -320,13 +343,14 @@
     } else {
         CGFloat min = - _headerViewH;
         CGFloat progress = (offsetY / min);
+        _headerBg.y = -_headerViewH;
+        _headerBg.height = _headerViewH;
         _headerImageView.alpha = progress;
         _statusBarStyle = (progress < 0.5) ? UIStatusBarStyleDefault : UIStatusBarStyleLightContent;
         [self.navigationController setNeedsStatusBarAppearanceUpdate];
     }
     _headerImageView.frame = CGRectMake(0, 0, DEVICE_WIDTH, _headerBg.height - MAIN_HEIGHT);
-    _header.y = _headerImageView.height + ScreenScale(5);
-    _addAssets.centerY = CGRectGetMaxY(_headerImageView.frame);
+    _headerViewBg.y = _headerBg.height - _headerViewH;
     /*
      CGFloat offset = scrollView.contentOffset.y + scrollView.contentInset.top;
      if (offset <= 0) {
@@ -377,9 +401,10 @@
         }
     }];
     [scanner setTitleColor:[UIColor whiteColor] tintColor:MAIN_COLOR];
-    scanner.modalPresentationStyle = UIModalPresentationOverCurrentContext;
-    [self presentViewController:scanner animated:YES completion:nil];
-//    [self showDetailViewController:scanner sender:nil];
+    [self showDetailViewController:scanner sender:nil];
+//    AppDelegate *appdelegate=(AppDelegate*)[[UIApplication sharedApplication] delegate];
+//    appdelegate.window.rootViewController.definesPresentationContext = YES;
+//    [appdelegate.window.rootViewController presentViewController:presentedVC  animated:YES completion:nil];
 }
 
 #pragma mark - backup

@@ -50,6 +50,9 @@
 
 - (void)skipAction
 {
+    NSUserDefaults * defaults = [NSUserDefaults standardUserDefaults];
+    [defaults setBool:YES forKey:ifSkip];
+    [defaults synchronize];
     [UIApplication sharedApplication].keyWindow.rootViewController = [[TabBarViewController alloc] init];
 }
 - (void)setupView
@@ -65,30 +68,32 @@
     UILabel * confirmPrompt = [[UILabel alloc] init];
     confirmPrompt.font = TITLE_FONT;
     confirmPrompt.textColor = COLOR_9;
+    confirmPrompt.numberOfLines = 0;
     confirmPrompt.text = Localized(@"ConfirmMnemonicPrompt");
     [self.scrollView addSubview:confirmPrompt];
     [confirmPrompt mas_makeConstraints:^(MASConstraintMaker *make) {
         make.top.mas_equalTo(Margin_10);
-        make.left.mas_equalTo(Margin_30);
-        make.width.mas_equalTo(DEVICE_WIDTH - Margin_60);
+        make.left.mas_equalTo(Margin_20);
+        make.width.mas_equalTo(DEVICE_WIDTH - Margin_40);
     }];
     
     self.mnemonicBg = [[UIView alloc] init];
     self.mnemonicBg.backgroundColor = VIEWBG_COLOR;
-    self.mnemonicBg.layer.cornerRadius = TAG_FILLET;
+    self.mnemonicBg.layer.cornerRadius = BG_CORNER;
     [self.scrollView addSubview:self.mnemonicBg];
     [self.mnemonicBg mas_makeConstraints:^(MASConstraintMaker *make) {
         make.top.equalTo(confirmPrompt.mas_bottom).offset(Margin_40);
-        make.left.width.equalTo(confirmPrompt);
+        make.left.equalTo(confirmPrompt);
+        make.width.mas_equalTo(DEVICE_WIDTH - Margin_40);
         make.height.mas_equalTo(ScreenScale(145));
     }];
     
     UIView * lineView = [[UIView alloc] init];
-    lineView.bounds = CGRectMake(0, 0, DEVICE_WIDTH - Margin_60, LINE_WIDTH);
+    lineView.bounds = CGRectMake(0, 0, DEVICE_WIDTH - Margin_40, LINE_WIDTH);
     [lineView drawDashLine];
     [self.scrollView addSubview:lineView];
     [lineView mas_makeConstraints:^(MASConstraintMaker *make) {
-        make.left.width.equalTo(confirmPrompt);
+        make.left.width.equalTo(self.mnemonicBg);
         make.top.equalTo(self.mnemonicBg.mas_bottom).offset(Margin_15);
     }];
     self.randomArray = [self.mnemonicArray sortedArrayUsingComparator:^NSComparisonResult(NSString *str1, NSString *str2) {
@@ -99,7 +104,7 @@
             return [str2 compare:str1];
         }
     }];
-    CGFloat tagW = (DEVICE_WIDTH - ScreenScale(90)) / 4;
+    CGFloat tagW = (DEVICE_WIDTH - ScreenScale(70)) / 4;
     CGFloat tagH = Margin_40;
     CGFloat tagBgH = Margin_20 + (tagH + Margin_10) * (self.randomArray.count / 4) +  MAIN_HEIGHT;
     for (NSInteger i = 0; i < self.randomArray.count; i ++) {
@@ -123,7 +128,7 @@
     }];
     self.finish = finish;
     [self.view layoutIfNeeded];
-    self.scrollView.contentSize = CGSizeMake(DEVICE_WIDTH, CGRectGetMaxY(finish.frame) + Margin_50);
+    self.scrollView.contentSize = CGSizeMake(0, CGRectGetMaxY(finish.frame) + Margin_50);
 }
 - (void)tagAction:(UIButton *)button
 {

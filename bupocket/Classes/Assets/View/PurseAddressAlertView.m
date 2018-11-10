@@ -84,8 +84,8 @@
     
     [self.purseAddress mas_makeConstraints:^(MASConstraintMaker *make) {
         make.top.equalTo(self.purseAddressTitle.mas_bottom).offset(Margin_10);
-        make.left.equalTo(self.mas_left).offset(Margin_15);
-        make.right.equalTo(self.mas_right).offset(-Margin_15);
+        make.left.equalTo(self.mas_left).offset(Margin_20);
+        make.right.equalTo(self.mas_right).offset(-Margin_20);
     }];
     
     [self.copyBtn mas_makeConstraints:^(MASConstraintMaker *make) {
@@ -96,14 +96,14 @@
     
     [self.lineView mas_makeConstraints:^(MASConstraintMaker *make) {
         make.left.right.equalTo(self.purseAddress);
-        make.top.equalTo(self.copyBtn.mas_bottom).offset(ScreenScale(23));
+        make.top.equalTo(self.copyBtn.mas_bottom).offset(Margin_20);
         //        make.height.mas_equalTo(ScreenScale(1.5));
     }];
     
     [self.QRCodeImage mas_makeConstraints:^(MASConstraintMaker *make) {
         make.centerX.equalTo(self);
         make.top.equalTo(self.copyBtn.mas_bottom).offset(MAIN_HEIGHT);
-        make.size.mas_equalTo(CGSizeMake(ScreenScale(178), ScreenScale(178)));
+        make.size.mas_equalTo(CGSizeMake(ScreenScale(180), ScreenScale(180)));
     }];
     
     [self.QRCodeTitle mas_makeConstraints:^(MASConstraintMaker *make) {
@@ -142,7 +142,6 @@
 {
     if (!_copyBtn) {
         _copyBtn = [UIButton createButtonWithTitle:Localized(@"DuplicateWalletAddress") isEnabled:YES Target:self Selector:@selector(copyClick)];
-//        [_copyBtn setViewSize:CGSizeMake(ScreenScale(210), MAIN_HEIGHT) borderWidth:0 borderColor:nil borderRadius:MAIN_FILLET];
     }
     return _copyBtn;
 }
@@ -150,7 +149,7 @@
 {
     if (!_lineView) {
         _lineView = [[UIView alloc] init];
-        _lineView.bounds = CGRectMake(0, 0, DEVICE_WIDTH - Margin_30, LINE_WIDTH);
+        _lineView.bounds = CGRectMake(0, 0, DEVICE_WIDTH - Margin_40, LINE_WIDTH);
         [_lineView drawDashLine];
     }
     return _lineView;
@@ -160,7 +159,6 @@
     if (!_QRCodeImage) {
         _QRCodeImage = [[UIImageView alloc] init];
         _QRCodeImage.image = [UIImage imageNamed:@"placeholder"];
-//        [_QRCodeImage setViewSize:CGSizeMake(ScreenScale(178), ScreenScale(178)) borderWidth:0.5 borderColor:MAIN_COLOR borderRadius:MAIN_FILLET];
     }
     return _QRCodeImage;
 }

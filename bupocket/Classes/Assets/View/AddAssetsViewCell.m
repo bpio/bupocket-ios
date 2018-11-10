@@ -43,7 +43,7 @@ static NSString * const AddAssetsCellID = @"AddAssetsCellID";
 {
     [super layoutSubviews];
     [self.listImage mas_makeConstraints:^(MASConstraintMaker *make) {
-        make.left.equalTo(self.contentView.mas_left).offset(Margin_15);
+        make.left.equalTo(self.contentView.mas_left).offset(Margin_20);
         make.top.equalTo(self.contentView.mas_top).offset(Margin_15);
         make.width.height.mas_equalTo(Margin_40);
     }];
@@ -60,11 +60,11 @@ static NSString * const AddAssetsCellID = @"AddAssetsCellID";
         make.top.equalTo(self.detailTitle.mas_bottom).offset(Margin_10);
         make.left.equalTo(self.title);
     }];
-    CGSize size = CGSizeMake(ScreenScale(52), Margin_25);
+    CGSize size = CGSizeMake(ScreenScale(53), Margin_25);
     [self.addBtn setViewSize:size borderWidth:0 borderColor:nil borderRadius:ScreenScale(2)];
     [self.addBtn mas_makeConstraints:^(MASConstraintMaker *make) {
         make.centerY.equalTo(self.detailTitle);
-        make.right.equalTo(self.contentView.mas_right).offset(-ScreenScale(22));
+        make.right.equalTo(self.contentView.mas_right).offset(-Margin_20);
         make.size.mas_equalTo(size);
     }];
 }
@@ -76,13 +76,17 @@ static NSString * const AddAssetsCellID = @"AddAssetsCellID";
     _detailTitle.text = searchAssetsModel.assetName;
     _infoTitle.text = searchAssetsModel.issuer;
     _addBtn.hidden = !searchAssetsModel.recommend;
+//    0 是推荐 1 是非推荐
     if (searchAssetsModel.recommend) {
-        NSArray * assetsArray = [[NSUserDefaults standardUserDefaults] objectForKey:AddAssets];
-        for (NSDictionary * dic in assetsArray) {
+        NSUserDefaults * defaults = [NSUserDefaults standardUserDefaults];
+        self.addAssetsArray = [NSMutableArray arrayWithArray:[defaults objectForKey:AddAssets]];
+        for (NSDictionary * dic in self.addAssetsArray) {
             if ([searchAssetsModel.assetCode isEqualToString:dic[@"assetCode"]] && [searchAssetsModel.issuer isEqualToString:dic[@"issuer"]]) {
                 _addBtn.selected = YES;
+                _addBtn.backgroundColor = WARNING_COLOR;
             } else {
                 _addBtn.selected = NO;
+                _addBtn.backgroundColor = MAIN_COLOR;
             }
         }
     }
@@ -102,7 +106,7 @@ static NSString * const AddAssetsCellID = @"AddAssetsCellID";
         _title = [[UILabel alloc] init];
         _title.font = FONT(18);
         _title.textColor = TITLE_COLOR;
-        _title.preferredMaxLayoutWidth = DEVICE_WIDTH - ScreenScale(80);
+        _title.preferredMaxLayoutWidth = DEVICE_WIDTH - ScreenScale(95);
     }
     return _title;
 }
@@ -112,7 +116,7 @@ static NSString * const AddAssetsCellID = @"AddAssetsCellID";
         _detailTitle = [[UILabel alloc] init];
         _detailTitle.font = FONT(16);
         _detailTitle.textColor = TITLE_COLOR;
-        _detailTitle.preferredMaxLayoutWidth = DEVICE_WIDTH - ScreenScale(150);
+        _detailTitle.preferredMaxLayoutWidth = DEVICE_WIDTH - ScreenScale(160);
     }
     return _detailTitle;
 }
@@ -122,7 +126,7 @@ static NSString * const AddAssetsCellID = @"AddAssetsCellID";
         _infoTitle = [[UILabel alloc] init];
         _infoTitle.font = TITLE_FONT;
         _infoTitle.textColor = COLOR_9;
-        _infoTitle.preferredMaxLayoutWidth = DEVICE_WIDTH - ScreenScale(80);
+        _infoTitle.preferredMaxLayoutWidth = DEVICE_WIDTH - ScreenScale(95);
         _infoTitle.numberOfLines = 0;
     }
     return _infoTitle;
@@ -147,8 +151,10 @@ static NSString * const AddAssetsCellID = @"AddAssetsCellID";
     NSUserDefaults * defaults = [NSUserDefaults standardUserDefaults];
     self.addAssetsArray = [NSMutableArray arrayWithArray:[defaults objectForKey:AddAssets]];
     if (button.selected == YES) {
+        button.backgroundColor = WARNING_COLOR;
         [self.addAssetsArray addObject:assetsDic];
     } else {
+        button.backgroundColor = MAIN_COLOR;
         [self.addAssetsArray removeObject:assetsDic];
     }
     [defaults setObject:self.addAssetsArray forKey:AddAssets];

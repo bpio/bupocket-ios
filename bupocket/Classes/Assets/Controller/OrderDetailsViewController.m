@@ -16,6 +16,7 @@
 
 @property (nonatomic, strong) UITableView * tableView;
 @property (nonatomic, strong) UIView * headerView;
+@property (nonatomic, strong) UIView * headerViewBg;
 @property (nonatomic, assign) CGFloat headerViewH;
 @property (nonatomic, strong) NSDictionary * dataDic;
 @property (nonatomic, strong) NSArray * listArray;
@@ -164,12 +165,15 @@ static NSString * const OrderDetailsCellID = @"OrderDetailsCellID";
     if (!_headerView) {
         UIView * headerView = [[UIView alloc] initWithFrame:CGRectMake(0, -_headerViewH, DEVICE_WIDTH, _headerViewH)];
         headerView.backgroundColor = [UIColor whiteColor];
+        
+        _headerViewBg = [[UIView alloc] initWithFrame:CGRectMake(0, 0, DEVICE_WIDTH, _headerViewH)];
+        [headerView addSubview:_headerViewBg];
         NSString * imageName = (self.listModel.txStatus == 0) ? @"OrderSuccess" : @"OrderFailure";
         UIImageView * stateImage = [[UIImageView alloc] initWithImage:[UIImage imageNamed:imageName]];
-        [headerView addSubview:stateImage];
+        [self.headerViewBg addSubview:stateImage];
         [stateImage mas_makeConstraints:^(MASConstraintMaker *make) {
-            make.top.equalTo(headerView.mas_top).offset(Margin_25);
-            make.centerX.equalTo(headerView);
+            make.top.equalTo(self.headerViewBg.mas_top).offset(Margin_25);
+            make.centerX.equalTo(self.headerViewBg);
 //            make.size.mas_equalTo(ScreenScale(75));
         }];
         NSString * outOrIn;
@@ -182,10 +186,10 @@ static NSString * const OrderDetailsCellID = @"OrderDetailsCellID";
         UILabel * orderResults = [[UILabel alloc] init];
         orderResults.font = FONT_Bold(27);
         orderResults.attributedText = [Encapsulation attrWithString:assets preFont:FONT_Bold(27) preColor:TITLE_COLOR index:assets.length - 2 sufFont:FONT_Bold(27) sufColor:COLOR(@"3F3F3F") lineSpacing:0];
-        [headerView addSubview:orderResults];
+        [self.headerViewBg addSubview:orderResults];
         [orderResults mas_makeConstraints:^(MASConstraintMaker *make) {
             make.top.equalTo(stateImage.mas_bottom).offset(ScreenScale(23));
-            make.centerX.equalTo(headerView);
+            make.centerX.equalTo(self.headerViewBg);
             //            make.size.mas_equalTo(ScreenScale(75));
         }];
 //        CustomButton * orderResults = [[CustomButton alloc] init];
@@ -195,10 +199,10 @@ static NSString * const OrderDetailsCellID = @"OrderDetailsCellID";
 //        [orderResults setTitleColor:TITLE_COLOR forState:UIControlStateNormal];
 //        orderResults.titleLabel.font = FONT_Bold(27);
         //    [orderResults setAttributedTitle: forState:UIControlStateNormal];
-//        [headerView addSubview:orderResults];
+//        [self.headerViewBg addSubview:orderResults];
 //        [orderResults mas_makeConstraints:^(MASConstraintMaker *make) {
-//            make.top.equalTo(headerView.mas_top).offset(ScreenScale(15));
-//            make.centerX.equalTo(headerView);
+//            make.top.equalTo(self.headerViewBg.mas_top).offset(ScreenScale(15));
+//            make.centerX.equalTo(self.headerViewBg);
 //            make.height.mas_equalTo(ScreenScale(145));
 //        }];
 //
@@ -206,10 +210,10 @@ static NSString * const OrderDetailsCellID = @"OrderDetailsCellID";
         UILabel * state = [[UILabel alloc] init];
         state.font = TITLE_FONT;
         state.textColor = COLOR_6;
-        [headerView addSubview:state];
+        [self.headerViewBg addSubview:state];
         [state mas_makeConstraints:^(MASConstraintMaker *make) {
             make.top.equalTo(orderResults.mas_bottom).offset(Margin_10);
-            make.centerX.equalTo(headerView);
+            make.centerX.equalTo(self.headerViewBg);
         }];
         state.text = (self.listModel.txStatus == 0) ? Localized(@"Success") : Localized(@"Failure");
         _headerView = headerView;
@@ -222,6 +226,9 @@ static NSString * const OrderDetailsCellID = @"OrderDetailsCellID";
     if (offsetY <= -_headerViewH) {
         _headerView.y = offsetY;
         _headerView.height = - offsetY;
+    } else {
+        _headerView.y = -_headerViewH;
+        _headerView.height = _headerViewH;
     }
 }
 - (CGFloat)tableView:(UITableView *)tableView heightForHeaderInSection:(NSInteger)section
@@ -270,8 +277,8 @@ static NSString * const OrderDetailsCellID = @"OrderDetailsCellID";
         [lineView drawDashLine];
         [headerBg addSubview:lineView];
         [lineView mas_makeConstraints:^(MASConstraintMaker *make) {
-            make.left.equalTo(headerBg.mas_left).offset(Margin_12);
-            make.right.equalTo(headerBg.mas_right).offset(-Margin_12);
+            make.left.equalTo(headerBg.mas_left).offset(Margin_10);
+            make.right.equalTo(headerBg.mas_right).offset(-Margin_10);
             make.bottom.equalTo(headerBg);
             //        make.height.mas_equalTo(ScreenScale(1.5));
         }];

@@ -81,7 +81,7 @@
     UIButton * reloadBtn = [UIButton createButtonWithTitle:Localized(@"Reload") TextFont:18 TextColor:[UIColor whiteColor] Target:nil Selector:nil];
     reloadBtn.layer.masksToBounds = YES;
     reloadBtn.clipsToBounds = YES;
-    reloadBtn.layer.cornerRadius = MAIN_FILLET;
+    reloadBtn.layer.cornerRadius = MAIN_CORNER;
     reloadBtn.backgroundColor = MAIN_COLOR;
     [_noNetWork addSubview:reloadBtn];
     [reloadBtn mas_makeConstraints:^(MASConstraintMaker *make) {

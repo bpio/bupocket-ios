@@ -118,7 +118,7 @@ static HttpTool *__shareTool = nil;
     [request setValue:@"application/json" forHTTPHeaderField:@"Accept"];
     // NSaData -> HTTPBody
     [request setHTTPBody:[[JsonTool JSONStringWithDictionaryOrArray:parameters] dataUsingEncoding:NSUTF8StringEncoding]];
-    [MBProgressHUD showActivityMessageInWindow:Localized(@"Loading")];
+    
     [[self.sessionManager dataTaskWithRequest:request uploadProgress:^(NSProgress * _Nonnull uploadProgress) {
         
     } downloadProgress:^(NSProgress * _Nonnull downloadProgress) {

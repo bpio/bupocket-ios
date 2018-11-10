@@ -18,6 +18,7 @@
 
 @property (nonatomic, strong) UITableView * tableView;
 @property (nonatomic, strong) UIView * headerBg;
+@property (nonatomic, strong) UIView * headerViewBg;
 @property (nonatomic, assign) CGFloat headerViewH;
 @property (nonatomic, strong) NSMutableArray * listArray;
 @property (nonatomic, strong) UILabel * assets;
@@ -85,7 +86,7 @@
 //            self.tableView.tableHeaderView = self.headerBg;
             [self.tableView addSubview:self.headerBg];
             [self.tableView insertSubview:self.headerBg atIndex:0];
-             self.assets.text = [NSString stringWithFormat:@"%@%@", responseObject[@"data"][@"tokenBalance"], self.listModel.assetCode];
+             self.assets.text = [NSString stringWithFormat:@"%@ %@", responseObject[@"data"][@"tokenBalance"], self.listModel.assetCode];
             NSString * amountStr = responseObject[@"data"][@"assetAmount"];
             self.amount.text = [amountStr isEqualToString:@"~"] ? amountStr : [NSString stringWithFormat:@"≈￥%@", amountStr];
             NSArray * listArray = [AssetsDetailModel mj_objectArrayWithKeyValuesArray:responseObject[@"data"] [@"txRecord"]];
@@ -128,8 +129,9 @@
 - (UIView *)noData
 {
     if (!_noData) {
-        _noData = [[UIView alloc] initWithFrame:CGRectMake(0, 0, DEVICE_WIDTH, ScreenScale(250))];
-        UIButton * noDataBtn = [Encapsulation showNoDataWithTitle:Localized(@"NoTransactionRecord") imageName:@"NoTransactionRecord" superView:self.noData frame:CGRectMake(0, Margin_40, DEVICE_WIDTH, ScreenScale(160))];
+        CGFloat noDataH = DEVICE_HEIGHT - _headerViewH - NavBarH - SafeAreaBottomH;
+        _noData = [[UIView alloc] initWithFrame:CGRectMake(0, 0, DEVICE_WIDTH, noDataH)];
+        UIButton * noDataBtn = [Encapsulation showNoDataWithTitle:Localized(@"NoTransactionRecord") imageName:@"NoTransactionRecord" superView:self.noData frame:CGRectMake(0, (noDataH - ScreenScale(160)) / 2, DEVICE_WIDTH, ScreenScale(160))];
         noDataBtn.hidden = NO;
         [_noData addSubview:noDataBtn];
     }
@@ -141,33 +143,35 @@
         UIView * headerBg = [[UIView alloc] init];
         headerBg.backgroundColor = [UIColor whiteColor];
         headerBg.frame = CGRectMake(0, -_headerViewH, DEVICE_WIDTH, _headerViewH);
+        _headerViewBg = [[UIView alloc] initWithFrame:CGRectMake(0, 0, DEVICE_WIDTH, _headerViewH)];
+        [headerBg addSubview:_headerViewBg];
         UIImageView * assetsIcon = [[UIImageView alloc] init];
         [assetsIcon sd_setImageWithURL:[NSURL URLWithString:self.listModel.icon] placeholderImage:[UIImage imageNamed:@"placeholder"]];
-        [headerBg addSubview:assetsIcon];
+        [_headerViewBg addSubview:assetsIcon];
         [assetsIcon mas_makeConstraints:^(MASConstraintMaker *make) {
-            make.top.equalTo(headerBg.mas_top).offset(Margin_20);
-            make.centerX.equalTo(headerBg);
+            make.top.equalTo(self.headerViewBg.mas_top).offset(Margin_20);
+            make.centerX.equalTo(self.headerViewBg);
             make.size.mas_equalTo(CGSizeMake(ScreenScale(50), ScreenScale(50)));
         }];
         
         self.assets = [[UILabel alloc] init];
         self.assets.textColor = TITLE_COLOR;
         self.assets.font = FONT_Bold(24);
-        [headerBg addSubview:self.assets];
+        [self.headerViewBg addSubview:self.assets];
         [self.assets mas_makeConstraints:^(MASConstraintMaker *make) {
             make.top.equalTo(assetsIcon.mas_bottom).offset(Margin_25);
-            make.centerX.equalTo(headerBg);
+            make.centerX.equalTo(self.headerViewBg);
         }];
         self.amount = [[UILabel alloc] init];
         self.amount.font = FONT(15);
         self.amount.textColor = COLOR_9;
-        [headerBg addSubview:self.amount];
+        [self.headerViewBg addSubview:self.amount];
         [self.amount mas_makeConstraints:^(MASConstraintMaker *make) {
             make.top.equalTo(self.assets.mas_bottom).offset(Margin_15);
-            make.centerX.equalTo(headerBg);
+            make.centerX.equalTo(self.headerViewBg);
         }];
         
-        CGFloat btnW = (DEVICE_WIDTH - ScreenScale(34)) / 2;
+        CGFloat btnW = (DEVICE_WIDTH - Margin_30) / 2;
         CustomButton * scanBtn = [[CustomButton alloc] init];
         scanBtn.layoutMode = HorizontalNormal;
         [scanBtn setTitleColor:[UIColor whiteColor] forState:UIControlStateNormal];
@@ -176,12 +180,12 @@
         [scanBtn setImage:[UIImage imageNamed:@"assetsDetail_scan"] forState:UIControlStateNormal];
         [scanBtn addTarget:self action:@selector(scanAction:) forControlEvents:UIControlEventTouchUpInside];
         //    .titleLabel.lineBreakMode = NSLineBreakByTruncatingTail;
-        [headerBg addSubview: scanBtn];
+        [self.headerViewBg addSubview: scanBtn];
         [scanBtn setViewSize:CGSizeMake(btnW, MAIN_HEIGHT) borderWidth:0 borderColor:nil borderRadius:ScreenScale(3)];
         scanBtn.backgroundColor = NAVITEM_COLOR;
         [scanBtn mas_makeConstraints:^(MASConstraintMaker *make) {
             make.top.equalTo(self.amount.mas_bottom).offset(Margin_25);
-            make.left.equalTo(headerBg.mas_left).offset(Margin_12);
+            make.left.equalTo(self.headerViewBg.mas_left).offset(Margin_10);
             make.size.mas_equalTo(CGSizeMake(btnW, MAIN_HEIGHT));
         }];
         CustomButton * transferAccounts = [[CustomButton alloc] init];
@@ -192,11 +196,11 @@
         [transferAccounts setImage:[UIImage imageNamed:@"TransferAccounts"] forState:UIControlStateNormal];
         [transferAccounts addTarget:self action:@selector(transferAccountsAction:) forControlEvents:UIControlEventTouchUpInside];
         //    .titleLabel.lineBreakMode = NSLineBreakByTruncatingTail;
-        [headerBg addSubview: transferAccounts];
-        [transferAccounts setViewSize:CGSizeMake(btnW, MAIN_HEIGHT) borderWidth:0 borderColor:nil borderRadius:MAIN_FILLET];
+        [self.headerViewBg addSubview: transferAccounts];
+        [transferAccounts setViewSize:CGSizeMake(btnW, MAIN_HEIGHT) borderWidth:0 borderColor:nil borderRadius:MAIN_CORNER];
         transferAccounts.backgroundColor = MAIN_COLOR;
         [transferAccounts mas_makeConstraints:^(MASConstraintMaker *make) {
-            make.right.equalTo(headerBg.mas_right).offset(-Margin_12);
+            make.right.equalTo(self.headerViewBg.mas_right).offset(-Margin_10);
             make.size.top.equalTo(scanBtn);
         }];
         _headerBg = headerBg;
@@ -209,7 +213,11 @@
     if (offsetY <= -_headerViewH) {
         _headerBg.y = offsetY;
         _headerBg.height = - offsetY;
+    } else {
+        _headerBg.y = -_headerViewH;
+        _headerBg.height = _headerViewH;
     }
+    _headerViewBg.y = _headerBg.height - _headerViewH;
 }
 #pragma mark - scanAction
 - (void)scanAction:(UIButton *)button
@@ -257,7 +265,7 @@
          [self.header mas_makeConstraints:^(MASConstraintMaker *make) {
              make.left.equalTo(headerView.mas_left).offset(Margin_10);
              make.bottom.equalTo(headerView);
-             make.top.equalTo(headerView.mas_top).offset(ScreenScale(5));
+             make.top.equalTo(headerView.mas_top).offset(Margin_5);
          }];
          self.header.attributedText = [Encapsulation attrTitle:Localized(@"RecentTransactionRecords") ifRequired:NO];
      }

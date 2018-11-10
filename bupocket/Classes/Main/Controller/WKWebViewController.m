@@ -245,9 +245,9 @@ static void *WkwebBrowserContext = &WkwebBrowserContext;
     }
     // 获取加载网页的标题
     
-    if (self.title.length == 0) {
-        self.title = self.wkWebView.title;
-    }
+//    if (self.title.length == 0) {
+//        self.title = self.wkWebView.title;
+//    }
     
     [[UIApplication sharedApplication] setNetworkActivityIndicatorVisible:NO];
     //    [self updateNavigationItems];
@@ -343,7 +343,6 @@ static void *WkwebBrowserContext = &WkwebBrowserContext;
 
 // 内容加载失败时候调用
 -(void)webView:(WKWebView *)webView didFailProvisionalNavigation:(WKNavigation *)navigation withError:(NSError *)error{
-    NSLog(@"页面加载超时");
 }
 
 //跳转失败的时候调用

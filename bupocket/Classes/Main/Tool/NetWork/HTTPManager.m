@@ -66,11 +66,13 @@ static NSInteger _assetsStateCount = 0;
     }
 }
 // 余额是否足够
-- (int64_t)getDataWithBalanceJudgmentWithCost:(double)cost
+- (int64_t)getDataWithBalanceJudgmentWithCost:(double)cost ifShowLoading:(BOOL)ifShowLoading
 {
-    dispatch_async(dispatch_get_main_queue(), ^{
-        [MBProgressHUD showActivityMessageInWindow:Localized(@"Loading")];
-    });
+    if (ifShowLoading == YES) {
+        dispatch_async(dispatch_get_main_queue(), ^{
+            [MBProgressHUD showActivityMessageInWindow:Localized(@"Loading")];
+        });
+    }
     int64_t balance = 0;
     int64_t baseReserve = 0;
     AccountService *accountService = [[[SDK sharedInstance] setUrl:_bumoNodeUrl] getAccountService];
@@ -84,20 +86,26 @@ static NSInteger _assetsStateCount = 0;
         BlockService *service = [[[SDK sharedInstance] setUrl: _bumoNodeUrl] getBlockService];
         BlockGetFeesResponse * feesResponse = [service getFees: request];
         if (response.errorCode == 0) {
-            dispatch_async(dispatch_get_main_queue(), ^{
-                [MBProgressHUD hideHUD];
-            });
+            if (ifShowLoading == YES) {
+                dispatch_async(dispatch_get_main_queue(), ^{
+                    [MBProgressHUD hideHUD];
+                });
+            }
             baseReserve = feesResponse.result.fees.baseReserve;
         } else {
-            dispatch_async(dispatch_get_main_queue(), ^{
-                [MBProgressHUD hideHUD];
-            });
+            if (ifShowLoading == YES) {
+                dispatch_async(dispatch_get_main_queue(), ^{
+                    [MBProgressHUD hideHUD];
+                });
+            }
 //            [MBProgressHUD showErrorMessage:feesResponse.errorDesc];
         }
     } else {
-        dispatch_async(dispatch_get_main_queue(), ^{
-            [MBProgressHUD hideHUD];
-        });
+        if (ifShowLoading == YES) {
+            dispatch_async(dispatch_get_main_queue(), ^{
+                [MBProgressHUD hideHUD];
+            });
+        }
 //        [MBProgressHUD showErrorMessage:response.errorDesc];
     }
     int64_t amount = balance - baseReserve - [Tools BU2MO:cost];
@@ -170,6 +178,7 @@ static NSInteger _assetsStateCount = 0;
         [parmenters addEntriesFromDictionary:@{@"assetCode" : assetCode,
                                                @"issuer" : issuer,
                                                @"address" : address}];
+        [MBProgressHUD showActivityMessageInWindow:Localized(@"Loading")];
     }
     [[HttpTool shareTool] POST:url parameters:parmenters success:^(id responseObject) {
         if(success != nil)
@@ -191,6 +200,7 @@ static NSInteger _assetsStateCount = 0;
 {
     NSString * url = SERVER_COMBINE_API(_webServerDomain, Order_Details);
     NSDictionary * parmenters = @{@"Hash" : hash};
+    [MBProgressHUD showActivityMessageInWindow:Localized(@"Loading")];
     [[HttpTool shareTool] POST:url parameters:parmenters success:^(id responseObject) {
         if(success != nil)
         {
@@ -213,11 +223,9 @@ static NSInteger _assetsStateCount = 0;
     [MBProgressHUD showActivityMessageInWindow:Localized(@"Loading")];
     // 随机数 -> 生成助记词
     NSArray * words = [Mnemonic generateMnemonicCode: [random copy]];
-    NSLog(@"%@", [words componentsJoinedByString:@" "]);
     // 身份账户、钱包账户
     NSMutableArray * hdPaths = [NSMutableArray arrayWithObjects:@"M/44H/526H/0H/0/0", @"M/44H/526H/1H/0/0", nil];
     NSArray *privateKeys = [Mnemonic generatePrivateKeys: words : hdPaths];
-    NSLog(@"%@", privateKeys);
     // 随机数data -> 随机数字符串
     //        NSString * randomNumber  = [Tools dataToHexStr: random];
     // 存储随机数、身份账户、钱包账户、创建身份成功
@@ -405,7 +413,7 @@ static NSInteger _assetsStateCount = 0;
     TransactionBuildBlobResponse *buildBlobResponse = [transactionServer buildBlob : buildBlobRequest];
     NSString *hash = nil;
     if (buildBlobResponse.errorCode == 0) {
-        NSLog(@"blob: %@, hash: %@", buildBlobResponse.result.transactionBlob, buildBlobResponse.result.transactionHash);
+//        NSLog(@"blob: %@, hash: %@", buildBlobResponse.result.transactionBlob, buildBlobResponse.result.transactionHash);
         hash = buildBlobResponse.result.transactionHash;
     } else {
         [MBProgressHUD showTipMessageInWindow:buildBlobResponse.errorDesc];
@@ -418,7 +426,7 @@ static NSInteger _assetsStateCount = 0;
     [signRequest addPrivateKey : privateKey];
     TransactionSignResponse * signResponse = [transactionServer sign : signRequest];
     if (signResponse.errorCode == 0) {
-        NSLog(@"sign response: %@", [signResponse yy_modelToJSONString]);
+//        NSLog(@"sign response: %@", [signResponse yy_modelToJSONString]);
     } else {
         [MBProgressHUD showTipMessageInWindow:signResponse.errorDesc];
         return nil;
@@ -525,6 +533,7 @@ static NSInteger _assetsStateCount = 0;
                                   @"assetCode": assetCode,
                                   @"issueAddress": issueAddress
                                   };
+    [MBProgressHUD showActivityMessageInWindow:Localized(@"Loading")];
     [[HttpTool shareTool] POST:url parameters:parmenters success:^(id responseObject) {
         if(success != nil)
         {
@@ -549,6 +558,7 @@ static NSInteger _assetsStateCount = 0;
                                   @"content": content,
                                   @"contact": contact
                                   };
+    [MBProgressHUD showActivityMessageInWindow:Localized(@"Loading")];
     [[HttpTool shareTool] POST:url parameters:parmenters success:^(id responseObject) {
         if(success != nil)
         {

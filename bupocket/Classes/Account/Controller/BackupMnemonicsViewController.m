@@ -20,6 +20,7 @@
     [super viewDidLoad];
     self.navigationItem.title = Localized(@"BackupMnemonics");
     [self setupView];
+    
     // Do any additional setup after loading the view.
 }
 
@@ -31,8 +32,8 @@
     [self.view addSubview:promptBg];
     [promptBg mas_makeConstraints:^(MASConstraintMaker *make) {
         make.top.equalTo(self.view.mas_top).offset(Margin_20);
-        make.left.equalTo(self.view.mas_left).offset(Margin_30);
-        make.right.equalTo(self.view.mas_right).offset(-Margin_30);
+        make.left.equalTo(self.view.mas_left).offset(Margin_20);
+        make.right.equalTo(self.view.mas_right).offset(-Margin_20);
     }];
     
     CustomButton * noScreenshot = [[CustomButton alloc] init];
@@ -68,7 +69,7 @@
         make.top.equalTo(promptBg.mas_bottom).offset(Margin_30);
         make.left.right.equalTo(promptBg);
     }];
-    CGFloat tagW = (DEVICE_WIDTH - ScreenScale(90)) / 4;
+    CGFloat tagW = (DEVICE_WIDTH - ScreenScale(70)) / 4;
     CGFloat tagH = Margin_40;
     for (NSInteger i = 0; i < self.mnemonicArray.count; i ++) {
         UIButton * tagBtn = [UIButton createButtonWithTitle:self.mnemonicArray[i] TextFont:14 TextColor:COLOR_9 Target:nil Selector:nil];
@@ -96,6 +97,7 @@
     VC.mnemonicArray = self.mnemonicArray;
     [self.navigationController pushViewController:VC animated:YES];
 }
+
 /*
 #pragma mark - Navigation
 

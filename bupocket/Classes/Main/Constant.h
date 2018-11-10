@@ -14,6 +14,8 @@
 #define ifCreated @"ifCreated"
 // 是否已成功备份助记词
 #define ifBackup @"ifBackup"
+// 是否跳过备份
+#define ifSkip @"ifSkip"
 
 // 添加资产数组
 #define AddAssets @"AddAssets"
@@ -35,8 +37,8 @@
 #define TransactionCost_MIN 0.01
 #define TransactionCost_MAX 10
 // 转账发送数量
-#define SendingQuantity_MIN 0.00000001
-#define SendingQuantity_MAX 10000
+//#define SendingQuantity_MIN 0.00000001
+//#define SendingQuantity_MAX 10000
 // 身份名和密码最大长度、交易备注长度、意见反馈练习方式长度
 #define MAX_LENGTH 20
 // 意见反馈内容

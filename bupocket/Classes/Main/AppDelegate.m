@@ -25,6 +25,7 @@
     [self setRootVC];
     [self.window makeKeyAndVisible];
     [self setDefaultLocale];
+    [self prohibitionOfScreenshot];
     return YES;
 }
 
@@ -42,7 +43,7 @@
     NSUserDefaults * defaults = [NSUserDefaults standardUserDefaults];
 //    if ([defaults boolForKey:NotFirst]) {
         if ([defaults boolForKey:ifCreated]) {
-            if ([defaults boolForKey:ifBackup]) {
+            if ([defaults boolForKey:ifBackup] || [defaults boolForKey:ifSkip]) {
                 self.window.rootViewController = [[TabBarViewController alloc] init];
             } else {
                 self.window.rootViewController = [[NavigationViewController alloc] initWithRootViewController:[[BackUpPurseViewController alloc] init]];
@@ -74,17 +75,60 @@
         [defaults synchronize];
         [kLanguageManager setUserlanguage:@"en"];
     } else {
-        
+        // 其他语言
     }
-    /*
-    if ([language hasPrefix:@"zh"]) {//检测开头匹配，是否为中文
-        
-    } else {//其他语言
-       
-    }*/
 }
-
-
+- (void)prohibitionOfScreenshot
+{
+    [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(userDidTakeScreenshotNotification:) name:UIApplicationUserDidTakeScreenshotNotification object:nil];
+}
+- (void)dealloc
+{
+    [[NSNotificationCenter defaultCenter] removeObserver:self];
+}
+- (void)userDidTakeScreenshotNotification:(NSNotification *)notification
+{
+    UIImage *image = [self imageWithScreenshot];
+}
+// 代码截屏
+- (UIImage *)imageWithScreenshot {
+    CGSize imageSize = CGSizeZero;
+    UIInterfaceOrientation orientation = [UIApplication sharedApplication].statusBarOrientation;
+    if (UIInterfaceOrientationIsPortrait(orientation)) {
+        imageSize = [UIScreen mainScreen].bounds.size;
+    } else {
+        imageSize = CGSizeMake([UIScreen mainScreen].bounds.size.height, [UIScreen mainScreen].bounds.size.width);
+    }
+    UIGraphicsBeginImageContextWithOptions(imageSize, NO, 0);
+    CGContextRef context = UIGraphicsGetCurrentContext();
+    for (UIWindow *window in [[UIApplication sharedApplication] windows]) {
+        CGContextSaveGState(context);
+        CGContextTranslateCTM(context, window.center.x, window.center.y);
+        CGContextConcatCTM(context, window.transform);
+        CGContextTranslateCTM(context, -window.bounds.size.width * window.layer.anchorPoint.x, -window.bounds.size.height * window.layer.anchorPoint.y);
+        if (orientation == UIInterfaceOrientationLandscapeLeft) {
+            CGContextRotateCTM(context, M_PI_2);
+            CGContextTranslateCTM(context, 0, -imageSize.width);
+        } else if (orientation == UIInterfaceOrientationLandscapeRight) {
+            CGContextRotateCTM(context, -M_PI_2);
+            CGContextTranslateCTM(context, -imageSize.height, 0);
+        } else if (orientation == UIInterfaceOrientationPortraitUpsideDown) {
+            CGContextRotateCTM(context, M_PI);
+            CGContextTranslateCTM(context, -imageSize.width, -imageSize.height);
+        }
+        if ([window respondsToSelector:@selector(drawViewHierarchyInRect:afterScreenUpdates:)]) {
+            [window drawViewHierarchyInRect:window.bounds afterScreenUpdates:YES];
+        } else {
+            [window.layer renderInContext:context];
+        }
+        CGContextRestoreGState(context);
+    }
+    UIImage *image = UIGraphicsGetImageFromCurrentImageContext();
+    UIGraphicsEndImageContext();
+    NSData *imageData = UIImagePNGRepresentation(image);
+    UIImage *screenImage = [UIImage imageWithData:imageData];
+    return screenImage;
+}
 - (void)applicationWillResignActive:(UIApplication *)application {
     // Sent when the application is about to move from active to inactive state. This can occur for certain types of temporary interruptions (such as an incoming phone call or SMS message) or when the user quits the application and it begins the transition to the background state.
     // Use this method to pause ongoing tasks, disable timers, and invalidate graphics rendering callbacks. Games should use this method to pause the game.

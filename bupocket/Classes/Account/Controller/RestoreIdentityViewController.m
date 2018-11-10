@@ -44,8 +44,8 @@
     [self.view addSubview:self.memorizingWords];
     [self.memorizingWords mas_makeConstraints:^(MASConstraintMaker *make) {
         make.top.equalTo(self.view.mas_top).offset(Margin_30);
-        make.left.equalTo(self.view.mas_left).offset(Margin_30);
-        make.right.equalTo(self.view.mas_right).offset(-Margin_30);
+        make.left.equalTo(self.view.mas_left).offset(Margin_20);
+        make.right.equalTo(self.view.mas_right).offset(-Margin_20);
         make.height.mas_equalTo(ScreenScale(130));
     }];
     _purseName = [UITextField textFieldWithplaceholder:Localized(@"newWalletName")];
@@ -91,7 +91,7 @@
         _memorizingWords.placeholder = Localized(@"MnemonicPrompt");
         _memorizingWords.delegate = self;
         _memorizingWords.layer.masksToBounds = YES;
-        _memorizingWords.layer.cornerRadius = ScreenScale(5);
+        _memorizingWords.layer.cornerRadius = BG_CORNER;
         _memorizingWords.backgroundColor = VIEWBG_COLOR;
     }
     return _memorizingWords;

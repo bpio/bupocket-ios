@@ -40,6 +40,8 @@
 {
     UIImageView * identityBg = [[UIImageView alloc] initWithImage:[UIImage imageNamed:@"identity_bg"]];
     identityBg.userInteractionEnabled = YES;
+    identityBg.contentMode = UIViewContentModeScaleAspectFill;
+    identityBg.clipsToBounds = YES;
     [self.view addSubview:identityBg];
     [identityBg mas_makeConstraints:^(MASConstraintMaker *make) {
         make.edges.equalTo(self.view);
@@ -63,8 +65,8 @@
     [identityBg addSubview:createIdentity];
     [createIdentity mas_makeConstraints:^(MASConstraintMaker *make) {
         make.top.equalTo(titleLabel.mas_bottom).offset(ScreenScale(90));
-        make.left.equalTo(identityBg.mas_left).offset(Margin_30);
-        make.right.equalTo(identityBg.mas_right).offset(-Margin_30);
+        make.left.equalTo(identityBg.mas_left).offset(Margin_20);
+        make.right.equalTo(identityBg.mas_right).offset(-Margin_20);
         make.height.mas_equalTo(MAIN_HEIGHT);
     }];
     

@@ -109,8 +109,8 @@
     
     [self.transferPrompt mas_makeConstraints:^(MASConstraintMaker *make) {
         make.top.equalTo(self.confirmationOfTransfer.mas_bottom).offset(ScreenScale(18));
-        make.left.equalTo(self.mas_left).offset(Margin_15);
-        make.right.equalTo(self.mas_right).offset(-Margin_15);
+        make.left.equalTo(self.mas_left).offset(Margin_20);
+        make.right.equalTo(self.mas_right).offset(-Margin_20);
     }];
     
     [self.lineView mas_makeConstraints:^(MASConstraintMaker *make) {
@@ -158,7 +158,7 @@
 {
     if (!_lineView) {
         _lineView = [[UIView alloc] init];
-        _lineView.bounds = CGRectMake(0, 0, DEVICE_WIDTH - Margin_30, LINE_WIDTH);
+        _lineView.bounds = CGRectMake(0, 0, DEVICE_WIDTH - Margin_40, LINE_WIDTH);
         [_lineView drawDashLine];
     }
     return _lineView;
@@ -167,7 +167,7 @@
 {
     if (!_submission) {
         _submission = [UIButton createButtonWithTitle:Localized(@"Submission") isEnabled:YES Target:self Selector:@selector(submissionClick)];
-//        [_submission setViewSize:CGSizeMake(DEVICE_WIDTH - Margin_40, MAIN_HEIGHT) borderWidth:0 borderColor:nil borderRadius:MAIN_FILLET];
+//        [_submission setViewSize:CGSizeMake(DEVICE_WIDTH - Margin_40, MAIN_HEIGHT) borderWidth:0 borderColor:nil borderRadius:MAIN_CORNER];
     }
     return _submission;
 }

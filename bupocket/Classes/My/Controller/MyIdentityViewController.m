@@ -28,9 +28,9 @@
 - (void)setupView
 {
     self.view.backgroundColor = COLOR(@"F2F2F2");
-    UIView * myIdentityBg = [[UIView alloc] initWithFrame:CGRectMake(Margin_12, Margin_10, DEVICE_WIDTH - Margin_24, ScreenScale(110))];
+    UIView * myIdentityBg = [[UIView alloc] initWithFrame:CGRectMake(Margin_15, Margin_10, DEVICE_WIDTH - Margin_30, ScreenScale(110))];
     myIdentityBg.backgroundColor = [UIColor whiteColor];
-    [myIdentityBg setViewSize:myIdentityBg.size borderWidth:0 borderColor:nil borderRadius:ScreenScale(5)];
+    [myIdentityBg setViewSize:myIdentityBg.size borderWidth:0 borderColor:nil borderRadius:BG_CORNER];
     [self.view addSubview:myIdentityBg];
     
     UILabel * IDNameTitle = [[UILabel alloc] init];
@@ -80,9 +80,9 @@
         make.width.mas_equalTo(ScreenScale(200));
     }];
     
-    CGSize btnSize = CGSizeMake(DEVICE_WIDTH - Margin_24, MAIN_HEIGHT);
+    CGSize btnSize = CGSizeMake(DEVICE_WIDTH - Margin_30, MAIN_HEIGHT);
     UIButton * exitID = [UIButton createButtonWithTitle:Localized(@"ExitCurrentIdentity") isEnabled:YES Target:self Selector:@selector(exitIDAction)];
-//    [exitID setViewSize:btnSize borderWidth:0 borderColor:nil borderRadius:MAIN_FILLET];
+//    [exitID setViewSize:btnSize borderWidth:0 borderColor:nil borderRadius:MAIN_CORNER];
     [exitID setTitleColor:COLOR(@"FF6363") forState:UIControlStateNormal];
     exitID.backgroundColor = [UIColor whiteColor];
     [self.view addSubview:exitID];
@@ -92,7 +92,7 @@
         make.size.mas_equalTo(btnSize);
     }];
     UIButton * backupIdentity = [UIButton createButtonWithTitle:Localized(@"BackupIdentity") isEnabled:YES Target:self Selector:@selector(backupIdentityAction)];
-//    [backupIdentity setViewSize:btnSize borderWidth:0 borderColor:nil borderRadius:MAIN_FILLET];
+//    [backupIdentity setViewSize:btnSize borderWidth:0 borderColor:nil borderRadius:MAIN_CORNER];
     [self.view addSubview:backupIdentity];
     [backupIdentity mas_makeConstraints:^(MASConstraintMaker *make) {
         make.bottom.equalTo(exitID.mas_top).offset(- Margin_20);
@@ -131,6 +131,7 @@
                 NSUserDefaults *defaults =[NSUserDefaults standardUserDefaults];
                 [defaults removeObjectForKey:ifCreated];
                 [defaults removeObjectForKey:ifBackup];
+                [defaults removeObjectForKey:ifSkip];
 //                [MBProgressHUD wb_showSuccess:@"退出当前身份成功"];
                 [UIApplication sharedApplication].keyWindow.rootViewController = [[NavigationViewController alloc] initWithRootViewController:[[IdentityViewController alloc] init]];
             } else {

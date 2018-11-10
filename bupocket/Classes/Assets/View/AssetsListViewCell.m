@@ -51,7 +51,7 @@ static NSString * const AssetsCellID = @"AssetsCellID";
         make.right.equalTo(self.detailTitle);
         make.bottom.equalTo(self.listImage);
     }];
-    [self setViewSize:CGSizeMake(DEVICE_WIDTH - Margin_20, ScreenScale(75)) borderWidth:0 borderColor:nil borderRadius:ScreenScale(5)];
+    [self setViewSize:CGSizeMake(DEVICE_WIDTH - Margin_20, ScreenScale(75)) borderWidth:0 borderColor:nil borderRadius:BG_CORNER];
 }
 - (void)setListModel:(AssetsListModel *)listModel
 {
@@ -67,6 +67,7 @@ static NSString * const AssetsCellID = @"AssetsCellID";
 {
     if (!_listImage) {
         _listImage = [[UIImageView alloc] init];
+        [_listImage setViewSize:CGSizeMake(Margin_40, Margin_40) borderWidth:LINE_WIDTH borderColor:LINE_COLOR borderRadius:Margin_20];
     }
     return _listImage;
 }
@@ -99,7 +100,7 @@ static NSString * const AssetsCellID = @"AssetsCellID";
 }
 - (void)setFrame:(CGRect)frame
 {
-    CGFloat margin = ScreenScale(5);
+    CGFloat margin = Margin_5;
     frame.origin.x = margin * 2;
     frame.size.width -= margin * 4;
     frame.origin.y += margin;

@@ -22,7 +22,7 @@
 - (int64_t)getAccountBalance;
 - (int64_t) getBlockFees;
 // 余额是否足够
-- (int64_t)getDataWithBalanceJudgmentWithCost:(double)cost;
+- (int64_t)getDataWithBalanceJudgmentWithCost:(double)cost ifShowLoading:(BOOL)ifShowLoading;
 
 // Assets
 - (void)getAssetsDataWithAddress:(NSString *)address

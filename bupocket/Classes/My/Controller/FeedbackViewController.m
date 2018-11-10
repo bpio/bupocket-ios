@@ -40,8 +40,9 @@
     [self.view addSubview:self.feedbackText];
     [self.feedbackText mas_makeConstraints:^(MASConstraintMaker *make) {
         make.top.equalTo(self.view.mas_top).offset(Margin_15 + MAIN_HEIGHT);
-        make.left.equalTo(self.view.mas_left).offset(Margin_12);
-        make.right.equalTo(self.view.mas_right).offset(-Margin_12);
+//        make.left.right.equalTo(self.view);
+        make.left.equalTo(self.view.mas_left).offset(Margin_10);
+        make.right.equalTo(self.view.mas_right).offset(-Margin_10);
         make.height.mas_equalTo(ScreenScale(120));
     }];
     UIView * lineView = [[UIView alloc] init];
@@ -49,8 +50,8 @@
     [self.view addSubview:lineView];
     [lineView mas_makeConstraints:^(MASConstraintMaker *make) {
         make.top.equalTo(self.feedbackText.mas_bottom);
-        make.left.equalTo(self.view.mas_left).offset(ScreenScale(22));
-        make.right.equalTo(self.view.mas_right).offset(-ScreenScale(22));
+        make.left.equalTo(self.view.mas_left).offset(Margin_20);
+        make.right.equalTo(self.view.mas_right).offset(-Margin_20);
         make.height.mas_equalTo(LINE_WIDTH);
     }];
     
@@ -65,8 +66,9 @@
     [self.view addSubview:textField];
     [textField mas_makeConstraints:^(MASConstraintMaker *make) {
         make.top.equalTo(lineView.mas_bottom).offset(ScreenScale(55));
-        make.left.equalTo(self.view.mas_left).offset(Margin_30);
-        make.right.equalTo(self.view.mas_right).offset(-Margin_30);
+        make.left.right.equalTo(lineView);
+//        make.left.equalTo(self.view.mas_left).offset(Margin_30);
+//        make.right.equalTo(self.view.mas_right).offset(-Margin_30);
         make.height.mas_equalTo(Margin_40);
     }];
     self.contactField = textField;
@@ -82,7 +84,7 @@
     [self.view addSubview:submit];
     [submit mas_makeConstraints:^(MASConstraintMaker *make) {
         make.bottom.equalTo(self.view.mas_bottom).offset(-Margin_30 - SafeAreaBottomH);
-        make.left.right.equalTo(self.feedbackText);
+        make.left.right.equalTo(lineView);
         make.height.mas_equalTo(MAIN_HEIGHT);
     }];
     self.submit = submit;
@@ -122,7 +124,7 @@
         _feedbackText.placeholder = Localized(@"PleaseEnterQOrS");
         _feedbackText.delegate = self;
 //        _feedbackText.layer.masksToBounds = YES;
-//        _feedbackText.layer.cornerRadius = ScreenScale(5);
+//        _feedbackText.layer.cornerRadius = BG_CORNER;
     }
     return _feedbackText;
 }
@@ -157,8 +159,8 @@
     header.attributedText = [Encapsulation attrTitle:title ifRequired:NO];
     [header mas_makeConstraints:^(MASConstraintMaker *make) {
         make.top.bottom.equalTo(viewBg);
-        make.left.equalTo(viewBg.mas_left).offset(ScreenScale(22));
-        make.right.equalTo(viewBg.mas_right).offset(-ScreenScale(22));
+        make.left.equalTo(viewBg.mas_left).offset(Margin_20);
+        make.right.equalTo(viewBg.mas_right).offset(-Margin_20);
     }];
     return viewBg;
 }

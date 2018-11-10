@@ -45,8 +45,8 @@
     [self.view addSubview:_confirm];
     [_confirm mas_makeConstraints:^(MASConstraintMaker *make) {
         make.bottom.equalTo(self.view.mas_bottom).offset(-Margin_30 - SafeAreaBottomH);
-        make.left.equalTo(self.view.mas_left).offset(Margin_12);
-        make.right.equalTo(self.view.mas_right).offset(-Margin_12);
+        make.left.equalTo(self.view.mas_left).offset(Margin_20);
+        make.right.equalTo(self.view.mas_right).offset(-Margin_20);
         make.height.mas_equalTo(MAIN_HEIGHT);
     }];
 }
@@ -95,8 +95,8 @@
     header.attributedText = [Encapsulation attrTitle:title ifRequired:NO];
     [header mas_makeConstraints:^(MASConstraintMaker *make) {
         make.top.equalTo(viewBg.mas_top).offset(ScreenScale(33));
-        make.left.equalTo(viewBg.mas_left).offset(ScreenScale(22));
-        make.right.equalTo(viewBg.mas_right).offset(-ScreenScale(22));
+        make.left.equalTo(viewBg.mas_left).offset(Margin_20);
+        make.right.equalTo(viewBg.mas_right).offset(-Margin_20);
     }];
     UITextField * textField = [[UITextField alloc] init];
     textField.textColor = TITLE_COLOR;
@@ -107,9 +107,10 @@
     [viewBg addSubview:textField];
     [textField addTarget:self action:@selector(textChange:) forControlEvents:UIControlEventEditingChanged];
     [textField mas_makeConstraints:^(MASConstraintMaker *make) {
-        make.top.equalTo(header.mas_bottom).offset(ScreenScale(5));
-        make.left.equalTo(viewBg.mas_left).offset(Margin_30);
-        make.right.equalTo(viewBg.mas_right).offset(-Margin_30);
+        make.top.equalTo(header.mas_bottom).offset(Margin_5);
+        make.left.right.equalTo(header);
+//        make.left.equalTo(viewBg.mas_left).offset(Margin_30);
+//        make.right.equalTo(viewBg.mas_right).offset(-Margin_30);
         make.height.mas_equalTo(ScreenScale(39));
     }];
     UIView * lineView = [[UIView alloc] init];

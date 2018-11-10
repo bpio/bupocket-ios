@@ -56,7 +56,7 @@ static NSString * const AssetsDetailCellID = @"AssetsDetailCellID";
         make.centerY.equalTo(self.date);
         make.right.equalTo(self.assets);
     }];
-    [self setViewSize:CGSizeMake(DEVICE_WIDTH - Margin_20, ScreenScale(75)) borderWidth:0 borderColor:nil borderRadius:ScreenScale(5)];
+    [self setViewSize:CGSizeMake(DEVICE_WIDTH - Margin_20, ScreenScale(75)) borderWidth:0 borderColor:nil borderRadius:BG_CORNER];
 }
 
 - (void)setListModel:(AssetsDetailModel *)listModel
@@ -127,7 +127,7 @@ static NSString * const AssetsDetailCellID = @"AssetsDetailCellID";
 }
 - (void)setFrame:(CGRect)frame
 {
-    CGFloat margin = ScreenScale(5);
+    CGFloat margin = Margin_5;
     frame.origin.x = margin * 2;
     frame.size.width -= margin * 4;
     frame.origin.y += margin;

@@ -54,6 +54,7 @@
     self.tableView.separatorStyle = UITableViewCellSeparatorStyleNone;
     [self.view addSubview:self.tableView];
     self.tableView.bounces = NO;
+    self.tableView.backgroundColor = [UIColor whiteColor];
     [self setupHeaderView];
 }
 - (void)setupHeaderView

@@ -22,7 +22,6 @@
     [super viewDidLoad];
     self.navigationItem.title = Localized(@"BackUpPurse");
     [self setupView];
-    
     // Do any additional setup after loading the view.
 }
 
@@ -50,8 +49,8 @@
     [self.scrollView addSubview:titleLabel];
     [titleLabel mas_makeConstraints:^(MASConstraintMaker *make) {
         make.top.equalTo(wallet.mas_bottom).offset(Margin_30);
-        make.left.mas_equalTo(Margin_30);
-        make.width.mas_equalTo(DEVICE_WIDTH - Margin_60);
+        make.left.mas_equalTo(Margin_20);
+        make.width.mas_equalTo(DEVICE_WIDTH - Margin_40);
     }];
     
     UILabel * infoLabel = [[UILabel alloc] init];
@@ -85,7 +84,7 @@
         make.left.width.height.equalTo(backupMnemonics);
     }];
     [self.view layoutIfNeeded];
-    self.scrollView.contentSize = CGSizeMake(DEVICE_WIDTH, CGRectGetMaxY(temporaryBackup.frame) + Margin_50);
+    self.scrollView.contentSize = CGSizeMake(0, CGRectGetMaxY(temporaryBackup.frame) + Margin_50);
 }
 
 - (void)backupMnemonicsAction

@@ -46,12 +46,12 @@
     }];
     // IGotIt
     UIButton * gotIt = [UIButton createButtonWithTitle:Localized(@"IGotIt") isEnabled:YES Target:self Selector:@selector(gotItAction)];
-//    [gotIt setViewSize:CGSizeMake(DEVICE_WIDTH - Margin_60, MAIN_HEIGHT) borderWidth:0 borderColor:nil borderRadius:MAIN_FILLET];
+//    [gotIt setViewSize:CGSizeMake(DEVICE_WIDTH - Margin_60, MAIN_HEIGHT) borderWidth:0 borderColor:nil borderRadius:MAIN_CORNER];
     [self.view addSubview:gotIt];
     [gotIt mas_makeConstraints:^(MASConstraintMaker *make) {
         make.top.equalTo(requestTimeout.mas_bottom).offset(Margin_15);
-        make.left.equalTo(self.view.mas_left).offset(Margin_30);
-        make.right.equalTo(self.view.mas_right).offset(-Margin_30);
+        make.left.equalTo(self.view.mas_left).offset(Margin_20);
+        make.right.equalTo(self.view.mas_right).offset(-Margin_20);
         make.height.mas_equalTo(MAIN_HEIGHT);
     }];
 }

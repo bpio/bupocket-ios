@@ -43,8 +43,8 @@ static NSString *_title;
     [button setImage:[UIImage imageNamed:normalImage] forState:UIControlStateNormal];
     [button setImage:[UIImage imageNamed:selectedImage] forState:UIControlStateSelected];
 //    if (title && normalImage) {
-//        button.titleEdgeInsets = UIEdgeInsetsMake(0, ScreenScale(5), 0, 0);
-//        button.imageEdgeInsets = UIEdgeInsetsMake(0, 0, 0, ScreenScale(5));
+//        button.titleEdgeInsets = UIEdgeInsetsMake(0, BG_CORNER, 0, 0);
+//        button.imageEdgeInsets = UIEdgeInsetsMake(0, 0, 0, BG_CORNER);
 //    }
     [button addTarget:target action:selector forControlEvents:UIControlEventTouchUpInside];
 //    CGSize buttonSize = button.frame.size;
@@ -73,7 +73,7 @@ static NSString *_title;
     [button addTarget:target action:selector forControlEvents:UIControlEventTouchUpInside];
     button.layer.masksToBounds = YES;
     button.clipsToBounds = YES;
-    button.layer.cornerRadius = MAIN_FILLET;
+    button.layer.cornerRadius = MAIN_CORNER;
     if (isEnabled == YES) {
         button.backgroundColor = MAIN_COLOR;
     } else {

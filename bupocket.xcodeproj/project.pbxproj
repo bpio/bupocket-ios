@@ -32,8 +32,8 @@
 		83379A5521787F2500C222A5 /* Default-896h@3x.png in Resources */ = {isa = PBXBuildFile; fileRef = 83379A4621787F2500C222A5 /* Default-896h@3x.png */; };
 		83379A58217880C700C222A5 /* BackUpPurseViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 83379A57217880C700C222A5 /* BackUpPurseViewController.m */; };
 		83379A5B2178825300C222A5 /* PurseCipherAlertView.m in Sources */ = {isa = PBXBuildFile; fileRef = 83379A5A2178825300C222A5 /* PurseCipherAlertView.m */; };
-		83379A5E21796BFC00C222A5 /* BU Pocket Service Agreement.html in Resources */ = {isa = PBXBuildFile; fileRef = 83379A5C21796BFC00C222A5 /* BU Pocket Service Agreement.html */; };
-		83379A5F21796BFC00C222A5 /* 小布口袋服务协议.html in Resources */ = {isa = PBXBuildFile; fileRef = 83379A5D21796BFC00C222A5 /* 小布口袋服务协议.html */; };
+		83379A5E21796BFC00C222A5 /* Terms of use_EN.html in Resources */ = {isa = PBXBuildFile; fileRef = 83379A5C21796BFC00C222A5 /* Terms of use_EN.html */; };
+		83379A5F21796BFC00C222A5 /* Terms of use_CN.html in Resources */ = {isa = PBXBuildFile; fileRef = 83379A5D21796BFC00C222A5 /* Terms of use_CN.html */; };
 		83379A6221797BDD00C222A5 /* ConfirmMnemonicViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 83379A6121797BDD00C222A5 /* ConfirmMnemonicViewController.m */; };
 		83379A6B2179C1D500C222A5 /* ChangePasswordViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 83379A6A2179C1D500C222A5 /* ChangePasswordViewController.m */; };
 		83379A6E2179CB9E00C222A5 /* FeedbackViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 83379A6D2179CB9E00C222A5 /* FeedbackViewController.m */; };
@@ -211,8 +211,8 @@
 		83379A57217880C700C222A5 /* BackUpPurseViewController.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = BackUpPurseViewController.m; sourceTree = "<group>"; };
 		83379A592178825300C222A5 /* PurseCipherAlertView.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = PurseCipherAlertView.h; sourceTree = "<group>"; };
 		83379A5A2178825300C222A5 /* PurseCipherAlertView.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = PurseCipherAlertView.m; sourceTree = "<group>"; };
-		83379A5C21796BFC00C222A5 /* BU Pocket Service Agreement.html */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.html; path = "BU Pocket Service Agreement.html"; sourceTree = "<group>"; };
-		83379A5D21796BFC00C222A5 /* 小布口袋服务协议.html */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.html; path = "小布口袋服务协议.html"; sourceTree = "<group>"; };
+		83379A5C21796BFC00C222A5 /* Terms of use_EN.html */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.html; path = "Terms of use_EN.html"; sourceTree = "<group>"; };
+		83379A5D21796BFC00C222A5 /* Terms of use_CN.html */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.html; path = "Terms of use_CN.html"; sourceTree = "<group>"; };
 		83379A6021797BDD00C222A5 /* ConfirmMnemonicViewController.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = ConfirmMnemonicViewController.h; sourceTree = "<group>"; };
 		83379A6121797BDD00C222A5 /* ConfirmMnemonicViewController.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = ConfirmMnemonicViewController.m; sourceTree = "<group>"; };
 		83379A692179C1D500C222A5 /* ChangePasswordViewController.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = ChangePasswordViewController.h; sourceTree = "<group>"; };
@@ -441,8 +441,8 @@
 		83379A0A2178588800C222A5 /* Resource */ = {
 			isa = PBXGroup;
 			children = (
-				83379A5D21796BFC00C222A5 /* 小布口袋服务协议.html */,
-				83379A5C21796BFC00C222A5 /* BU Pocket Service Agreement.html */,
+				83379A5D21796BFC00C222A5 /* Terms of use_CN.html */,
+				83379A5C21796BFC00C222A5 /* Terms of use_EN.html */,
 			);
 			path = Resource;
 			sourceTree = "<group>";
@@ -995,11 +995,11 @@
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				83379A5E21796BFC00C222A5 /* BU Pocket Service Agreement.html in Resources */,
+				83379A5E21796BFC00C222A5 /* Terms of use_EN.html in Resources */,
 				833799252176FE4800C222A5 /* Localizable.strings in Resources */,
 				83379A5221787F2500C222A5 /* Default-568h@2x.png in Resources */,
 				83379A5521787F2500C222A5 /* Default-896h@3x.png in Resources */,
-				83379A5F21796BFC00C222A5 /* 小布口袋服务协议.html in Resources */,
+				83379A5F21796BFC00C222A5 /* Terms of use_CN.html in Resources */,
 				83379A5321787F2500C222A5 /* Default-812h@3x.png in Resources */,
 				83379A4F21787F2500C222A5 /* Default-iPhone6.png in Resources */,
 				83379A5021787F2500C222A5 /* Default@2x.png in Resources */,

@@ -59,8 +59,8 @@
     
     [_identityName mas_makeConstraints:^(MASConstraintMaker *make) {
         make.top.equalTo(self.view).offset(Margin_30);
-        make.left.equalTo(self.view.mas_left).offset(Margin_30);
-        make.right.equalTo(self.view.mas_right).offset(-Margin_30);
+        make.left.equalTo(self.view.mas_left).offset(Margin_20);
+        make.right.equalTo(self.view.mas_right).offset(-Margin_20);
         make.height.mas_equalTo(TEXTFIELD_HEIGHT);
     }];
     [_identityPassword mas_makeConstraints:^(MASConstraintMaker *make) {
@@ -145,7 +145,7 @@
     
     [alertView showInWindowWithMode:CustomAnimationModeAlert inView:nil bgAlpha:0.2 needEffectView:NO];
 }
-- (void)setData
+- (void)getData
 {
     //创建比特数组
     NSMutableData *random = [NSMutableData dataWithLength: Random_Length];
@@ -158,7 +158,7 @@
             [defaults synchronize];
             BackUpPurseViewController * VC = [[BackUpPurseViewController alloc] init];
             VC.mnemonicArray = responseObject;
-            [self.navigationController pushViewController:VC animated:YES];
+            [UIApplication sharedApplication].keyWindow.rootViewController = [[NavigationViewController alloc] initWithRootViewController:VC];
         } failure:^(NSError *error) {
             
         }];
@@ -183,7 +183,7 @@
         [MBProgressHUD showTipMessageInWindow:Localized(@"PasswordIsDifferent")];
         return;
     }
-    [self setData];
+    [self getData];
 }
 - (void)didReceiveMemoryWarning
 {

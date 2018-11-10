@@ -26,7 +26,7 @@
 
 - (void)setupView {
     self.backgroundColor = [UIColor whiteColor];
-    self.layer.cornerRadius = MAIN_FILLET;
+    self.layer.cornerRadius = MAIN_CORNER;
     CustomButton * promptBtn = [[CustomButton alloc] init];
     promptBtn.layoutMode = VerticalNormal;
     promptBtn.titleLabel.font = FONT(21);
@@ -62,8 +62,8 @@
         make.height.mas_equalTo(MAIN_HEIGHT);
     }];
     
-    CGFloat height = [Encapsulation getSizeSpaceLabelWithStr:titleStr font:FONT(15) width:(DEVICE_WIDTH - ScreenScale(110)) height:CGFLOAT_MAX lineSpacing:ScreenScale(5)].height + ScreenScale(230);
-    self.bounds = CGRectMake(0, 0, DEVICE_WIDTH - Margin_60, height);
+    CGFloat height = [Encapsulation getSizeSpaceLabelWithStr:titleStr font:FONT(15) width:(DEVICE_WIDTH - ScreenScale(90)) height:CGFLOAT_MAX lineSpacing:Margin_5].height + ScreenScale(230);
+    self.bounds = CGRectMake(0, 0, DEVICE_WIDTH - Margin_40, height);
 }
 
 - (void)sureBtnClick {

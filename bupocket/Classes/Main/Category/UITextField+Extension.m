@@ -109,12 +109,12 @@
     UIButton * button = [UIButton createButtonWithTitle:title TextFont:14 TextNormalColor:TITLE_COLOR TextSelectedColor:TITLE_COLOR NormalImage:normalImage SelectedImage:SelectedImage Target:target Selector:selector];
     if (title && normalImage == nil) {
         button.contentHorizontalAlignment = UIControlContentHorizontalAlignmentRight;
-        button.contentEdgeInsets = UIEdgeInsetsMake(0, 0, 0, Margin_12);
+        button.contentEdgeInsets = UIEdgeInsetsMake(0, 0, 0, Margin_10);
         button.frame = CGRectMake(0, 0, ScreenScale(90), ScreenScale(titleFieldHeight));
     } else if (title.length == 0 && normalImage) {
         button.frame = CGRectMake(0, 0, Margin_40, ScreenScale(titleFieldHeight));
     } else {
-        button.frame = CGRectMake(0, 0, Margin_12, ScreenScale(titleFieldHeight));
+        button.frame = CGRectMake(0, 0, Margin_10, ScreenScale(titleFieldHeight));
     }
     textField.rightView = button;
     

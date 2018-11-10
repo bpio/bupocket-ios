@@ -40,7 +40,7 @@
 - (void)viewDidLoad {
     [super viewDidLoad];
     [self setupView];
-    self.navigationItem.title = @"BU转账";
+    self.navigationItem.title = Localized(@"TransferTitle");
     // Do any additional setup after loading the view.
 }
 - (void)viewWillAppear:(BOOL)animated
@@ -48,7 +48,7 @@
     [super viewWillAppear:animated];
     NSOperationQueue * queue = [[NSOperationQueue alloc] init];
     [queue addOperationWithBlock:^{
-        double amount = [Tools MO2BU:[[HTTPManager shareManager] getDataWithBalanceJudgmentWithCost:0]];
+        double amount = [Tools MO2BU:[[HTTPManager shareManager] getDataWithBalanceJudgmentWithCost:0 ifShowLoading:NO]];
         [[NSOperationQueue mainQueue] addOperationWithBlock:^{
             self.availableBalance.attributedText = [Encapsulation attrWithString:[NSString stringWithFormat:@"%@\n%f BU", Localized(@"AvailableBalance"), amount] preFont:FONT(12) preColor:COLOR_6 index:4 sufFont:FONT(12) sufColor:MAIN_COLOR lineSpacing:10];
             self.availableBalance.textAlignment = NSTextAlignmentRight;
@@ -80,7 +80,7 @@
     //    self.scrollView.scrollsToTop = NO;
     //    self.scrollView.delegate = self;
     [self.view addSubview:self.scrollView];
-    NSArray * array = @[@[Localized(@"ReciprocalAccount"), Localized(@"AmountOfTransfer"), Localized(@"Remarks"), Localized(@"EstimatedMaximum")], @[Localized(@"PhoneOrAddress"), Localized(@"MostOnce"), Localized(@"RemarksPlaceholder"), Localized(@"TransactionCostPlaceholder")]];
+    NSArray * array = @[@[Localized(@"ReciprocalAccount"), Localized(@"AmountOfTransfer"), Localized(@"Remarks"), Localized(@"EstimatedMaximum")], @[Localized(@"PhoneOrAddress"), Localized(@"AmountOfTransferPlaceholder"), Localized(@"RemarksPlaceholder"), Localized(@"TransactionCostPlaceholder")]];
 //    NSArray * array = @[@[@"对方账户（BU地址） *", @"转账数量（BU） *", @"备注 ", @"预估最多支付费用（BU) *"], @[@"请输入手机号/接收方地址", @"单笔不可超过10000 BU", @"请输入备注", @"请输交易费用"]];
     for (NSInteger i = 0; i < 4; i++) {
         UIView * TAView = [self setViewWithTitle:[array firstObject][i] placeholder:[array lastObject][i] index:i];
@@ -97,12 +97,12 @@
     [self.scrollView addSubview:self.next];
     [self.next mas_makeConstraints:^(MASConstraintMaker *make) {
         make.top.mas_equalTo(Margin_15 + (ScreenScale(95) * 4) + MAIN_HEIGHT);
-        make.left.mas_equalTo(Margin_15);
-        make.width.mas_equalTo(DEVICE_WIDTH - Margin_30);
+        make.left.mas_equalTo(Margin_20);
+        make.width.mas_equalTo(DEVICE_WIDTH - Margin_40);
         make.height.mas_equalTo(MAIN_HEIGHT);
     }];
     [self.view layoutIfNeeded];
-    self.scrollView.contentSize = CGSizeMake(DEVICE_WIDTH, CGRectGetMaxY(self.next.frame) + Margin_50);
+    self.scrollView.contentSize = CGSizeMake(0, CGRectGetMaxY(self.next.frame) + Margin_50);
 }
 - (void)keyBoardHidden
 {
@@ -119,13 +119,16 @@
     if ([regex validateIsPositiveFloatingPoint:self.mostOnce.text] == NO) {
         [MBProgressHUD showTipMessageInWindow:Localized(@"SendingQuantityIsIncorrect")];
         return;
-    } else if (sendingQuantity < SendingQuantity_MIN) {
+    }
+    /*
+     else if (sendingQuantity < SendingQuantity_MIN) {
         [MBProgressHUD showTipMessageInWindow:Localized(@"SendingQuantityMin")];
         return;
     } else if (sendingQuantity > SendingQuantity_MAX) {
         [MBProgressHUD showTipMessageInWindow:Localized(@"SendingQuantityMax")];
         return;
     }
+     */
     if (_remarks.text.length > MAX_LENGTH) {
         [MBProgressHUD showTipMessageInWindow:Localized(@"ExtraLongNotes")];
         return;
@@ -141,7 +144,7 @@
         [MBProgressHUD showTipMessageInWindow:Localized(@"TransactionCostMax")];
         return;
     }
-    int64_t amount = [[HTTPManager shareManager] getDataWithBalanceJudgmentWithCost:sendingQuantity + cost];
+    int64_t amount = [[HTTPManager shareManager] getDataWithBalanceJudgmentWithCost:sendingQuantity + cost ifShowLoading:YES];
     if (amount < 0) {
         [MBProgressHUD showTipMessageInWindow:Localized(@"NotSufficientFunds")];
         return;
@@ -197,8 +200,8 @@
     header.attributedText = [Encapsulation attrTitle:title ifRequired:YES];
     [header mas_makeConstraints:^(MASConstraintMaker *make) {
         make.top.equalTo(viewBg.mas_top).offset(Margin_30);
-        make.left.equalTo(viewBg.mas_left).offset(Margin_15);
-        make.right.equalTo(viewBg.mas_right).offset(-Margin_15);
+        make.left.equalTo(viewBg.mas_left).offset(Margin_20);
+        make.right.equalTo(viewBg.mas_right).offset(-Margin_20);
     }];
     UITextField * textField = [[UITextField alloc] init];
     textField.textColor = TITLE_COLOR;
@@ -208,9 +211,10 @@
     [viewBg addSubview:textField];
     [textField addTarget:self action:@selector(textChange:) forControlEvents:UIControlEventEditingChanged];
     [textField mas_makeConstraints:^(MASConstraintMaker *make) {
-        make.top.equalTo(header.mas_bottom).offset(ScreenScale(5));
-        make.left.equalTo(viewBg.mas_left).offset(Margin_25);
-        make.right.equalTo(viewBg.mas_right).offset(-Margin_25);
+        make.top.equalTo(header.mas_bottom).offset(Margin_5);
+        make.left.right.equalTo(header);
+//        make.left.equalTo(viewBg.mas_left).offset(Margin_25);
+//        make.right.equalTo(viewBg.mas_right).offset(-Margin_25);
         make.height.mas_equalTo(Margin_40);
     }];
     UIView * lineView = [[UIView alloc] init];
@@ -237,8 +241,8 @@
         self.availableBalance.numberOfLines = 0;
         [header addSubview:self.availableBalance];
 //        double amount = [Tools MO2BU:[[HTTPManager shareManager] getDataWithBalanceJudgmentWithCost:0]];
-//        self.availableBalance.attributedText = [Encapsulation attrWithString:[NSString stringWithFormat:@"%@\n%@ BU", Localized(@"AvailableBalance"), self.listModel.amount] preFont:FONT(12) preColor:COLOR_6 index:4 sufFont:FONT(12) sufColor:MAIN_COLOR lineSpacing:10];
-//        self.availableBalance.textAlignment = NSTextAlignmentRight;
+        self.availableBalance.attributedText = [Encapsulation attrWithString:[NSString stringWithFormat:@"%@\n0 BU", Localized(@"AvailableBalance")] preFont:FONT(12) preColor:COLOR_6 index:4 sufFont:FONT(12) sufColor:MAIN_COLOR lineSpacing:10];
+        self.availableBalance.textAlignment = NSTextAlignmentRight;
         [self.availableBalance mas_makeConstraints:^(MASConstraintMaker *make) {
             make.right.top.equalTo(header);
         }];
@@ -248,6 +252,7 @@
         self.remarks.delegate = self;
     } else if (index == 3) {
         self.transactionCosts = textField;
+        self.transactionCosts.text = [NSString stringWithFormat:@"%.2f", TransactionCost_MIN];
     }
     return viewBg;
 }

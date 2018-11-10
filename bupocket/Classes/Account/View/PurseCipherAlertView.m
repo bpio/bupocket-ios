@@ -31,7 +31,7 @@
 
 - (void)setupView {
     self.backgroundColor = [UIColor whiteColor];
-    self.layer.cornerRadius = MAIN_FILLET;
+    self.layer.cornerRadius = MAIN_CORNER;
     
     UIButton * closeBtn = [UIButton createButtonWithNormalImage:@"close" SelectedImage:@"close" Target:self Selector:@selector(cancleBtnClick)];
     [self addSubview:closeBtn];
@@ -97,8 +97,8 @@
         make.height.mas_equalTo(MAIN_HEIGHT);
     }];
     
-    CGFloat height = [Encapsulation rectWithText:Localized(@"PurseCipherPrompt") fontSize:15 textWidth:DEVICE_WIDTH - ScreenScale(110)].size.height + ScreenScale(255);
-    self.bounds = CGRectMake(0, 0, DEVICE_WIDTH - Margin_60, height);
+    CGFloat height = [Encapsulation rectWithText:Localized(@"PurseCipherPrompt") fontSize:15 textWidth:DEVICE_WIDTH - ScreenScale(90)].size.height + ScreenScale(255);
+    self.bounds = CGRectMake(0, 0, DEVICE_WIDTH - Margin_40, height);
 }
 
 - (void)cancleBtnClick {
