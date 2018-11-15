@@ -20,10 +20,8 @@
     [super viewDidLoad];
     self.navigationItem.title = Localized(@"BackupMnemonics");
     [self setupView];
-    
     // Do any additional setup after loading the view.
 }
-
 - (void)setupView
 {
     UIView * promptBg = [[UIView alloc] init];
@@ -74,7 +72,7 @@
     for (NSInteger i = 0; i < self.mnemonicArray.count; i ++) {
         UIButton * tagBtn = [UIButton createButtonWithTitle:self.mnemonicArray[i] TextFont:14 TextColor:COLOR_9 Target:nil Selector:nil];
         tagBtn.backgroundColor = VIEWBG_COLOR;
-        tagBtn.layer.cornerRadius = TAG_FILLET;
+        tagBtn.layer.cornerRadius = TAG_CORNER;
         [self.view addSubview:tagBtn];
         [tagBtn mas_makeConstraints:^(MASConstraintMaker *make) {
             make.left.equalTo(promptBg.mas_left).offset((tagW + Margin_10) * (i % 4));

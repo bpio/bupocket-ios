@@ -22,9 +22,9 @@ NS_ASSUME_NONNULL_BEGIN
 // keyStoreValue -> key
 + (NSData *)decipherKeyStoreWithPW:(NSString *)PW randomKeyStoreValueStr:(NSString *)randomKeyStoreValueStr;
 + (NSString *)decipherKeyStoreWithPW:(NSString *)PW keyStoreValueStr:(NSString *)keyStoreValueStr;
-// base64编码
+// base64 Code
 + (NSString *)encode:(NSString *)string;
-// base64解码
+// base64 Decode
 + (NSString *)dencode:(NSString *)base64String;
 
 @end

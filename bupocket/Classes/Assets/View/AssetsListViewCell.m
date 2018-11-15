@@ -100,11 +100,10 @@ static NSString * const AssetsCellID = @"AssetsCellID";
 }
 - (void)setFrame:(CGRect)frame
 {
-    CGFloat margin = Margin_5;
-    frame.origin.x = margin * 2;
-    frame.size.width -= margin * 4;
-    frame.origin.y += margin;
-    frame.size.height -= margin * 2;
+    frame.origin.x = Margin_10;
+    frame.size.width -= Margin_20;
+    frame.origin.y += Margin_5;
+    frame.size.height -= Margin_10;
     [super setFrame:frame];
 }
 - (void)awakeFromNib {

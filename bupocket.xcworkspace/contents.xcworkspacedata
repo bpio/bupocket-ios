@@ -2,12 +2,12 @@
 <Workspace
    version = "1.0">
    <FileRef
-      location = "group:/Users/bubi/Desktop/bupocket/bupocket.xcodeproj">
+      location = "group:bupocket.xcodeproj">
    </FileRef>
    <FileRef
       location = "group:Pods/Pods.xcodeproj">
    </FileRef>
    <FileRef
-      location = "group:bupocket.xcodeproj">
+      location = "group:../bupocket 21-03-48-512/bupocket.xcworkspace">
    </FileRef>
 </Workspace>

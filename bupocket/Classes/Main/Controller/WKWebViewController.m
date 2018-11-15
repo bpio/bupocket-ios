@@ -13,12 +13,10 @@
 @property (nonatomic, copy) NSString * URLString;
 @property (nonatomic, copy) NSString * postString;
 @property (nonatomic, copy) NSString * htmlString;
-//@property (nonatomic, copy) NSString * URLPath;
 //仅当第一次的时候加载本地JS
 @property(nonatomic,assign) BOOL needLoadJSPOST;
 //设置加载进度条
 @property (nonatomic,strong) UIProgressView * progressView;
-
 
 //保存请求链接
 @property (nonatomic)NSMutableArray* snapShotsArray;
@@ -35,13 +33,8 @@ static void *WkwebBrowserContext = &WkwebBrowserContext;
 
 - (void)viewDidLoad {
     [super viewDidLoad];
-    
-    //添加到主控制器上
     [self.view addSubview:self.wkWebView];
-    
-    //添加进度条
     [self.view addSubview:self.progressView];
-    
 }
 
 
@@ -53,8 +46,7 @@ static void *WkwebBrowserContext = &WkwebBrowserContext;
         }else{
             _progressView.frame = CGRectMake(0, 0, self.view.bounds.size.width, 3);
         }
-        // 设置进度条的色彩
-        [_progressView setTrackTintColor:[UIColor colorWithRed:240.0/255 green:240.0/255 blue:240.0/255 alpha:1.0]];
+        [_progressView setTrackTintColor:COLOR(@"F0F0F0")];
         _progressView.progressTintColor = MAIN_COLOR;
     }
     return _progressView;
@@ -62,9 +54,7 @@ static void *WkwebBrowserContext = &WkwebBrowserContext;
 
 - (WKWebView *)wkWebView{
     if (!_wkWebView) {
-        //设置网页的配置文件
         WKWebViewConfiguration * Configuration = [[WKWebViewConfiguration alloc]init];
-        //允许视频播放
         if (@available(iOS 9.0, *)) {
             Configuration.allowsAirPlayForMediaPlayback = NO;
         } else {
@@ -131,14 +121,6 @@ static void *WkwebBrowserContext = &WkwebBrowserContext;
     }
 }
 
-
-//- (void)backButtonClicked {
-//    if([self.wkWebView canGoBack] == NO) {
-//        [self.navigationController popViewControllerAnimated:YES];
-//    } else {
-//        [self.wkWebView goBack];
-//    }
-//}
 
 - (void)viewWillAppear:(BOOL)animated
 {
@@ -461,11 +443,11 @@ static void *WkwebBrowserContext = &WkwebBrowserContext;
 - (UIBarButtonItem *)customBackBarItem
 {
     if (!_customBackBarItem) {
-        UIImage* backItemImage = [[UIImage imageNamed:@"backItemImage"] imageWithRenderingMode:UIImageRenderingModeAlwaysTemplate];
-        UIImage* backItemHlImage = [[UIImage imageNamed:@"backItemImage-hl"] imageWithRenderingMode:UIImageRenderingModeAlwaysTemplate];
+        UIImage* backItemImage = [[UIImage imageNamed:@"nav_goback_n"] imageWithRenderingMode:UIImageRenderingModeAlwaysTemplate];
+        UIImage* backItemHlImage = [[UIImage imageNamed:@"nav_goback_n"] imageWithRenderingMode:UIImageRenderingModeAlwaysTemplate];
         
         UIButton* backButton = [[UIButton alloc] init];
-        [backButton setTitle:@"返回" forState:UIControlStateNormal];
+        [backButton setTitle:@"" forState:UIControlStateNormal];
         [backButton setTitleColor:self.navigationController.navigationBar.tintColor forState:UIControlStateNormal];
         [backButton setTitleColor:[self.navigationController.navigationBar.tintColor colorWithAlphaComponent:0.5] forState:UIControlStateHighlighted];
         [backButton.titleLabel setFont:[UIFont systemFontOfSize:17]];
@@ -495,52 +477,36 @@ static void *WkwebBrowserContext = &WkwebBrowserContext;
     return _snapShotsArray;
 }
 
--(void)viewWillDisappear:(BOOL)animated{
-//    [self.wkWebView.configuration.userContentController removeScriptMessageHandlerForName:@"WXPay"];
+-(void)viewWillDisappear:(BOOL)animated {
     [self.wkWebView setNavigationDelegate:nil];
     [self.wkWebView setUIDelegate:nil];
 }
 
-//注意，观察的移除
 - (void)dealloc
 {
     [self.wkWebView removeObserver:self forKeyPath:NSStringFromSelector(@selector(estimatedProgress))];
 }
 
-//
-#pragma mark    分享
--(void)enterShare{
-}
 
 #pragma mark- 链接内容
 - (NSDictionary *)urlInfo:(NSString *)query{
     NSMutableDictionary *dict = [[NSMutableDictionary alloc] init];
-    // 检测字符串中是否包含 ‘&’
     if([query rangeOfString:@"&"].location != NSNotFound){
-        // 以 & 来分割字符，并放入数组中
         NSArray *pairs = [query componentsSeparatedByString:@"&"];
-        // 遍历字符数组
         for (NSString *pair in pairs) {
-            // 以等号来分割字符
             NSArray *elements = [pair componentsSeparatedByString:@"="];
-            
             if (elements.count == 2) {
                 NSString *key = [elements objectAtIndex:0];
                 NSString *val = [elements objectAtIndex:1];
-                NSLog(@"%@  %@",key, val);
-                // 添加到字典中
                 [dict setObject:val forKey:key];
             }
         }
     }
     else{
-        // 以等号来分割字符
         NSArray *elements = [query componentsSeparatedByString:@"="];
         if (elements.count == 2) {
             NSString *key = [elements objectAtIndex:0];
             NSString *val = [elements objectAtIndex:1];
-            NSLog(@"%@  %@",key, val);
-            // 添加到字典中
             [dict setObject:val forKey:key];
         }
     }

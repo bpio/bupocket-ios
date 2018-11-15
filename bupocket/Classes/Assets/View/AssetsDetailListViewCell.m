@@ -28,12 +28,6 @@ static NSString * const AssetsDetailCellID = @"AssetsDetailCellID";
         [self.contentView addSubview:self.date];
         [self.contentView addSubview:self.assets];
         [self.contentView addSubview:self.state];
-//        self.purseAddress.text = @"buQYxj3yVm***qcsMvLivDu";
-//        self.date.text = @"2018-09-30 19:45:36";
-//        self.assets.text = @"+50 BU";
-//        self.state.text = @"成功";
-//        self.state.text = @"失败";
-//        self.state.textColor = COLOR(@"FF7272");
     }
     return self;
 }
@@ -65,11 +59,9 @@ static NSString * const AssetsDetailCellID = @"AssetsDetailCellID";
     NSString * outOrIn;
     NSString * addressStr;
     if (listModel.outinType == 0) {
-        // 转出
         addressStr = listModel.toAddress;
         outOrIn = @"-";
     } else {
-        // 转入
         addressStr = listModel.fromAddress;
         outOrIn = @"+";
     }
@@ -77,18 +69,9 @@ static NSString * const AssetsDetailCellID = @"AssetsDetailCellID";
         self.purseAddress.text = [NSString stringEllipsisWithStr:addressStr];
     }
     self.date.text = [DateTool getDateProcessingWithTimeStr:listModel.txTime];
-    self.assets.text = [listModel.amount isEqualToString:@"~"] ? listModel.amount : [NSString stringWithFormat:@"%@%@%@", outOrIn, listModel.amount, self.assetCode];
+    self.assets.text = [listModel.amount isEqualToString:@"~"] ? listModel.amount : [NSString stringWithFormat:@"%@%@ %@", outOrIn, listModel.amount, self.assetCode];
     self.state.text = (listModel.txStatus == 0) ? Localized(@"Success") : Localized(@"Failure");
 }
-//- (NSString *)UTCchangeDate:(NSString *)utc
-//{
-//    NSTimeInterval interval = [[utc substringToIndex:utc.length - 3] doubleValue] / 1000.0;
-//    NSDate * date = [NSDate dateWithTimeIntervalSince1970:interval];
-//    NSDateFormatter *formatter = [[NSDateFormatter alloc] init];
-//    [formatter setDateFormat:@"YYYY-MM-dd HH:mm:ss SS"];
-//    NSLog(@"%@", [formatter stringFromDate:date]);
-//    return [formatter stringFromDate:date];
-//}
 - (UILabel *)purseAddress
 {
     if (!_purseAddress) {
@@ -127,11 +110,10 @@ static NSString * const AssetsDetailCellID = @"AssetsDetailCellID";
 }
 - (void)setFrame:(CGRect)frame
 {
-    CGFloat margin = Margin_5;
-    frame.origin.x = margin * 2;
-    frame.size.width -= margin * 4;
-    frame.origin.y += margin;
-    frame.size.height -= margin * 2;
+    frame.origin.x = Margin_10;
+    frame.size.width -= Margin_20;
+    frame.origin.y += Margin_5;
+    frame.size.height -= Margin_10;
     [super setFrame:frame];
 }
 - (void)awakeFromNib {

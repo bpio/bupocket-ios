@@ -29,8 +29,6 @@
 {
     self.scrollView = [[UIScrollView alloc] initWithFrame:CGRectMake(0, 0, DEVICE_WIDTH, DEVICE_HEIGHT)];
     self.scrollView.contentInset = UIEdgeInsetsMake(0, 0, SafeAreaBottomH + NavBarH + Margin_10, 0);
-    //    self.scrollView.scrollsToTop = NO;
-    //    self.scrollView.delegate = self;
     self.scrollView.keyboardDismissMode = UIScrollViewKeyboardDismissModeOnDrag;
     [self.view addSubview:self.scrollView];
     UIImageView * wallet = [[UIImageView alloc] initWithImage:[UIImage imageNamed:@"wallet"]];
@@ -94,16 +92,10 @@
         VC.mnemonicArray = self.mnemonicArray;
         [self.navigationController pushViewController:VC animated:YES];
     } else {
-        PurseCipherAlertView * alertView = [[PurseCipherAlertView alloc] initWithType:PurseCipherNormalType confrimBolck:^(NSString * _Nonnull password) {
-            NSData * random = [NSString decipherKeyStoreWithPW:password randomKeyStoreValueStr:[AccountTool account].randomNumber];
-            if (random) {
-                NSArray * words = [Mnemonic generateMnemonicCode: random];
-                BackupMnemonicsViewController * VC = [[BackupMnemonicsViewController alloc] init];
-                VC.mnemonicArray = words;
-                [self.navigationController pushViewController:VC animated:YES];
-            } else {
-                [MBProgressHUD showTipMessageInWindow:Localized(@"PasswordIsIncorrect")];
-            }
+        PurseCipherAlertView * alertView = [[PurseCipherAlertView alloc] initWithPrompt:Localized(@"IdentityCipherPrompt") confrimBolck:^(NSString * _Nonnull password, NSArray * _Nonnull words) {
+            BackupMnemonicsViewController * VC = [[BackupMnemonicsViewController alloc] init];
+            VC.mnemonicArray = words;
+            [self.navigationController pushViewController:VC animated:YES];
         } cancelBlock:^{
         }];
         [alertView showInWindowWithMode:CustomAnimationModeAlert inView:nil bgAlpha:0.2 needEffectView:NO];

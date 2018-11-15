@@ -9,7 +9,6 @@
 #import "TabBarViewController.h"
 #import "AssetsViewController.h"
 #import "MyViewController.h"
-//#import "TabBar.h"
 
 @interface TabBarViewController ()
 
@@ -23,7 +22,6 @@
 + (void)initialize
 {
     NSMutableDictionary * attrs = [NSMutableDictionary dictionary];
-//    attrs[NSFontAttributeName] = FONT(12);
     attrs[NSForegroundColorAttributeName] = COLOR(@"7F8389 ");
     NSMutableDictionary * selectedAttrs = [NSMutableDictionary dictionary];
     selectedAttrs[NSForegroundColorAttributeName] = MAIN_COLOR;
@@ -47,7 +45,6 @@
     [self setupChildVC:self.assetsVC title:Localized(@"AssetsTitle") image:@"tab_Assets_n" selectedImage:@"tab_Assets_s"];
     self.myVC = [[MyViewController alloc] init];
     [self setupChildVC:self.myVC title:Localized(@"MyTitle") image:@"tab_My_n" selectedImage:@"tab_My_s"];
-    //注册通知，用于接收改变语言的通知
     [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(changeLanguage) name:ChangeLanguageNotificationName object:nil];
     // Do any additional setup after loading the view.
 }

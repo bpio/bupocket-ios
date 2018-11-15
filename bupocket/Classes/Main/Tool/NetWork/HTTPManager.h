@@ -9,9 +9,6 @@
 #import <Foundation/Foundation.h>
 #import "RegisteredModel.h"
 #import "TransactionResultModel.h"
-//#import "DistributionModel.h"
-
-//static NSString * _pushMessageSocketUrl;
 
 @interface HTTPManager : NSObject
 
@@ -19,10 +16,12 @@
 
 + (instancetype)shareManager;
 
-- (int64_t)getAccountBalance;
-- (int64_t) getBlockFees;
-// 余额是否足够
-- (int64_t)getDataWithBalanceJudgmentWithCost:(double)cost ifShowLoading:(BOOL)ifShowLoading;
+// Switched network
+- (void)SwitchedNetworkWithIsTest:(BOOL)isTest;
+
+// VersionUpdate
+- (void)getVersionDataWithSuccess:(void (^)(id responseObject))success
+                          failure:(void (^)(NSError *error))failure;
 
 // Assets
 - (void)getAssetsDataWithAddress:(NSString *)address
@@ -46,15 +45,32 @@
 - (void)getOrderDetailsDataWithHash:(NSString *)hash
                             success:(void (^)(id responseObject))success
                             failure:(void (^)(NSError *error))failure;
+// Registration / issuance of assets information
+- (void)getRegisteredORDistributionDataWithAssetCode:(NSString *)assetCode
+                                        issueAddress:(NSString *)issueAddress
+                                             success:(void (^)(id responseObject))success
+                                             failure:(void (^)(NSError *error))failure;
+// Feedback feedback
+- (void)getFeedbackDataWithContent:(NSString *)content
+                           contact:(NSString *)contact
+                           success:(void (^)(id responseObject))success
+                           failure:(void (^)(NSError *error))failure;
 
+#pragma mark - SDK
+// Check the balance
+- (int64_t)getAccountBalance;
+// Query cost standard
+- (int64_t) getBlockFees;
+// Balance judgment
+- (int64_t)getDataWithBalanceJudgmentWithCost:(double)cost ifShowLoading:(BOOL)ifShowLoading;
 
-// 身份账号数据
+// identity data
 - (void)setAccountDataWithRandom:(NSData *)random
                         password:(NSString *)password
                     identityName:(NSString *)identityName
                          success:(void (^)(id responseObject))success
                          failure:(void (^)(NSError *error))failure;
-// 转账
+// Transfer accounts
 - (void)setTransferDataWithPassword:(NSString *)password
                         destAddress:(NSString *)destAddress
                            BUAmount:(NSString *)BUAmount
@@ -63,27 +79,19 @@
                             success:(void (^)(TransactionResultModel * resultModel))success
                             failure:(void (^)(TransactionResultModel * resultModel))failure;
 
-// 登记/发行资产
-- (void)getRegisteredORDistributionDataWithAssetCode:(NSString *)assetCode
-                                        issueAddress:(NSString *)issueAddress
-                                             success:(void (^)(id responseObject))success
-                                             failure:(void (^)(NSError *error))failure;
 
-// 登记
+// register
 - (void)getRegisteredDataWithPassword:(NSString *)password
                       registeredModel:(RegisteredModel *)registeredModel
                               success:(void (^)(TransactionResultModel * resultModel))success
                               failure:(void (^)(TransactionResultModel * resultModel))failure;
-// 发行
+// Issue
 - (void)getIssueAssetDataWithPassword:(NSString *)password
                             assetCode:(NSString *)assetCode
                           assetAmount:(NSString *)assetAmount
                              decimals:(NSInteger)decimals
                               success:(void (^)(TransactionResultModel * resultModel))success
                               failure:(void (^)(TransactionResultModel * resultModel))failure;
-- (void)getFeedbackDataWithContent:(NSString *)content
-                           contact:(NSString *)contact
-                           success:(void (^)(id responseObject))success
-                           failure:(void (^)(NSError *error))failure;
+
 
 @end

@@ -98,38 +98,24 @@
     [self.layer setMask:maskLayer];
 }
 
-// 通过CAShapeLayer 方式绘制虚线
-/**
- ** lineView:      需要绘制成虚线的view
- ** lineLength:    虚线的宽度
- ** lineSpacing:    虚线的间距
- ** lineColor:      虚线的颜色
- **/
-
-//- (void)drawDashLineLength:(int)lineLength lineSpacing:(int)lineSpacing lineColor:(UIColor *)lineColor
 - (void)drawDashLine
 {
     CAShapeLayer *shapeLayer = [CAShapeLayer layer];
     [shapeLayer setBounds:self.bounds];
     [shapeLayer setPosition:CGPointMake(CGRectGetWidth(self.frame) / 2, CGRectGetHeight(self.frame))];
     [shapeLayer setFillColor:[UIColor clearColor].CGColor];
-    //  设置虚线颜色
     [shapeLayer setStrokeColor:COLOR(@"D4D4D4").CGColor];
-    //  设置虚线宽度
     [shapeLayer setLineWidth:CGRectGetHeight(self.frame)];
     [shapeLayer setLineJoin:kCALineJoinRound];
-    //  设置线宽，线间距
     [shapeLayer setLineDashPattern:[NSArray arrayWithObjects:[NSNumber numberWithInt:3], [NSNumber numberWithInt:2], nil]];
-    //  设置路径
     CGMutablePathRef path = CGPathCreateMutable();
     CGPathMoveToPoint(path, NULL, 0, 0);
     CGPathAddLineToPoint(path, NULL,CGRectGetWidth(self.frame), 0);
     [shapeLayer setPath:path];
     CGPathRelease(path);
-    //  把绘制好的虚线添加上来
     [self.layer addSublayer:shapeLayer];
 }
-// UIView 分开设置边框
+// UIView Set borders separately
 - (void)setViewBorder:(UIView *)view color:(UIColor *)color border:(float)border type:(UIViewBorderLineType)borderLineType
 {
     CALayer *lineLayer = [CALayer layer];

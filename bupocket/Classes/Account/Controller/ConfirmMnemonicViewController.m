@@ -12,11 +12,8 @@
 
 @property (nonatomic, strong) UIScrollView * scrollView;
 @property (nonatomic, strong) UIView * mnemonicBg;
-/** 所有的标签 */
 @property (nonatomic, strong) NSMutableArray * tagArray;
-/** 所有的标签按钮 */
 @property (nonatomic, strong) NSMutableArray * tagButtons;
-/** 随机数组 */
 @property (nonatomic, strong) NSArray * randomArray;
 @property (nonatomic, strong) UIButton * finish;
 
@@ -51,7 +48,7 @@
 - (void)skipAction
 {
     NSUserDefaults * defaults = [NSUserDefaults standardUserDefaults];
-    [defaults setBool:YES forKey:ifSkip];
+    [defaults setBool:YES forKey:If_Skip];
     [defaults synchronize];
     [UIApplication sharedApplication].keyWindow.rootViewController = [[TabBarViewController alloc] init];
 }
@@ -59,12 +56,8 @@
 {
     self.scrollView = [[UIScrollView alloc] initWithFrame:CGRectMake(0, 0, DEVICE_WIDTH, DEVICE_HEIGHT)];
     self.scrollView.contentInset = UIEdgeInsetsMake(0, 0, SafeAreaBottomH + NavBarH + Margin_10, 0);
-    //    self.scrollView.scrollsToTop = NO;
-    //    self.scrollView.delegate = self;
     self.scrollView.keyboardDismissMode = UIScrollViewKeyboardDismissModeOnDrag;
     [self.view addSubview:self.scrollView];
-    //    self.noDataBtn = [Encapsulation showNoDataWithSuperView:self.view frame:self.view.frame];
-    //    self.noNetWork = [Encapsulation showNoNetWorkWithSuperView:self.view frame:self.view.frame target:self action:@selector(getDataWithtxt_text:pageindex:)];
     UILabel * confirmPrompt = [[UILabel alloc] init];
     confirmPrompt.font = TITLE_FONT;
     confirmPrompt.textColor = COLOR_9;
@@ -108,9 +101,10 @@
     CGFloat tagH = Margin_40;
     CGFloat tagBgH = Margin_20 + (tagH + Margin_10) * (self.randomArray.count / 4) +  MAIN_HEIGHT;
     for (NSInteger i = 0; i < self.randomArray.count; i ++) {
-        UIButton * tagBtn = [UIButton createButtonWithTitle:self.randomArray[i] TextFont:14 TextNormalColor:MAIN_COLOR TextSelectedColor:[UIColor whiteColor] NormalImage:nil SelectedImage:nil Target:self Selector:@selector(tagAction:)];
+        UIButton * tagBtn = [UIButton createButtonWithTitle:self.randomArray[i] TextFont:14 TextColor:MAIN_COLOR Target:self Selector:@selector(tagAction:)];
+        [tagBtn setTitleColor:[UIColor whiteColor] forState:UIControlStateSelected];
         tagBtn.backgroundColor = VIEWBG_COLOR;
-        tagBtn.layer.cornerRadius = TAG_FILLET;
+        tagBtn.layer.cornerRadius = TAG_CORNER;
         tagBtn.tag = i;
         [self.scrollView addSubview:tagBtn];
         [tagBtn mas_makeConstraints:^(MASConstraintMaker *make) {
@@ -185,7 +179,7 @@
 - (void)finishedAction
 {
     NSUserDefaults * defaults = [NSUserDefaults standardUserDefaults];
-    [defaults setBool:YES forKey:ifBackup];
+    [defaults setBool:YES forKey:If_Backup];
     [defaults synchronize];
     [UIApplication sharedApplication].keyWindow.rootViewController = [[TabBarViewController alloc] init];
 }

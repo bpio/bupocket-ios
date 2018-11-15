@@ -9,39 +9,48 @@
 #ifndef Constant_h
 #define Constant_h
 
-#define NotFirst @"notFirst"
-// 是否已创建身份
-#define ifCreated @"ifCreated"
-// 是否已成功备份助记词
-#define ifBackup @"ifBackup"
-// 是否跳过备份
-#define ifSkip @"ifSkip"
+//#define NotFirst @"notFirst"
+// Identity creation
+#define If_Created @"ifCreated"
+// Successful backup of memorizing words
+#define If_Backup @"ifBackup"
+// skip the backup
+#define If_Skip @"ifSkip"
+#define If_Switch_TestNetwork @"ifSwitchTestNetwork"
+// Language key
+#define AppLanguage @"appLanguage"
+#define ZhHans @"zh-Hans"
+#define EN @"en"
+// Network request timeout limit time
+#define Timeout_Interval 30.0
+// Add assets
+#define Add_Assets @"AddAssets"
+#define Add_Assets_Test @"AddAssetsTest"
 
-// 添加资产数组
-#define AddAssets @"AddAssets"
-
-// 分页数据条数
+#define PageIndex_Default 1
 #define PageSize_Max 10
-// 助记词个数
+#define Success_Code 0
+// Number of mnemonic words
 #define NumberOf_MnemonicWords 12
-// 随机数长度
+// Random number length
 #define Random_Length 16
-
-// 登记费用
+// Estimated registration fees
 #define Registered_CostBU @"0.02 BU"
 #define Registered_Cost 0.02
-// 发行费用
+// Estimated issuance cost
 #define Distribution_CostBU @"50.01 BU"
 #define Distribution_Cost 50.01
-// 转账支付费用
+// Transfer payment expenses
 #define TransactionCost_MIN 0.01
 #define TransactionCost_MAX 10
 // 转账发送数量
 //#define SendingQuantity_MIN 0.00000001
 //#define SendingQuantity_MAX 10000
-// 身份名和密码最大长度、交易备注长度、意见反馈练习方式长度
+// Maximum length of ID and password / Transaction memo length / Length of feedback contact mode
 #define MAX_LENGTH 20
-// 意见反馈内容
+// Cycle query transaction state maximum number
+#define Maximum_Number 20
+// Feedback content
 #define SuggestionsContent_MAX 100
 // ATP
 #define ATP_Version @"1.0"

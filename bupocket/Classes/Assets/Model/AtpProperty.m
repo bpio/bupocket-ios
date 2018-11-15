@@ -10,7 +10,7 @@
 
 @implementation AtpProperty
 
-+ (NSDictionary *)replacedKeyFromPropertyName{
++ (NSDictionary *)replacedKeyFromPropertyName {
     return @{@"Description":@"description"};
 }
 

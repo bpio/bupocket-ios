@@ -17,17 +17,10 @@
 @property (nonatomic, strong) UIView * lineView;
 @property (nonatomic, strong) UIButton * submission;
 
-//@property (nonatomic, strong) UILabel * ReciprocalAccount;
-//@property (nonatomic, strong) UILabel * account;
-//@property (nonatomic, strong) UILabel * amountOfTransfer;
-//@property (nonatomic, strong) UILabel * amount;
-//@property (nonatomic, strong) UILabel * estimatedMaximum;
-
 @end
 
 @implementation TransferDetailsAlertView
 
-//- (instancetype)initWithReciprocalAccount:(NSString *)reciprocalAccount amountOfTransfer:(NSString *)amountOfTransfer estimatedMaximum:(NSString *)estimatedMaximum remarks:(NSString *)remarks confrimBolck:(nonnull void (^)(void))confrimBlock cancelBlock:(nonnull void (^)(void))cancelBlock
 - (instancetype)initWithTransferInfoArray:(NSArray *)transferInfoArray confrimBolck:(nonnull void (^)(void))confrimBlock cancelBlock:(nonnull void (^)(void))cancelBlock
 {
     self = [super init];
@@ -46,18 +39,10 @@
     [self addSubview:self.confirmationOfTransfer];
     [self addSubview:self.transferPrompt];
     [self addSubview:self.lineView];
-    //    NSArray * array = @[@[@"对方账户（BU地址） *", @"转账数量（BU） *", @"备注 ", @"预估最多支付费用（BU) *"], @[@"请输入手机号/接收方地址", @"单笔不可超过10000 BU", @"请输入备注", @"请输交易费用"]];
     for (NSInteger i = 0; i < [[_transferInfoArray firstObject] count]; i ++) {
-//        if (i == [[_transferInfoArray firstObject] count] - 1) {
-//            NSString * str = [[_transferInfoArray firstObject] count] != [[_transferInfoArray lastObject] count] ? @"" : _transferInfoArray[1][i];
-//            [self setUpTransferInfoWithTitle:_transferInfoArray[0][i] info:str index:i];
-//        } else {
-//        }
         [self setUpTransferInfoWithIndex:i];
     }
     [self addSubview:self.submission];
-    
-    //    CGFloat height = [Encapsulation rectWithText:Localized(@"PurseCipherPrompt") fontSize:15 textWidth:DEVICE_WIDTH - ScreenScale(110)].size.height + ScreenScale(255);
     self.frame = CGRectMake(0, DEVICE_HEIGHT - ScreenScale(440) - SafeAreaBottomH, DEVICE_WIDTH, ScreenScale(440));
 }
 
@@ -70,10 +55,10 @@
     infoLabel.numberOfLines = 0;
     infoLabel.textAlignment = NSTextAlignmentRight;
     [self addSubview:infoLabel];
-    infoLabel.preferredMaxLayoutWidth = ScreenScale(205);
+    infoLabel.preferredMaxLayoutWidth = ScreenScale(150);
     [infoLabel mas_makeConstraints:^(MASConstraintMaker *make) {
         make.bottom.equalTo(self.mas_bottom).offset(-ScreenScale(245) + Margin_40 * index);
-        make.right.equalTo(self.mas_right).offset(-ScreenScale(22));
+        make.right.equalTo(self.mas_right).offset(-Margin_20);
     }];
     
     UILabel * titleLabel = [[UILabel alloc] init];
@@ -83,7 +68,7 @@
     [self addSubview:titleLabel];
     [titleLabel mas_makeConstraints:^(MASConstraintMaker *make) {
         make.top.equalTo(infoLabel);
-        make.left.equalTo(self.mas_left).offset(ScreenScale(22));
+        make.left.equalTo(self.mas_left).offset(Margin_20);
     }];
     
 }
@@ -116,7 +101,6 @@
     [self.lineView mas_makeConstraints:^(MASConstraintMaker *make) {
         make.left.right.equalTo(self.transferPrompt);
         make.top.equalTo(self.transferPrompt.mas_bottom).offset(Margin_30);
-        //        make.height.mas_equalTo(ScreenScale(1.5));
     }];
     
     [self.submission mas_makeConstraints:^(MASConstraintMaker *make) {
@@ -167,7 +151,6 @@
 {
     if (!_submission) {
         _submission = [UIButton createButtonWithTitle:Localized(@"Submission") isEnabled:YES Target:self Selector:@selector(submissionClick)];
-//        [_submission setViewSize:CGSizeMake(DEVICE_WIDTH - Margin_40, MAIN_HEIGHT) borderWidth:0 borderColor:nil borderRadius:MAIN_CORNER];
     }
     return _submission;
 }

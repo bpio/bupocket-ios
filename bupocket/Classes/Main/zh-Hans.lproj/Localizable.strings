@@ -5,10 +5,14 @@
   Created by bupocket on 2018/10/17.
   Copyright © 2018年 bupocket. All rights reserved.
 */
+"LaunchTitle" = "小布口袋";
+"LaunchBriefIntroduction" = "泛在价值流通区块链网络";
 "NoNetWork" = "您的网络好像不太给力，请稍后再试";
 "Reload" = "重新加载";
 "MyTitle" = "我的";//等号左边为代码中需要调用的key，右边为对应的中文文本value。
 "AssetsTitle" = "资产";
+"VersionUpdate" = "版本更新";
+"UpdateVersion" = "更新版本";
 // 身份
 "CreateDigitalIdentity" = "创建数字身份";
 "ImmediateCreation" = "立即创建";
@@ -30,18 +34,19 @@
 "Confirm" = "确认";
 "Cancel" = "取消";
 // 恢复身份
-"newWalletName" = "请输入新钱包名";
+"newIdentityName" = "请输入新身份名";
 "MnemonicPrompt" = "输入助记词，用空格分割";
-"ConfirmRecoveryID" = "是否确认更新密码及导入钱包？";
+"ConfirmRecoveryID" = "是否确认更新密码及导入身份？";
+"Restore" = "恢复";
 // 备份
 "BackUpPurse" = "备份钱包";
 "BackupInformation" = "没有妥善备份就无法保障资产安全，删除程序或钱包后，你需要备份文件来恢复钱包";
 "BackupPrompt" = "请确保在四周无人，没有摄像头的安全环境下备份。";
 "TemporaryBackup" = "暂不备份";
 "BackupMnemonics" = "备份助记词";
-"PurseCipherConfirm" = "密码确认";
-"PurseCipherPrompt" = "请填写钱包密码以确认备份";
-"PurseCipherWarning" = "警告：若未妥善备份，退出后将无法找回钱包，请慎重处理该操作";
+"IdentityCipherConfirm" = "密码确认";
+"IdentityCipherPrompt" = "请填写身份密码以确认备份";
+"IdentityCipherWarning" = "警告：若未妥善备份，退出后将无法找回身份，请慎重处理该操作";
 "PWPlaceholder" = "8-20个字符，且内容仅限字母和数字";
 "NoScreenshot" = "请勿截图";
 "MnemonicsPrompt" = "泄露助记词将导致资产丢失，请抄写下助记词并存放在安全的地方。";
@@ -52,18 +57,21 @@
 "Skip" = "跳过";
 "Finished" = "完成";
 // 我的
+"Setting" = "设置";
 "ModifyPassword" = "修改密码";
 "Feedback" = "帮助与反馈";
 "MultiLingual" = "多语言";
 "VersionNumber" = "版本号";
 "Save" = "保存";
+"MonetaryUnit" = "货币单位";
+"SwitchedNetwork" = "切换测试网";
 // 我的身份
 "MyIdentity" = "我的身份";
 "IdentityNameTitle" = "身份名";
 "IdentityIDTitle" = "身份ID";
 "BackupIdentity" = "备份身份";
 "ExitCurrentIdentity" = "退出当前身份";
-"ExitCurrentIdentityPrompt" = "即将移除身份及所有已导入的钱包，请确保所有钱包已备份";
+"ExitCurrentIdentityPrompt" = "即将移除身份，请确保身份已备份";
 // 修改密码
 "OldPassword" = "旧密码";
 "NewPassword" = "新密码";
@@ -75,6 +83,17 @@
 "YourContact" = "您的联系方式";
 "PleaseEnterQOrS" = "请输入您遇到的问题或建议";
 "PleaseEnterContact" = "请输入您的联系方式";
+// 多语言
+"Multilingual" = "多语言";
+"SimplifiedChinese" = "简体中文";
+"English" = "English";
+// 切换网络
+"SwitchToTestNetwork" = "是否切换为测试网？";
+"YES" = "是";
+"NO" = "否";
+"ClosedTestNetwork" = "您已关闭测试网";
+"OpenedTestNetwork" = "您已开启测试网";
+"TestNetworkPrompt" = "当前为测试网环境";
 
 // 资产
 "TotalAssets" = "总资产（¥）";
@@ -111,6 +130,7 @@
 "estimatedMaximum" = "预估最多支付费用";
 "TransactionCostPlaceholder" = "请输交易费用";
 "Next" = "下一步";
+"TransactionIdentityCipherPrompt" = "请填写身份密码以确认转出";
 "ConfirmationOfTransfer" = "确认转账";
 "TransferPrompt" = "请确认转账信息是否有误";
 "Submission" = "提交";
@@ -132,6 +152,7 @@
 "ConfirmationOfRegisteredAssets" = "登记资产确认";
 "ConfirmRegistrationInformation" = "请确认以下登记资产信息";
 "ConfirmationOfRegistration" = "确认登记";
+"RegistrationIdentityCipherPrompt" = "请填写身份密码以确认登记";
 "RegisteredAssetsDetail" = "资产登记详情";
 "RegistrationSuccess" = "登记成功";
 "RegistrationFailure" = "登记失败";
@@ -144,6 +165,7 @@
 // 发行资产确认
 "IssueAssetsConfirmation" = "发行资产确认";
 "ConfirmAssetInformation" = "请确认以下发行资产信息";
+"IssueIdentityCipherPrompt" = "请填写身份密码以确认登记";
 "TokenName" = "资产名称";
 "TokenCode" = "资产代码";
 "TheIssueVolume" = "本次发行量";
@@ -221,6 +243,9 @@
 "ContactOverlength" = "联系方式内容过长，不能超过20个字";
 "SubmissionOfSuccess" = "提交成功";
 
+// 错误信息
+"LoadFailure" = "加载失败";
+"SYSTEM_ERROR" = "系统错误";
 
 
 

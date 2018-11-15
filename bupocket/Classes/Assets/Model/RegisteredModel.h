@@ -18,9 +18,7 @@ NS_ASSUME_NONNULL_BEGIN
 @property (nonatomic, assign) NSInteger decimals;
 @property (nonatomic, copy) NSString * desc;
 
-//@property (nonatomic, copy) NSString * version;
 
-//@property (nonatomic, assign) NSInteger type;
 @property (nonatomic, copy) NSString * transactionHash;
 @property (nonatomic, copy) NSString * registeredFee;
 

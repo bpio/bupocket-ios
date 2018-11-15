@@ -13,8 +13,6 @@ NS_ASSUME_NONNULL_BEGIN
 
 @interface DistributionOfAssetsViewController : BaseViewController
 
-//@property (nonatomic, strong) NSDictionary * scanDic;
-//@property (nonatomic, strong) NSDictionary * assetsDic;
 @property (nonatomic, strong) RegisteredModel * registeredModel;
 @property (nonatomic, strong) DistributionModel * distributionModel;
 @property (nonatomic, copy) NSString * uuid;

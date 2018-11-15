@@ -24,6 +24,8 @@
 @property (nonatomic, strong) UILabel * availableBalance;
 
 @property (nonatomic, strong) NSMutableArray * transferInfoArray;
+@property (nonatomic, assign) BOOL isCorrectText;
+//@property (nonatomic, assign) BOOL isSufficientBalance;
 
 @end
 
@@ -46,29 +48,16 @@
 - (void)viewWillAppear:(BOOL)animated
 {
     [super viewWillAppear:animated];
+    __weak typeof(self) weakSelf = self;
     NSOperationQueue * queue = [[NSOperationQueue alloc] init];
     [queue addOperationWithBlock:^{
         double amount = [Tools MO2BU:[[HTTPManager shareManager] getDataWithBalanceJudgmentWithCost:0 ifShowLoading:NO]];
+        NSNumber * nsAmount = @(amount);
         [[NSOperationQueue mainQueue] addOperationWithBlock:^{
-            self.availableBalance.attributedText = [Encapsulation attrWithString:[NSString stringWithFormat:@"%@\n%f BU", Localized(@"AvailableBalance"), amount] preFont:FONT(12) preColor:COLOR_6 index:4 sufFont:FONT(12) sufColor:MAIN_COLOR lineSpacing:10];
-            self.availableBalance.textAlignment = NSTextAlignmentRight;
+            weakSelf.availableBalance.attributedText = [Encapsulation attrWithString:[NSString stringWithFormat:@"%@\n%@ BU", Localized(@"AvailableBalance"), nsAmount] preFont:FONT(12) preColor:COLOR_6 index:[Localized(@"AvailableBalance") length] sufFont:FONT(12) sufColor:MAIN_COLOR lineSpacing:Margin_5];
+            weakSelf.availableBalance.textAlignment = NSTextAlignmentRight;
         }];
     }];
-    /*
-    __block double amount;
-    dispatch_group_t group = dispatch_group_create();
-    dispatch_queue_t queue = dispatch_get_global_queue(0, 0);
-     dispatch_group_async(group, queue, ^{
-        amount = [Tools MO2BU:[[HTTPManager shareManager] getDataWithBalanceJudgmentWithCost:0]];
-    });
-
-    dispatch_group_notify(group, dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_DEFAULT, 0), ^{
-        dispatch_async(dispatch_get_main_queue(), ^{
-            self.availableBalance.attributedText = [Encapsulation attrWithString:[NSString stringWithFormat:@"%@\n%f BU", Localized(@"AvailableBalance"), amount] preFont:FONT(12) preColor:COLOR_6 index:4 sufFont:FONT(12) sufColor:MAIN_COLOR lineSpacing:10];
-            self.availableBalance.textAlignment = NSTextAlignmentRight;
-        });
-    });
-*/
 }
 - (void)setupView
 {
@@ -77,11 +66,8 @@
     self.scrollView = [[UIScrollView alloc] initWithFrame:CGRectMake(0, 0, DEVICE_WIDTH, DEVICE_HEIGHT)];
     self.scrollView.contentInset = UIEdgeInsetsMake(0, 0, SafeAreaBottomH + NavBarH + Margin_10, 0);
     self.scrollView.keyboardDismissMode = UIScrollViewKeyboardDismissModeOnDrag;
-    //    self.scrollView.scrollsToTop = NO;
-    //    self.scrollView.delegate = self;
     [self.view addSubview:self.scrollView];
     NSArray * array = @[@[Localized(@"ReciprocalAccount"), Localized(@"AmountOfTransfer"), Localized(@"Remarks"), Localized(@"EstimatedMaximum")], @[Localized(@"PhoneOrAddress"), Localized(@"AmountOfTransferPlaceholder"), Localized(@"RemarksPlaceholder"), Localized(@"TransactionCostPlaceholder")]];
-//    NSArray * array = @[@[@"对方账户（BU地址） *", @"转账数量（BU） *", @"备注 ", @"预估最多支付费用（BU) *"], @[@"请输入手机号/接收方地址", @"单笔不可超过10000 BU", @"请输入备注", @"请输交易费用"]];
     for (NSInteger i = 0; i < 4; i++) {
         UIView * TAView = [self setViewWithTitle:[array firstObject][i] placeholder:[array lastObject][i] index:i];
         [self.scrollView addSubview:TAView];
@@ -110,54 +96,81 @@
 }
 - (void)nextAction
 {
-    if (![Keypair isAddressValid: self.amountOfTransfer.text]) {
-        [MBProgressHUD showTipMessageInWindow:Localized(@"BUAddressIsIncorrect")];
-        return;
-    }
-    double sendingQuantity = [self.mostOnce.text doubleValue];
-    RegexPatternTool * regex = [[RegexPatternTool alloc] init];
-    if ([regex validateIsPositiveFloatingPoint:self.mostOnce.text] == NO) {
-        [MBProgressHUD showTipMessageInWindow:Localized(@"SendingQuantityIsIncorrect")];
-        return;
-    }
-    /*
-     else if (sendingQuantity < SendingQuantity_MIN) {
-        [MBProgressHUD showTipMessageInWindow:Localized(@"SendingQuantityMin")];
-        return;
-    } else if (sendingQuantity > SendingQuantity_MAX) {
-        [MBProgressHUD showTipMessageInWindow:Localized(@"SendingQuantityMax")];
-        return;
-    }
-     */
-    if (_remarks.text.length > MAX_LENGTH) {
-        [MBProgressHUD showTipMessageInWindow:Localized(@"ExtraLongNotes")];
-        return;
-    }
-    double cost = [self.transactionCosts.text doubleValue];
-    if ([regex validateIsPositiveFloatingPoint:self.transactionCosts.text] == NO) {
-        [MBProgressHUD showTipMessageInWindow:Localized(@"TransactionCostIsIncorrect")];
-        return;
-    } else if (cost < TransactionCost_MIN) {
-        [MBProgressHUD showTipMessageInWindow:Localized(@"TransactionCostMin")];
-        return;
-    } else if (cost > TransactionCost_MAX) {
-        [MBProgressHUD showTipMessageInWindow:Localized(@"TransactionCostMax")];
-        return;
-    }
-    int64_t amount = [[HTTPManager shareManager] getDataWithBalanceJudgmentWithCost:sendingQuantity + cost ifShowLoading:YES];
-    if (amount < 0) {
-        [MBProgressHUD showTipMessageInWindow:Localized(@"NotSufficientFunds")];
-        return;
-    }
-    
-    self.transferInfoArray = [NSMutableArray arrayWithObjects:self.amountOfTransfer.text, [NSString stringAppendingBUWithStr:self.mostOnce.text], [NSString stringAppendingBUWithStr:self.transactionCosts.text], nil];
-    if ([_remarks hasText]) {
-        [self.transferInfoArray addObject:_remarks.text];
-    }
+    [self DataJudgment];
+}
+- (void)DataJudgment
+{
+    [MBProgressHUD showActivityMessageInWindow:Localized(@"Loading")];
+    __weak typeof(self) weakSelf = self;
+    __block NSString * amountOfTransfer = self.amountOfTransfer.text;
+    __block double sendingQuantity = [self.mostOnce.text doubleValue];
+    __block double cost = [self.transactionCosts.text doubleValue];
+    dispatch_group_t group = dispatch_group_create();
+    dispatch_group_enter(group);
+    BOOL isCorrectAddress = [Keypair isAddressValid: amountOfTransfer];
+    dispatch_async(dispatch_get_main_queue(), ^{
+        if (!isCorrectAddress) {
+            [MBProgressHUD hideHUD];
+            [MBProgressHUD showTipMessageInWindow:Localized(@"BUAddressIsIncorrect")];
+            return;
+        }
+        RegexPatternTool * regex = [[RegexPatternTool alloc] init];
+        if ([regex validateIsPositiveFloatingPoint:weakSelf.mostOnce.text] == NO) {
+            [MBProgressHUD hideHUD];
+            [MBProgressHUD showTipMessageInWindow:Localized(@"SendingQuantityIsIncorrect")];
+            return;
+        }
+        if (weakSelf.remarks.text.length > MAX_LENGTH) {
+            [MBProgressHUD hideHUD];
+            [MBProgressHUD showTipMessageInWindow:Localized(@"ExtraLongNotes")];
+            return;
+        }
+        if ([regex validateIsPositiveFloatingPoint:weakSelf.transactionCosts.text] == NO) {
+            [MBProgressHUD hideHUD];
+            [MBProgressHUD showTipMessageInWindow:Localized(@"TransactionCostIsIncorrect")];
+            return;
+        } else if (cost < TransactionCost_MIN) {
+            [MBProgressHUD hideHUD];
+            [MBProgressHUD showTipMessageInWindow:Localized(@"TransactionCostMin")];
+            return;
+        } else if (cost > TransactionCost_MAX) {
+            [MBProgressHUD hideHUD];
+            [MBProgressHUD showTipMessageInWindow:Localized(@"TransactionCostMax")];
+            return;
+        }
+        weakSelf.isCorrectText = YES;
+        dispatch_group_leave(group);
+    });
+    dispatch_group_notify(group, dispatch_get_main_queue(), ^{
+        if (weakSelf.isCorrectText == YES) {
+            dispatch_async(dispatch_get_main_queue(), ^{
+                [MBProgressHUD showActivityMessageInWindow:Localized(@"Loading")];
+            });
+            int64_t amount = [[HTTPManager shareManager] getDataWithBalanceJudgmentWithCost:sendingQuantity + cost ifShowLoading:YES];
+            dispatch_async(dispatch_get_main_queue(), ^{
+                if (amount < 0) {
+                    [MBProgressHUD hideHUD];
+                    [MBProgressHUD showTipMessageInWindow:Localized(@"NotSufficientFunds")];
+                    return;
+                }
+                [MBProgressHUD hideHUD];
+                weakSelf.transferInfoArray = [NSMutableArray arrayWithObjects:amountOfTransfer, [NSString stringAppendingBUWithStr:weakSelf.mostOnce.text], [NSString stringAppendingBUWithStr:weakSelf.transactionCosts.text], nil];
+                if ([weakSelf.remarks hasText]) {
+                    [weakSelf.transferInfoArray addObject:weakSelf.remarks.text];
+                }
+                [weakSelf showTransferInfo];
+            });
+        }
+        
+    });
+}
+- (void)showTransferInfo
+{
+    __weak typeof(self) weakSelf = self;
     TransferDetailsAlertView * transferDetailsAlertView = [[TransferDetailsAlertView alloc] initWithTransferInfoArray:self.transferInfoArray confrimBolck:^{
         dispatch_after(dispatch_time(DISPATCH_TIME_NOW, (int64_t)(0.5 * NSEC_PER_SEC)), dispatch_get_main_queue(), ^{
-            PurseCipherAlertView * alertView = [[PurseCipherAlertView alloc] initWithType:PurseCipherNormalType confrimBolck:^(NSString * _Nonnull password) {
-                [self getDataWithPassword:password];
+            PurseCipherAlertView * alertView = [[PurseCipherAlertView alloc] initWithPrompt:Localized(@"TransactionIdentityCipherPrompt") confrimBolck:^(NSString * _Nonnull password, NSArray * _Nonnull words) {
+                [weakSelf getDataWithPassword:password];
             } cancelBlock:^{
                 
             }];
@@ -169,24 +182,20 @@
     [transferDetailsAlertView showInWindowWithMode:CustomAnimationModeShare inView:nil bgAlpha:0.2 needEffectView:NO];
 }
 
-// 转账数据解析
 - (void)getDataWithPassword:(NSString *)password
 {
     [[HTTPManager shareManager] setTransferDataWithPassword:password destAddress:_amountOfTransfer.text BUAmount:_mostOnce.text feeLimit:_transactionCosts.text notes:_remarks.text success:^(TransactionResultModel *resultModel) {
         [self.transferInfoArray addObject:[DateTool getDateStringWithTimeStr:[NSString stringWithFormat:@"%lld", resultModel.transactionTime]]];
-        // 交易成功、失败
         TransferResultsViewController * VC = [[TransferResultsViewController alloc] init];
-        if (resultModel.errorCode == 0) { // 成功
+        if (resultModel.errorCode == Success_Code) {
             VC.state = YES;
         } else {
-            // 直接失败
             VC.state = NO;
-            [MBProgressHUD showTipMessageInWindow:resultModel.errorDesc];
+            [MBProgressHUD showTipMessageInWindow:[ErrorTypeTool getDescription:resultModel.errorCode]];
         }
         VC.transferInfoArray = self.transferInfoArray;
         [self.navigationController pushViewController:VC animated:YES];
     } failure:^(TransactionResultModel *resultModel) {
-        // 请求超时
         RequestTimeoutViewController * VC = [[RequestTimeoutViewController alloc] init];
         [self.navigationController pushViewController:VC animated:YES];
     }];
@@ -213,8 +222,6 @@
     [textField mas_makeConstraints:^(MASConstraintMaker *make) {
         make.top.equalTo(header.mas_bottom).offset(Margin_5);
         make.left.right.equalTo(header);
-//        make.left.equalTo(viewBg.mas_left).offset(Margin_25);
-//        make.right.equalTo(viewBg.mas_right).offset(-Margin_25);
         make.height.mas_equalTo(Margin_40);
     }];
     UIView * lineView = [[UIView alloc] init];
@@ -230,7 +237,7 @@
         if (self.address.length > 0) {
             self.amountOfTransfer.text = self.address;
         }
-        UIButton * scan = [UIButton createButtonWithNormalImage:@"TransferAccounts_scan" SelectedImage:@"TransferAccounts_scan" Target:self Selector:@selector(scanAction)];
+        UIButton * scan = [UIButton createButtonWithNormalImage:@"transferAccounts_scan" SelectedImage:@"transferAccounts_scan" Target:self Selector:@selector(scanAction)];
         scan.contentHorizontalAlignment = UIControlContentHorizontalAlignmentRight;
         scan.bounds = CGRectMake(0, 0, Margin_30, Margin_40);
         textField.rightViewMode = UITextFieldViewModeAlways;
@@ -240,8 +247,7 @@
         self.availableBalance = [[UILabel alloc] init];
         self.availableBalance.numberOfLines = 0;
         [header addSubview:self.availableBalance];
-//        double amount = [Tools MO2BU:[[HTTPManager shareManager] getDataWithBalanceJudgmentWithCost:0]];
-        self.availableBalance.attributedText = [Encapsulation attrWithString:[NSString stringWithFormat:@"%@\n0 BU", Localized(@"AvailableBalance")] preFont:FONT(12) preColor:COLOR_6 index:4 sufFont:FONT(12) sufColor:MAIN_COLOR lineSpacing:10];
+        self.availableBalance.attributedText = [Encapsulation attrWithString:[NSString stringWithFormat:@"%@\n0 BU", Localized(@"AvailableBalance")] preFont:FONT(12) preColor:COLOR_6 index:[Localized(@"AvailableBalance") length] sufFont:FONT(12) sufColor:MAIN_COLOR lineSpacing:Margin_5];
         self.availableBalance.textAlignment = NSTextAlignmentRight;
         [self.availableBalance mas_makeConstraints:^(MASConstraintMaker *make) {
             make.right.top.equalTo(header);

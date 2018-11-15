@@ -10,14 +10,17 @@
 
 NS_ASSUME_NONNULL_BEGIN
 
+typedef NS_ENUM(NSInteger, ResultSate) {
+    ResultSateSuccess,
+    ResultSateFailure,
+    ResultSateOvertime
+};
+
 @interface RegisteredResultViewController : BaseViewController
 
-// 0 成功 1 失败 2 超时
-@property (nonatomic, assign) NSInteger state;
-//@property (nonatomic, strong) NSDictionary * scanDic;
+@property (nonatomic, assign) ResultSate resultSate;
 @property (nonatomic, strong) RegisteredModel * registeredModel;
 @property (nonatomic, strong) NSMutableArray * listArray;
-//@property (nonatomic, strong) NSDictionary * assetsDic;
 
 @end
 

@@ -12,7 +12,6 @@ NS_ASSUME_NONNULL_BEGIN
 
 @interface BlockInfoModel : BaseModel
 
-// 区块信息底层参数
 @property (nonatomic, copy) NSString * closeTimeDate;
 @property (nonatomic, copy) NSString * hashStr;
 @property (nonatomic, copy) NSString * previousHash;

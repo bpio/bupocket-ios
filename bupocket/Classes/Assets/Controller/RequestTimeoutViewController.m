@@ -20,15 +20,6 @@
     [self popToRootVC];
     // Do any additional setup after loading the view.
 }
-- (void)viewWillAppear:(BOOL)animated
-{
-    [super viewWillAppear:animated];
-    if (@available(iOS 11.0, *)) {
-        [self.navigationController.navigationBar setPrefersLargeTitles:NO];
-    } else {
-        // Fallback on earlier versions
-    }
-}
 - (void)setupView
 {
     CustomButton * requestTimeout = [[CustomButton alloc] init];
@@ -37,7 +28,7 @@
     // TransferFailure
     [requestTimeout setTitleColor:COLOR_6 forState:UIControlStateNormal];
     requestTimeout.titleLabel.font = FONT(16);
-    [requestTimeout setImage:[UIImage imageNamed:@"RequestTimeout"] forState:UIControlStateNormal];
+    [requestTimeout setImage:[UIImage imageNamed:@"requestTimeout"] forState:UIControlStateNormal];
     [self.view addSubview:requestTimeout];
     [requestTimeout mas_makeConstraints:^(MASConstraintMaker *make) {
         make.top.equalTo(self.view.mas_top).offset(NavBarH);
@@ -46,7 +37,6 @@
     }];
     // IGotIt
     UIButton * gotIt = [UIButton createButtonWithTitle:Localized(@"IGotIt") isEnabled:YES Target:self Selector:@selector(gotItAction)];
-//    [gotIt setViewSize:CGSizeMake(DEVICE_WIDTH - Margin_60, MAIN_HEIGHT) borderWidth:0 borderColor:nil borderRadius:MAIN_CORNER];
     [self.view addSubview:gotIt];
     [gotIt mas_makeConstraints:^(MASConstraintMaker *make) {
         make.top.equalTo(requestTimeout.mas_bottom).offset(Margin_15);

@@ -12,13 +12,12 @@ NS_ASSUME_NONNULL_BEGIN
 
 @interface ListTableViewCell : UITableViewCell
 
-+ (instancetype)cellWithTableView:(UITableView *)tableView;
++ (instancetype)cellWithTableView:(UITableView *)tableView identifier:(NSString *)identifier;
 
 @property (nonatomic, strong) UIImageView * listImage;
 @property (nonatomic, strong) UILabel * title;
 @property (nonatomic, strong) UILabel * detailTitle;
 @property (nonatomic, strong) UIImageView * detailImage;
-//@property (nonatomic, strong) UIView * line;
 
 @end
 

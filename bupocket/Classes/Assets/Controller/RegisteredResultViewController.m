@@ -13,9 +13,6 @@
 
 @property (nonatomic, strong) UITableView * tableView;
 @property (nonatomic, strong) UIView * headerView;
-//@property (nonatomic, strong) NSDictionary * dataDic;
-//@property (nonatomic, strong) NSArray * listArray;
-//@property (nonatomic, strong) NSMutableArray * infoArray;
 
 
 @end
@@ -39,13 +36,11 @@ static NSString * const DistributionDetailCellID = @"DistributionDetailCellID";
     [self setData];
     [self setupView];
     [self popToRootVC];
-    //    [self setupRefresh];
     // Do any additional setup after loading the view.
 }
 
 - (void)setData
 {
-    // 发行成功失败
     NSString * decimal = [NSString stringWithFormat:@"%zd", self.registeredModel.decimals];
     NSString * amount = [NSString stringWithFormat:@"%zd", self.registeredModel.amount];
     NSMutableArray * array = [NSMutableArray arrayWithObjects:@{Localized(@"TokenName"): self.registeredModel.name}, @{Localized(@"TokenCode"): self.registeredModel.code}, @{Localized(@"TokenDecimalDigits"): decimal}, @{Localized(@"ATPVersion"): ATP_Version}, nil];
@@ -59,8 +54,7 @@ static NSString * const DistributionDetailCellID = @"DistributionDetailCellID";
     }
     [self.listArray addObject:array];
     
-    if (self.state != 3) {
-        // 发行超时不显示
+    if (self.resultSate != ResultSateOvertime) {
         NSArray * transactionArray = @[@{Localized(@"ActualTransactionCost"): [NSString stringAppendingBUWithStr:self.registeredModel.registeredFee]}, @{Localized(@"RegisteredAddress"): [AccountTool account].purseAccount}, @{Localized(@"Hash"): self.registeredModel.transactionHash}];
         [self.listArray addObject:transactionArray];
     }
@@ -72,11 +66,7 @@ static NSString * const DistributionDetailCellID = @"DistributionDetailCellID";
     self.tableView.dataSource = self;
     self.tableView.separatorInset = UIEdgeInsetsZero;
     self.tableView.separatorStyle = UITableViewCellSeparatorStyleNone;
-//    self.tableView.contentInset = UIEdgeInsetsMake(NavBarH, 0, SafeAreaBottomH, 0);
-    //    [self.tableView registerClass:[DetailListViewCell class] forCellReuseIdentifier:@"CellID"];
     [self.view addSubview:self.tableView];
-    //    transferResults.bounds = CGRectMake(0, 0, DEVICE_WIDTH, ScreenScale(120));
-    //    transferResults.backgroundColor = [UIColor whiteColor];
     self.tableView.tableHeaderView = self.headerView;
 }
 - (UIView *)headerView
@@ -87,15 +77,14 @@ static NSString * const DistributionDetailCellID = @"DistributionDetailCellID";
         NSString * imageName;
         NSString * result;
         CGFloat headerViewH = ScreenScale(110);
-        // 登记资产确认
-        if (self.state == 0) {
-            imageName = @"AssetsSuccess";
+        if (self.resultSate == ResultSateSuccess) {
+            imageName = @"assetsSuccess";
             result = Localized(@"RegistrationSuccess");
-        } else if (self.state == 1) {
-            imageName = @"AssetsFailure";
+        } else if (self.resultSate == ResultSateFailure) {
+            imageName = @"assetsFailure";
             result = Localized(@"RegistrationFailure");
-        } else if (self.state == 2) {
-            imageName = @"AssetsTimeout";
+        } else if (self.resultSate == ResultSateOvertime) {
+            imageName = @"assetsTimeout";
             result = Localized(@"RegistrationTimeout");
             UILabel * prompt = [[UILabel alloc] init];
             prompt.font = TITLE_FONT;
@@ -120,7 +109,6 @@ static NSString * const DistributionDetailCellID = @"DistributionDetailCellID";
         [state setImage:[UIImage imageNamed:imageName] forState:UIControlStateNormal];
         [headerView addSubview:state];
         [state mas_makeConstraints:^(MASConstraintMaker *make) {
-            //            make.top.equalTo(headerView.mas_top).offset(Margin_25);
             make.top.centerX.equalTo(headerView);
             make.height.mas_equalTo(ScreenScale(110));
         }];

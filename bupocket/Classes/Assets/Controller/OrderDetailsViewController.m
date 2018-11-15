@@ -33,13 +33,6 @@
 static NSString * const DetailListCellID = @"DetailListCellID";
 static NSString * const OrderDetailsCellID = @"OrderDetailsCellID";
 
-//- (NSMutableArray *)infoArray
-//{
-//    if (!_infoArray) {
-//        _infoArray = [NSMutableArray array];
-//    }
-//    return _infoArray;
-//}
 
 - (void)viewDidLoad {
     [super viewDidLoad];
@@ -47,26 +40,21 @@ static NSString * const OrderDetailsCellID = @"OrderDetailsCellID";
     _headerViewH = ScreenScale(200);
     [self setupView];
     [self setupRefresh];
-    self.noNetWork = [Encapsulation showNoNetWorkWithSuperView:self.view target:self action:@selector(loadNewData)];
+    self.noNetWork = [Encapsulation showNoNetWorkWithSuperView:self.view target:self action:@selector(reloadData)];
     // Do any additional setup after loading the view.
 }
-- (void)viewWillAppear:(BOOL)animated
+- (void)reloadData
 {
-    [super viewWillAppear:animated];
-    if (@available(iOS 11.0, *)) {
-        [self.navigationController.navigationBar setPrefersLargeTitles:NO];
-    } else {
-        // Fallback on earlier versions
-    }
+    self.noNetWork.hidden = YES;
+    [self.tableView.mj_header beginRefreshing];
 }
+
 - (void)setupRefresh
 {
     self.tableView.mj_header = [CustomRefreshHeader headerWithRefreshingTarget:self refreshingAction:@selector(loadNewData)];
     self.tableView.mj_header.automaticallyChangeAlpha = YES;
     self.tableView.mj_header.ignoredScrollViewContentInsetTop = _headerViewH;
     [self.tableView.mj_header beginRefreshing];
-    //    self.tableView.mj_footer = [MJRefreshAutoNormalFooter footerWithRefreshingTarget:self refreshingAction:@selector(loadMoreData)];
-    //    self.userTableView.mj_footer.hidden = YES;
 }
 - (void)loadNewData
 {
@@ -75,22 +63,17 @@ static NSString * const OrderDetailsCellID = @"OrderDetailsCellID";
 - (void)loadData
 {
     [[HTTPManager shareManager] getOrderDetailsDataWithHash:self.listModel.txHash success:^(id responseObject) {
-        NSString * message = [responseObject objectForKey:@"msg"];
         NSInteger code = [[responseObject objectForKey:@"errCode"] integerValue];
-        if (code == 0) {
-//            self.tableView.tableHeaderView = self.headerView;
+        if (code == Success_Code) {
             [self.tableView addSubview:self.headerView];
             [self.tableView insertSubview:self.headerView atIndex:0];
             self.blockInfoModel = [BlockInfoModel mj_objectWithKeyValues:responseObject[@"data"][@"blockInfoRespBo"]];
             self.txDetailModel = [TxDetailModel mj_objectWithKeyValues:responseObject[@"data"][@"txDeatilRespBo"]];
             self.txInfoModel = [TxInfoModel mj_objectWithKeyValues:responseObject[@"data"][@"txInfoRespBo"]];
             [self setListData];
-//            self.listArray = [AssetsListModel mj_objectArrayWithKeyValuesArray:responseObject[@"data"] [@"tokenList"]];
-//            NSString * amountStr = responseObject[@"data"][@"totalAmount"];
-//            self.amount.text = [amountStr isEqualToString:@"~"] ? amountStr : [NSString stringWithFormat:@"≈%@", amountStr];
             [self.tableView reloadData];
         } else {
-            [MBProgressHUD showTipMessageInWindow:message];
+            [MBProgressHUD showTipMessageInWindow:[ErrorTypeTool getDescriptionWithErrorCode:code]];
         }
         [self.tableView.mj_header endRefreshing];
         self.noNetWork.hidden = YES;
@@ -103,14 +86,9 @@ static NSString * const OrderDetailsCellID = @"OrderDetailsCellID";
 - (void)setListData
 {
     NSMutableArray * infoTitleArray = [NSMutableArray arrayWithObjects:@"TX Hash", @"Source Address", @"Dest Address", @"Amount", @"TX Fee", @"Ledger Seq", @"Transaction Signature", nil];
-    
-    //
-    // , @"Public Key", @"Singed Data", @"Public Key", @"Singed Data"
     self.infoArray = [NSMutableArray array];
     NSMutableArray * detailArray = [NSMutableArray array];
-    // 转出方地址
     [detailArray addObject:self.txDetailModel.sourceAddress];
-    // 转入方地址
     [detailArray addObject:self.txDetailModel.destAddress];
     [detailArray addObject:[NSString stringAppendingBUWithStr: self.txDetailModel.fee]];
     [detailArray addObject:[DateTool getDateStringWithTimeStr:self.txDetailModel.applyTimeDate]];
@@ -155,10 +133,7 @@ static NSString * const OrderDetailsCellID = @"OrderDetailsCellID";
     self.tableView.separatorInset = UIEdgeInsetsZero;
     self.tableView.separatorStyle = UITableViewCellSeparatorStyleNone;
     self.tableView.contentInset = UIEdgeInsetsMake(_headerViewH, 0, 0, 0);
-//    [self.tableView registerClass:[DetailListViewCell class] forCellReuseIdentifier:@"CellID"];
     [self.view addSubview:self.tableView];
-//    transferResults.bounds = CGRectMake(0, 0, DEVICE_WIDTH, ScreenScale(120));
-//    transferResults.backgroundColor = [UIColor whiteColor];
 }
 - (UIView *)headerView
 {
@@ -168,13 +143,12 @@ static NSString * const OrderDetailsCellID = @"OrderDetailsCellID";
         
         _headerViewBg = [[UIView alloc] initWithFrame:CGRectMake(0, 0, DEVICE_WIDTH, _headerViewH)];
         [headerView addSubview:_headerViewBg];
-        NSString * imageName = (self.listModel.txStatus == 0) ? @"OrderSuccess" : @"OrderFailure";
+        NSString * imageName = (self.listModel.txStatus == 0) ? @"orderSuccess" : @"orderFailure";
         UIImageView * stateImage = [[UIImageView alloc] initWithImage:[UIImage imageNamed:imageName]];
         [self.headerViewBg addSubview:stateImage];
         [stateImage mas_makeConstraints:^(MASConstraintMaker *make) {
             make.top.equalTo(self.headerViewBg.mas_top).offset(Margin_25);
             make.centerX.equalTo(self.headerViewBg);
-//            make.size.mas_equalTo(ScreenScale(75));
         }];
         NSString * outOrIn;
         if (self.listModel.outinType == 0) {
@@ -190,23 +164,7 @@ static NSString * const OrderDetailsCellID = @"OrderDetailsCellID";
         [orderResults mas_makeConstraints:^(MASConstraintMaker *make) {
             make.top.equalTo(stateImage.mas_bottom).offset(ScreenScale(23));
             make.centerX.equalTo(self.headerViewBg);
-            //            make.size.mas_equalTo(ScreenScale(75));
         }];
-//        CustomButton * orderResults = [[CustomButton alloc] init];
-//        orderResults.layoutMode = VerticalNormal;
-//        [orderResults setImage:[UIImage imageNamed:imageName] forState:UIControlStateNormal];
-//        // OrderFailure
-//        [orderResults setTitleColor:TITLE_COLOR forState:UIControlStateNormal];
-//        orderResults.titleLabel.font = FONT_Bold(27);
-        //    [orderResults setAttributedTitle: forState:UIControlStateNormal];
-//        [self.headerViewBg addSubview:orderResults];
-//        [orderResults mas_makeConstraints:^(MASConstraintMaker *make) {
-//            make.top.equalTo(self.headerViewBg.mas_top).offset(ScreenScale(15));
-//            make.centerX.equalTo(self.headerViewBg);
-//            make.height.mas_equalTo(ScreenScale(145));
-//        }];
-//
-//        [orderResults setTitle:assets forState:UIControlStateNormal];
         UILabel * state = [[UILabel alloc] init];
         state.font = TITLE_FONT;
         state.textColor = COLOR_6;
@@ -230,6 +188,7 @@ static NSString * const OrderDetailsCellID = @"OrderDetailsCellID";
         _headerView.y = -_headerViewH;
         _headerView.height = _headerViewH;
     }
+    _headerViewBg.y = _headerView.height - _headerViewH;
 }
 - (CGFloat)tableView:(UITableView *)tableView heightForHeaderInSection:(NSInteger)section
 {
@@ -280,7 +239,6 @@ static NSString * const OrderDetailsCellID = @"OrderDetailsCellID";
             make.left.equalTo(headerBg.mas_left).offset(Margin_10);
             make.right.equalTo(headerBg.mas_right).offset(-Margin_10);
             make.bottom.equalTo(headerBg);
-            //        make.height.mas_equalTo(ScreenScale(1.5));
         }];
         return headerView;
     }

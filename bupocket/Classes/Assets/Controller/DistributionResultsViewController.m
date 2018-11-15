@@ -14,8 +14,6 @@
 @property (nonatomic, strong) UITableView * tableView;
 @property (nonatomic, strong) UIView * headerView;
 @property (nonatomic, strong) NSMutableArray * listArray;
-//@property (nonatomic, strong) NSDictionary * dataDic;
-//@property (nonatomic, strong) NSMutableArray * infoArray;
 
 @end
 
@@ -38,7 +36,6 @@ static NSString * const DistributionDetailCellID = @"DistributionDetailCellID";
     [self setData];
     [self setupView];
     [self popToRootVC];
-//    [self setupRefresh];
     // Do any additional setup after loading the view.
 }
 
@@ -46,35 +43,30 @@ static NSString * const DistributionDetailCellID = @"DistributionDetailCellID";
 {
     NSString * amount = [NSString stringWithFormat:@"%zd", self.registeredModel.amount];
     NSString * decimal  = [NSString stringWithFormat:@"%zd", self.distributionModel.decimals];
-    // 发行成功失败
     NSMutableArray * array = [NSMutableArray arrayWithObjects:@{Localized(@"TokenName"): self.distributionModel.assetName}, @{Localized(@"TokenCode"): self.distributionModel.assetCode}, @{Localized(@"TheIssueVolume"): amount}, @{Localized(@"TokenDecimalDigits"): decimal}, @{Localized(@"ATPVersion"): self.distributionModel.version}, nil];
     if (self.distributionModel.tokenDescription) {
         [array addObject:@{Localized(@"TokenDescription"): self.distributionModel.tokenDescription}];
     }
-    // 累计发行量
     NSString * actualSupply;
-    if (self.state == 0) {
+    if (self.resultSate == ResultSateSuccess) {
         actualSupply = [NSString stringWithFormat:@"%zd", self.registeredModel.amount + [self.distributionModel.actualSupply integerValue]];
-    } else if (self.state == 1) {
+    } else if (self.resultSate == ResultSateFailure) {
         actualSupply = self.distributionModel.actualSupply;
     }
     if ([self.distributionModel.totalSupply longLongValue] == 0) {
-        // 无限制
         [array insertObject:@{Localized(@"TotalAmountOfToken"): Localized(@"UnrestrictedIssue")} atIndex:2];
-        if (self.state != 2) {
+        if (self.resultSate != ResultSateOvertime) {
             [array insertObject:@{Localized(@"CumulativeCirculation"): actualSupply} atIndex:4];
         }
     } else {
         [array insertObject:@{Localized(@"TotalAmountOfToken"): self.distributionModel.totalSupply} atIndex:2];
-        if (self.state != 2) {
-            // 发行超时不显示
+        if (self.resultSate != ResultSateOvertime) {
             NSString * remainingVolume = [NSString stringWithFormat:@"%zd", [self.distributionModel.totalSupply integerValue] - [actualSupply integerValue]];
             [array insertObject:@{Localized(@"RemainingUnissuedVolume"): remainingVolume} atIndex:4];
         }
     }
     [self.listArray addObject:array];
-    if (self.state != 2) {
-        // 发行超时不显示
+    if (self.resultSate != ResultSateOvertime) {
         NSArray * transactionArray = @[@{Localized(@"ActualTransactionCost"): [NSString stringAppendingBUWithStr:self.distributionModel.distributionFee]}, @{Localized(@"IssuerAddress"): [AccountTool account].purseAccount}, @{Localized(@"Hash"): self.distributionModel.transactionHash}];
         [self.listArray addObject:transactionArray];
     }
@@ -87,11 +79,7 @@ static NSString * const DistributionDetailCellID = @"DistributionDetailCellID";
     self.tableView.dataSource = self;
     self.tableView.separatorInset = UIEdgeInsetsZero;
     self.tableView.separatorStyle = UITableViewCellSeparatorStyleNone;
-//    self.tableView.contentInset = UIEdgeInsetsMake(NavBarH, 0, SafeAreaBottomH, 0);
-    //    [self.tableView registerClass:[DetailListViewCell class] forCellReuseIdentifier:@"CellID"];
     [self.view addSubview:self.tableView];
-    //    transferResults.bounds = CGRectMake(0, 0, DEVICE_WIDTH, ScreenScale(120));
-    //    transferResults.backgroundColor = [UIColor whiteColor];
     self.tableView.tableHeaderView = self.headerView;
 }
 - (UIView *)headerView
@@ -102,14 +90,14 @@ static NSString * const DistributionDetailCellID = @"DistributionDetailCellID";
         NSString * imageName;
         NSString * result;
         CGFloat headerViewH = ScreenScale(110);
-        if (self.state == 0) {
-            imageName = @"AssetsSuccess";
+        if (self.resultSate == ResultSateSuccess) {
+            imageName = @"assetsSuccess";
             result = Localized(@"DistributionSuccess");
-        } else if (self.state == 1) {
-            imageName = @"AssetsFailure";
+        } else if (self.resultSate == ResultSateFailure) {
+            imageName = @"assetsFailure";
             result = Localized(@"TransferFailure");
-        } else if (self.state == 2) {
-            imageName = @"AssetsTimeout";
+        } else if (self.resultSate == ResultSateOvertime) {
+            imageName = @"assetsTimeout";
             result = Localized(@"DistributionTimeout");
             UILabel * prompt = [[UILabel alloc] init];
             prompt.font = TITLE_FONT;
@@ -126,12 +114,6 @@ static NSString * const DistributionDetailCellID = @"DistributionDetailCellID";
             headerViewH = ScreenScale(170);
         }
         headerView.frame = CGRectMake(0, 0, DEVICE_WIDTH, headerViewH);
-        
-//        NSString * imageName = (self.listModel.txStatus == 0) ? @"OrderSuccess" : @"OrderFailure";
-//        state.text = (self.listModel.txStatus == 0) ? Localized(@"TransferSuccess") : Localized(@"TransferFailure");
-//        "DistributionSuccess" = "发行成功";
-//        "DistributionFailure" = "发行失败";
-//        "DistributionTimeout" = "发行超时";
         CustomButton * state = [[CustomButton alloc] init];
         state.layoutMode = VerticalNormal;
         state.titleLabel.font = FONT(16);
@@ -140,11 +122,9 @@ static NSString * const DistributionDetailCellID = @"DistributionDetailCellID";
         [state setImage:[UIImage imageNamed:imageName] forState:UIControlStateNormal];
         [headerView addSubview:state];
         [state mas_makeConstraints:^(MASConstraintMaker *make) {
-//            make.top.equalTo(headerView.mas_top).offset(Margin_25);
             make.top.centerX.equalTo(headerView);
             make.height.mas_equalTo(ScreenScale(110));
         }];
-        
         _headerView = headerView;
     }
     return _headerView;

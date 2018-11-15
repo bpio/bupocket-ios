@@ -8,7 +8,7 @@
 
 #import "CreateIdentityViewController.h"
 #import "BackUpPurseViewController.h"
-#import "CreatePromptAlertView.h"
+#import "CreateTipsAlertView.h"
 
 @interface CreateIdentityViewController ()<UITextFieldDelegate>
 
@@ -21,20 +21,19 @@
 
 @implementation CreateIdentityViewController
 
-- (id)initWithNibName:(NSString *)nibNameOrNil bundle:(NSBundle *)nibBundleOrNil
-{
-    self = [super initWithNibName:nibNameOrNil bundle:nibBundleOrNil];
-    if (self) {
-        
-    }
-    return self;
-}
-
 - (void)viewDidLoad
 {
     [super viewDidLoad];
     self.navigationItem.title = Localized(@"CreateIdentity");
     [self setupView];
+    [self showCreateTips];
+}
+- (void)showCreateTips
+{
+    CreateTipsAlertView * alertView = [[CreateTipsAlertView alloc] initWithConfrimBolck:^{
+        
+    }];
+    [alertView showInWindowWithMode:CustomAnimationModeAlert inView:nil bgAlpha:0.2 needEffectView:NO];
 }
 - (void)setupView
 {
@@ -141,20 +140,15 @@
 - (void)viewWillAppear:(BOOL)animated
 {
     [super viewWillAppear:animated];
-    CreatePromptAlertView * alertView = [[CreatePromptAlertView alloc] init];
-    
-    [alertView showInWindowWithMode:CustomAnimationModeAlert inView:nil bgAlpha:0.2 needEffectView:NO];
 }
 - (void)getData
 {
-    //创建比特数组
     NSMutableData *random = [NSMutableData dataWithLength: Random_Length];
-    //生成随机data
     int status = SecRandomCopyBytes(kSecRandomDefault, random.length, random.mutableBytes);
     if (status == 0) {
         [[HTTPManager shareManager] setAccountDataWithRandom:random password:self.identityPassword.text identityName:self.identityName.text success:^(id responseObject) {
             NSUserDefaults * defaults = [NSUserDefaults standardUserDefaults];
-            [defaults setBool:YES forKey:ifCreated];
+            [defaults setBool:YES forKey:If_Created];
             [defaults synchronize];
             BackUpPurseViewController * VC = [[BackUpPurseViewController alloc] init];
             VC.mnemonicArray = responseObject;
@@ -167,8 +161,6 @@
     }
 }
 
-
-//创建事件处理
 - (void)createAction
 {
     if ([RegexPatternTool validateUserName:_identityName.text] == NO) {

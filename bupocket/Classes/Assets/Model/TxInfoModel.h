@@ -12,7 +12,6 @@ NS_ASSUME_NONNULL_BEGIN
 
 @interface TxInfoModel : BaseModel
 
-// 交易信息底层参数
 @property (nonatomic, copy) NSString * amount;
 @property (nonatomic, copy) NSString * sourceAddress;
 @property (nonatomic, copy) NSString * destAddress;

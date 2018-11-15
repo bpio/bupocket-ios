@@ -19,7 +19,6 @@
     textField.leftViewMode = UITextFieldViewModeAlways;
     textField.rightViewMode = UITextFieldViewModeAlways;
     textField.clearButtonMode = UITextFieldViewModeWhileEditing;
-//    textField.textAlignment = NSTextAlignmentRight;
     textField.backgroundColor = [UIColor whiteColor];
     UILabel * titleLabel = [[UILabel alloc] init];
     CGFloat titleLabelW = [titleLabelText boundingRectWithSize:CGSizeMake(MAXFLOAT, ScreenScale(titleLabelHeight)) options:NSStringDrawingUsesLineFragmentOrigin attributes:@{NSFontAttributeName:TITLE_FONT} context:nil].size.width;
@@ -49,11 +48,8 @@
     textField.font = titleLabel.font;
     textField.text = text;
     textField.leftViewMode = UITextFieldViewModeAlways;
-//    textField.rightViewMode = UITextFieldViewModeAlways;
     textField.clearButtonMode = UITextFieldViewModeWhileEditing;
-    //    textField.textAlignment = NSTextAlignmentRight;
     textField.leftView = titleLabel;
-//    textField.rightView = [[UIView alloc] initWithFrame:CGRectMake(0, 0, 15, titleLabelHeight)];
     UIView * lineView = [[UIView alloc]init];
     lineView.backgroundColor = LINE_COLOR;
     lineView.hidden = lineViewHidden;
@@ -120,7 +116,6 @@
     
     UIView * lineView = [[UIView alloc]init];
     lineView.backgroundColor = LINE_COLOR;
-    // TIPMRGBColor(185, 193, 214);
     [textField addSubview:lineView];
     [lineView mas_makeConstraints:^(MASConstraintMaker *make) {
         make.bottom.left.right.equalTo(textField);

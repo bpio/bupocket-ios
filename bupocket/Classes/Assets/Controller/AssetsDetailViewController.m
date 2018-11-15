@@ -12,7 +12,6 @@
 #import "OrderDetailsViewController.h"
 #import "AssetsDetailModel.h"
 #import "HMScannerController.h"
-//#import "ScanningViewController.h"
 
 @interface AssetsDetailViewController ()<UITableViewDelegate, UITableViewDataSource>
 
@@ -44,20 +43,15 @@
     [super viewDidLoad];
     self.navigationItem.title = self.listModel.assetCode;
     _headerViewH = ScreenScale(240);
-    self.pageindex = 1;
     [self setupView];
-    self.noNetWork = [Encapsulation showNoNetWorkWithSuperView:self.view target:self action:@selector(loadNewData)];
+    self.noNetWork = [Encapsulation showNoNetWorkWithSuperView:self.view target:self action:@selector(reloadData)];
     [self setupRefresh];
     // Do any additional setup after loading the view.
 }
-- (void)viewWillAppear:(BOOL)animated
+- (void)reloadData
 {
-    [super viewWillAppear:animated];
-    if (@available(iOS 11.0, *)) {
-        [self.navigationController.navigationBar setPrefersLargeTitles:NO];
-    } else {
-        // Fallback on earlier versions
-    }
+    self.noNetWork.hidden = YES;
+    [self.tableView.mj_header beginRefreshing];
 }
 - (void)setupRefresh
 {
@@ -70,7 +64,7 @@
 }
 - (void)loadNewData
 {
-    [self getDataWithPageindex:1];
+    [self getDataWithPageindex: PageIndex_Default];
 }
 - (void)loadMoreData
 {
@@ -79,21 +73,17 @@
 - (void)getDataWithPageindex:(NSInteger)pageindex
 {
     [[HTTPManager shareManager] getAssetsDetailDataWithAssetCode:self.listModel.assetCode issuer:self.listModel.issuer address:[AccountTool account].purseAccount pageIndex:pageindex success:^(id responseObject) {
-        NSString * message = [responseObject objectForKey:@"msg"];
         NSInteger code = [[responseObject objectForKey:@"errCode"] integerValue];
-        if (code == 0) {
-            // 请求成功数据处理
-//            self.tableView.tableHeaderView = self.headerBg;
+        if (code == Success_Code) {
             [self.tableView addSubview:self.headerBg];
             [self.tableView insertSubview:self.headerBg atIndex:0];
              self.assets.text = [NSString stringWithFormat:@"%@ %@", responseObject[@"data"][@"tokenBalance"], self.listModel.assetCode];
             NSString * amountStr = responseObject[@"data"][@"assetAmount"];
             self.amount.text = [amountStr isEqualToString:@"~"] ? amountStr : [NSString stringWithFormat:@"≈￥%@", amountStr];
             NSArray * listArray = [AssetsDetailModel mj_objectArrayWithKeyValuesArray:responseObject[@"data"] [@"txRecord"]];
-            if (pageindex == 1) {
-                // 清除所有旧数据
+            if (pageindex == PageIndex_Default) {
                 [self.listArray removeAllObjects];
-                self.pageindex = 1;
+                self.pageindex = PageIndex_Default;
             }
             self.pageindex = self.pageindex + 1;
             [self.listArray addObjectsFromArray:listArray];
@@ -104,7 +94,7 @@
             }
             [self.tableView reloadData];
         } else {
-            [MBProgressHUD showTipMessageInWindow:message];
+            [MBProgressHUD showTipMessageInWindow:[ErrorTypeTool getDescriptionWithErrorCode:code]];
         }
         [self.tableView.mj_header endRefreshing];
         (self.listArray.count > 0) ? (self.tableView.tableFooterView = [UIView new]) : (self.tableView.tableFooterView = self.noData);
@@ -131,7 +121,7 @@
     if (!_noData) {
         CGFloat noDataH = DEVICE_HEIGHT - _headerViewH - NavBarH - SafeAreaBottomH;
         _noData = [[UIView alloc] initWithFrame:CGRectMake(0, 0, DEVICE_WIDTH, noDataH)];
-        UIButton * noDataBtn = [Encapsulation showNoDataWithTitle:Localized(@"NoTransactionRecord") imageName:@"NoTransactionRecord" superView:self.noData frame:CGRectMake(0, (noDataH - ScreenScale(160)) / 2, DEVICE_WIDTH, ScreenScale(160))];
+        UIButton * noDataBtn = [Encapsulation showNoDataWithTitle:Localized(@"NoTransactionRecord") imageName:@"noTransactionRecord" superView:self.noData frame:CGRectMake(0, (noDataH - ScreenScale(160)) / 2, DEVICE_WIDTH, ScreenScale(160))];
         noDataBtn.hidden = NO;
         [_noData addSubview:noDataBtn];
     }
@@ -179,7 +169,6 @@
         [scanBtn setTitle:Localized(@"AssetsDetailScan") forState:UIControlStateNormal];
         [scanBtn setImage:[UIImage imageNamed:@"assetsDetail_scan"] forState:UIControlStateNormal];
         [scanBtn addTarget:self action:@selector(scanAction:) forControlEvents:UIControlEventTouchUpInside];
-        //    .titleLabel.lineBreakMode = NSLineBreakByTruncatingTail;
         [self.headerViewBg addSubview: scanBtn];
         [scanBtn setViewSize:CGSizeMake(btnW, MAIN_HEIGHT) borderWidth:0 borderColor:nil borderRadius:ScreenScale(3)];
         scanBtn.backgroundColor = NAVITEM_COLOR;
@@ -193,9 +182,8 @@
         [transferAccounts setTitleColor:[UIColor whiteColor] forState:UIControlStateNormal];
         transferAccounts.titleLabel.font = TITLE_FONT;
         [transferAccounts setTitle:Localized(@"TransferAccounts") forState:UIControlStateNormal];
-        [transferAccounts setImage:[UIImage imageNamed:@"TransferAccounts"] forState:UIControlStateNormal];
+        [transferAccounts setImage:[UIImage imageNamed:@"transferAccounts"] forState:UIControlStateNormal];
         [transferAccounts addTarget:self action:@selector(transferAccountsAction:) forControlEvents:UIControlEventTouchUpInside];
-        //    .titleLabel.lineBreakMode = NSLineBreakByTruncatingTail;
         [self.headerViewBg addSubview: transferAccounts];
         [transferAccounts setViewSize:CGSizeMake(btnW, MAIN_HEIGHT) borderWidth:0 borderColor:nil borderRadius:MAIN_CORNER];
         transferAccounts.backgroundColor = MAIN_COLOR;

@@ -94,7 +94,6 @@ static NSString * const DistributionDetailCellID = @"DistributionDetailCellID";
         _title.font = FONT(15);
         _title.textColor = COLOR_9;
         _title.numberOfLines = 0;
-//        _title.preferredMaxLayoutWidth = DEVICE_WIDTH - Margin_40;
     }
     return _title;
 }
@@ -110,11 +109,8 @@ static NSString * const DistributionDetailCellID = @"DistributionDetailCellID";
 }
 - (void)setFrame:(CGRect)frame
 {
-    CGFloat margin = Margin_5;
-    frame.origin.x = margin * 2;
-    frame.size.width -= margin * 4;
-//    frame.origin.y += margin;
-//    frame.size.height -= margin * 2;
+    frame.origin.x = Margin_10;
+    frame.size.width -= Margin_20;
     [super setFrame:frame];
 }
 - (void)awakeFromNib {

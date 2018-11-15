@@ -17,40 +17,22 @@
 
 @end
 
+static NSString * const ListCellID = @"ListCellID";
+
 @implementation MultilingualViewController
 
 - (void)viewDidLoad {
     [super viewDidLoad];
-    self.navigationItem.title = @"多语言";
-    NSString * language = [[NSUserDefaults standardUserDefaults] objectForKey:@"appLanguage"];
-    if ([language isEqualToString:@"zh-Hans"]) {
+    self.navigationItem.title = Localized(@"Multilingual");
+    if ([CurrentAppLanguage isEqualToString:ZhHans]) {
         self.index = 0;
-    } else if ([language isEqualToString:@"en"]) {
+    } else if ([CurrentAppLanguage isEqualToString:EN]) {
         self.index = 1;
     }
     [self setupView];
-    self.listArray = @[@"简体中文", @"English"];
-    
-    self.navigationItem.rightBarButtonItem = [[UIBarButtonItem alloc] initWithCustomView:[UIButton createNavButtonWithTitle:Localized(@"Save") Target:self Selector:@selector(saveAction)]];
+    self.listArray = @[Localized(@"SimplifiedChinese"), Localized(@"English")];
     
     // Do any additional setup after loading the view.
-}
-- (void)saveAction
-{
-    NSUserDefaults * defaults = [NSUserDefaults standardUserDefaults];
-    //中文
-    if(_index == 0){
-        [defaults setObject:@"zh-Hans" forKey:@"appLanguage"];//App语言设置为中文
-        [defaults synchronize];
-        [kLanguageManager setUserlanguage:@"zh-Hans"];
-    }
-    //英文
-    if(_index == 1){
-        [defaults setObject:@"en" forKey:@"appLanguage"];//App语言设置为英文
-        [defaults synchronize];
-        [kLanguageManager setUserlanguage:@"en"];
-    }
-    [self.navigationController popViewControllerAnimated:YES];
 }
 - (void)setupView
 {
@@ -83,13 +65,12 @@
 }
 - (UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath
 {
-    ListTableViewCell * cell = [ListTableViewCell cellWithTableView:tableView];
+    ListTableViewCell * cell = [ListTableViewCell cellWithTableView:tableView identifier:ListCellID];
     cell.selectionStyle = UITableViewCellSelectionStyleNone;
     cell.listImage.image = [UIImage imageNamed:[NSString stringWithFormat:@"multilingual_list_%zd", indexPath.row]];
     cell.detailImage.image = [UIImage imageNamed:@"multilingual_checked"];
     cell.title.text = self.listArray[indexPath.row];
     cell.detailTitle.text = nil;
-    // 重用机制，如果选中的行正好要重用
     if (_index == indexPath.row) {
         cell.detailImage.hidden = NO;
     } else {
@@ -106,6 +87,18 @@
     ListTableViewCell * cell = [tableView cellForRowAtIndexPath:indexPath];
     cell.detailImage.hidden = NO;
     _index = indexPath.row;
+    NSUserDefaults * defaults = [NSUserDefaults standardUserDefaults];
+    if(indexPath.row == 0){
+        [defaults setObject:ZhHans forKey:AppLanguage];
+        [defaults synchronize];
+        [kLanguageManager setUserlanguage:ZhHans];
+    }
+    if(indexPath.row == 1){
+        [defaults setObject:EN forKey:AppLanguage];
+        [defaults synchronize];
+        [kLanguageManager setUserlanguage:EN];
+    }
+    [UIApplication sharedApplication].keyWindow.rootViewController = [[TabBarViewController alloc] init];
 }
 
 /*

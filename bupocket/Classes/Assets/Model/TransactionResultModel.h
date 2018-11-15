@@ -12,8 +12,6 @@ NS_ASSUME_NONNULL_BEGIN
 
 @interface TransactionResultModel : BaseModel
 
-//@property (nonatomic, strong) TransactionGetInfoResponse * ;
-//@property (nonatomic, strong) TransactionHistory * history;
 @property (nonatomic, copy) NSString * transactionHash;
 @property (nonatomic, assign) int64_t transactionTime;
 @property (nonatomic, copy) NSString *actualFee;

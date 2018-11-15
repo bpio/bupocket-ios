@@ -76,12 +76,10 @@
     } else {
         [self showAlertControllerWithMessage:Localized(@"OldPasswordIncorrect") handler:nil];
     }
-//    NSArray * words = [Mnemonic generateMnemonicCode: random];
-//    NSData * random = [Mnemonic randomFromMnemonicCode: words];
 }
 - (void)showAlertControllerWithMessage:(NSString *)message handler:(void(^)(UIAlertAction * action))handle
 {
-    UIAlertController * alertController = [UIAlertController alertControllerWithTitle:nil message:message preferredStyle:UIAlertControllerStyleAlert];
+    UIAlertController * alertController = [UIAlertController alertControllerWithTitle:message message:nil preferredStyle:UIAlertControllerStyleAlert];
     UIAlertAction * cancelAction = [UIAlertAction actionWithTitle:Localized(@"IGotIt") style:UIAlertActionStyleCancel handler:handle];
     [alertController addAction:cancelAction];
     [self presentViewController:alertController animated:YES completion:nil];
@@ -109,8 +107,6 @@
     [textField mas_makeConstraints:^(MASConstraintMaker *make) {
         make.top.equalTo(header.mas_bottom).offset(Margin_5);
         make.left.right.equalTo(header);
-//        make.left.equalTo(viewBg.mas_left).offset(Margin_30);
-//        make.right.equalTo(viewBg.mas_right).offset(-Margin_30);
         make.height.mas_equalTo(ScreenScale(39));
     }];
     UIView * lineView = [[UIView alloc] init];

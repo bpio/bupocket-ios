@@ -7,9 +7,10 @@
 //
 
 #import "AppDelegate.h"
-#import "GuideViewController.h"
 #import "IdentityViewController.h"
 #import "BackUpPurseViewController.h"
+#import "VersionUpdateAlertView.h"
+#import "VersionModel.h"
 
 @interface AppDelegate ()
 
@@ -22,10 +23,11 @@
     // Override point for customization after application launch.
     self.window = [[UIWindow alloc] initWithFrame:[UIScreen mainScreen].bounds];
     self.window.backgroundColor = [UIColor whiteColor];
-    [self setRootVC];
-    [self.window makeKeyAndVisible];
     [self setDefaultLocale];
-    [self prohibitionOfScreenshot];
+    [self.window makeKeyAndVisible];
+    [self setRootVC];
+    [self setVersionUpdate];
+    
     return YES;
 }
 
@@ -38,96 +40,82 @@
         UITableView.appearance.estimatedRowHeight = 0;
         UITableView.appearance.estimatedSectionFooterHeight = 0;
         UITableView.appearance.estimatedSectionHeaderHeight = 0;
+        [[UINavigationBar appearance]setPrefersLargeTitles:true];
     }
     //             self.automaticallyAdjustsScrollViewInsets = NO;
     NSUserDefaults * defaults = [NSUserDefaults standardUserDefaults];
-//    if ([defaults boolForKey:NotFirst]) {
-        if ([defaults boolForKey:ifCreated]) {
-            if ([defaults boolForKey:ifBackup] || [defaults boolForKey:ifSkip]) {
-                self.window.rootViewController = [[TabBarViewController alloc] init];
-            } else {
-                self.window.rootViewController = [[NavigationViewController alloc] initWithRootViewController:[[BackUpPurseViewController alloc] init]];
-            }
+    if ([defaults boolForKey:If_Created]) {
+        if ([defaults boolForKey:If_Backup] || [defaults boolForKey:If_Skip]) {
+            self.window.rootViewController = [[TabBarViewController alloc] init];
         } else {
-            self.window.rootViewController = [[NavigationViewController alloc] initWithRootViewController:[[IdentityViewController alloc] init]];
+            self.window.rootViewController = [[NavigationViewController alloc] initWithRootViewController:[[BackUpPurseViewController alloc] init]];
         }
-//    } else {
-//        self.window.rootViewController = [[GuideViewController alloc] init];
-//    }
+    } else {
+        self.window.rootViewController = [[NavigationViewController alloc] initWithRootViewController:[[IdentityViewController alloc] init]];
+    }
 }
-
-
 - (void)setDefaultLocale
 {
-    // 系统语言检测与赋值
+    // System language detection and assignment
     NSUserDefaults * defaults = [NSUserDefaults standardUserDefaults];
-    NSString * language = [[NSUserDefaults standardUserDefaults] objectForKey:@"appLanguage"];
-    if (!language) {
+    NSString * language = CurrentAppLanguage;
+    if (language.length == 0) {
         NSArray *languages = [NSLocale preferredLanguages];
         language = [languages objectAtIndex:0];
     }
-    if ([language isEqualToString:@"zh-Hans"]) {
-        [defaults setObject:@"zh-Hans" forKey:@"appLanguage"];//App语言设置为中文
+    if ([language hasPrefix:ZhHans]) {
+        // The App language is set to Chinese.
+        [defaults setObject:ZhHans forKey:AppLanguage];
         [defaults synchronize];
-        [kLanguageManager setUserlanguage:@"zh-Hans"];
-    } else if ([language isEqualToString:@"en"]) {
-        [defaults setObject:@"en" forKey:@"appLanguage"];//App语言设置为英文
+        [kLanguageManager setUserlanguage:ZhHans];
+    } else if ([language hasPrefix:EN]) {
+        // The App language is set in English.
+        [defaults setObject:EN forKey:AppLanguage];
         [defaults synchronize];
-        [kLanguageManager setUserlanguage:@"en"];
+        [kLanguageManager setUserlanguage:EN];
     } else {
-        // 其他语言
+        // Other languages
     }
 }
-- (void)prohibitionOfScreenshot
+- (void)setVersionUpdate
 {
-    [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(userDidTakeScreenshotNotification:) name:UIApplicationUserDidTakeScreenshotNotification object:nil];
+    [self getVersionData];
 }
-- (void)dealloc
+- (void)getVersionData
 {
-    [[NSNotificationCenter defaultCenter] removeObserver:self];
-}
-- (void)userDidTakeScreenshotNotification:(NSNotification *)notification
-{
-    UIImage *image = [self imageWithScreenshot];
-}
-// 代码截屏
-- (UIImage *)imageWithScreenshot {
-    CGSize imageSize = CGSizeZero;
-    UIInterfaceOrientation orientation = [UIApplication sharedApplication].statusBarOrientation;
-    if (UIInterfaceOrientationIsPortrait(orientation)) {
-        imageSize = [UIScreen mainScreen].bounds.size;
-    } else {
-        imageSize = CGSizeMake([UIScreen mainScreen].bounds.size.height, [UIScreen mainScreen].bounds.size.width);
-    }
-    UIGraphicsBeginImageContextWithOptions(imageSize, NO, 0);
-    CGContextRef context = UIGraphicsGetCurrentContext();
-    for (UIWindow *window in [[UIApplication sharedApplication] windows]) {
-        CGContextSaveGState(context);
-        CGContextTranslateCTM(context, window.center.x, window.center.y);
-        CGContextConcatCTM(context, window.transform);
-        CGContextTranslateCTM(context, -window.bounds.size.width * window.layer.anchorPoint.x, -window.bounds.size.height * window.layer.anchorPoint.y);
-        if (orientation == UIInterfaceOrientationLandscapeLeft) {
-            CGContextRotateCTM(context, M_PI_2);
-            CGContextTranslateCTM(context, 0, -imageSize.width);
-        } else if (orientation == UIInterfaceOrientationLandscapeRight) {
-            CGContextRotateCTM(context, -M_PI_2);
-            CGContextTranslateCTM(context, -imageSize.height, 0);
-        } else if (orientation == UIInterfaceOrientationPortraitUpsideDown) {
-            CGContextRotateCTM(context, M_PI);
-            CGContextTranslateCTM(context, -imageSize.width, -imageSize.height);
-        }
-        if ([window respondsToSelector:@selector(drawViewHierarchyInRect:afterScreenUpdates:)]) {
-            [window drawViewHierarchyInRect:window.bounds afterScreenUpdates:YES];
+    [[HTTPManager shareManager] getVersionDataWithSuccess:^(id responseObject) {
+        NSInteger code = [[responseObject objectForKey:@"errCode"] integerValue];
+        VersionModel * versionModel  = [VersionModel mj_objectWithKeyValues:[responseObject objectForKey:@"data"]];
+        if (code == Success_Code) {
+            NSDictionary * infoDictionary = [[NSBundle mainBundle] infoDictionary];
+            NSString * currentVersion = [infoDictionary objectForKey:@"CFBundleShortVersionString"];
+            BOOL result = [currentVersion compare:versionModel.verNumber] == NSOrderedAscending;
+            if (result) {
+                NSString * updateContent = nil;
+                NSString * language = CurrentAppLanguage;
+                if (language.length == 0) {
+                    NSArray *languages = [NSLocale preferredLanguages];
+                    language = [languages objectAtIndex:0];
+                }
+                if ([language hasPrefix:ZhHans]) {
+                    updateContent = versionModel.verContents;
+                } else if ([language hasPrefix:EN]) {
+                    updateContent = versionModel.englishVerContents;
+                }
+                VersionUpdateAlertView * alertView = [[VersionUpdateAlertView alloc] initWithVersionUpdateContent:updateContent confrimBolck:^{
+//               NSString *str = @"itms-apps://itunes.apple.com/cn/app/id1329918420?mt=8"; //更换id即可
+                    [[UIApplication sharedApplication] openURL:[NSURL URLWithString:versionModel.downloadLink]];
+                } cancelBlock:^{
+                    
+                }];
+                [alertView showInWindowWithMode:CustomAnimationModeAlert inView:nil bgAlpha:0.2 needEffectView:NO];
+            }
         } else {
-            [window.layer renderInContext:context];
+            [MBProgressHUD showTipMessageInWindow:[ErrorTypeTool getDescriptionWithErrorCode:code]];
         }
-        CGContextRestoreGState(context);
-    }
-    UIImage *image = UIGraphicsGetImageFromCurrentImageContext();
-    UIGraphicsEndImageContext();
-    NSData *imageData = UIImagePNGRepresentation(image);
-    UIImage *screenImage = [UIImage imageWithData:imageData];
-    return screenImage;
+    } failure:^(NSError *error) {
+        
+    }];
 }
 - (void)applicationWillResignActive:(UIApplication *)application {
     // Sent when the application is about to move from active to inactive state. This can occur for certain types of temporary interruptions (such as an incoming phone call or SMS message) or when the user quits the application and it begins the transition to the background state.

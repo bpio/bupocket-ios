@@ -9,14 +9,15 @@
 #import "ListTableViewCell.h"
 
 static NSString * const ListCellID = @"ListCellID";
+static NSString * const SettingCellID = @"SettingCellID";
 
 @implementation ListTableViewCell
 
-+ (instancetype)cellWithTableView:(UITableView *)tableView
++ (instancetype)cellWithTableView:(UITableView *)tableView identifier:(NSString *)identifier
 {
-    ListTableViewCell * cell = [tableView dequeueReusableCellWithIdentifier:ListCellID];
+    ListTableViewCell * cell = [tableView dequeueReusableCellWithIdentifier:identifier];
     if (cell == nil) {
-        cell = [[ListTableViewCell alloc] initWithStyle:UITableViewCellStyleValue1 reuseIdentifier:ListCellID];
+        cell = [[ListTableViewCell alloc] initWithStyle:UITableViewCellStyleValue1 reuseIdentifier:identifier];
     }
     return cell;
 }
@@ -28,7 +29,6 @@ static NSString * const ListCellID = @"ListCellID";
         [self.contentView addSubview:self.title];
         [self.contentView addSubview:self.detailTitle];
         [self.contentView addSubview:self.detailImage];
-//        [self.contentView addSubview:self.line];
     }
     return self;
 }
@@ -48,15 +48,18 @@ static NSString * const ListCellID = @"ListCellID";
         make.right.equalTo(self.contentView.mas_right).offset(-Margin_20);
         make.centerY.equalTo(self.contentView);
     }];
+    if ([self.reuseIdentifier isEqualToString:SettingCellID]) {
+        [self.detailTitle mas_makeConstraints:^(MASConstraintMaker *make) {
+            make.right.equalTo(self.detailImage.mas_left).offset(-Margin_10);
+        }];
+    } else {
+        [self.detailTitle mas_makeConstraints:^(MASConstraintMaker *make) {
+            make.right.equalTo(self.contentView.mas_right).offset(-Margin_20);
+        }];
+    }
     [self.detailTitle mas_makeConstraints:^(MASConstraintMaker *make) {
-        make.right.equalTo(self.contentView.mas_right).offset(-Margin_20);
         make.centerY.equalTo(self.contentView);
     }];
-//    [self.line mas_makeConstraints:^(MASConstraintMaker *make) {
-//        make.left.right.equalTo(self.contentView);
-//        make.bottom.equalTo(self.contentView);
-//        make.height.mas_equalTo(LINE_WIDTH);
-//    }];
 }
 - (UIImageView *)listImage
 {
@@ -80,7 +83,7 @@ static NSString * const ListCellID = @"ListCellID";
     if (!_detailTitle) {
         _detailTitle = [[UILabel alloc] init];
         _detailTitle.font = FONT(15);
-        _detailTitle.textColor = COLOR_6;
+        _detailTitle.textColor = COLOR_9;
     }
     return _detailTitle;
 }
@@ -91,14 +94,6 @@ static NSString * const ListCellID = @"ListCellID";
     }
     return _detailImage;
 }
-//- (UIView *)line
-//{
-//    if (!_line) {
-//        _line = [[UIView alloc] init];
-//        _line.backgroundColor = LINE_COLOR;
-//    }
-//    return _line;
-//}
 - (void)awakeFromNib {
     [super awakeFromNib];
     // Initialization code

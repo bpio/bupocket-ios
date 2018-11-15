@@ -177,11 +177,11 @@ static CGFloat animationTime;
 //弹出隐藏
 -(void)hide{
     if (self.superview) {
-//        [UIView animateWithDuration:animationTime animations:^{
-//            self.transform = CGAffineTransformScale(self.transform,0.1,0.1);
-//            self.alpha = 0;
-//        } completion:^(BOOL finished) {
-//        }];
+        [UIView animateWithDuration:animationTime animations:^{
+            self.transform = CGAffineTransformScale(self.transform,0.1,0.1);
+            self.alpha = 0;
+        } completion:^(BOOL finished) {
+        }];
         [self hideAnimationFinish];
     }
 }

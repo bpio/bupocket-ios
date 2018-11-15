@@ -14,12 +14,5 @@
 {
     return @{@"hashStr" :  @"hash"};
 }
-//- (void)setValue:(id)value forUndefinedKey:(nonnull NSString *)key
-//{
-//    if ([key isEqualToString:@"hash"]) {
-//        self.hashStr = value;
-//        return;
-//    }
-//}
 
 @end

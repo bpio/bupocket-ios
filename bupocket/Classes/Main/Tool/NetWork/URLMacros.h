@@ -11,25 +11,21 @@
 
 #define SERVER_COMBINE_API(API_BASE, API_INTERFACE) [NSString stringWithFormat:@"%@%@",API_BASE,API_INTERFACE]
 
-//#define URLPREFIX @"http://api-bp.bumotest.io/"
-//#define URLPREFIX_Socket @"ws-tools.bumotest.io"
 /*
-// 开发环境
 #define URLPREFIX @"http://52.80.218.114:8081/"
-// SDK
 #define URL_SDK @"http://seed1.bumotest.io:26002"
-// Socket
 #define URLPREFIX_Socket @"http://192.168.6.98:3100"
  */
 
-// 测试网环境
-#define WEB_SERVER_DOMAIN @"http://api-bp.bumotest.io/"
-// SDK
-#define BUMO_NODE_URL @"http://wallet-node.bumotest.io"
-// Socket
-#define PUSH_MESSAGE_SOCKET_URL @"https://ws-tools.bumotest.io";
+#define WEB_SERVER_DOMAIN @"https://api-bp.bumo.io/"
+#define BUMO_NODE_URL @"https://wallet-node.bumo.io"
+#define PUSH_MESSAGE_SOCKET_URL @"https://ws-tools.bumo.io";
 
+#define WEB_SERVER_DOMAIN_TEST @"http://api-bp.bumotest.io/"
+#define BUMO_NODE_URL_TEST @"http://wallet-node.bumotest.io"
+#define PUSH_MESSAGE_SOCKET_URL_TEST @"https://ws-tools.bumotest.io";
 
+#define Version_Update @"wallet/version"
 #define Assets_List @"wallet/token/list"
 #define Transaction_Record @"wallet/token/tx/list"
 #define Transaction_Record_BU @"wallet/user/tx/list"

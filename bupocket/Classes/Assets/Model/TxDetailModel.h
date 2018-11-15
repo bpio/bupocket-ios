@@ -12,7 +12,6 @@ NS_ASSUME_NONNULL_BEGIN
 
 @interface TxDetailModel : BaseModel
 
-// 业务参数
 @property (nonatomic, copy) NSString * amount;
 @property (nonatomic, copy) NSString * applyTimeDate;
 @property (nonatomic, copy) NSString * destAddress;

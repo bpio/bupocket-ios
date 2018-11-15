@@ -19,7 +19,6 @@
 @property (nonatomic, strong) UIImageView * QRCodeImage;
 @property (nonatomic, strong) UILabel * QRCodeTitle;
 
-
 @end
 
 @implementation PurseAddressAlertView
@@ -32,9 +31,6 @@
         _cancleBlock = cancelBlock;
         [self setupView];
         self.purseAddress.text = purseAddress;
-//        NSString *cardName = @"天涯刀哥 - 傅红雪";
-//        UIImage *avatar = [UIImage imageNamed:@"avatar"];
-        
         [HMScannerController cardImageWithCardName:purseAddress avatar:nil scale:0.2 completion:^(UIImage *image) {
             self.QRCodeImage.image = image;
         }];
@@ -59,7 +55,6 @@
     
     [self addSubview:self.QRCodeTitle];
     
-//    CGFloat height = [Encapsulation rectWithText:Localized(@"PurseCipherPrompt") fontSize:15 textWidth:DEVICE_WIDTH - ScreenScale(110)].size.height + ScreenScale(255);
     self.frame = CGRectMake(0, DEVICE_HEIGHT - ScreenScale(440) - SafeAreaBottomH, DEVICE_WIDTH, ScreenScale(440));
 }
 
@@ -97,7 +92,6 @@
     [self.lineView mas_makeConstraints:^(MASConstraintMaker *make) {
         make.left.right.equalTo(self.purseAddress);
         make.top.equalTo(self.copyBtn.mas_bottom).offset(Margin_20);
-        //        make.height.mas_equalTo(ScreenScale(1.5));
     }];
     
     [self.QRCodeImage mas_makeConstraints:^(MASConstraintMaker *make) {

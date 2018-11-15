@@ -9,8 +9,8 @@
 #import "MyIdentityViewController.h"
 #import "IdentityViewController.h"
 #import "PurseCipherAlertView.h"
-//#import "BackUpPurseViewController.h"
 #import "BackupMnemonicsViewController.h"
+#import "ClearCacheTool.h"
 
 @interface MyIdentityViewController ()
 
@@ -39,7 +39,6 @@
     IDNameTitle.text = Localized(@"IdentityNameTitle");
     [myIdentityBg addSubview:IDNameTitle];
     [IDNameTitle mas_makeConstraints:^(MASConstraintMaker *make) {
-        //        make.centerX.equalTo(self.view);
         make.top.equalTo(myIdentityBg.mas_top).offset(ScreenScale(17));
         make.left.equalTo(myIdentityBg.mas_left).offset(Margin_10);
     }];
@@ -47,10 +46,9 @@
     UILabel * IDName = [[UILabel alloc] init];
     IDName.font = FONT(15);
     IDName.textColor = COLOR_6;
-    IDName.text = [AccountTool account].identityName; // Localized(@"IdentityName");
+    IDName.text = [AccountTool account].identityName;
     [myIdentityBg addSubview:IDName];
     [IDName mas_makeConstraints:^(MASConstraintMaker *make) {
-        //        make.centerX.equalTo(self.view);
         make.top.equalTo(IDNameTitle);
         make.right.equalTo(myIdentityBg.mas_right).offset(-Margin_10);
     }];
@@ -61,7 +59,6 @@
     IdentityIDTitle.text = Localized(@"IdentityIDTitle");
     [myIdentityBg addSubview:IdentityIDTitle];
     [IdentityIDTitle mas_makeConstraints:^(MASConstraintMaker *make) {
-        //        make.centerX.equalTo(self.view);
         make.top.equalTo(IDNameTitle.mas_bottom).offset(Margin_25);
         make.left.equalTo(IDNameTitle);
     }];
@@ -74,7 +71,6 @@
     IdentityID.textAlignment = NSTextAlignmentRight;
     [myIdentityBg addSubview:IdentityID];
     [IdentityID mas_makeConstraints:^(MASConstraintMaker *make) {
-        //        make.centerX.equalTo(self.view);
         make.top.equalTo(IdentityIDTitle);
         make.right.equalTo(IDName);
         make.width.mas_equalTo(ScreenScale(200));
@@ -82,7 +78,6 @@
     
     CGSize btnSize = CGSizeMake(DEVICE_WIDTH - Margin_30, MAIN_HEIGHT);
     UIButton * exitID = [UIButton createButtonWithTitle:Localized(@"ExitCurrentIdentity") isEnabled:YES Target:self Selector:@selector(exitIDAction)];
-//    [exitID setViewSize:btnSize borderWidth:0 borderColor:nil borderRadius:MAIN_CORNER];
     [exitID setTitleColor:COLOR(@"FF6363") forState:UIControlStateNormal];
     exitID.backgroundColor = [UIColor whiteColor];
     [self.view addSubview:exitID];
@@ -92,7 +87,6 @@
         make.size.mas_equalTo(btnSize);
     }];
     UIButton * backupIdentity = [UIButton createButtonWithTitle:Localized(@"BackupIdentity") isEnabled:YES Target:self Selector:@selector(backupIdentityAction)];
-//    [backupIdentity setViewSize:btnSize borderWidth:0 borderColor:nil borderRadius:MAIN_CORNER];
     [self.view addSubview:backupIdentity];
     [backupIdentity mas_makeConstraints:^(MASConstraintMaker *make) {
         make.bottom.equalTo(exitID.mas_top).offset(- Margin_20);
@@ -101,16 +95,10 @@
 }
 - (void)backupIdentityAction
 {
-    PurseCipherAlertView * alertView = [[PurseCipherAlertView alloc] initWithType:PurseCipherNormalType confrimBolck:^(NSString * _Nonnull password) {
-        NSData * random = [NSString decipherKeyStoreWithPW:password randomKeyStoreValueStr:[AccountTool account].randomNumber];
-        if (random) {
-            NSArray * words = [Mnemonic generateMnemonicCode: random];
-            BackupMnemonicsViewController * VC = [[BackupMnemonicsViewController alloc] init];
-            VC.mnemonicArray = words;
-            [UIApplication sharedApplication].keyWindow.rootViewController = [[NavigationViewController alloc] initWithRootViewController:VC];
-        } else {
-            [MBProgressHUD showTipMessageInWindow:Localized(@"PasswordIsIncorrect")];
-        }
+    PurseCipherAlertView * alertView = [[PurseCipherAlertView alloc] initWithPrompt:Localized(@"IdentityCipherPrompt") confrimBolck:^(NSString * _Nonnull password, NSArray * _Nonnull words) {
+        BackupMnemonicsViewController * VC = [[BackupMnemonicsViewController alloc] init];
+        VC.mnemonicArray = words;
+        [UIApplication sharedApplication].keyWindow.rootViewController = [[NavigationViewController alloc] initWithRootViewController:VC];
     } cancelBlock:^{
         
     }];
@@ -120,29 +108,20 @@
 {
     UIAlertController * alertController = [Encapsulation alertControllerWithCancelTitle:Localized(@"Cancel") title:Localized(@"ExitCurrentIdentity") message:Localized(@"ExitCurrentIdentityPrompt")];
     UIAlertAction * okAction = [UIAlertAction actionWithTitle:Localized(@"Confirm") style:UIAlertActionStyleDefault handler:^(UIAlertAction * _Nonnull action) {
-        PurseCipherAlertView * alertView = [[PurseCipherAlertView alloc] initWithType:PurseCipherWarnType confrimBolck:^(NSString * _Nonnull password) {
+        PurseCipherAlertView * alertView = [[PurseCipherAlertView alloc] initWithPrompt:Localized(@"IdentityCipherWarning") confrimBolck:^(NSString * _Nonnull password, NSArray * _Nonnull words) {
             NSString * privateKey = [NSString decipherKeyStoreWithPW:password keyStoreValueStr:[AccountTool account].purseKey];
             if ([Tools isEmpty:privateKey]) {
                 [MBProgressHUD showWarnMessage:Localized(@"PasswordIsIncorrect")];
                 return;
             }
-            BOOL ifClearData = [AccountTool clearCache];
-            if (ifClearData) {
-                NSUserDefaults *defaults =[NSUserDefaults standardUserDefaults];
-                [defaults removeObjectForKey:ifCreated];
-                [defaults removeObjectForKey:ifBackup];
-                [defaults removeObjectForKey:ifSkip];
-//                [MBProgressHUD wb_showSuccess:@"退出当前身份成功"];
-                [UIApplication sharedApplication].keyWindow.rootViewController = [[NavigationViewController alloc] initWithRootViewController:[[IdentityViewController alloc] init]];
-            } else {
-//                [MBProgressHUD wb_showError:@"移除身份及所有已导入的钱包失败"];
-            }
+           [ClearCacheTool cleanCache:^{
+               [ClearCacheTool cleanUserDefaults];
+               [UIApplication sharedApplication].keyWindow.rootViewController = [[NavigationViewController alloc] initWithRootViewController:[[IdentityViewController alloc] init]];
+            }];
         } cancelBlock:^{
             
         }];
         [alertView showInWindowWithMode:CustomAnimationModeAlert inView:nil bgAlpha:0.2 needEffectView:NO];
-        
-        
     }];
     [alertController addAction:okAction];
     [self presentViewController:alertController animated:YES completion:nil];

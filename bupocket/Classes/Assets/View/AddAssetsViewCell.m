@@ -8,6 +8,13 @@
 
 #import "AddAssetsViewCell.h"
 
+@interface AddAssetsViewCell()
+
+@property (nonatomic, strong) NSMutableArray * addAssetsArray;
+@property (nonatomic, strong) NSString * addAssetsKey;
+
+@end
+
 @implementation AddAssetsViewCell
 
 static NSString * const AddAssetsCellID = @"AddAssetsCellID";
@@ -29,6 +36,11 @@ static NSString * const AddAssetsCellID = @"AddAssetsCellID";
         [self.contentView addSubview:self.detailTitle];
         [self.contentView addSubview:self.infoTitle];
         [self.contentView addSubview:self.addBtn];
+        if ([[NSUserDefaults standardUserDefaults] boolForKey:If_Switch_TestNetwork]) {
+            self.addAssetsKey = Add_Assets_Test;
+        } else {
+            self.addAssetsKey = Add_Assets;
+        }
     }
     return self;
 }
@@ -48,7 +60,6 @@ static NSString * const AddAssetsCellID = @"AddAssetsCellID";
         make.width.height.mas_equalTo(Margin_40);
     }];
     [self.title mas_makeConstraints:^(MASConstraintMaker *make) {
-//        make.top.equalTo(self.contentView.mas_top).offset(Margin_20);
         make.top.equalTo(self.listImage);
         make.left.equalTo(self.listImage.mas_right).offset(Margin_15);
     }];
@@ -76,10 +87,9 @@ static NSString * const AddAssetsCellID = @"AddAssetsCellID";
     _detailTitle.text = searchAssetsModel.assetName;
     _infoTitle.text = searchAssetsModel.issuer;
     _addBtn.hidden = !searchAssetsModel.recommend;
-//    0 是推荐 1 是非推荐
     if (searchAssetsModel.recommend) {
         NSUserDefaults * defaults = [NSUserDefaults standardUserDefaults];
-        self.addAssetsArray = [NSMutableArray arrayWithArray:[defaults objectForKey:AddAssets]];
+        self.addAssetsArray = [NSMutableArray arrayWithArray:[defaults objectForKey:self.addAssetsKey]];
         for (NSDictionary * dic in self.addAssetsArray) {
             if ([searchAssetsModel.assetCode isEqualToString:dic[@"assetCode"]] && [searchAssetsModel.issuer isEqualToString:dic[@"issuer"]]) {
                 _addBtn.selected = YES;
@@ -136,7 +146,6 @@ static NSString * const AddAssetsCellID = @"AddAssetsCellID";
     if (!_addBtn) {
         _addBtn = [UIButton createButtonWithTitle:Localized(@"Add") TextFont:14 TextColor:[UIColor whiteColor] Target:self Selector:@selector(addAction:)];
         [_addBtn setTitle:Localized(@"Delete") forState:UIControlStateSelected];
-//        [_addBtn setImage:[UIImage imageNamed:@"alreadyAdded"] forState:UIControlStateDisabled];
         _addBtn.backgroundColor = MAIN_COLOR;
     }
     return _addBtn;
@@ -149,7 +158,7 @@ static NSString * const AddAssetsCellID = @"AddAssetsCellID";
                                  @"issuer" : _searchAssetsModel.issuer
                                  };
     NSUserDefaults * defaults = [NSUserDefaults standardUserDefaults];
-    self.addAssetsArray = [NSMutableArray arrayWithArray:[defaults objectForKey:AddAssets]];
+    self.addAssetsArray = [NSMutableArray arrayWithArray:[defaults objectForKey:self.addAssetsKey]];
     if (button.selected == YES) {
         button.backgroundColor = WARNING_COLOR;
         [self.addAssetsArray addObject:assetsDic];
@@ -157,7 +166,7 @@ static NSString * const AddAssetsCellID = @"AddAssetsCellID";
         button.backgroundColor = MAIN_COLOR;
         [self.addAssetsArray removeObject:assetsDic];
     }
-    [defaults setObject:self.addAssetsArray forKey:AddAssets];
+    [defaults setObject:self.addAssetsArray forKey:self.addAssetsKey];
     [defaults synchronize];
     
 }

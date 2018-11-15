@@ -40,7 +40,6 @@
     [self.view addSubview:self.feedbackText];
     [self.feedbackText mas_makeConstraints:^(MASConstraintMaker *make) {
         make.top.equalTo(self.view.mas_top).offset(Margin_15 + MAIN_HEIGHT);
-//        make.left.right.equalTo(self.view);
         make.left.equalTo(self.view.mas_left).offset(Margin_10);
         make.right.equalTo(self.view.mas_right).offset(-Margin_10);
         make.height.mas_equalTo(ScreenScale(120));
@@ -67,8 +66,6 @@
     [textField mas_makeConstraints:^(MASConstraintMaker *make) {
         make.top.equalTo(lineView.mas_bottom).offset(ScreenScale(55));
         make.left.right.equalTo(lineView);
-//        make.left.equalTo(self.view.mas_left).offset(Margin_30);
-//        make.right.equalTo(self.view.mas_right).offset(-Margin_30);
         make.height.mas_equalTo(Margin_40);
     }];
     self.contactField = textField;
@@ -106,12 +103,11 @@
 - (void)getData
 {
     [[HTTPManager shareManager] getFeedbackDataWithContent:self.feedbackText.text contact:self.contactField.text success:^(id responseObject) {
-        NSString * message = [responseObject objectForKey:@"msg"];
         NSInteger code = [[responseObject objectForKey:@"errCode"] integerValue];
-        if (code == 0) {
+        if (code == Success_Code) {
             [MBProgressHUD showSuccessMessage:Localized(@"SubmissionOfSuccess")];
         } else {
-            [MBProgressHUD showTipMessageInWindow:message];
+            [MBProgressHUD showTipMessageInWindow:[ErrorTypeTool getDescriptionWithErrorCode:code]];
         }
     } failure:^(NSError *error) {
         
@@ -123,8 +119,6 @@
         _feedbackText = [[PlaceholderTextView alloc] init];
         _feedbackText.placeholder = Localized(@"PleaseEnterQOrS");
         _feedbackText.delegate = self;
-//        _feedbackText.layer.masksToBounds = YES;
-//        _feedbackText.layer.cornerRadius = BG_CORNER;
     }
     return _feedbackText;
 }

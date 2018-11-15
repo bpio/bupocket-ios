@@ -63,14 +63,22 @@
 
 - (void)viewWillAppear:(BOOL)animated {
     [super viewWillAppear:animated];
-    
+    if (@available(iOS 11.0, *)) {
+        [self.navigationController.navigationBar setPrefersLargeTitles:false];
+    } else {
+        // Fallback on earlier versions
+    }
     [scannerBorder startScannerAnimating];
     [scanner startScan];
 }
 
 - (void)viewWillDisappear:(BOOL)animated {
     [super viewWillDisappear:animated];
-    
+    if (@available(iOS 11.0, *)) {
+        [self.navigationController.navigationBar setPrefersLargeTitles:true];
+    } else {
+        // Fallback on earlier versions
+    }
     [scannerBorder stopScannerAnimating];
     [scanner stopScan];
 }

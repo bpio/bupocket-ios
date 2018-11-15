@@ -13,8 +13,6 @@ NS_ASSUME_NONNULL_BEGIN
 
 @interface RegisteredAssetsViewController : BaseViewController
 
-//@property (nonatomic, strong) NSDictionary * scanDic;
-//@property (nonatomic, strong) NSDictionary * assetsDic;
 @property (nonatomic, strong) RegisteredModel * registeredModel;
 @property (nonatomic, copy) NSString * uuid;
 

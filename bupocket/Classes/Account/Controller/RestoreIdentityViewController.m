@@ -15,7 +15,7 @@
 @property (nonatomic, strong) UITextField * purseName;
 @property (nonatomic, strong) UITextField * pursePassword;
 @property (nonatomic, strong) UITextField * confirmPassword;
-@property (nonatomic, strong) UIButton * createIdentity;
+@property (nonatomic, strong) UIButton * restoreIdentity;
 
 @end
 
@@ -48,7 +48,7 @@
         make.right.equalTo(self.view.mas_right).offset(-Margin_20);
         make.height.mas_equalTo(ScreenScale(130));
     }];
-    _purseName = [UITextField textFieldWithplaceholder:Localized(@"newWalletName")];
+    _purseName = [UITextField textFieldWithplaceholder:Localized(@"newIdentityName")];
     _purseName.delegate = self;
     _purseName.enablesReturnKeyAutomatically = YES;
     [_purseName addTarget:self action:@selector(textChange:) forControlEvents:UIControlEventEditingChanged];
@@ -60,8 +60,8 @@
     _confirmPassword = [self setupPWPlaceholder:Localized(@"ConfirmPassword")];
     [self.view addSubview:_confirmPassword];
     
-    _createIdentity = [UIButton createButtonWithTitle:Localized(@"Create") isEnabled:NO Target:self Selector:@selector(createAction)];
-    [self.view addSubview:_createIdentity];
+    _restoreIdentity = [UIButton createButtonWithTitle:Localized(@"Restore") isEnabled:NO Target:self Selector:@selector(restoreAction)];
+    [self.view addSubview:_restoreIdentity];
     
     [_purseName mas_makeConstraints:^(MASConstraintMaker *make) {
         make.top.equalTo(self.memorizingWords.mas_bottom).offset(Margin_25);
@@ -78,7 +78,7 @@
         make.left.right.height.equalTo(self.purseName);
     }];
     
-    [_createIdentity mas_makeConstraints:^(MASConstraintMaker *make) {
+    [_restoreIdentity mas_makeConstraints:^(MASConstraintMaker *make) {
         make.top.equalTo(self.confirmPassword.mas_bottom).offset(MAIN_HEIGHT);
         make.left.right.equalTo(self.purseName);
         make.height.mas_equalTo(MAIN_HEIGHT);
@@ -123,11 +123,11 @@
 - (void)ifEnable
 {
     if (_purseName.text.length > 0 && _pursePassword.text.length > 0 && _confirmPassword.text.length > 0 && _memorizingWords.text.length > 0) {
-        _createIdentity.enabled = YES;
-        _createIdentity.backgroundColor = MAIN_COLOR;
+        _restoreIdentity.enabled = YES;
+        _restoreIdentity.backgroundColor = MAIN_COLOR;
     } else {
-        _createIdentity.enabled = NO;
-        _createIdentity.backgroundColor = DISABLED_COLOR;
+        _restoreIdentity.enabled = NO;
+        _restoreIdentity.backgroundColor = DISABLED_COLOR;
     }
 }
 - (void)secureAction:(UIButton *)button
@@ -174,13 +174,15 @@
     [[HTTPManager shareManager] setAccountDataWithRandom:random password:self.pursePassword.text identityName:self.purseName.text success:^(id responseObject) {
         [UIApplication sharedApplication].keyWindow.rootViewController = [[TabBarViewController alloc] init];
         NSUserDefaults * defaults = [NSUserDefaults standardUserDefaults];
-        [defaults setBool:YES forKey:ifCreated];
+        [defaults setBool:YES forKey:If_Created];
+        [defaults setBool:YES forKey:If_Backup];
         [defaults synchronize];
     } failure:^(NSError *error) {
         
     }];
 }
-- (void)confirmUpdate
+
+- (void)restoreAction
 {
     if ([RegexPatternTool validateUserName:_purseName.text] == NO) {
         [MBProgressHUD showTipMessageInWindow:Localized(@"WalletNameFormatIncorrect")];
@@ -200,11 +202,6 @@
     }];
     [alertController addAction:okAction];
     [self presentViewController:alertController animated:YES completion:nil];
-}
-//创建事件处理
-- (void)createAction
-{
-    [self confirmUpdate];
 }
 - (void)didReceiveMemoryWarning
 {

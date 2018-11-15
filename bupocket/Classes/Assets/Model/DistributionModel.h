@@ -15,7 +15,6 @@ NS_ASSUME_NONNULL_BEGIN
 @property (nonatomic, copy) NSString * assetCode;
 @property (nonatomic, copy) NSString * assetName;
 @property (nonatomic, copy) NSString * issueAddress;
-//@property (nonatomic, assign) NSInteger tokenType;
 @property (nonatomic, copy) NSString * totalSupply;
 @property (nonatomic, copy) NSString * actualSupply;
 @property (nonatomic, assign) NSInteger decimals;

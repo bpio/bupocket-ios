@@ -28,15 +28,6 @@ static NSString * const TransferResultsCellID = @"DetailListCellID";
     [self popToRootVC];
     // Do any additional setup after loading the view.
 }
-- (void)viewWillAppear:(BOOL)animated
-{
-    [super viewWillAppear:animated];
-    if (@available(iOS 11.0, *)) {
-        [self.navigationController.navigationBar setPrefersLargeTitles:NO];
-    } else {
-        // Fallback on earlier versions
-    }
-}
 - (void)setupView
 {
     self.tableView = [[UITableView alloc] initWithFrame:self.view.frame style:UITableViewStyleGrouped];
@@ -51,10 +42,10 @@ static NSString * const TransferResultsCellID = @"DetailListCellID";
     transferResults.titleLabel.font = FONT(16);
     if (self.state == YES) {
         [transferResults setTitle:Localized(@"TransferSuccess") forState:UIControlStateNormal];
-        [transferResults setImage:[UIImage imageNamed:@"TransferSuccess"] forState:UIControlStateNormal];
+        [transferResults setImage:[UIImage imageNamed:@"transferSuccess"] forState:UIControlStateNormal];
     } else {
         [transferResults setTitle:Localized(@"TransferFailure") forState:UIControlStateNormal];
-        [transferResults setImage:[UIImage imageNamed:@"TransferFailure"] forState:UIControlStateNormal];
+        [transferResults setImage:[UIImage imageNamed:@"transferFailure"] forState:UIControlStateNormal];
     }
     transferResults.bounds = CGRectMake(0, 0, DEVICE_WIDTH, ScreenScale(120));
     transferResults.backgroundColor = [UIColor whiteColor];
