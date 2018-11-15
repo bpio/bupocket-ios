@@ -1,0 +1,12 @@
+/* 
+  InfoPlist.strings
+  bupocket
+
+  Created by bupocket on 2018/10/17.
+  Copyright © 2018年 bupocket. All rights reserved.
+*/
+CFBundleDisplayName = "小布口袋";
+
+NSCameraUsageDescription = "bupocket需要访问您的相机，为了帮您进行扫描二维码";
+NSMicrophoneUsageDescription = "bupocket需要访问您的相册，为了帮您进行相关图片的扫描";
+NSPhotoLibraryUsageDescription = "bupocket需要访问您的相册，为了帮您进行相关图片的扫描";
