@@ -11,10 +11,12 @@
 
 @implementation DateTool
 
+static int timeStampLength = 13;
+
 + (NSString *)getDateStringWithTimeStr:(NSString *)str
 {
-    if (str.length < 3) return nil;
-    NSTimeInterval interval = [[str substringToIndex:str.length - 3] doubleValue] / 1000.0;
+    if (str.length < timeStampLength) return nil;
+    NSTimeInterval interval = [[str substringToIndex:timeStampLength] doubleValue] / 1000.0;
     NSDate * date = [NSDate dateWithTimeIntervalSince1970:interval];
     NSDateFormatter *formatter = [[NSDateFormatter alloc] init];
     [formatter setDateFormat:@"YYYY.MM.dd HH:mm:ss"];
@@ -22,8 +24,8 @@
 }
 + (NSString *)getDateProcessingWithTimeStr:(NSString *)str
 {
-    if (str.length < 3) return nil;
-    NSTimeInterval interval = [[str substringToIndex:str.length - 3] doubleValue] / 1000.0;
+    if (str.length < timeStampLength) return nil;
+    NSTimeInterval interval = [[str substringToIndex:timeStampLength] doubleValue] / 1000.0;
     NSDate * date = [NSDate dateWithTimeIntervalSince1970:interval];
     NSDateFormatter *formatter = [[NSDateFormatter alloc] init];
     formatter.dateFormat = @"EEE MMM dd HH:mm:ss Z yyyy";

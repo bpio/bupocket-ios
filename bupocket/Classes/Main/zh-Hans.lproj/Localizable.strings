@@ -72,6 +72,7 @@
 "BackupIdentity" = "备份身份";
 "ExitCurrentIdentity" = "退出当前身份";
 "ExitCurrentIdentityPrompt" = "即将移除身份，请确保身份已备份";
+"IdentityIDInfo" = "用来维护你存储在区块链上的数据，这些信息会以分布式存储的方式进行保存，只有拥有该身份的人可以动用数据，充分确保你的数据主权不受侵犯。";
 // 修改密码
 "OldPassword" = "旧密码";
 "NewPassword" = "新密码";
@@ -96,7 +97,7 @@
 "TestNetworkPrompt" = "当前为测试网环境";
 
 // 资产
-"TotalAssets" = "总资产（¥）";
+"TotalAssets" = "总资产";
 "MyAssets" = "我的资产";
 "PleaseBackup" = "请备份";
 // 钱包地址
@@ -115,19 +116,19 @@
 "RecentTransactionRecords" = "最近交易记录";
 "NoTransactionRecord" = "暂无交易记录";
 // 转账
-"TransferTitle" = "BU转账";
+//"TransferTitle" = "BU转账";
 "ReciprocalAccount" = "对方账户（BU地址）*";
 "reciprocalAccount" = "对方账户";
 "PhoneOrAddress" = "请输入接收方地址";
-"AmountOfTransfer" = "转账数量（BU）*";
-"amountOfTransfer" = "转账数量";
+//"AmountOfTransfer" = "转账数量（BU）*";
+"AmountOfTransfer" = "转账数量";
 "AvailableBalance" = "可用余额";
 //"MostOnce" = "单笔不可超过10000 BU";
 "AmountOfTransferPlaceholder" = "请输入转账数量";
 "Remarks" = "备注 ";
 "RemarksPlaceholder" = "备注限20字符内";
-"EstimatedMaximum" = "预估最多支付费用（BU）*";
-"estimatedMaximum" = "预估最多支付费用";
+"EstimatedMaximum" = "最多支付费用（BU）*";
+"estimatedMaximum" = "最多支付费用";
 "TransactionCostPlaceholder" = "请输交易费用";
 "Next" = "下一步";
 "TransactionIdentityCipherPrompt" = "请填写身份密码以确认转出";

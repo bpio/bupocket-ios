@@ -36,7 +36,7 @@
 
 @property (nonatomic, assign) CGFloat headerViewH;
 @property (nonatomic, strong) NSMutableArray * listArray;
-
+@property (nonatomic, strong) UILabel * totalAssets;
 @property (nonatomic, strong) UILabel * amount;
 @property (nonatomic, strong) UIView * noNetWork;
 
@@ -99,18 +99,30 @@
 - (void)loadData
 {
     NSUserDefaults * defaults = [NSUserDefaults standardUserDefaults];
-    NSArray * assetsArray = [defaults objectForKey:Add_Assets];
+    NSString * addAssetsKey = Add_Assets;
+    if ([defaults boolForKey:If_Switch_TestNetwork]) {
+        addAssetsKey = Add_Assets_Test;
+    }
+    NSArray * assetsArray = [defaults objectForKey:addAssetsKey];
     if (!assetsArray) {
         assetsArray = [NSArray array];
     }
-    [[HTTPManager shareManager] getAssetsDataWithAddress:[[AccountTool account] purseAccount] currencyType:@"CNY" tokenList:assetsArray success:^(id responseObject) {
+    NSString * currentCurrency = [AssetCurrencyModel getAssetCurrencyTypeWithAssetCurrency:[[defaults objectForKey:Current_Currency] integerValue]];
+    [[HTTPManager shareManager] getAssetsDataWithAddress:[[AccountTool account] purseAccount] currencyType:currentCurrency tokenList:assetsArray success:^(id responseObject) {
         NSInteger code = [[responseObject objectForKey:@"errCode"] integerValue];
         if (code == Success_Code) {
             [self.tableView addSubview:self.headerBg];
             [self.tableView insertSubview:self.headerBg atIndex:0];
             self.listArray = [AssetsListModel mj_objectArrayWithKeyValuesArray:responseObject[@"data"] [@"tokenList"]];
             NSString * amountStr = responseObject[@"data"][@"totalAmount"];
-            self.amount.text = [amountStr isEqualToString:@"~"] ? amountStr : [NSString stringWithFormat:@"≈%@", amountStr];
+            if ([amountStr isEqualToString:@"~"]) {
+                self.amount.text = amountStr;
+            } else {
+                NSString * currencyType = responseObject[@"data"][@"currencyType"];
+                NSString * amountString = [NSString stringWithFormat:@"≈%@ %@", amountStr, currencyType];
+                self.amount.attributedText = [Encapsulation attrWithString:amountString preFont:FONT_Bold(32) preColor:[UIColor whiteColor] index:amountString.length - currencyType.length sufFont:FONT(16) sufColor:[UIColor whiteColor] lineSpacing:0];
+            }
+            self.totalAssets.text = Localized(@"TotalAssets");
             [self setNetworkEnvironment];
             [self.tableView reloadData];
         } else {
@@ -129,6 +141,7 @@
         }
     }];
 }
+
 - (void)getAssetsStateData
 {
     [[HTTPManager shareManager] getRegisteredORDistributionDataWithAssetCode:self.registeredModel.code issueAddress:[[AccountTool account] purseAccount] success:^(id responseObject) {
@@ -297,19 +310,18 @@
         self.amount.textColor = [UIColor whiteColor];
         [self.headerViewBg addSubview:self.amount];
         
-        UILabel * totalAssets = [[UILabel alloc] init];
-        totalAssets.font = FONT(15);
-        totalAssets.textColor = [UIColor whiteColor];
-        totalAssets.text = Localized(@"TotalAssets");
-        [self.headerViewBg addSubview:totalAssets];
-        [totalAssets mas_makeConstraints:^(MASConstraintMaker *make) {
+        self.totalAssets = [[UILabel alloc] init];
+        self.totalAssets.font = FONT(15);
+        self.totalAssets.textColor = [UIColor whiteColor];
+        [self.headerViewBg addSubview:self.totalAssets];
+        [self.totalAssets mas_makeConstraints:^(MASConstraintMaker *make) {
             make.bottom.equalTo(self.headerViewBg.mas_bottom).offset(- Margin_20);
             make.left.equalTo(self.headerViewBg.mas_left).offset(Margin_20);
            
         }];
         [self.amount mas_makeConstraints:^(MASConstraintMaker *make) {
-            make.bottom.equalTo(totalAssets.mas_top).offset(-Margin_10);
-            make.left.equalTo(totalAssets);
+            make.bottom.equalTo(self.totalAssets.mas_top).offset(-Margin_10);
+            make.left.equalTo(self.totalAssets);
         }];
         [QRCode mas_makeConstraints:^(MASConstraintMaker *make) {
             make.bottom.equalTo(self.amount.mas_top).offset(-Margin_15);

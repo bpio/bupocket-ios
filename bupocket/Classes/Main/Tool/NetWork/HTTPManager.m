@@ -300,9 +300,29 @@ static int64_t const gasPrice = 1000;
 //        [MBProgressHUD showErrorMessage:response.errorDesc];
     }
     int64_t amount = balance - baseReserve - [Tools BU2MO:cost];
+    if (amount < 0) {
+        amount = 0;
+    }
     return amount;
 }
-
+// MBalance of assets
+- (int64_t)getAssetInfoWithAddress:(NSString *)address code:(NSString *)code issuer:(NSString *)issuer
+{
+    AssetGetInfoRequest *request = [AssetGetInfoRequest new];
+    [request setAddress : address];
+    [request setCode : code];
+    [request setIssuer : issuer];
+    AssetService *assetService = [[[SDK sharedInstance] setUrl: _bumoNodeUrl] getAssetService];
+    AssetGetInfoResponse *response = [assetService getInfo : request];
+    if (response.errorCode == 0) {
+        AssetInfo *assetInfo = response.result.assets[0];
+        NSLog(@"%@", [response.result yy_modelToJSONString]);
+        return assetInfo.amount;
+    } else {
+        [MBProgressHUD showErrorMessage:[ErrorTypeTool getDescription:response.errorCode]];
+        return 0;
+    }
+}
 // identity data
 - (void)setAccountDataWithRandom:(NSData *)random
                         password:(NSString *)password
@@ -349,16 +369,14 @@ static int64_t const gasPrice = 1000;
                            BUAmount:(NSString *)BUAmount
                            feeLimit:(NSString *)feeLimit
                               notes:(NSString *)notes
+                               code:(NSString *)code
+                             issuer:(NSString *)issuer
                             success:(void (^)(TransactionResultModel * resultModel))success
                             failure:(void (^)(TransactionResultModel * resultModel))failure
 {
     // Build BUSendOperation
     NSString * sourceAddress = [AccountTool account].purseAccount;
     int64_t amount = [Tools BU2MO: [BUAmount doubleValue]];
-    BUSendOperation *operation = [BUSendOperation new];
-    [operation setSourceAddress: sourceAddress];
-    [operation setDestAddress: destAddress];
-    [operation setAmount: amount];
     NSString * privateKey = [NSString decipherKeyStoreWithPW:password keyStoreValueStr:[AccountTool account].purseKey];
     if ([Tools isEmpty:privateKey]) {
         [MBProgressHUD showWarnMessage:Localized(@"PasswordIsIncorrect")];
@@ -367,11 +385,29 @@ static int64_t const gasPrice = 1000;
     int64_t fee = [Tools BU2MO: [feeLimit doubleValue]];
     int64_t nonce = [[HTTPManager shareManager] getAccountNonce: sourceAddress] + 1;
     if (nonce == 0) return;
-    NSString * hash = [[HTTPManager shareManager] buildBlobAndSignAndSubmit:privateKey :sourceAddress :nonce :gasPrice :fee :operation :notes];
+    NSString * hash;
+    if (issuer) {
+        AssetSendOperation *operation = [AssetSendOperation new];
+        [operation setSourceAddress: sourceAddress];
+        [operation setDestAddress: destAddress];
+        [operation setCode: code];
+        [operation setIssuer: issuer];
+        [operation setAmount: amount];
+        hash = [[HTTPManager shareManager] buildBlobAndSignAndSubmit:privateKey :sourceAddress :nonce :gasPrice :fee :operation :notes];
+    } else {
+        BUSendOperation *operation = [BUSendOperation new];
+        [operation setSourceAddress: sourceAddress];
+        [operation setDestAddress: destAddress];
+        [operation setAmount: amount];
+        hash = [[HTTPManager shareManager] buildBlobAndSignAndSubmit:privateKey :sourceAddress :nonce :gasPrice :fee :operation :notes];
+    }
+    
+    
     if (![Tools isEmpty: hash]) {
         [[HTTPManager shareManager] getTransactionStatusHash:hash success:success failure:failure];
     }
 }
+
 // register
 - (void)getRegisteredDataWithPassword:(NSString *)password
                       registeredModel:(RegisteredModel *)registeredModel

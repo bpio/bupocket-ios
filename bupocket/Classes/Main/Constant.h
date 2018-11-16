@@ -21,6 +21,7 @@
 #define AppLanguage @"appLanguage"
 #define ZhHans @"zh-Hans"
 #define EN @"en"
+#define Current_Currency @"CurrentCurrency"
 // Network request timeout limit time
 #define Timeout_Interval 30.0
 // Add assets

@@ -109,8 +109,8 @@ static NSString * const ListCellID = @"ListCellID";
 }
 - (void)userIconAction
 {
-//    MyIdentityViewController * VC = [[MyIdentityViewController alloc] init];
-//    [self.navigationController pushViewController:VC animated:YES];
+    MyIdentityViewController * VC = [[MyIdentityViewController alloc] init];
+    [self.navigationController pushViewController:VC animated:YES];
 }
 - (CGFloat)tableView:(UITableView *)tableView heightForHeaderInSection:(NSInteger)section
 {

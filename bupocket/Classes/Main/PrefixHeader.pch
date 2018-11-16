@@ -32,6 +32,7 @@
 #import <sdk_ios/sdk_ios.h>
 #import "AccountTool.h"
 #import "RegexPatternTool.h"
+#import "AssetCurrencyModel.h"
 
 #import "LanguageManager.h"
 #import "Encapsulation.h"

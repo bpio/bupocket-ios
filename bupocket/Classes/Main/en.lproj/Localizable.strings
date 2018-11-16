@@ -74,6 +74,7 @@
 "IdentityIDTitle" = "Identity ID";
 "BackupIdentity" = "Backup identity";
 "ExitCurrentIdentity" = "Exit the current identity";
+"IdentityIDInfo" = "It is used to secure the data that you store on the blockchain, which is stored in a distributed manner. Only those who have the identity can use the data, so as to ensure that your data sovereignty is not violated";
 // 待确认
 "ExitCurrentIdentityPrompt" = "The identity will be removed. Please make sure the identity is backed up";
 // Revise password
@@ -100,7 +101,7 @@
 "TestNetworkPrompt" = "The current environment is the test network environment";
 
 // Tokens
-"TotalAssets" = "Total tokens（¥）";
+"TotalAssets" = "Total tokens";
 "MyAssets" = "My tokens";
 "PleaseBackup" = "Please back up";
 // Wallet address
@@ -119,19 +120,19 @@
 "RecentTransactionRecords" = "Recent transactions";
 "NoTransactionRecord" = "No transaction records";
 // Transfer coins
-"TransferTitle" = "BU transfer";
+//"TransferTitle" = "BU transfer";
 "ReciprocalAccount" = "Recipient account(BU address)*";
 "reciprocalAccount" = "Recipient account";
 "PhoneOrAddress" = "Please enter the recipient address";
-"AmountOfTransfer" = "Transfer amount(BU)*";
-"amountOfTransfer" = "Transfer amount";
+//"AmountOfTransfer" = "Transfer amount(BU)*";
+"AmountOfTransfer" = "Transfer amount";
 "AvailableBalance" = "Available balance";
 //"MostOnce" = "Each transaction cannot exceed 10000 BU";
 "AmountOfTransferPlaceholder" = "Please enter the amount to be transferred";
 "Remarks" = "Remark ";
 "RemarksPlaceholder" = "Remarks cannot exceed 20 characters";
-"EstimatedMaximum" = "Estimated maximum payment (BU)*";
-"estimatedMaximum" = "Estimated maximum payment";
+"EstimatedMaximum" = "Maximum payment (BU)*";
+"estimatedMaximum" = "Maximum payment";
 "TransactionCostPlaceholder" = "Please enter the transaction fee";
 "Next" = "Next";
 "TransactionIdentityCipherPrompt" = "Please fill in the identity password to confirm the transfer";

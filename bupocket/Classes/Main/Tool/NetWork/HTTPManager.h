@@ -63,6 +63,8 @@
 - (int64_t) getBlockFees;
 // Balance judgment
 - (int64_t)getDataWithBalanceJudgmentWithCost:(double)cost ifShowLoading:(BOOL)ifShowLoading;
+// Balance of assets
+- (int64_t)getAssetInfoWithAddress:(NSString *)address code:(NSString *)code issuer:(NSString *)issuer;
 
 // identity data
 - (void)setAccountDataWithRandom:(NSData *)random
@@ -76,6 +78,8 @@
                            BUAmount:(NSString *)BUAmount
                            feeLimit:(NSString *)feeLimit
                               notes:(NSString *)notes
+                               code:(NSString *)code
+                             issuer:(NSString *)issuer
                             success:(void (^)(TransactionResultModel * resultModel))success
                             failure:(void (^)(TransactionResultModel * resultModel))failure;
 

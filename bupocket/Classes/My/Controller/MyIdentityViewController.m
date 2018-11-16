@@ -11,8 +11,12 @@
 #import "PurseCipherAlertView.h"
 #import "BackupMnemonicsViewController.h"
 #import "ClearCacheTool.h"
+#import "YBPopupMenu.h"
 
 @interface MyIdentityViewController ()
+
+@property (nonatomic, strong) YBPopupMenu *popupMenu;
+@property (nonatomic, strong) CustomButton * identityIDTitle;
 
 @end
 
@@ -28,7 +32,7 @@
 - (void)setupView
 {
     self.view.backgroundColor = COLOR(@"F2F2F2");
-    UIView * myIdentityBg = [[UIView alloc] initWithFrame:CGRectMake(Margin_15, Margin_10, DEVICE_WIDTH - Margin_30, ScreenScale(110))];
+    UIView * myIdentityBg = [[UIView alloc] initWithFrame:CGRectMake(Margin_15, Margin_10, DEVICE_WIDTH - Margin_30, ScreenScale(90))];
     myIdentityBg.backgroundColor = [UIColor whiteColor];
     [myIdentityBg setViewSize:myIdentityBg.size borderWidth:0 borderColor:nil borderRadius:BG_CORNER];
     [self.view addSubview:myIdentityBg];
@@ -39,7 +43,7 @@
     IDNameTitle.text = Localized(@"IdentityNameTitle");
     [myIdentityBg addSubview:IDNameTitle];
     [IDNameTitle mas_makeConstraints:^(MASConstraintMaker *make) {
-        make.top.equalTo(myIdentityBg.mas_top).offset(ScreenScale(17));
+        make.top.equalTo(myIdentityBg.mas_top).offset(Margin_15);
         make.left.equalTo(myIdentityBg.mas_left).offset(Margin_10);
     }];
     
@@ -53,12 +57,15 @@
         make.right.equalTo(myIdentityBg.mas_right).offset(-Margin_10);
     }];
     
-    UILabel * IdentityIDTitle = [[UILabel alloc] init];
-    IdentityIDTitle.font = IDNameTitle.font;
-    IdentityIDTitle.textColor = IDNameTitle.textColor;
-    IdentityIDTitle.text = Localized(@"IdentityIDTitle");
-    [myIdentityBg addSubview:IdentityIDTitle];
-    [IdentityIDTitle mas_makeConstraints:^(MASConstraintMaker *make) {
+    self.identityIDTitle = [[CustomButton alloc] init];
+    self.identityIDTitle.layoutMode = HorizontalInverted;
+    self.identityIDTitle.titleLabel.font = IDNameTitle.font;
+    [self.identityIDTitle setTitleColor:IDNameTitle.textColor forState:UIControlStateNormal];
+    [self.identityIDTitle setTitle:Localized(@"IdentityIDTitle") forState:UIControlStateNormal];
+    [self.identityIDTitle setImage:[UIImage imageNamed:@"identityIDInfo"] forState:UIControlStateNormal];
+    [self.identityIDTitle addTarget:self action:@selector(identityIDInfo:) forControlEvents:UIControlEventTouchUpInside];
+    [myIdentityBg addSubview:self.identityIDTitle];
+    [self.identityIDTitle mas_makeConstraints:^(MASConstraintMaker *make) {
         make.top.equalTo(IDNameTitle.mas_bottom).offset(Margin_25);
         make.left.equalTo(IDNameTitle);
     }];
@@ -66,12 +73,12 @@
     UILabel * IdentityID = [[UILabel alloc] init];
     IdentityID.font = IDName.font;
     IdentityID.textColor = IDName.textColor;
-    IdentityID.text = [AccountTool account].identityAccount;
+    IdentityID.text = [NSString stringEllipsisWithStr:[AccountTool account].identityAccount];
     IdentityID.numberOfLines = 0;
     IdentityID.textAlignment = NSTextAlignmentRight;
     [myIdentityBg addSubview:IdentityID];
     [IdentityID mas_makeConstraints:^(MASConstraintMaker *make) {
-        make.top.equalTo(IdentityIDTitle);
+        make.top.equalTo(self.identityIDTitle);
         make.right.equalTo(IDName);
         make.width.mas_equalTo(ScreenScale(200));
     }];
@@ -125,6 +132,23 @@
     }];
     [alertController addAction:okAction];
     [self presentViewController:alertController animated:YES completion:nil];
+}
+- (void)identityIDInfo:(UIButton *)button
+{
+    NSString * title = Localized(@"IdentityIDInfo");
+    CGFloat titleHeight = [Encapsulation rectWithText:title fontSize:14 textWidth:DEVICE_WIDTH - ScreenScale(120)].size.height;
+    _popupMenu = [YBPopupMenu showRelyOnView:button.imageView titles:@[title] icons:nil menuWidth:DEVICE_WIDTH - ScreenScale(90) otherSettings:^(YBPopupMenu * popupMenu) {
+        popupMenu.priorityDirection = YBPopupMenuPriorityDirectionTop;
+        popupMenu.itemHeight = titleHeight + Margin_30;
+        popupMenu.dismissOnTouchOutside = YES;
+        popupMenu.dismissOnSelected = NO;
+        popupMenu.fontSize = 14;
+        popupMenu.textColor = [UIColor whiteColor];
+        popupMenu.backColor = COLOR(@"56526D");
+        popupMenu.tableView.separatorStyle = UITableViewCellSeparatorStyleNone;
+        popupMenu.tableView.scrollEnabled = NO;
+        popupMenu.height = titleHeight + Margin_40;
+    }];
 }
 /*
 #pragma mark - Navigation

@@ -34,7 +34,6 @@
 		83379A6B2179C1D500C222A5 /* ChangePasswordViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 83379A6A2179C1D500C222A5 /* ChangePasswordViewController.m */; };
 		83379A6E2179CB9E00C222A5 /* FeedbackViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 83379A6D2179CB9E00C222A5 /* FeedbackViewController.m */; };
 		83379A742179D62300C222A5 /* MyIdentityViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 83379A732179D62300C222A5 /* MyIdentityViewController.m */; };
-		83379A7A217B4EA700C222A5 /* AppDelegate+Extension.m in Sources */ = {isa = PBXBuildFile; fileRef = 83379A79217B4EA700C222A5 /* AppDelegate+Extension.m */; };
 		83379A80217B524D00C222A5 /* UIApplication+Extension.m in Sources */ = {isa = PBXBuildFile; fileRef = 83379A7F217B524D00C222A5 /* UIApplication+Extension.m */; };
 		83379A83217D805300C222A5 /* PurseAddressAlertView.m in Sources */ = {isa = PBXBuildFile; fileRef = 83379A82217D805300C222A5 /* PurseAddressAlertView.m */; };
 		83379A86217D9C8A00C222A5 /* AssetsDetailViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 83379A85217D9C8A00C222A5 /* AssetsDetailViewController.m */; };
@@ -101,6 +100,8 @@
 		83FB443921904AA400D68569 /* HMScanerCardViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 83FB442F21904AA300D68569 /* HMScanerCardViewController.m */; };
 		83FB443A21904AA400D68569 /* HMScannerController.m in Sources */ = {isa = PBXBuildFile; fileRef = 83FB443121904AA300D68569 /* HMScannerController.m */; };
 		83FB4443219131EC00D68569 /* UINavigationController+Extension.m in Sources */ = {isa = PBXBuildFile; fileRef = 83FB4442219131EC00D68569 /* UINavigationController+Extension.m */; };
+		950E4145219E6ADD002C7900 /* AssetCurrencyModel.m in Sources */ = {isa = PBXBuildFile; fileRef = 950E4144219E6ADD002C7900 /* AssetCurrencyModel.m */; };
+		950EF2A3219D801300F5121A /* MonetaryUnitViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 950EF2A2219D801300F5121A /* MonetaryUnitViewController.m */; };
 		9510A3CC219A91D4007A49A4 /* ErrorTypeTool.m in Sources */ = {isa = PBXBuildFile; fileRef = 9510A3CB219A91D4007A49A4 /* ErrorTypeTool.m */; };
 		954371742199234100915BBE /* SettingViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 954371732199234100915BBE /* SettingViewController.m */; };
 		9549EC66219C0CF800307255 /* CreateTipsAlertView.m in Sources */ = {isa = PBXBuildFile; fileRef = 9549EC65219C0CF800307255 /* CreateTipsAlertView.m */; };
@@ -112,6 +113,9 @@
 		95A8A3B9219D15D8008E978E /* RegexPatternTool.m in Sources */ = {isa = PBXBuildFile; fileRef = 95A8A3B8219D15D8008E978E /* RegexPatternTool.m */; };
 		95A8A3BC219D161D008E978E /* CustomRefreshHeader.m in Sources */ = {isa = PBXBuildFile; fileRef = 95A8A3BB219D161D008E978E /* CustomRefreshHeader.m */; };
 		95A8A3BF219D166D008E978E /* Encapsulation.m in Sources */ = {isa = PBXBuildFile; fileRef = 95A8A3BE219D166D008E978E /* Encapsulation.m */; };
+		95A8A41C219D5FF7008E978E /* YBPopupMenu.m in Sources */ = {isa = PBXBuildFile; fileRef = 95A8A417219D5FF6008E978E /* YBPopupMenu.m */; };
+		95A8A41D219D5FF7008E978E /* YBRectConst.m in Sources */ = {isa = PBXBuildFile; fileRef = 95A8A41A219D5FF7008E978E /* YBRectConst.m */; };
+		95A8A41E219D5FF7008E978E /* YBPopupMenuPath.m in Sources */ = {isa = PBXBuildFile; fileRef = 95A8A41B219D5FF7008E978E /* YBPopupMenuPath.m */; };
 		C78AA58ABD5C4F75C67B6250 /* Pods_bupocketTests.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 248F98B6791F2F7C55E77E0E /* Pods_bupocketTests.framework */; };
 		E0A64C5CAFFFD9486B7713D7 /* Pods_bupocket.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = EB267DD938A42BAD30A164A2 /* Pods_bupocket.framework */; };
 /* End PBXBuildFile section */
@@ -216,8 +220,6 @@
 		83379A6D2179CB9E00C222A5 /* FeedbackViewController.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = FeedbackViewController.m; sourceTree = "<group>"; };
 		83379A722179D62300C222A5 /* MyIdentityViewController.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = MyIdentityViewController.h; sourceTree = "<group>"; };
 		83379A732179D62300C222A5 /* MyIdentityViewController.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = MyIdentityViewController.m; sourceTree = "<group>"; };
-		83379A78217B4EA600C222A5 /* AppDelegate+Extension.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = "AppDelegate+Extension.h"; sourceTree = "<group>"; };
-		83379A79217B4EA700C222A5 /* AppDelegate+Extension.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = "AppDelegate+Extension.m"; sourceTree = "<group>"; };
 		83379A7E217B524D00C222A5 /* UIApplication+Extension.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "UIApplication+Extension.h"; sourceTree = "<group>"; };
 		83379A7F217B524D00C222A5 /* UIApplication+Extension.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "UIApplication+Extension.m"; sourceTree = "<group>"; };
 		83379A81217D805300C222A5 /* PurseAddressAlertView.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = PurseAddressAlertView.h; sourceTree = "<group>"; };
@@ -353,6 +355,10 @@
 		83FB4441219131EC00D68569 /* UINavigationController+Extension.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = "UINavigationController+Extension.h"; sourceTree = "<group>"; };
 		83FB4442219131EC00D68569 /* UINavigationController+Extension.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = "UINavigationController+Extension.m"; sourceTree = "<group>"; };
 		8BAFA7A3EC4992591E7450DA /* Pods-bupocket.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-bupocket.release.xcconfig"; path = "Pods/Target Support Files/Pods-bupocket/Pods-bupocket.release.xcconfig"; sourceTree = "<group>"; };
+		950E4143219E6ADD002C7900 /* AssetCurrencyModel.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = AssetCurrencyModel.h; sourceTree = "<group>"; };
+		950E4144219E6ADD002C7900 /* AssetCurrencyModel.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = AssetCurrencyModel.m; sourceTree = "<group>"; };
+		950EF2A1219D801300F5121A /* MonetaryUnitViewController.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = MonetaryUnitViewController.h; sourceTree = "<group>"; };
+		950EF2A2219D801300F5121A /* MonetaryUnitViewController.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = MonetaryUnitViewController.m; sourceTree = "<group>"; };
 		9510A3CA219A91D4007A49A4 /* ErrorTypeTool.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = ErrorTypeTool.h; sourceTree = "<group>"; };
 		9510A3CB219A91D4007A49A4 /* ErrorTypeTool.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = ErrorTypeTool.m; sourceTree = "<group>"; };
 		954371722199234100915BBE /* SettingViewController.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = SettingViewController.h; sourceTree = "<group>"; };
@@ -375,6 +381,12 @@
 		95A8A3BB219D161D008E978E /* CustomRefreshHeader.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = CustomRefreshHeader.m; sourceTree = "<group>"; };
 		95A8A3BD219D166D008E978E /* Encapsulation.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = Encapsulation.h; sourceTree = "<group>"; };
 		95A8A3BE219D166D008E978E /* Encapsulation.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = Encapsulation.m; sourceTree = "<group>"; };
+		95A8A416219D5FF6008E978E /* YBRectConst.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = YBRectConst.h; sourceTree = "<group>"; };
+		95A8A417219D5FF6008E978E /* YBPopupMenu.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = YBPopupMenu.m; sourceTree = "<group>"; };
+		95A8A418219D5FF6008E978E /* YBPopupMenu.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = YBPopupMenu.h; sourceTree = "<group>"; };
+		95A8A419219D5FF7008E978E /* YBPopupMenuPath.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = YBPopupMenuPath.h; sourceTree = "<group>"; };
+		95A8A41A219D5FF7008E978E /* YBRectConst.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = YBRectConst.m; sourceTree = "<group>"; };
+		95A8A41B219D5FF7008E978E /* YBPopupMenuPath.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = YBPopupMenuPath.m; sourceTree = "<group>"; };
 		9D915F385F1A78B38EC83B6E /* Pods_bupocketUITests.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_bupocketUITests.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		A61F11E76D6541BC859B703E /* Pods-bupocket.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-bupocket.debug.xcconfig"; path = "Pods/Target Support Files/Pods-bupocket/Pods-bupocket.debug.xcconfig"; sourceTree = "<group>"; };
 		EB267DD938A42BAD30A164A2 /* Pods_bupocket.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_bupocket.framework; sourceTree = BUILT_PRODUCTS_DIR; };
@@ -428,6 +440,7 @@
 		833799292177091500C222A5 /* Tool */ = {
 			isa = PBXGroup;
 			children = (
+				95A8A415219D5FE2008E978E /* YBPopupMenu */,
 				95A8A3B6219D15AB008E978E /* RegularCheck */,
 				95A8A3B2219D155E008E978E /* Date */,
 				95A8A3A8219D12B1008E978E /* Internationalization */,
@@ -532,8 +545,6 @@
 				83379AC0217F3F1E00C222A5 /* Model */,
 				835A45232174C14D005BFCDD /* AppDelegate.h */,
 				835A45252174C14D005BFCDD /* AppDelegate.m */,
-				83379A78217B4EA600C222A5 /* AppDelegate+Extension.h */,
-				83379A79217B4EA700C222A5 /* AppDelegate+Extension.m */,
 				835A45242174C14D005BFCDD /* main.m */,
 				835A45382174C47E005BFCDD /* PrefixHeader.pch */,
 				83A66A2D218B323300E071B9 /* Constant.h */,
@@ -614,6 +625,8 @@
 				83379A6A2179C1D500C222A5 /* ChangePasswordViewController.m */,
 				83379A6C2179CB9E00C222A5 /* FeedbackViewController.h */,
 				83379A6D2179CB9E00C222A5 /* FeedbackViewController.m */,
+				950EF2A1219D801300F5121A /* MonetaryUnitViewController.h */,
+				950EF2A2219D801300F5121A /* MonetaryUnitViewController.m */,
 				833799182176E80D00C222A5 /* MultilingualViewController.h */,
 				833799192176E80D00C222A5 /* MultilingualViewController.m */,
 			);
@@ -678,6 +691,8 @@
 		835A45342174C212005BFCDD /* Model */ = {
 			isa = PBXGroup;
 			children = (
+				950E4143219E6ADD002C7900 /* AssetCurrencyModel.h */,
+				950E4144219E6ADD002C7900 /* AssetCurrencyModel.m */,
 				83379AC4217F3F4200C222A5 /* AssetsListModel.h */,
 				83379AC5217F3F4200C222A5 /* AssetsListModel.m */,
 				83FB4421219035B700D68569 /* SearchAssetsModel.h */,
@@ -893,6 +908,19 @@
 			path = RegularCheck;
 			sourceTree = "<group>";
 		};
+		95A8A415219D5FE2008E978E /* YBPopupMenu */ = {
+			isa = PBXGroup;
+			children = (
+				95A8A418219D5FF6008E978E /* YBPopupMenu.h */,
+				95A8A417219D5FF6008E978E /* YBPopupMenu.m */,
+				95A8A419219D5FF7008E978E /* YBPopupMenuPath.h */,
+				95A8A41B219D5FF7008E978E /* YBPopupMenuPath.m */,
+				95A8A416219D5FF6008E978E /* YBRectConst.h */,
+				95A8A41A219D5FF7008E978E /* YBRectConst.m */,
+			);
+			path = YBPopupMenu;
+			sourceTree = "<group>";
+		};
 		AAA27303C314FA52BBDCAB7B /* Frameworks */ = {
 			isa = PBXGroup;
 			children = (
@@ -984,7 +1012,7 @@
 		83B4659821745C9300187961 /* Project object */ = {
 			isa = PBXProject;
 			attributes = {
-				LastUpgradeCheck = 1000;
+				LastUpgradeCheck = 1010;
 				ORGANIZATIONNAME = bupocket;
 				TargetAttributes = {
 					83B4659F21745C9300187961 = {
@@ -1200,7 +1228,6 @@
 				83379A6B2179C1D500C222A5 /* ChangePasswordViewController.m in Sources */,
 				8372C86C2174CCB000FF9506 /* MyViewController.m in Sources */,
 				83379A58217880C700C222A5 /* BackUpPurseViewController.m in Sources */,
-				83379A7A217B4EA700C222A5 /* AppDelegate+Extension.m in Sources */,
 				83379A80217B524D00C222A5 /* UIApplication+Extension.m in Sources */,
 				9549EC66219C0CF800307255 /* CreateTipsAlertView.m in Sources */,
 				83379AE52180631200C222A5 /* TxInfoModel.m in Sources */,
@@ -1214,6 +1241,7 @@
 				83379AAA217F006600C222A5 /* HttpTool.m in Sources */,
 				8372C86F2174D03F00FF9506 /* UIButton+Extension.m in Sources */,
 				83379A8F217DC0C700C222A5 /* TransferDetailsAlertView.m in Sources */,
+				950EF2A3219D801300F5121A /* MonetaryUnitViewController.m in Sources */,
 				83D5B1EB2181741200BF1FF1 /* AddAssetsViewCell.m in Sources */,
 				95A8A3B1219D1352008E978E /* LanguageManager.m in Sources */,
 				8395AF22218725D20082EA30 /* RegisteredAssetsViewController.m in Sources */,
@@ -1258,11 +1286,13 @@
 				83379AC3217F3F3000C222A5 /* BaseModel.m in Sources */,
 				83D5BCD12182AB8200BF1FF1 /* AccountTool.m in Sources */,
 				8372C872217588D100FF9506 /* IdentityViewController.m in Sources */,
+				95A8A41C219D5FF7008E978E /* YBPopupMenu.m in Sources */,
 				83B594AA2175954F009F91BA /* CreateIdentityViewController.m in Sources */,
 				83EE39422181633A0017CDE5 /* AddAssetsViewController.m in Sources */,
 				83379A83217D805300C222A5 /* PurseAddressAlertView.m in Sources */,
 				8395AF2B218843650082EA30 /* RegisteredModel.m in Sources */,
 				8395AF25218725FF0082EA30 /* RegisteredResultViewController.m in Sources */,
+				950E4145219E6ADD002C7900 /* AssetCurrencyModel.m in Sources */,
 				83379A6E2179CB9E00C222A5 /* FeedbackViewController.m in Sources */,
 				83D5BCC72181BF9500BF1FF1 /* UIColor+Extension.m in Sources */,
 				9510A3CC219A91D4007A49A4 /* ErrorTypeTool.m in Sources */,
@@ -1276,11 +1306,13 @@
 				83379A98217EB79B00C222A5 /* RequestTimeoutViewController.m in Sources */,
 				835A45272174C14D005BFCDD /* AppDelegate.m in Sources */,
 				83379AE22180630300C222A5 /* TxDetailModel.m in Sources */,
+				95A8A41D219D5FF7008E978E /* YBRectConst.m in Sources */,
 				833799172176E1E600C222A5 /* ListTableViewCell.m in Sources */,
 				95A8A3BC219D161D008E978E /* CustomRefreshHeader.m in Sources */,
 				83379A5B2178825300C222A5 /* PurseCipherAlertView.m in Sources */,
 				83379A092178509300C222A5 /* WKWebViewController.m in Sources */,
 				83379A6221797BDD00C222A5 /* ConfirmMnemonicViewController.m in Sources */,
+				95A8A41E219D5FF7008E978E /* YBPopupMenuPath.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -1541,6 +1573,7 @@
 			isa = XCBuildConfiguration;
 			baseConfigurationReference = A61F11E76D6541BC859B703E /* Pods-bupocket.debug.xcconfig */;
 			buildSettings = {
+				ALWAYS_EMBED_SWIFT_STANDARD_LIBRARIES = YES;
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				CODE_SIGN_IDENTITY = "iPhone Developer";
 				CODE_SIGN_STYLE = Automatic;
@@ -1577,6 +1610,7 @@
 			isa = XCBuildConfiguration;
 			baseConfigurationReference = 8BAFA7A3EC4992591E7450DA /* Pods-bupocket.release.xcconfig */;
 			buildSettings = {
+				ALWAYS_EMBED_SWIFT_STANDARD_LIBRARIES = YES;
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				CODE_SIGN_IDENTITY = "iPhone Developer";
 				CODE_SIGN_STYLE = Automatic;

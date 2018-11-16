@@ -43,19 +43,11 @@
         }
             break;
         case MJRefreshStatePulling: {
-            
+            [self setAnimation];
         }
             break;
         case MJRefreshStateRefreshing: {
-            CABasicAnimation * animation = [CABasicAnimation animationWithKeyPath:@"transform.rotation.z"];
-//            animation.toValue = [NSNumber numberWithFloat:M_PI * 12.0];
-//            animation.duration = 8.5f;
-//            animation.repeatCount = 1;
-            animation.duration = 1.0f;
-            animation.toValue = [NSNumber numberWithFloat:M_PI * 2.0];
-            animation.repeatCount = CGFLOAT_MAX;
-            animation.cumulative = YES;
-            [_refreshImage.layer addAnimation:animation forKey:@"rotationAnimation"];
+            [self setAnimation];
         }
             break;
             case MJRefreshStateNoMoreData:
@@ -67,6 +59,18 @@
         default:
             break;
     }
+}
+- (void)setAnimation
+{
+    CABasicAnimation * animation = [CABasicAnimation animationWithKeyPath:@"transform.rotation.z"];
+    //            animation.toValue = [NSNumber numberWithFloat:M_PI * 12.0];
+    //            animation.duration = 8.5f;
+    //            animation.repeatCount = 1;
+    animation.duration = 1.0f;
+    animation.toValue = [NSNumber numberWithFloat:M_PI * 2.0];
+    animation.repeatCount = CGFLOAT_MAX;
+    animation.cumulative = YES;
+    [_refreshImage.layer addAnimation:animation forKey:@"rotationAnimation"];
 }
 /*
 // Only override drawRect: if you perform custom drawing.

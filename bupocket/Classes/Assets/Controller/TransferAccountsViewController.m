@@ -42,22 +42,24 @@
 - (void)viewDidLoad {
     [super viewDidLoad];
     [self setupView];
-    self.navigationItem.title = Localized(@"TransferTitle");
+    self.navigationItem.title = Localized(@"TransferAccounts");
     // Do any additional setup after loading the view.
 }
 - (void)viewWillAppear:(BOOL)animated
 {
     [super viewWillAppear:animated];
-    __weak typeof(self) weakSelf = self;
-    NSOperationQueue * queue = [[NSOperationQueue alloc] init];
-    [queue addOperationWithBlock:^{
-        double amount = [Tools MO2BU:[[HTTPManager shareManager] getDataWithBalanceJudgmentWithCost:0 ifShowLoading:NO]];
-        NSNumber * nsAmount = @(amount);
-        [[NSOperationQueue mainQueue] addOperationWithBlock:^{
-            weakSelf.availableBalance.attributedText = [Encapsulation attrWithString:[NSString stringWithFormat:@"%@\n%@ BU", Localized(@"AvailableBalance"), nsAmount] preFont:FONT(12) preColor:COLOR_6 index:[Localized(@"AvailableBalance") length] sufFont:FONT(12) sufColor:MAIN_COLOR lineSpacing:Margin_5];
-            weakSelf.availableBalance.textAlignment = NSTextAlignmentRight;
+    if ([self.listModel.assetCode isEqualToString:@"BU"]) {
+        __weak typeof(self) weakSelf = self;
+        NSOperationQueue * queue = [[NSOperationQueue alloc] init];
+        [queue addOperationWithBlock:^{
+            double amount = [Tools MO2BU:[[HTTPManager shareManager] getDataWithBalanceJudgmentWithCost:0 ifShowLoading:NO]];
+            NSNumber * nsAmount = @(amount);
+            [[NSOperationQueue mainQueue] addOperationWithBlock:^{
+                weakSelf.availableBalance.attributedText = [Encapsulation attrWithString:[NSString stringWithFormat:@"%@\n%@ BU", Localized(@"AvailableBalance"), nsAmount] preFont:FONT(12) preColor:COLOR_6 index:[Localized(@"AvailableBalance") length] sufFont:FONT(12) sufColor:MAIN_COLOR lineSpacing:Margin_5];
+                weakSelf.availableBalance.textAlignment = NSTextAlignmentRight;
+            }];
         }];
-    }];
+    }
 }
 - (void)setupView
 {
@@ -67,7 +69,8 @@
     self.scrollView.contentInset = UIEdgeInsetsMake(0, 0, SafeAreaBottomH + NavBarH + Margin_10, 0);
     self.scrollView.keyboardDismissMode = UIScrollViewKeyboardDismissModeOnDrag;
     [self.view addSubview:self.scrollView];
-    NSArray * array = @[@[Localized(@"ReciprocalAccount"), Localized(@"AmountOfTransfer"), Localized(@"Remarks"), Localized(@"EstimatedMaximum")], @[Localized(@"PhoneOrAddress"), Localized(@"AmountOfTransferPlaceholder"), Localized(@"RemarksPlaceholder"), Localized(@"TransactionCostPlaceholder")]];
+    NSString * numberOfTransfers = [NSString stringWithFormat:@"%@（%@）*", Localized(@"AmountOfTransfer"), self.listModel.assetCode];
+    NSArray * array = @[@[Localized(@"ReciprocalAccount"), numberOfTransfers, Localized(@"Remarks"), Localized(@"EstimatedMaximum")], @[Localized(@"PhoneOrAddress"), Localized(@"AmountOfTransferPlaceholder"), Localized(@"RemarksPlaceholder"), Localized(@"TransactionCostPlaceholder")]];
     for (NSInteger i = 0; i < 4; i++) {
         UIView * TAView = [self setViewWithTitle:[array firstObject][i] placeholder:[array lastObject][i] index:i];
         [self.scrollView addSubview:TAView];
@@ -103,8 +106,17 @@
     [MBProgressHUD showActivityMessageInWindow:Localized(@"Loading")];
     __weak typeof(self) weakSelf = self;
     __block NSString * amountOfTransfer = self.amountOfTransfer.text;
-    __block double sendingQuantity = [self.mostOnce.text doubleValue];
+    __block double sendingQuantity = 0;
     __block double cost = [self.transactionCosts.text doubleValue];
+    if ([self.listModel.assetCode isEqualToString:@"BU"]) {
+        sendingQuantity = [self.mostOnce.text doubleValue];
+    } else {
+        if ([self.mostOnce.text doubleValue] > [self.listModel.amount floatValue]) {
+            [MBProgressHUD hideHUD];
+            [MBProgressHUD showTipMessageInWindow:Localized(@"NotSufficientFunds")];
+            return;
+        }
+    }
     dispatch_group_t group = dispatch_group_create();
     dispatch_group_enter(group);
     BOOL isCorrectAddress = [Keypair isAddressValid: amountOfTransfer];
@@ -154,7 +166,7 @@
                     return;
                 }
                 [MBProgressHUD hideHUD];
-                weakSelf.transferInfoArray = [NSMutableArray arrayWithObjects:amountOfTransfer, [NSString stringAppendingBUWithStr:weakSelf.mostOnce.text], [NSString stringAppendingBUWithStr:weakSelf.transactionCosts.text], nil];
+                weakSelf.transferInfoArray = [NSMutableArray arrayWithObjects:amountOfTransfer, [NSString stringWithFormat:@"%@ %@", weakSelf.mostOnce.text, self.listModel.assetCode], [NSString stringAppendingBUWithStr:weakSelf.transactionCosts.text], nil];
                 if ([weakSelf.remarks hasText]) {
                     [weakSelf.transferInfoArray addObject:weakSelf.remarks.text];
                 }
@@ -184,7 +196,7 @@
 
 - (void)getDataWithPassword:(NSString *)password
 {
-    [[HTTPManager shareManager] setTransferDataWithPassword:password destAddress:_amountOfTransfer.text BUAmount:_mostOnce.text feeLimit:_transactionCosts.text notes:_remarks.text success:^(TransactionResultModel *resultModel) {
+    [[HTTPManager shareManager] setTransferDataWithPassword:password destAddress:_amountOfTransfer.text BUAmount:_mostOnce.text feeLimit:_transactionCosts.text notes:_remarks.text code:self.listModel.assetCode issuer:self.listModel.issuer success:^(TransactionResultModel *resultModel) {
         [self.transferInfoArray addObject:[DateTool getDateStringWithTimeStr:[NSString stringWithFormat:@"%lld", resultModel.transactionTime]]];
         TransferResultsViewController * VC = [[TransferResultsViewController alloc] init];
         if (resultModel.errorCode == Success_Code) {
@@ -235,7 +247,8 @@
     if (index == 0) {
         self.amountOfTransfer = textField;
         if (self.address.length > 0) {
-            self.amountOfTransfer.text = self.address;
+            self.amountOfTransfer.text = @"";
+            [self.amountOfTransfer insertText:self.address];
         }
         UIButton * scan = [UIButton createButtonWithNormalImage:@"transferAccounts_scan" SelectedImage:@"transferAccounts_scan" Target:self Selector:@selector(scanAction)];
         scan.contentHorizontalAlignment = UIControlContentHorizontalAlignmentRight;
@@ -247,7 +260,7 @@
         self.availableBalance = [[UILabel alloc] init];
         self.availableBalance.numberOfLines = 0;
         [header addSubview:self.availableBalance];
-        self.availableBalance.attributedText = [Encapsulation attrWithString:[NSString stringWithFormat:@"%@\n0 BU", Localized(@"AvailableBalance")] preFont:FONT(12) preColor:COLOR_6 index:[Localized(@"AvailableBalance") length] sufFont:FONT(12) sufColor:MAIN_COLOR lineSpacing:Margin_5];
+        self.availableBalance.attributedText = [Encapsulation attrWithString:[NSString stringWithFormat:@"%@\n%@ %@", Localized(@"AvailableBalance"), self.listModel.amount, self.listModel.assetCode] preFont:FONT(12) preColor:COLOR_6 index:[Localized(@"AvailableBalance") length] sufFont:FONT(12) sufColor:MAIN_COLOR lineSpacing:Margin_5];
         self.availableBalance.textAlignment = NSTextAlignmentRight;
         [self.availableBalance mas_makeConstraints:^(MASConstraintMaker *make) {
             make.right.top.equalTo(header);
@@ -292,7 +305,8 @@
 - (void)scanAction
 {
     HMScannerController *scanner = [HMScannerController scannerWithCardName:nil avatar:nil completion:^(NSString *stringValue) {
-        self.amountOfTransfer.text = stringValue;
+        self.amountOfTransfer.text = @"";
+        [self.amountOfTransfer insertText:stringValue];
     }];
     [scanner setTitleColor:[UIColor whiteColor] tintColor:MAIN_COLOR];
     [self showDetailViewController:scanner sender:nil];

@@ -7,6 +7,6 @@
 */
 CFBundleDisplayName = "BU Pocket";
 
-NSCameraUsageDescription = "bupocket需要访问您的相机，为了帮您进行扫描二维码";
-NSMicrophoneUsageDescription = "bupocket需要访问您的相册，为了帮您进行相关图片的扫描";
-NSPhotoLibraryUsageDescription = "bupocket需要访问您的相册，为了帮您进行相关图片的扫描";
+NSCameraUsageDescription = "Bupocket needs to visit your camera, in order to help you scan the two-dimensional code.";
+NSMicrophoneUsageDescription = "Bupocket needs to visit your photo album, in order to help you scan related pictures.";
+NSPhotoLibraryUsageDescription = "Bupocket needs to visit your photo album, in order to help you scan related pictures.";

@@ -10,6 +10,7 @@
 
 static NSString * const ListCellID = @"ListCellID";
 static NSString * const SettingCellID = @"SettingCellID";
+static NSString * const MonetaryUnitCellID = @"MonetaryUnitCellID";
 
 @implementation ListTableViewCell
 
@@ -35,15 +36,22 @@ static NSString * const SettingCellID = @"SettingCellID";
 - (void)layoutSubviews
 {
     [super layoutSubviews];
-    [self.listImage mas_makeConstraints:^(MASConstraintMaker *make) {
-        make.left.equalTo(self.contentView.mas_left).offset(Margin_20);
-        make.centerY.equalTo(self.contentView);
-        make.width.height.mas_equalTo(Margin_20);
-    }];
-    [self.title mas_makeConstraints:^(MASConstraintMaker *make) {
-        make.left.equalTo(self.listImage.mas_right).offset(Margin_10);
-        make.centerY.equalTo(self.contentView);
-    }];
+    if ([self.reuseIdentifier isEqualToString:MonetaryUnitCellID]) {
+        [self.title mas_makeConstraints:^(MASConstraintMaker *make) {
+            make.left.equalTo(self.contentView.mas_left).offset(Margin_20);
+            make.top.height.equalTo(self.contentView);
+        }];
+    } else {
+        [self.listImage mas_makeConstraints:^(MASConstraintMaker *make) {
+            make.left.equalTo(self.contentView.mas_left).offset(Margin_20);
+            make.centerY.equalTo(self.contentView);
+            make.width.height.mas_equalTo(Margin_20);
+        }];
+        [self.title mas_makeConstraints:^(MASConstraintMaker *make) {
+            make.left.equalTo(self.listImage.mas_right).offset(Margin_10);
+            make.top.height.equalTo(self.contentView);
+        }];
+    }
     [self.detailImage mas_makeConstraints:^(MASConstraintMaker *make) {
         make.right.equalTo(self.contentView.mas_right).offset(-Margin_20);
         make.centerY.equalTo(self.contentView);

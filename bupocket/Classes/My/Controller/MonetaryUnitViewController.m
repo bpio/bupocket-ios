@@ -1,15 +1,15 @@
 //
-//  MultilingualViewController.m
+//  MonetaryUnitViewController.m
 //  bupocket
 //
-//  Created by bupocket on 2018/10/17.
+//  Created by huoss on 2018/11/15.
 //  Copyright © 2018年 bupocket. All rights reserved.
 //
 
-#import "MultilingualViewController.h"
+#import "MonetaryUnitViewController.h"
 #import "ListTableViewCell.h"
 
-@interface MultilingualViewController ()<UITableViewDelegate, UITableViewDataSource>
+@interface MonetaryUnitViewController ()<UITableViewDelegate, UITableViewDataSource>
 
 @property (nonatomic, strong) UITableView * tableView;
 @property (nonatomic, strong) NSArray * listArray;
@@ -17,20 +17,17 @@
 
 @end
 
-static NSString * const ListCellID = @"ListCellID";
+static NSString * const MonetaryUnitCellID = @"MonetaryUnitCellID";
 
-@implementation MultilingualViewController
+@implementation MonetaryUnitViewController
 
 - (void)viewDidLoad {
     [super viewDidLoad];
-    self.navigationItem.title = Localized(@"Multilingual");
-    if ([CurrentAppLanguage isEqualToString:ZhHans]) {
-        self.index = 0;
-    } else if ([CurrentAppLanguage isEqualToString:EN]) {
-        self.index = 1;
-    }
+    self.navigationItem.title = Localized(@"MonetaryUnit");
+    
     [self setupView];
-    self.listArray = @[Localized(@"SimplifiedChinese"), Localized(@"English")];
+    self.listArray = @[@"CNY", @"USD", @"JPY", @"KRW"];
+    self.index = [[[NSUserDefaults standardUserDefaults] objectForKey:Current_Currency] integerValue];
     
     // Do any additional setup after loading the view.
 }
@@ -65,9 +62,8 @@ static NSString * const ListCellID = @"ListCellID";
 }
 - (UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath
 {
-    ListTableViewCell * cell = [ListTableViewCell cellWithTableView:tableView identifier:ListCellID];
+    ListTableViewCell * cell = [ListTableViewCell cellWithTableView:tableView identifier:MonetaryUnitCellID];
     cell.selectionStyle = UITableViewCellSelectionStyleNone;
-    cell.listImage.image = [UIImage imageNamed:[NSString stringWithFormat:@"multilingual_list_%zd", indexPath.row]];
     cell.detailImage.image = [UIImage imageNamed:@"checked"];
     cell.title.text = self.listArray[indexPath.row];
     cell.detailTitle.text = nil;
@@ -87,20 +83,12 @@ static NSString * const ListCellID = @"ListCellID";
     ListTableViewCell * cell = [tableView cellForRowAtIndexPath:indexPath];
     cell.detailImage.hidden = NO;
     _index = indexPath.row;
+    
     NSUserDefaults * defaults = [NSUserDefaults standardUserDefaults];
-    if(indexPath.row == 0){
-        [defaults setObject:ZhHans forKey:AppLanguage];
-        [defaults synchronize];
-        [kLanguageManager setUserlanguage:ZhHans];
-    }
-    if(indexPath.row == 1){
-        [defaults setObject:EN forKey:AppLanguage];
-        [defaults synchronize];
-        [kLanguageManager setUserlanguage:EN];
-    }
+    [defaults setObject:@(indexPath.row) forKey:Current_Currency];
+    [defaults synchronize];
     [UIApplication sharedApplication].keyWindow.rootViewController = [[TabBarViewController alloc] init];
 }
-
 /*
 #pragma mark - Navigation
 

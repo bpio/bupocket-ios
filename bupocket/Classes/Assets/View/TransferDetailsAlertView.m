@@ -27,7 +27,7 @@
     if (self) {
         _sureBlock = confrimBlock;
         _cancleBlock = cancelBlock;
-        _transferInfoArray = @[@[Localized(@"reciprocalAccount"), Localized(@"amountOfTransfer"), Localized(@"estimatedMaximum"), Localized(@"Remarks")], transferInfoArray];
+        _transferInfoArray = @[@[Localized(@"reciprocalAccount"), Localized(@"AmountOfTransfer"), Localized(@"estimatedMaximum"), Localized(@"Remarks")], transferInfoArray];
         [self setupView];
     }
     return self;

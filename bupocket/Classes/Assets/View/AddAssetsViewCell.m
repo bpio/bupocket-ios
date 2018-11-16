@@ -31,16 +31,16 @@ static NSString * const AddAssetsCellID = @"AddAssetsCellID";
 - (instancetype)initWithStyle:(UITableViewCellStyle)style reuseIdentifier:(NSString *)reuseIdentifier
 {
     if (self = [super initWithStyle:style reuseIdentifier:reuseIdentifier]) {
-        [self.contentView addSubview:self.listImage];
-        [self.contentView addSubview:self.title];
-        [self.contentView addSubview:self.detailTitle];
-        [self.contentView addSubview:self.infoTitle];
-        [self.contentView addSubview:self.addBtn];
         if ([[NSUserDefaults standardUserDefaults] boolForKey:If_Switch_TestNetwork]) {
             self.addAssetsKey = Add_Assets_Test;
         } else {
             self.addAssetsKey = Add_Assets;
         }
+        [self.contentView addSubview:self.listImage];
+        [self.contentView addSubview:self.title];
+        [self.contentView addSubview:self.detailTitle];
+        [self.contentView addSubview:self.infoTitle];
+        [self.contentView addSubview:self.addBtn];
     }
     return self;
 }

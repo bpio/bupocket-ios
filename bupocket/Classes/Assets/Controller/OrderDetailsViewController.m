@@ -32,6 +32,7 @@
 
 static NSString * const DetailListCellID = @"DetailListCellID";
 static NSString * const OrderDetailsCellID = @"OrderDetailsCellID";
+static NSInteger const TxInfoNormalCount = 7;
 
 
 - (void)viewDidLoad {
@@ -85,7 +86,7 @@ static NSString * const OrderDetailsCellID = @"OrderDetailsCellID";
 }
 - (void)setListData
 {
-    NSMutableArray * infoTitleArray = [NSMutableArray arrayWithObjects:@"TX Hash", @"Source Address", @"Dest Address", @"Amount", @"TX Fee", @"Ledger Seq", @"Transaction Signature", nil];
+    NSMutableArray * infoTitleArray = [NSMutableArray arrayWithObjects:@"TX Hash", @"Source Address", @"Dest Address", @"Amount", @"TX Fee", @"Nonce", @"Ledger Seq", @"Transaction Signature", nil];
     self.infoArray = [NSMutableArray array];
     NSMutableArray * detailArray = [NSMutableArray array];
     [detailArray addObject:self.txDetailModel.sourceAddress];
@@ -101,6 +102,7 @@ static NSString * const OrderDetailsCellID = @"OrderDetailsCellID";
     [infoArray addObject:self.txInfoModel.destAddress];
     [infoArray addObject:[NSString stringAppendingBUWithStr:self.txInfoModel.amount]];
     [infoArray addObject:[NSString stringAppendingBUWithStr:self.txInfoModel.fee]];
+    [infoArray addObject:self.txInfoModel.nonce];
     [infoArray addObject:self.txInfoModel.ledgerSeq];
     [infoArray addObject:@"Transaction Signature"];
     NSArray * signatureArray = [JsonTool dictionaryOrArrayWithJSONSString: self.txInfoModel.signatureStr];
@@ -118,11 +120,11 @@ static NSString * const OrderDetailsCellID = @"OrderDetailsCellID";
     [blockInfoArray addObject:self.blockInfoModel.hashStr];
     [blockInfoArray addObject:self.blockInfoModel.previousHash];
     [blockInfoArray addObject:self.blockInfoModel.txCount];
-    [blockInfoArray addObject:self.blockInfoModel.validatorsHash];
+//    [blockInfoArray addObject:self.blockInfoModel.validatorsHash]; , @"Validators Hash"
     [blockInfoArray addObject:[DateTool getDateStringWithTimeStr:self.blockInfoModel.closeTimeDate]];
     [self.infoArray addObject:blockInfoArray];
     
-    self.listArray = @[@[Localized(@"OriginatorAdress"), Localized(@"RecipientAddress"), Localized(@"TransactionCost"), Localized(@"SendingTime"), Localized(@"Remarks")], infoTitleArray, @[@"Block Height", @"Block Hash", @"Prev Block Hash", @"TX Count", @"Validators Hash", @"Consensus Time"]];
+    self.listArray = @[@[Localized(@"OriginatorAdress"), Localized(@"RecipientAddress"), Localized(@"TransactionCost"), Localized(@"SendingTime"), Localized(@"Remarks")], infoTitleArray, @[@"Block Height", @"Block Hash", @"Prev Block Hash", @"TX Count", @"Consensus Time"]];
 }
 
 - (void)setupView
@@ -156,7 +158,7 @@ static NSString * const OrderDetailsCellID = @"OrderDetailsCellID";
         } else {
             outOrIn = @"+";
         }
-        NSString * assets = [self.listModel.amount isEqualToString:@"~"] ? self.listModel.amount : [NSString stringWithFormat:@"%@%@%@", outOrIn, self.listModel.amount, self.assetCode];
+        NSString * assets = [self.listModel.amount isEqualToString:@"~"] ? self.listModel.amount : [NSString stringWithFormat:@"%@%@ %@", outOrIn, self.listModel.amount, self.assetCode];
         UILabel * orderResults = [[UILabel alloc] init];
         orderResults.font = FONT_Bold(27);
         orderResults.attributedText = [Encapsulation attrWithString:assets preFont:FONT_Bold(27) preColor:TITLE_COLOR index:assets.length - 2 sufFont:FONT_Bold(27) sufColor:COLOR(@"3F3F3F") lineSpacing:0];
@@ -173,7 +175,7 @@ static NSString * const OrderDetailsCellID = @"OrderDetailsCellID";
             make.top.equalTo(orderResults.mas_bottom).offset(Margin_10);
             make.centerX.equalTo(self.headerViewBg);
         }];
-        state.text = (self.listModel.txStatus == 0) ? Localized(@"Success") : Localized(@"Failure");
+        state.text = (self.listModel.txStatus == 0) ? Localized(@"TransferSuccess") : Localized(@"TransferFailure");
         _headerView = headerView;
     }
     return _headerView;
@@ -245,10 +247,10 @@ static NSString * const OrderDetailsCellID = @"OrderDetailsCellID";
 }
 - (CGFloat)tableView:(UITableView *)tableView heightForRowAtIndexPath:(NSIndexPath *)indexPath
 {
-    if (indexPath.section == 1 && indexPath.row == 6) {
+    if (indexPath.section == 1 && indexPath.row == TxInfoNormalCount) {
         return MAIN_HEIGHT;
-    } else if (indexPath.section == 1 && indexPath.row > 6) {
-        CGFloat bottomH = indexPath.row % 2 ? 0 : Margin_10;
+    } else if (indexPath.section == 1 && indexPath.row > TxInfoNormalCount) {
+        CGFloat bottomH = indexPath.row % 2 ? Margin_15 : 0;
         CGFloat rowHeight = [Encapsulation rectWithText:self.infoArray[indexPath.section][indexPath.row] fontSize:15 textWidth: DEVICE_WIDTH - Margin_60].size.height + ScreenScale(50) + bottomH;
         return rowHeight;
     } else {
@@ -267,12 +269,12 @@ static NSString * const OrderDetailsCellID = @"OrderDetailsCellID";
 - (UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath
 {
     NSString * cellID = DetailListCellID;
-    if (indexPath.section == 1 && indexPath.row > 6) {
+    if (indexPath.section == 1 && indexPath.row > TxInfoNormalCount) {
         cellID = OrderDetailsCellID;
     }
     DetailListViewCell * cell = [DetailListViewCell cellWithTableView:tableView identifier:cellID];
     cell.title.text = self.listArray[indexPath.section][indexPath.row];
-    if (indexPath.section == 1 && indexPath.row == 6) {
+    if (indexPath.section == 1 && indexPath.row == TxInfoNormalCount) {
         cell.infoTitle.text = @"";
     } else {
         cell.infoTitle.text = self.infoArray[indexPath.section][indexPath.row];

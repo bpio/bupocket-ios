@@ -148,6 +148,7 @@
         self.assets.textColor = TITLE_COLOR;
         self.assets.font = FONT_Bold(24);
         [self.headerViewBg addSubview:self.assets];
+        self.assets.preferredMaxLayoutWidth = DEVICE_WIDTH - Margin_40;
         [self.assets mas_makeConstraints:^(MASConstraintMaker *make) {
             make.top.equalTo(assetsIcon.mas_bottom).offset(Margin_25);
             make.centerX.equalTo(self.headerViewBg);
@@ -156,6 +157,7 @@
         self.amount.font = FONT(15);
         self.amount.textColor = COLOR_9;
         [self.headerViewBg addSubview:self.amount];
+        self.amount.preferredMaxLayoutWidth = DEVICE_WIDTH - Margin_40;
         [self.amount mas_makeConstraints:^(MASConstraintMaker *make) {
             make.top.equalTo(self.assets.mas_bottom).offset(Margin_15);
             make.centerX.equalTo(self.headerViewBg);

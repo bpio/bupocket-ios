@@ -8,6 +8,7 @@
 
 #import "SettingViewController.h"
 #import "MultilingualViewController.h"
+#import "MonetaryUnitViewController.h"
 #import "ListTableViewCell.h"
 
 @interface SettingViewController ()<UITableViewDelegate, UITableViewDataSource>
@@ -83,8 +84,8 @@ static NSString * const SettingCellID = @"SettingCellID";
             } else if ([CurrentAppLanguage isEqualToString:EN]) {
                 cell.detailTitle.text = Localized(@"English");
             }
-        } else {
-            cell.detailTitle.text = nil;
+        } else if (indexPath.row == 1) {
+            cell.detailTitle.text = [AssetCurrencyModel getAssetCurrencyTypeWithAssetCurrency:[[[NSUserDefaults standardUserDefaults] objectForKey:Current_Currency] integerValue]];
         }
     }
     return cell;
@@ -97,7 +98,8 @@ static NSString * const SettingCellID = @"SettingCellID";
         MultilingualViewController * VC = [[MultilingualViewController alloc] init];
         [self.navigationController pushViewController:VC animated:YES];
     } else if (indexPath.row == 1) {
-        // 货币单位
+        MonetaryUnitViewController * VC = [[MonetaryUnitViewController alloc] init];
+        [self.navigationController pushViewController:VC animated:YES];
     }
 }
 - (UISwitch *)switchControl
