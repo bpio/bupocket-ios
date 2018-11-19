@@ -21,6 +21,7 @@
 #define SafeAreaBottomH ((IS_IPHONE_5_8 || IS_IPHONE_6_5) ? 34 : 0)
 #define TabBarH ([[UIApplication sharedApplication] statusBarFrame].size.height > 20 ? 83 : 49)
 #define ScreenScale(WH) ((IS_IPHONE_5_8 || IS_IPHONE_6_5) ? (DEVICE_WIDTH / 375) * WH : WH)
+#define ContentSizeBottom SafeAreaBottomH + NavBarH + Margin_10
 
 #define MAIN_HEIGHT ScreenScale(45)
 #define LINE_WIDTH ScreenScale(0.5)
@@ -64,6 +65,7 @@
 // language
 #define CurrentAppLanguage [[NSUserDefaults standardUserDefaults] objectForKey: AppLanguage]
 #define Localized(key)  [[NSBundle bundleWithPath:[[NSBundle mainBundle] pathForResource:[NSString stringWithFormat:@"%@", CurrentAppLanguage] ofType:@"lproj"]] localizedStringForKey:(key) value:nil table:@"Localizable"]
+#define Localized_Refresh(key)  [[NSBundle bundleWithPath:[[NSBundle mj_refreshBundle] pathForResource:[NSString stringWithFormat:@"%@", CurrentAppLanguage] ofType:@"lproj"]] localizedStringForKey:(key) value:nil table:@"Localizable"]
 
 #ifdef DEBUG
 #define HSSLog(...) NSLog(__VA_ARGS__)

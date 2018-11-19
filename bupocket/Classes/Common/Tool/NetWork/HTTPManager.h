@@ -38,6 +38,7 @@
 - (void)getAssetsDetailDataWithAssetCode:(NSString *)assetCode
                                   issuer:(NSString *)issuer
                                  address:(NSString *)address
+                            currencyType:(NSString *)currencyType
                                pageIndex:(NSInteger)pageIndex
                                  success:(void (^)(id responseObject))success
                                  failure:(void (^)(NSError *error))failure;

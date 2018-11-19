@@ -12,8 +12,8 @@
 
 @interface TabBarViewController ()
 
-@property (nonatomic, strong) AssetsViewController * assetsVC;
-@property (nonatomic, strong) MyViewController * myVC;
+//@property (nonatomic, strong) AssetsViewController * assetsVC;
+//@property (nonatomic, strong) MyViewController * myVC;
 
 @end
 
@@ -41,24 +41,22 @@
 
 - (void)viewDidLoad {
     [super viewDidLoad];
-    self.assetsVC = [[AssetsViewController alloc] init];
-    [self setupChildVC:self.assetsVC title:Localized(@"AssetsTitle") image:@"tab_Assets_n" selectedImage:@"tab_Assets_s"];
-    self.myVC = [[MyViewController alloc] init];
-    [self setupChildVC:self.myVC title:Localized(@"MyTitle") image:@"tab_My_n" selectedImage:@"tab_My_s"];
-    [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(changeLanguage) name:ChangeLanguageNotificationName object:nil];
+    [self setupChildVC:[[AssetsViewController alloc] init] title:Localized(@"AssetsTitle") image:@"tab_Assets_n" selectedImage:@"tab_Assets_s"];
+    [self setupChildVC:[[MyViewController alloc] init] title:Localized(@"MyTitle") image:@"tab_My_n" selectedImage:@"tab_My_s"];
+//    [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(changeLanguage) name:ChangeLanguageNotificationName object:nil];
     // Do any additional setup after loading the view.
 }
-- (void)changeLanguage
-{
-    self.assetsVC.navigationItem.title = Localized(@"AssetsTitle");
-    self.assetsVC.tabBarItem.title = Localized(@"AssetsTitle");
-    
-    self.myVC.navigationItem.title = Localized(@"MyTitle");
-    self.myVC.tabBarItem.title = Localized(@"MyTitle");
-}
-- (void)dealloc {
-    [[NSNotificationCenter defaultCenter] removeObserver:self];
-}
+//- (void)changeLanguage
+//{
+//    self.assetsVC.navigationItem.title = Localized(@"AssetsTitle");
+//    self.assetsVC.tabBarItem.title = Localized(@"AssetsTitle");
+//
+//    self.myVC.navigationItem.title = Localized(@"MyTitle");
+//    self.myVC.tabBarItem.title = Localized(@"MyTitle");
+//}
+//- (void)dealloc {
+//    [[NSNotificationCenter defaultCenter] removeObserver:self];
+//}
 - (void)didReceiveMemoryWarning {
     [super didReceiveMemoryWarning];
     // Dispose of any resources that can be recreated.

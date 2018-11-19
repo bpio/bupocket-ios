@@ -60,6 +60,7 @@
 - (void)viewDidLoad {
     [super viewDidLoad];
     [self setupView];
+//    [self setupNav];
     // Do any additional setup after loading the view.
 }
 - (void)viewWillAppear:(BOOL)animated {
@@ -194,24 +195,30 @@
     VC.registeredModel = self.registeredModel;
     [self.navigationController pushViewController:VC animated:YES];
 }
+- (void)setupNav
+{
+    self.navAlpha = 0;
+    self.navBackgroundColor = [UIColor clearColor];
+}
 - (void)setupView
 {
     self.headerImage = [UIImage imageNamed:@"assets_header"];
     _headerViewH = ScreenScale(375 * self.headerImage.size.height / self.headerImage.size.width);
     [self.view addSubview:self.tableView];
-    [self.tableView mas_makeConstraints:^(MASConstraintMaker *make) {
-        make.edges.mas_equalTo(0);
-    }];
+//    [self.tableView mas_makeConstraints:^(MASConstraintMaker *make) {
+//        make.edges.mas_equalTo(0);
+//    }];
     [self setupRefresh];
     self.noNetWork = [Encapsulation showNoNetWorkWithSuperView:self.view target:self action:@selector(reloadData)];
 }
 - (UITableView *)tableView
 {
     if (!_tableView) {
-        _tableView = [[UITableView alloc] initWithFrame:CGRectMake(0, 0, DEVICE_WIDTH, DEVICE_HEIGHT - TabBarH - SafeAreaBottomH) style:UITableViewStyleGrouped];
+        _tableView = [[UITableView alloc] initWithFrame:self.view.bounds style:UITableViewStyleGrouped];
+//        CGRectMake(0, 0, DEVICE_WIDTH, DEVICE_HEIGHT - TabBarH - SafeAreaBottomH)
         _tableView.delegate = self;
         _tableView.dataSource = self;
-        _tableView.separatorInset = UIEdgeInsetsZero;
+//        _tableView.separatorInset = UIEdgeInsetsZero;
         _tableView.separatorStyle = UITableViewCellSeparatorStyleNone;
         _tableView.contentInset = UIEdgeInsetsMake(_headerViewH, 0, 0, 0);
         _tableView.scrollIndicatorInsets = _tableView.contentInset;
@@ -224,7 +231,6 @@
     if (!_headerBg) {
         UIView * headerBg = [[UIView alloc] init];
         headerBg.frame = CGRectMake(0, -_headerViewH, DEVICE_WIDTH, _headerViewH);
-        
         _headerImageView = [[UIImageView alloc] init];
         _headerImageView.image = [UIImage imageNamed:@"assets_header"];
         _headerImageView.frame = CGRectMake(0, 0, DEVICE_WIDTH, _headerViewH);
@@ -359,6 +365,13 @@
     }
     _headerImageView.frame = CGRectMake(0, 0, DEVICE_WIDTH, _headerBg.height);
     _headerViewBg.y = _headerBg.height - _headerViewH;
+    
+    self.navAlpha = offsetY + _headerViewH / 80;
+    if (offsetY + _headerViewH > 80) {
+        self.navTitleColor = self.navTintColor = offsetY + _headerViewH < 0 ? [UIColor clearColor] : TITLE_COLOR;
+    } else {
+        self.navTitleColor = self.navTintColor = [UIColor whiteColor];
+    }
 }
 - (void)alertViewWithMessage:(NSString *)message
 {

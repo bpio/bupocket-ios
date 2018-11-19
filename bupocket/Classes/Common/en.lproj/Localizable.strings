@@ -10,7 +10,9 @@
 "LaunchBriefIntroduction" = "A ubiquitous trust blockchain network of value circulation";
 "VersionUpdate" = "Version update";
 "UpdateVersion" = "Update version";
-
+"IfUpdate" = "是否更新到";
+"Version" = "版本";
+"AppSize" = "新版本大小：";
 
 "NoNetWork" = "Your network is interrupted. Please try again later.";
 "Reload" = "Reload";
@@ -194,7 +196,7 @@
 // scan
 "Close" = "Close";
 "Album" = "Album";
-"ScanPrompt" = "Automatically scan the QR code/bar code in the box";
+"ScanPrompt" = "Automatically scan the QR code in the box";
 // date
 "HoursAgo" = "Hour ago";
 "MinutesAgo" = "Minute ago";

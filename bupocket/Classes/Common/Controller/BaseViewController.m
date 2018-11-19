@@ -19,6 +19,10 @@
     self.view.backgroundColor = [UIColor whiteColor];
     self.edgesForExtendedLayout = UIRectEdgeNone;
     [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(changeLanguage) name:ChangeLanguageNotificationName object:nil];
+//    if (@available(iOS 11.0, *)){
+//    } else {
+//        self.automaticallyAdjustsScrollViewInsets = NO;
+//    }
     // Do any additional setup after loading the view.
 }
 - (void)popToRootVC

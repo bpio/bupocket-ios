@@ -42,7 +42,9 @@
         UITableView.appearance.estimatedSectionHeaderHeight = 0;
         [[UINavigationBar appearance]setPrefersLargeTitles:true];
     }
-    //             self.automaticallyAdjustsScrollViewInsets = NO;
+//    else {
+//        self.automaticallyAdjustsScrollViewInsets = NO;
+//    }
     NSUserDefaults * defaults = [NSUserDefaults standardUserDefaults];
     if ([defaults boolForKey:If_Created]) {
         if ([defaults boolForKey:If_Backup] || [defaults boolForKey:If_Skip]) {
@@ -102,8 +104,7 @@
                 } else if ([language hasPrefix:EN]) {
                     updateContent = versionModel.englishVerContents;
                 }
-                VersionUpdateAlertView * alertView = [[VersionUpdateAlertView alloc] initWithVersionUpdateContent:updateContent confrimBolck:^{
-//               NSString *str = @"itms-apps://itunes.apple.com/cn/app/id1329918420?mt=8"; //更换id即可
+                VersionUpdateAlertView * alertView = [[VersionUpdateAlertView alloc] initWithUpdateVersionNumber:versionModel.verNumber versionSize:versionModel.appSize content:updateContent confrimBolck:^{
                     [[UIApplication sharedApplication] openURL:[NSURL URLWithString:versionModel.downloadLink]];
                 } cancelBlock:^{
                     

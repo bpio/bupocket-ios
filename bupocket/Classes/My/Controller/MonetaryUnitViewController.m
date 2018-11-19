@@ -50,7 +50,7 @@ static NSString * const MonetaryUnitCellID = @"MonetaryUnitCellID";
 }
 - (CGFloat)tableView:(UITableView *)tableView heightForFooterInSection:(NSInteger)section
 {
-    return SafeAreaBottomH + NavBarH + Margin_10;
+    return ContentSizeBottom;
 }
 - (NSInteger)numberOfSectionsInTableView:(UITableView *)tableView
 {

@@ -43,6 +43,7 @@ static NSString * const ListCellID = @"ListCellID";
 
 - (void)viewDidLoad {
     [super viewDidLoad];
+//    [self setupNav];
     self.headerImage = [UIImage imageNamed:@"my_header"];
     self.touchCounter = 0;
     self.listArray = @[Localized(@"Setting"), Localized(@"ModifyPassword"), Localized(@"Feedback"), Localized(@"VersionNumber")];
@@ -62,6 +63,11 @@ static NSString * const ListCellID = @"ListCellID";
         self.headerBg.backgroundColor = [UIColor whiteColor];
         self.settingListArray = @[Localized(@"MultiLingual"), Localized(@"MonetaryUnit")];
     }
+}
+- (void)setupNav
+{
+    self.navAlpha = 0;
+    self.navBackgroundColor = [UIColor whiteColor];
 }
 - (void)setupView
 {
@@ -118,7 +124,7 @@ static NSString * const ListCellID = @"ListCellID";
 }
 - (CGFloat)tableView:(UITableView *)tableView heightForFooterInSection:(NSInteger)section
 {
-    return SafeAreaBottomH + NavBarH + Margin_10;
+    return ContentSizeBottom;
 }
 - (CGFloat)tableView:(UITableView *)tableView heightForRowAtIndexPath:(NSIndexPath *)indexPath
 {

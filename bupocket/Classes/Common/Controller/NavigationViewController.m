@@ -28,6 +28,12 @@
     UINavigationBar * bar = [UINavigationBar appearance];
     bar.shadowImage = [[UIImage alloc] init];
     bar.barTintColor = [UIColor whiteColor];
+    
+//    NSMutableDictionary * attr = [NSMutableDictionary dictionary];
+//    attr[NSFontAttributeName] = FONT(18);
+//    attr[NSForegroundColorAttributeName] = TITLE_COLOR;
+//    [bar setTitleTextAttributes:attr];
+//    [bar setBarTintColor:MAIN_COLOR];
 }
 - (void)pushViewController:(UIViewController *)viewController animated:(BOOL)animated
 {
@@ -38,6 +44,7 @@
         viewController.navigationItem.leftBarButtonItem = [[UIBarButtonItem alloc]initWithCustomView:backButton];
         viewController.hidesBottomBarWhenPushed = YES;
     }
+    viewController.view.backgroundColor = [UIColor whiteColor];
     [super pushViewController:viewController animated:animated];
 }
 - (UIViewController *)childViewControllerForStatusBarStyle
@@ -58,8 +65,10 @@
 - (void)navigationController:(UINavigationController *)navigationController willShowViewController:(UIViewController *)viewController animated:(BOOL)animated
 {
     [viewController viewWillAppear:animated];
-    BOOL isSetLargeTitles = ([viewController isKindOfClass:[AddAssetsViewController class]] ||
-                      [viewController isKindOfClass:[AssetsDetailViewController class]] ||
+    BOOL isSetLargeTitles = (
+//                             [viewController isKindOfClass:[AssetsViewController class]]  ||
+                             [viewController isKindOfClass:[AddAssetsViewController class]] ||
+                             [viewController isKindOfClass:[AssetsDetailViewController class]] ||
                              [viewController isKindOfClass:[TransferResultsViewController class]] ||
                              [viewController isKindOfClass:[RequestTimeoutViewController class]] ||
                              [viewController isKindOfClass:[OrderDetailsViewController class]]);

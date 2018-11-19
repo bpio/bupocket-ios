@@ -37,6 +37,19 @@ static int64_t const gasPrice = 1000;
     });
     return _shareManager;
 }
++ (instancetype)allocWithZone:(struct _NSZone *)zone
+{
+    static dispatch_once_t onceToken;
+    dispatch_once(&onceToken, ^{
+        _shareManager = [super allocWithZone:zone];
+    });
+    return _shareManager;
+}
+- (id)copyWithZone:(NSZone *)zone
+{
+    return _shareManager;
+}
+
 // Switched network
 - (void)SwitchedNetworkWithIsTest:(BOOL)isTest
 {
@@ -121,6 +134,7 @@ static int64_t const gasPrice = 1000;
 - (void)getAssetsDetailDataWithAssetCode:(NSString *)assetCode
                                   issuer:(NSString *)issuer
                                  address:(NSString *)address
+                            currencyType:(NSString *)currencyType
                                pageIndex:(NSInteger)pageIndex
                                  success:(void (^)(id responseObject))success
                                  failure:(void (^)(NSError *error))failure
@@ -128,7 +142,9 @@ static int64_t const gasPrice = 1000;
     NSString * url;
     NSMutableDictionary * parmenters = [NSMutableDictionary dictionary];
     [parmenters addEntriesFromDictionary:@{@"startPage" : @(pageIndex),
-                                           @"pageSize" : @(PageSize_Max)}];
+                                           @"pageSize" : @(PageSize_Max),
+                                           @"currencyType": currencyType
+                                           }];
     if ([assetCode isEqualToString:@"BU"]) {
         url = SERVER_COMBINE_API(_webServerDomain, Transaction_Record_BU);
         [parmenters setObject:address forKey:@"walletAddress"];
@@ -136,7 +152,8 @@ static int64_t const gasPrice = 1000;
         url = SERVER_COMBINE_API(_webServerDomain, Transaction_Record);
         [parmenters addEntriesFromDictionary:@{@"assetCode" : assetCode,
                                                @"issuer" : issuer,
-                                               @"address" : address}];
+                                               @"address" : address,
+                                               }];
         [MBProgressHUD showActivityMessageInWindow:Localized(@"Loading")];
     }
     [[HttpTool shareTool] POST:url parameters:parmenters success:^(id responseObject) {
@@ -386,7 +403,15 @@ static int64_t const gasPrice = 1000;
     int64_t nonce = [[HTTPManager shareManager] getAccountNonce: sourceAddress] + 1;
     if (nonce == 0) return;
     NSString * hash;
-    if (issuer) {
+    if ([code isEqualToString:@"BU"]) {
+        // BU
+        BUSendOperation *operation = [BUSendOperation new];
+        [operation setSourceAddress: sourceAddress];
+        [operation setDestAddress: destAddress];
+        [operation setAmount: amount];
+        hash = [[HTTPManager shareManager] buildBlobAndSignAndSubmit:privateKey :sourceAddress :nonce :gasPrice :fee :operation :notes];
+    } else {
+        // Other currencies
         AssetSendOperation *operation = [AssetSendOperation new];
         [operation setSourceAddress: sourceAddress];
         [operation setDestAddress: destAddress];
@@ -394,15 +419,7 @@ static int64_t const gasPrice = 1000;
         [operation setIssuer: issuer];
         [operation setAmount: amount];
         hash = [[HTTPManager shareManager] buildBlobAndSignAndSubmit:privateKey :sourceAddress :nonce :gasPrice :fee :operation :notes];
-    } else {
-        BUSendOperation *operation = [BUSendOperation new];
-        [operation setSourceAddress: sourceAddress];
-        [operation setDestAddress: destAddress];
-        [operation setAmount: amount];
-        hash = [[HTTPManager shareManager] buildBlobAndSignAndSubmit:privateKey :sourceAddress :nonce :gasPrice :fee :operation :notes];
     }
-    
-    
     if (![Tools isEmpty: hash]) {
         [[HTTPManager shareManager] getTransactionStatusHash:hash success:success failure:failure];
     }

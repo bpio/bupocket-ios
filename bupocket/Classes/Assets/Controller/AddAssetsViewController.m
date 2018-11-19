@@ -63,8 +63,8 @@ static NSString * const SearchID = @"SearchID";
 {
     self.tableView.mj_header = [CustomRefreshHeader headerWithRefreshingTarget:self refreshingAction:@selector(loadNewData)];
     self.tableView.mj_header.automaticallyChangeAlpha = YES;
-    self.tableView.mj_footer = [MJRefreshAutoNormalFooter footerWithRefreshingTarget:self refreshingAction:@selector(loadMoreData)];
-    self.tableView.mj_footer.hidden = YES;
+    self.tableView.mj_footer = [CustomRefreshFooter footerWithRefreshingTarget:self refreshingAction:@selector(loadMoreData)];
+    self.tableView.mj_footer.ignoredScrollViewContentInsetBottom = -(ContentSizeBottom);
 }
 - (void)loadNewData
 {
@@ -136,7 +136,6 @@ static NSString * const SearchID = @"SearchID";
     self.tableView.dataSource = self;
     [self.view addSubview:self.searchController.searchBar];
     [self.view addSubview:self.tableView];
-    self.automaticallyAdjustsScrollViewInsets = NO;
 }
 - (UIView *)noData
 {
@@ -165,7 +164,7 @@ static NSString * const SearchID = @"SearchID";
 }
 - (CGFloat)tableView:(UITableView *)tableView heightForFooterInSection:(NSInteger)section
 {
-    return SafeAreaBottomH + NavBarH + Margin_10;
+    return ContentSizeBottom;
 }
 - (CGFloat)tableView:(UITableView *)tableView heightForRowAtIndexPath:(NSIndexPath *)indexPath
 {

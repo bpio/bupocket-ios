@@ -39,7 +39,18 @@ static HttpTool * _shareTool = nil;
     });
     return _shareTool;
 }
-
++ (instancetype)allocWithZone:(struct _NSZone *)zone
+{
+    static dispatch_once_t onceToken;
+    dispatch_once(&onceToken, ^{
+        _shareTool = [super allocWithZone:zone];
+    });
+    return _shareTool;
+}
+- (id)copyWithZone:(NSZone *)zone
+{
+    return _shareTool;
+}
 
 - (void)GET:(NSString *)URLString parameters:(NSDictionary *)parameters success:(void (^)(id))success failure:(void (^)(NSError *))failure
 {

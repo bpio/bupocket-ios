@@ -12,6 +12,9 @@
 "MyTitle" = "我的";//等号左边为代码中需要调用的key，右边为对应的中文文本value。
 "AssetsTitle" = "资产";
 "VersionUpdate" = "版本更新";
+"IfUpdate" = "是否更新到";
+"Version" = "版本";
+"AppSize" = "新版本大小：";
 "UpdateVersion" = "更新版本";
 // 身份
 "CreateDigitalIdentity" = "创建数字身份";
@@ -190,7 +193,7 @@
 // scan
 "Close" = "关闭";
 "Album" = "相册";
-"ScanPrompt" = "将二维码/条码放入框中，即可自动扫描";
+"ScanPrompt" = "将二维码放入框中，即可自动扫描";
 // date
 "HoursAgo" = "小时前";
 "MinutesAgo" = "分钟前";

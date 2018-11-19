@@ -136,7 +136,7 @@ static NSString * const DistributionDetailCellID = @"DistributionDetailCellID";
 - (CGFloat)tableView:(UITableView *)tableView heightForFooterInSection:(NSInteger)section
 {
     if (section == self.listArray.count - 1) {
-        return SafeAreaBottomH + NavBarH + Margin_10;
+        return ContentSizeBottom;
     } else {
         return CGFLOAT_MIN;
     }
