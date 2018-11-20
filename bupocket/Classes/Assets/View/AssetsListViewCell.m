@@ -63,7 +63,7 @@ static NSString * const AssetsCellID = @"AssetsCellID";
     self.detailTitle.text = listModel.amount;
     
     NSString * currencyUnit = [AssetCurrencyModel getCurrencyUnitWithAssetCurrency:[[[NSUserDefaults standardUserDefaults] objectForKey:Current_Currency] integerValue]];
-    self.infoTitle.text = [listModel.assetAmount isEqualToString:@"~"] ? listModel.assetAmount : [NSString stringWithFormat:@"≈ %@%@", currencyUnit, listModel.assetAmount];
+    self.infoTitle.text = [listModel.assetAmount isEqualToString:@"~"] ? listModel.assetAmount : [NSString stringWithFormat:@"≈%@%@", currencyUnit, listModel.assetAmount];
 }
 - (UIImageView *)listImage
 {

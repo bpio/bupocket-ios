@@ -16,20 +16,5 @@ NS_ASSUME_NONNULL_BEGIN
 
 @end
 
-@interface UIViewController (Extension)
-
-// Transparency of navigation bar
-@property (nonatomic, assign) CGFloat navAlpha;
-
-// Navigation bar background color
-@property (null_resettable, nonatomic, strong) UIColor * navBackgroundColor;
-
-// item font color
-@property (null_resettable, nonatomic, strong) UIColor * navTintColor;
-
-// title font color
-@property (null_resettable, nonatomic, strong) UIColor * navTitleColor;
-
-@end
 
 NS_ASSUME_NONNULL_END

@@ -60,7 +60,6 @@
 - (void)viewDidLoad {
     [super viewDidLoad];
     [self setupView];
-//    [self setupNav];
     // Do any additional setup after loading the view.
 }
 - (void)viewWillAppear:(BOOL)animated {
@@ -194,11 +193,6 @@
     VC.distributionModel = self.distributionModel;
     VC.registeredModel = self.registeredModel;
     [self.navigationController pushViewController:VC animated:YES];
-}
-- (void)setupNav
-{
-    self.navAlpha = 0;
-    self.navBackgroundColor = [UIColor clearColor];
 }
 - (void)setupView
 {
@@ -365,13 +359,6 @@
     }
     _headerImageView.frame = CGRectMake(0, 0, DEVICE_WIDTH, _headerBg.height);
     _headerViewBg.y = _headerBg.height - _headerViewH;
-    
-    self.navAlpha = offsetY + _headerViewH / 80;
-    if (offsetY + _headerViewH > 80) {
-        self.navTitleColor = self.navTintColor = offsetY + _headerViewH < 0 ? [UIColor clearColor] : TITLE_COLOR;
-    } else {
-        self.navTitleColor = self.navTintColor = [UIColor whiteColor];
-    }
 }
 - (void)alertViewWithMessage:(NSString *)message
 {

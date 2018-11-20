@@ -44,7 +44,6 @@
         viewController.navigationItem.leftBarButtonItem = [[UIBarButtonItem alloc]initWithCustomView:backButton];
         viewController.hidesBottomBarWhenPushed = YES;
     }
-    viewController.view.backgroundColor = [UIColor whiteColor];
     [super pushViewController:viewController animated:animated];
 }
 - (UIViewController *)childViewControllerForStatusBarStyle

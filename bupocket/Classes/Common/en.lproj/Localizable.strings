@@ -6,17 +6,16 @@
   Copyright © 2018年 bupocket. All rights reserved.
 */
 
-"LaunchTitle" = "BU Pocket";
-"LaunchBriefIntroduction" = "A ubiquitous trust blockchain network of value circulation";
-"VersionUpdate" = "Version update";
-"UpdateVersion" = "Update version";
-"IfUpdate" = "是否更新到";
-"Version" = "版本";
-"AppSize" = "新版本大小：";
+//"LaunchTitle" = "BU Pocket";
+//"LaunchBriefIntroduction" = "A ubiquitous trust blockchain network of value circulation";
+//"VersionUpdate" = "Version update";
+"IfUpdate" = "Whether to update to the new version";
+"AppSize" = "The size of the new version：";
+"UpdateVersion" = "Update";
 
 "NoNetWork" = "Your network is interrupted. Please try again later.";
 "Reload" = "Reload";
-"MyTitle" = "Profile";//The left side of the equal sign is the key to be called in the code, and the right side is the corresponding Chinese text value.
+"MyTitle" = "Profile";
 "AssetsTitle" = "Tokens";
 // Identity
 "CreateDigitalIdentity" = "Create an digital identity";
@@ -77,8 +76,7 @@
 "BackupIdentity" = "Backup identity";
 "ExitCurrentIdentity" = "Exit the current identity";
 "IdentityIDInfo" = "It is used to secure the data that you store on the blockchain, which is stored in a distributed manner. Only those who have the identity can use the data, so as to ensure that your data sovereignty is not violated";
-// 待确认
-"ExitCurrentIdentityPrompt" = "The identity will be removed. Please make sure the identity is backed up";
+"ExitCurrentIdentityPrompt" = "The identity is removed soon. Please ensure that your identity has been backed up";
 // Revise password
 "OldPassword" = "Old password";
 "NewPassword" = "New password";
@@ -123,7 +121,7 @@
 "NoTransactionRecord" = "No transaction records";
 // Transfer coins
 //"TransferTitle" = "BU transfer";
-"ReciprocalAccount" = "Recipient account(BU address)*";
+"ReciprocalAccount" = "Recipient account（BU address）*";
 "reciprocalAccount" = "Recipient account";
 "PhoneOrAddress" = "Please enter the recipient address";
 //"AmountOfTransfer" = "Transfer amount(BU)*";
@@ -133,8 +131,8 @@
 "AmountOfTransferPlaceholder" = "Please enter the amount to be transferred";
 "Remarks" = "Remark ";
 "RemarksPlaceholder" = "Remarks cannot exceed 20 characters";
-"EstimatedMaximum" = "Maximum payment (BU)*";
-"estimatedMaximum" = "Maximum payment";
+"EstimatedMaximum" = "Maximum transaction fee（BU）*";
+"estimatedMaximum" = "Maximum transaction fee";
 "TransactionCostPlaceholder" = "Please enter the transaction fee";
 "Next" = "Next";
 "TransactionIdentityCipherPrompt" = "Please fill in the identity password to confirm the transfer";

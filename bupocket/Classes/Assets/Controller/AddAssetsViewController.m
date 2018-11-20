@@ -193,9 +193,9 @@ static NSString * const SearchID = @"SearchID";
 
 #pragma mark - UISearchResultsUpdating
 - (void)updateSearchResultsForSearchController:(UISearchController *)searchController {
-    self.edgesForExtendedLayout = UIRectEdgeNone;//不加的话，UISearchBar返回后会上移
-    [_searchController.searchBar setShowsCancelButton:YES animated:YES];
-    [_searchController.searchBar setValue:@"Cancel" forKey:@"_cancelButtonText"];
+    // Prevent UISearchBar from moving up after returning.
+    self.edgesForExtendedLayout = UIRectEdgeNone;
+    searchController.searchBar.showsCancelButton = YES;
     UIButton * cancelButton = [self.searchController.searchBar valueForKey:@"cancelButton"];
     if (cancelButton) {
         [cancelButton setTitle:Localized(@"Cancel") forState:UIControlStateNormal];

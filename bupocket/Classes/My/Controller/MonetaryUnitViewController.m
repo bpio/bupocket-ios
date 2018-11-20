@@ -2,7 +2,7 @@
 //  MonetaryUnitViewController.m
 //  bupocket
 //
-//  Created by huoss on 2018/11/15.
+//  Created by bupocket on 2018/11/15.
 //  Copyright © 2018年 bupocket. All rights reserved.
 //
 

@@ -8,7 +8,7 @@
 
 #import <Foundation/Foundation.h>
 
-typedef void(^CleanCacheBlock)();
+typedef void(^CleanCacheBlock)(void);
 
 @interface ClearCacheTool : NSObject
 

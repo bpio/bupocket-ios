@@ -81,7 +81,7 @@
              self.assets.text = [NSString stringWithFormat:@"%@ %@", responseObject[@"data"][@"tokenBalance"], self.listModel.assetCode];
             NSString * amountStr = responseObject[@"data"][@"assetAmount"];
             NSString * currencyUnit = [AssetCurrencyModel getCurrencyUnitWithAssetCurrency:[[[NSUserDefaults standardUserDefaults] objectForKey:Current_Currency] integerValue]];
-            self.amount.text = [amountStr isEqualToString:@"~"] ? amountStr : [NSString stringWithFormat:@"≈ %@%@", currencyUnit, amountStr];
+            self.amount.text = [amountStr isEqualToString:@"~"] ? amountStr : [NSString stringWithFormat:@"≈%@%@", currencyUnit, amountStr];
             NSArray * listArray = [AssetsDetailModel mj_objectArrayWithKeyValuesArray:responseObject[@"data"] [@"txRecord"]];
             if (pageindex == PageIndex_Default) {
                 [self.listArray removeAllObjects];

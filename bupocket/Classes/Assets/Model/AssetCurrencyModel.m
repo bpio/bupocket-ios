@@ -2,7 +2,7 @@
 //  AssetCurrencyModel.m
 //  bupocket
 //
-//  Created by huoss on 2018/11/16.
+//  Created by bupocket on 2018/11/16.
 //  Copyright © 2018年 bupocket. All rights reserved.
 //
 

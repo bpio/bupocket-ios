@@ -7,7 +7,7 @@
 //
 
 #import "HttpTool.h"
-#import "AFNetworking.h"
+#import <AFNetworking/AFNetworking.h>
 
 @interface HttpTool()
 

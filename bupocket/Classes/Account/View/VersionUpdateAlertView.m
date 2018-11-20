@@ -31,7 +31,7 @@
         _sureBlock = confrimBlock;
         _cancleBlock = cancelBlock;
         [self setupView];
-        self.versionUpdateTitle.text = [NSString stringWithFormat:@"%@%@%@？", Localized(@"IfUpdate"), versionNumber, Localized(@"Version")];
+        self.versionUpdateTitle.text = [NSString stringWithFormat:@"%@%@？", Localized(@"IfUpdate"), versionNumber];
         self.versionSize.text = [NSString stringWithFormat:@"%@%@", Localized(@"AppSize"), versionSize];
         self.updateContent.text = content;
         CGFloat height = [Encapsulation rectWithText:self.updateContent.text fontSize:14 textWidth:DEVICE_WIDTH - ScreenScale(80)].size.height + ScreenScale(370);

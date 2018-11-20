@@ -44,7 +44,7 @@
     [self.view addSubview:cardImageView];
     
     [HMScanner qrImageWithString:self.cardName avatar:self.avatar completion:^(UIImage *image) {
-        cardImageView.image = image;
+        self->cardImageView.image = image;
     }];
 }
 

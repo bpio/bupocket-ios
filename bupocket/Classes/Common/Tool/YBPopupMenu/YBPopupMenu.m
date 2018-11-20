@@ -149,14 +149,14 @@ UITableViewDataSource
     [UIView animateWithDuration: 0.25 animations:^{
         self.layer.affineTransform = CGAffineTransformMakeScale(0.1, 0.1);
         self.alpha = 0;
-        _menuBackView.alpha = 0;
+        self.menuBackView.alpha = 0;
     } completion:^(BOOL finished) {
         if (self.delegate && [self.delegate respondsToSelector:@selector(ybPopupMenuDidDismiss)]) {
             [self.delegate ybPopupMenuDidDismiss];
         }
         self.delegate = nil;
         [self removeFromSuperview];
-        [_menuBackView removeFromSuperview];
+        [self.menuBackView removeFromSuperview];
     }];
 }
 
@@ -271,7 +271,7 @@ UITableViewDataSource
     [UIView animateWithDuration: 0.25 animations:^{
         self.layer.affineTransform = CGAffineTransformMakeScale(1.0, 1.0);
         self.alpha = 1;
-        _menuBackView.alpha = 1;
+        self.menuBackView.alpha = 1;
     } completion:^(BOOL finished) {
         if (self.delegate && [self.delegate respondsToSelector:@selector(ybPopupMenuDidShow)]) {
             [self.delegate ybPopupMenuDidShow];
