@@ -147,6 +147,7 @@
         popupMenu.backColor = COLOR(@"56526D");
         popupMenu.tableView.separatorStyle = UITableViewCellSeparatorStyleNone;
         popupMenu.tableView.scrollEnabled = NO;
+        popupMenu.tableView.allowsSelection = NO;
         popupMenu.height = titleHeight + Margin_40;
     }];
 }

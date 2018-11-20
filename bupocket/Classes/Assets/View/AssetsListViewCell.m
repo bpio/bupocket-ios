@@ -61,7 +61,9 @@ static NSString * const AssetsCellID = @"AssetsCellID";
     //    cell.listImage.image = [UIImage imageNamed:self.listArray[indexPath.section]];
     //    cell.title.text = self.listArray[indexPath.section];
     self.detailTitle.text = listModel.amount;
-    self.infoTitle.text = [listModel.assetAmount isEqualToString:@"~"] ? listModel.assetAmount : [NSString stringWithFormat:@"≈￥%@", listModel.assetAmount];
+    
+    NSString * currencyUnit = [AssetCurrencyModel getCurrencyUnitWithAssetCurrency:[[[NSUserDefaults standardUserDefaults] objectForKey:Current_Currency] integerValue]];
+    self.infoTitle.text = [listModel.assetAmount isEqualToString:@"~"] ? listModel.assetAmount : [NSString stringWithFormat:@"≈%@%@", currencyUnit, listModel.assetAmount];
 }
 - (UIImageView *)listImage
 {

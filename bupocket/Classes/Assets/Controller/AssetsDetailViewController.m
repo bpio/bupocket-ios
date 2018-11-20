@@ -59,8 +59,8 @@
     self.tableView.mj_header.automaticallyChangeAlpha = YES;
     self.tableView.mj_header.ignoredScrollViewContentInsetTop = _headerViewH;
     [self.tableView.mj_header beginRefreshing];
-    self.tableView.mj_footer = [MJRefreshAutoNormalFooter footerWithRefreshingTarget:self refreshingAction:@selector(loadMoreData)];
-    self.tableView.mj_footer.hidden = YES;
+    self.tableView.mj_footer = [CustomRefreshFooter footerWithRefreshingTarget:self refreshingAction:@selector(loadMoreData)];
+    self.tableView.mj_footer.ignoredScrollViewContentInsetBottom = -(ContentSizeBottom);
 }
 - (void)loadNewData
 {
@@ -72,14 +72,16 @@
 }
 - (void)getDataWithPageindex:(NSInteger)pageindex
 {
-    [[HTTPManager shareManager] getAssetsDetailDataWithAssetCode:self.listModel.assetCode issuer:self.listModel.issuer address:[AccountTool account].purseAccount pageIndex:pageindex success:^(id responseObject) {
+    NSString * currentCurrency = [AssetCurrencyModel getAssetCurrencyTypeWithAssetCurrency:[[[NSUserDefaults standardUserDefaults] objectForKey:Current_Currency] integerValue]];
+    [[HTTPManager shareManager] getAssetsDetailDataWithAssetCode:self.listModel.assetCode issuer:self.listModel.issuer address:[AccountTool account].purseAccount currencyType:currentCurrency pageIndex:pageindex success:^(id responseObject) {
         NSInteger code = [[responseObject objectForKey:@"errCode"] integerValue];
         if (code == Success_Code) {
             [self.tableView addSubview:self.headerBg];
             [self.tableView insertSubview:self.headerBg atIndex:0];
              self.assets.text = [NSString stringWithFormat:@"%@ %@", responseObject[@"data"][@"tokenBalance"], self.listModel.assetCode];
             NSString * amountStr = responseObject[@"data"][@"assetAmount"];
-            self.amount.text = [amountStr isEqualToString:@"~"] ? amountStr : [NSString stringWithFormat:@"≈￥%@", amountStr];
+            NSString * currencyUnit = [AssetCurrencyModel getCurrencyUnitWithAssetCurrency:[[[NSUserDefaults standardUserDefaults] objectForKey:Current_Currency] integerValue]];
+            self.amount.text = [amountStr isEqualToString:@"~"] ? amountStr : [NSString stringWithFormat:@"≈%@%@", currencyUnit, amountStr];
             NSArray * listArray = [AssetsDetailModel mj_objectArrayWithKeyValuesArray:responseObject[@"data"] [@"txRecord"]];
             if (pageindex == PageIndex_Default) {
                 [self.listArray removeAllObjects];
@@ -87,7 +89,7 @@
             }
             self.pageindex = self.pageindex + 1;
             [self.listArray addObjectsFromArray:listArray];
-            if (listArray.count < 10) {
+            if (listArray.count < PageSize_Max) {
                 [self.tableView.mj_footer endRefreshingWithNoMoreData];
             } else {
                 [self.tableView.mj_footer endRefreshing];
@@ -265,9 +267,9 @@
 - (CGFloat)tableView:(UITableView *)tableView heightForFooterInSection:(NSInteger)section
 {
     if (section == self.listArray.count - 1) {
-        return SafeAreaBottomH + NavBarH + Margin_10;
+        return ContentSizeBottom;
     } else {
-        return CGFLOAT_MIN;        
+        return CGFLOAT_MIN;
     }
 }
 - (NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section

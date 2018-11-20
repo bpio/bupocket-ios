@@ -118,7 +118,7 @@ static NSString * const ListCellID = @"ListCellID";
 }
 - (CGFloat)tableView:(UITableView *)tableView heightForFooterInSection:(NSInteger)section
 {
-    return SafeAreaBottomH + NavBarH + Margin_10;
+    return ContentSizeBottom;
 }
 - (CGFloat)tableView:(UITableView *)tableView heightForRowAtIndexPath:(NSIndexPath *)indexPath
 {

@@ -26,6 +26,8 @@
 @property (nonatomic, strong) TxInfoModel * txInfoModel;
 @property (nonatomic, strong) UIView * noNetWork;
 
+@property (nonatomic, strong) NSString * assets;
+
 @end
 
 @implementation OrderDetailsViewController
@@ -100,7 +102,7 @@ static NSInteger const TxInfoNormalCount = 7;
     [infoArray addObject:self.txInfoModel.hashStr];
     [infoArray addObject:self.txInfoModel.sourceAddress];
     [infoArray addObject:self.txInfoModel.destAddress];
-    [infoArray addObject:[NSString stringAppendingBUWithStr:self.txInfoModel.amount]];
+    [infoArray addObject:self.assets];
     [infoArray addObject:[NSString stringAppendingBUWithStr:self.txInfoModel.fee]];
     [infoArray addObject:self.txInfoModel.nonce];
     [infoArray addObject:self.txInfoModel.ledgerSeq];
@@ -158,10 +160,10 @@ static NSInteger const TxInfoNormalCount = 7;
         } else {
             outOrIn = @"+";
         }
-        NSString * assets = [self.listModel.amount isEqualToString:@"~"] ? self.listModel.amount : [NSString stringWithFormat:@"%@%@ %@", outOrIn, self.listModel.amount, self.assetCode];
+        self.assets = [self.listModel.amount isEqualToString:@"~"] ? self.listModel.amount : [NSString stringWithFormat:@"%@%@ %@", outOrIn, self.listModel.amount, self.assetCode];
         UILabel * orderResults = [[UILabel alloc] init];
         orderResults.font = FONT_Bold(27);
-        orderResults.attributedText = [Encapsulation attrWithString:assets preFont:FONT_Bold(27) preColor:TITLE_COLOR index:assets.length - 2 sufFont:FONT_Bold(27) sufColor:COLOR(@"3F3F3F") lineSpacing:0];
+        orderResults.attributedText = [Encapsulation attrWithString:self.assets preFont:FONT_Bold(27) preColor:TITLE_COLOR index:self.assets.length - self.assetCode.length sufFont:FONT_Bold(27) sufColor:COLOR_9 lineSpacing:0];
         [self.headerViewBg addSubview:orderResults];
         [orderResults mas_makeConstraints:^(MASConstraintMaker *make) {
             make.top.equalTo(stateImage.mas_bottom).offset(ScreenScale(23));
@@ -203,7 +205,7 @@ static NSInteger const TxInfoNormalCount = 7;
 - (CGFloat)tableView:(UITableView *)tableView heightForFooterInSection:(NSInteger)section
 {
     if (section == self.listArray.count - 1) {
-        return SafeAreaBottomH + NavBarH + Margin_10;
+        return ContentSizeBottom;
     } else {
         return CGFLOAT_MIN;
     }

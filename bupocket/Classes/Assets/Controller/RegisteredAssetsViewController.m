@@ -73,7 +73,7 @@ static NSString * const Register_Leave = @"leaveRoomForApp";
 - (void)setupView
 {
     self.scrollView = [[UIScrollView alloc] initWithFrame:CGRectMake(0, 0, DEVICE_WIDTH, DEVICE_HEIGHT)];
-    self.scrollView.contentInset = UIEdgeInsetsMake(0, 0, SafeAreaBottomH + NavBarH + Margin_10, 0);
+//    self.scrollView.contentInset = UIEdgeInsetsMake(0, 0, SafeAreaBottomH + NavBarH + Margin_10, 0);
     [self.view addSubview:self.scrollView];
     
     CustomButton * confirmationPrompt = [[CustomButton alloc] init];
@@ -135,7 +135,7 @@ static NSString * const Register_Leave = @"leaveRoomForApp";
         make.size.centerX.equalTo(confirmation);
     }];
     [self.view layoutIfNeeded];
-    self.scrollView.contentSize = CGSizeMake(0, CGRectGetMaxY(cancel.frame) + Margin_50);
+    self.scrollView.contentSize = CGSizeMake(0, CGRectGetMaxY(cancel.frame) + ContentSizeBottom + Margin_50);
 }
 
 - (void)confirmationAction
