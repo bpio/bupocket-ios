@@ -51,7 +51,7 @@
     NSData * password = [PW dataUsingEncoding : NSUTF8StringEncoding];
     return [KeyStore decipherKeyStore: keyStoreValue  : password];
 }
-// base64编码
+// base64 encode
 + (NSString *)encode:(NSString *)string
 {
     NSData * data = [string dataUsingEncoding:NSUTF8StringEncoding];
@@ -59,10 +59,10 @@
     NSString * baseString = [[NSString alloc] initWithData:base64Data encoding:NSUTF8StringEncoding];
     return baseString;
 }
-// base64解码
+// base64 dencode
 + (NSString *)dencode:(NSString *)base64String
 {
-    NSData * data = [[NSData alloc] initWithBase64EncodedData:base64String options:NSDataBase64DecodingIgnoreUnknownCharacters];
+    NSData * data = [[NSData alloc]initWithBase64EncodedString:base64String options:NSDataBase64DecodingIgnoreUnknownCharacters];
     NSString * string = [[NSString alloc] initWithData:data encoding:NSUTF8StringEncoding];
     return string;
 }

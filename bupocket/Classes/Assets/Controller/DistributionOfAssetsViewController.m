@@ -177,14 +177,14 @@ static NSString * const Issue_Leave = @"leaveRoomForApp";
             DistributionResultsViewController * VC = [[DistributionResultsViewController alloc] init];
             if (overtime == NO) {
                 if (resultModel.errorCode == Success_Code) { // 成功
-                    VC.resultSate = ResultSateSuccess;
+                    VC.distributionResultState = DistributionResultSuccess;
                     NSString * json = [self setResultDataWithCode:0 message:@"issue success"];
                     [self.socket emit:Issue_Success with:@[json]];
                     [self.socket on:Issue_Success callback:^(NSArray* data, SocketAckEmitter* ack) {
                         [self.socket disconnect];
                     }];
                 } else {
-                    VC.resultSate = ResultSateFailure;
+                    VC.distributionResultState = DistributionResultFailure;
                     NSString * json = [self setResultDataWithCode:1 message:@"issue failure"];
                     [self.socket emit:Issue_Failure with:@[json]];
                     [self.socket on:Issue_Failure callback:^(NSArray* data, SocketAckEmitter* ack) {
@@ -193,7 +193,7 @@ static NSString * const Issue_Leave = @"leaveRoomForApp";
                     [MBProgressHUD showTipMessageInWindow:[ErrorTypeTool getDescription:resultModel.errorCode]];
                 }
             } else {
-                VC.resultSate = ResultSateOvertime;
+                VC.distributionResultState = DistributionResultOvertime;
                 NSString * json = [self setResultDataWithCode:2 message:@"issue timeout"];
                 [self.socket emit:Issue_Timeout with:@[json]];
                 [self.socket on:Issue_Timeout callback:^(NSArray* data, SocketAckEmitter* ack) {

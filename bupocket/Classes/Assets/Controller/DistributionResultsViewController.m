@@ -35,7 +35,6 @@ static NSString * const DistributionDetailCellID = @"DistributionDetailCellID";
     self.navigationItem.title = Localized(@"DistributionAssetsDetail");
     [self setData];
     [self setupView];
-    [self popToRootVC];
     // Do any additional setup after loading the view.
 }
 
@@ -48,25 +47,25 @@ static NSString * const DistributionDetailCellID = @"DistributionDetailCellID";
         [array addObject:@{Localized(@"TokenDescription"): self.distributionModel.tokenDescription}];
     }
     NSString * actualSupply;
-    if (self.resultSate == ResultSateSuccess) {
+    if (self.distributionResultState == DistributionResultSuccess) {
         actualSupply = [NSString stringWithFormat:@"%zd", self.registeredModel.amount + [self.distributionModel.actualSupply integerValue]];
-    } else if (self.resultSate == ResultSateFailure) {
+    } else if (self.distributionResultState == DistributionResultFailure) {
         actualSupply = self.distributionModel.actualSupply;
     }
     if ([self.distributionModel.totalSupply longLongValue] == 0) {
         [array insertObject:@{Localized(@"TotalAmountOfToken"): Localized(@"UnrestrictedIssue")} atIndex:2];
-        if (self.resultSate != ResultSateOvertime) {
+        if (self.distributionResultState != DistributionResultOvertime) {
             [array insertObject:@{Localized(@"CumulativeCirculation"): actualSupply} atIndex:4];
         }
     } else {
         [array insertObject:@{Localized(@"TotalAmountOfToken"): self.distributionModel.totalSupply} atIndex:2];
-        if (self.resultSate != ResultSateOvertime) {
+        if (self.distributionResultState != DistributionResultOvertime) {
             NSString * remainingVolume = [NSString stringWithFormat:@"%zd", [self.distributionModel.totalSupply integerValue] - [actualSupply integerValue]];
             [array insertObject:@{Localized(@"RemainingUnissuedVolume"): remainingVolume} atIndex:4];
         }
     }
     [self.listArray addObject:array];
-    if (self.resultSate != ResultSateOvertime) {
+    if (self.distributionResultState != DistributionResultOvertime) {
         NSArray * transactionArray = @[@{Localized(@"ActualTransactionCost"): [NSString stringAppendingBUWithStr:self.distributionModel.distributionFee]}, @{Localized(@"IssuerAddress"): [AccountTool account].purseAccount}, @{Localized(@"Hash"): self.distributionModel.transactionHash}];
         [self.listArray addObject:transactionArray];
     }
@@ -90,13 +89,13 @@ static NSString * const DistributionDetailCellID = @"DistributionDetailCellID";
         NSString * imageName;
         NSString * result;
         CGFloat headerViewH = ScreenScale(110);
-        if (self.resultSate == ResultSateSuccess) {
+        if (self.distributionResultState == DistributionResultSuccess) {
             imageName = @"assetsSuccess";
             result = Localized(@"DistributionSuccess");
-        } else if (self.resultSate == ResultSateFailure) {
+        } else if (self.distributionResultState == DistributionResultFailure) {
             imageName = @"assetsFailure";
             result = Localized(@"TransferFailure");
-        } else if (self.resultSate == ResultSateOvertime) {
+        } else if (self.distributionResultState == DistributionResultOvertime) {
             imageName = @"assetsTimeout";
             result = Localized(@"DistributionTimeout");
             UILabel * prompt = [[UILabel alloc] init];

@@ -12,12 +12,12 @@
 
 @property (nonatomic, strong) UIView * updateBg;
 @property (nonatomic, strong) UIImageView * updateImage;
-@property (nonatomic, strong) UIButton * closeBtn;
 @property (nonatomic, strong) UILabel * versionUpdateTitle;
 @property (nonatomic, strong) UILabel * versionSize;
 @property (nonatomic, strong) UILabel * updateContent;
 @property (nonatomic, strong) UIButton * updateBtn;
-@property (nonatomic, strong) UIView * lineView;
+//@property (nonatomic, strong) UIButton * closeBtn;
+//@property (nonatomic, strong) UIView * lineView;
 
 @end
 
@@ -54,9 +54,9 @@
     
     [self addSubview:self.updateBtn];
     
-    [self addSubview:self.lineView];
+//    [self addSubview:self.lineView];
     
-    [self addSubview:self.closeBtn];
+//    [self addSubview:self.closeBtn];
 }
 
 - (void)layoutSubviews
@@ -91,16 +91,16 @@
         make.height.mas_equalTo(MAIN_HEIGHT);
         make.bottom.equalTo(self.updateBg.mas_bottom).offset(-Margin_20);
     }];
-    [self.lineView mas_makeConstraints:^(MASConstraintMaker *make) {
-        make.top.equalTo(self.updateBg.mas_bottom);
-        make.centerX.equalTo(self);
-        make.size.mas_equalTo(CGSizeMake(ScreenScale(1), Margin_50));
-    }];
-    [self.closeBtn mas_makeConstraints:^(MASConstraintMaker *make) {
-        make.top.equalTo(self.lineView.mas_bottom);
-        make.centerX.equalTo(self);
-        make.size.mas_equalTo(CGSizeMake(ScreenScale(32), ScreenScale(32)));
-    }];
+//    [self.lineView mas_makeConstraints:^(MASConstraintMaker *make) {
+//        make.top.equalTo(self.updateBg.mas_bottom);
+//        make.centerX.equalTo(self);
+//        make.size.mas_equalTo(CGSizeMake(ScreenScale(1), Margin_50));
+//    }];
+//    [self.closeBtn mas_makeConstraints:^(MASConstraintMaker *make) {
+//        make.top.equalTo(self.lineView.mas_bottom);
+//        make.centerX.equalTo(self);
+//        make.size.mas_equalTo(CGSizeMake(ScreenScale(32), ScreenScale(32)));
+//    }];
 }
 - (UIView *)updateBg
 {
@@ -112,6 +112,7 @@
     }
     return _updateBg;
 }
+/*
 - (UIView *)lineView
 {
     if (!_lineView) {
@@ -127,6 +128,7 @@
     }
     return _closeBtn;
 }
+*/
 - (UILabel *)versionUpdateTitle
 {
     if (!_versionUpdateTitle) {

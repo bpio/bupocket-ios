@@ -35,7 +35,6 @@ static NSString * const DistributionDetailCellID = @"DistributionDetailCellID";
     self.navigationItem.title = Localized(@"RegisteredAssetsDetail");
     [self setData];
     [self setupView];
-    [self popToRootVC];
     // Do any additional setup after loading the view.
 }
 
@@ -54,7 +53,7 @@ static NSString * const DistributionDetailCellID = @"DistributionDetailCellID";
     }
     [self.listArray addObject:array];
     
-    if (self.resultSate != ResultSateOvertime) {
+    if (self.registeredResultState != RegisteredResultOvertime) {
         NSArray * transactionArray = @[@{Localized(@"ActualTransactionCost"): [NSString stringAppendingBUWithStr:self.registeredModel.registeredFee]}, @{Localized(@"RegisteredAddress"): [AccountTool account].purseAccount}, @{Localized(@"Hash"): self.registeredModel.transactionHash}];
         [self.listArray addObject:transactionArray];
     }
@@ -77,13 +76,13 @@ static NSString * const DistributionDetailCellID = @"DistributionDetailCellID";
         NSString * imageName;
         NSString * result;
         CGFloat headerViewH = ScreenScale(110);
-        if (self.resultSate == ResultSateSuccess) {
+        if (self.registeredResultState == RegisteredResultSuccess) {
             imageName = @"assetsSuccess";
             result = Localized(@"RegistrationSuccess");
-        } else if (self.resultSate == ResultSateFailure) {
+        } else if (self.registeredResultState == RegisteredResultFailure) {
             imageName = @"assetsFailure";
             result = Localized(@"RegistrationFailure");
-        } else if (self.resultSate == ResultSateOvertime) {
+        } else if (self.registeredResultState == RegisteredResultOvertime) {
             imageName = @"assetsTimeout";
             result = Localized(@"RegistrationTimeout");
             UILabel * prompt = [[UILabel alloc] init];

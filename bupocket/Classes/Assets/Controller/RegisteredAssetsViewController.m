@@ -180,14 +180,14 @@ static NSString * const Register_Leave = @"leaveRoomForApp";
             RegisteredResultViewController * VC = [[RegisteredResultViewController alloc] init];
             if (overtime == NO) {
                 if (resultModel.errorCode == Success_Code) {
-                    VC.resultSate = ResultSateSuccess;
+                    VC.registeredResultState = RegisteredResultSuccess;
                     NSString * json = [self setResultDataWithCode:0 message:@"register success"];
                     [self.socket emit:Register_Success with:@[json]];
                     [self.socket on:Register_Success callback:^(NSArray* data, SocketAckEmitter* ack) {
                         [self.socket disconnect];
                     }];
                 } else {
-                    VC.resultSate = ResultSateFailure;
+                    VC.registeredResultState = RegisteredResultFailure;
                     NSString * json = [self setResultDataWithCode:1 message:@"register failure"];
                     [self.socket emit:Register_Failure with:@[json]];
                     [self.socket on:Register_Failure callback:^(NSArray* data, SocketAckEmitter* ack) {
@@ -196,7 +196,7 @@ static NSString * const Register_Leave = @"leaveRoomForApp";
                     [MBProgressHUD showTipMessageInWindow:[ErrorTypeTool getDescription:resultModel.errorCode]];
                 }
             } else {
-                VC.resultSate = ResultSateOvertime;
+                VC.registeredResultState = RegisteredResultOvertime;
                 NSString * json = [self setResultDataWithCode:2 message:@"register timeout"];
                 [self.socket emit:Register_Timeout with:@[json]];
                 [self.socket on:Register_Timeout callback:^(NSArray* data, SocketAckEmitter* ack) {

@@ -25,6 +25,7 @@ static NSString * const SettingCellID = @"SettingCellID";
 - (void)viewDidLoad {
     [super viewDidLoad];
     self.navigationItem.title = Localized(@"Setting");
+    
     [self setupView];
     
     // Do any additional setup after loading the view.

@@ -23,9 +23,12 @@
 
 #import "UINavigationController+Extension.h"
 
+#import "SocketIOHandler.h"
+
 
 @interface AssetsViewController ()<UITableViewDelegate, UITableViewDataSource>
 
+@property (nonatomic, strong) UIButton * scanButton;
 @property (nonatomic, strong) UITableView * tableView;
 @property (nonatomic, strong) UIView * headerBg;
 @property (nonatomic, strong) UIView * headerViewBg;
@@ -60,11 +63,27 @@
 - (void)viewDidLoad {
     [super viewDidLoad];
     [self setupView];
+    [self setupNav];
+    self.edgesForExtendedLayout = UIRectEdgeAll;
     // Do any additional setup after loading the view.
+}
+- (void)setupNav
+{
+    self.scanButton = [UIButton createButtonWithNormalImage:@"nav_scan" SelectedImage:@"transferAccounts_scan" Target:self Selector:@selector(scanAction)];
+    self.scanButton.frame = CGRectMake(0, 0, ScreenScale(44), Margin_30);
+        self.scanButton.contentHorizontalAlignment = UIControlContentHorizontalAlignmentRight;
+    self.navigationItem.rightBarButtonItem = [[UIBarButtonItem alloc]initWithCustomView:self.scanButton];
+    self.navTitleColor = self.navTintColor = [UIColor clearColor];
+    self.navAlpha = 0;
+    
 }
 - (void)viewWillAppear:(BOOL)animated {
     [super viewWillAppear:animated];
     [self.tableView.mj_header beginRefreshing];
+}
+- (void)viewDidDisappear:(BOOL)animated {
+    [super viewDidDisappear:animated];
+    [self.tableView.mj_header endRefreshing];
 }
 
 - (void)setNetworkEnvironment
@@ -118,11 +137,12 @@
             if ([amountStr isEqualToString:@"~"]) {
                 self.amount.text = amountStr;
             } else {
-                NSString * currencyType = responseObject[@"data"][@"currencyType"];
-                NSString * amountString = [NSString stringWithFormat:@"≈%@ %@", amountStr, currencyType];
-                self.amount.attributedText = [Encapsulation attrWithString:amountString preFont:FONT_Bold(32) preColor:[UIColor whiteColor] index:amountString.length - currencyType.length sufFont:FONT(16) sufColor:[UIColor whiteColor] lineSpacing:0];
+                self.amount.text = [NSString stringWithFormat:@"≈%@", amountStr];
+//                NSString * currencyType = responseObject[@"data"][@"currencyType"];
+//                self.amount.attributedText = [Encapsulation attrWithString:amountString preFont:FONT_Bold(32) preColor:[UIColor whiteColor] index:amountString.length - currencyType.length sufFont:FONT(16) sufColor:[UIColor whiteColor] lineSpacing:0];
             }
-            self.totalAssets.text = Localized(@"TotalAssets");
+            NSString * currencyUnit = [AssetCurrencyModel getCurrencyUnitWithAssetCurrency:[[[NSUserDefaults standardUserDefaults] objectForKey:Current_Currency] integerValue]];
+            self.totalAssets.text = [NSString stringWithFormat:@"%@（%@）", Localized(@"TotalAssets"), currencyUnit];
             [self setNetworkEnvironment];
             [self.tableView reloadData];
         } else {
@@ -247,14 +267,6 @@
             make.centerX.equalTo(self.headerViewBg.mas_centerX).offset(-Margin_10);
         }];
         
-        UIButton * issueBtn = [UIButton createButtonWithNormalImage:@"nav_scan" SelectedImage:@"nav_scan" Target:self Selector:@selector(issueAction)];
-        issueBtn.contentHorizontalAlignment = UIControlContentHorizontalAlignmentRight;
-        [_headerViewBg addSubview:issueBtn];
-        [issueBtn mas_makeConstraints:^(MASConstraintMaker *make) {
-            make.top.equalTo(self.headerViewBg.mas_top).offset(StatusBarHeight);
-            make.size.mas_equalTo(CGSizeMake(ScreenScale(44), Margin_30));
-            make.right.equalTo(self.headerViewBg.mas_right).offset(- Margin_20);
-        }];
         UIImageView * userIcon = [[UIImageView alloc] initWithImage:[UIImage imageNamed:@"userIcon_placeholder"]];
         [userIcon addGestureRecognizer:[[UITapGestureRecognizer alloc] initWithTarget:self action:@selector(userIconAction)]];
         userIcon.userInteractionEnabled = YES;
@@ -348,6 +360,9 @@
         _headerBg.y = offsetY;
         _headerBg.height = - offsetY;
         _headerImageView.alpha = 1.0;
+        self.navTitleColor = self.navTintColor = [UIColor clearColor];
+        self.navAlpha = 0;
+        self.scanButton.selected = NO;
     } else {
         CGFloat min = - _headerViewH;
         CGFloat progress = (offsetY / min);
@@ -356,6 +371,9 @@
         _headerImageView.alpha = progress;
         _statusBarStyle = (progress < 0.5) ? UIStatusBarStyleDefault : UIStatusBarStyleLightContent;
         [self.navigationController setNeedsStatusBarAppearanceUpdate];
+        self.navTitleColor = self.navTintColor = (progress < 0.5) ? TITLE_COLOR : [UIColor clearColor];
+        self.navAlpha = 1 - progress;
+        self.scanButton.selected = (progress < 0.5) ? YES : NO;
     }
     _headerImageView.frame = CGRectMake(0, 0, DEVICE_WIDTH, _headerBg.height);
     _headerViewBg.y = _headerBg.height - _headerViewH;
@@ -367,10 +385,12 @@
     [alertController addAction:cancelAction];
     [self presentViewController:alertController animated:YES completion:nil];
 }
-- (void)issueAction
+- (void)scanAction
 {
     __weak typeof (self) weakself = self;
     HMScannerController *scanner = [HMScannerController scannerWithCardName:nil avatar:nil completion:^(NSString *stringValue) {
+        [MBProgressHUD showInfoMessage:stringValue];
+        NSLog(@"%@", stringValue);
         NSOperationQueue * queue = [[NSOperationQueue alloc] init];
         [queue addOperationWithBlock:^{
             BOOL isCorrectAddress = [Keypair isAddressValid: stringValue];

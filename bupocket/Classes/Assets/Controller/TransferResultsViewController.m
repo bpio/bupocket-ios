@@ -26,7 +26,6 @@ static NSString * const TransferResultsCellID = @"DetailListCellID";
     [self setupView];
     
     self.listArray = @[@[Localized(@"reciprocalAccount"), Localized(@"AmountOfTransfer"), Localized(@"TransactionCost"), Localized(@"Remarks"), Localized(@"TransferTime")], self.transferInfoArray];
-    [self popToRootVC];
     // Do any additional setup after loading the view.
 }
 - (void)setupView

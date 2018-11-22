@@ -13,6 +13,7 @@ typedef NS_ENUM(NSInteger, CustomAnimationMode) {
     CustomAnimationModeDrop, //由上方掉落
     CustomAnimationModeShare,//下方弹出（类似分享效果）
     CustomAnimationModeNone,//没有动画
+    CustomAnimationModeDisabled,// 不能点击背景
 };
 
 @interface UIView (CustomAlertView)

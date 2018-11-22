@@ -41,7 +41,7 @@ static NSString * const SearchID = @"SearchID";
         // Fallback on earlier versions
     }
     [self setupView];
-     self.noNetWork = [Encapsulation showNoNetWorkWithSuperView:self.view target:self action:@selector(reloadData)];
+    self.noNetWork = [Encapsulation showNoNetWorkWithSuperView:self.view target:self action:@selector(reloadData)];
     UIButton * backButton = [UIButton createButtonWithNormalImage:@"nav_goback_n" SelectedImage:@"nav_goback_n" Target:self Selector:@selector(cancelAction)];
     backButton.frame = CGRectMake(0, 0, ScreenScale(44), Margin_30);
     backButton.contentHorizontalAlignment = UIControlContentHorizontalAlignmentLeft;
@@ -204,10 +204,10 @@ static NSString * const SearchID = @"SearchID";
 }
 #pragma mark - UISearchBarDelegate
 - (void)searchBarTextDidBeginEditing:(UISearchBar *)searchBar {
-
+    
 }
 - (void)searchBarTextDidEndEditing:(UISearchBar *)searchBar {
-
+    
 }
 - (void)searchBarSearchButtonClicked:(UISearchBar *)searchBar
 {
@@ -220,13 +220,13 @@ static NSString * const SearchID = @"SearchID";
     [self.tableView reloadData];
 }
 /*
-#pragma mark - Navigation
-
-// In a storyboard-based application, you will often want to do a little preparation before navigation
-- (void)prepareForSegue:(UIStoryboardSegue *)segue sender:(id)sender {
-    // Get the new view controller using [segue destinationViewController].
-    // Pass the selected object to the new view controller.
-}
-*/
+ #pragma mark - Navigation
+ 
+ // In a storyboard-based application, you will often want to do a little preparation before navigation
+ - (void)prepareForSegue:(UIStoryboardSegue *)segue sender:(id)sender {
+ // Get the new view controller using [segue destinationViewController].
+ // Pass the selected object to the new view controller.
+ }
+ */
 
 @end

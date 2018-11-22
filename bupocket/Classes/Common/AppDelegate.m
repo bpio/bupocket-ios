@@ -40,7 +40,7 @@
         UITableView.appearance.estimatedRowHeight = 0;
         UITableView.appearance.estimatedSectionFooterHeight = 0;
         UITableView.appearance.estimatedSectionHeaderHeight = 0;
-        [[UINavigationBar appearance]setPrefersLargeTitles:true];
+        [[UINavigationBar appearance] setPrefersLargeTitles:true];
     }
 //    else {
 //        self.automaticallyAdjustsScrollViewInsets = NO;
@@ -109,7 +109,7 @@
                 } cancelBlock:^{
                     
                 }];
-                [alertView showInWindowWithMode:CustomAnimationModeAlert inView:nil bgAlpha:0.2 needEffectView:NO];
+                [alertView showInWindowWithMode:CustomAnimationModeDisabled inView:nil bgAlpha:0.2 needEffectView:NO];
             }
         } else {
             [MBProgressHUD showTipMessageInWindow:[ErrorTypeTool getDescriptionWithErrorCode:code]];

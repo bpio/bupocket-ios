@@ -41,6 +41,7 @@ static CGFloat animationTime;
     [self keyBoardListen];
     switch (animationMode) {
         case CustomAnimationModeAlert:
+        case CustomAnimationModeDisabled:
             [self showInWindow];
             break;
         case CustomAnimationModeDrop:
@@ -73,6 +74,8 @@ static CGFloat animationTime;
             break;
         case CustomAnimationModeNone:
             [self hideWithOutAnimation];
+            break;
+        case CustomAnimationModeDisabled:
             break;
         default:
             
@@ -323,6 +326,7 @@ static CGFloat animationTime;
         case CustomAnimationModeDrop:
             return DropTime;
         case CustomAnimationModeAlert:
+        case CustomAnimationModeDisabled:
             return AlertTime;
             
         default:

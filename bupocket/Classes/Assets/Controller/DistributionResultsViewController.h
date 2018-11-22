@@ -9,17 +9,17 @@
 #import "BaseViewController.h"
 #import "DistributionModel.h"
 
-typedef NS_ENUM(NSInteger, ResultSate) {
-    ResultSateSuccess,
-    ResultSateFailure,
-    ResultSateOvertime
+typedef NS_ENUM(NSInteger, DistributionResultState) {
+    DistributionResultSuccess,
+    DistributionResultFailure,
+    DistributionResultOvertime
 };
 
 NS_ASSUME_NONNULL_BEGIN
 
 @interface DistributionResultsViewController : BaseViewController
 
-@property (nonatomic, assign) ResultSate resultSate;
+@property (nonatomic, assign) DistributionResultState distributionResultState;
 @property (nonatomic, strong) RegisteredModel * registeredModel;
 @property (nonatomic, strong) DistributionModel * distributionModel;
 
