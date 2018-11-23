@@ -10,11 +10,14 @@
 #import "AddAssetsViewCell.h"
 #import "SearchAssetsModel.h"
 
-@interface AddAssetsViewController ()<UISearchControllerDelegate, UISearchResultsUpdating, UISearchBarDelegate, UITableViewDelegate, UITableViewDataSource>
+@interface AddAssetsViewController ()<UITableViewDelegate, UITableViewDataSource, UITextFieldDelegate>
+// UISearchControllerDelegate, UISearchResultsUpdating, UISearchBarDelegate,
 
 @property (nonatomic, strong) UITableView * tableView;
-@property (nonatomic, strong) UISearchController * searchController;
-@property (nonatomic, strong) NSMutableArray *results;
+//@property (nonatomic, strong) UISearchController * searchController;
+//@property (nonatomic, strong) NSMutableArray *results;
+@property (nonatomic, strong) UITextField * searchTextField;
+@property (nonatomic, strong) NSMutableArray * listArray;
 @property (nonatomic, strong) UIView * noData;
 @property (nonatomic, assign) NSInteger pageindex;
 @property (nonatomic, strong) UIView * noNetWork;
@@ -25,13 +28,20 @@
 
 static NSString * const SearchID = @"SearchID";
 
-- (NSMutableArray *)results {
-    if (!_results) {
-        _results = [NSMutableArray array];
-    }
-    return _results;
-}
+//- (NSMutableArray *)results {
+//    if (!_results) {
+//        _results = [NSMutableArray array];
+//    }
+//    return _results;
+//}
 
+- (NSMutableArray *)listArray
+{
+    if (!_listArray) {
+        _listArray = [NSMutableArray array];
+    }
+    return _listArray;
+}
 - (void)viewDidLoad {
     [super viewDidLoad];
     self.navigationItem.title = Localized(@"AddAssets");
@@ -42,11 +52,10 @@ static NSString * const SearchID = @"SearchID";
     }
     [self setupView];
     self.noNetWork = [Encapsulation showNoNetWorkWithSuperView:self.view target:self action:@selector(reloadData)];
-    UIButton * backButton = [UIButton createButtonWithNormalImage:@"nav_goback_n" SelectedImage:@"nav_goback_n" Target:self Selector:@selector(cancelAction)];
-    backButton.frame = CGRectMake(0, 0, ScreenScale(44), Margin_30);
-    backButton.contentHorizontalAlignment = UIControlContentHorizontalAlignmentLeft;
-    self.navigationItem.leftBarButtonItem = [[UIBarButtonItem alloc]initWithCustomView:backButton];
-    [self setupRefresh];
+//    UIButton * backButton = [UIButton createButtonWithNormalImage:@"nav_goback_n" SelectedImage:@"nav_goback_n" Target:self Selector:@selector(cancelAction)];
+//    backButton.frame = CGRectMake(0, 0, ScreenScale(44), Margin_30);
+//    backButton.contentHorizontalAlignment = UIControlContentHorizontalAlignmentLeft;
+//    self.navigationItem.leftBarButtonItem = [[UIBarButtonItem alloc]initWithCustomView:backButton];
     // Do any additional setup after loading the view.
 }
 - (void)reloadData
@@ -54,11 +63,11 @@ static NSString * const SearchID = @"SearchID";
     self.noNetWork.hidden = YES;
     [self.tableView.mj_header beginRefreshing];
 }
-- (void)cancelAction
-{
-    self.searchController.active = NO;
-    [self.navigationController popViewControllerAnimated:YES];
-}
+//- (void)cancelAction
+//{
+//    self.searchController.active = NO;
+//    [self.navigationController popViewControllerAnimated:YES];
+//}
 - (void)setupRefresh
 {
     self.tableView.mj_header = [CustomRefreshHeader headerWithRefreshingTarget:self refreshingAction:@selector(loadNewData)];
@@ -68,26 +77,31 @@ static NSString * const SearchID = @"SearchID";
 }
 - (void)loadNewData
 {
-    [self getDataWithPageindex: PageIndex_Default];
+    if (self.searchTextField.hasText) {
+        [self getDataWithPageindex: PageIndex_Default];
+    }
 }
 - (void)loadMoreData
 {
-    [self getDataWithPageindex:self.pageindex];
+    if (self.searchTextField.hasText) {
+        [self getDataWithPageindex:self.pageindex];
+    }
 }
 - (void)getDataWithPageindex:(NSInteger)pageindex
 {
-    [[HTTPManager shareManager] getSearchAssetsDataWithAssetCode:_searchController.searchBar.text pageIndex:1 success:^(id responseObject) {
+    [[HTTPManager shareManager] getSearchAssetsDataWithAssetCode:_searchTextField.text pageIndex:1 success:^(id responseObject) {
         NSInteger code = [[responseObject objectForKey:@"errCode"] integerValue];
         if (code == Success_Code) {
             NSArray * listArray = [SearchAssetsModel mj_objectArrayWithKeyValuesArray:responseObject[@"data"] [@"tokenList"]];
             if (pageindex == PageIndex_Default) {
-                [self.results removeAllObjects];
+                [self.listArray removeAllObjects];
                 self.pageindex = PageIndex_Default;
             }
             self.pageindex = self.pageindex + 1;
-            [self.results addObjectsFromArray:listArray];
+            [self.listArray addObjectsFromArray:listArray];
             if (listArray.count < PageSize_Max) {
-                [self.tableView.mj_footer endRefreshingWithNoMoreData];
+//                [self.tableView.mj_footer endRefreshingWithNoMoreData];
+                [self.tableView.mj_footer endRefreshing];
             } else {
                 [self.tableView.mj_footer endRefreshing];
             }
@@ -96,7 +110,7 @@ static NSString * const SearchID = @"SearchID";
             [MBProgressHUD showTipMessageInWindow:[ErrorTypeTool getDescriptionWithErrorCode:code]];
         }
         [self.tableView.mj_header endRefreshing];
-        (self.results.count > 0) ? (self.tableView.tableFooterView = [UIView new]) : (self.tableView.tableFooterView = self.noData);
+        (self.listArray.count > 0) ? (self.tableView.tableFooterView = [UIView new]) : (self.tableView.tableFooterView = self.noData);
         self.noNetWork.hidden = YES;
     } failure:^(NSError *error) {
         [self.tableView.mj_header endRefreshing];
@@ -104,6 +118,7 @@ static NSString * const SearchID = @"SearchID";
         self.noNetWork.hidden = NO;
     }];
 }
+/*
 - (UISearchController *)searchController
 {
     if (!_searchController) {
@@ -125,18 +140,30 @@ static NSString * const SearchID = @"SearchID";
     }
     return _searchController;
 }
-
+*/
+- (void)viewDidAppear:(BOOL)animated
+{
+    [super viewDidAppear:animated];
+    [_searchTextField becomeFirstResponder];
+}
+- (void)viewWillDisappear:(BOOL)animated
+{
+    [super viewWillDisappear:animated];
+    [_searchTextField resignFirstResponder];
+}
 - (void)setupView
 {
-    self.definesPresentationContext = NO;
-    [self setExtendedLayoutIncludesOpaqueBars:YES];
-    CGFloat searchBarH = self.searchController.searchBar.height;
-    self.tableView = [[UITableView alloc] initWithFrame:CGRectMake(0, searchBarH, DEVICE_WIDTH, DEVICE_HEIGHT - searchBarH) style:UITableViewStyleGrouped];
+//    self.definesPresentationContext = NO;
+//    [self setExtendedLayoutIncludesOpaqueBars:YES];
+//    CGFloat searchBarH = self.searchController.searchBar.height;
+    self.tableView = [[UITableView alloc] initWithFrame:self.view.frame style:UITableViewStyleGrouped];
     self.tableView.delegate = self;
     self.tableView.dataSource = self;
-    [self.view addSubview:self.searchController.searchBar];
+    self.tableView.backgroundColor = [UIColor whiteColor];
+//    [self.view addSubview:self.searchController.searchBar];
     [self.view addSubview:self.tableView];
 }
+
 - (UIView *)noData
 {
     if (!_noData) {
@@ -153,18 +180,81 @@ static NSString * const SearchID = @"SearchID";
 }
 - (NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section
 {
-    if (self.searchController.active) {
-        return self.results.count ;
-    }
-    return 0;
+    return self.listArray.count;
 }
 - (CGFloat)tableView:(UITableView *)tableView heightForHeaderInSection:(NSInteger)section
 {
-    return CGFLOAT_MIN;
+    return MAIN_HEIGHT;
+}
+- (UIView *)tableView:(UITableView *)tableView viewForHeaderInSection:(NSInteger)section
+{
+    UIView * headerView = [[UIView alloc] init];
+    headerView.backgroundColor = [UIColor whiteColor];
+    _searchTextField = [[UITextField alloc] init];
+    _searchTextField.placeholder = Localized(@"InputAssetName");
+    _searchTextField.font = FONT(16);
+    _searchTextField.textColor = TITLE_COLOR;
+    _searchTextField.delegate = self;
+    _searchTextField.tintColor = MAIN_COLOR;
+    _searchTextField.clearButtonMode = UITextFieldViewModeWhileEditing;
+    //    _searchTextField.layer.cornerRadius = 6;
+    //    _searchTextField.layer.masksToBounds = YES;
+    //        _searchTextField.returnKeyType = UIReturnKeySearch;
+    [_searchTextField addTarget:self action:@selector(textChange:) forControlEvents:UIControlEventEditingChanged];
+    //        [_searchTextField becomeFirstResponder];
+    [headerView addSubview:_searchTextField];
+    
+    //搜索按钮
+    UIButton * searchBtn = [UIButton createButtonWithNormalImage:@"search" SelectedImage:@"search" Target:self Selector:@selector(searchAction:)];
+    [headerView addSubview:searchBtn];
+    [searchBtn mas_makeConstraints:^(MASConstraintMaker *make) {
+        make.top.bottom.equalTo(headerView);
+        make.right.equalTo(headerView.mas_right).offset(-Margin_20);
+        make.width.mas_equalTo(ScreenScale(22));
+    }];
+    
+    [_searchTextField mas_makeConstraints:^(MASConstraintMaker *make) {
+        make.left.equalTo(headerView.mas_left).offset(Margin_20);
+        make.top.bottom.equalTo(headerView);
+        make.right.equalTo(searchBtn.mas_left).offset(-Margin_10);
+    }];
+    UIView * lineView = [[UIView alloc] init];
+    lineView.backgroundColor = LINE_COLOR;
+    [headerView addSubview:lineView];
+    [lineView mas_makeConstraints:^(MASConstraintMaker *make) {
+        make.left.equalTo(self.searchTextField);
+        make.right.equalTo(searchBtn);
+        make.height.mas_equalTo(LINE_WIDTH);
+        make.bottom.equalTo(headerView);
+    }];
+    return headerView;
+}
+- (void)searchAction:(UIButton *)button
+{
+    [self.searchTextField resignFirstResponder];
+    if (self.searchTextField.hasText) {
+        if (!self.tableView.mj_header) {
+            [self setupRefresh];
+        } else {
+            [self loadNewData];
+        }
+    }
+}
+- (void)textChange:(UITextField *)textField
+{
+    
+}
+- (BOOL)textFieldShouldReturn:(UITextField *)textField
+{
+//    [self.listArray removeAllObjects];
+//    [self.tableView reloadData];
+    [textField resignFirstResponder];
+    return YES;
 }
 - (CGFloat)tableView:(UITableView *)tableView heightForFooterInSection:(NSInteger)section
 {
-    return ContentSizeBottom;
+//    return ContentSizeBottom;
+    return CGFLOAT_MIN;
 }
 - (CGFloat)tableView:(UITableView *)tableView heightForRowAtIndexPath:(NSIndexPath *)indexPath
 {
@@ -173,7 +263,7 @@ static NSString * const SearchID = @"SearchID";
 - (UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath
 {
     AddAssetsViewCell * cell = [AddAssetsViewCell cellWithTableView:tableView];
-    cell.searchAssetsModel = self.results[indexPath.row];
+    cell.searchAssetsModel = self.listArray[indexPath.row];
     cell.selectionStyle = UITableViewCellSelectionStyleNone;
     return cell;
 }
@@ -181,16 +271,16 @@ static NSString * const SearchID = @"SearchID";
     [tableView deselectRowAtIndexPath:indexPath animated:YES];
 }
 
-- (void)viewDidAppear:(BOOL)animated {
-    [super viewDidAppear:animated];
-    self.searchController.active = true;
-}
-- (void)didPresentSearchController:(UISearchController *)searchController {
-    [UIView animateWithDuration:0.1 animations:^{} completion:^(BOOL finished) {
-        [self.searchController.searchBar becomeFirstResponder];
-    }];
-}
-
+//- (void)viewDidAppear:(BOOL)animated {
+//    [super viewDidAppear:animated];
+//    self.searchController.active = true;
+//}
+//- (void)didPresentSearchController:(UISearchController *)searchController {
+//    [UIView animateWithDuration:0.1 animations:^{} completion:^(BOOL finished) {
+//        [self.searchController.searchBar becomeFirstResponder];
+//    }];
+//}
+/*
 #pragma mark - UISearchResultsUpdating
 - (void)updateSearchResultsForSearchController:(UISearchController *)searchController {
     // Prevent UISearchBar from moving up after returning.
@@ -219,6 +309,7 @@ static NSString * const SearchID = @"SearchID";
     [self.results removeAllObjects];
     [self.tableView reloadData];
 }
+ */
 /*
  #pragma mark - Navigation
  

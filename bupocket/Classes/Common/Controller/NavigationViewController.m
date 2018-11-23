@@ -25,9 +25,9 @@
 
 + (void)initialize
 {
-    UINavigationBar * bar = [UINavigationBar appearance];
-    bar.shadowImage = [[UIImage alloc] init];
-    bar.barTintColor = [UIColor whiteColor];
+//    UINavigationBar * bar = [UINavigationBar appearance];
+//    bar.shadowImage = [[UIImage alloc] init];
+//    bar.barTintColor = [UIColor whiteColor];
     
 //    NSMutableDictionary * attr = [NSMutableDictionary dictionary];
 //    attr[NSFontAttributeName] = FONT(18);
@@ -60,7 +60,7 @@
     [viewController viewWillAppear:animated];
     BOOL isSetLargeTitles = (
                              [viewController isKindOfClass:[AssetsViewController class]]  ||
-                             [viewController isKindOfClass:[AddAssetsViewController class]] ||
+//                             [viewController isKindOfClass:[AddAssetsViewController class]] ||
                              [viewController isKindOfClass:[AssetsDetailViewController class]] ||
                              [viewController isKindOfClass:[TransferResultsViewController class]] ||
                              [viewController isKindOfClass:[RequestTimeoutViewController class]] ||

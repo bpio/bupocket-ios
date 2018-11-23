@@ -494,7 +494,7 @@
 - (CGFloat)tableView:(UITableView *)tableView heightForFooterInSection:(NSInteger)section
 {
     if (section == self.listArray.count - 1) {
-        return TabBarH + NavBarH + Margin_10;
+        return TabBarH + Margin_10;
     } else {
         return CGFLOAT_MIN;
     }

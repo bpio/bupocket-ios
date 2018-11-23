@@ -45,7 +45,7 @@
     if (![self isRootViewController]) {
         [self setupLeftItem];
     }
-    [self setupPopGestureRecognizer];
+//    [self setupPopGestureRecognizer];
     // Do any additional setup after loading the view.
 }
 //- (void)viewWillDisappear:(BOOL)animated
@@ -116,7 +116,7 @@
 - (BOOL)isSetLargeTitles
 {
     return !([self isKindOfClass:[AssetsViewController class]]  ||
-            [self isKindOfClass:[AddAssetsViewController class]] ||
+//            [self isKindOfClass:[AddAssetsViewController class]] ||
             [self isKindOfClass:[AssetsDetailViewController class]] ||
             [self isKindOfClass:[TransferResultsViewController class]] ||
             [self isKindOfClass:[RequestTimeoutViewController class]] ||
