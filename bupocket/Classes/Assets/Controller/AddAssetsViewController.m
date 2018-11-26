@@ -45,11 +45,11 @@ static NSString * const SearchID = @"SearchID";
 - (void)viewDidLoad {
     [super viewDidLoad];
     self.navigationItem.title = Localized(@"AddAssets");
-    if (@available(iOS 11.0, *)) {
-        self.navigationItem.hidesSearchBarWhenScrolling = YES;
-    } else {
-        // Fallback on earlier versions
-    }
+//    if (@available(iOS 11.0, *)) {
+//        self.navigationItem.hidesSearchBarWhenScrolling = YES;
+//    } else {
+//        // Fallback on earlier versions
+//    }
     [self setupView];
     self.noNetWork = [Encapsulation showNoNetWorkWithSuperView:self.view target:self action:@selector(reloadData)];
 //    UIButton * backButton = [UIButton createButtonWithNormalImage:@"nav_goback_n" SelectedImage:@"nav_goback_n" Target:self Selector:@selector(cancelAction)];
@@ -73,23 +73,28 @@ static NSString * const SearchID = @"SearchID";
     self.tableView.mj_header = [CustomRefreshHeader headerWithRefreshingTarget:self refreshingAction:@selector(loadNewData)];
     self.tableView.mj_header.automaticallyChangeAlpha = YES;
     self.tableView.mj_footer = [CustomRefreshFooter footerWithRefreshingTarget:self refreshingAction:@selector(loadMoreData)];
+    [self.tableView.mj_header beginRefreshing];
     self.tableView.mj_footer.ignoredScrollViewContentInsetBottom = -(ContentSizeBottom);
 }
 - (void)loadNewData
 {
     if (self.searchTextField.hasText) {
         [self getDataWithPageindex: PageIndex_Default];
+    } else {
+        [self.tableView.mj_header endRefreshing];
     }
 }
 - (void)loadMoreData
 {
     if (self.searchTextField.hasText) {
         [self getDataWithPageindex:self.pageindex];
+    } else {
+        [self.tableView.mj_footer endRefreshing];
     }
 }
 - (void)getDataWithPageindex:(NSInteger)pageindex
 {
-    [[HTTPManager shareManager] getSearchAssetsDataWithAssetCode:_searchTextField.text pageIndex:1 success:^(id responseObject) {
+    [[HTTPManager shareManager] getSearchAssetsDataWithAssetCode:_searchTextField.text pageIndex:pageindex success:^(id responseObject) {
         NSInteger code = [[responseObject objectForKey:@"errCode"] integerValue];
         if (code == Success_Code) {
             NSArray * listArray = [SearchAssetsModel mj_objectArrayWithKeyValuesArray:responseObject[@"data"] [@"tokenList"]];
@@ -100,8 +105,7 @@ static NSString * const SearchID = @"SearchID";
             self.pageindex = self.pageindex + 1;
             [self.listArray addObjectsFromArray:listArray];
             if (listArray.count < PageSize_Max) {
-//                [self.tableView.mj_footer endRefreshingWithNoMoreData];
-                [self.tableView.mj_footer endRefreshing];
+                [self.tableView.mj_footer endRefreshingWithNoMoreData];
             } else {
                 [self.tableView.mj_footer endRefreshing];
             }
@@ -111,6 +115,7 @@ static NSString * const SearchID = @"SearchID";
         }
         [self.tableView.mj_header endRefreshing];
         (self.listArray.count > 0) ? (self.tableView.tableFooterView = [UIView new]) : (self.tableView.tableFooterView = self.noData);
+        self.tableView.mj_footer.hidden = (self.listArray.count == 0);
         self.noNetWork.hidden = YES;
     } failure:^(NSError *error) {
         [self.tableView.mj_header endRefreshing];
@@ -160,36 +165,17 @@ static NSString * const SearchID = @"SearchID";
     self.tableView.delegate = self;
     self.tableView.dataSource = self;
     self.tableView.backgroundColor = [UIColor whiteColor];
+    self.tableView.separatorStyle = UITableViewCellSeparatorStyleNone;
 //    [self.view addSubview:self.searchController.searchBar];
     [self.view addSubview:self.tableView];
+    [self setupHeaderView];
 }
 
-- (UIView *)noData
+- (void)setupHeaderView
 {
-    if (!_noData) {
-        _noData = [[UIView alloc] initWithFrame:CGRectMake(0, 0, DEVICE_WIDTH, ScreenScale(270))];
-        UIButton * noDataBtn = [Encapsulation showNoDataWithTitle:Localized(@"NoSearchResults") imageName:@"noSearchResults" superView:self.noData frame:CGRectMake(0, Margin_50, DEVICE_WIDTH, ScreenScale(160))];
-        noDataBtn.hidden = NO;
-        [_noData addSubview:noDataBtn];
-    }
-    return _noData;
-}
-- (NSInteger)numberOfSectionsInTableView:(UITableView *)tableView
-{
-    return 1;
-}
-- (NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section
-{
-    return self.listArray.count;
-}
-- (CGFloat)tableView:(UITableView *)tableView heightForHeaderInSection:(NSInteger)section
-{
-    return MAIN_HEIGHT;
-}
-- (UIView *)tableView:(UITableView *)tableView viewForHeaderInSection:(NSInteger)section
-{
-    UIView * headerView = [[UIView alloc] init];
+    UIView * headerView = [[UIView alloc] initWithFrame:CGRectMake(0, 0, DEVICE_WIDTH, MAIN_HEIGHT)];
     headerView.backgroundColor = [UIColor whiteColor];
+    self.tableView.tableHeaderView = headerView;
     _searchTextField = [[UITextField alloc] init];
     _searchTextField.placeholder = Localized(@"InputAssetName");
     _searchTextField.font = FONT(16);
@@ -199,13 +185,12 @@ static NSString * const SearchID = @"SearchID";
     _searchTextField.clearButtonMode = UITextFieldViewModeWhileEditing;
     //    _searchTextField.layer.cornerRadius = 6;
     //    _searchTextField.layer.masksToBounds = YES;
-    //        _searchTextField.returnKeyType = UIReturnKeySearch;
+    _searchTextField.returnKeyType = UIReturnKeySearch;
     [_searchTextField addTarget:self action:@selector(textChange:) forControlEvents:UIControlEventEditingChanged];
     //        [_searchTextField becomeFirstResponder];
     [headerView addSubview:_searchTextField];
     
-    //搜索按钮
-    UIButton * searchBtn = [UIButton createButtonWithNormalImage:@"search" SelectedImage:@"search" Target:self Selector:@selector(searchAction:)];
+    UIButton * searchBtn = [UIButton createButtonWithNormalImage:@"search" SelectedImage:@"search" Target:self Selector:@selector(searchAction)];
     [headerView addSubview:searchBtn];
     [searchBtn mas_makeConstraints:^(MASConstraintMaker *make) {
         make.top.bottom.equalTo(headerView);
@@ -227,16 +212,40 @@ static NSString * const SearchID = @"SearchID";
         make.height.mas_equalTo(LINE_WIDTH);
         make.bottom.equalTo(headerView);
     }];
-    return headerView;
 }
-- (void)searchAction:(UIButton *)button
+
+- (UIView *)noData
+{
+    if (!_noData) {
+        CGFloat contentSizeH = ContentSizeBottom;
+        CGFloat noDataH = DEVICE_HEIGHT - MAIN_HEIGHT - 3 * contentSizeH;
+        _noData = [[UIView alloc] initWithFrame:CGRectMake(0, 0, DEVICE_WIDTH, noDataH)];
+        UIButton * noDataBtn = [Encapsulation showNoDataWithTitle:Localized(@"NoSearchResults") imageName:@"noSearchResults" superView:self.noData frame:CGRectMake(0, (noDataH - ScreenScale(160)) / 2, DEVICE_WIDTH, ScreenScale(160))];
+        noDataBtn.hidden = NO;
+        [_noData addSubview:noDataBtn];
+    }
+    return _noData;
+}
+- (NSInteger)numberOfSectionsInTableView:(UITableView *)tableView
+{
+    return 1;
+}
+- (NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section
+{
+    return self.listArray.count;
+}
+- (CGFloat)tableView:(UITableView *)tableView heightForHeaderInSection:(NSInteger)section
+{
+    return CGFLOAT_MIN;
+}
+- (void)searchAction
 {
     [self.searchTextField resignFirstResponder];
     if (self.searchTextField.hasText) {
         if (!self.tableView.mj_header) {
             [self setupRefresh];
         } else {
-            [self loadNewData];
+            [self.tableView.mj_header beginRefreshing];
         }
     }
 }
@@ -248,13 +257,12 @@ static NSString * const SearchID = @"SearchID";
 {
 //    [self.listArray removeAllObjects];
 //    [self.tableView reloadData];
-    [textField resignFirstResponder];
+    [self searchAction];
     return YES;
 }
 - (CGFloat)tableView:(UITableView *)tableView heightForFooterInSection:(NSInteger)section
 {
-//    return ContentSizeBottom;
-    return CGFLOAT_MIN;
+    return ContentSizeBottom;
 }
 - (CGFloat)tableView:(UITableView *)tableView heightForRowAtIndexPath:(NSIndexPath *)indexPath
 {

@@ -54,6 +54,7 @@ static int64_t const gasPrice = 1000;
 - (void)SwitchedNetworkWithIsTest:(BOOL)isTest
 {
     NSUserDefaults * defaults = [NSUserDefaults standardUserDefaults];
+    [defaults setBool:YES forKey:If_Show_Switch_Network];
     [defaults setBool:isTest forKey:If_Switch_TestNetwork];
     [defaults synchronize];
     if (isTest == NO) {
@@ -131,21 +132,41 @@ static int64_t const gasPrice = 1000;
     }];
 }
 // AssetsDetail Transaction_Record
-- (void)getAssetsDetailDataWithAssetCode:(NSString *)assetCode
+//- (void)getAssetsDetailDataWithTokenType:(NSInteger)tokenType
+//                               assetCode:(NSString *)assetCode
+//                                  issuer:(NSString *)issuer
+//                                 address:(NSString *)address
+//                            currencyType:(NSString *)currencyType
+//                               pageIndex:(NSInteger)pageIndex
+//                                 success:(void (^)(id responseObject))success
+//                                 failure:(void (^)(NSError *error))failure
+- (void)getAssetsDetailDataWithTokenType:(NSInteger)tokenType
+                            currencyType:(NSString *)currencyType
+                               assetCode:(NSString *)assetCode
                                   issuer:(NSString *)issuer
                                  address:(NSString *)address
-                            currencyType:(NSString *)currencyType
                                pageIndex:(NSInteger)pageIndex
                                  success:(void (^)(id responseObject))success
                                  failure:(void (^)(NSError *error))failure
 {
+    NSString * url = SERVER_COMBINE_API(_webServerDomain, Transaction_Record);
+    NSMutableDictionary * parmenters = [NSMutableDictionary dictionary];
+    [parmenters addEntriesFromDictionary:@{@"tokenType" : @(tokenType),
+                                           @"currencyType": currencyType,
+                                           @"assetCode" : assetCode,
+                                           @"issuer" : issuer,
+                                           @"address" : address,
+                                           @"startPage" : @(pageIndex),
+                                           @"pageSize" : @(PageSize_Max)
+                                           }];
+    /*
     NSString * url;
     NSMutableDictionary * parmenters = [NSMutableDictionary dictionary];
     [parmenters addEntriesFromDictionary:@{@"startPage" : @(pageIndex),
                                            @"pageSize" : @(PageSize_Max),
                                            @"currencyType": currencyType
                                            }];
-    if ([assetCode isEqualToString:@"BU"]) {
+    if (tokenType == Token_Type_BU) {
         url = SERVER_COMBINE_API(_webServerDomain, Transaction_Record_BU);
         [parmenters setObject:address forKey:@"walletAddress"];
     } else {
@@ -154,8 +175,9 @@ static int64_t const gasPrice = 1000;
                                                @"issuer" : issuer,
                                                @"address" : address,
                                                }];
-        [MBProgressHUD showActivityMessageInWindow:Localized(@"Loading")];
+        //        [MBProgressHUD showActivityMessageInWindow:Localized(@"Loading")];
     }
+     */
     [[HttpTool shareTool] POST:url parameters:parmenters success:^(id responseObject) {
         if(success != nil)
         {
@@ -168,13 +190,36 @@ static int64_t const gasPrice = 1000;
         }
     }];
 }
-
 // OrderDetails
-- (void)getOrderDetailsDataWithHash:(NSString *)hash
-                            success:(void (^)(id responseObject))success
-                            failure:(void (^)(NSError *error))failure
+- (void)getOrderDetailsDataWithAddress:(NSString *)address
+                                 optNo:(NSInteger)optNo
+                               success:(void (^)(id responseObject))success
+                               failure:(void (^)(NSError *error))failure
 {
     NSString * url = SERVER_COMBINE_API(_webServerDomain, Order_Details);
+    NSDictionary * parmenters = @{
+                                  @"address" : address,
+                                  @"optNo": @(optNo)
+                                  };
+//    [MBProgressHUD showActivityMessageInWindow:Localized(@"Loading")];
+    [[HttpTool shareTool] POST:url parameters:parmenters success:^(id responseObject) {
+        if(success != nil)
+        {
+            success(responseObject);
+        }
+    } failure:^(NSError *error) {
+        if(failure != nil)
+        {
+            failure(error);
+        }
+    }];
+}
+// Transaction Details
+- (void)getTransactionDetailsDataWithHash:(NSString *)hash
+                                  success:(void (^)(id responseObject))success
+                                  failure:(void (^)(NSError *error))failure
+{
+    NSString * url = SERVER_COMBINE_API(_webServerDomain, Transaction_Details);
     NSDictionary * parmenters = @{@"Hash" : hash};
     [MBProgressHUD showActivityMessageInWindow:Localized(@"Loading")];
     [[HttpTool shareTool] POST:url parameters:parmenters success:^(id responseObject) {
@@ -238,7 +283,6 @@ static int64_t const gasPrice = 1000;
         }
     }];
 }
-
 #pragma mark - SDK
 // Check the balance
 - (int64_t)getAccountBalance {

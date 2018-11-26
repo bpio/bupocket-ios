@@ -112,7 +112,8 @@
 "AddAssets" = "Add tokens";
 "Add" = "Add";
 "Delete" = "Delete";
-"InputAssetName" = "Please enter the full token code";
+// 待定
+"InputAssetName" = "Please enter the full tokens code";
 "NoSearchResults" = "No search results found";
 // Details of tokens
 "AssetsDetailScan" = "Scan";

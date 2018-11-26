@@ -35,17 +35,31 @@
                                  success:(void (^)(id responseObject))success
                                  failure:(void (^)(NSError *error))failure;
 // AssetsDetail Transaction_Record
-- (void)getAssetsDetailDataWithAssetCode:(NSString *)assetCode
+//- (void)getAssetsDetailDataWithTokenType:(NSInteger)tokenType
+//                               assetCode:(NSString *)assetCode
+//                                  issuer:(NSString *)issuer
+//                                 address:(NSString *)address
+//                            currencyType:(NSString *)currencyType
+//                               pageIndex:(NSInteger)pageIndex
+//                                 success:(void (^)(id responseObject))success
+//                                 failure:(void (^)(NSError *error))failure;
+- (void)getAssetsDetailDataWithTokenType:(NSInteger)tokenType
+                            currencyType:(NSString *)currencyType
+                               assetCode:(NSString *)assetCode
                                   issuer:(NSString *)issuer
                                  address:(NSString *)address
-                            currencyType:(NSString *)currencyType
                                pageIndex:(NSInteger)pageIndex
                                  success:(void (^)(id responseObject))success
                                  failure:(void (^)(NSError *error))failure;
 // OrderDetails
-- (void)getOrderDetailsDataWithHash:(NSString *)hash
-                            success:(void (^)(id responseObject))success
-                            failure:(void (^)(NSError *error))failure;
+- (void)getOrderDetailsDataWithAddress:(NSString *)address
+                                 optNo:(NSInteger)optNo
+                               success:(void (^)(id responseObject))success
+                               failure:(void (^)(NSError *error))failure;
+// Transaction Details
+- (void)getTransactionDetailsDataWithHash:(NSString *)hash
+                                  success:(void (^)(id responseObject))success
+                                  failure:(void (^)(NSError *error))failure;
 // Registration / issuance of assets information
 - (void)getRegisteredORDistributionDataWithAssetCode:(NSString *)assetCode
                                         issueAddress:(NSString *)issueAddress

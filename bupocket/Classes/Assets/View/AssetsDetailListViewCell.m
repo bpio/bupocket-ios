@@ -58,7 +58,7 @@ static NSString * const AssetsDetailCellID = @"AssetsDetailCellID";
     _listModel = listModel;
     NSString * outOrIn;
     NSString * addressStr;
-    if (listModel.outinType == 0) {
+    if (listModel.outinType == Transaction_Type_TurnOut) {
         addressStr = listModel.toAddress;
         outOrIn = @"-";
     } else {

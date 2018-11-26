@@ -34,7 +34,7 @@
 
 static NSString * const DetailListCellID = @"DetailListCellID";
 static NSString * const OrderDetailsCellID = @"OrderDetailsCellID";
-static NSInteger const TxInfoNormalCount = 7;
+static NSInteger const TxInfoNormalCount = 6;
 
 
 - (void)viewDidLoad {
@@ -65,7 +65,9 @@ static NSInteger const TxInfoNormalCount = 7;
 }
 - (void)loadData
 {
-    [[HTTPManager shareManager] getOrderDetailsDataWithHash:self.listModel.txHash success:^(id responseObject) {
+    [[HTTPManager shareManager] getOrderDetailsDataWithAddress:[[AccountTool account] purseAccount] optNo:self.listModel.optNo
+//                                   getTransactionDetailsDataWithHash:self.listModel.txHash
+                                                       success:^(id responseObject) {
         NSInteger code = [[responseObject objectForKey:@"errCode"] integerValue];
         if (code == Success_Code) {
             [self.tableView addSubview:self.headerView];
@@ -88,14 +90,16 @@ static NSInteger const TxInfoNormalCount = 7;
 }
 - (void)setListData
 {
-    NSMutableArray * infoTitleArray = [NSMutableArray arrayWithObjects:@"TX Hash", @"Source Address", @"Dest Address", @"Amount", @"TX Fee", @"Nonce", @"Ledger Seq", @"Transaction Signature", nil];
+    NSMutableArray * infoTitleArray = [NSMutableArray arrayWithObjects:@"TX Hash", @"Source Address", @"Dest Address", @"Amount", @"TX Fee", @"Nonce", @"Transaction Signature", nil];
+    // , @"Ledger Seq"
     self.infoArray = [NSMutableArray array];
     NSMutableArray * detailArray = [NSMutableArray array];
     [detailArray addObject:self.txDetailModel.sourceAddress];
     [detailArray addObject:self.txDetailModel.destAddress];
     [detailArray addObject:[NSString stringAppendingBUWithStr: self.txDetailModel.fee]];
     [detailArray addObject:[DateTool getDateStringWithTimeStr:self.txDetailModel.applyTimeDate]];
-    [detailArray addObject:self.txDetailModel.originalMetadata];
+//    [detailArray addObject:self.txDetailModel.originalMetadata];
+    [detailArray addObject:self.txDetailModel.txMetadata];
     [self.infoArray addObject:detailArray];
     // TX Info
     NSMutableArray * infoArray = [NSMutableArray array];
@@ -105,7 +109,7 @@ static NSInteger const TxInfoNormalCount = 7;
     [infoArray addObject:self.assets];
     [infoArray addObject:[NSString stringAppendingBUWithStr:self.txInfoModel.fee]];
     [infoArray addObject:self.txInfoModel.nonce];
-    [infoArray addObject:self.txInfoModel.ledgerSeq];
+//    [infoArray addObject:self.txInfoModel.ledgerSeq];
     [infoArray addObject:@"Transaction Signature"];
     NSArray * signatureArray = [JsonTool dictionaryOrArrayWithJSONSString: self.txInfoModel.signatureStr];
     for (NSInteger i = 0; i < signatureArray.count; i ++) {
@@ -155,7 +159,7 @@ static NSInteger const TxInfoNormalCount = 7;
             make.centerX.equalTo(self.headerViewBg);
         }];
         NSString * outOrIn;
-        if (self.listModel.outinType == 0) {
+        if (self.listModel.outinType == Transaction_Type_TurnOut) {
             outOrIn = @"-";
         } else {
             outOrIn = @"+";
@@ -252,7 +256,7 @@ static NSInteger const TxInfoNormalCount = 7;
     if (indexPath.section == 1 && indexPath.row == TxInfoNormalCount) {
         return MAIN_HEIGHT;
     } else if (indexPath.section == 1 && indexPath.row > TxInfoNormalCount) {
-        CGFloat bottomH = indexPath.row % 2 ? Margin_15 : 0;
+        CGFloat bottomH = indexPath.row % 2 ? 0 : Margin_15;
         CGFloat rowHeight = [Encapsulation rectWithText:self.infoArray[indexPath.section][indexPath.row] fontSize:15 textWidth: DEVICE_WIDTH - Margin_60].size.height + ScreenScale(50) + bottomH;
         return rowHeight;
     } else {

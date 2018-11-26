@@ -73,7 +73,9 @@
 - (void)getDataWithPageindex:(NSInteger)pageindex
 {
     NSString * currentCurrency = [AssetCurrencyModel getAssetCurrencyTypeWithAssetCurrency:[[[NSUserDefaults standardUserDefaults] objectForKey:Current_Currency] integerValue]];
-    [[HTTPManager shareManager] getAssetsDetailDataWithAssetCode:self.listModel.assetCode issuer:self.listModel.issuer address:[AccountTool account].purseAccount currencyType:currentCurrency pageIndex:pageindex success:^(id responseObject) {
+    [[HTTPManager shareManager] getAssetsDetailDataWithTokenType:self.listModel.type currencyType:currentCurrency assetCode:self.listModel.assetCode issuer:self.listModel.issuer address:[AccountTool account].purseAccount pageIndex:pageindex
+//     [[HTTPManager shareManager] getAssetsDetailDataWithTokenType:self.listModel.type assetCode:self.listModel.assetCode issuer:self.listModel.issuer address:[AccountTool account].purseAccount currencyType:currentCurrency pageIndex:pageindex
+                                                          success:^(id responseObject) {
         NSInteger code = [[responseObject objectForKey:@"errCode"] integerValue];
         if (code == Success_Code) {
             [self.tableView addSubview:self.headerBg];
@@ -101,6 +103,7 @@
         [self.tableView.mj_header endRefreshing];
         (self.listArray.count > 0) ? (self.tableView.tableFooterView = [UIView new]) : (self.tableView.tableFooterView = self.noData);
         self.noNetWork.hidden = YES;
+        self.tableView.mj_footer.hidden = (self.listArray.count == 0);
     } failure:^(NSError *error) {
         [self.tableView.mj_header endRefreshing];
         [self.tableView.mj_footer endRefreshing];

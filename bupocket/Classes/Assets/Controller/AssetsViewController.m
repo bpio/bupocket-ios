@@ -21,10 +21,7 @@
 #import "RegisteredModel.h"
 #import "DistributionModel.h"
 
-#import "UINavigationController+Extension.h"
-
-#import "SocketIOHandler.h"
-
+//#import "UINavigationController+Extension.h"
 
 @interface AssetsViewController ()<UITableViewDelegate, UITableViewDataSource>
 
@@ -47,6 +44,7 @@
 @property (nonatomic, strong) DistributionModel * distributionModel;
 @property (nonatomic, strong) NSDictionary * scanDic;
 @property (nonatomic, assign) UIStatusBarStyle statusBarStyle;
+@property (nonatomic, strong) NSString * assetsCacheDataKey;
 
 @end
 
@@ -62,21 +60,31 @@
 
 - (void)viewDidLoad {
     [super viewDidLoad];
-    [self setupView];
-    [self setupNav];
+//    [self setupNav];
     self.edgesForExtendedLayout = UIRectEdgeAll;
+    [self setupView];
+    if ([[NSUserDefaults standardUserDefaults] boolForKey:If_Switch_TestNetwork]) {
+        self.assetsCacheDataKey = Assets_HomePage_CacheData_Test;
+    } else {
+        self.assetsCacheDataKey = Assets_HomePage_CacheData;
+    }
+    [self setupRefresh];
+    NSUserDefaults * defaults = [NSUserDefaults standardUserDefaults];
+    NSDictionary * dic = [defaults objectForKey:self.assetsCacheDataKey];
+    if (dic) {
+        [self setDataWithResponseObject:dic];
+    }
     // Do any additional setup after loading the view.
 }
+/*
 - (void)setupNav
 {
     self.scanButton = [UIButton createButtonWithNormalImage:@"nav_scan" SelectedImage:@"transferAccounts_scan" Target:self Selector:@selector(scanAction)];
     self.scanButton.frame = CGRectMake(0, 0, ScreenScale(44), Margin_30);
         self.scanButton.contentHorizontalAlignment = UIControlContentHorizontalAlignmentRight;
     self.navigationItem.rightBarButtonItem = [[UIBarButtonItem alloc]initWithCustomView:self.scanButton];
-    self.navTitleColor = self.navTintColor = [UIColor clearColor];
-    self.navAlpha = 0;
-    
 }
+ */
 - (void)viewWillAppear:(BOOL)animated {
     [super viewWillAppear:animated];
     [self.tableView.mj_header beginRefreshing];
@@ -90,13 +98,17 @@
 {
     if ([[NSUserDefaults standardUserDefaults] boolForKey:If_Switch_TestNetwork]) {
         self.networkPrompt.text = Localized(@"TestNetworkPrompt");
-        self.headerImageView.image = nil;
+//        self.headerImageView.image = [UIImage imageNamed:@"assets_header_test"];
         self.headerImageView.backgroundColor = COLOR(@"4B4A66");
+        self.headerImageView.image = nil;
     } else {
         self.networkPrompt.text = nil;
         self.headerImageView.image = self.headerImage;
-        self.headerImageView.backgroundColor = [UIColor whiteColor];
+        self.headerImageView.backgroundColor = COLOR(@"645FC3");
     }
+//    self.navBackgroundColor = self.headerImageView.backgroundColor;
+//    self.navTitleColor = self.navTintColor = [UIColor clearColor];
+//    self.navAlpha = 1.0;
 }
 - (UIStatusBarStyle)preferredStatusBarStyle{
     return _statusBarStyle;
@@ -115,6 +127,24 @@
     self.tableView.mj_header.ignoredScrollViewContentInsetTop = _headerViewH;
     [self.tableView.mj_header beginRefreshing];
 }
+- (void)setDataWithResponseObject:(id)responseObject
+{
+    [self.tableView addSubview:self.headerBg];
+    [self.tableView insertSubview:self.headerBg atIndex:0];
+    self.listArray = [AssetsListModel mj_objectArrayWithKeyValuesArray:responseObject[@"data"] [@"tokenList"]];
+    NSString * amountStr = responseObject[@"data"][@"totalAmount"];
+    if ([amountStr isEqualToString:@"~"]) {
+        self.amount.text = amountStr;
+    } else {
+        self.amount.text = [NSString stringWithFormat:@"≈%@", amountStr];
+        //                NSString * currencyType = responseObject[@"data"][@"currencyType"];
+        //                self.amount.attributedText = [Encapsulation attrWithString:amountString preFont:FONT_Bold(32) preColor:[UIColor whiteColor] index:amountString.length - currencyType.length sufFont:FONT(16) sufColor:[UIColor whiteColor] lineSpacing:0];
+    }
+    NSString * currencyUnit = [AssetCurrencyModel getCurrencyUnitWithAssetCurrency:[[[NSUserDefaults standardUserDefaults] objectForKey:Current_Currency] integerValue]];
+    self.totalAssets.text = [NSString stringWithFormat:@"%@（%@）", Localized(@"TotalAssets"), currencyUnit];
+    [self setNetworkEnvironment];
+    [self.tableView reloadData];
+}
 - (void)loadData
 {
     NSUserDefaults * defaults = [NSUserDefaults standardUserDefaults];
@@ -130,21 +160,10 @@
     [[HTTPManager shareManager] getAssetsDataWithAddress:[[AccountTool account] purseAccount] currencyType:currentCurrency tokenList:assetsArray success:^(id responseObject) {
         NSInteger code = [[responseObject objectForKey:@"errCode"] integerValue];
         if (code == Success_Code) {
-            [self.tableView addSubview:self.headerBg];
-            [self.tableView insertSubview:self.headerBg atIndex:0];
-            self.listArray = [AssetsListModel mj_objectArrayWithKeyValuesArray:responseObject[@"data"] [@"tokenList"]];
-            NSString * amountStr = responseObject[@"data"][@"totalAmount"];
-            if ([amountStr isEqualToString:@"~"]) {
-                self.amount.text = amountStr;
-            } else {
-                self.amount.text = [NSString stringWithFormat:@"≈%@", amountStr];
-//                NSString * currencyType = responseObject[@"data"][@"currencyType"];
-//                self.amount.attributedText = [Encapsulation attrWithString:amountString preFont:FONT_Bold(32) preColor:[UIColor whiteColor] index:amountString.length - currencyType.length sufFont:FONT(16) sufColor:[UIColor whiteColor] lineSpacing:0];
-            }
-            NSString * currencyUnit = [AssetCurrencyModel getCurrencyUnitWithAssetCurrency:[[[NSUserDefaults standardUserDefaults] objectForKey:Current_Currency] integerValue]];
-            self.totalAssets.text = [NSString stringWithFormat:@"%@（%@）", Localized(@"TotalAssets"), currencyUnit];
-            [self setNetworkEnvironment];
-            [self.tableView reloadData];
+            [self setDataWithResponseObject:responseObject];
+            NSUserDefaults * defaults = [NSUserDefaults standardUserDefaults];
+            [defaults setObject:responseObject forKey:self.assetsCacheDataKey];
+            [defaults synchronize];
         } else {
             [MBProgressHUD showTipMessageInWindow:[ErrorTypeTool getDescriptionWithErrorCode:code]];
         }
@@ -206,6 +225,8 @@
         
     }];
 }
+
+
 - (void)pushDistributionVC
 {
     DistributionOfAssetsViewController * VC = [[DistributionOfAssetsViewController alloc] init];
@@ -222,7 +243,6 @@
 //    [self.tableView mas_makeConstraints:^(MASConstraintMaker *make) {
 //        make.edges.mas_equalTo(0);
 //    }];
-    [self setupRefresh];
     self.noNetWork = [Encapsulation showNoNetWorkWithSuperView:self.view target:self action:@selector(reloadData)];
 }
 - (UITableView *)tableView
@@ -265,6 +285,15 @@
         [self.networkPrompt mas_makeConstraints:^(MASConstraintMaker *make) {
             make.top.equalTo(self.headerViewBg.mas_top).offset(StatusBarHeight);
             make.centerX.equalTo(self.headerViewBg.mas_centerX).offset(-Margin_10);
+        }];
+        
+        UIButton * scanBtn = [UIButton createButtonWithNormalImage:@"nav_scan" SelectedImage:@"nav_scan" Target:self Selector:@selector(scanAction)];
+        scanBtn.contentHorizontalAlignment = UIControlContentHorizontalAlignmentRight;
+        [_headerViewBg addSubview:scanBtn];
+        [scanBtn mas_makeConstraints:^(MASConstraintMaker *make) {
+            make.top.equalTo(self.headerViewBg.mas_top).offset(StatusBarHeight);
+            make.size.mas_equalTo(CGSizeMake(ScreenScale(44), Margin_30));
+            make.right.equalTo(self.headerViewBg.mas_right).offset(- Margin_20);
         }];
         
         UIImageView * userIcon = [[UIImageView alloc] initWithImage:[UIImage imageNamed:@"userIcon_placeholder"]];
@@ -360,8 +389,8 @@
         _headerBg.y = offsetY;
         _headerBg.height = - offsetY;
         _headerImageView.alpha = 1.0;
-        self.navTitleColor = self.navTintColor = [UIColor clearColor];
-        self.navAlpha = 0;
+//        self.navTitleColor = self.navTintColor = [UIColor clearColor];
+//        self.navAlpha = 0;
         self.scanButton.selected = NO;
     } else {
         CGFloat min = - _headerViewH;
@@ -371,8 +400,8 @@
         _headerImageView.alpha = progress;
         _statusBarStyle = (progress < 0.5) ? UIStatusBarStyleDefault : UIStatusBarStyleLightContent;
         [self.navigationController setNeedsStatusBarAppearanceUpdate];
-        self.navTitleColor = self.navTintColor = (progress < 0.5) ? TITLE_COLOR : [UIColor clearColor];
-        self.navAlpha = 1 - progress;
+//        self.navTitleColor = self.navTintColor = (progress < 0.5) ? TITLE_COLOR : [UIColor clearColor];
+//        self.navAlpha = 1 - progress;
         self.scanButton.selected = (progress < 0.5) ? YES : NO;
     }
     _headerImageView.frame = CGRectMake(0, 0, DEVICE_WIDTH, _headerBg.height);
@@ -390,7 +419,6 @@
     __weak typeof (self) weakself = self;
     HMScannerController *scanner = [HMScannerController scannerWithCardName:nil avatar:nil completion:^(NSString *stringValue) {
         [MBProgressHUD showInfoMessage:stringValue];
-        NSLog(@"%@", stringValue);
         NSOperationQueue * queue = [[NSOperationQueue alloc] init];
         [queue addOperationWithBlock:^{
             BOOL isCorrectAddress = [Keypair isAddressValid: stringValue];
@@ -398,7 +426,7 @@
                 if (isCorrectAddress) {
                     TransferAccountsViewController * VC = [[TransferAccountsViewController alloc] init];
                     for (AssetsListModel * listModel in self.listArray) {
-                        if ([listModel.assetCode isEqualToString:@"BU"]) {
+                        if (listModel.type == Token_Type_BU) {
                             VC.listModel = listModel;
                         }
                     }
@@ -494,7 +522,7 @@
 - (CGFloat)tableView:(UITableView *)tableView heightForFooterInSection:(NSInteger)section
 {
     if (section == self.listArray.count - 1) {
-        return TabBarH + Margin_10;
+        return TabBarH + SafeAreaBottomH + Margin_10;
     } else {
         return CGFLOAT_MIN;
     }

@@ -41,6 +41,7 @@ static NSString * const AddAssetsCellID = @"AddAssetsCellID";
         [self.contentView addSubview:self.detailTitle];
         [self.contentView addSubview:self.infoTitle];
         [self.contentView addSubview:self.addBtn];
+        [self.contentView addSubview:self.lineView];
     }
     return self;
 }
@@ -70,6 +71,11 @@ static NSString * const AddAssetsCellID = @"AddAssetsCellID";
     [self.infoTitle mas_makeConstraints:^(MASConstraintMaker *make) {
         make.top.equalTo(self.detailTitle.mas_bottom).offset(Margin_10);
         make.left.equalTo(self.title);
+    }];
+    [self.lineView mas_makeConstraints:^(MASConstraintMaker *make) {
+        make.left.equalTo(self.listImage);
+        make.bottom.equalTo(self.contentView);
+        make.size.mas_equalTo(CGSizeMake(DEVICE_WIDTH - Margin_40, LINE_WIDTH));
     }];
     CGSize size = CGSizeMake(ScreenScale(53), Margin_25);
     [self.addBtn setViewSize:size borderWidth:0 borderColor:nil borderRadius:ScreenScale(2)];
@@ -140,6 +146,14 @@ static NSString * const AddAssetsCellID = @"AddAssetsCellID";
         _infoTitle.numberOfLines = 0;
     }
     return _infoTitle;
+}
+- (UIView *)lineView
+{
+    if (!_lineView) {
+        _lineView = [[UIView alloc] init];
+        _lineView.backgroundColor = LINE_COLOR;
+    }
+    return _lineView;
 }
 - (UIButton *)addBtn
 {

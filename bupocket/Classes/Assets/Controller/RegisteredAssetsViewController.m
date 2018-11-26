@@ -173,7 +173,7 @@ static NSString * const Register_Leave = @"leaveRoomForApp";
 
 - (void)loadDataWithIsOvertime:(BOOL)overtime resultModel:(TransactionResultModel *)resultModel
 {
-    [[HTTPManager shareManager] getOrderDetailsDataWithHash:self.registeredModel.transactionHash success:^(id responseObject) {
+    [[HTTPManager shareManager] getTransactionDetailsDataWithHash:self.registeredModel.transactionHash success:^(id responseObject) {
         NSInteger code = [[responseObject objectForKey:@"errCode"] integerValue];
         if (code == Success_Code) {
             self.registeredModel.registeredFee = responseObject[@"data"][@"txDeatilRespBo"][@"fee"];

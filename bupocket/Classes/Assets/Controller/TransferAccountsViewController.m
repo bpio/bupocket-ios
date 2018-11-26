@@ -48,7 +48,7 @@
 - (void)viewWillAppear:(BOOL)animated
 {
     [super viewWillAppear:animated];
-    if ([self.listModel.assetCode isEqualToString:@"BU"]) {
+    if (self.listModel.type == Token_Type_BU) {
         __weak typeof(self) weakSelf = self;
         NSOperationQueue * queue = [[NSOperationQueue alloc] init];
         [queue addOperationWithBlock:^{
@@ -108,7 +108,7 @@
     __block NSString * amountOfTransfer = self.amountOfTransfer.text;
     __block double sendingQuantity = 0;
     __block double cost = [self.transactionCosts.text doubleValue];
-    if ([self.listModel.assetCode isEqualToString:@"BU"]) {
+    if (self.listModel.type == Token_Type_BU) {
         sendingQuantity = [self.mostOnce.text doubleValue];
     } else {
         if ([self.mostOnce.text doubleValue] > [self.listModel.amount floatValue]) {

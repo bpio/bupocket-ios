@@ -22,7 +22,8 @@
 
 #import "MyIdentityViewController.h"
 
-@interface BaseViewController ()<UIGestureRecognizerDelegate>
+@interface BaseViewController ()
+//UIGestureRecognizerDelegate
 
 @end
 
@@ -81,6 +82,7 @@
         [self.navigationController popViewControllerAnimated:YES];
     }
 }
+/*
 - (void)setupPopGestureRecognizer
 {
     id target = self.navigationController.interactivePopGestureRecognizer.delegate;
@@ -105,6 +107,7 @@
 {
     [self back];
 }
+ */
 - (BOOL)isRootViewController
 {
     if (self.navigationController.childViewControllers.count == 1) {

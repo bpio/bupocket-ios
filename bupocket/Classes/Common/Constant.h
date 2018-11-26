@@ -16,6 +16,7 @@
 #define If_Backup @"ifBackup"
 // skip the backup
 #define If_Skip @"ifSkip"
+#define If_Show_Switch_Network @"ifShowSwitchNetwork"
 #define If_Switch_TestNetwork @"ifSwitchTestNetwork"
 // Language key
 #define AppLanguage @"appLanguage"
@@ -24,6 +25,10 @@
 #define Current_Currency @"CurrentCurrency"
 // Network request timeout limit time
 #define Timeout_Interval 30.0
+#define Assets_HomePage_CacheData @"AssetsHomePageCacheData"
+#define Assets_HomePage_CacheData_Test @"AssetsHomePageCacheDataTest"
+#define Token_Type_BU 0
+#define Transaction_Type_TurnOut 0
 // Add assets
 #define Add_Assets @"AddAssets"
 #define Add_Assets_Test @"AddAssetsTest"

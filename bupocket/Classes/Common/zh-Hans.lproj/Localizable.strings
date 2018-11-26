@@ -110,7 +110,7 @@
 "AddAssets" = "添加资产";
 "Add" = "添加";
 "Delete" = "删除";
-"InputAssetName" = "请输入完整的Token代码";
+"InputAssetName" = "请输入完整的资产代码";
 "NoSearchResults" = "未找到搜索结果";
 // 资产详情
 "AssetsDetailScan" = "扫一扫";

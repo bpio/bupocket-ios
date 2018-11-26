@@ -172,6 +172,7 @@ static NSString * const ListCellID = @"ListCellID";
 }
 - (void)handleTaps:(UITapGestureRecognizer *)paramSender
 {
+    if ([[NSUserDefaults standardUserDefaults] boolForKey:If_Show_Switch_Network]) return;
     if (self.acceptEventInterval <= 0) {
         self.acceptEventInterval = 3;
     }
@@ -195,7 +196,7 @@ static NSString * const ListCellID = @"ListCellID";
         [alertController addAction:cancelAction];
         UIAlertAction * okAction = [UIAlertAction actionWithTitle:Localized(@"YES") style:UIAlertActionStyleDefault handler:^(UIAlertAction * _Nonnull action) {
             SettingViewController * VC = [[SettingViewController alloc] init];
-            VC.listArray = @[Localized(@"MultiLingual"), Localized(@"MonetaryUnit"), Localized(@"SwitchedNetwork")];;
+            [[HTTPManager shareManager] SwitchedNetworkWithIsTest:YES];
             [self.navigationController pushViewController:VC animated:YES];
         }];
         [alertController addAction:okAction];
@@ -208,7 +209,6 @@ static NSString * const ListCellID = @"ListCellID";
     [tableView deselectRowAtIndexPath:indexPath animated:YES];
     if (indexPath.row == 0) {
         SettingViewController * VC = [[SettingViewController alloc] init];
-        VC.listArray = self.settingListArray;
         [self.navigationController pushViewController:VC animated:YES];
     } else if (indexPath.row == 1) {
         ChangePasswordViewController * VC = [[ChangePasswordViewController alloc] init];

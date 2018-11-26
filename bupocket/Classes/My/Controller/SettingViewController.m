@@ -15,6 +15,7 @@
 
 @property (nonatomic, strong) UITableView * tableView;
 @property (nonatomic, strong) UISwitch * switchControl;
+@property (nonatomic, strong) NSArray * listArray;
 
 @end
 
@@ -25,7 +26,11 @@ static NSString * const SettingCellID = @"SettingCellID";
 - (void)viewDidLoad {
     [super viewDidLoad];
     self.navigationItem.title = Localized(@"Setting");
-    
+    if ([[NSUserDefaults standardUserDefaults] boolForKey:If_Show_Switch_Network]) {
+        self.listArray = @[Localized(@"MultiLingual"), Localized(@"MonetaryUnit"), Localized(@"SwitchedNetwork")];
+    } else {
+       self.listArray = @[Localized(@"MultiLingual"), Localized(@"MonetaryUnit")];
+    }
     [self setupView];
     
     // Do any additional setup after loading the view.
@@ -108,8 +113,7 @@ static NSString * const SettingCellID = @"SettingCellID";
     if (!_switchControl) {
         _switchControl = [[UISwitch alloc] init];
         [_switchControl addTarget:self action:@selector(switchChange:) forControlEvents:UIControlEventValueChanged];
-        [_switchControl setOn:YES animated:YES];
-        [[HTTPManager shareManager] SwitchedNetworkWithIsTest:YES];
+        [_switchControl setOn:[[NSUserDefaults standardUserDefaults] boolForKey:If_Switch_TestNetwork] animated:YES];
     }
     return _switchControl;
 }

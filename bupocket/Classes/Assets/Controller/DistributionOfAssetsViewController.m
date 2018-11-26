@@ -170,7 +170,7 @@ static NSString * const Issue_Leave = @"leaveRoomForApp";
 
 - (void)loadDataWithIsOvertime:(BOOL)overtime resultModel:(TransactionResultModel *)resultModel
 {
-    [[HTTPManager shareManager] getOrderDetailsDataWithHash:self.distributionModel.transactionHash success:^(id responseObject) {
+    [[HTTPManager shareManager] getTransactionDetailsDataWithHash:self.distributionModel.transactionHash success:^(id responseObject) {
         NSInteger code = [[responseObject objectForKey:@"errCode"] integerValue];
         if (code == Success_Code) {
             self.distributionModel.distributionFee = responseObject[@"data"][@"txDeatilRespBo"][@"fee"];

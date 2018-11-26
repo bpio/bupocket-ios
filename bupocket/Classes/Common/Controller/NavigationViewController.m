@@ -59,7 +59,7 @@
 {
     [viewController viewWillAppear:animated];
     BOOL isSetLargeTitles = (
-                             [viewController isKindOfClass:[AssetsViewController class]]  ||
+//                             [viewController isKindOfClass:[AssetsViewController class]]  ||
 //                             [viewController isKindOfClass:[AddAssetsViewController class]] ||
                              [viewController isKindOfClass:[AssetsDetailViewController class]] ||
                              [viewController isKindOfClass:[TransferResultsViewController class]] ||
@@ -70,7 +70,8 @@
     } else {
         // Fallback on earlier versions
     }
-    BOOL isHideNav = ([viewController isKindOfClass:[IdentityViewController class]] ||
+    BOOL isHideNav = ([viewController isKindOfClass:[AssetsViewController class]] ||
+                      [viewController isKindOfClass:[IdentityViewController class]] ||
                       [viewController isKindOfClass:[MyViewController class]]);
     [self setNavigationBarHidden:isHideNav animated:animated];
 }

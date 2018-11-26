@@ -19,7 +19,7 @@ NS_ASSUME_NONNULL_BEGIN
 @property (nonatomic, copy) NSString * icon;
 @property (nonatomic, copy) NSString * issuer;
 @property (nonatomic, copy) NSString * price;
-@property (nonatomic, copy) NSString * type;
+@property (nonatomic, assign) NSInteger type;
 
 @end
 
