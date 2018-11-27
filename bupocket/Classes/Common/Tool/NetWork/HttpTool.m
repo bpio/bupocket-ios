@@ -1,9 +1,9 @@
 //
 //  HttpTool.m
-//  TheImperialPalaceMuseum
+//  bupocket
 //
 //  Created by bupocket on 17/2/25.
-//  Copyright © 2017年 hss. All rights reserved.
+//  Copyright © 2017年 bupocket. All rights reserved.
 //
 
 #import "HttpTool.h"

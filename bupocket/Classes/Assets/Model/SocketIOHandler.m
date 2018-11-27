@@ -2,7 +2,7 @@
 //  SocketIOHandler.m
 //  bupocket
 //
-//  Created by huoss on 2018/11/22.
+//  Created by bupocket on 2018/11/22.
 //  Copyright © 2018年 bupocket. All rights reserved.
 //
 

@@ -23,11 +23,11 @@
     // Override point for customization after application launch.
     self.window = [[UIWindow alloc] initWithFrame:[UIScreen mainScreen].bounds];
     self.window.backgroundColor = [UIColor whiteColor];
-    [self setDefaultLocale];
+//    [self setDefaultLocale];
+    [[LanguageManager shareInstance] setDefaultLocale];
     [self.window makeKeyAndVisible];
     [self setRootVC];
     [self setVersionUpdate];
-    
     return YES;
 }
 
@@ -56,29 +56,7 @@
         self.window.rootViewController = [[NavigationViewController alloc] initWithRootViewController:[[IdentityViewController alloc] init]];
     }
 }
-- (void)setDefaultLocale
-{
-    // System language detection and assignment
-    NSUserDefaults * defaults = [NSUserDefaults standardUserDefaults];
-    NSString * language = CurrentAppLanguage;
-    if (language.length == 0) {
-        NSArray *languages = [NSLocale preferredLanguages];
-        language = [languages objectAtIndex:0];
-    }
-    if ([language hasPrefix:ZhHans]) {
-        // The App language is set to Chinese.
-        [defaults setObject:ZhHans forKey:AppLanguage];
-        [defaults synchronize];
-        [kLanguageManager setUserlanguage:ZhHans];
-    } else if ([language hasPrefix:EN]) {
-        // The App language is set in English.
-        [defaults setObject:EN forKey:AppLanguage];
-        [defaults synchronize];
-        [kLanguageManager setUserlanguage:EN];
-    } else {
-        // Other languages
-    }
-}
+
 - (void)setVersionUpdate
 {
     [self getVersionData];

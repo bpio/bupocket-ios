@@ -27,6 +27,8 @@ NS_ASSUME_NONNULL_BEGIN
 
 + (instancetype)shareInstance;
 
+- (void)setDefaultLocale;
+
 #define kLanguageManager [LanguageManager shareInstance]
 
 @end

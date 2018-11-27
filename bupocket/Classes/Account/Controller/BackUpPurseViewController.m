@@ -103,6 +103,9 @@
 }
 - (void)temporaryBackupAction
 {
+    NSUserDefaults * defaults = [NSUserDefaults standardUserDefaults];
+    [defaults setBool:YES forKey:If_Skip];
+    [defaults synchronize];
     [UIApplication sharedApplication].keyWindow.rootViewController = [[TabBarViewController alloc] init];
 }
 /*

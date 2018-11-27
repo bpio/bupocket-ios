@@ -51,6 +51,30 @@ static LanguageManager * _manager = nil;
     return _manager;
 }
 
+- (void)setDefaultLocale
+{
+    // System language detection and assignment
+    NSUserDefaults * defaults = [NSUserDefaults standardUserDefaults];
+    NSString * language = CurrentAppLanguage;
+    if (language.length == 0) {
+        NSArray *languages = [NSLocale preferredLanguages];
+        language = [languages objectAtIndex:0];
+    }
+    if ([language hasPrefix:ZhHans]) {
+        // The App language is set to Chinese.
+        [defaults setObject:ZhHans forKey:AppLanguage];
+        [defaults synchronize];
+        [kLanguageManager setUserlanguage:ZhHans];
+    } else if ([language hasPrefix:EN]) {
+        // The App language is set in English.
+        [defaults setObject:EN forKey:AppLanguage];
+        [defaults synchronize];
+        [kLanguageManager setUserlanguage:EN];
+    } else {
+        // Other languages
+    }
+}
+
 // 初始化语言
 - (void)initUserLanguage {
     NSString * currentLanguage = [self currentLanguage];
