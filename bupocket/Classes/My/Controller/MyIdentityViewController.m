@@ -118,7 +118,7 @@
         PurseCipherAlertView * alertView = [[PurseCipherAlertView alloc] initWithPrompt:Localized(@"IdentityCipherWarning") confrimBolck:^(NSString * _Nonnull password, NSArray * _Nonnull words) {
             NSString * privateKey = [NSString decipherKeyStoreWithPW:password keyStoreValueStr:[AccountTool account].purseKey];
             if ([Tools isEmpty:privateKey]) {
-                [MBProgressHUD showWarnMessage:Localized(@"PasswordIsIncorrect")];
+                [MBProgressHUD showTipMessageInWindow:Localized(@"PasswordIsIncorrect")];
                 return;
             }
            [ClearCacheTool cleanCache:^{
@@ -136,7 +136,7 @@
 - (void)identityIDInfo:(UIButton *)button
 {
     NSString * title = Localized(@"IdentityIDInfo");
-    CGFloat titleHeight = [Encapsulation rectWithText:title fontSize:14 textWidth:DEVICE_WIDTH - ScreenScale(120)].size.height;
+    CGFloat titleHeight = [Encapsulation rectWithText:title font:TITLE_FONT textWidth:DEVICE_WIDTH - ScreenScale(120)].size.height;
     _popupMenu = [YBPopupMenu showRelyOnView:button.imageView titles:@[title] icons:nil menuWidth:DEVICE_WIDTH - ScreenScale(90) otherSettings:^(YBPopupMenu * popupMenu) {
         popupMenu.priorityDirection = YBPopupMenuPriorityDirectionTop;
         popupMenu.itemHeight = titleHeight + Margin_30;

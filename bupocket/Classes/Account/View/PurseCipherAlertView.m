@@ -32,7 +32,7 @@
         } else {
             _promptLabel.textColor = COLOR_6;
         }
-        self.bgHeight = [Encapsulation rectWithText:self.promptLabel.text fontSize:15 textWidth:DEVICE_WIDTH - ScreenScale(80)].size.height  + ScreenScale(255);
+        self.bgHeight = [Encapsulation rectWithText:self.promptLabel.text font:_promptLabel.font textWidth:DEVICE_WIDTH - ScreenScale(80)].size.height  + ScreenScale(255);
         self.bounds = CGRectMake(0, 0, DEVICE_WIDTH - Margin_40, self.bgHeight);
     }
     return self;

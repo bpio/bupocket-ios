@@ -88,7 +88,7 @@ static NSString * const AddAssetsCellID = @"AddAssetsCellID";
 - (void)setSearchAssetsModel:(SearchAssetsModel *)searchAssetsModel
 {
     _searchAssetsModel = searchAssetsModel;
-    [_listImage sd_setImageWithURL:[NSURL URLWithString:searchAssetsModel.icon] placeholderImage:[UIImage imageNamed:@"placeholder"]];
+    [_listImage sd_setImageWithURL:[NSURL URLWithString:searchAssetsModel.icon] placeholderImage:[UIImage imageNamed:@"placeholder_list"]];
     _title.text = searchAssetsModel.assetCode;
     _detailTitle.text = searchAssetsModel.assetName;
     _infoTitle.text = searchAssetsModel.issuer;
@@ -111,7 +111,7 @@ static NSString * const AddAssetsCellID = @"AddAssetsCellID";
 {
     if (!_listImage) {
         _listImage = [[UIImageView alloc] init];
-        _listImage.image = [UIImage imageNamed:@"placeholder"];
+//        _listImage.image = [UIImage imageNamed:@"placeholder_list"];
         [_listImage setViewSize:CGSizeMake(Margin_40, Margin_40) borderWidth:LINE_WIDTH borderColor:LINE_COLOR borderRadius:Margin_20];
     }
     return _listImage;

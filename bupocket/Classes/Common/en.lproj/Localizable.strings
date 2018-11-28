@@ -103,7 +103,11 @@
 // Tokens
 "TotalAssets" = "Total tokens";
 "MyAssets" = "My tokens";
-"PleaseBackup" = "Please back up";
+//"PleaseBackup" = "Please back up";
+"PaymentCode" = "收款码";
+"SafetyTipsTitle" = "安全提示";
+"SafetyTips" = "您的钱包助记词尚未备份，为防止忘记密码、删除App或丢失手机等情况导致资产损失，请务必备份助记词";
+"ImmediateBackup" = "立即备份";
 // Wallet address
 "PurseAddressTitle" = "Wallet address";
 "DuplicateWalletAddress" = "Copy the wallet address";
@@ -136,6 +140,7 @@
 "estimatedMaximum" = "Maximum transaction fee";
 "TransactionCostPlaceholder" = "Please enter the transaction fee";
 "Next" = "Next";
+"CannotTransferToOneself" = "You can\'t transfer BU to yourself";
 "TransactionIdentityCipherPrompt" = "Please fill in the identity password to confirm the transfer";
 "ConfirmationOfTransfer" = "Confirm";
 "TransferPrompt" = "Please confirm whether the transfer information is correct.";
@@ -252,3 +257,4 @@
 // Errors
 "LoadFailure" = "Failed to load";
 "SYSTEM_ERROR" = "System error";
+"INVALID_ADDRESS_ERROR" = "Invalid address";

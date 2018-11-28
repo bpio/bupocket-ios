@@ -101,7 +101,11 @@
 // 资产
 "TotalAssets" = "总资产";
 "MyAssets" = "我的资产";
-"PleaseBackup" = "请备份";
+//"PleaseBackup" = "请备份";
+"PaymentCode" = "收款码";
+"SafetyTipsTitle" = "安全提示";
+"SafetyTips" = "您的钱包助记词尚未备份，为防止忘记密码、删除App或丢失手机等情况导致资产损失，请务必备份助记词";
+"ImmediateBackup" = "立即备份";
 // 钱包地址
 "PurseAddressTitle" = "钱包地址";
 "DuplicateWalletAddress" = "复制钱包地址";
@@ -133,6 +137,7 @@
 "estimatedMaximum" = "最多支付交易费用";
 "TransactionCostPlaceholder" = "请输交易费用";
 "Next" = "下一步";
+"CannotTransferToOneself" = "不能给自己转账";
 "TransactionIdentityCipherPrompt" = "请填写身份密码以确认转出";
 "ConfirmationOfTransfer" = "确认转账";
 "TransferPrompt" = "请确认转账信息是否有误";
@@ -249,6 +254,7 @@
 // 错误信息
 "LoadFailure" = "加载失败";
 "SYSTEM_ERROR" = "系统错误";
+"INVALID_ADDRESS_ERROR" = "无效地址";
 
 
 

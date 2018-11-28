@@ -35,33 +35,35 @@ static NSString * const AssetsCellID = @"AssetsCellID";
 {
     [super layoutSubviews];
     [self.listImage mas_makeConstraints:^(MASConstraintMaker *make) {
-        make.left.equalTo(self.contentView.mas_left).offset(Margin_10);
+        make.left.equalTo(self.contentView.mas_left).offset(Margin_5);
         make.centerY.equalTo(self.contentView);
-        make.width.height.mas_equalTo(Margin_40);
+        make.width.height.mas_equalTo(ScreenScale(68));
     }];
+//    [self.title setContentHuggingPriority:UILayoutPriorityRequired forAxis:UILayoutConstraintAxisHorizontal];
+    [self.title setContentCompressionResistancePriority:UILayoutPriorityRequired forAxis:UILayoutConstraintAxisHorizontal];
     [self.title mas_makeConstraints:^(MASConstraintMaker *make) {
-        make.left.equalTo(self.listImage.mas_right).offset(Margin_10);
+        make.left.equalTo(self.listImage.mas_right).offset(Margin_5);
         make.centerY.equalTo(self.contentView);
+        make.right.mas_lessThanOrEqualTo(self.detailTitle.mas_left).offset(-Margin_10);
     }];
     [self.detailTitle mas_makeConstraints:^(MASConstraintMaker *make) {
         make.right.equalTo(self.contentView.mas_right).offset(-Margin_10);
-        make.top.equalTo(self.listImage);
+        make.top.equalTo(self.contentView.mas_top).offset(Margin_20);
+        make.left.mas_greaterThanOrEqualTo(self.title.mas_right).offset(Margin_10);
     }];
     [self.infoTitle mas_makeConstraints:^(MASConstraintMaker *make) {
         make.right.equalTo(self.detailTitle);
-        make.bottom.equalTo(self.listImage);
+        make.bottom.equalTo(self.contentView.mas_bottom).offset(-Margin_20);
+        make.left.mas_greaterThanOrEqualTo(self.title.mas_right).offset(Margin_10);
     }];
-    [self setViewSize:CGSizeMake(DEVICE_WIDTH - Margin_20, ScreenScale(75)) borderWidth:0 borderColor:nil borderRadius:BG_CORNER];
+    [self setViewSize:CGSizeMake(DEVICE_WIDTH - Margin_20, ScreenScale(80)) borderWidth:0 borderColor:nil borderRadius:BG_CORNER];
 }
 - (void)setListModel:(AssetsListModel *)listModel
 {
     _listModel = listModel;
-    [self.listImage sd_setImageWithURL:[NSURL URLWithString:listModel.icon] placeholderImage:[UIImage imageNamed:@"placeholder"]];
+    [self.listImage sd_setImageWithURL:[NSURL URLWithString:listModel.icon] placeholderImage:[UIImage imageNamed:@"placeholder_list"]];
     self.title.text = listModel.assetCode;
-    //    cell.listImage.image = [UIImage imageNamed:self.listArray[indexPath.section]];
-    //    cell.title.text = self.listArray[indexPath.section];
     self.detailTitle.text = listModel.amount;
-    
     NSString * currencyUnit = [AssetCurrencyModel getCurrencyUnitWithAssetCurrency:[[[NSUserDefaults standardUserDefaults] objectForKey:Current_Currency] integerValue]];
     self.infoTitle.text = [listModel.assetAmount isEqualToString:@"~"] ? listModel.assetAmount : [NSString stringWithFormat:@"≈%@%@", currencyUnit, listModel.assetAmount];
 }
@@ -69,7 +71,7 @@ static NSString * const AssetsCellID = @"AssetsCellID";
 {
     if (!_listImage) {
         _listImage = [[UIImageView alloc] init];
-        [_listImage setViewSize:CGSizeMake(Margin_40, Margin_40) borderWidth:LINE_WIDTH borderColor:LINE_COLOR borderRadius:Margin_20];
+        [_listImage setViewSize:CGSizeMake(ScreenScale(68), ScreenScale(68)) borderWidth:0 borderColor:nil borderRadius:ScreenScale(34)];
     }
     return _listImage;
 }
@@ -86,7 +88,7 @@ static NSString * const AssetsCellID = @"AssetsCellID";
 {
     if (!_detailTitle) {
         _detailTitle = [[UILabel alloc] init];
-        _detailTitle.font = FONT(16);
+        _detailTitle.font = FONT_Bold(18);
         _detailTitle.textColor = TITLE_COLOR;
     }
     return _detailTitle;

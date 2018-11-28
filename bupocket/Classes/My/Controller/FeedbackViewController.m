@@ -105,7 +105,7 @@
     [[HTTPManager shareManager] getFeedbackDataWithContent:self.feedbackText.text contact:self.contactField.text success:^(id responseObject) {
         NSInteger code = [[responseObject objectForKey:@"errCode"] integerValue];
         if (code == Success_Code) {
-            [MBProgressHUD showSuccessMessage:Localized(@"SubmissionOfSuccess")];
+            [MBProgressHUD showTipMessageInWindow:Localized(@"SubmissionOfSuccess")];
         } else {
             [MBProgressHUD showTipMessageInWindow:[ErrorTypeTool getDescriptionWithErrorCode:code]];
         }

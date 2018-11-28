@@ -348,6 +348,7 @@ static int64_t const gasPrice = 1000;
             if (ifShowLoading == YES) {
                 dispatch_async(dispatch_get_main_queue(), ^{
                     [MBProgressHUD hideHUD];
+                    [MBProgressHUD showTipMessageInWindow:[ErrorTypeTool getDescription:response.errorCode]];
                 });
             }
 //            [MBProgressHUD showErrorMessage:feesResponse.errorDesc];
@@ -356,14 +357,15 @@ static int64_t const gasPrice = 1000;
         if (ifShowLoading == YES) {
             dispatch_async(dispatch_get_main_queue(), ^{
                 [MBProgressHUD hideHUD];
+                [MBProgressHUD showTipMessageInWindow:[ErrorTypeTool getDescription:response.errorCode]];
             });
         }
 //        [MBProgressHUD showErrorMessage:response.errorDesc];
     }
     int64_t amount = balance - baseReserve - [Tools BU2MO:cost];
-    if (amount < 0) {
-        amount = 0;
-    }
+//    if (amount < 0) {
+//        amount = 0;
+//    }
     return amount;
 }
 // MBalance of assets
@@ -377,10 +379,9 @@ static int64_t const gasPrice = 1000;
     AssetGetInfoResponse *response = [assetService getInfo : request];
     if (response.errorCode == 0) {
         AssetInfo *assetInfo = response.result.assets[0];
-        NSLog(@"%@", [response.result yy_modelToJSONString]);
         return assetInfo.amount;
     } else {
-        [MBProgressHUD showErrorMessage:[ErrorTypeTool getDescription:response.errorCode]];
+        [MBProgressHUD showTipMessageInWindow:[ErrorTypeTool getDescription:response.errorCode]];
         return 0;
     }
 }
@@ -425,7 +426,8 @@ static int64_t const gasPrice = 1000;
     }
 }
 // Transfer accounts
-- (void)setTransferDataWithPassword:(NSString *)password
+- (void)setTransferDataWithTokenType:(NSInteger)tokenType
+                            password:(NSString *)password
                         destAddress:(NSString *)destAddress
                            BUAmount:(NSString *)BUAmount
                            feeLimit:(NSString *)feeLimit
@@ -440,14 +442,14 @@ static int64_t const gasPrice = 1000;
     int64_t amount = [Tools BU2MO: [BUAmount doubleValue]];
     NSString * privateKey = [NSString decipherKeyStoreWithPW:password keyStoreValueStr:[AccountTool account].purseKey];
     if ([Tools isEmpty:privateKey]) {
-        [MBProgressHUD showWarnMessage:Localized(@"PasswordIsIncorrect")];
+        [MBProgressHUD showTipMessageInWindow:Localized(@"PasswordIsIncorrect")];
         return;
     }
     int64_t fee = [Tools BU2MO: [feeLimit doubleValue]];
     int64_t nonce = [[HTTPManager shareManager] getAccountNonce: sourceAddress] + 1;
     if (nonce == 0) return;
     NSString * hash;
-    if ([code isEqualToString:@"BU"]) {
+    if (tokenType == Token_Type_BU) {
         // BU
         BUSendOperation *operation = [BUSendOperation new];
         [operation setSourceAddress: sourceAddress];
@@ -497,7 +499,7 @@ static int64_t const gasPrice = 1000;
     [operation setValue : value];
     NSString * privateKey = [NSString decipherKeyStoreWithPW:password keyStoreValueStr:[AccountTool account].purseKey];
     if ([Tools isEmpty:privateKey]) {
-        [MBProgressHUD showWarnMessage:Localized(@"PasswordIsIncorrect")];
+        [MBProgressHUD showTipMessageInWindow:Localized(@"PasswordIsIncorrect")];
         return;
     }
     int64_t feeLimit = [Tools BU2MO: Registered_Cost];
@@ -520,7 +522,7 @@ static int64_t const gasPrice = 1000;
     // Asset amount
     int64_t amount = [assetAmount longLongValue] * powl(10, decimals);
     if (amount < 1) {
-        [MBProgressHUD showWarnMessage:Localized(@"IssueNumberIsIncorrect")];
+        [MBProgressHUD showTipMessageInWindow:Localized(@"IssueNumberIsIncorrect")];
         return;
     }
     AssetIssueOperation *operation = [AssetIssueOperation new];
@@ -529,7 +531,7 @@ static int64_t const gasPrice = 1000;
     [operation setAmount: amount];
     NSString * privateKey = [NSString decipherKeyStoreWithPW:password keyStoreValueStr:[AccountTool account].purseKey];
     if ([Tools isEmpty:privateKey]) {
-        [MBProgressHUD showWarnMessage:Localized(@"PasswordIsIncorrect")];
+        [MBProgressHUD showTipMessageInWindow:Localized(@"PasswordIsIncorrect")];
         return;
     }
     int64_t feeLimit = [Tools BU2MO: Distribution_Cost];

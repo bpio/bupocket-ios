@@ -144,7 +144,7 @@ static NSString * const DistributionDetailCellID = @"DistributionDetailCellID";
 - (CGFloat)tableView:(UITableView *)tableView heightForRowAtIndexPath:(NSIndexPath *)indexPath
 {
     if ((self.distributionModel.tokenDescription && indexPath.section == 0 && indexPath.row == [self.listArray[0] count] - 1) || (indexPath.section == 1 && indexPath.row > 0)) {
-        CGFloat rowHeight = [Encapsulation rectWithText:[[self.listArray[indexPath.section][indexPath.row] allValues] firstObject] fontSize:15 textWidth: DEVICE_WIDTH - Margin_40].size.height + ScreenScale(55);
+        CGFloat rowHeight = [Encapsulation rectWithText:[[self.listArray[indexPath.section][indexPath.row] allValues] firstObject] font:FONT(15) textWidth: DEVICE_WIDTH - Margin_40].size.height + ScreenScale(55);
         return rowHeight;
     } else {
         return MAIN_HEIGHT;

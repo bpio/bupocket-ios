@@ -14,8 +14,11 @@
 {
     NSString *errorDesc;
     switch(errorCode) {
-//        case SYSTEM_ERROR: errorDesc = Localized(@"SYSTEM_ERROR"); break;
-        default: errorDesc = Localized(@"SYSTEM_ERROR"); break;
+            // getBalance
+//        case INVALID_ADDRESS_ERROR: errorDesc = Localized(@"INVALID_ADDRESS_ERROR");
+//            break;
+        default: errorDesc = Localized(@"SYSTEM_ERROR");
+            break;
     }
     return errorDesc;
 }

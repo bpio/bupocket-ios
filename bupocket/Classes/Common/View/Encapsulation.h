@@ -11,9 +11,9 @@
 @interface Encapsulation : UIView
 
 // 设置label的自适应宽度
-+ (CGRect)rectWithText:(NSString *)text fontSize:(CGFloat)fontSize textWidth:(CGFloat)textWidth;
++ (CGRect)rectWithText:(NSString *)text font:(UIFont *)font textWidth:(CGFloat)textWidth;
 // 设置label的自适应高度
-+ (CGRect)rectWithText:(NSString *)text fontSize:(CGFloat)fontSize textHeight:(CGFloat)textHeight;
++ (CGRect)rectWithText:(NSString *)text font:(UIFont *)font textHeight:(CGFloat)textHeight;
 // 设置行间距和字间距
 + (NSMutableAttributedString *)attrWithString:(NSString *)str preFont:(UIFont *)preFont preColor:(UIColor *)preColor index:(NSInteger)index sufFont:(UIFont *)sufFont sufColor:(UIColor *)sufColor lineSpacing:(CGFloat)lineSpacing;
 // 设置标题属性文字

@@ -11,11 +11,8 @@
 #import "SearchAssetsModel.h"
 
 @interface AddAssetsViewController ()<UITableViewDelegate, UITableViewDataSource, UITextFieldDelegate>
-// UISearchControllerDelegate, UISearchResultsUpdating, UISearchBarDelegate,
 
 @property (nonatomic, strong) UITableView * tableView;
-//@property (nonatomic, strong) UISearchController * searchController;
-//@property (nonatomic, strong) NSMutableArray *results;
 @property (nonatomic, strong) UITextField * searchTextField;
 @property (nonatomic, strong) NSMutableArray * listArray;
 @property (nonatomic, strong) UIView * noData;
@@ -45,17 +42,8 @@ static NSString * const SearchID = @"SearchID";
 - (void)viewDidLoad {
     [super viewDidLoad];
     self.navigationItem.title = Localized(@"AddAssets");
-//    if (@available(iOS 11.0, *)) {
-//        self.navigationItem.hidesSearchBarWhenScrolling = YES;
-//    } else {
-//        // Fallback on earlier versions
-//    }
     [self setupView];
     self.noNetWork = [Encapsulation showNoNetWorkWithSuperView:self.view target:self action:@selector(reloadData)];
-//    UIButton * backButton = [UIButton createButtonWithNormalImage:@"nav_goback_n" SelectedImage:@"nav_goback_n" Target:self Selector:@selector(cancelAction)];
-//    backButton.frame = CGRectMake(0, 0, ScreenScale(44), Margin_30);
-//    backButton.contentHorizontalAlignment = UIControlContentHorizontalAlignmentLeft;
-//    self.navigationItem.leftBarButtonItem = [[UIBarButtonItem alloc]initWithCustomView:backButton];
     // Do any additional setup after loading the view.
 }
 - (void)reloadData
@@ -63,11 +51,6 @@ static NSString * const SearchID = @"SearchID";
     self.noNetWork.hidden = YES;
     [self.tableView.mj_header beginRefreshing];
 }
-//- (void)cancelAction
-//{
-//    self.searchController.active = NO;
-//    [self.navigationController popViewControllerAnimated:YES];
-//}
 - (void)setupRefresh
 {
     self.tableView.mj_header = [CustomRefreshHeader headerWithRefreshingTarget:self refreshingAction:@selector(loadNewData)];
@@ -123,29 +106,6 @@ static NSString * const SearchID = @"SearchID";
         self.noNetWork.hidden = NO;
     }];
 }
-/*
-- (UISearchController *)searchController
-{
-    if (!_searchController) {
-        _searchController = [[UISearchController alloc] initWithSearchResultsController:nil];
-        _searchController.searchResultsUpdater = self;
-        _searchController.delegate = self;
-        _searchController.searchBar.delegate = self;
-        _searchController.dimsBackgroundDuringPresentation = NO;
-        _searchController.hidesNavigationBarDuringPresentation = NO;
-        _searchController.searchBar.placeholder = Localized(@"InputAssetName");
-        _searchController.searchBar.tintColor = MAIN_COLOR;
-        _searchController.searchBar.barTintColor = [UIColor whiteColor];
-        UIImageView *barImageView = [[[_searchController.searchBar.subviews firstObject] subviews] firstObject];
-        barImageView.layer.borderColor = LINE_COLOR.CGColor;
-        barImageView.layer.borderWidth = LINE_WIDTH;
-        UITextField * textField = [_searchController.searchBar valueForKey:@"_searchField"];
-        textField.textColor = TITLE_COLOR;
-        textField.font = FONT(16);
-    }
-    return _searchController;
-}
-*/
 - (void)viewDidAppear:(BOOL)animated
 {
     [super viewDidAppear:animated];
@@ -158,15 +118,11 @@ static NSString * const SearchID = @"SearchID";
 }
 - (void)setupView
 {
-//    self.definesPresentationContext = NO;
-//    [self setExtendedLayoutIncludesOpaqueBars:YES];
-//    CGFloat searchBarH = self.searchController.searchBar.height;
     self.tableView = [[UITableView alloc] initWithFrame:self.view.frame style:UITableViewStyleGrouped];
     self.tableView.delegate = self;
     self.tableView.dataSource = self;
     self.tableView.backgroundColor = [UIColor whiteColor];
     self.tableView.separatorStyle = UITableViewCellSeparatorStyleNone;
-//    [self.view addSubview:self.searchController.searchBar];
     [self.view addSubview:self.tableView];
     [self setupHeaderView];
 }
@@ -183,11 +139,8 @@ static NSString * const SearchID = @"SearchID";
     _searchTextField.delegate = self;
     _searchTextField.tintColor = MAIN_COLOR;
     _searchTextField.clearButtonMode = UITextFieldViewModeWhileEditing;
-    //    _searchTextField.layer.cornerRadius = 6;
-    //    _searchTextField.layer.masksToBounds = YES;
     _searchTextField.returnKeyType = UIReturnKeySearch;
     [_searchTextField addTarget:self action:@selector(textChange:) forControlEvents:UIControlEventEditingChanged];
-    //        [_searchTextField becomeFirstResponder];
     [headerView addSubview:_searchTextField];
     
     UIButton * searchBtn = [UIButton createButtonWithNormalImage:@"search" SelectedImage:@"search" Target:self Selector:@selector(searchAction)];
@@ -255,8 +208,6 @@ static NSString * const SearchID = @"SearchID";
 }
 - (BOOL)textFieldShouldReturn:(UITextField *)textField
 {
-//    [self.listArray removeAllObjects];
-//    [self.tableView reloadData];
     [self searchAction];
     return YES;
 }
@@ -278,46 +229,6 @@ static NSString * const SearchID = @"SearchID";
 - (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath {
     [tableView deselectRowAtIndexPath:indexPath animated:YES];
 }
-
-//- (void)viewDidAppear:(BOOL)animated {
-//    [super viewDidAppear:animated];
-//    self.searchController.active = true;
-//}
-//- (void)didPresentSearchController:(UISearchController *)searchController {
-//    [UIView animateWithDuration:0.1 animations:^{} completion:^(BOOL finished) {
-//        [self.searchController.searchBar becomeFirstResponder];
-//    }];
-//}
-/*
-#pragma mark - UISearchResultsUpdating
-- (void)updateSearchResultsForSearchController:(UISearchController *)searchController {
-    // Prevent UISearchBar from moving up after returning.
-    self.edgesForExtendedLayout = UIRectEdgeNone;
-    searchController.searchBar.showsCancelButton = YES;
-    UIButton * cancelButton = [self.searchController.searchBar valueForKey:@"cancelButton"];
-    if (cancelButton) {
-        [cancelButton setTitle:Localized(@"Cancel") forState:UIControlStateNormal];
-        [cancelButton setTitleColor:MAIN_COLOR forState:UIControlStateNormal];
-    }
-}
-#pragma mark - UISearchBarDelegate
-- (void)searchBarTextDidBeginEditing:(UISearchBar *)searchBar {
-    
-}
-- (void)searchBarTextDidEndEditing:(UISearchBar *)searchBar {
-    
-}
-- (void)searchBarSearchButtonClicked:(UISearchBar *)searchBar
-{
-    [searchBar resignFirstResponder];
-    [self loadNewData];
-}
-- (void)searchBarCancelButtonClicked:(UISearchBar *)searchBar
-{
-    [self.results removeAllObjects];
-    [self.tableView reloadData];
-}
- */
 /*
  #pragma mark - Navigation
  

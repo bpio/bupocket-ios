@@ -25,9 +25,9 @@
 
 + (void)initialize
 {
-//    UINavigationBar * bar = [UINavigationBar appearance];
-//    bar.shadowImage = [[UIImage alloc] init];
-//    bar.barTintColor = [UIColor whiteColor];
+    UINavigationBar * bar = [UINavigationBar appearance];
+    bar.shadowImage = [[UIImage alloc] init];
+    bar.barTintColor = [UIColor whiteColor];
     
 //    NSMutableDictionary * attr = [NSMutableDictionary dictionary];
 //    attr[NSFontAttributeName] = FONT(18);

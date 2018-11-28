@@ -53,6 +53,9 @@
         NSOperationQueue * queue = [[NSOperationQueue alloc] init];
         [queue addOperationWithBlock:^{
             double amount = [Tools MO2BU:[[HTTPManager shareManager] getDataWithBalanceJudgmentWithCost:0 ifShowLoading:NO]];
+            if (amount < 0) {
+                amount = 0;
+            }
             NSNumber * nsAmount = @(amount);
             [[NSOperationQueue mainQueue] addOperationWithBlock:^{
                 weakSelf.availableBalance.attributedText = [Encapsulation attrWithString:[NSString stringWithFormat:@"%@\n%@ BU", Localized(@"AvailableBalance"), nsAmount] preFont:FONT(12) preColor:COLOR_6 index:[Localized(@"AvailableBalance") length] sufFont:FONT(12) sufColor:MAIN_COLOR lineSpacing:Margin_5];
@@ -126,6 +129,11 @@
             [MBProgressHUD showTipMessageInWindow:Localized(@"BUAddressIsIncorrect")];
             return;
         }
+        if ([amountOfTransfer isEqualToString:[[AccountTool account] purseAccount]]) {
+            [MBProgressHUD hideHUD];
+            [MBProgressHUD showTipMessageInWindow:Localized(@"CannotTransferToOneself")];
+            return;
+        }
         RegexPatternTool * regex = [[RegexPatternTool alloc] init];
         if ([regex validateIsPositiveFloatingPoint:weakSelf.mostOnce.text] == NO) {
             [MBProgressHUD hideHUD];
@@ -196,7 +204,7 @@
 
 - (void)getDataWithPassword:(NSString *)password
 {
-    [[HTTPManager shareManager] setTransferDataWithPassword:password destAddress:_amountOfTransfer.text BUAmount:_mostOnce.text feeLimit:_transactionCosts.text notes:_remarks.text code:self.listModel.assetCode issuer:self.listModel.issuer success:^(TransactionResultModel *resultModel) {
+    [[HTTPManager shareManager] setTransferDataWithTokenType:self.listModel.type password:password destAddress:_amountOfTransfer.text BUAmount:_mostOnce.text feeLimit:_transactionCosts.text notes:_remarks.text code:self.listModel.assetCode issuer:self.listModel.issuer success:^(TransactionResultModel *resultModel) {
         [self.transferInfoArray addObject:[DateTool getDateStringWithTimeStr:[NSString stringWithFormat:@"%lld", resultModel.transactionTime]]];
         TransferResultsViewController * VC = [[TransferResultsViewController alloc] init];
         if (resultModel.errorCode == Success_Code) {
@@ -247,8 +255,8 @@
     if (index == 0) {
         self.amountOfTransfer = textField;
         if (self.address.length > 0) {
-            self.amountOfTransfer.text = @"";
-            [self.amountOfTransfer insertText:self.address];
+            self.amountOfTransfer.text = self.address;
+            [self.amountOfTransfer sendActionsForControlEvents:UIControlEventEditingChanged];
         }
         UIButton * scan = [UIButton createButtonWithNormalImage:@"transferAccounts_scan" SelectedImage:@"transferAccounts_scan" Target:self Selector:@selector(scanAction)];
         scan.contentHorizontalAlignment = UIControlContentHorizontalAlignmentRight;
@@ -305,8 +313,8 @@
 - (void)scanAction
 {
     HMScannerController *scanner = [HMScannerController scannerWithCardName:nil avatar:nil completion:^(NSString *stringValue) {
-        self.amountOfTransfer.text = @"";
-        [self.amountOfTransfer insertText:stringValue];
+        self.amountOfTransfer.text = stringValue;
+        [self.amountOfTransfer sendActionsForControlEvents:UIControlEventEditingChanged];
     }];
     [scanner setTitleColor:[UIColor whiteColor] tintColor:MAIN_COLOR];
     [self showDetailViewController:scanner sender:nil];

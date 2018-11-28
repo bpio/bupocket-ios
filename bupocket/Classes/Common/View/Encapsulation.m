@@ -11,17 +11,17 @@
 @implementation Encapsulation
 
 // 设置label的自适应宽度
-+ (CGRect)rectWithText:(NSString *)text fontSize:(CGFloat)fontSize textWidth:(CGFloat)textWidth
++ (CGRect)rectWithText:(NSString *)text font:(UIFont *)font textWidth:(CGFloat)textWidth
 {
-    NSDictionary *dic = @{NSFontAttributeName:[UIFont systemFontOfSize:fontSize]};
-    CGSize size = CGSizeMake(textWidth, 3000);
+    NSDictionary *dic = @{NSFontAttributeName:font};
+    CGSize size = CGSizeMake(textWidth, CGFLOAT_MAX);
     CGRect rect = [text boundingRectWithSize:size options:NSStringDrawingUsesLineFragmentOrigin attributes:dic context:nil];
     return rect;
 }
 // 设置label的自适应高度
-+ (CGRect)rectWithText:(NSString *)text fontSize:(CGFloat)fontSize textHeight:(CGFloat)textHeight
++ (CGRect)rectWithText:(NSString *)text font:(UIFont *)font textHeight:(CGFloat)textHeight
 {
-    NSDictionary *dic = @{NSFontAttributeName:[UIFont systemFontOfSize:fontSize]};
+    NSDictionary *dic = @{NSFontAttributeName:font};
     CGSize size = CGSizeMake(CGFLOAT_MAX, textHeight);
     CGRect rect = [text boundingRectWithSize:size options:NSStringDrawingUsesLineFragmentOrigin attributes:dic context:nil];
     return rect;

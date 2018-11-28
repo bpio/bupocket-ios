@@ -88,15 +88,16 @@
                          success:(void (^)(id responseObject))success
                          failure:(void (^)(NSError *error))failure;
 // Transfer accounts
-- (void)setTransferDataWithPassword:(NSString *)password
-                        destAddress:(NSString *)destAddress
-                           BUAmount:(NSString *)BUAmount
-                           feeLimit:(NSString *)feeLimit
-                              notes:(NSString *)notes
-                               code:(NSString *)code
-                             issuer:(NSString *)issuer
-                            success:(void (^)(TransactionResultModel * resultModel))success
-                            failure:(void (^)(TransactionResultModel * resultModel))failure;
+- (void)setTransferDataWithTokenType:(NSInteger)tokenType
+                            password:(NSString *)password
+                         destAddress:(NSString *)destAddress
+                            BUAmount:(NSString *)BUAmount
+                            feeLimit:(NSString *)feeLimit
+                               notes:(NSString *)notes
+                                code:(NSString *)code
+                              issuer:(NSString *)issuer
+                             success:(void (^)(TransactionResultModel * resultModel))success
+                             failure:(void (^)(TransactionResultModel * resultModel))failure;
 
 
 // register
