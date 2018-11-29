@@ -217,7 +217,9 @@ static NSString * const SearchID = @"SearchID";
 }
 - (CGFloat)tableView:(UITableView *)tableView heightForRowAtIndexPath:(NSIndexPath *)indexPath
 {
-    return ScreenScale(120);
+//    return ScreenScale(130);
+    SearchAssetsModel * searchAssetsModel = self.listArray[indexPath.row];
+    return searchAssetsModel.cellHeight;
 }
 - (UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath
 {

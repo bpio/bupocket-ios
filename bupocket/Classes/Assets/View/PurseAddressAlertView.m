@@ -152,7 +152,7 @@
 {
     if (!_QRCodeImage) {
         _QRCodeImage = [[UIImageView alloc] init];
-        _QRCodeImage.image = [UIImage imageNamed:@"placeholder"];
+        _QRCodeImage.image = [UIImage imageNamed:@"placeholderBg"];
     }
     return _QRCodeImage;
 }

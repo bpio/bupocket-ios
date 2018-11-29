@@ -70,6 +70,14 @@ static NSString * const DistributionDetailCellID = @"DistributionDetailCellID";
             [self.infoTitle mas_makeConstraints:^(MASConstraintMaker *make) {
                 make.top.equalTo(self.title);
             }];
+//            [self.title setContentCompressionResistancePriority:UILayoutPriorityRequired forAxis:UILayoutConstraintAxisHorizontal];
+//            [self.title mas_makeConstraints:^(MASConstraintMaker *make) {
+//                make.right.mas_lessThanOrEqualTo(self.infoTitle.mas_left).offset(-Margin_10);
+//            }];
+//            [self.infoTitle mas_makeConstraints:^(MASConstraintMaker *make) {
+//                make.top.equalTo(self.title);
+//                make.left.mas_greaterThanOrEqualTo(self.title.mas_right).offset(Margin_10);
+//            }];
         } else {
             
             [self.infoTitle mas_makeConstraints:^(MASConstraintMaker *make) {

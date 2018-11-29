@@ -266,6 +266,7 @@ static NSString * const Issue_Leave = @"leaveRoomForApp";
     [detailLabel mas_makeConstraints:^(MASConstraintMaker *make) {
         make.right.mas_equalTo(-Margin_10);
         make.centerY.equalTo(titleLabel);
+        make.width.mas_lessThanOrEqualTo(DEVICE_WIDTH - ScreenScale(140));
     }];
     return assetInfo;
 }

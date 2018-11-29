@@ -90,7 +90,8 @@ static NSString *_title;
     button.titleLabel.font = FONT(16);
     button.contentHorizontalAlignment = UIControlContentHorizontalAlignmentRight;
     button.bounds = CGRectMake(0, 0, ScreenScale(50), ScreenScale(44));
-    [button setTitleColor:NAVITEM_COLOR forState:UIControlStateNormal];
+//    [button setTitleColor:NAVITEM_COLOR forState:UIControlStateNormal];
+    [button setTitleColor:MAIN_COLOR forState:UIControlStateNormal];
     [button addTarget:target action:selector forControlEvents:UIControlEventTouchUpInside];
     return button;
 }

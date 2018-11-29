@@ -348,7 +348,7 @@ static int64_t const gasPrice = 1000;
             if (ifShowLoading == YES) {
                 dispatch_async(dispatch_get_main_queue(), ^{
                     [MBProgressHUD hideHUD];
-                    [MBProgressHUD showTipMessageInWindow:[ErrorTypeTool getDescription:response.errorCode]];
+//                    [MBProgressHUD showTipMessageInWindow:[ErrorTypeTool getDescription:response.errorCode]];
                 });
             }
 //            [MBProgressHUD showErrorMessage:feesResponse.errorDesc];
@@ -357,7 +357,7 @@ static int64_t const gasPrice = 1000;
         if (ifShowLoading == YES) {
             dispatch_async(dispatch_get_main_queue(), ^{
                 [MBProgressHUD hideHUD];
-                [MBProgressHUD showTipMessageInWindow:[ErrorTypeTool getDescription:response.errorCode]];
+//                [MBProgressHUD showTipMessageInWindow:[ErrorTypeTool getDescription:response.errorCode]];
             });
         }
 //        [MBProgressHUD showErrorMessage:response.errorDesc];
@@ -368,7 +368,7 @@ static int64_t const gasPrice = 1000;
 //    }
     return amount;
 }
-// MBalance of assets
+// Balance of assets
 - (int64_t)getAssetInfoWithAddress:(NSString *)address code:(NSString *)code issuer:(NSString *)issuer
 {
     AssetGetInfoRequest *request = [AssetGetInfoRequest new];

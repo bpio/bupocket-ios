@@ -82,11 +82,14 @@ static NSString * const Register_Leave = @"leaveRoomForApp";
     [confirmationPrompt setTitle:Localized(@"ConfirmRegistrationInformation") forState:UIControlStateNormal];
     [confirmationPrompt setTitleColor:COLOR_9 forState:UIControlStateNormal];
     [confirmationPrompt setImage:[UIImage imageNamed:@"assetsConfirmation"] forState:UIControlStateNormal];
+    confirmationPrompt.titleLabel.numberOfLines = 0;
+    confirmationPrompt.titleLabel.textAlignment = NSTextAlignmentCenter;
     [self.scrollView addSubview:confirmationPrompt];
     [confirmationPrompt mas_makeConstraints:^(MASConstraintMaker *make) {
         make.top.mas_equalTo(Margin_20);
         make.centerX.mas_equalTo(0);
         make.height.mas_equalTo(ScreenScale(150));
+        make.width.mas_lessThanOrEqualTo(DEVICE_WIDTH - Margin_40);
     }];
     
     self.registeredArray = [NSMutableArray arrayWithArray:@[@{Localized(@"TokenName"): self.registeredModel.name}, @{Localized(@"TokenCode"): self.registeredModel.code}, @{Localized(@"DistributionCost"): Registered_CostBU}]];
@@ -265,6 +268,7 @@ static NSString * const Register_Leave = @"leaveRoomForApp";
     [detailLabel mas_makeConstraints:^(MASConstraintMaker *make) {
         make.right.mas_equalTo(-Margin_10);
         make.centerY.equalTo(titleLabel);
+        make.width.mas_lessThanOrEqualTo(DEVICE_WIDTH - ScreenScale(140));
     }];
     return assetInfo;
 }

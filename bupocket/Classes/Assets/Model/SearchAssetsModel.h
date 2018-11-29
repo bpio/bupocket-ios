@@ -19,6 +19,8 @@ NS_ASSUME_NONNULL_BEGIN
 @property (nonatomic, assign) NSInteger recommend;
 @property (nonatomic, assign) NSInteger type;
 
+@property (nonatomic, assign) CGFloat cellHeight;
+
 @end
 
 NS_ASSUME_NONNULL_END

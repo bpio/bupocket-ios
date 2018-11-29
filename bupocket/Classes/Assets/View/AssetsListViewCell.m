@@ -24,6 +24,7 @@ static NSString * const AssetsCellID = @"AssetsCellID";
 - (instancetype)initWithStyle:(UITableViewCellStyle)style reuseIdentifier:(NSString *)reuseIdentifier
 {
     if (self = [super initWithStyle:style reuseIdentifier:reuseIdentifier]) {
+        [self.contentView addSubview:self.listImageBg];
         [self.contentView addSubview:self.listImage];
         [self.contentView addSubview:self.title];
         [self.contentView addSubview:self.detailTitle];
@@ -35,14 +36,18 @@ static NSString * const AssetsCellID = @"AssetsCellID";
 {
     [super layoutSubviews];
     [self.listImage mas_makeConstraints:^(MASConstraintMaker *make) {
-        make.left.equalTo(self.contentView.mas_left).offset(Margin_5);
+        make.left.equalTo(self.contentView.mas_left).offset(Margin_10);
         make.centerY.equalTo(self.contentView);
+        make.width.height.mas_equalTo(Margin_50);
+    }];
+    [self.listImageBg mas_makeConstraints:^(MASConstraintMaker *make) {
+        make.centerX.centerY.equalTo(self.listImage);
         make.width.height.mas_equalTo(ScreenScale(68));
     }];
 //    [self.title setContentHuggingPriority:UILayoutPriorityRequired forAxis:UILayoutConstraintAxisHorizontal];
     [self.title setContentCompressionResistancePriority:UILayoutPriorityRequired forAxis:UILayoutConstraintAxisHorizontal];
     [self.title mas_makeConstraints:^(MASConstraintMaker *make) {
-        make.left.equalTo(self.listImage.mas_right).offset(Margin_5);
+        make.left.equalTo(self.listImage.mas_right).offset(Margin_10);
         make.centerY.equalTo(self.contentView);
         make.right.mas_lessThanOrEqualTo(self.detailTitle.mas_left).offset(-Margin_10);
     }];
@@ -67,11 +72,18 @@ static NSString * const AssetsCellID = @"AssetsCellID";
     NSString * currencyUnit = [AssetCurrencyModel getCurrencyUnitWithAssetCurrency:[[[NSUserDefaults standardUserDefaults] objectForKey:Current_Currency] integerValue]];
     self.infoTitle.text = [listModel.assetAmount isEqualToString:@"~"] ? listModel.assetAmount : [NSString stringWithFormat:@"≈%@%@", currencyUnit, listModel.assetAmount];
 }
+- (UIImageView *)listImageBg
+{
+    if (!_listImageBg) {
+        _listImageBg = [[UIImageView alloc] initWithImage:[UIImage imageNamed:@"placeholder_bg_list"]];
+    }
+    return _listImageBg;
+}
 - (UIImageView *)listImage
 {
     if (!_listImage) {
         _listImage = [[UIImageView alloc] init];
-        [_listImage setViewSize:CGSizeMake(ScreenScale(68), ScreenScale(68)) borderWidth:0 borderColor:nil borderRadius:ScreenScale(34)];
+        [_listImage setViewSize:CGSizeMake(Margin_50, Margin_50) borderWidth:0 borderColor:nil borderRadius:Margin_25];
     }
     return _listImage;
 }
