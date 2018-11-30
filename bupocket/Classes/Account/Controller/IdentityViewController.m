@@ -23,7 +23,6 @@
 - (void)viewDidLoad
 {
     [super viewDidLoad];
-    [[LanguageManager shareInstance] setDefaultLocale];
     [self setupView];
 }
 

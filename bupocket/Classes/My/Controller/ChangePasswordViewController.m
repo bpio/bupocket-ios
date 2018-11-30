@@ -110,7 +110,7 @@
         make.height.mas_equalTo(ScreenScale(39));
     }];
     UIView * lineView = [[UIView alloc] init];
-    lineView.backgroundColor = COLOR(@"E3E3E3");
+    lineView.backgroundColor = LINE_COLOR;
     [viewBg addSubview:lineView];
     [lineView mas_makeConstraints:^(MASConstraintMaker *make) {
         make.top.equalTo(textField.mas_bottom);

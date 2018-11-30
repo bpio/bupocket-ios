@@ -215,6 +215,10 @@ static NSString * const SearchID = @"SearchID";
 {
     return ContentSizeBottom;
 }
+- (CGFloat)tableView:(UITableView *)tableView estimatedHeightForRowAtIndexPath:(NSIndexPath *)indexPath
+{
+    return ScreenScale(130);
+}
 - (CGFloat)tableView:(UITableView *)tableView heightForRowAtIndexPath:(NSIndexPath *)indexPath
 {
 //    return ScreenScale(130);

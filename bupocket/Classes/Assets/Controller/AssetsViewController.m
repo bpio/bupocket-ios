@@ -286,11 +286,11 @@
         _totalAssets = [[UILabel alloc] init];
         _totalAssets.font = FONT(36);
         _totalAssets.textColor = [UIColor whiteColor];
-        _totalAssets.preferredMaxLayoutWidth = DEVICE_WIDTH - Margin_40;
         [_headerViewBg addSubview:_totalAssets];
         [self.totalAssets mas_makeConstraints:^(MASConstraintMaker *make) {
             make.top.equalTo(self.headerViewBg.mas_top).offset(StatusBarHeight + Margin_50);
             make.centerX.equalTo(self.headerViewBg);
+            make.width.mas_lessThanOrEqualTo(DEVICE_WIDTH - Margin_40);
         }];
         
         UILabel * totalAssetsTitle = [[UILabel alloc] init];
@@ -316,7 +316,7 @@
         }];
         
         NSArray * operationArray = @[Localized(@"AssetsDetailScan"), Localized(@"PaymentCode"), Localized(@"AddAssets")];
-        CGFloat operationBtnW = (DEVICE_WIDTH - (Margin_20 + Margin_10) * 2) / operationArray.count;
+        CGFloat operationBtnW = (DEVICE_WIDTH - (Margin_15 + Margin_10) * 2) / operationArray.count;
         for (NSInteger i = 0; i < operationArray.count; i ++) {
             CustomButton * operationBtn = [[CustomButton alloc] init];
             operationBtn.layoutMode = VerticalNormal;
@@ -329,7 +329,7 @@
             [operationBtn addTarget:self action:@selector(operationAction:) forControlEvents:UIControlEventTouchUpInside];
             [operationBtnBg addSubview:operationBtn];
             [operationBtn mas_makeConstraints:^(MASConstraintMaker *make) {
-                make.left.equalTo(operationBtnBg.mas_left).offset(Margin_20 + operationBtnW * i);
+                make.left.equalTo(operationBtnBg.mas_left).offset(Margin_15 + operationBtnW * i);
                 make.centerY.equalTo(operationBtnBg);
                 make.size.mas_equalTo(CGSizeMake(operationBtnW, ScreenScale(80)));
             }];
@@ -457,7 +457,8 @@
     if (section == 0) {
         NSUserDefaults * defaults = [NSUserDefaults standardUserDefaults];
         if (![defaults boolForKey:If_Backup] && self.noBackup.selected == NO) {
-            return ScreenScale(210);
+            return ScreenScale(150) + [Encapsulation rectWithText:Localized(@"SafetyTips") font:TITLE_FONT textWidth:DEVICE_WIDTH - Margin_40].size.height;
+//            return ScreenScale(210);
         } else {
             return Margin_40;
         }
@@ -481,7 +482,8 @@
                 make.top.equalTo(headerView.mas_top).offset(Margin_10);
                 make.left.equalTo(headerView.mas_left).offset(Margin_10);
                 make.right.equalTo(headerView.mas_right).offset(- Margin_10);
-                make.height.mas_equalTo(ScreenScale(160));
+//                make.height.mas_equalTo(ScreenScale(105) + []);
+//                make.height.mas_equalTo(ScreenScale(160));
             }];
             UILabel * safetyTipsTitle = [[UILabel alloc] init];
             safetyTipsTitle.textColor = COLOR_6;
@@ -496,7 +498,7 @@
             
             UILabel * safetyTips = [[UILabel alloc] init];
             safetyTips.textColor = COLOR_6;
-            safetyTips.font = FONT(14);
+            safetyTips.font = TITLE_FONT;
             safetyTips.text = Localized(@"SafetyTips");
             safetyTips.numberOfLines = 0;
             [backupBg addSubview:safetyTips];
@@ -512,6 +514,7 @@
             self.noBackup.layer.cornerRadius = MAIN_CORNER;
             [backupBg addSubview:self.noBackup];
             [self.noBackup mas_makeConstraints:^(MASConstraintMaker *make) {
+                make.top.equalTo(safetyTips.mas_bottom).offset(Margin_10);
                 make.left.equalTo(safetyTipsTitle);
                 make.bottom.equalTo(backupBg.mas_bottom).offset(-Margin_15);
                 make.size.mas_equalTo(CGSizeMake(btnW, Margin_40));

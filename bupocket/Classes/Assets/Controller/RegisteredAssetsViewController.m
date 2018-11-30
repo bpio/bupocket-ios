@@ -105,7 +105,7 @@ static NSString * const Register_Leave = @"leaveRoomForApp";
     UIView * assetInfoBg = [[UIView alloc] init];
     [self.scrollView addSubview:assetInfoBg];
     CGSize size = CGSizeMake(DEVICE_WIDTH - Margin_20, assetInfoBgH);
-    [assetInfoBg setViewSize:size borderWidth:LINE_WIDTH borderColor:COLOR(@"E3E3E3") borderRadius:BG_CORNER];
+    [assetInfoBg setViewSize:size borderWidth:LINE_WIDTH borderColor:LINE_COLOR borderRadius:BG_CORNER];
     [assetInfoBg mas_makeConstraints:^(MASConstraintMaker *make) {
         make.top.equalTo(confirmationPrompt.mas_bottom).offset(Margin_20);
         make.centerX.mas_equalTo(0);
@@ -146,7 +146,7 @@ static NSString * const Register_Leave = @"leaveRoomForApp";
     __weak typeof(self) weakSelf = self;
     NSOperationQueue * queue = [[NSOperationQueue alloc] init];
     [queue addOperationWithBlock:^{
-        int64_t amount = [[HTTPManager shareManager] getDataWithBalanceJudgmentWithCost:Registered_Cost ifShowLoading:YES];
+        CGFloat amount = [[HTTPManager shareManager] getDataWithBalanceJudgmentWithCost:Registered_Cost ifShowLoading:YES];
         [[NSOperationQueue mainQueue] addOperationWithBlock:^{
             if (amount < 0) {
                 [MBProgressHUD showTipMessageInWindow:Localized(@"RegisteredNotSufficientFunds")];

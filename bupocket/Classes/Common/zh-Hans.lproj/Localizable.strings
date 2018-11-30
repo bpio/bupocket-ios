@@ -261,7 +261,7 @@
 "INVALID_DESTADDRESS_ERROR" = "Invalid destAddress";
 "INVALID_INITBALANCE_ERROR" = "InitBalance must be between 1 and int64_t.MAX_VALUE";
 "SOURCEADDRESS_EQUAL_DESTADDRESS_ERROR" = "SourceAddress cannot be equal to destAddress";
-"INVALID_ADDRESS_ERROR" = "Invalid address";
+"INVALID_ADDRESS_ERROR" = "无效地址";
 "CONNECTNETWORK_ERROR" = "Failed to connect to the network";
 "INVALID_ISSUE_AMOUNT_ERROR" = "Amount of the token to be issued must be between 1 and int64_t.MAX_VALUE";
 "NO_ASSET_ERROR" = "The account does not have the asset";

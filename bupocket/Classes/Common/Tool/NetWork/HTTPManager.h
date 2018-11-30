@@ -75,9 +75,10 @@
 // Check the balance
 - (int64_t)getAccountBalance;
 // Query cost standard
-- (int64_t) getBlockFees;
+// Obtain minimum asset limits and fuel unit prices for accounts in designated blocks
+- (void)getBlockFees;
 // Balance judgment
-- (int64_t)getDataWithBalanceJudgmentWithCost:(double)cost ifShowLoading:(BOOL)ifShowLoading;
+- (CGFloat)getDataWithBalanceJudgmentWithCost:(double)cost ifShowLoading:(BOOL)ifShowLoading;
 // Balance of assets
 - (int64_t)getAssetInfoWithAddress:(NSString *)address code:(NSString *)code issuer:(NSString *)issuer;
 

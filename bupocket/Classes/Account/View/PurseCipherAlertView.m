@@ -76,7 +76,7 @@
     PWTextField.font = TITLE_FONT;
     PWTextField.placeholder = Localized(@"PWPlaceholder");
     PWTextField.layer.cornerRadius = ScreenScale(3);
-    PWTextField.layer.borderColor = COLOR(@"E3E3E3").CGColor;
+    PWTextField.layer.borderColor = LINE_COLOR.CGColor;
     PWTextField.layer.borderWidth = LINE_WIDTH;
     PWTextField.secureTextEntry = YES;
     PWTextField.leftView = [[UIView alloc] initWithFrame:CGRectMake(0, 0, Margin_10, MAIN_HEIGHT)];

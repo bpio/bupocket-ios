@@ -63,7 +63,8 @@
 #define SuggestionsContent_MAX 100
 // ATP Version
 #define ATP_Version @"1.0"
-
+// Obtain minimum asset limits and fuel unit prices for accounts in designated blocks
+#define Minimum_Asset_Limitation @"MinimumAssetLimitation"
 
 
 

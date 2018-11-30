@@ -28,6 +28,7 @@
     UITabBarItem * item = [UITabBarItem appearance];
     [item setTitleTextAttributes:attrs forState:UIControlStateNormal];
     [item setTitleTextAttributes:selectedAttrs forState:UIControlStateSelected];
+    [[UITabBar appearance] setTranslucent:NO];
 }
 - (void)setupChildVC:(UIViewController *)VC title:(NSString *)title image:(NSString *)image selectedImage:(NSString *)selectedImage
 {

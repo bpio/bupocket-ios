@@ -129,6 +129,9 @@
             }
            [ClearCacheTool cleanCache:^{
                [ClearCacheTool cleanUserDefaults];
+               [[LanguageManager shareInstance] setDefaultLocale];
+               // Minimum Asset Limitation
+               [[HTTPManager shareManager] getBlockFees];
                [UIApplication sharedApplication].keyWindow.rootViewController = [[NavigationViewController alloc] initWithRootViewController:[[IdentityViewController alloc] init]];
             }];
         } cancelBlock:^{
