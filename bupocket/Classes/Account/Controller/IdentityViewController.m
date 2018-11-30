@@ -23,7 +23,6 @@
 - (void)viewDidLoad
 {
     [super viewDidLoad];
-    [[LanguageManager shareInstance] setDefaultLocale];
     [self setupView];
 }
 
@@ -45,7 +44,7 @@
     }];
     UILabel * titleLabel = [[UILabel alloc] init];
     titleLabel.font = FONT(24);
-    titleLabel.textColor = [UIColor whiteColor];
+    titleLabel.textColor = TITLE_COLOR;
     titleLabel.text = Localized(@"CreateDigitalIdentity");
     [identityBg addSubview:titleLabel];
     [titleLabel mas_makeConstraints:^(MASConstraintMaker *make) {
@@ -63,7 +62,9 @@
     
     UIButton * restoreIdentity = [UIButton createButtonWithTitle:Localized(@"RestoreIdentity") isEnabled:YES Target:self Selector:@selector(restoreAction)];
     restoreIdentity.backgroundColor = [UIColor whiteColor];
-    [restoreIdentity setTitleColor:NAVITEM_COLOR forState:UIControlStateNormal];
+    restoreIdentity.layer.borderColor = MAIN_COLOR.CGColor;
+    restoreIdentity.layer.borderWidth = LINE_WIDTH;
+    [restoreIdentity setTitleColor:MAIN_COLOR forState:UIControlStateNormal];
     [identityBg addSubview:restoreIdentity];
     [restoreIdentity mas_makeConstraints:^(MASConstraintMaker *make) {
         make.top.equalTo(createIdentity.mas_bottom).offset(ScreenScale(35));

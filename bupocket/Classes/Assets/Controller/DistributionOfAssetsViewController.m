@@ -96,7 +96,7 @@ static NSString * const Issue_Leave = @"leaveRoomForApp";
     UIView * assetInfoBg = [[UIView alloc] init];
     [self.scrollView addSubview:assetInfoBg];
     CGSize size = CGSizeMake(DEVICE_WIDTH - Margin_20, Margin_10 + self.distributionArray.count * Margin_40);
-    [assetInfoBg setViewSize:size borderWidth:LINE_WIDTH borderColor:COLOR(@"E3E3E3") borderRadius:BG_CORNER];
+    [assetInfoBg setViewSize:size borderWidth:LINE_WIDTH borderColor:LINE_COLOR borderRadius:BG_CORNER];
     [assetInfoBg mas_makeConstraints:^(MASConstraintMaker *make) {
         make.top.equalTo(confirmationPrompt.mas_bottom).offset(Margin_20);
         make.centerX.mas_equalTo(0);
@@ -139,7 +139,7 @@ static NSString * const Issue_Leave = @"leaveRoomForApp";
     __weak typeof(self) weakSelf = self;
     NSOperationQueue * queue = [[NSOperationQueue alloc] init];
     [queue addOperationWithBlock:^{
-        int64_t amount = [[HTTPManager shareManager] getDataWithBalanceJudgmentWithCost:Distribution_Cost ifShowLoading:YES];
+        CGFloat amount = [[HTTPManager shareManager] getDataWithBalanceJudgmentWithCost:Distribution_Cost ifShowLoading:YES];
         [[NSOperationQueue mainQueue] addOperationWithBlock:^{
             if (amount < 0) {
                 [MBProgressHUD showTipMessageInWindow:Localized(@"DistributionNotSufficientFunds")];
@@ -266,6 +266,7 @@ static NSString * const Issue_Leave = @"leaveRoomForApp";
     [detailLabel mas_makeConstraints:^(MASConstraintMaker *make) {
         make.right.mas_equalTo(-Margin_10);
         make.centerY.equalTo(titleLabel);
+        make.width.mas_lessThanOrEqualTo(DEVICE_WIDTH - ScreenScale(140));
     }];
     return assetInfo;
 }

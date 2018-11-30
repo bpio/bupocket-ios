@@ -22,12 +22,13 @@
 + (void)initialize
 {
     NSMutableDictionary * attrs = [NSMutableDictionary dictionary];
-    attrs[NSForegroundColorAttributeName] = COLOR(@"7F8389 ");
+    attrs[NSForegroundColorAttributeName] = COLOR(@"7F8389");
     NSMutableDictionary * selectedAttrs = [NSMutableDictionary dictionary];
     selectedAttrs[NSForegroundColorAttributeName] = MAIN_COLOR;
-    UIBarButtonItem * item = [UIBarButtonItem appearance];
+    UITabBarItem * item = [UITabBarItem appearance];
     [item setTitleTextAttributes:attrs forState:UIControlStateNormal];
     [item setTitleTextAttributes:selectedAttrs forState:UIControlStateSelected];
+    [[UITabBar appearance] setTranslucent:NO];
 }
 - (void)setupChildVC:(UIViewController *)VC title:(NSString *)title image:(NSString *)image selectedImage:(NSString *)selectedImage
 {
@@ -41,8 +42,8 @@
 
 - (void)viewDidLoad {
     [super viewDidLoad];
-    [self setupChildVC:[[AssetsViewController alloc] init] title:Localized(@"AssetsTitle") image:@"tab_Assets_n" selectedImage:@"tab_Assets_s"];
-    [self setupChildVC:[[MyViewController alloc] init] title:Localized(@"MyTitle") image:@"tab_My_n" selectedImage:@"tab_My_s"];
+    [self setupChildVC:[[AssetsViewController alloc] init] title:Localized(@"AssetsTitle") image:@"tab_assets_n" selectedImage:@"tab_assets_s"];
+    [self setupChildVC:[[MyViewController alloc] init] title:Localized(@"MyTitle") image:@"tab_my_n" selectedImage:@"tab_my_s"];
     // Do any additional setup after loading the view.
 }
 - (void)didReceiveMemoryWarning {

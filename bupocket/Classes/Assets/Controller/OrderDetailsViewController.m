@@ -26,6 +26,7 @@
 @property (nonatomic, strong) TxInfoModel * txInfoModel;
 @property (nonatomic, strong) UIView * noNetWork;
 
+@property (nonatomic, strong) NSString * amount;
 @property (nonatomic, strong) NSString * assets;
 
 @end
@@ -40,7 +41,15 @@ static NSInteger const TxInfoNormalCount = 6;
 - (void)viewDidLoad {
     [super viewDidLoad];
     self.navigationItem.title = Localized(@"OrderDetails");
-    _headerViewH = ScreenScale(200);
+    NSString * outOrIn;
+    if (self.listModel.outinType == Transaction_Type_TurnOut) {
+        outOrIn = @"-";
+    } else {
+        outOrIn = @"+";
+    }
+    self.amount = [self.listModel.amount isEqualToString:@"~"] ? self.listModel.amount : [NSString stringWithFormat:@"%@ %@", self.listModel.amount, self.assetCode];
+    self.assets = [NSString stringWithFormat:@"%@%@", outOrIn, self.amount];
+    _headerViewH = ScreenScale(170) + [Encapsulation rectWithText:self.assets font:FONT_Bold(27) textWidth:DEVICE_WIDTH - Margin_40].size.height;
     [self setupView];
     [self setupRefresh];
     self.noNetWork = [Encapsulation showNoNetWorkWithSuperView:self.view target:self action:@selector(reloadData)];
@@ -106,7 +115,7 @@ static NSInteger const TxInfoNormalCount = 6;
     [infoArray addObject:self.txInfoModel.hashStr];
     [infoArray addObject:self.txInfoModel.sourceAddress];
     [infoArray addObject:self.txInfoModel.destAddress];
-    [infoArray addObject:self.assets];
+    [infoArray addObject:self.amount];
     [infoArray addObject:[NSString stringAppendingBUWithStr:self.txInfoModel.fee]];
     [infoArray addObject:self.txInfoModel.nonce];
 //    [infoArray addObject:self.txInfoModel.ledgerSeq];
@@ -158,20 +167,17 @@ static NSInteger const TxInfoNormalCount = 6;
             make.top.equalTo(self.headerViewBg.mas_top).offset(Margin_25);
             make.centerX.equalTo(self.headerViewBg);
         }];
-        NSString * outOrIn;
-        if (self.listModel.outinType == Transaction_Type_TurnOut) {
-            outOrIn = @"-";
-        } else {
-            outOrIn = @"+";
-        }
-        self.assets = [self.listModel.amount isEqualToString:@"~"] ? self.listModel.amount : [NSString stringWithFormat:@"%@%@ %@", outOrIn, self.listModel.amount, self.assetCode];
+        
         UILabel * orderResults = [[UILabel alloc] init];
         orderResults.font = FONT_Bold(27);
-        orderResults.attributedText = [Encapsulation attrWithString:self.assets preFont:FONT_Bold(27) preColor:TITLE_COLOR index:self.assets.length - self.assetCode.length sufFont:FONT_Bold(27) sufColor:COLOR_9 lineSpacing:0];
+        orderResults.attributedText = [Encapsulation attrWithString:self.assets preFont:orderResults.font preColor:TITLE_COLOR index:self.assets.length - self.assetCode.length sufFont:orderResults.font sufColor:COLOR_9 lineSpacing:0];
+        orderResults.numberOfLines = 0;
+        orderResults.textAlignment = NSTextAlignmentCenter;
         [self.headerViewBg addSubview:orderResults];
         [orderResults mas_makeConstraints:^(MASConstraintMaker *make) {
             make.top.equalTo(stateImage.mas_bottom).offset(ScreenScale(23));
             make.centerX.equalTo(self.headerViewBg);
+            make.width.mas_lessThanOrEqualTo(DEVICE_WIDTH - Margin_40);
         }];
         UILabel * state = [[UILabel alloc] init];
         state.font = TITLE_FONT;
@@ -257,10 +263,10 @@ static NSInteger const TxInfoNormalCount = 6;
         return MAIN_HEIGHT;
     } else if (indexPath.section == 1 && indexPath.row > TxInfoNormalCount) {
         CGFloat bottomH = indexPath.row % 2 ? 0 : Margin_15;
-        CGFloat rowHeight = [Encapsulation rectWithText:self.infoArray[indexPath.section][indexPath.row] fontSize:15 textWidth: DEVICE_WIDTH - Margin_60].size.height + ScreenScale(50) + bottomH;
+        CGFloat rowHeight = [Encapsulation rectWithText:self.infoArray[indexPath.section][indexPath.row] font:FONT(15) textWidth: DEVICE_WIDTH - Margin_60].size.height + ScreenScale(50) + bottomH;
         return rowHeight;
     } else {
-        CGFloat rowHeight = [Encapsulation rectWithText:self.infoArray[indexPath.section][indexPath.row] fontSize:15 textWidth: Info_Width_Max].size.height + Margin_30;
+        CGFloat rowHeight = [Encapsulation rectWithText:self.infoArray[indexPath.section][indexPath.row] font:FONT(15) textWidth: Info_Width_Max].size.height + Margin_30;
         return rowHeight;
     }
 }

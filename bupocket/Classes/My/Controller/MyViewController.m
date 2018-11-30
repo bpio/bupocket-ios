@@ -28,7 +28,6 @@
 @property (nonatomic, assign) NSTimeInterval acceptEventTime;
 
 @property (nonatomic, assign) NSInteger touchCounter;
-@property (nonatomic, strong) NSArray * settingListArray;
 
 @end
 
@@ -53,14 +52,10 @@ static NSString * const ListCellID = @"ListCellID";
     [super viewWillAppear:animated];
     if ([[NSUserDefaults standardUserDefaults] boolForKey:If_Switch_TestNetwork]) {
         self.networkPrompt.text = Localized(@"TestNetworkPrompt");
-        self.headerBg.image = nil;
-        self.headerBg.backgroundColor = COLOR(@"4B4A66");
-        self.settingListArray = @[Localized(@"MultiLingual"), Localized(@"MonetaryUnit"), Localized(@"SwitchedNetwork")];
+        self.headerBg.image = [UIImage imageNamed:@"my_header_test"];
     } else {
         self.networkPrompt.text = nil;
         self.headerBg.image = self.headerImage;
-        self.headerBg.backgroundColor = [UIColor whiteColor];
-        self.settingListArray = @[Localized(@"MultiLingual"), Localized(@"MonetaryUnit")];
     }
 }
 - (void)setupView
@@ -90,22 +85,42 @@ static NSString * const ListCellID = @"ListCellID";
         make.top.equalTo(self.headerBg.mas_top).offset(StatusBarHeight + Margin_10);
         make.centerX.equalTo(self.headerBg);
     }];
-    CustomButton * userIcon = [[CustomButton alloc] init];
-    userIcon.layoutMode = VerticalNormal;
-    [userIcon setTitleColor:[UIColor whiteColor] forState:UIControlStateNormal];
-    userIcon.titleLabel.font = FONT(16);
-    [userIcon setTitle:[AccountTool account].identityName forState:UIControlStateNormal];
-    [userIcon setImage:[UIImage imageNamed:@"userIcon_placeholder"] forState:UIControlStateNormal];
-    [userIcon addTarget:self action:@selector(userIconAction) forControlEvents:UIControlEventTouchUpInside];
+    UIButton * userIcon = [UIButton createButtonWithNormalImage:@"userIcon_placeholder" SelectedImage:@"userIcon_placeholder" Target:self Selector:@selector(userIconAction)];
+    userIcon.imageView.contentMode = UIViewContentModeScaleAspectFit;
     [self.headerBg addSubview:userIcon];
     [userIcon mas_makeConstraints:^(MASConstraintMaker *make) {
-        make.centerY.equalTo(self.headerBg.mas_centerY).offset(Margin_15);
-        make.centerX.equalTo(self.headerBg);
-        make.height.mas_equalTo(ScreenScale(120));
+        make.left.equalTo(self.headerBg.mas_left).offset(ScreenScale(35));
+        make.centerY.equalTo(self.headerBg.mas_bottom).offset(-ScreenScale(64));
+        make.height.mas_equalTo(ScreenScale(100));
     }];
+    UILabel * userName = [[UILabel alloc] init];
+    userName.font = FONT_Bold(18);
+    userName.textColor = TITLE_COLOR;
+    userName.text = [AccountTool account].identityName;
+    [self.headerBg addSubview:userName];
+    [userName mas_makeConstraints:^(MASConstraintMaker *make) {
+        make.top.equalTo(userIcon.mas_bottom).offset(Margin_5);
+        make.width.mas_lessThanOrEqualTo(DEVICE_WIDTH - Margin_40);
+    }];
+    CGFloat userNameW = [Encapsulation rectWithText:userName.text font:userName.font textHeight:ScreenScale(20)].size.width;
+    if (userNameW > ScreenScale(130)) {
+        [userName mas_makeConstraints:^(MASConstraintMaker *make) {
+            make.left.equalTo(self.headerBg.mas_left).offset(Margin_20);
+        }];
+    } else {
+        [userName mas_makeConstraints:^(MASConstraintMaker *make) {
+            make.centerX.equalTo(userIcon);
+        }];
+    }
     CGFloat headerH = ScreenScale(375 * self.headerImage.size.height / self.headerImage.size.width);
-    self.headerBg.bounds = CGRectMake(0, 0, DEVICE_WIDTH, headerH);
-    self.tableView.tableHeaderView = self.headerBg;
+//    self.headerBg.bounds = CGRectMake(0, 0, DEVICE_WIDTH, headerH);
+    UIView * headerView = [[UIView alloc] initWithFrame:CGRectMake(0, 0, DEVICE_WIDTH, headerH + Margin_30)];
+    [headerView addSubview:self.headerBg];
+    [self.headerBg mas_makeConstraints:^(MASConstraintMaker *make) {
+        make.left.top.right.equalTo(headerView);
+        make.height.mas_equalTo(headerH);
+    }];
+    self.tableView.tableHeaderView = headerView;
 }
 - (void)userIconAction
 {

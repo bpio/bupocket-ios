@@ -141,32 +141,39 @@
         headerBg.frame = CGRectMake(0, -_headerViewH, DEVICE_WIDTH, _headerViewH);
         _headerViewBg = [[UIView alloc] initWithFrame:CGRectMake(0, 0, DEVICE_WIDTH, _headerViewH)];
         [headerBg addSubview:_headerViewBg];
-        UIImageView * assetsIcon = [[UIImageView alloc] init];
-        [assetsIcon sd_setImageWithURL:[NSURL URLWithString:self.listModel.icon] placeholderImage:[UIImage imageNamed:@"placeholder"]];
-        [_headerViewBg addSubview:assetsIcon];
-        [assetsIcon mas_makeConstraints:^(MASConstraintMaker *make) {
-            make.top.equalTo(self.headerViewBg.mas_top).offset(Margin_20);
+        UIImageView * assetsIconBg = [[UIImageView alloc] initWithImage:[UIImage imageNamed:@"placeholder_bg"]];
+        [_headerViewBg addSubview:assetsIconBg];
+        [assetsIconBg mas_makeConstraints:^(MASConstraintMaker *make) {
+            make.top.equalTo(self.headerViewBg.mas_top).offset(Margin_10);
             make.centerX.equalTo(self.headerViewBg);
-            make.size.mas_equalTo(CGSizeMake(ScreenScale(50), ScreenScale(50)));
+            make.size.mas_equalTo(CGSizeMake(ScreenScale(82), ScreenScale(82)));
         }];
         
+        UIImageView * assetsIcon = [[UIImageView alloc] init];
+        [assetsIcon sd_setImageWithURL:[NSURL URLWithString:self.listModel.icon] placeholderImage:[UIImage imageNamed:@"placeholder"]];
+        [assetsIcon setViewSize:CGSizeMake(Margin_60, Margin_60) borderWidth:0 borderColor:nil borderRadius:Margin_30];
+        [assetsIconBg addSubview:assetsIcon];
+        [assetsIcon mas_makeConstraints:^(MASConstraintMaker *make) {
+            make.centerX.centerY.equalTo(assetsIconBg);
+            make.size.mas_equalTo(CGSizeMake(Margin_60, Margin_60));
+        }];
         self.assets = [[UILabel alloc] init];
         self.assets.textColor = TITLE_COLOR;
         self.assets.font = FONT_Bold(24);
         [self.headerViewBg addSubview:self.assets];
-        self.assets.preferredMaxLayoutWidth = DEVICE_WIDTH - Margin_40;
         [self.assets mas_makeConstraints:^(MASConstraintMaker *make) {
-            make.top.equalTo(assetsIcon.mas_bottom).offset(Margin_25);
+            make.top.equalTo(assetsIcon.mas_bottom).offset(Margin_15);
             make.centerX.equalTo(self.headerViewBg);
+            make.width.mas_lessThanOrEqualTo(DEVICE_WIDTH - Margin_40);
         }];
         self.amount = [[UILabel alloc] init];
         self.amount.font = FONT(15);
         self.amount.textColor = COLOR_9;
         [self.headerViewBg addSubview:self.amount];
-        self.amount.preferredMaxLayoutWidth = DEVICE_WIDTH - Margin_40;
         [self.amount mas_makeConstraints:^(MASConstraintMaker *make) {
             make.top.equalTo(self.assets.mas_bottom).offset(Margin_15);
             make.centerX.equalTo(self.headerViewBg);
+            make.width.mas_lessThanOrEqualTo(DEVICE_WIDTH - Margin_40);
         }];
         
         CGFloat btnW = (DEVICE_WIDTH - Margin_30) / 2;
@@ -181,7 +188,7 @@
         [scanBtn setViewSize:CGSizeMake(btnW, MAIN_HEIGHT) borderWidth:0 borderColor:nil borderRadius:ScreenScale(3)];
         scanBtn.backgroundColor = NAVITEM_COLOR;
         [scanBtn mas_makeConstraints:^(MASConstraintMaker *make) {
-            make.top.equalTo(self.amount.mas_bottom).offset(Margin_25);
+            make.top.equalTo(self.amount.mas_bottom).offset(Margin_20);
             make.left.equalTo(self.headerViewBg.mas_left).offset(Margin_10);
             make.size.mas_equalTo(CGSizeMake(btnW, MAIN_HEIGHT));
         }];
@@ -257,13 +264,15 @@
      UIView * headerView = [[UIView alloc] init];
      if (section == 0) {
          self.header = [[UILabel alloc] init];
+         self.header.font = FONT(15);
+         self.header.textColor = COLOR_6;
+         self.header.text = Localized(@"RecentTransactionRecords");
          [headerView addSubview:self.header];
          [self.header mas_makeConstraints:^(MASConstraintMaker *make) {
              make.left.equalTo(headerView.mas_left).offset(Margin_10);
              make.bottom.equalTo(headerView);
              make.top.equalTo(headerView.mas_top).offset(Margin_5);
          }];
-         self.header.attributedText = [Encapsulation attrTitle:Localized(@"RecentTransactionRecords") ifRequired:NO];
      }
      return headerView;
  }

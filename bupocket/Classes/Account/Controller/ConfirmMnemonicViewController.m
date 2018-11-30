@@ -128,7 +128,7 @@
 {
     button.selected = !button.selected;
     if (button.selected) {
-        button.backgroundColor = MAIN_COLOR;
+        button.backgroundColor = TAGBG_COLOR;
         [self.tagArray addObject:button.titleLabel.text];
         UIButton * tagButton = [UIButton createButtonWithTitle:button.titleLabel.text TextFont:15 TextColor:COLOR_6 Target:nil Selector:nil];
         [tagButton sizeToFit];

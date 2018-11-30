@@ -75,9 +75,10 @@
 // Check the balance
 - (int64_t)getAccountBalance;
 // Query cost standard
-- (int64_t) getBlockFees;
+// Obtain minimum asset limits and fuel unit prices for accounts in designated blocks
+- (void)getBlockFees;
 // Balance judgment
-- (int64_t)getDataWithBalanceJudgmentWithCost:(double)cost ifShowLoading:(BOOL)ifShowLoading;
+- (CGFloat)getDataWithBalanceJudgmentWithCost:(double)cost ifShowLoading:(BOOL)ifShowLoading;
 // Balance of assets
 - (int64_t)getAssetInfoWithAddress:(NSString *)address code:(NSString *)code issuer:(NSString *)issuer;
 
@@ -88,15 +89,16 @@
                          success:(void (^)(id responseObject))success
                          failure:(void (^)(NSError *error))failure;
 // Transfer accounts
-- (void)setTransferDataWithPassword:(NSString *)password
-                        destAddress:(NSString *)destAddress
-                           BUAmount:(NSString *)BUAmount
-                           feeLimit:(NSString *)feeLimit
-                              notes:(NSString *)notes
-                               code:(NSString *)code
-                             issuer:(NSString *)issuer
-                            success:(void (^)(TransactionResultModel * resultModel))success
-                            failure:(void (^)(TransactionResultModel * resultModel))failure;
+- (void)setTransferDataWithTokenType:(NSInteger)tokenType
+                            password:(NSString *)password
+                         destAddress:(NSString *)destAddress
+                            BUAmount:(NSString *)BUAmount
+                            feeLimit:(NSString *)feeLimit
+                               notes:(NSString *)notes
+                                code:(NSString *)code
+                              issuer:(NSString *)issuer
+                             success:(void (^)(TransactionResultModel * resultModel))success
+                             failure:(void (^)(TransactionResultModel * resultModel))failure;
 
 
 // register

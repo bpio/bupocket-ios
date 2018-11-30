@@ -22,6 +22,7 @@
 @property (nonatomic, strong) UITextField * transactionCosts;
 @property (nonatomic, strong) UIButton * next;
 @property (nonatomic, strong) UILabel * availableBalance;
+@property (nonatomic, strong) NSNumber * availableAmount;
 
 @property (nonatomic, strong) NSMutableArray * transferInfoArray;
 @property (nonatomic, assign) BOOL isCorrectText;
@@ -45,22 +46,25 @@
     self.navigationItem.title = Localized(@"TransferAccounts");
     // Do any additional setup after loading the view.
 }
-- (void)viewWillAppear:(BOOL)animated
-{
-    [super viewWillAppear:animated];
-    if (self.listModel.type == Token_Type_BU) {
-        __weak typeof(self) weakSelf = self;
-        NSOperationQueue * queue = [[NSOperationQueue alloc] init];
-        [queue addOperationWithBlock:^{
-            double amount = [Tools MO2BU:[[HTTPManager shareManager] getDataWithBalanceJudgmentWithCost:0 ifShowLoading:NO]];
-            NSNumber * nsAmount = @(amount);
-            [[NSOperationQueue mainQueue] addOperationWithBlock:^{
-                weakSelf.availableBalance.attributedText = [Encapsulation attrWithString:[NSString stringWithFormat:@"%@\n%@ BU", Localized(@"AvailableBalance"), nsAmount] preFont:FONT(12) preColor:COLOR_6 index:[Localized(@"AvailableBalance") length] sufFont:FONT(12) sufColor:MAIN_COLOR lineSpacing:Margin_5];
-                weakSelf.availableBalance.textAlignment = NSTextAlignmentRight;
-            }];
-        }];
-    }
-}
+//- (void)viewWillAppear:(BOOL)animated
+//{
+//    [super viewWillAppear:animated];
+//    if (self.listModel.type == Token_Type_BU) {
+//        __weak typeof(self) weakSelf = self;
+//        NSOperationQueue * queue = [[NSOperationQueue alloc] init];
+//        [queue addOperationWithBlock:^{
+//            double amount = [Tools MO2BU:[[HTTPManager shareManager] getDataWithBalanceJudgmentWithCost:0 ifShowLoading:NO]];
+//            if (amount < 0) {
+//                amount = 0;
+//            }
+//            NSNumber * nsAmount = @(amount);
+//            [[NSOperationQueue mainQueue] addOperationWithBlock:^{
+//                weakSelf.availableBalance.attributedText = [Encapsulation attrWithString:[NSString stringWithFormat:@"%@\n%@ BU", Localized(@"AvailableBalance"), nsAmount] preFont:FONT(12) preColor:COLOR_6 index:[Localized(@"AvailableBalance") length] sufFont:FONT(12) sufColor:MAIN_COLOR lineSpacing:Margin_5];
+//                weakSelf.availableBalance.textAlignment = NSTextAlignmentRight;
+//            }];
+//        }];
+//    }
+//}
 - (void)setupView
 {
     UITapGestureRecognizer *tap = [[UITapGestureRecognizer alloc] initWithTarget:self action:@selector(keyBoardHidden)];
@@ -75,17 +79,17 @@
         UIView * TAView = [self setViewWithTitle:[array firstObject][i] placeholder:[array lastObject][i] index:i];
         [self.scrollView addSubview:TAView];
         [TAView mas_makeConstraints:^(MASConstraintMaker *make) {
-            make.top.mas_equalTo(Margin_15 + (ScreenScale(95) * i));
+            make.top.mas_equalTo(Margin_15 + (ScreenScale(100) * i));
             make.left.mas_equalTo(0);
             make.width.mas_equalTo(DEVICE_WIDTH);
-            make.height.mas_equalTo(ScreenScale(95));
+            make.height.mas_equalTo(ScreenScale(100));
         }];
     }
     
     self.next = [UIButton createButtonWithTitle:Localized(@"Next") isEnabled:NO Target:self Selector:@selector(nextAction)];
     [self.scrollView addSubview:self.next];
     [self.next mas_makeConstraints:^(MASConstraintMaker *make) {
-        make.top.mas_equalTo(Margin_15 + (ScreenScale(95) * 4) + MAIN_HEIGHT);
+        make.top.mas_equalTo(Margin_15 + (ScreenScale(100) * 4) + MAIN_HEIGHT);
         make.left.mas_equalTo(Margin_20);
         make.width.mas_equalTo(DEVICE_WIDTH - Margin_40);
         make.height.mas_equalTo(MAIN_HEIGHT);
@@ -126,6 +130,11 @@
             [MBProgressHUD showTipMessageInWindow:Localized(@"BUAddressIsIncorrect")];
             return;
         }
+        if ([amountOfTransfer isEqualToString:[[AccountTool account] purseAccount]]) {
+            [MBProgressHUD hideHUD];
+            [MBProgressHUD showTipMessageInWindow:Localized(@"CannotTransferToOneself")];
+            return;
+        }
         RegexPatternTool * regex = [[RegexPatternTool alloc] init];
         if ([regex validateIsPositiveFloatingPoint:weakSelf.mostOnce.text] == NO) {
             [MBProgressHUD hideHUD];
@@ -158,7 +167,7 @@
             dispatch_async(dispatch_get_main_queue(), ^{
                 [MBProgressHUD showActivityMessageInWindow:Localized(@"Loading")];
             });
-            int64_t amount = [[HTTPManager shareManager] getDataWithBalanceJudgmentWithCost:sendingQuantity + cost ifShowLoading:YES];
+            double amount = [self.availableAmount doubleValue] - (sendingQuantity + cost);
             dispatch_async(dispatch_get_main_queue(), ^{
                 if (amount < 0) {
                     [MBProgressHUD hideHUD];
@@ -196,7 +205,7 @@
 
 - (void)getDataWithPassword:(NSString *)password
 {
-    [[HTTPManager shareManager] setTransferDataWithPassword:password destAddress:_amountOfTransfer.text BUAmount:_mostOnce.text feeLimit:_transactionCosts.text notes:_remarks.text code:self.listModel.assetCode issuer:self.listModel.issuer success:^(TransactionResultModel *resultModel) {
+    [[HTTPManager shareManager] setTransferDataWithTokenType:self.listModel.type password:password destAddress:_amountOfTransfer.text BUAmount:_mostOnce.text feeLimit:_transactionCosts.text notes:_remarks.text code:self.listModel.assetCode issuer:self.listModel.issuer success:^(TransactionResultModel *resultModel) {
         [self.transferInfoArray addObject:[DateTool getDateStringWithTimeStr:[NSString stringWithFormat:@"%lld", resultModel.transactionTime]]];
         TransferResultsViewController * VC = [[TransferResultsViewController alloc] init];
         if (resultModel.errorCode == Success_Code) {
@@ -219,11 +228,7 @@
     UILabel * header = [[UILabel alloc] init];
     [viewBg addSubview:header];
     header.attributedText = [Encapsulation attrTitle:title ifRequired:YES];
-    [header mas_makeConstraints:^(MASConstraintMaker *make) {
-        make.top.equalTo(viewBg.mas_top).offset(Margin_30);
-        make.left.equalTo(viewBg.mas_left).offset(Margin_20);
-        make.right.equalTo(viewBg.mas_right).offset(-Margin_20);
-    }];
+    
     UITextField * textField = [[UITextField alloc] init];
     textField.textColor = TITLE_COLOR;
     textField.font = FONT(15);
@@ -231,13 +236,21 @@
     textField.clearButtonMode = UITextFieldViewModeWhileEditing;
     [viewBg addSubview:textField];
     [textField addTarget:self action:@selector(textChange:) forControlEvents:UIControlEventEditingChanged];
+    
+    [header mas_makeConstraints:^(MASConstraintMaker *make) {
+        make.left.equalTo(viewBg.mas_left).offset(Margin_20);
+        make.right.equalTo(viewBg.mas_right).offset(-Margin_20);
+        make.bottom.equalTo(textField.mas_top).offset(-Margin_10);
+    }];
+    
     [textField mas_makeConstraints:^(MASConstraintMaker *make) {
-        make.top.equalTo(header.mas_bottom).offset(Margin_5);
+//        make.top.equalTo(header.mas_bottom).offset(Margin_5);
         make.left.right.equalTo(header);
         make.height.mas_equalTo(Margin_40);
+        make.bottom.equalTo(viewBg);
     }];
     UIView * lineView = [[UIView alloc] init];
-    lineView.backgroundColor = COLOR(@"E3E3E3");
+    lineView.backgroundColor = LINE_COLOR;
     [viewBg addSubview:lineView];
     [lineView mas_makeConstraints:^(MASConstraintMaker *make) {
         make.top.equalTo(textField.mas_bottom);
@@ -247,8 +260,8 @@
     if (index == 0) {
         self.amountOfTransfer = textField;
         if (self.address.length > 0) {
-            self.amountOfTransfer.text = @"";
-            [self.amountOfTransfer insertText:self.address];
+            self.amountOfTransfer.text = self.address;
+            [self.amountOfTransfer sendActionsForControlEvents:UIControlEventEditingChanged];
         }
         UIButton * scan = [UIButton createButtonWithNormalImage:@"transferAccounts_scan" SelectedImage:@"transferAccounts_scan" Target:self Selector:@selector(scanAction)];
         scan.contentHorizontalAlignment = UIControlContentHorizontalAlignmentRight;
@@ -260,10 +273,16 @@
         self.availableBalance = [[UILabel alloc] init];
         self.availableBalance.numberOfLines = 0;
         [header addSubview:self.availableBalance];
-        self.availableBalance.attributedText = [Encapsulation attrWithString:[NSString stringWithFormat:@"%@\n%@ %@", Localized(@"AvailableBalance"), self.listModel.amount, self.listModel.assetCode] preFont:FONT(12) preColor:COLOR_6 index:[Localized(@"AvailableBalance") length] sufFont:FONT(12) sufColor:MAIN_COLOR lineSpacing:Margin_5];
+        double amount = [self.listModel.amount doubleValue];
+        if (self.listModel.type == Token_Type_BU) {
+            amount = amount - [[[NSUserDefaults standardUserDefaults] objectForKey:Minimum_Asset_Limitation] doubleValue];
+        }
+        self.availableAmount = @(amount);
+        self.availableBalance.attributedText = [Encapsulation attrWithString:[NSString stringWithFormat:@"%@\n%@ %@", Localized(@"AvailableBalance"), self.availableAmount, self.listModel.assetCode] preFont:FONT(12) preColor:COLOR_6 index:[Localized(@"AvailableBalance") length] sufFont:FONT(12) sufColor:MAIN_COLOR lineSpacing:ScreenScale(7)];
         self.availableBalance.textAlignment = NSTextAlignmentRight;
         [self.availableBalance mas_makeConstraints:^(MASConstraintMaker *make) {
             make.right.top.equalTo(header);
+            make.width.mas_lessThanOrEqualTo(DEVICE_WIDTH - Margin_40);
         }];
         self.mostOnce = textField;
     } else if (index == 2) {
@@ -305,8 +324,8 @@
 - (void)scanAction
 {
     HMScannerController *scanner = [HMScannerController scannerWithCardName:nil avatar:nil completion:^(NSString *stringValue) {
-        self.amountOfTransfer.text = @"";
-        [self.amountOfTransfer insertText:stringValue];
+        self.amountOfTransfer.text = stringValue;
+        [self.amountOfTransfer sendActionsForControlEvents:UIControlEventEditingChanged];
     }];
     [scanner setTitleColor:[UIColor whiteColor] tintColor:MAIN_COLOR];
     [self showDetailViewController:scanner sender:nil];

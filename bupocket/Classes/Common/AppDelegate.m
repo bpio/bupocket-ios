@@ -28,6 +28,8 @@
     [self.window makeKeyAndVisible];
     [self setRootVC];
     [self setVersionUpdate];
+    // Minimum Asset Limitation
+    [[HTTPManager shareManager] getBlockFees];
     return YES;
 }
 

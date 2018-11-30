@@ -44,6 +44,7 @@
 // font
 #define FONT(F) [UIFont systemFontOfSize:ScreenScale(F)]
 #define FONT_Bold(F) [UIFont boldSystemFontOfSize:ScreenScale(F)]
+//#define FONT_Bold(F) [UIFont fontWithName:@"SourceHanSansCN-Medium" size:ScreenScale(F)]
 #define TITLE_FONT FONT(14)
 
 //#define FONT(F) [UIFont fontWithName:@"SourceHanSansCN-Medium" size:ScreenScale(F)]
@@ -52,12 +53,17 @@
 // Color
 #define COLOR(HexString)  [UIColor colorWithHexString:HexString]
 #define RandomColor [UIColor colorWithRed:arc4random_uniform(255) / 255.0 green:arc4random_uniform(255) / 255.0 blue:arc4random_uniform(255) / 255.0 alpha:1.0]
-#define NAVITEM_COLOR COLOR(@"5745C3")
+//#define NAVITEM_COLOR COLOR(@"5745C3")
+#define NAVITEM_COLOR COLOR(@"7C96F8")
 #define LINE_COLOR COLOR(@"E3E3E3")
 #define TITLE_COLOR COLOR(@"333333")
-#define MAIN_COLOR COLOR(@"36B3FF")
-#define WARNING_COLOR COLOR(@"FF7272")
-#define DISABLED_COLOR COLOR(@"9AD9FF")
+//#define MAIN_COLOR COLOR(@"36B3FF")
+#define MAIN_COLOR COLOR(@"02CA71")
+//#define WARNING_COLOR COLOR(@"FF7272")
+#define WARNING_COLOR COLOR(@"FF6464")
+//#define DISABLED_COLOR COLOR(@"9AD9FF")
+#define DISABLED_COLOR COLOR(@"8CD7B5")
+#define TAGBG_COLOR COLOR(@"3FD592")
 #define VIEWBG_COLOR COLOR(@"F5F5F5")
 #define COLOR_6 COLOR(@"666666")
 #define COLOR_9 COLOR(@"999999")

@@ -45,7 +45,7 @@
         make.height.mas_equalTo(ScreenScale(120));
     }];
     UIView * lineView = [[UIView alloc] init];
-    lineView.backgroundColor = COLOR(@"E3E3E3");
+    lineView.backgroundColor = LINE_COLOR;
     [self.view addSubview:lineView];
     [lineView mas_makeConstraints:^(MASConstraintMaker *make) {
         make.top.equalTo(self.feedbackText.mas_bottom);
@@ -70,7 +70,7 @@
     }];
     self.contactField = textField;
     UIView * line = [[UIView alloc] init];
-    line.backgroundColor = COLOR(@"E3E3E3");
+    line.backgroundColor = LINE_COLOR;
     [self.view addSubview:line];
     [line mas_makeConstraints:^(MASConstraintMaker *make) {
         make.top.equalTo(textField.mas_bottom);
@@ -105,7 +105,7 @@
     [[HTTPManager shareManager] getFeedbackDataWithContent:self.feedbackText.text contact:self.contactField.text success:^(id responseObject) {
         NSInteger code = [[responseObject objectForKey:@"errCode"] integerValue];
         if (code == Success_Code) {
-            [MBProgressHUD showSuccessMessage:Localized(@"SubmissionOfSuccess")];
+            [MBProgressHUD showTipMessageInWindow:Localized(@"SubmissionOfSuccess")];
         } else {
             [MBProgressHUD showTipMessageInWindow:[ErrorTypeTool getDescriptionWithErrorCode:code]];
         }

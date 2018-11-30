@@ -14,8 +14,21 @@
 {
     NSString *errorDesc;
     switch(errorCode) {
-//        case SYSTEM_ERROR: errorDesc = Localized(@"SYSTEM_ERROR"); break;
-        default: errorDesc = Localized(@"SYSTEM_ERROR"); break;
+            // getBalance
+        case INVALID_ADDRESS_ERROR: errorDesc = Localized(@"INVALID_ADDRESS_ERROR");
+            break;
+//            INVALID_ADDRESS_ERROR 11006无效地址
+//            The account does not have the asset  帐户没有资产
+//        case NO_ASSET_ERROR: errorDesc = Localized(@"");
+//            break;
+        case CONNECTNETWORK_ERROR: errorDesc = Localized(@"NoNetWork");
+            break;
+            // SourceAddress cannot be equal to destAddress
+        case SOURCEADDRESS_EQUAL_DESTADDRESS_ERROR: errorDesc = Localized(@"CannotTransferToOneself");
+            break;
+            case SYSTEM_ERROR: errorDesc = Localized(@"SYSTEM_ERROR");
+        default: errorDesc = Localized(@"LoadFailure");
+            break;
     }
     return errorDesc;
 }

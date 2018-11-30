@@ -34,7 +34,7 @@
         self.versionUpdateTitle.text = [NSString stringWithFormat:@"%@%@？", Localized(@"IfUpdate"), versionNumber];
         self.versionSize.text = [NSString stringWithFormat:@"%@%@", Localized(@"AppSize"), versionSize];
         self.updateContent.text = content;
-        CGFloat height = [Encapsulation rectWithText:self.updateContent.text fontSize:14 textWidth:DEVICE_WIDTH - ScreenScale(80)].size.height + ScreenScale(370);
+        CGFloat height = [Encapsulation rectWithText:self.updateContent.text font:_updateContent.font textWidth:DEVICE_WIDTH - ScreenScale(80)].size.height + ScreenScale(370);
         self.bounds = CGRectMake(0, 0, DEVICE_WIDTH - Margin_40, height);
     }
     return self;
@@ -144,7 +144,7 @@
     if (!_versionSize) {
         _versionSize = [[UILabel alloc] init];
         _versionSize.textColor = COLOR_6;
-        _versionSize.font = FONT(14);
+        _versionSize.font = TITLE_FONT;
     }
     return _versionSize;
 }
@@ -153,7 +153,7 @@
     if (!_updateContent) {
         _updateContent = [[UILabel alloc] init];
         _updateContent.textColor = COLOR_6;
-        _updateContent.font = FONT(14);
+        _updateContent.font = TITLE_FONT;
         _updateContent.numberOfLines = 0;
     }
     return _updateContent;

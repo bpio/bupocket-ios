@@ -111,7 +111,7 @@ typedef NS_ENUM(NSInteger , YBPopupMenuPriorityDirection) {
 /**
  设置字体大小 自定义cell时忽略 Default is 15
  */
-@property (nonatomic, assign) CGFloat fontSize;
+@property (nonatomic, strong) UIFont * fontSize;
 
 /**
  设置字体颜色 自定义cell时忽略 Default is [UIColor blackColor]

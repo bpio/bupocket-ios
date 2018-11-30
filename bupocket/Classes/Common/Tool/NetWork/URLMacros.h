@@ -18,11 +18,12 @@
  */
 
 #define WEB_SERVER_DOMAIN @"https://api-bp.bumo.io/"
+//#define WEB_SERVER_DOMAIN @"http://52.80.218.114:8081/"
 #define BUMO_NODE_URL @"https://wallet-node.bumo.io"
 #define PUSH_MESSAGE_SOCKET_URL @"https://ws-tools.bumo.io"
 
-//#define WEB_SERVER_DOMAIN_TEST @"http://52.80.218.114:8081/"
-#define WEB_SERVER_DOMAIN_TEST @"http://192.168.6.97:8081/"
+#define WEB_SERVER_DOMAIN_TEST @"http://52.80.218.114:8081/"
+//#define WEB_SERVER_DOMAIN_TEST @"http://192.168.6.97:8081/"
 //#define WEB_SERVER_DOMAIN_TEST @"https://api-bp.bumotest.io/"
 #define BUMO_NODE_URL_TEST @"https://wallet-node.bumotest.io"
 #define PUSH_MESSAGE_SOCKET_URL_TEST @"https://ws-tools.bumotest.io"

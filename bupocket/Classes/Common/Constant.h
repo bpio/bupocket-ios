@@ -22,12 +22,15 @@
 #define AppLanguage @"appLanguage"
 #define ZhHans @"zh-Hans"
 #define EN @"en"
+// Current currency index 0：CNY（¥）, 1：USD（$）, 2：JPY（¥）, 3：KRW（₩）,
 #define Current_Currency @"CurrentCurrency"
 // Network request timeout limit time
 #define Timeout_Interval 30.0
 #define Assets_HomePage_CacheData @"AssetsHomePageCacheData"
 #define Assets_HomePage_CacheData_Test @"AssetsHomePageCacheDataTest"
+// 0: BU 1：ATP 2：CTP
 #define Token_Type_BU 0
+// 0：Turn out 1：To change into
 #define Transaction_Type_TurnOut 0
 // Add assets
 #define Add_Assets @"AddAssets"
@@ -58,9 +61,10 @@
 #define Maximum_Number 20
 // Feedback content
 #define SuggestionsContent_MAX 100
-// ATP
+// ATP Version
 #define ATP_Version @"1.0"
-
+// Obtain minimum asset limits and fuel unit prices for accounts in designated blocks
+#define Minimum_Asset_Limitation @"MinimumAssetLimitation"
 
 
 

@@ -185,7 +185,7 @@ UITableViewDataSource
     }
     cell.backgroundColor = [UIColor clearColor];
     cell.textLabel.textColor = _textColor;
-    cell.textLabel.font = [UIFont systemFontOfSize:_fontSize];
+    cell.textLabel.font = _fontSize;
     if ([_titles[indexPath.row] isKindOfClass:[NSAttributedString class]]) {
         cell.textLabel.attributedText = _titles[indexPath.row];
     }else if ([_titles[indexPath.row] isKindOfClass:[NSString class]]) {
@@ -286,7 +286,7 @@ UITableViewDataSource
     self.isShowShadow = YES;
     _dismissOnSelected = YES;
     _dismissOnTouchOutside = YES;
-    _fontSize = 15;
+    _fontSize = FONT(15);
     _textColor = [UIColor blackColor];
     _offset = 0.0;
     _relyRect = CGRectZero;
@@ -371,7 +371,7 @@ UITableViewDataSource
     [self updateUI];
 }
 
-- (void)setFontSize:(CGFloat)fontSize
+- (void)setFontSize:(UIFont *)fontSize
 {
     _fontSize = fontSize;
     [self.tableView reloadData];

@@ -105,6 +105,7 @@
 		954371742199234100915BBE /* SettingViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 954371732199234100915BBE /* SettingViewController.m */; };
 		9549EC66219C0CF800307255 /* CreateTipsAlertView.m in Sources */ = {isa = PBXBuildFile; fileRef = 9549EC65219C0CF800307255 /* CreateTipsAlertView.m */; };
 		9549EC70219D075F00307255 /* ClearCacheTool.m in Sources */ = {isa = PBXBuildFile; fileRef = 9549EC6F219D075E00307255 /* ClearCacheTool.m */; };
+		956CD42121B016D1004DC1FA /* ListModel.m in Sources */ = {isa = PBXBuildFile; fileRef = 956CD42021B016D1004DC1FA /* ListModel.m */; };
 		958127EF219ABD9D0081A02E /* VersionUpdateAlertView.m in Sources */ = {isa = PBXBuildFile; fileRef = 958127EE219ABD9D0081A02E /* VersionUpdateAlertView.m */; };
 		958127F2219AC82A0081A02E /* VersionModel.m in Sources */ = {isa = PBXBuildFile; fileRef = 958127F1219AC82A0081A02E /* VersionModel.m */; };
 		958AA69821A2A89600BEA50C /* CustomRefreshFooter.m in Sources */ = {isa = PBXBuildFile; fileRef = 958AA69721A2A89600BEA50C /* CustomRefreshFooter.m */; };
@@ -370,6 +371,8 @@
 		9549EC65219C0CF800307255 /* CreateTipsAlertView.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = CreateTipsAlertView.m; sourceTree = "<group>"; };
 		9549EC6E219D075E00307255 /* ClearCacheTool.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ClearCacheTool.h; sourceTree = "<group>"; };
 		9549EC6F219D075E00307255 /* ClearCacheTool.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ClearCacheTool.m; sourceTree = "<group>"; };
+		956CD41F21B016D1004DC1FA /* ListModel.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = ListModel.h; sourceTree = "<group>"; };
+		956CD42021B016D1004DC1FA /* ListModel.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = ListModel.m; sourceTree = "<group>"; };
 		958127ED219ABD9D0081A02E /* VersionUpdateAlertView.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = VersionUpdateAlertView.h; sourceTree = "<group>"; };
 		958127EE219ABD9D0081A02E /* VersionUpdateAlertView.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = VersionUpdateAlertView.m; sourceTree = "<group>"; };
 		958127F0219AC82A0081A02E /* VersionModel.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = VersionModel.h; sourceTree = "<group>"; };
@@ -703,6 +706,8 @@
 				8395AF302189496E0082EA30 /* DistributionModel.m */,
 				8395AF32218958840082EA30 /* TransactionResultModel.h */,
 				8395AF33218958840082EA30 /* TransactionResultModel.m */,
+				956CD41F21B016D1004DC1FA /* ListModel.h */,
+				956CD42021B016D1004DC1FA /* ListModel.m */,
 				952ADD0B21A65B4B00BEE51B /* SocketIOHandler.h */,
 				952ADD0C21A65B4B00BEE51B /* SocketIOHandler.m */,
 			);
@@ -1316,6 +1321,7 @@
 				833799322177305A00C222A5 /* UIView+Extension.m in Sources */,
 				83379A98217EB79B00C222A5 /* RequestTimeoutViewController.m in Sources */,
 				835A45272174C14D005BFCDD /* AppDelegate.m in Sources */,
+				956CD42121B016D1004DC1FA /* ListModel.m in Sources */,
 				83379AE22180630300C222A5 /* TxDetailModel.m in Sources */,
 				95A8A41D219D5FF7008E978E /* YBRectConst.m in Sources */,
 				833799172176E1E600C222A5 /* ListTableViewCell.m in Sources */,

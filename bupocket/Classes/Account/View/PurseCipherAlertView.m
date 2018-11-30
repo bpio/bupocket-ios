@@ -32,7 +32,7 @@
         } else {
             _promptLabel.textColor = COLOR_6;
         }
-        self.bgHeight = [Encapsulation rectWithText:self.promptLabel.text fontSize:15 textWidth:DEVICE_WIDTH - ScreenScale(80)].size.height  + ScreenScale(255);
+        self.bgHeight = [Encapsulation rectWithText:self.promptLabel.text font:_promptLabel.font textWidth:DEVICE_WIDTH - ScreenScale(80)].size.height  + ScreenScale(255);
         self.bounds = CGRectMake(0, 0, DEVICE_WIDTH - Margin_40, self.bgHeight);
     }
     return self;
@@ -76,7 +76,7 @@
     PWTextField.font = TITLE_FONT;
     PWTextField.placeholder = Localized(@"PWPlaceholder");
     PWTextField.layer.cornerRadius = ScreenScale(3);
-    PWTextField.layer.borderColor = COLOR(@"E3E3E3").CGColor;
+    PWTextField.layer.borderColor = LINE_COLOR.CGColor;
     PWTextField.layer.borderWidth = LINE_WIDTH;
     PWTextField.secureTextEntry = YES;
     PWTextField.leftView = [[UIView alloc] initWithFrame:CGRectMake(0, 0, Margin_10, MAIN_HEIGHT)];

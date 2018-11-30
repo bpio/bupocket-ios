@@ -17,6 +17,15 @@
 @property (nonatomic, strong) UIView * lineView;
 @property (nonatomic, strong) UIButton * submission;
 
+@property (nonatomic, strong) UILabel * reciprocalAccountTitle;
+@property (nonatomic, strong) UILabel * amountOfTransferTitle;
+@property (nonatomic, strong) UILabel * estimatedMaximumTitle;
+@property (nonatomic, strong) UILabel * remarksTitle;
+@property (nonatomic, strong) UILabel * reciprocalAccount;
+@property (nonatomic, strong) UILabel * amountOfTransfer;
+@property (nonatomic, strong) UILabel * estimatedMaximum;
+@property (nonatomic, strong) UILabel * remarks;
+
 @end
 
 @implementation TransferDetailsAlertView
@@ -39,15 +48,21 @@
     [self addSubview:self.confirmationOfTransfer];
     [self addSubview:self.transferPrompt];
     [self addSubview:self.lineView];
+    [self addSubview:self.submission];
     for (NSInteger i = 0; i < [[_transferInfoArray firstObject] count]; i ++) {
         [self setUpTransferInfoWithIndex:i];
     }
-    [self addSubview:self.submission];
-    self.frame = CGRectMake(0, DEVICE_HEIGHT - ScreenScale(440) - SafeAreaBottomH, DEVICE_WIDTH, ScreenScale(440));
+//    self.frame = CGRectMake(0, DEVICE_HEIGHT - ScreenScale(440) - SafeAreaBottomH, DEVICE_WIDTH, ScreenScale(440));
 }
 
 - (void)setUpTransferInfoWithIndex:(NSInteger)index
 {
+    UILabel * titleLabel = [[UILabel alloc] init];
+    titleLabel.font = FONT(15);
+    titleLabel.textColor = COLOR_9;
+    titleLabel.text = _transferInfoArray[0][index];
+    [self addSubview:titleLabel];
+    
     UILabel * infoLabel = [[UILabel alloc] init];
     infoLabel.font = FONT(15);
     infoLabel.textColor = COLOR_6;
@@ -55,58 +70,132 @@
     infoLabel.numberOfLines = 0;
     infoLabel.textAlignment = NSTextAlignmentRight;
     [self addSubview:infoLabel];
-    infoLabel.preferredMaxLayoutWidth = ScreenScale(150);
-    [infoLabel mas_makeConstraints:^(MASConstraintMaker *make) {
-        make.bottom.equalTo(self.mas_bottom).offset(-ScreenScale(245) + Margin_40 * index);
-        make.right.equalTo(self.mas_right).offset(-Margin_20);
-    }];
-    
-    UILabel * titleLabel = [[UILabel alloc] init];
-    titleLabel.font = FONT(15);
-    titleLabel.textColor = COLOR_9;
-    titleLabel.text = _transferInfoArray[0][index];
-    [self addSubview:titleLabel];
-    [titleLabel mas_makeConstraints:^(MASConstraintMaker *make) {
-        make.top.equalTo(infoLabel);
-        make.left.equalTo(self.mas_left).offset(Margin_20);
-    }];
+//    infoLabel.preferredMaxLayoutWidth = ScreenScale(150);
+//    [infoLabel mas_makeConstraints:^(MASConstraintMaker *make) {
+//        make.bottom.equalTo(self.mas_bottom).offset(-ScreenScale(250) + MAIN_HEIGHT * index);
+        
+//        make.height.mas_greaterThanOrEqualTo(Margin_15);
+//    }];
+//    [titleLabel setContentCompressionResistancePriority:UILayoutPriorityRequired forAxis:UILayoutConstraintAxisHorizontal];
+//    [titleLabel mas_makeConstraints:^(MASConstraintMaker *make) {
+//        make.top.equalTo(infoLabel);
+//        make.left.equalTo(self.mas_left).offset(Margin_20);
+////        make.right.mas_lessThanOrEqualTo(infoLabel.mas_left).offset(-Margin_10);
+//    }];
+    switch (index) {
+        case 0: {
+            self.reciprocalAccountTitle = titleLabel;
+            self.reciprocalAccount = infoLabel;
+            
+        }
+            break;
+        case 1:
+        {
+            self.amountOfTransferTitle = titleLabel;
+            self.amountOfTransfer = infoLabel;
+            
+        }
+            break;
+        case 2:
+        {
+            self.estimatedMaximumTitle = titleLabel;
+            self.estimatedMaximum = infoLabel;
+            
+        }
+            break;
+        case 3:
+        {
+            self.remarksTitle = titleLabel;
+            self.remarks = infoLabel;
+           
+        }
+            break;
+        default:
+            break;
+    }
     
 }
 
 - (void)layoutSubviews
 {
     [super layoutSubviews];
-    [self mas_makeConstraints:^(MASConstraintMaker *make) {
-        make.left.right.equalTo([UIApplication sharedApplication].keyWindow);
-        make.height.mas_equalTo(ScreenScale(440));
-        make.bottom.equalTo([UIApplication sharedApplication].keyWindow.mas_bottom).offset(-SafeAreaBottomH);
-    }];
-    
-    [self.closeBtn mas_makeConstraints:^(MASConstraintMaker *make) {
-        make.top.right.equalTo(self);
-        make.size.mas_equalTo(CGSizeMake(MAIN_HEIGHT, MAIN_HEIGHT));
-    }];
-    
-    [self.confirmationOfTransfer mas_makeConstraints:^(MASConstraintMaker *make) {
-        make.top.equalTo(self).offset(ScreenScale(35));
-        make.centerX.equalTo(self);
-    }];
-    
-    [self.transferPrompt mas_makeConstraints:^(MASConstraintMaker *make) {
-        make.top.equalTo(self.confirmationOfTransfer.mas_bottom).offset(ScreenScale(18));
-        make.left.equalTo(self.mas_left).offset(Margin_20);
-        make.right.equalTo(self.mas_right).offset(-Margin_20);
-    }];
-    
-    [self.lineView mas_makeConstraints:^(MASConstraintMaker *make) {
-        make.left.right.equalTo(self.transferPrompt);
-        make.top.equalTo(self.transferPrompt.mas_bottom).offset(Margin_30);
-    }];
-    
     [self.submission mas_makeConstraints:^(MASConstraintMaker *make) {
         make.bottom.equalTo(self.mas_bottom).offset(- SafeAreaBottomH - Margin_30);
         make.centerX.equalTo(self);
         make.size.mas_equalTo(CGSizeMake(DEVICE_WIDTH - Margin_40, MAIN_HEIGHT));
+    }];
+    
+    [self.remarks mas_makeConstraints:^(MASConstraintMaker *make) {
+        make.bottom.equalTo(self.submission.mas_top).offset(-Margin_50);
+        make.right.equalTo(self.mas_right).offset(-Margin_20);
+        make.left.mas_greaterThanOrEqualTo(self.remarksTitle.mas_right).offset(Margin_10);
+        make.height.mas_greaterThanOrEqualTo(Margin_15);
+    }];
+    [self.remarksTitle setContentCompressionResistancePriority:UILayoutPriorityRequired forAxis:UILayoutConstraintAxisHorizontal];
+    [self.remarksTitle mas_makeConstraints:^(MASConstraintMaker *make) {
+        make.top.equalTo(self.remarks);
+        make.left.equalTo(self.mas_left).offset(Margin_20);
+        make.right.mas_lessThanOrEqualTo(self.remarks.mas_left).offset(-Margin_10);
+    }];
+    
+    [self.estimatedMaximum mas_makeConstraints:^(MASConstraintMaker *make) {
+        make.bottom.equalTo(self.remarks.mas_top).offset(-Margin_25);
+        make.right.equalTo(self.remarks);
+        make.left.mas_greaterThanOrEqualTo(self.estimatedMaximumTitle.mas_right).offset(Margin_10);
+    }];
+    [self.estimatedMaximumTitle setContentCompressionResistancePriority:UILayoutPriorityRequired forAxis:UILayoutConstraintAxisHorizontal];
+    [self.estimatedMaximumTitle mas_makeConstraints:^(MASConstraintMaker *make) {
+        make.top.equalTo(self.estimatedMaximum);
+        make.left.equalTo(self.remarksTitle);
+        make.right.mas_lessThanOrEqualTo(self.estimatedMaximum.mas_left).offset(-Margin_10);
+    }];
+    
+    [self.amountOfTransfer mas_makeConstraints:^(MASConstraintMaker *make) {
+        make.bottom.equalTo(self.estimatedMaximum.mas_top).offset(-Margin_25);
+        make.right.equalTo(self.remarks);
+        make.left.mas_greaterThanOrEqualTo(self.amountOfTransferTitle.mas_right).offset(Margin_10);
+    }];
+    [self.amountOfTransferTitle setContentCompressionResistancePriority:UILayoutPriorityRequired forAxis:UILayoutConstraintAxisHorizontal];
+    [self.amountOfTransferTitle mas_makeConstraints:^(MASConstraintMaker *make) {
+        make.top.equalTo(self.amountOfTransfer);
+        make.left.equalTo(self.remarksTitle);
+        make.right.mas_lessThanOrEqualTo(self.amountOfTransfer.mas_left).offset(-Margin_10);
+    }];
+    
+    [self.reciprocalAccount mas_makeConstraints:^(MASConstraintMaker *make) {
+        make.bottom.equalTo(self.amountOfTransfer.mas_top).offset(-Margin_25);
+        make.right.equalTo(self.remarks);
+        make.left.mas_greaterThanOrEqualTo(self.reciprocalAccountTitle.mas_right).offset(Margin_10);
+    }];
+    [self.reciprocalAccountTitle setContentCompressionResistancePriority:UILayoutPriorityRequired forAxis:UILayoutConstraintAxisHorizontal];
+    [self.reciprocalAccountTitle mas_makeConstraints:^(MASConstraintMaker *make) {
+        make.top.equalTo(self.reciprocalAccount);
+        make.left.equalTo(self.remarksTitle);
+        make.right.mas_lessThanOrEqualTo(self.reciprocalAccount.mas_left).offset(-Margin_10);
+    }];
+    
+    [self.lineView mas_makeConstraints:^(MASConstraintMaker *make) {
+        make.left.equalTo(self.mas_left).offset(Margin_20);
+        make.right.equalTo(self.mas_right).offset(-Margin_20);
+        make.bottom.equalTo(self.reciprocalAccount.mas_top).offset(-Margin_25);
+    }];
+    [self.transferPrompt mas_makeConstraints:^(MASConstraintMaker *make) {
+        make.bottom.equalTo(self.lineView.mas_top).offset(-Margin_30);
+        make.left.right.equalTo(self.lineView);
+    }];
+    [self.confirmationOfTransfer mas_makeConstraints:^(MASConstraintMaker *make) {
+        make.bottom.equalTo(self.transferPrompt.mas_top).offset(-ScreenScale(18));
+        make.centerX.equalTo(self);
+        make.top.equalTo(self.mas_top).offset(ScreenScale(35));
+    }];
+    [self.closeBtn mas_makeConstraints:^(MASConstraintMaker *make) {
+        make.top.right.equalTo(self);
+        make.size.mas_equalTo(CGSizeMake(MAIN_HEIGHT, MAIN_HEIGHT));
+    }];
+    [self mas_makeConstraints:^(MASConstraintMaker *make) {
+        make.left.right.equalTo([UIApplication sharedApplication].keyWindow);
+//        make.height.mas_equalTo(ScreenScale(440));
+        make.bottom.equalTo([UIApplication sharedApplication].keyWindow.mas_bottom).offset(-SafeAreaBottomH);
     }];
 }
 - (UIButton *)closeBtn
