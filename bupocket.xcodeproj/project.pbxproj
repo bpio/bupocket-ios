@@ -106,11 +106,11 @@
 		9549EC66219C0CF800307255 /* CreateTipsAlertView.m in Sources */ = {isa = PBXBuildFile; fileRef = 9549EC65219C0CF800307255 /* CreateTipsAlertView.m */; };
 		9549EC70219D075F00307255 /* ClearCacheTool.m in Sources */ = {isa = PBXBuildFile; fileRef = 9549EC6F219D075E00307255 /* ClearCacheTool.m */; };
 		956CD42121B016D1004DC1FA /* ListModel.m in Sources */ = {isa = PBXBuildFile; fileRef = 956CD42021B016D1004DC1FA /* ListModel.m */; };
+		9579E71F21B4D6C200051EDB /* sdk_ios.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 958AAE5121A3D36800BEA50C /* sdk_ios.framework */; };
+		9579E72021B4D6C200051EDB /* sdk_ios.framework in Embed Frameworks */ = {isa = PBXBuildFile; fileRef = 958AAE5121A3D36800BEA50C /* sdk_ios.framework */; settings = {ATTRIBUTES = (CodeSignOnCopy, RemoveHeadersOnCopy, ); }; };
 		958127EF219ABD9D0081A02E /* VersionUpdateAlertView.m in Sources */ = {isa = PBXBuildFile; fileRef = 958127EE219ABD9D0081A02E /* VersionUpdateAlertView.m */; };
 		958127F2219AC82A0081A02E /* VersionModel.m in Sources */ = {isa = PBXBuildFile; fileRef = 958127F1219AC82A0081A02E /* VersionModel.m */; };
 		958AA69821A2A89600BEA50C /* CustomRefreshFooter.m in Sources */ = {isa = PBXBuildFile; fileRef = 958AA69721A2A89600BEA50C /* CustomRefreshFooter.m */; };
-		958AAE5221A3D37F00BEA50C /* sdk_ios.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 958AAE5121A3D36800BEA50C /* sdk_ios.framework */; };
-		958AAE5321A3D37F00BEA50C /* sdk_ios.framework in Embed Frameworks */ = {isa = PBXBuildFile; fileRef = 958AAE5121A3D36800BEA50C /* sdk_ios.framework */; settings = {ATTRIBUTES = (CodeSignOnCopy, RemoveHeadersOnCopy, ); }; };
 		95A8A3B1219D1352008E978E /* LanguageManager.m in Sources */ = {isa = PBXBuildFile; fileRef = 95A8A3AF219D1352008E978E /* LanguageManager.m */; };
 		95A8A3B5219D157C008E978E /* DateTool.m in Sources */ = {isa = PBXBuildFile; fileRef = 95A8A3B4219D157C008E978E /* DateTool.m */; };
 		95A8A3B9219D15D8008E978E /* RegexPatternTool.m in Sources */ = {isa = PBXBuildFile; fileRef = 95A8A3B8219D15D8008E978E /* RegexPatternTool.m */; };
@@ -138,6 +138,13 @@
 			remoteGlobalIDString = 83B4659F21745C9300187961;
 			remoteInfo = bupocket;
 		};
+		9579E72121B4D6C200051EDB /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = 958AAE4C21A3D36800BEA50C /* sdk-ios.xcodeproj */;
+			proxyType = 1;
+			remoteGlobalIDString = 58FED02B2117EF6F00702DDB;
+			remoteInfo = "sdk-ios";
+		};
 		958AAE5021A3D36800BEA50C /* PBXContainerItemProxy */ = {
 			isa = PBXContainerItemProxy;
 			containerPortal = 958AAE4C21A3D36800BEA50C /* sdk-ios.xcodeproj */;
@@ -145,23 +152,16 @@
 			remoteGlobalIDString = 58FED02C2117EF6F00702DDB;
 			remoteInfo = "sdk-ios";
 		};
-		958AAE5421A3D37F00BEA50C /* PBXContainerItemProxy */ = {
-			isa = PBXContainerItemProxy;
-			containerPortal = 958AAE4C21A3D36800BEA50C /* sdk-ios.xcodeproj */;
-			proxyType = 1;
-			remoteGlobalIDString = 58FED02B2117EF6F00702DDB;
-			remoteInfo = "sdk-ios";
-		};
 /* End PBXContainerItemProxy section */
 
 /* Begin PBXCopyFilesBuildPhase section */
-		838DC7622182DDDB002FF276 /* Embed Frameworks */ = {
+		9579E72321B4D6C200051EDB /* Embed Frameworks */ = {
 			isa = PBXCopyFilesBuildPhase;
 			buildActionMask = 2147483647;
 			dstPath = "";
 			dstSubfolderSpec = 10;
 			files = (
-				958AAE5321A3D37F00BEA50C /* sdk_ios.framework in Embed Frameworks */,
+				9579E72021B4D6C200051EDB /* sdk_ios.framework in Embed Frameworks */,
 			);
 			name = "Embed Frameworks";
 			runOnlyForDeploymentPostprocessing = 0;
@@ -373,6 +373,12 @@
 		9549EC6F219D075E00307255 /* ClearCacheTool.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ClearCacheTool.m; sourceTree = "<group>"; };
 		956CD41F21B016D1004DC1FA /* ListModel.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = ListModel.h; sourceTree = "<group>"; };
 		956CD42021B016D1004DC1FA /* ListModel.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = ListModel.m; sourceTree = "<group>"; };
+		9579E71121B4D39B00051EDB /* CoreSpotlight.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = CoreSpotlight.framework; path = System/Library/Frameworks/CoreSpotlight.framework; sourceTree = SDKROOT; };
+		9579E71421B4D3AE00051EDB /* SystemConfiguration.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = SystemConfiguration.framework; path = System/Library/Frameworks/SystemConfiguration.framework; sourceTree = SDKROOT; };
+		9579E71621B4D3C400051EDB /* Security.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Security.framework; path = System/Library/Frameworks/Security.framework; sourceTree = SDKROOT; };
+		9579E71821B4D3CF00051EDB /* WebKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = WebKit.framework; path = System/Library/Frameworks/WebKit.framework; sourceTree = SDKROOT; };
+		9579E71A21B4D3D900051EDB /* StoreKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = StoreKit.framework; path = System/Library/Frameworks/StoreKit.framework; sourceTree = SDKROOT; };
+		9579E71C21B4D48900051EDB /* bupocket.entitlements */ = {isa = PBXFileReference; lastKnownFileType = text.plist.entitlements; path = bupocket.entitlements; sourceTree = "<group>"; };
 		958127ED219ABD9D0081A02E /* VersionUpdateAlertView.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = VersionUpdateAlertView.h; sourceTree = "<group>"; };
 		958127EE219ABD9D0081A02E /* VersionUpdateAlertView.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = VersionUpdateAlertView.m; sourceTree = "<group>"; };
 		958127F0219AC82A0081A02E /* VersionModel.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = VersionModel.h; sourceTree = "<group>"; };
@@ -406,8 +412,8 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				9579E71F21B4D6C200051EDB /* sdk_ios.framework in Frameworks */,
 				E0A64C5CAFFFD9486B7713D7 /* Pods_bupocket.framework in Frameworks */,
-				958AAE5221A3D37F00BEA50C /* sdk_ios.framework in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -798,6 +804,7 @@
 		83B465A221745C9300187961 /* bupocket */ = {
 			isa = PBXGroup;
 			children = (
+				9579E71C21B4D48900051EDB /* bupocket.entitlements */,
 				835A45202174C14D005BFCDD /* Classes */,
 				83B465A621745C9300187961 /* ViewController.h */,
 				83B465A721745C9300187961 /* ViewController.m */,
@@ -940,6 +947,11 @@
 		AAA27303C314FA52BBDCAB7B /* Frameworks */ = {
 			isa = PBXGroup;
 			children = (
+				9579E71A21B4D3D900051EDB /* StoreKit.framework */,
+				9579E71821B4D3CF00051EDB /* WebKit.framework */,
+				9579E71621B4D3C400051EDB /* Security.framework */,
+				9579E71421B4D3AE00051EDB /* SystemConfiguration.framework */,
+				9579E71121B4D39B00051EDB /* CoreSpotlight.framework */,
 				EB267DD938A42BAD30A164A2 /* Pods_bupocket.framework */,
 				248F98B6791F2F7C55E77E0E /* Pods_bupocketTests.framework */,
 				9D915F385F1A78B38EC83B6E /* Pods_bupocketUITests.framework */,
@@ -971,13 +983,13 @@
 				83B4659C21745C9300187961 /* Sources */,
 				83B4659D21745C9300187961 /* Frameworks */,
 				83B4659E21745C9300187961 /* Resources */,
-				838DC7622182DDDB002FF276 /* Embed Frameworks */,
 				6C9857D402B444A8F985E58F /* [CP] Embed Pods Frameworks */,
+				9579E72321B4D6C200051EDB /* Embed Frameworks */,
 			);
 			buildRules = (
 			);
 			dependencies = (
-				958AAE5521A3D37F00BEA50C /* PBXTargetDependency */,
+				9579E72221B4D6C200051EDB /* PBXTargetDependency */,
 			);
 			name = bupocket;
 			productName = bupocket;
@@ -1033,6 +1045,11 @@
 				TargetAttributes = {
 					83B4659F21745C9300187961 = {
 						CreatedOnToolsVersion = 10.0;
+						SystemCapabilities = {
+							com.apple.SafariKeychain = {
+								enabled = 0;
+							};
+						};
 					};
 					83B465B721745C9400187961 = {
 						CreatedOnToolsVersion = 10.0;
@@ -1362,10 +1379,10 @@
 			target = 83B4659F21745C9300187961 /* bupocket */;
 			targetProxy = 83B465C421745C9400187961 /* PBXContainerItemProxy */;
 		};
-		958AAE5521A3D37F00BEA50C /* PBXTargetDependency */ = {
+		9579E72221B4D6C200051EDB /* PBXTargetDependency */ = {
 			isa = PBXTargetDependency;
 			name = "sdk-ios";
-			targetProxy = 958AAE5421A3D37F00BEA50C /* PBXContainerItemProxy */;
+			targetProxy = 9579E72121B4D6C200051EDB /* PBXContainerItemProxy */;
 		};
 /* End PBXTargetDependency section */
 
@@ -1590,10 +1607,9 @@
 			isa = XCBuildConfiguration;
 			baseConfigurationReference = A61F11E76D6541BC859B703E /* Pods-bupocket.debug.xcconfig */;
 			buildSettings = {
-				ALWAYS_EMBED_SWIFT_STANDARD_LIBRARIES = YES;
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
-				CODE_SIGN_IDENTITY = "iPhone Developer: Sicheng Li (5K8YJQAA49)";
-				CODE_SIGN_STYLE = Manual;
+				CODE_SIGN_IDENTITY = "iPhone Developer";
+				CODE_SIGN_STYLE = Automatic;
 				DEFINES_MODULE = YES;
 				DEVELOPMENT_TEAM = 3DPSH636RT;
 				FRAMEWORK_SEARCH_PATHS = (
@@ -1612,8 +1628,8 @@
 				LIBRARY_SEARCH_PATHS = "$(inherited)";
 				PRODUCT_BUNDLE_IDENTIFIER = com.bupocket;
 				PRODUCT_NAME = "$(TARGET_NAME)";
-				PROVISIONING_PROFILE_SPECIFIER = bupocket_Development;
-				TARGETED_DEVICE_FAMILY = "1,2";
+				PROVISIONING_PROFILE_SPECIFIER = "";
+				TARGETED_DEVICE_FAMILY = 1;
 			};
 			name = Debug;
 		};
@@ -1621,10 +1637,9 @@
 			isa = XCBuildConfiguration;
 			baseConfigurationReference = 8BAFA7A3EC4992591E7450DA /* Pods-bupocket.release.xcconfig */;
 			buildSettings = {
-				ALWAYS_EMBED_SWIFT_STANDARD_LIBRARIES = YES;
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
-				CODE_SIGN_IDENTITY = "iPhone Developer: Sicheng Li (5K8YJQAA49)";
-				CODE_SIGN_STYLE = Manual;
+				CODE_SIGN_IDENTITY = "iPhone Developer";
+				CODE_SIGN_STYLE = Automatic;
 				DEFINES_MODULE = YES;
 				DEVELOPMENT_TEAM = 3DPSH636RT;
 				FRAMEWORK_SEARCH_PATHS = (
@@ -1643,8 +1658,8 @@
 				LIBRARY_SEARCH_PATHS = "$(inherited)";
 				PRODUCT_BUNDLE_IDENTIFIER = com.bupocket;
 				PRODUCT_NAME = "$(TARGET_NAME)";
-				PROVISIONING_PROFILE_SPECIFIER = bupocket_Development;
-				TARGETED_DEVICE_FAMILY = "1,2";
+				PROVISIONING_PROFILE_SPECIFIER = "";
+				TARGETED_DEVICE_FAMILY = 1;
 			};
 			name = Release;
 		};

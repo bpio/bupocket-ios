@@ -122,7 +122,7 @@
     }];
     self.finish = finish;
     [self.view layoutIfNeeded];
-    self.scrollView.contentSize = CGSizeMake(0, CGRectGetMaxY(finish.frame) + ContentSizeBottom + Margin_50);
+    self.scrollView.contentSize = CGSizeMake(0, CGRectGetMaxY(finish.frame) + ContentSizeBottom + ScreenScale(100));
 }
 - (void)tagAction:(UIButton *)button
 {

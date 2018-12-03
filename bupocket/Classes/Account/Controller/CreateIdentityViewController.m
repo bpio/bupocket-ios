@@ -38,9 +38,7 @@
 - (void)setupView
 {
     self.view.backgroundColor = [UIColor whiteColor];
-    UITapGestureRecognizer *tap = [[UITapGestureRecognizer alloc] initWithTarget:self action:@selector(keyBoardHidden)];
-    [self.view addGestureRecognizer:tap];
-    
+
     _identityName = [UITextField textFieldWithplaceholder:Localized(@"IdentityName")];
     _identityName.delegate = self;
     [_identityName addTarget:self action:@selector(textChange:) forControlEvents:UIControlEventEditingChanged];
@@ -99,10 +97,6 @@
         _createIdentity.enabled = NO;
         _createIdentity.backgroundColor = DISABLED_COLOR;
     }
-}
-- (void)keyBoardHidden
-{
-    [self.view endEditing:YES];
 }
 - (void)secureAction:(UIButton *)button
 {

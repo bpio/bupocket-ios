@@ -281,6 +281,7 @@
         [self.networkPrompt mas_makeConstraints:^(MASConstraintMaker *make) {
             make.top.equalTo(self.headerViewBg.mas_top).offset(StatusBarHeight + Margin_10);
             make.centerX.equalTo(self.headerViewBg);
+            make.width.mas_lessThanOrEqualTo(DEVICE_WIDTH - Margin_40);
         }];
         
         _totalAssets = [[UILabel alloc] init];
@@ -584,7 +585,6 @@
     VC.listModel = self.listArray[indexPath.section];
     [self.navigationController pushViewController:VC animated:YES];
 }
-
 
 /*
 #pragma mark - Navigation

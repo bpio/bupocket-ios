@@ -39,8 +39,6 @@
 - (void)setupView
 {
     self.view.backgroundColor = [UIColor whiteColor];
-    UITapGestureRecognizer *tap = [[UITapGestureRecognizer alloc] initWithTarget:self action:@selector(keyBoardHidden)];
-    [self.view addGestureRecognizer:tap];
     [self.view addSubview:self.memorizingWords];
     [self.memorizingWords mas_makeConstraints:^(MASConstraintMaker *make) {
         make.top.equalTo(self.view.mas_top).offset(Margin_30);
@@ -107,10 +105,6 @@
     textField.rightView = ifSecure;
     [textField addTarget:self action:@selector(textChange:) forControlEvents:UIControlEventEditingChanged];
     return textField;
-}
-- (void)keyBoardHidden
-{
-    [self.view endEditing:YES];
 }
 - (void)textChange:(UITextField *)textField
 {

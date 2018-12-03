@@ -131,7 +131,7 @@ static NSString * const Issue_Leave = @"leaveRoomForApp";
         make.size.centerX.equalTo(confirmation);
     }];
     [self.view layoutIfNeeded];
-    self.scrollView.contentSize = CGSizeMake(0, CGRectGetMaxY(cancel.frame) + ContentSizeBottom + Margin_50);
+    self.scrollView.contentSize = CGSizeMake(0, CGRectGetMaxY(cancel.frame) + ContentSizeBottom + ScreenScale(100));
 }
 
 - (void)confirmationAction

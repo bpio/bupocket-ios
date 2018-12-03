@@ -11,6 +11,7 @@
 #import "BackUpPurseViewController.h"
 #import "VersionUpdateAlertView.h"
 #import "VersionModel.h"
+#import <IQKeyboardManager/IQKeyboardManager.h>
 
 @interface AppDelegate ()
 
@@ -26,14 +27,14 @@
 //    [self setDefaultLocale];
     [[LanguageManager shareInstance] setDefaultLocale];
     [self.window makeKeyAndVisible];
+    [self initializationSettings];
     [self setRootVC];
     [self setVersionUpdate];
     // Minimum Asset Limitation
     [[HTTPManager shareManager] getBlockFees];
     return YES;
 }
-
-- (void)setRootVC
+- (void)initializationSettings
 {
     [[UIButton appearance] setExclusiveTouch:YES];
     [UIApplication sharedApplication].statusBarStyle = UIStatusBarStyleDefault;
@@ -44,9 +45,16 @@
         UITableView.appearance.estimatedSectionHeaderHeight = 0;
         [[UINavigationBar appearance] setPrefersLargeTitles:true];
     }
-//    else {
-//        self.automaticallyAdjustsScrollViewInsets = NO;
-//    }
+    //    else {
+    //        self.automaticallyAdjustsScrollViewInsets = NO;
+    //    }
+    IQKeyboardManager * keyboardManager = [IQKeyboardManager sharedManager];
+    keyboardManager.shouldResignOnTouchOutside = YES;
+//    keyboardManager.enableAutoToolbar = NO;
+//    keyboardManager.keyboardDistanceFromTextField = Margin_15;
+}
+- (void)setRootVC
+{
     NSUserDefaults * defaults = [NSUserDefaults standardUserDefaults];
     if ([defaults boolForKey:If_Created]) {
         if ([defaults boolForKey:If_Backup] || [defaults boolForKey:If_Skip]) {
@@ -98,6 +106,7 @@
         
     }];
 }
+
 - (void)applicationWillResignActive:(UIApplication *)application {
     // Sent when the application is about to move from active to inactive state. This can occur for certain types of temporary interruptions (such as an incoming phone call or SMS message) or when the user quits the application and it begins the transition to the background state.
     // Use this method to pause ongoing tasks, disable timers, and invalidate graphics rendering callbacks. Games should use this method to pause the game.
