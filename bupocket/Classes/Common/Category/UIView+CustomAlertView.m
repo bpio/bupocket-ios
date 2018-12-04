@@ -62,6 +62,15 @@ static CGFloat animationTime;
 
 
 -(void)tapBgView{
+    [self hideViewWithIfTapBgView:YES];
+}
+
+-(void)hideView{
+    [self removeKeyBoardListen];
+    [self hideViewWithIfTapBgView:NO];
+}
+- (void)hideViewWithIfTapBgView:(BOOL)ifTapBgView
+{
     switch (mode) {
         case CustomAnimationModeAlert:
             [self hide];
@@ -76,18 +85,15 @@ static CGFloat animationTime;
             [self hideWithOutAnimation];
             break;
         case CustomAnimationModeDisabled:
+            if (ifTapBgView == NO) {
+                [self hide];
+            }
             break;
         default:
             
             break;
     }
 }
-
--(void)hideView{
-    [self removeKeyBoardListen];
-    [self tapBgView];
-}
-
 #pragma mark- 动画显示
 
 //弹出动画

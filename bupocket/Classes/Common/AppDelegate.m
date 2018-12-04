@@ -15,6 +15,8 @@
 
 @interface AppDelegate ()
 
+@property (nonatomic, strong) VersionUpdateAlertView * alertView;
+
 @end
 
 @implementation AppDelegate
@@ -28,8 +30,8 @@
     [[LanguageManager shareInstance] setDefaultLocale];
     [self.window makeKeyAndVisible];
     [self initializationSettings];
-    [self setRootVC];
     [self setVersionUpdate];
+    [self setRootVC];
     // Minimum Asset Limitation
     [[HTTPManager shareManager] getBlockFees];
     return YES;
@@ -92,12 +94,12 @@
                 } else if ([language hasPrefix:EN]) {
                     updateContent = versionModel.englishVerContents;
                 }
-                VersionUpdateAlertView * alertView = [[VersionUpdateAlertView alloc] initWithUpdateVersionNumber:versionModel.verNumber versionSize:versionModel.appSize content:updateContent confrimBolck:^{
+                self.alertView = [[VersionUpdateAlertView alloc] initWithUpdateVersionNumber:versionModel.verNumber versionSize:versionModel.appSize content:updateContent verType:versionModel.verType confrimBolck:^{
                     [[UIApplication sharedApplication] openURL:[NSURL URLWithString:versionModel.downloadLink]];
                 } cancelBlock:^{
                     
                 }];
-                [alertView showInWindowWithMode:CustomAnimationModeDisabled inView:nil bgAlpha:0.2 needEffectView:NO];
+                [self.alertView showInWindowWithMode:CustomAnimationModeDisabled inView:nil bgAlpha:0.2 needEffectView:NO];
             }
         } else {
             [MBProgressHUD showTipMessageInWindow:[ErrorTypeTool getDescriptionWithErrorCode:code]];

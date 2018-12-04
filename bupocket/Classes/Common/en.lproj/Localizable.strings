@@ -23,7 +23,7 @@
 "RestoreIdentity" = "Restore your identity";
 // Terms of use
 "TermsOfUse" = "Terms of use";
-"TermsOfUseFileName" = "Terms of use_CN";
+"TermsOfUseFileName" = "Terms of use_EN";
 "Continue" = "Continue";
 "ReadAndAgree" = "I have read and agreed to the above terms and conditions.";
 // Create an identity
@@ -107,7 +107,6 @@
 "PaymentCode" = "Payment code";
 "SafetyTipsTitle" = "Safety tips";
 "SafetyTips" = "Your wallet mnemonics have not been backed up. To prevent loss of assets due to forgetting passwords, deleting apps, or losing your phone, be sure to back up your mnemonics.";
-// 待定
 "ImmediateBackup" = "Back up now";
 // Wallet address
 "PurseAddressTitle" = "Wallet address";

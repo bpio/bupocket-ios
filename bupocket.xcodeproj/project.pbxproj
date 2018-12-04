@@ -106,8 +106,8 @@
 		9549EC66219C0CF800307255 /* CreateTipsAlertView.m in Sources */ = {isa = PBXBuildFile; fileRef = 9549EC65219C0CF800307255 /* CreateTipsAlertView.m */; };
 		9549EC70219D075F00307255 /* ClearCacheTool.m in Sources */ = {isa = PBXBuildFile; fileRef = 9549EC6F219D075E00307255 /* ClearCacheTool.m */; };
 		956CD42121B016D1004DC1FA /* ListModel.m in Sources */ = {isa = PBXBuildFile; fileRef = 956CD42021B016D1004DC1FA /* ListModel.m */; };
-		9579E71F21B4D6C200051EDB /* sdk_ios.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 958AAE5121A3D36800BEA50C /* sdk_ios.framework */; };
-		9579E72021B4D6C200051EDB /* sdk_ios.framework in Embed Frameworks */ = {isa = PBXBuildFile; fileRef = 958AAE5121A3D36800BEA50C /* sdk_ios.framework */; settings = {ATTRIBUTES = (CodeSignOnCopy, RemoveHeadersOnCopy, ); }; };
+		9579EB2321B5356B00051EDB /* sdk_ios.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 9579EB2221B5355E00051EDB /* sdk_ios.framework */; };
+		9579EB2421B5356B00051EDB /* sdk_ios.framework in Embed Frameworks */ = {isa = PBXBuildFile; fileRef = 9579EB2221B5355E00051EDB /* sdk_ios.framework */; settings = {ATTRIBUTES = (CodeSignOnCopy, RemoveHeadersOnCopy, ); }; };
 		958127EF219ABD9D0081A02E /* VersionUpdateAlertView.m in Sources */ = {isa = PBXBuildFile; fileRef = 958127EE219ABD9D0081A02E /* VersionUpdateAlertView.m */; };
 		958127F2219AC82A0081A02E /* VersionModel.m in Sources */ = {isa = PBXBuildFile; fileRef = 958127F1219AC82A0081A02E /* VersionModel.m */; };
 		958AA69821A2A89600BEA50C /* CustomRefreshFooter.m in Sources */ = {isa = PBXBuildFile; fileRef = 958AA69721A2A89600BEA50C /* CustomRefreshFooter.m */; };
@@ -138,30 +138,30 @@
 			remoteGlobalIDString = 83B4659F21745C9300187961;
 			remoteInfo = bupocket;
 		};
-		9579E72121B4D6C200051EDB /* PBXContainerItemProxy */ = {
+		9579EB2121B5355E00051EDB /* PBXContainerItemProxy */ = {
 			isa = PBXContainerItemProxy;
-			containerPortal = 958AAE4C21A3D36800BEA50C /* sdk-ios.xcodeproj */;
-			proxyType = 1;
-			remoteGlobalIDString = 58FED02B2117EF6F00702DDB;
-			remoteInfo = "sdk-ios";
-		};
-		958AAE5021A3D36800BEA50C /* PBXContainerItemProxy */ = {
-			isa = PBXContainerItemProxy;
-			containerPortal = 958AAE4C21A3D36800BEA50C /* sdk-ios.xcodeproj */;
+			containerPortal = 9579EB1D21B5355E00051EDB /* sdk-ios.xcodeproj */;
 			proxyType = 2;
 			remoteGlobalIDString = 58FED02C2117EF6F00702DDB;
+			remoteInfo = "sdk-ios";
+		};
+		9579EB2521B5356B00051EDB /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = 9579EB1D21B5355E00051EDB /* sdk-ios.xcodeproj */;
+			proxyType = 1;
+			remoteGlobalIDString = 58FED02B2117EF6F00702DDB;
 			remoteInfo = "sdk-ios";
 		};
 /* End PBXContainerItemProxy section */
 
 /* Begin PBXCopyFilesBuildPhase section */
-		9579E72321B4D6C200051EDB /* Embed Frameworks */ = {
+		9579E74A21B5329300051EDB /* Embed Frameworks */ = {
 			isa = PBXCopyFilesBuildPhase;
 			buildActionMask = 2147483647;
 			dstPath = "";
 			dstSubfolderSpec = 10;
 			files = (
-				9579E72021B4D6C200051EDB /* sdk_ios.framework in Embed Frameworks */,
+				9579EB2421B5356B00051EDB /* sdk_ios.framework in Embed Frameworks */,
 			);
 			name = "Embed Frameworks";
 			runOnlyForDeploymentPostprocessing = 0;
@@ -379,13 +379,13 @@
 		9579E71821B4D3CF00051EDB /* WebKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = WebKit.framework; path = System/Library/Frameworks/WebKit.framework; sourceTree = SDKROOT; };
 		9579E71A21B4D3D900051EDB /* StoreKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = StoreKit.framework; path = System/Library/Frameworks/StoreKit.framework; sourceTree = SDKROOT; };
 		9579E71C21B4D48900051EDB /* bupocket.entitlements */ = {isa = PBXFileReference; lastKnownFileType = text.plist.entitlements; path = bupocket.entitlements; sourceTree = "<group>"; };
+		9579EB1D21B5355E00051EDB /* sdk-ios.xcodeproj */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.pb-project"; path = "sdk-ios.xcodeproj"; sourceTree = "<group>"; };
 		958127ED219ABD9D0081A02E /* VersionUpdateAlertView.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = VersionUpdateAlertView.h; sourceTree = "<group>"; };
 		958127EE219ABD9D0081A02E /* VersionUpdateAlertView.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = VersionUpdateAlertView.m; sourceTree = "<group>"; };
 		958127F0219AC82A0081A02E /* VersionModel.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = VersionModel.h; sourceTree = "<group>"; };
 		958127F1219AC82A0081A02E /* VersionModel.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = VersionModel.m; sourceTree = "<group>"; };
 		958AA69621A2A89600BEA50C /* CustomRefreshFooter.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = CustomRefreshFooter.h; sourceTree = "<group>"; };
 		958AA69721A2A89600BEA50C /* CustomRefreshFooter.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = CustomRefreshFooter.m; sourceTree = "<group>"; };
-		958AAE4C21A3D36800BEA50C /* sdk-ios.xcodeproj */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.pb-project"; name = "sdk-ios.xcodeproj"; path = "sdk-ios/sdk-ios.xcodeproj"; sourceTree = "<group>"; };
 		95A8A3AF219D1352008E978E /* LanguageManager.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = LanguageManager.m; sourceTree = "<group>"; };
 		95A8A3B0219D1352008E978E /* LanguageManager.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = LanguageManager.h; sourceTree = "<group>"; };
 		95A8A3B3219D157B008E978E /* DateTool.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = DateTool.h; sourceTree = "<group>"; };
@@ -412,8 +412,8 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				9579E71F21B4D6C200051EDB /* sdk_ios.framework in Frameworks */,
 				E0A64C5CAFFFD9486B7713D7 /* Pods_bupocket.framework in Frameworks */,
+				9579EB2321B5356B00051EDB /* sdk_ios.framework in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -439,7 +439,7 @@
 		833799292177091500C222A5 /* Tool */ = {
 			isa = PBXGroup;
 			children = (
-				958AAA7421A3D28D00BEA50C /* Lib */,
+				9579E74D21B5353700051EDB /* Lib */,
 				95A8A415219D5FE2008E978E /* YBPopupMenu */,
 				95A8A3B6219D15AB008E978E /* RegularCheck */,
 				95A8A3B2219D155E008E978E /* Date */,
@@ -887,19 +887,26 @@
 			path = ClearCache;
 			sourceTree = "<group>";
 		};
-		958AAA7421A3D28D00BEA50C /* Lib */ = {
+		9579E74D21B5353700051EDB /* Lib */ = {
 			isa = PBXGroup;
 			children = (
-				958AAE4C21A3D36800BEA50C /* sdk-ios.xcodeproj */,
+				9579E74E21B5353700051EDB /* sdk-ios */,
 			);
-			name = Lib;
-			path = "New Group";
+			path = Lib;
 			sourceTree = "<group>";
 		};
-		958AAE4D21A3D36800BEA50C /* Products */ = {
+		9579E74E21B5353700051EDB /* sdk-ios */ = {
 			isa = PBXGroup;
 			children = (
-				958AAE5121A3D36800BEA50C /* sdk_ios.framework */,
+				9579EB1D21B5355E00051EDB /* sdk-ios.xcodeproj */,
+			);
+			path = "sdk-ios";
+			sourceTree = "<group>";
+		};
+		9579EB1E21B5355E00051EDB /* Products */ = {
+			isa = PBXGroup;
+			children = (
+				9579EB2221B5355E00051EDB /* sdk_ios.framework */,
 			);
 			name = Products;
 			sourceTree = "<group>";
@@ -984,12 +991,12 @@
 				83B4659D21745C9300187961 /* Frameworks */,
 				83B4659E21745C9300187961 /* Resources */,
 				6C9857D402B444A8F985E58F /* [CP] Embed Pods Frameworks */,
-				9579E72321B4D6C200051EDB /* Embed Frameworks */,
+				9579E74A21B5329300051EDB /* Embed Frameworks */,
 			);
 			buildRules = (
 			);
 			dependencies = (
-				9579E72221B4D6C200051EDB /* PBXTargetDependency */,
+				9579EB2621B5356B00051EDB /* PBXTargetDependency */,
 			);
 			name = bupocket;
 			productName = bupocket;
@@ -1075,8 +1082,8 @@
 			projectDirPath = "";
 			projectReferences = (
 				{
-					ProductGroup = 958AAE4D21A3D36800BEA50C /* Products */;
-					ProjectRef = 958AAE4C21A3D36800BEA50C /* sdk-ios.xcodeproj */;
+					ProductGroup = 9579EB1E21B5355E00051EDB /* Products */;
+					ProjectRef = 9579EB1D21B5355E00051EDB /* sdk-ios.xcodeproj */;
 				},
 			);
 			projectRoot = "";
@@ -1089,11 +1096,11 @@
 /* End PBXProject section */
 
 /* Begin PBXReferenceProxy section */
-		958AAE5121A3D36800BEA50C /* sdk_ios.framework */ = {
+		9579EB2221B5355E00051EDB /* sdk_ios.framework */ = {
 			isa = PBXReferenceProxy;
 			fileType = wrapper.framework;
 			path = sdk_ios.framework;
-			remoteRef = 958AAE5021A3D36800BEA50C /* PBXContainerItemProxy */;
+			remoteRef = 9579EB2121B5355E00051EDB /* PBXContainerItemProxy */;
 			sourceTree = BUILT_PRODUCTS_DIR;
 		};
 /* End PBXReferenceProxy section */
@@ -1379,10 +1386,10 @@
 			target = 83B4659F21745C9300187961 /* bupocket */;
 			targetProxy = 83B465C421745C9400187961 /* PBXContainerItemProxy */;
 		};
-		9579E72221B4D6C200051EDB /* PBXTargetDependency */ = {
+		9579EB2621B5356B00051EDB /* PBXTargetDependency */ = {
 			isa = PBXTargetDependency;
 			name = "sdk-ios";
-			targetProxy = 9579E72121B4D6C200051EDB /* PBXContainerItemProxy */;
+			targetProxy = 9579EB2521B5356B00051EDB /* PBXContainerItemProxy */;
 		};
 /* End PBXTargetDependency section */
 
@@ -1625,7 +1632,10 @@
 					"$(inherited)",
 					"@executable_path/Frameworks",
 				);
-				LIBRARY_SEARCH_PATHS = "$(inherited)";
+				LIBRARY_SEARCH_PATHS = (
+					"$(inherited)",
+					"$(PROJECT_DIR)/bupocket/Classes/Common/Tool/Lib/sdk-ios/crypto/openssl/lib",
+				);
 				PRODUCT_BUNDLE_IDENTIFIER = com.bupocket;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				PROVISIONING_PROFILE_SPECIFIER = "";
@@ -1655,7 +1665,10 @@
 					"$(inherited)",
 					"@executable_path/Frameworks",
 				);
-				LIBRARY_SEARCH_PATHS = "$(inherited)";
+				LIBRARY_SEARCH_PATHS = (
+					"$(inherited)",
+					"$(PROJECT_DIR)/bupocket/Classes/Common/Tool/Lib/sdk-ios/crypto/openssl/lib",
+				);
 				PRODUCT_BUNDLE_IDENTIFIER = com.bupocket;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				PROVISIONING_PROFILE_SPECIFIER = "";

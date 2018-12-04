@@ -27,7 +27,7 @@
 //#define WEB_SERVER_DOMAIN_TEST @"https://api-bp.bumotest.io/"
 #define BUMO_NODE_URL_TEST @"https://wallet-node.bumotest.io"
 #define PUSH_MESSAGE_SOCKET_URL_TEST @"https://ws-tools.bumotest.io"
-
+// App type 1-android 2-iOS
 #define Version_Update @"wallet/version?appType=2"
 #define Assets_List @"wallet/token/list"
 #define Transaction_Record @"wallet/v2/tx/list"

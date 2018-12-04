@@ -19,7 +19,7 @@ typedef void (^OnSureButtonClick)(void);
 @property (nonatomic, copy) OnCancleButtonClick cancleBlock;
 @property (nonatomic, copy) OnSureButtonClick sureBlock;
 
-- (instancetype)initWithUpdateVersionNumber:(NSString *)versionNumber versionSize:(NSString *)versionSize content:(NSString *)content confrimBolck:(nonnull void (^)(void))confrimBlock cancelBlock:(nonnull void (^)(void))cancelBlock;
+- (instancetype)initWithUpdateVersionNumber:(NSString *)versionNumber versionSize:(NSString *)versionSize content:(NSString *)content verType:(NSInteger)verType confrimBolck:(nonnull void (^)(void))confrimBlock cancelBlock:(nonnull void (^)(void))cancelBlock;
 
 @end
 

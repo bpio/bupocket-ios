@@ -102,6 +102,7 @@ static NSString * const AddAssetsCellID = @"AddAssetsCellID";
     _title.text = searchAssetsModel.assetCode;
     _detailTitle.text = searchAssetsModel.assetName;
     _infoTitle.text = searchAssetsModel.issuer;
+    // 0-Recommendation (Hide) 1-Non-Recommendation (Display)
     _addBtn.hidden = !searchAssetsModel.recommend;
     if (searchAssetsModel.recommend) {
         NSUserDefaults * defaults = [NSUserDefaults standardUserDefaults];
