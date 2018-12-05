@@ -11,6 +11,7 @@
 #import "HMScannerBorder.h"
 #import "HMScannerMaskView.h"
 #import "HMScanner.h"
+#import <Photos/Photos.h>
 
 /// 控件间距
 #define kControlMargin  32.0
@@ -91,21 +92,65 @@
 
 /// 点击相册按钮
 - (void)clickAlbumButton {
-    
+    //相册权限
+    PHAuthorizationStatus author = [PHPhotoLibrary authorizationStatus];
+    // PHAuthorizationStatusNotDetermined：用户尚未作出关于这个应用的选择。
+    // PHAuthorizationStatusRestricted：此应用程序未被授权访问照片数据。
+    // PHAuthorizationStatusDenied：用户已明确拒绝该应用程序访问照片数据
+    // PHAuthorizationStatusAuthorized：用户已授权该应用程序访问照片数据。
+    if (author == PHAuthorizationStatusRestricted || author == PHAuthorizationStatusDenied) {
+        //无权限 引导去开启
+        NSString *appName = [[NSBundle mainBundle].infoDictionary valueForKey:@"CFBundleDisplayName"];
+        if (!appName) appName = [[NSBundle mainBundle].infoDictionary valueForKey:@"CFBundleName"];
+        NSString *message = [NSString stringWithFormat:Localized(@"Allow %@ to access your album in \"Settings -> Privacy -> Photos\""),appName];
+        UIAlertController * alertController = [UIAlertController alertControllerWithTitle:message message:nil preferredStyle:UIAlertControllerStyleAlert];
+        UIAlertAction * okAction = [UIAlertAction actionWithTitle:Localized(@"OK") style:UIAlertActionStyleDefault handler:^(UIAlertAction * _Nonnull action) {
+            NSURL *url = [NSURL URLWithString:UIApplicationOpenSettingsURLString];
+            if ([[UIApplication sharedApplication] canOpenURL:url]) {
+                [[UIApplication sharedApplication] openURL:url];
+            }
+        }];
+        [alertController addAction:okAction];
+        [[UIApplication topViewController:[[UIApplication sharedApplication] keyWindow].rootViewController] presentViewController:alertController animated:YES completion:nil];
+    } else if (author == PHAuthorizationStatusNotDetermined) {
+        /**
+         * 当某些情况下PHAuthorizationStatus == PHAuthorizationStatusNotDetermined时，无法弹出系统首次使用的授权alertView，系统应用设置里亦没有相册的设置，此时将无法使用，故作以下操作，弹出系统首次使用的授权alertView
+         */
+        [self requestAuthorizationWithCompletion:nil];
+    } else {
+        [self openPhotoPicker];
+    }
+   
+}
+- (void)openPhotoPicker
+{
     if (![UIImagePickerController isSourceTypeAvailable:UIImagePickerControllerSourceTypePhotoLibrary]) {
-        tipLabel.text = @"无法访问相册";
+        tipLabel.text = Localized(@"UnableToAccessAlbum");
         return;
     }
-    
     UIImagePickerController *picker = [[UIImagePickerController alloc] init];
-//    picker.modalPresentationStyle = UIModalPresentationCurrentContext;
+    //    picker.modalPresentationStyle = UIModalPresentationCurrentContext;
     picker.view.backgroundColor = [UIColor whiteColor];
     picker.delegate = self;
     picker.navigationBar.translucent = NO;
-//    [self.navigationController presentViewController:picker animated:YES completion:nil];
+    //    [self.navigationController presentViewController:picker animated:YES completion:nil];
     [self showDetailViewController:picker sender:nil];
 }
-
+- (void)requestAuthorizationWithCompletion:(void (^)(void))completion {
+    void (^callCompletionBlock)(void) = ^(){
+        dispatch_async(dispatch_get_main_queue(), ^{
+            if (completion) {
+                completion();
+            }
+        });
+    };
+    
+    dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_DEFAULT, 0), ^{
+        [PHPhotoLibrary requestAuthorization:^(PHAuthorizationStatus status) {
+            callCompletionBlock();
+        }];
+    });
+}
 /// 点击名片按钮
 - (void)clickCardButton {
     HMScanerCardViewController *vc = [[HMScanerCardViewController alloc] initWithCardName:self.cardName avatar:self.avatar];
@@ -127,7 +172,7 @@
                 [self clickCloseButton];
             }];
         } else {
-            self->tipLabel.text = @"没有识别到二维码，请选择其他照片";
+            self->tipLabel.text = Localized(@"RecognitionFailure");
             
             [self dismissViewControllerAnimated:YES completion:nil];
         }
@@ -175,11 +220,15 @@
     tipLabel.font = [UIFont systemFontOfSize:12];
     tipLabel.textColor = [UIColor whiteColor];
     tipLabel.textAlignment = NSTextAlignmentCenter;
-    
-    [tipLabel sizeToFit];
-    tipLabel.center = CGPointMake(scannerBorder.center.x, CGRectGetMaxY(scannerBorder.frame) + kControlMargin);
+    tipLabel.numberOfLines = 0;
+//    [tipLabel sizeToFit];
+//    tipLabel.center = CGPointMake(scannerBorder.center.x, CGRectGetMaxY(scannerBorder.frame) + kControlMargin);
     
     [self.view addSubview:tipLabel];
+    [tipLabel mas_makeConstraints:^(MASConstraintMaker *make) {
+        make.centerX.equalTo(self->scannerBorder);
+        make.top.equalTo(self->scannerBorder.mas_bottom).offset(kControlMargin);
+    }];
     /*
     // 2> 名片按钮
     UIButton *cardButton = [[UIButton alloc] init];

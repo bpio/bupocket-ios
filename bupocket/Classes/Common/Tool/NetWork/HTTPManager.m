@@ -116,7 +116,8 @@ static int64_t const gasPrice = 1000;
                                  failure:(void (^)(NSError *error))failure
 {
     NSString * url = SERVER_COMBINE_API(_webServerDomain, Assets_Search);
-    NSDictionary * parmenters = @{@"assetCode" : assetCode,
+    NSDictionary * parmenters = @{@"address": [[AccountTool account] purseAccount],
+                                  @"assetCode" : assetCode,
                                   @"startPage" : @(pageIndex),
                                   @"pageSize" : @(PageSize_Max)};
     [[HttpTool shareTool] POST:url parameters:parmenters success:^(id responseObject) {
@@ -286,17 +287,23 @@ static int64_t const gasPrice = 1000;
 #pragma mark - SDK
 // Check the balance
 - (int64_t)getAccountBalance {
-    [MBProgressHUD showActivityMessageInWindow:Localized(@"Loading")];
+    dispatch_async(dispatch_get_main_queue(), ^{
+        [MBProgressHUD showActivityMessageInWindow:Localized(@"Loading")];
+    });
     AccountService *accountService = [[[SDK sharedInstance] setUrl:_bumoNodeUrl] getAccountService];
     AccountGetBalanceRequest * request = [AccountGetBalanceRequest new];
     [request setAddress : [AccountTool account].purseAccount];
     AccountGetBalanceResponse *response = [accountService getBalance : request];
     if (response.errorCode == Success_Code) {
-        [MBProgressHUD hideHUD];
+        dispatch_async(dispatch_get_main_queue(), ^{
+            [MBProgressHUD hideHUD];
+        });
         return response.result.balance;
     } else {
-        [MBProgressHUD hideHUD];
-        [MBProgressHUD showTipMessageInWindow:[ErrorTypeTool getDescription:response.errorCode]];
+        dispatch_async(dispatch_get_main_queue(), ^{
+            [MBProgressHUD hideHUD];
+            [MBProgressHUD showTipMessageInWindow:[ErrorTypeTool getDescription:response.errorCode]];
+        });
         return 0;
     }
 }
@@ -366,10 +373,33 @@ static int64_t const gasPrice = 1000;
         AssetInfo *assetInfo = response.result.assets[0];
         return assetInfo.amount;
     } else {
-        [MBProgressHUD showTipMessageInWindow:[ErrorTypeTool getDescription:response.errorCode]];
+        dispatch_async(dispatch_get_main_queue(), ^{
+            [MBProgressHUD showTipMessageInWindow:[ErrorTypeTool getDescription:response.errorCode]];
+        });
         return 0;
     }
 }
+
+// Query account / Is it activated?
+- (BOOL)getAccountInfoWithAddress:(NSString *)address {
+    AccountService * accountService = [[[SDK sharedInstance] setUrl:_bumoNodeUrl] getAccountService];
+    AccountGetInfoRequest *request = [AccountGetInfoRequest new];
+    [request setAddress : address];
+    AccountGetInfoResponse *response = [accountService getInfo : request];
+    if (response.errorCode == 0) {
+//        NSLog(@"%@", [response.result yy_modelToJSONString]);
+        return YES;
+    } else if (response.errorCode == 4) {
+        return NO;
+    } else {
+//        dispatch_async(dispatch_get_main_queue(), ^{
+//            [MBProgressHUD showTipMessageInWindow:[ErrorTypeTool getDescription:response.errorCode]];
+//        });
+        return NO;
+        //        NSLog(@"%@", response.errorDesc);
+    }
+}
+
 // identity data
 - (void)setAccountDataWithRandom:(NSData *)random
                         password:(NSString *)password
@@ -410,32 +440,34 @@ static int64_t const gasPrice = 1000;
         }
     }
 }
+
 // Transfer accounts
 - (void)setTransferDataWithTokenType:(NSInteger)tokenType
                             password:(NSString *)password
-                        destAddress:(NSString *)destAddress
-                           BUAmount:(NSString *)BUAmount
-                           feeLimit:(NSString *)feeLimit
-                              notes:(NSString *)notes
-                               code:(NSString *)code
-                             issuer:(NSString *)issuer
-                            success:(void (^)(TransactionResultModel * resultModel))success
-                            failure:(void (^)(TransactionResultModel * resultModel))failure
+                         destAddress:(NSString *)destAddress
+                              assets:(NSString *)assets
+                            decimals:(NSInteger)decimals
+                            feeLimit:(NSString *)feeLimit
+                               notes:(NSString *)notes
+                                code:(NSString *)code
+                              issuer:(NSString *)issuer
+                             success:(void (^)(TransactionResultModel * resultModel))success
+                             failure:(void (^)(TransactionResultModel * resultModel))failure
 {
     // Build BUSendOperation
     NSString * sourceAddress = [AccountTool account].purseAccount;
-    int64_t amount = [Tools BU2MO: [BUAmount doubleValue]];
     NSString * privateKey = [NSString decipherKeyStoreWithPW:password keyStoreValueStr:[AccountTool account].purseKey];
     if ([Tools isEmpty:privateKey]) {
         [MBProgressHUD showTipMessageInWindow:Localized(@"PasswordIsIncorrect")];
         return;
     }
-    int64_t fee = [Tools BU2MO: [feeLimit doubleValue]];
+    int64_t fee = [[[NSDecimalNumber decimalNumberWithString:feeLimit] decimalNumberByMultiplyingByPowerOf10: Decimals_BU] integerValue];
     int64_t nonce = [[HTTPManager shareManager] getAccountNonce: sourceAddress] + 1;
     if (nonce == 0) return;
     NSString * hash;
     if (tokenType == Token_Type_BU) {
         // BU
+        int64_t amount = [[[NSDecimalNumber decimalNumberWithString:assets] decimalNumberByMultiplyingByPowerOf10: Decimals_BU] integerValue];
         BUSendOperation *operation = [BUSendOperation new];
         [operation setSourceAddress: sourceAddress];
         [operation setDestAddress: destAddress];
@@ -443,6 +475,8 @@ static int64_t const gasPrice = 1000;
         hash = [[HTTPManager shareManager] buildBlobAndSignAndSubmit:privateKey :sourceAddress :nonce :gasPrice :fee :operation :notes];
     } else {
         // Other currencies
+        NSInteger amount = [[[NSDecimalNumber decimalNumberWithString:assets] decimalNumberByMultiplyingByPowerOf10: decimals] integerValue];
+//        int64_t amount = multiplierNumber * powl(10, decimals);
         AssetSendOperation *operation = [AssetSendOperation new];
         [operation setSourceAddress: sourceAddress];
         [operation setDestAddress: destAddress];
@@ -537,7 +571,9 @@ static int64_t const gasPrice = 1000;
     if (response.errorCode == Success_Code) {
         nonce = response.result.nonce;
     } else {
-        [MBProgressHUD showTipMessageInWindow:[ErrorTypeTool getDescription:response.errorCode]];
+        dispatch_async(dispatch_get_main_queue(), ^{
+            [MBProgressHUD showTipMessageInWindow:[ErrorTypeTool getDescription:response.errorCode]];
+        });
     }
     return nonce;
 }
@@ -558,7 +594,9 @@ static int64_t const gasPrice = 1000;
     if (buildBlobResponse.errorCode == Success_Code) {
         hash = buildBlobResponse.result.transactionHash;
     } else {
-        [MBProgressHUD showTipMessageInWindow:[ErrorTypeTool getDescription:buildBlobResponse.errorCode]];
+        dispatch_async(dispatch_get_main_queue(), ^{
+            [MBProgressHUD showTipMessageInWindow:[ErrorTypeTool getDescription:buildBlobResponse.errorCode]];
+        });
         return nil;
     }
     
@@ -569,7 +607,9 @@ static int64_t const gasPrice = 1000;
     TransactionSignResponse * signResponse = [transactionServer sign : signRequest];
     if (signResponse.errorCode == Success_Code) {
     } else {
-        [MBProgressHUD showTipMessageInWindow:[ErrorTypeTool getDescription:signResponse.errorCode]];
+        dispatch_async(dispatch_get_main_queue(), ^{
+            [MBProgressHUD showTipMessageInWindow:[ErrorTypeTool getDescription:signResponse.errorCode]];
+        });
         return nil;
     }
     // Submission of transactions
@@ -579,7 +619,9 @@ static int64_t const gasPrice = 1000;
     TransactionSubmitResponse *submitResponse = [transactionServer submit : submitRequest];
     if (submitResponse.errorCode == Success_Code) {
     } else {
-        [MBProgressHUD showTipMessageInWindow:[ErrorTypeTool getDescription:submitResponse.errorCode]];
+        dispatch_async(dispatch_get_main_queue(), ^{
+            [MBProgressHUD showTipMessageInWindow:[ErrorTypeTool getDescription:submitResponse.errorCode]];
+        });
         return nil;
     }
     return hash;

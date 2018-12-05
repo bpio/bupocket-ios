@@ -25,7 +25,7 @@
 
 @interface AssetsViewController ()<UITableViewDelegate, UITableViewDataSource>
 
-@property (nonatomic, strong) UIButton * scanButton;
+//@property (nonatomic, strong) UIButton * scanButton;
 @property (nonatomic, strong) UITableView * tableView;
 @property (nonatomic, strong) UIView * headerBg;
 @property (nonatomic, strong) UIView * headerViewBg;
@@ -125,7 +125,7 @@
     self.tableView.mj_header = [CustomRefreshHeader headerWithRefreshingTarget:self refreshingAction:@selector(loadData)];
     self.tableView.mj_header.automaticallyChangeAlpha = YES;
     self.tableView.mj_header.ignoredScrollViewContentInsetTop = _headerViewH;
-    [self.tableView.mj_header beginRefreshing];
+//    [self.tableView.mj_header beginRefreshing];
 }
 - (void)setDataWithResponseObject:(id)responseObject
 {
@@ -349,7 +349,7 @@
         _headerImageView.alpha = 1.0;
 //        self.navTitleColor = self.navTintColor = [UIColor clearColor];
 //        self.navAlpha = 0;
-        self.scanButton.selected = NO;
+//        self.scanButton.selected = NO;
     } else {
         CGFloat min = - _headerViewH;
         CGFloat progress = (offsetY / min);
@@ -360,7 +360,7 @@
         [self.navigationController setNeedsStatusBarAppearanceUpdate];
 //        self.navTitleColor = self.navTintColor = (progress < 0.5) ? TITLE_COLOR : [UIColor clearColor];
 //        self.navAlpha = 1 - progress;
-        self.scanButton.selected = (progress < 0.5) ? YES : NO;
+//        self.scanButton.selected = (progress < 0.5) ? YES : NO;
     }
     _headerImageView.frame = CGRectMake(0, 0, DEVICE_WIDTH, _headerBg.height - Margin_15);
     _headerViewBg.y = _headerBg.height - _headerViewH;

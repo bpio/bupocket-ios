@@ -15,7 +15,7 @@ NS_ASSUME_NONNULL_BEGIN
 @property (nonatomic, copy) NSString * amount;
 @property (nonatomic, copy) NSString * assetAmount;
 @property (nonatomic, copy) NSString * assetCode;
-@property (nonatomic, copy) NSString * decimals;
+@property (nonatomic, assign) NSInteger decimals;
 @property (nonatomic, copy) NSString * icon;
 @property (nonatomic, copy) NSString * issuer;
 @property (nonatomic, copy) NSString * price;

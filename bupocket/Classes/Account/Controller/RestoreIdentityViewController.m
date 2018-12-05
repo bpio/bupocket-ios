@@ -160,10 +160,6 @@
 - (void)setData
 {
     NSArray * words = [_memorizingWords.text componentsSeparatedByString:@" "];
-    if (words.count != NumberOf_MnemonicWords) {
-        [MBProgressHUD showTipMessageInWindow:Localized(@"MnemonicIsIncorrect")];
-        return;
-    }
     NSData * random = [Mnemonic randomFromMnemonicCode: words];
     [[HTTPManager shareManager] setAccountDataWithRandom:random password:self.pursePassword.text identityName:self.purseName.text success:^(id responseObject) {
         [UIApplication sharedApplication].keyWindow.rootViewController = [[TabBarViewController alloc] init];
@@ -178,6 +174,11 @@
 
 - (void)restoreAction
 {
+    NSArray * words = [_memorizingWords.text componentsSeparatedByString:@" "];
+    if (words.count != NumberOf_MnemonicWords) {
+        [MBProgressHUD showTipMessageInWindow:Localized(@"MnemonicIsIncorrect")];
+        return;
+    }
     if ([RegexPatternTool validateUserName:_purseName.text] == NO) {
         [MBProgressHUD showTipMessageInWindow:Localized(@"WalletNameFormatIncorrect")];
         return;

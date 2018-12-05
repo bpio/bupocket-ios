@@ -72,6 +72,12 @@
     return [self regexPatternResultWithRegex:regex TargetString:targetString];
 }
 
+//验证字符串是否精度校验
+- (BOOL)validateIsPositiveFloatingPoint:(NSString *)targetString decimals:(NSInteger)decimals
+{
+    NSString *regex = [NSString stringWithFormat:@"^[0-9]{1,10}(\\.[0-9]{1,%zd})?$", decimals];
+    return [self regexPatternResultWithRegex:regex TargetString:targetString];
+}
 //验证字符串是否为非正浮点数
 -(BOOL)validateIsNonPositiveFloatingPoint:(NSString *)targetString{
     

@@ -82,6 +82,9 @@
 // Balance of assets
 - (int64_t)getAssetInfoWithAddress:(NSString *)address code:(NSString *)code issuer:(NSString *)issuer;
 
+// Query account / Is it activated?
+- (BOOL)getAccountInfoWithAddress:(NSString *)address;
+
 // identity data
 - (void)setAccountDataWithRandom:(NSData *)random
                         password:(NSString *)password
@@ -92,7 +95,8 @@
 - (void)setTransferDataWithTokenType:(NSInteger)tokenType
                             password:(NSString *)password
                          destAddress:(NSString *)destAddress
-                            BUAmount:(NSString *)BUAmount
+                              assets:(NSString *)assets
+                            decimals:(NSInteger)decimals
                             feeLimit:(NSString *)feeLimit
                                notes:(NSString *)notes
                                 code:(NSString *)code

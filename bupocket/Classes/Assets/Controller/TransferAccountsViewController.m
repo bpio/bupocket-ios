@@ -16,8 +16,8 @@
 @interface TransferAccountsViewController ()<UITextFieldDelegate>
 
 @property (nonatomic, strong) UIScrollView * scrollView;
-@property (nonatomic, strong) UITextField * amountOfTransfer;
-@property (nonatomic, strong) UITextField * mostOnce;
+@property (nonatomic, strong) UITextField * destinationAddress;
+@property (nonatomic, strong) UITextField * transferVolume;
 @property (nonatomic, strong) UITextField * remarks;
 @property (nonatomic, strong) UITextField * transactionCosts;
 @property (nonatomic, strong) UIButton * next;
@@ -104,13 +104,13 @@
 {
     [MBProgressHUD showActivityMessageInWindow:Localized(@"Loading")];
     __weak typeof(self) weakSelf = self;
-    __block NSString * amountOfTransfer = self.amountOfTransfer.text;
+    __block NSString * destAddress = self.destinationAddress.text;
     __block double sendingQuantity = 0;
     __block double cost = [self.transactionCosts.text doubleValue];
     if (self.listModel.type == Token_Type_BU) {
-        sendingQuantity = [self.mostOnce.text doubleValue];
+        sendingQuantity = [self.transferVolume.text doubleValue];
     } else {
-        if ([self.mostOnce.text doubleValue] > [self.listModel.amount floatValue]) {
+        if ([self.transferVolume.text doubleValue] > [self.listModel.amount floatValue]) {
             [MBProgressHUD hideHUD];
             [MBProgressHUD showTipMessageInWindow:Localized(@"NotSufficientFunds")];
             return;
@@ -118,20 +118,21 @@
     }
     dispatch_group_t group = dispatch_group_create();
     dispatch_group_enter(group);
-    BOOL isCorrectAddress = [Keypair isAddressValid: amountOfTransfer];
+    BOOL isCorrectAddress = [Keypair isAddressValid: destAddress];
     dispatch_async(dispatch_get_main_queue(), ^{
         if (!isCorrectAddress) {
             [MBProgressHUD hideHUD];
             [MBProgressHUD showTipMessageInWindow:Localized(@"BUAddressIsIncorrect")];
             return;
         }
-        if ([amountOfTransfer isEqualToString:[[AccountTool account] purseAccount]]) {
+        
+        if ([destAddress isEqualToString:[[AccountTool account] purseAccount]]) {
             [MBProgressHUD hideHUD];
             [MBProgressHUD showTipMessageInWindow:Localized(@"CannotTransferToOneself")];
             return;
         }
         RegexPatternTool * regex = [[RegexPatternTool alloc] init];
-        if ([regex validateIsPositiveFloatingPoint:weakSelf.mostOnce.text] == NO) {
+        if ([regex validateIsPositiveFloatingPoint:weakSelf.transferVolume.text decimals:self.listModel.decimals] == NO) {
             [MBProgressHUD hideHUD];
             [MBProgressHUD showTipMessageInWindow:Localized(@"SendingQuantityIsIncorrect")];
             return;
@@ -141,7 +142,7 @@
             [MBProgressHUD showTipMessageInWindow:Localized(@"ExtraLongNotes")];
             return;
         }
-        if ([regex validateIsPositiveFloatingPoint:weakSelf.transactionCosts.text] == NO) {
+        if ([regex validateIsPositiveFloatingPoint:weakSelf.transactionCosts.text decimals:self.listModel.decimals] == NO) {
             [MBProgressHUD hideHUD];
             [MBProgressHUD showTipMessageInWindow:Localized(@"TransactionCostIsIncorrect")];
             return;
@@ -170,7 +171,7 @@
                     return;
                 }
                 [MBProgressHUD hideHUD];
-                weakSelf.transferInfoArray = [NSMutableArray arrayWithObjects:amountOfTransfer, [NSString stringWithFormat:@"%@ %@", weakSelf.mostOnce.text, self.listModel.assetCode], [NSString stringAppendingBUWithStr:weakSelf.transactionCosts.text], nil];
+                weakSelf.transferInfoArray = [NSMutableArray arrayWithObjects:destAddress, [NSString stringWithFormat:@"%@ %@", weakSelf.transferVolume.text, self.listModel.assetCode], [NSString stringAppendingBUWithStr:weakSelf.transactionCosts.text], nil];
                 if ([weakSelf.remarks hasText]) {
                     [weakSelf.transferInfoArray addObject:weakSelf.remarks.text];
                 }
@@ -200,7 +201,7 @@
 
 - (void)getDataWithPassword:(NSString *)password
 {
-    [[HTTPManager shareManager] setTransferDataWithTokenType:self.listModel.type password:password destAddress:_amountOfTransfer.text BUAmount:_mostOnce.text feeLimit:_transactionCosts.text notes:_remarks.text code:self.listModel.assetCode issuer:self.listModel.issuer success:^(TransactionResultModel *resultModel) {
+    [[HTTPManager shareManager] setTransferDataWithTokenType:self.listModel.type password:password destAddress:_destinationAddress.text assets:_transferVolume.text decimals:self.listModel.decimals feeLimit:_transactionCosts.text notes:_remarks.text code:self.listModel.assetCode issuer:self.listModel.issuer success:^(TransactionResultModel *resultModel) {
         [self.transferInfoArray addObject:[DateTool getDateStringWithTimeStr:[NSString stringWithFormat:@"%lld", resultModel.transactionTime]]];
         TransferResultsViewController * VC = [[TransferResultsViewController alloc] init];
         if (resultModel.errorCode == Success_Code) {
@@ -253,10 +254,12 @@
         make.height.mas_equalTo(LINE_WIDTH);
     }];
     if (index == 0) {
-        self.amountOfTransfer = textField;
+        self.destinationAddress = textField;
+        self.destinationAddress.delegate = self;
         if (self.address.length > 0) {
-            self.amountOfTransfer.text = self.address;
-            [self.amountOfTransfer sendActionsForControlEvents:UIControlEventEditingChanged];
+            self.destinationAddress.text = self.address;
+            [self.destinationAddress sendActionsForControlEvents:UIControlEventEditingChanged];
+            [self IsActivatedWithAddress:self.address];
         }
         UIButton * scan = [UIButton createButtonWithNormalImage:@"transferAccounts_scan" SelectedImage:@"transferAccounts_scan" Target:self Selector:@selector(scanAction)];
         scan.contentHorizontalAlignment = UIControlContentHorizontalAlignmentRight;
@@ -279,25 +282,45 @@
             make.right.top.equalTo(header);
             make.width.mas_lessThanOrEqualTo(DEVICE_WIDTH - Margin_40);
         }];
-        self.mostOnce = textField;
+        self.transferVolume = textField;
     } else if (index == 2) {
         self.remarks = textField;
         self.remarks.delegate = self;
     } else if (index == 3) {
         self.transactionCosts = textField;
-        self.transactionCosts.text = [NSString stringWithFormat:@"%.2f", TransactionCost_MIN];
     }
     return viewBg;
 }
 
 - (void)textChange:(UITextField *)textField
 {
-    if (_amountOfTransfer.text.length > 0 && _mostOnce.text.length > 0 && _transactionCosts.text.length > 0) {
+    if (_destinationAddress.text.length > 0 && _transferVolume.text.length > 0 && _transactionCosts.text.length > 0) {
         self.next.enabled = YES;
         self.next.backgroundColor = MAIN_COLOR;
     } else {
         self.next.enabled = NO;
         self.next.backgroundColor = DISABLED_COLOR;
+    }
+}
+- (void)IsActivatedWithAddress:(NSString *)address
+{
+    __weak typeof(self) weakSelf = self;
+    NSOperationQueue * queue = [[NSOperationQueue alloc] init];
+    [queue addOperationWithBlock:^{
+        BOOL IsActivated = [[HTTPManager shareManager] getAccountInfoWithAddress:address];
+        [[NSOperationQueue mainQueue] addOperationWithBlock:^{
+            if (IsActivated == YES) {
+                self.transactionCosts.text = [NSString stringWithFormat:@"%.2f", TransactionCost_MIN];
+            } else {
+                self.transactionCosts.text = [NSString stringWithFormat:@"%.2f", TransactionCost_NotActive_MIN];
+            }
+        }];
+    }];
+}
+- (void)textFieldDidEndEditing:(UITextField *)textField
+{
+    if (textField == _destinationAddress && _destinationAddress.text.length > 0) {
+        [self IsActivatedWithAddress:textField.text];
     }
 }
 - (BOOL)textField:(UITextField *)textField shouldChangeCharactersInRange:(NSRange)range replacementString:(NSString *)string
@@ -319,8 +342,9 @@
 - (void)scanAction
 {
     HMScannerController *scanner = [HMScannerController scannerWithCardName:nil avatar:nil completion:^(NSString *stringValue) {
-        self.amountOfTransfer.text = stringValue;
-        [self.amountOfTransfer sendActionsForControlEvents:UIControlEventEditingChanged];
+        self.destinationAddress.text = stringValue;
+        [self.destinationAddress sendActionsForControlEvents:UIControlEventEditingChanged];
+        [self IsActivatedWithAddress:stringValue];
     }];
     [scanner setTitleColor:[UIColor whiteColor] tintColor:MAIN_COLOR];
     [self showDetailViewController:scanner sender:nil];

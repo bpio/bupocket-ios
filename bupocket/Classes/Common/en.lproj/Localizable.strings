@@ -18,11 +18,11 @@
 "MyTitle" = "Profile";
 "AssetsTitle" = "Tokens";
 // Identity
-"CreateDigitalIdentity" = "Create an digital identity";
+"CreateDigitalIdentity" = "Create a digital identity";
 "ImmediateCreation" = "Create now";
-"RestoreIdentity" = "Restore your identity";
+"RestoreIdentity" = "Restore identity";
 // Terms of use
-"TermsOfUse" = "Terms of use";
+"TermsOfUse" = "Terms of service";
 "TermsOfUseFileName" = "Terms of use_EN";
 "Continue" = "Continue";
 "ReadAndAgree" = "I have read and agreed to the above terms and conditions.";
@@ -106,7 +106,7 @@
 //"PleaseBackup" = "Please back up";
 "PaymentCode" = "Payment code";
 "SafetyTipsTitle" = "Safety tips";
-"SafetyTips" = "Your wallet mnemonics have not been backed up. To prevent loss of assets due to forgetting passwords, deleting apps, or losing your phone, be sure to back up your mnemonics.";
+"SafetyTips" = "Your wallet mnemonics have not been backed up. To prevent loss of tokens due to forgetting passwords, deleting apps, or losing your phone, be sure to back up your mnemonics.";
 "ImmediateBackup" = "Back up now";
 // Wallet address
 "PurseAddressTitle" = "Wallet address";
@@ -116,7 +116,7 @@
 "AddAssets" = "Add tokens";
 "Add" = "Add";
 "Delete" = "Delete";
-"InputAssetName" = "Please enter the complete asset code";
+"InputAssetName" = "Please enter the complete token code";
 "NoSearchResults" = "No search results found";
 // Details of tokens
 "AssetsDetailScan" = "Scan";
@@ -197,6 +197,11 @@
 "IssuerAddress" = "Issuer address";
 "Hash" = "Hash";
 // scan
+"UnableToAccessAlbum" = "无法访问相册";
+//"Can not use camera" = "无法使用相机";
+"Allow %@ to access your album in \"Settings -> Privacy -> Photos\"" = "Allow %@ to access your album in \"Settings -> Privacy -> Photos\"";
+"Please allow %@ to access your camera in \"Settings -> Privacy -> Camera\"" = "Please allow %@ to access your camera in \"Settings -> Privacy -> Camera\"";
+
 "Close" = "Close";
 "Album" = "Album";
 "ScanPrompt" = "Automatically scan the QR code in the box";
@@ -258,67 +263,5 @@
 
 // SDK Errors
 "SYSTEM_ERROR" = "System error";
-
-"ACCOUNT_CREATE_ERROR" = "Failed to create the account";
-"INVALID_SOURCEADDRESS_ERROR" = "Invalid sourceAddress";
-"INVALID_DESTADDRESS_ERROR" = "Invalid destAddress";
-"INVALID_INITBALANCE_ERROR" = "InitBalance must be between 1 and int64_t.MAX_VALUE";
-"SOURCEADDRESS_EQUAL_DESTADDRESS_ERROR" = "SourceAddress cannot be equal to destAddress";
 "INVALID_ADDRESS_ERROR" = "Invalid address";
-"CONNECTNETWORK_ERROR" = "Failed to connect to the network";
-"INVALID_ISSUE_AMOUNT_ERROR" = "Amount of the token to be issued must be between 1 and int64_t.MAX_VALUE";
-"NO_ASSET_ERROR" = "The account does not have the asset";
-"NO_METADATA_ERROR" = "The account does not have the metadata";
-"INVALID_DATAKEY_ERROR" = "The length of key must be between 1 and 1024";
-"INVALID_DATAVALUE_ERROR" = "The length of value must be between 0 and 256000";
-"INVALID_DATAVERSION_ERROR" = "The version must be equal to or greater than 0";
-"INVALID_MASTERWEIGHT_ERROR" = "MasterWeight must be between 0 and (int32_t.MAX_VALUE * 2L + 1)";
-"INVALID_SIGNER_ADDRESS_ERROR" = "Invalid signer address";
-"INVALID_SIGNER_WEIGHT_ERROR" = "Signer weight must be between 0 and (int32_t.MAX_VALUE * 2L + 1)";
-"INVALID_TX_THRESHOLD_ERROR" = "TxThreshold must be between 0 and int64_t.MAX_VALUE";
-"INVALID_OPERATION_TYPE_ERROR" = "Operation type must be between 1 and 100";
-"INVALID_TYPE_THRESHOLD_ERROR" = "TypeThreshold must be between 0 and int64_t.MAX_VALUE";
-"INVALID_ASSET_CODE_ERROR" = "The length of key must be between 1 and 64";
-"INVALID_ASSET_AMOUNT_ERROR" = "AssetAmount must be between 0 and int64_t.MAX_VALUE";
-"INVALID_BU_AMOUNT_ERROR" = "BuAmount must be between 0 and int64_t.MAX_VALUE";
-"INVALID_ISSUER_ADDRESS_ERROR" = "Invalid issuer address";
-"NO_SUCH_TOKEN_ERROR" = "No such token";
-"INVALID_TOKEN_NAME_ERROR" = "The length of token name must be between 1 and 1024";
-"INVALID_TOKEN_SIMBOL_ERROR" = "The length of symbol must be between 1 and 1024";
-"INVALID_TOKEN_DECIMALS_ERROR" = "Decimals must be between 0 and 8";
-"INVALID_TOKEN_TOTALSUPPLY_ERROR" = "TotalSupply must be between 1 and int64_t.MAX_VALUE";
-"INVALID_TOKENOWNER_ERRPR" = "Invalid token owner";
-"INVALID_CONTRACTADDRESS_ERROR" = "Invalid contract address";
-"CONTRACTADDRESS_NOT_CONTRACTACCOUNT_ERROR" = "contractAddress is not a contract account";
-"INVALID_TOKEN_AMOUNT_ERROR" = "TokenAmount must be between 1 and int64_t.MAX_VALUE";
-"SOURCEADDRESS_EQUAL_CONTRACTADDRESS_ERROR" = "SourceAddress cannot be equal to contractAddress";
-"INVALID_FROMADDRESS_ERROR" = "Invalid fromAddress";
-"FROMADDRESS_EQUAL_DESTADDRESS_ERROR" = "FromAddress cannot be equal to destAddress";
-"INVALID_SPENDER_ERROR" = "Invalid spender";
-"PAYLOAD_EMPTY_ERROR" = "Payload cannot be empty";
-"INVALID_LOG_TOPIC_ERROR" = "The length of a log topic must be between 1 and 128";
-"INVALID_LOG_DATA_ERROR" = "The length of one piece of log data must be between 1 and1024";
-"INVALID_CONTRACT_TYPE_ERROR" = "Invalid contract type";
-"INVALID_NONCE_ERROR" = "Nonce must be between 1 and int64_t.MAX_VALUE";
-"INVALID_GASPRICE_ERROR" = "GasPrice must be between 1000 and int64_t.MAX_VALUE";
-"INVALID_FEELIMIT_ERROR" = "FeeLimit must be between 1 and int64_t.MAX_VALUE";
-"OPERATIONS_EMPTY_ERROR" = "Operations cannot be empty";
-"INVALID_CEILLEDGERSEQ_ERROR" = "CeilLedgerSeq must be equal to or greater than 0";
-"OPERATIONS_ONE_ERROR" = "One of the operations cannot be resolved";
-"INVALID_SIGNATURENUMBER_ERROR" = "SignagureNumber must be between 1 and int32_t.MAX_VALUE";
-"INVALID_HASH_ERROR" = "Invalid transaction hash";
-"INVALID_BLOB_ERROR" = "Invalid blob";
-"PRIVATEKEY_NULL_ERROR" = "PrivateKeys cannot be empty";
-"PRIVATEKEY_ONE_ERROR" = "One of privateKeys is invalid";
-"SIGNDATA_NULL_ERROR" = "SignData cannot be empty";
-"INVALID_BLOCKNUMBER_ERROR" = "BlockNumber must be bigger than 0";
-"PUBLICKEY_NULL_ERROR" = "PublicKey cannot be empty";
-"URL_EMPTY_ERROR" = "Url cannot be empty";
-"CONTRACTADDRESS_CODE_BOTH_NULL_ERROR" = "ContractAddress and code cannot be empty at the same time";
-"INVALID_OPTTYPE_ERROR" = "OptType must be between 0 and 2";
-"GET_ALLOWANCE_ERROR" = "Failed to get allowance";
-"GET_TOKEN_INFO_ERROR" = "Failed to get token info";
-"SIGNATURE_EMPTY_ERROR" =  "The signatures cannot be empty";
-"REQUEST_NULL_ERROR" = "Request parameter cannot be null";
-"CONNECTN_BLOCKCHAIN_ERROR" = "Failed to connect to the blockchain";
 
