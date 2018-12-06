@@ -55,6 +55,7 @@
 //    keyboardManager.enableAutoToolbar = NO;
 //    keyboardManager.keyboardDistanceFromTextField = Margin_15;
 }
+
 - (void)setRootVC
 {
     NSUserDefaults * defaults = [NSUserDefaults standardUserDefaults];
@@ -102,7 +103,7 @@
                 [self.alertView showInWindowWithMode:CustomAnimationModeDisabled inView:nil bgAlpha:0.2 needEffectView:NO];
             }
         } else {
-            [MBProgressHUD showTipMessageInWindow:[ErrorTypeTool getDescriptionWithErrorCode:code]];
+            [[HUDHelper sharedInstance] syncStopLoadingMessage:[ErrorTypeTool getDescriptionWithErrorCode:code]];
         }
     } failure:^(NSError *error) {
         

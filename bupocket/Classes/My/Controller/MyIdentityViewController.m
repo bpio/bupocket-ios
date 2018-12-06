@@ -124,12 +124,13 @@
         PurseCipherAlertView * alertView = [[PurseCipherAlertView alloc] initWithPrompt:Localized(@"IdentityCipherWarning") confrimBolck:^(NSString * _Nonnull password, NSArray * _Nonnull words) {
             NSString * privateKey = [NSString decipherKeyStoreWithPW:password keyStoreValueStr:[AccountTool account].purseKey];
             if ([Tools isEmpty:privateKey]) {
-                [MBProgressHUD showTipMessageInWindow:Localized(@"PasswordIsIncorrect")];
+                [[HUDHelper sharedInstance] syncStopLoadingMessage:Localized(@"PasswordIsIncorrect")];
                 return;
             }
            [ClearCacheTool cleanCache:^{
                [ClearCacheTool cleanUserDefaults];
                [[LanguageManager shareInstance] setDefaultLocale];
+               [[HTTPManager shareManager] initNetWork];
                // Minimum Asset Limitation
                [[HTTPManager shareManager] getBlockFees];
                [UIApplication sharedApplication].keyWindow.rootViewController = [[NavigationViewController alloc] initWithRootViewController:[[IdentityViewController alloc] init]];

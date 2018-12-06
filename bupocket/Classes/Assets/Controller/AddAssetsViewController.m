@@ -18,6 +18,7 @@
 @property (nonatomic, strong) UIView * noData;
 @property (nonatomic, assign) NSInteger pageindex;
 @property (nonatomic, strong) UIView * noNetWork;
+@property (nonatomic, strong) NSString * searchText;
 
 @end
 
@@ -61,7 +62,7 @@ static NSString * const SearchID = @"SearchID";
 }
 - (void)loadNewData
 {
-    if (self.searchTextField.hasText) {
+    if (self.searchText.length > 0) {
         [self getDataWithPageindex: PageIndex_Default];
     } else {
         [self.tableView.mj_header endRefreshing];
@@ -69,7 +70,7 @@ static NSString * const SearchID = @"SearchID";
 }
 - (void)loadMoreData
 {
-    if (self.searchTextField.hasText) {
+    if (self.searchText.length > 0) {
         [self getDataWithPageindex:self.pageindex];
     } else {
         [self.tableView.mj_footer endRefreshing];
@@ -77,7 +78,7 @@ static NSString * const SearchID = @"SearchID";
 }
 - (void)getDataWithPageindex:(NSInteger)pageindex
 {
-    [[HTTPManager shareManager] getSearchAssetsDataWithAssetCode:_searchTextField.text pageIndex:pageindex success:^(id responseObject) {
+    [[HTTPManager shareManager] getSearchAssetsDataWithAssetCode:_searchText pageIndex:pageindex success:^(id responseObject) {
         NSInteger code = [[responseObject objectForKey:@"errCode"] integerValue];
         if (code == Success_Code) {
             NSArray * listArray = [SearchAssetsModel mj_objectArrayWithKeyValuesArray:responseObject[@"data"] [@"tokenList"]];
@@ -94,7 +95,7 @@ static NSString * const SearchID = @"SearchID";
             }
             [self.tableView reloadData];
         } else {
-            [MBProgressHUD showTipMessageInWindow:[ErrorTypeTool getDescriptionWithErrorCode:code]];
+            [[HUDHelper sharedInstance] syncStopLoadingMessage:[ErrorTypeTool getDescriptionWithErrorCode:code]];
         }
         [self.tableView.mj_header endRefreshing];
         (self.listArray.count > 0) ? (self.tableView.tableFooterView = [UIView new]) : (self.tableView.tableFooterView = self.noData);
@@ -194,7 +195,8 @@ static NSString * const SearchID = @"SearchID";
 - (void)searchAction
 {
     [self.searchTextField resignFirstResponder];
-    if (self.searchTextField.hasText) {
+    self.searchText = [self.searchTextField.text stringByTrimmingCharactersInSet:[NSCharacterSet whitespaceAndNewlineCharacterSet]];
+    if (self.searchText.length > 0) {
         if (!self.tableView.mj_header) {
             [self setupRefresh];
         } else {

@@ -87,7 +87,7 @@ static NSInteger const TxInfoNormalCount = 6;
             [self setListData];
             [self.tableView reloadData];
         } else {
-            [MBProgressHUD showTipMessageInWindow:[ErrorTypeTool getDescriptionWithErrorCode:code]];
+            [[HUDHelper sharedInstance] syncStopLoadingMessage:[ErrorTypeTool getDescriptionWithErrorCode:code]];
         }
         [self.tableView.mj_header endRefreshing];
         self.noNetWork.hidden = YES;

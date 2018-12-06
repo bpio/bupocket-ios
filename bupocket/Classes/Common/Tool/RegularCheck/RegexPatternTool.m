@@ -16,6 +16,12 @@
     NSPredicate *predicate = [NSPredicate predicateWithFormat:@"SELF MATCHES %@",regex];
     return [predicate evaluateWithObject:targetString];
 }
+////验证字符串是否包含空格
+//- (BOOL)validateIsBlank:(NSString *)targetString
+//{
+//    NSString *regex = @"";
+//    return [self regexPatternResultWithRegex:regex TargetString:targetString];
+//}
 
 //验证字符串是否为空值
 -(BOOL)validateIsEmpty:(NSString *)targetString{

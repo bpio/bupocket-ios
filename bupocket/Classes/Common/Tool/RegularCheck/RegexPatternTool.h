@@ -83,7 +83,7 @@ NS_ASSUME_NONNULL_BEGIN
  *  @return YES/NO
  */
 -(BOOL)validateIsPositiveFloatingPoint:(NSString *)targetString;
-//验证字符串是否精度校验
+// 验证字符串是否精度校验
 - (BOOL)validateIsPositiveFloatingPoint:(NSString *)targetString decimals:(NSInteger)decimals;
 
 /**

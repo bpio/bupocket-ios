@@ -149,7 +149,7 @@ static NSString * const Register_Leave = @"leaveRoomForApp";
         CGFloat amount = [[HTTPManager shareManager] getDataWithBalanceJudgmentWithCost:Registered_Cost ifShowLoading:YES];
         [[NSOperationQueue mainQueue] addOperationWithBlock:^{
             if (amount < 0) {
-                [MBProgressHUD showTipMessageInWindow:Localized(@"RegisteredNotSufficientFunds")];
+                [[HUDHelper sharedInstance] syncStopLoadingMessage:Localized(@"RegisteredNotSufficientFunds")];
                 return;
             }
             [weakSelf.socket emit:Register_Processing with:@[]];
@@ -196,7 +196,7 @@ static NSString * const Register_Leave = @"leaveRoomForApp";
                     [self.socket on:Register_Failure callback:^(NSArray* data, SocketAckEmitter* ack) {
                         [self.socket disconnect];
                     }];
-                    [MBProgressHUD showTipMessageInWindow:[ErrorTypeTool getDescription:resultModel.errorCode]];
+                    [[HUDHelper sharedInstance] syncStopLoadingMessage:[ErrorTypeTool getDescription:resultModel.errorCode]];
                 }
             } else {
                 VC.registeredResultState = RegisteredResultOvertime;
@@ -209,7 +209,7 @@ static NSString * const Register_Leave = @"leaveRoomForApp";
             VC.registeredModel = self.registeredModel;
             [self.navigationController pushViewController:VC animated:YES];
         } else {
-            [MBProgressHUD showTipMessageInWindow:[ErrorTypeTool getDescriptionWithErrorCode:code]];
+            [[HUDHelper sharedInstance] syncStopLoadingMessage:[ErrorTypeTool getDescriptionWithErrorCode:code]];
         }
     } failure:^(NSError *error) {
     }];

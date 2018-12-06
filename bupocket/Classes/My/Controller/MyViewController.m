@@ -201,7 +201,7 @@ static NSString * const ListCellID = @"ListCellID";
         self.touchCounter = 0;
     }
 //    if (self.touchCounter == 3) {
-//        [MBProgressHUD showTipMessageInWindow:@"您已点击4次"];
+//        [[HUDHelper sharedInstance] syncStopLoadingMessage:@"您已点击4次"];
 //    }
     if (self.touchCounter == 4) {
         self.touchCounter = 0;

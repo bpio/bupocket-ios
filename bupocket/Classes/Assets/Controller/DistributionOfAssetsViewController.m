@@ -142,7 +142,7 @@ static NSString * const Issue_Leave = @"leaveRoomForApp";
         CGFloat amount = [[HTTPManager shareManager] getDataWithBalanceJudgmentWithCost:Distribution_Cost ifShowLoading:YES];
         [[NSOperationQueue mainQueue] addOperationWithBlock:^{
             if (amount < 0) {
-                [MBProgressHUD showTipMessageInWindow:Localized(@"DistributionNotSufficientFunds")];
+                [[HUDHelper sharedInstance] syncStopLoadingMessage:Localized(@"DistributionNotSufficientFunds")];
                 return;
             }
             [weakSelf.socket emit:Issue_Processing with:@[]];
@@ -190,7 +190,7 @@ static NSString * const Issue_Leave = @"leaveRoomForApp";
                     [self.socket on:Issue_Failure callback:^(NSArray* data, SocketAckEmitter* ack) {
                         [self.socket disconnect];
                     }];
-                    [MBProgressHUD showTipMessageInWindow:[ErrorTypeTool getDescription:resultModel.errorCode]];
+                    [[HUDHelper sharedInstance] syncStopLoadingMessage:[ErrorTypeTool getDescription:resultModel.errorCode]];
                 }
             } else {
                 VC.distributionResultState = DistributionResultOvertime;
@@ -204,7 +204,7 @@ static NSString * const Issue_Leave = @"leaveRoomForApp";
             VC.distributionModel = self.distributionModel;
             [self.navigationController pushViewController:VC animated:YES];
         } else {
-            [MBProgressHUD showTipMessageInWindow:[ErrorTypeTool getDescriptionWithErrorCode:code]];
+            [[HUDHelper sharedInstance] syncStopLoadingMessage:[ErrorTypeTool getDescriptionWithErrorCode:code]];
         }
     } failure:^(NSError *error) {
     }];

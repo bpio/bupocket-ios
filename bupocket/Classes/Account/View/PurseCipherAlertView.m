@@ -109,9 +109,9 @@
 - (void)sureBtnClick {
     [self hideView];
     if ([RegexPatternTool validatePassword:self.PWTextField.text] == NO) {
-        [MBProgressHUD showTipMessageInWindow:Localized(@"CryptographicFormat")];
+        [[HUDHelper sharedInstance] syncStopLoadingMessage:Localized(@"CryptographicFormat")];
     } else {
-        [MBProgressHUD showActivityMessageInWindow:Localized(@"Loading")];
+        [[HUDHelper sharedInstance] syncLoading];
         __block NSString * password = self.PWTextField.text;
         NSOperationQueue * queue = [[NSOperationQueue alloc] init];
         [queue addOperationWithBlock:^{
@@ -120,15 +120,14 @@
                 if (random) {
                     NSArray * words = [Mnemonic generateMnemonicCode: random];
                     dispatch_async(dispatch_get_main_queue(), ^{
-                        [MBProgressHUD hideHUD];
+                        [[HUDHelper sharedInstance] syncStopLoading];
                         if (self->_sureBlock) {
                             self->_sureBlock(password, words);
                         }
                     });
                 } else {
                     dispatch_async(dispatch_get_main_queue(), ^{
-                        [MBProgressHUD hideHUD];
-                        [MBProgressHUD showTipMessageInWindow:Localized(@"PasswordIsIncorrect")];
+                        [[HUDHelper sharedInstance] syncStopLoadingMessage:Localized(@"PasswordIsIncorrect")];
                     });
                 }
             }];

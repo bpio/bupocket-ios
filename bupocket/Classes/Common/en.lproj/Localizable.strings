@@ -197,7 +197,8 @@
 "IssuerAddress" = "Issuer address";
 "Hash" = "Hash";
 // scan
-"UnableToAccessAlbum" = "无法访问相册";
+// 待定
+"UnableToAccessAlbum" = "Can not use photo album";
 //"Can not use camera" = "无法使用相机";
 "Allow %@ to access your album in \"Settings -> Privacy -> Photos\"" = "Allow %@ to access your album in \"Settings -> Privacy -> Photos\"";
 "Please allow %@ to access your camera in \"Settings -> Privacy -> Camera\"" = "Please allow %@ to access your camera in \"Settings -> Privacy -> Camera\"";

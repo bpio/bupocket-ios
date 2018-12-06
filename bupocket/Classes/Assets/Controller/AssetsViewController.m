@@ -62,6 +62,7 @@
     [super viewDidLoad];
 //    [self setupNav];
 //    self.edgesForExtendedLayout = UIRectEdgeAll;
+    self.statusBarStyle = UIStatusBarStyleLightContent;
     [self setupView];
     if ([[NSUserDefaults standardUserDefaults] boolForKey:If_Switch_TestNetwork]) {
         self.assetsCacheDataKey = Assets_HomePage_CacheData_Test;
@@ -166,7 +167,7 @@
             [defaults setObject:responseObject forKey:self.assetsCacheDataKey];
             [defaults synchronize];
         } else {
-            [MBProgressHUD showTipMessageInWindow:[ErrorTypeTool getDescriptionWithErrorCode:code]];
+            [[HUDHelper sharedInstance] syncStopLoadingMessage:[ErrorTypeTool getDescriptionWithErrorCode:code]];
         }
         [self.tableView.mj_header endRefreshing];
 //        self.noNetWork.hidden = YES;
@@ -178,6 +179,8 @@
             self.noNetWork.hidden = NO;
             self.statusBarStyle = UIStatusBarStyleDefault;
             [self.navigationController setNeedsStatusBarAppearanceUpdate];
+        } else {
+            [[HUDHelper sharedInstance] syncStopLoadingMessage:Localized(@"NoNetWork")];
         }
     }];
 }
@@ -414,7 +417,7 @@
                         weakself.registeredModel = [RegisteredModel mj_objectWithKeyValues:self.scanDic[@"data"]];
                         [weakself getAssetsStateData];
                     } else {
-                        [MBProgressHUD showTipMessageInWindow:Localized(@"ScanFailure")];
+                        [[HUDHelper sharedInstance] syncStopLoadingMessage:Localized(@"ScanFailure")];
                     }
                 }
             }];
@@ -430,7 +433,7 @@
     NSString * address = [AccountTool account].purseAccount;
     PurseAddressAlertView * alertView = [[PurseAddressAlertView alloc] initWithPurseAddress:address confrimBolck:^{
         [[UIPasteboard generalPasteboard] setString:address];
-        [MBProgressHUD showTipMessageInWindow:Localized(@"Replicating")];
+        [[HUDHelper sharedInstance] syncStopLoadingMessage:Localized(@"Replicating")];
     } cancelBlock:^{
         
     }];

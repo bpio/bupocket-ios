@@ -102,7 +102,7 @@
 }
 - (void)DataJudgment
 {
-    [MBProgressHUD showActivityMessageInWindow:Localized(@"Loading")];
+    [[HUDHelper sharedInstance] syncLoading];
     __weak typeof(self) weakSelf = self;
     __block NSString * destAddress = self.destinationAddress.text;
     __block double sendingQuantity = 0;
@@ -111,8 +111,7 @@
         sendingQuantity = [self.transferVolume.text doubleValue];
     } else {
         if ([self.transferVolume.text doubleValue] > [self.listModel.amount floatValue]) {
-            [MBProgressHUD hideHUD];
-            [MBProgressHUD showTipMessageInWindow:Localized(@"NotSufficientFunds")];
+            [[HUDHelper sharedInstance] syncStopLoadingMessage:Localized(@"NotSufficientFunds")];
             return;
         }
     }
@@ -121,38 +120,31 @@
     BOOL isCorrectAddress = [Keypair isAddressValid: destAddress];
     dispatch_async(dispatch_get_main_queue(), ^{
         if (!isCorrectAddress) {
-            [MBProgressHUD hideHUD];
-            [MBProgressHUD showTipMessageInWindow:Localized(@"BUAddressIsIncorrect")];
+            [[HUDHelper sharedInstance] syncStopLoadingMessage:Localized(@"BUAddressIsIncorrect")];
             return;
         }
         
         if ([destAddress isEqualToString:[[AccountTool account] purseAccount]]) {
-            [MBProgressHUD hideHUD];
-            [MBProgressHUD showTipMessageInWindow:Localized(@"CannotTransferToOneself")];
+            [[HUDHelper sharedInstance] syncStopLoadingMessage:Localized(@"CannotTransferToOneself")];
             return;
         }
         RegexPatternTool * regex = [[RegexPatternTool alloc] init];
         if ([regex validateIsPositiveFloatingPoint:weakSelf.transferVolume.text decimals:self.listModel.decimals] == NO) {
-            [MBProgressHUD hideHUD];
-            [MBProgressHUD showTipMessageInWindow:Localized(@"SendingQuantityIsIncorrect")];
+            [[HUDHelper sharedInstance] syncStopLoadingMessage:Localized(@"SendingQuantityIsIncorrect")];
             return;
         }
         if (weakSelf.remarks.text.length > MAX_LENGTH) {
-            [MBProgressHUD hideHUD];
-            [MBProgressHUD showTipMessageInWindow:Localized(@"ExtraLongNotes")];
+            [[HUDHelper sharedInstance] syncStopLoadingMessage:Localized(@"ExtraLongNotes")];
             return;
         }
         if ([regex validateIsPositiveFloatingPoint:weakSelf.transactionCosts.text decimals:self.listModel.decimals] == NO) {
-            [MBProgressHUD hideHUD];
-            [MBProgressHUD showTipMessageInWindow:Localized(@"TransactionCostIsIncorrect")];
+            [[HUDHelper sharedInstance] syncStopLoadingMessage:Localized(@"TransactionCostIsIncorrect")];
             return;
         } else if (cost < TransactionCost_MIN) {
-            [MBProgressHUD hideHUD];
-            [MBProgressHUD showTipMessageInWindow:Localized(@"TransactionCostMin")];
+            [[HUDHelper sharedInstance] syncStopLoadingMessage:Localized(@"TransactionCostMin")];
             return;
         } else if (cost > TransactionCost_MAX) {
-            [MBProgressHUD hideHUD];
-            [MBProgressHUD showTipMessageInWindow:Localized(@"TransactionCostMax")];
+            [[HUDHelper sharedInstance] syncStopLoadingMessage:Localized(@"TransactionCostMax")];
             return;
         }
         weakSelf.isCorrectText = YES;
@@ -161,16 +153,15 @@
     dispatch_group_notify(group, dispatch_get_main_queue(), ^{
         if (weakSelf.isCorrectText == YES) {
             dispatch_async(dispatch_get_main_queue(), ^{
-                [MBProgressHUD showActivityMessageInWindow:Localized(@"Loading")];
+                [[HUDHelper sharedInstance] syncLoading];
             });
             double amount = [self.availableAmount doubleValue] - (sendingQuantity + cost);
             dispatch_async(dispatch_get_main_queue(), ^{
                 if (amount < 0) {
-                    [MBProgressHUD hideHUD];
-                    [MBProgressHUD showTipMessageInWindow:Localized(@"NotSufficientFunds")];
+                    [[HUDHelper sharedInstance] syncStopLoadingMessage:Localized(@"NotSufficientFunds")];
                     return;
                 }
-                [MBProgressHUD hideHUD];
+                [[HUDHelper sharedInstance] syncStopLoading];
                 weakSelf.transferInfoArray = [NSMutableArray arrayWithObjects:destAddress, [NSString stringWithFormat:@"%@ %@", weakSelf.transferVolume.text, self.listModel.assetCode], [NSString stringAppendingBUWithStr:weakSelf.transactionCosts.text], nil];
                 if ([weakSelf.remarks hasText]) {
                     [weakSelf.transferInfoArray addObject:weakSelf.remarks.text];
@@ -208,7 +199,7 @@
             VC.state = YES;
         } else {
             VC.state = NO;
-            [MBProgressHUD showTipMessageInWindow:[ErrorTypeTool getDescription:resultModel.errorCode]];
+            [[HUDHelper sharedInstance] syncStopLoadingMessage:[ErrorTypeTool getDescription:resultModel.errorCode]];
         }
         VC.transferInfoArray = self.transferInfoArray;
         [self.navigationController pushViewController:VC animated:YES];
@@ -307,13 +298,9 @@
     __weak typeof(self) weakSelf = self;
     NSOperationQueue * queue = [[NSOperationQueue alloc] init];
     [queue addOperationWithBlock:^{
-        BOOL IsActivated = [[HTTPManager shareManager] getAccountInfoWithAddress:address];
+        NSString * costs = [[HTTPManager shareManager] getAccountInfoWithAddress:address];
         [[NSOperationQueue mainQueue] addOperationWithBlock:^{
-            if (IsActivated == YES) {
-                self.transactionCosts.text = [NSString stringWithFormat:@"%.2f", TransactionCost_MIN];
-            } else {
-                self.transactionCosts.text = [NSString stringWithFormat:@"%.2f", TransactionCost_NotActive_MIN];
-            }
+            weakSelf.transactionCosts.text = costs;
         }];
     }];
 }

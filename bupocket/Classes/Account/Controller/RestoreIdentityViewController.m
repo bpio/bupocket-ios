@@ -176,19 +176,19 @@
 {
     NSArray * words = [_memorizingWords.text componentsSeparatedByString:@" "];
     if (words.count != NumberOf_MnemonicWords) {
-        [MBProgressHUD showTipMessageInWindow:Localized(@"MnemonicIsIncorrect")];
+        [[HUDHelper sharedInstance] syncStopLoadingMessage:Localized(@"MnemonicIsIncorrect")];
         return;
     }
     if ([RegexPatternTool validateUserName:_purseName.text] == NO) {
-        [MBProgressHUD showTipMessageInWindow:Localized(@"WalletNameFormatIncorrect")];
+        [[HUDHelper sharedInstance] syncStopLoadingMessage:Localized(@"WalletNameFormatIncorrect")];
         return;
     }
     if ([RegexPatternTool validatePassword:_pursePassword.text] == NO) {
-        [MBProgressHUD showTipMessageInWindow:Localized(@"CryptographicFormat")];
+        [[HUDHelper sharedInstance] syncStopLoadingMessage:Localized(@"CryptographicFormat")];
         return;
     }
     if (![_pursePassword.text isEqualToString:_confirmPassword.text]) {
-        [MBProgressHUD showTipMessageInWindow:Localized(@"PasswordIsDifferent")];
+        [[HUDHelper sharedInstance] syncStopLoadingMessage:Localized(@"PasswordIsDifferent")];
         return;
     }
     UIAlertController * alertController = [Encapsulation alertControllerWithCancelTitle:Localized(@"Cancel") title:nil message:Localized(@"ConfirmRecoveryID")];

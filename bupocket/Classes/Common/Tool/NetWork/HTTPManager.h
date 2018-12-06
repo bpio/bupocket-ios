@@ -16,6 +16,8 @@
 
 + (instancetype)shareManager;
 
+- (void)initNetWork;
+
 // Switched network
 - (void)SwitchedNetworkWithIsTest:(BOOL)isTest;
 
@@ -83,7 +85,7 @@
 - (int64_t)getAssetInfoWithAddress:(NSString *)address code:(NSString *)code issuer:(NSString *)issuer;
 
 // Query account / Is it activated?
-- (BOOL)getAccountInfoWithAddress:(NSString *)address;
+- (NSString *)getAccountInfoWithAddress:(NSString *)address;
 
 // identity data
 - (void)setAccountDataWithRandom:(NSData *)random

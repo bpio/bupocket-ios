@@ -125,7 +125,7 @@
 - (void)openPhotoPicker
 {
     if (![UIImagePickerController isSourceTypeAvailable:UIImagePickerControllerSourceTypePhotoLibrary]) {
-        tipLabel.text = Localized(@"UnableToAccessAlbum");
+        [self updateTipLabelFrameWithText:Localized(@"UnableToAccessAlbum")];
         return;
     }
     UIImagePickerController *picker = [[UIImagePickerController alloc] init];
@@ -172,8 +172,7 @@
                 [self clickCloseButton];
             }];
         } else {
-            self->tipLabel.text = Localized(@"RecognitionFailure");
-            
+            [self updateTipLabelFrameWithText:Localized(@"RecognitionFailure")];
             [self dismissViewControllerAnimated:YES completion:nil];
         }
     }];
@@ -210,25 +209,29 @@
     [self prepareOtherControls];
 }
 
+- (void)updateTipLabelFrameWithText:(NSString *)text
+{
+    tipLabel.width = scannerBorder.width;
+    tipLabel.text = text;
+    [tipLabel sizeToFit];
+    tipLabel.center = CGPointMake(scannerBorder.center.x, CGRectGetMaxY(scannerBorder.frame) + kControlMargin);
+}
 /// 准备提示标签和名片按钮
 - (void)prepareOtherControls {
     
     // 1> 提示标签
     tipLabel = [[UILabel alloc] init];
-    
-    tipLabel.text = Localized(@"ScanPrompt");
     tipLabel.font = [UIFont systemFontOfSize:12];
     tipLabel.textColor = [UIColor whiteColor];
     tipLabel.textAlignment = NSTextAlignmentCenter;
     tipLabel.numberOfLines = 0;
-//    [tipLabel sizeToFit];
-//    tipLabel.center = CGPointMake(scannerBorder.center.x, CGRectGetMaxY(scannerBorder.frame) + kControlMargin);
+    [self updateTipLabelFrameWithText:Localized(@"ScanPrompt")];
     
     [self.view addSubview:tipLabel];
-    [tipLabel mas_makeConstraints:^(MASConstraintMaker *make) {
-        make.centerX.equalTo(self->scannerBorder);
-        make.top.equalTo(self->scannerBorder.mas_bottom).offset(kControlMargin);
-    }];
+//    [tipLabel mas_makeConstraints:^(MASConstraintMaker *make) {
+//        make.centerX.equalTo(self->scannerBorder);
+//        make.top.equalTo(self->scannerBorder.mas_bottom).offset(kControlMargin);
+//    }];
     /*
     // 2> 名片按钮
     UIButton *cardButton = [[UIButton alloc] init];
