@@ -24,8 +24,8 @@
 #import "CustomRefreshFooter.h"
 
 #import "HTTPManager.h"
-//#import "MBProgressHUD+JDragon.h"
-#import "HUDHelper.h"
+#import "MBProgressHUD+JDragon.h"
+//#import "HUDHelper.h"
 #import "ErrorTypeTool.h"
 
 #import "JsonTool.h"

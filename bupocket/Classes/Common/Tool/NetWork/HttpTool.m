@@ -54,19 +54,19 @@ static HttpTool * _shareTool = nil;
 
 - (void)GET:(NSString *)URLString parameters:(NSDictionary *)parameters success:(void (^)(id))success failure:(void (^)(NSError *))failure
 {
-//    [[HUDHelper sharedInstance] syncLoading];
+    [MBProgressHUD showActivityMessageInWindow:Localized(@"Loading")];
     [self.manager GET:URLString parameters:parameters progress:^(NSProgress * _Nonnull downloadProgress) {
         
     } success:^(NSURLSessionDataTask * _Nonnull task, id  _Nullable responseObject) {
-        [[HUDHelper sharedInstance] syncStopLoading];
+        [MBProgressHUD hideHUD];
         if (success) {
             success(responseObject);
         }
     } failure:^(NSURLSessionDataTask * _Nullable task, NSError * _Nonnull error) {
-        [[HUDHelper sharedInstance] syncStopLoading];
+        [MBProgressHUD hideHUD];
         if (failure) {
             failure(error);
-            [[HUDHelper sharedInstance] syncStopLoadingMessage:Localized(@"NoNetWork")];
+            [MBProgressHUD showTipMessageInWindow:Localized(@"NoNetWork")];
         }
     }];
 }
@@ -83,14 +83,14 @@ static HttpTool * _shareTool = nil;
         
     } completionHandler:^(NSURLResponse * _Nonnull response, id  _Nullable responseObject, NSError * _Nullable error) {
         if (!error) {
-            [[HUDHelper sharedInstance] syncStopLoading];
+            [MBProgressHUD hideHUD];
             if ([responseObject isKindOfClass:[NSDictionary class]]) {
                 if (success) {
                     success(responseObject);
                 }
             }
         } else {
-            [[HUDHelper sharedInstance] syncStopLoading];
+            [MBProgressHUD hideHUD];
             if (failure) {
                 failure(error);
             }

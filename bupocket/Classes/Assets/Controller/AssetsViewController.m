@@ -167,7 +167,7 @@
             [defaults setObject:responseObject forKey:self.assetsCacheDataKey];
             [defaults synchronize];
         } else {
-            [[HUDHelper sharedInstance] syncStopLoadingMessage:[ErrorTypeTool getDescriptionWithErrorCode:code]];
+            [MBProgressHUD showTipMessageInWindow:[ErrorTypeTool getDescriptionWithErrorCode:code]];
         }
         [self.tableView.mj_header endRefreshing];
 //        self.noNetWork.hidden = YES;
@@ -180,7 +180,7 @@
             self.statusBarStyle = UIStatusBarStyleDefault;
             [self.navigationController setNeedsStatusBarAppearanceUpdate];
         } else {
-            [[HUDHelper sharedInstance] syncStopLoadingMessage:Localized(@"NoNetWork")];
+            [MBProgressHUD showTipMessageInWindow:Localized(@"NoNetWork")];
         }
     }];
 }
@@ -417,7 +417,7 @@
                         weakself.registeredModel = [RegisteredModel mj_objectWithKeyValues:self.scanDic[@"data"]];
                         [weakself getAssetsStateData];
                     } else {
-                        [[HUDHelper sharedInstance] syncStopLoadingMessage:Localized(@"ScanFailure")];
+                        [MBProgressHUD showTipMessageInWindow:Localized(@"ScanFailure")];
                     }
                 }
             }];
@@ -433,7 +433,7 @@
     NSString * address = [AccountTool account].purseAccount;
     PurseAddressAlertView * alertView = [[PurseAddressAlertView alloc] initWithPurseAddress:address confrimBolck:^{
         [[UIPasteboard generalPasteboard] setString:address];
-        [[HUDHelper sharedInstance] syncStopLoadingMessage:Localized(@"Replicating")];
+        [MBProgressHUD showTipMessageInWindow:Localized(@"Replicating")];
     } cancelBlock:^{
         
     }];

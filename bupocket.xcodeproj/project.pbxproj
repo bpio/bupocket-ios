@@ -106,9 +106,8 @@
 		956CD42121B016D1004DC1FA /* ListModel.m in Sources */ = {isa = PBXBuildFile; fileRef = 956CD42021B016D1004DC1FA /* ListModel.m */; };
 		9579EB2321B5356B00051EDB /* sdk_ios.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 9579EB2221B5355E00051EDB /* sdk_ios.framework */; };
 		9579EB2421B5356B00051EDB /* sdk_ios.framework in Embed Frameworks */ = {isa = PBXBuildFile; fileRef = 9579EB2221B5355E00051EDB /* sdk_ios.framework */; settings = {ATTRIBUTES = (CodeSignOnCopy, RemoveHeadersOnCopy, ); }; };
-		9579EB3B21B92B9300051EDB /* HUDHelper.m in Sources */ = {isa = PBXBuildFile; fileRef = 9579EB3821B92B9300051EDB /* HUDHelper.m */; };
-		9579EB3C21B92B9300051EDB /* NSString+Common.m in Sources */ = {isa = PBXBuildFile; fileRef = 9579EB3921B92B9300051EDB /* NSString+Common.m */; };
-		9579EB4221B92C0A00051EDB /* NSObject+CommonBlock.m in Sources */ = {isa = PBXBuildFile; fileRef = 9579EB4121B92C0900051EDB /* NSObject+CommonBlock.m */; };
+		9579EB5221BABE6300051EDB /* MBProgressHUD+JDragon.bundle in Resources */ = {isa = PBXBuildFile; fileRef = 9579EB5021BABE6300051EDB /* MBProgressHUD+JDragon.bundle */; };
+		9579EB5321BABE6300051EDB /* MBProgressHUD+JDragon.m in Sources */ = {isa = PBXBuildFile; fileRef = 9579EB5121BABE6300051EDB /* MBProgressHUD+JDragon.m */; };
 		958127EF219ABD9D0081A02E /* VersionUpdateAlertView.m in Sources */ = {isa = PBXBuildFile; fileRef = 958127EE219ABD9D0081A02E /* VersionUpdateAlertView.m */; };
 		958127F2219AC82A0081A02E /* VersionModel.m in Sources */ = {isa = PBXBuildFile; fileRef = 958127F1219AC82A0081A02E /* VersionModel.m */; };
 		958AA69821A2A89600BEA50C /* CustomRefreshFooter.m in Sources */ = {isa = PBXBuildFile; fileRef = 958AA69721A2A89600BEA50C /* CustomRefreshFooter.m */; };
@@ -378,12 +377,9 @@
 		9579E71A21B4D3D900051EDB /* StoreKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = StoreKit.framework; path = System/Library/Frameworks/StoreKit.framework; sourceTree = SDKROOT; };
 		9579E71C21B4D48900051EDB /* bupocket.entitlements */ = {isa = PBXFileReference; lastKnownFileType = text.plist.entitlements; path = bupocket.entitlements; sourceTree = "<group>"; };
 		9579EB1D21B5355E00051EDB /* sdk-ios.xcodeproj */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.pb-project"; path = "sdk-ios.xcodeproj"; sourceTree = "<group>"; };
-		9579EB3721B92B9300051EDB /* NSString+Common.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "NSString+Common.h"; sourceTree = "<group>"; };
-		9579EB3821B92B9300051EDB /* HUDHelper.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = HUDHelper.m; sourceTree = "<group>"; };
-		9579EB3921B92B9300051EDB /* NSString+Common.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "NSString+Common.m"; sourceTree = "<group>"; };
-		9579EB3A21B92B9300051EDB /* HUDHelper.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = HUDHelper.h; sourceTree = "<group>"; };
-		9579EB4021B92C0900051EDB /* NSObject+CommonBlock.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "NSObject+CommonBlock.h"; sourceTree = "<group>"; };
-		9579EB4121B92C0900051EDB /* NSObject+CommonBlock.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "NSObject+CommonBlock.m"; sourceTree = "<group>"; };
+		9579EB4F21BABE6300051EDB /* MBProgressHUD+JDragon.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "MBProgressHUD+JDragon.h"; sourceTree = "<group>"; };
+		9579EB5021BABE6300051EDB /* MBProgressHUD+JDragon.bundle */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.plug-in"; path = "MBProgressHUD+JDragon.bundle"; sourceTree = "<group>"; };
+		9579EB5121BABE6300051EDB /* MBProgressHUD+JDragon.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "MBProgressHUD+JDragon.m"; sourceTree = "<group>"; };
 		958127ED219ABD9D0081A02E /* VersionUpdateAlertView.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = VersionUpdateAlertView.h; sourceTree = "<group>"; };
 		958127EE219ABD9D0081A02E /* VersionUpdateAlertView.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = VersionUpdateAlertView.m; sourceTree = "<group>"; };
 		958127F0219AC82A0081A02E /* VersionModel.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = VersionModel.h; sourceTree = "<group>"; };
@@ -443,7 +439,6 @@
 		833799292177091500C222A5 /* Tool */ = {
 			isa = PBXGroup;
 			children = (
-				9579EB3621B92B9300051EDB /* HUDHelper */,
 				9579E74D21B5353700051EDB /* Lib */,
 				95A8A415219D5FE2008E978E /* YBPopupMenu */,
 				95A8A3B6219D15AB008E978E /* RegularCheck */,
@@ -453,6 +448,7 @@
 				83F94D6621927EFE004E981A /* Refresh */,
 				83FB442621904AA300D68569 /* QRCode */,
 				83379A9C217EF20100C222A5 /* NetWork */,
+				9579EB4E21BABE6300051EDB /* MBProgressHUD+JDragon */,
 			);
 			path = Tool;
 			sourceTree = "<group>";
@@ -905,17 +901,14 @@
 			name = Products;
 			sourceTree = "<group>";
 		};
-		9579EB3621B92B9300051EDB /* HUDHelper */ = {
+		9579EB4E21BABE6300051EDB /* MBProgressHUD+JDragon */ = {
 			isa = PBXGroup;
 			children = (
-				9579EB3721B92B9300051EDB /* NSString+Common.h */,
-				9579EB3921B92B9300051EDB /* NSString+Common.m */,
-				9579EB3A21B92B9300051EDB /* HUDHelper.h */,
-				9579EB3821B92B9300051EDB /* HUDHelper.m */,
-				9579EB4021B92C0900051EDB /* NSObject+CommonBlock.h */,
-				9579EB4121B92C0900051EDB /* NSObject+CommonBlock.m */,
+				9579EB4F21BABE6300051EDB /* MBProgressHUD+JDragon.h */,
+				9579EB5021BABE6300051EDB /* MBProgressHUD+JDragon.bundle */,
+				9579EB5121BABE6300051EDB /* MBProgressHUD+JDragon.m */,
 			);
-			path = HUDHelper;
+			path = "MBProgressHUD+JDragon";
 			sourceTree = "<group>";
 		};
 		95A8A3A8219D12B1008E978E /* Internationalization */ = {
@@ -1126,6 +1119,7 @@
 				83379A4F21787F2500C222A5 /* Default-iPhone6.png in Resources */,
 				83379A5021787F2500C222A5 /* Default@2x.png in Resources */,
 				83B465B021745C9400187961 /* LaunchScreen.storyboard in Resources */,
+				9579EB5221BABE6300051EDB /* MBProgressHUD+JDragon.bundle in Resources */,
 				83379A5421787F2500C222A5 /* Default.png in Resources */,
 				83FB443821904AA400D68569 /* HMScanner.bundle in Resources */,
 				8337991F2176FD4400C222A5 /* InfoPlist.strings in Resources */,
@@ -1209,7 +1203,6 @@
 				"${BUILT_PRODUCTS_DIR}/FMDB/FMDB.framework",
 				"${BUILT_PRODUCTS_DIR}/IQKeyboardManager/IQKeyboardManager.framework",
 				"${BUILT_PRODUCTS_DIR}/MBProgressHUD/MBProgressHUD.framework",
-				"${BUILT_PRODUCTS_DIR}/MBProgressHUD+JDragon/MBProgressHUD_JDragon.framework",
 				"${BUILT_PRODUCTS_DIR}/MJExtension/MJExtension.framework",
 				"${BUILT_PRODUCTS_DIR}/MJRefresh/MJRefresh.framework",
 				"${BUILT_PRODUCTS_DIR}/Masonry/Masonry.framework",
@@ -1227,7 +1220,6 @@
 				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/FMDB.framework",
 				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/IQKeyboardManager.framework",
 				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/MBProgressHUD.framework",
-				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/MBProgressHUD_JDragon.framework",
 				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/MJExtension.framework",
 				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/MJRefresh.framework",
 				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/Masonry.framework",
@@ -1283,7 +1275,6 @@
 				833799382177427500C222A5 /* AssetsListViewCell.m in Sources */,
 				83379A95217EB08600C222A5 /* DetailListViewCell.m in Sources */,
 				83B594B42175F46E009F91BA /* TermsOfUseViewController.m in Sources */,
-				9579EB3C21B92B9300051EDB /* NSString+Common.m in Sources */,
 				83379AAA217F006600C222A5 /* HttpTool.m in Sources */,
 				8372C86F2174D03F00FF9506 /* UIButton+Extension.m in Sources */,
 				83379A8F217DC0C700C222A5 /* TransferDetailsAlertView.m in Sources */,
@@ -1303,7 +1294,6 @@
 				83FB443721904AA400D68569 /* HMScanner.m in Sources */,
 				83379A182178682100C222A5 /* UIView+CustomAlertView.m in Sources */,
 				95A8A3B9219D15D8008E978E /* RegexPatternTool.m in Sources */,
-				9579EB4221B92C0A00051EDB /* NSObject+CommonBlock.m in Sources */,
 				8395AF34218958840082EA30 /* TransactionResultModel.m in Sources */,
 				958127EF219ABD9D0081A02E /* VersionUpdateAlertView.m in Sources */,
 				8372C8662174CC6F00FF9506 /* BaseViewController.m in Sources */,
@@ -1326,13 +1316,13 @@
 				83FB443421904AA400D68569 /* HMScannerBorder.m in Sources */,
 				83B594AD2175E4D9009F91BA /* RestoreIdentityViewController.m in Sources */,
 				83FB443A21904AA400D68569 /* HMScannerController.m in Sources */,
-				9579EB3B21B92B9300051EDB /* HUDHelper.m in Sources */,
 				83379AE8218066FE00C222A5 /* BlockInfoModel.m in Sources */,
 				958127F2219AC82A0081A02E /* VersionModel.m in Sources */,
 				838DC7682186AFFB002FF276 /* DistributionResultsViewController.m in Sources */,
 				83379A86217D9C8A00C222A5 /* AssetsDetailViewController.m in Sources */,
 				83379A92217DE12600C222A5 /* TransferResultsViewController.m in Sources */,
 				8372C8632174CBF100FF9506 /* TabBarViewController.m in Sources */,
+				9579EB5321BABE6300051EDB /* MBProgressHUD+JDragon.m in Sources */,
 				83379AC3217F3F3000C222A5 /* BaseModel.m in Sources */,
 				83D5BCD12182AB8200BF1FF1 /* AccountTool.m in Sources */,
 				8372C872217588D100FF9506 /* IdentityViewController.m in Sources */,

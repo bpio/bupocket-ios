@@ -102,49 +102,60 @@
 }
 - (void)DataJudgment
 {
-    [[HUDHelper sharedInstance] syncLoading];
+    [MBProgressHUD showActivityMessageInWindow:Localized(@"Loading")];
     __weak typeof(self) weakSelf = self;
     __block NSString * destAddress = self.destinationAddress.text;
     __block double sendingQuantity = 0;
     __block double cost = [self.transactionCosts.text doubleValue];
-    if (self.listModel.type == Token_Type_BU) {
-        sendingQuantity = [self.transferVolume.text doubleValue];
-    } else {
-        if ([self.transferVolume.text doubleValue] > [self.listModel.amount floatValue]) {
-            [[HUDHelper sharedInstance] syncStopLoadingMessage:Localized(@"NotSufficientFunds")];
-            return;
-        }
-    }
     dispatch_group_t group = dispatch_group_create();
     dispatch_group_enter(group);
     BOOL isCorrectAddress = [Keypair isAddressValid: destAddress];
     dispatch_async(dispatch_get_main_queue(), ^{
+        if (self.listModel.type == Token_Type_BU) {
+            sendingQuantity = [self.transferVolume.text doubleValue];
+        } else {
+            if ([self.transferVolume.text doubleValue] > [self.listModel.amount doubleValue]) {
+                [MBProgressHUD hideHUD];
+                [MBProgressHUD showTipMessageInWindow:Localized(@"NotSufficientFunds")];
+                return;
+            }
+        }
         if (!isCorrectAddress) {
-            [[HUDHelper sharedInstance] syncStopLoadingMessage:Localized(@"BUAddressIsIncorrect")];
+            [MBProgressHUD hideHUD];
+            [MBProgressHUD showTipMessageInWindow:Localized(@"BUAddressIsIncorrect")];
             return;
         }
         
         if ([destAddress isEqualToString:[[AccountTool account] purseAccount]]) {
-            [[HUDHelper sharedInstance] syncStopLoadingMessage:Localized(@"CannotTransferToOneself")];
+            [MBProgressHUD hideHUD];
+            [MBProgressHUD showTipMessageInWindow:Localized(@"CannotTransferToOneself")];
             return;
         }
         RegexPatternTool * regex = [[RegexPatternTool alloc] init];
-        if ([regex validateIsPositiveFloatingPoint:weakSelf.transferVolume.text decimals:self.listModel.decimals] == NO) {
-            [[HUDHelper sharedInstance] syncStopLoadingMessage:Localized(@"SendingQuantityIsIncorrect")];
+        NSInteger decimals = self.listModel.decimals < 0 ? 0 : self.listModel.decimals;
+        BOOL transferVolumeRegx = [regex validateIsPositiveFloatingPoint:weakSelf.transferVolume.text] && [regex validateIsPositiveFloatingPoint:weakSelf.transferVolume.text decimals:decimals];
+        if (transferVolumeRegx == NO) {
+            [MBProgressHUD hideHUD];
+            [MBProgressHUD showTipMessageInWindow:Localized(@"SendingQuantityIsIncorrect")];
             return;
         }
         if (weakSelf.remarks.text.length > MAX_LENGTH) {
-            [[HUDHelper sharedInstance] syncStopLoadingMessage:Localized(@"ExtraLongNotes")];
+            [MBProgressHUD hideHUD];
+            [MBProgressHUD showTipMessageInWindow:Localized(@"ExtraLongNotes")];
             return;
         }
-        if ([regex validateIsPositiveFloatingPoint:weakSelf.transactionCosts.text decimals:self.listModel.decimals] == NO) {
-            [[HUDHelper sharedInstance] syncStopLoadingMessage:Localized(@"TransactionCostIsIncorrect")];
+        BOOL transactionCostsRegx = [regex validateIsPositiveFloatingPoint:weakSelf.transactionCosts.text] && [regex validateIsPositiveFloatingPoint:weakSelf.transactionCosts.text decimals:Decimals_BU];
+        if (transactionCostsRegx == NO) {
+            [MBProgressHUD hideHUD];
+            [MBProgressHUD showTipMessageInWindow:Localized(@"TransactionCostIsIncorrect")];
             return;
         } else if (cost < TransactionCost_MIN) {
-            [[HUDHelper sharedInstance] syncStopLoadingMessage:Localized(@"TransactionCostMin")];
+            [MBProgressHUD hideHUD];
+            [MBProgressHUD showTipMessageInWindow:Localized(@"TransactionCostMin")];
             return;
         } else if (cost > TransactionCost_MAX) {
-            [[HUDHelper sharedInstance] syncStopLoadingMessage:Localized(@"TransactionCostMax")];
+            [MBProgressHUD hideHUD];
+            [MBProgressHUD showTipMessageInWindow:Localized(@"TransactionCostMax")];
             return;
         }
         weakSelf.isCorrectText = YES;
@@ -153,15 +164,16 @@
     dispatch_group_notify(group, dispatch_get_main_queue(), ^{
         if (weakSelf.isCorrectText == YES) {
             dispatch_async(dispatch_get_main_queue(), ^{
-                [[HUDHelper sharedInstance] syncLoading];
+                [MBProgressHUD showActivityMessageInWindow:Localized(@"Loading")];
             });
             double amount = [self.availableAmount doubleValue] - (sendingQuantity + cost);
             dispatch_async(dispatch_get_main_queue(), ^{
                 if (amount < 0) {
-                    [[HUDHelper sharedInstance] syncStopLoadingMessage:Localized(@"NotSufficientFunds")];
+                    [MBProgressHUD hideHUD];
+                    [MBProgressHUD showTipMessageInWindow:Localized(@"NotSufficientFunds")];
                     return;
                 }
-                [[HUDHelper sharedInstance] syncStopLoading];
+                [MBProgressHUD hideHUD];
                 weakSelf.transferInfoArray = [NSMutableArray arrayWithObjects:destAddress, [NSString stringWithFormat:@"%@ %@", weakSelf.transferVolume.text, self.listModel.assetCode], [NSString stringAppendingBUWithStr:weakSelf.transactionCosts.text], nil];
                 if ([weakSelf.remarks hasText]) {
                     [weakSelf.transferInfoArray addObject:weakSelf.remarks.text];
@@ -199,7 +211,7 @@
             VC.state = YES;
         } else {
             VC.state = NO;
-            [[HUDHelper sharedInstance] syncStopLoadingMessage:[ErrorTypeTool getDescription:resultModel.errorCode]];
+            [MBProgressHUD showTipMessageInWindow:[ErrorTypeTool getDescription:resultModel.errorCode]];
         }
         VC.transferInfoArray = self.transferInfoArray;
         [self.navigationController pushViewController:VC animated:YES];

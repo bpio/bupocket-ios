@@ -151,22 +151,22 @@
             
         }];
     } else {
-        [[HUDHelper sharedInstance] syncStopLoadingMessage:Localized(@"RandomGenerationFailure")];
+        [MBProgressHUD showTipMessageInWindow:Localized(@"RandomGenerationFailure")];
     }
 }
 
 - (void)createAction
 {
     if ([RegexPatternTool validateUserName:_identityName.text] == NO) {
-        [[HUDHelper sharedInstance] syncStopLoadingMessage:Localized(@"IDNameFormatIncorrect")];
+        [MBProgressHUD showTipMessageInWindow:Localized(@"IDNameFormatIncorrect")];
         return;
     }
     if ([RegexPatternTool validatePassword:_identityPassword.text] == NO) {
-        [[HUDHelper sharedInstance] syncStopLoadingMessage:Localized(@"CryptographicFormat")];
+        [MBProgressHUD showTipMessageInWindow:Localized(@"CryptographicFormat")];
         return;
     }
     if (![_confirmPassword.text isEqualToString:_identityPassword.text]) {
-        [[HUDHelper sharedInstance] syncStopLoadingMessage:Localized(@"PasswordIsDifferent")];
+        [MBProgressHUD showTipMessageInWindow:Localized(@"PasswordIsDifferent")];
         return;
     }
     [self getData];

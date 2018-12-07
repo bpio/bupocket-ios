@@ -218,7 +218,7 @@ static int64_t const gasPrice = 1000;
                                   success:(void (^)(id responseObject))success
                                   failure:(void (^)(NSError *error))failure
 {
-    [[HUDHelper sharedInstance] syncLoading];
+    [MBProgressHUD showActivityMessageInWindow:Localized(@"Loading")];
     NSString * url = SERVER_COMBINE_API(_webServerDomain, Transaction_Details);
     NSDictionary * parmenters = @{@"Hash" : hash};
     [[HttpTool shareTool] POST:url parameters:parmenters success:^(id responseObject) {
@@ -230,7 +230,7 @@ static int64_t const gasPrice = 1000;
         if(failure != nil)
         {
             failure(error);
-            [[HUDHelper sharedInstance] syncStopLoadingMessage:Localized(@"NoNetWork")];
+            [MBProgressHUD showTipMessageInWindow:Localized(@"NoNetWork")];
         }
     }];
 }
@@ -241,7 +241,7 @@ static int64_t const gasPrice = 1000;
                                              success:(void (^)(id responseObject))success
                                              failure:(void (^)(NSError *error))failure
 {
-    [[HUDHelper sharedInstance] syncLoading];
+    [MBProgressHUD showActivityMessageInWindow:Localized(@"Loading")];
     NSString * url = SERVER_COMBINE_API(_webServerDomain, Registered_And_Distribution);
     NSDictionary * parmenters = @{
                                   @"assetCode": assetCode,
@@ -256,7 +256,7 @@ static int64_t const gasPrice = 1000;
         if(failure != nil)
         {
             failure(error);
-            [[HUDHelper sharedInstance] syncStopLoadingMessage:Localized(@"NoNetWork")];
+            [MBProgressHUD showTipMessageInWindow:Localized(@"NoNetWork")];
         }
     }];
 }
@@ -266,7 +266,7 @@ static int64_t const gasPrice = 1000;
                            success:(void (^)(id responseObject))success
                            failure:(void (^)(NSError *error))failure
 {
-    [[HUDHelper sharedInstance] syncLoading];
+    [MBProgressHUD showActivityMessageInWindow:Localized(@"Loading")];
     NSString * url = SERVER_COMBINE_API(_webServerDomain, Help_And_Feedback);
     NSDictionary * parmenters = @{
                                   @"content": content,
@@ -281,29 +281,24 @@ static int64_t const gasPrice = 1000;
         if(failure != nil)
         {
             failure(error);
-            [[HUDHelper sharedInstance] syncStopLoadingMessage:Localized(@"NoNetWork")];
+            [MBProgressHUD showTipMessageInWindow:Localized(@"NoNetWork")];
         }
     }];
 }
 #pragma mark - SDK
 // Check the balance
 - (int64_t)getAccountBalance {
-    dispatch_async(dispatch_get_main_queue(), ^{
-        [[HUDHelper sharedInstance] syncLoading];
-    });
+    [MBProgressHUD showActivityMessageInWindow:Localized(@"Loading")];
     AccountService *accountService = [[[SDK sharedInstance] setUrl:_bumoNodeUrl] getAccountService];
     AccountGetBalanceRequest * request = [AccountGetBalanceRequest new];
     [request setAddress : [AccountTool account].purseAccount];
     AccountGetBalanceResponse *response = [accountService getBalance : request];
     if (response.errorCode == Success_Code) {
-        dispatch_async(dispatch_get_main_queue(), ^{
-            [[HUDHelper sharedInstance] syncStopLoading];
-        });
+        [MBProgressHUD hideHUD];
         return response.result.balance;
     } else {
-        dispatch_async(dispatch_get_main_queue(), ^{
-            [[HUDHelper sharedInstance] syncStopLoadingMessage:[ErrorTypeTool getDescription:response.errorCode]];
-        });
+        [MBProgressHUD hideHUD];
+        [MBProgressHUD showTipMessageInWindow:[ErrorTypeTool getDescription:response.errorCode]];
         return 0;
     }
 }
@@ -339,7 +334,7 @@ static int64_t const gasPrice = 1000;
 {
     if (ifShowLoading == YES) {
         dispatch_async(dispatch_get_main_queue(), ^{
-            [[HUDHelper sharedInstance] syncLoading];
+            [MBProgressHUD showActivityMessageInWindow:Localized(@"Loading")];
         });
     }
     double balance = 0;
@@ -353,8 +348,7 @@ static int64_t const gasPrice = 1000;
     } else {
         if (ifShowLoading == YES) {
             dispatch_async(dispatch_get_main_queue(), ^{
-                [[HUDHelper sharedInstance] syncStopLoading];
-//                [[HUDHelper sharedInstance] syncStopLoadingMessage:[ErrorTypeTool getDescription:response.errorCode]];
+                [MBProgressHUD hideHUD];
             });
         }
 //        [MBProgressHUD showErrorMessage:response.errorDesc];
@@ -378,9 +372,7 @@ static int64_t const gasPrice = 1000;
         AssetInfo *assetInfo = response.result.assets[0];
         return assetInfo.amount;
     } else {
-        dispatch_async(dispatch_get_main_queue(), ^{
-            [[HUDHelper sharedInstance] syncStopLoadingMessage:[ErrorTypeTool getDescription:response.errorCode]];
-        });
+        [MBProgressHUD showErrorMessage:[ErrorTypeTool getDescription:response.errorCode]];
         return 0;
     }
 }
@@ -408,7 +400,7 @@ static int64_t const gasPrice = 1000;
                          success:(void (^)(id responseObject))success
                          failure:(void (^)(NSError *error))failure
 {
-    [[HUDHelper sharedInstance] syncLoading];
+    [MBProgressHUD showActivityMessageInWindow:Localized(@"Loading")];
     // Random number -> mnemonic
     NSArray * words = [Mnemonic generateMnemonicCode: [random copy]];
     NSMutableArray * hdPaths = [NSMutableArray arrayWithObjects:@"M/44H/526H/0H/0/0", @"M/44H/526H/1H/0/0", nil];
@@ -420,13 +412,13 @@ static int64_t const gasPrice = 1000;
     NSString * purseAddress = [Keypair getEncAddress : [Keypair getEncPublicKey: [privateKeys lastObject]]];
     NSString * purseKey = [NSString generateKeyStoreWithPW:password key:[privateKeys lastObject]];
     if (randomKey == nil) {
-        [[HUDHelper sharedInstance] syncStopLoadingMessage:Localized(@"RandomGenerationFailure")];
+        [MBProgressHUD showTipMessageInWindow:Localized(@"RandomGenerationFailure")];
     } else if (identityKey == nil) {
-        [[HUDHelper sharedInstance] syncStopLoadingMessage:@"IdentityFailure"];
+        [MBProgressHUD showTipMessageInWindow:@"IdentityFailure"];
     } else if (purseKey == nil) {
-        [[HUDHelper sharedInstance] syncStopLoadingMessage:Localized(@"WalletAccountFailure")];
+        [MBProgressHUD showTipMessageInWindow:Localized(@"WalletAccountFailure")];
     } else {
-        [[HUDHelper sharedInstance] syncStopLoading];
+        [MBProgressHUD hideHUD];
         if(success != nil)
         {
             AccountModel * account = [[AccountModel alloc] init];
@@ -459,7 +451,7 @@ static int64_t const gasPrice = 1000;
     NSString * sourceAddress = [AccountTool account].purseAccount;
     NSString * privateKey = [NSString decipherKeyStoreWithPW:password keyStoreValueStr:[AccountTool account].purseKey];
     if ([Tools isEmpty:privateKey]) {
-        [[HUDHelper sharedInstance] syncStopLoadingMessage:Localized(@"PasswordIsIncorrect")];
+        [MBProgressHUD showWarnMessage:Localized(@"PasswordIsIncorrect")];
         return;
     }
     int64_t fee = [[[NSDecimalNumber decimalNumberWithString:feeLimit] decimalNumberByMultiplyingByPowerOf10: Decimals_BU] integerValue];
@@ -500,9 +492,10 @@ static int64_t const gasPrice = 1000;
     NSString * sourceAddress = [AccountTool account].purseAccount;
     NSString *key = [NSString stringWithFormat: @"asset_property_%@", registeredModel.code];
     AtpProperty * atpProperty = [[AtpProperty alloc] init];
-    int64_t total = registeredModel.amount * pow(10, registeredModel.decimals);
+    NSInteger total = [[[NSDecimalNumber decimalNumberWithString:[NSString stringWithFormat:@"%zd", registeredModel.amount]] decimalNumberByMultiplyingByPowerOf10: registeredModel.decimals] integerValue];
+//    int64_t total = registeredModel.amount * pow(10, registeredModel.decimals);
     if (registeredModel.amount != 0 && total < 1) {
-        [[HUDHelper sharedInstance] syncStopLoadingMessage:Localized(@"IssueNumberIsIncorrect")];
+        [MBProgressHUD showTipMessageInWindow:Localized(@"IssueNumberIsIncorrect")];
         return;
     }
     atpProperty.name = registeredModel.name;
@@ -519,7 +512,7 @@ static int64_t const gasPrice = 1000;
     [operation setValue : value];
     NSString * privateKey = [NSString decipherKeyStoreWithPW:password keyStoreValueStr:[AccountTool account].purseKey];
     if ([Tools isEmpty:privateKey]) {
-        [[HUDHelper sharedInstance] syncStopLoadingMessage:Localized(@"PasswordIsIncorrect")];
+        [MBProgressHUD showWarnMessage:Localized(@"PasswordIsIncorrect")];
         return;
     }
     int64_t feeLimit = [Tools BU2MO: Registered_Cost];
@@ -540,9 +533,10 @@ static int64_t const gasPrice = 1000;
 {
     NSString * sourceAddress = [AccountTool account].purseAccount;
     // Asset amount
-    int64_t amount = [assetAmount longLongValue] * powl(10, decimals);
+//    int64_t amount = [assetAmount longLongValue] * powl(10, decimals);
+    NSInteger amount = [[[NSDecimalNumber decimalNumberWithString:assetAmount] decimalNumberByMultiplyingByPowerOf10: decimals] integerValue];
     if (amount < 1) {
-        [[HUDHelper sharedInstance] syncStopLoadingMessage:Localized(@"IssueNumberIsIncorrect")];
+        [MBProgressHUD showWarnMessage:Localized(@"IssueNumberIsIncorrect")];
         return;
     }
     AssetIssueOperation *operation = [AssetIssueOperation new];
@@ -551,7 +545,7 @@ static int64_t const gasPrice = 1000;
     [operation setAmount: amount];
     NSString * privateKey = [NSString decipherKeyStoreWithPW:password keyStoreValueStr:[AccountTool account].purseKey];
     if ([Tools isEmpty:privateKey]) {
-        [[HUDHelper sharedInstance] syncStopLoadingMessage:Localized(@"PasswordIsIncorrect")];
+        [MBProgressHUD showWarnMessage:Localized(@"PasswordIsIncorrect")];
         return;
     }
     int64_t feeLimit = [Tools BU2MO: Distribution_Cost];
@@ -572,9 +566,7 @@ static int64_t const gasPrice = 1000;
     if (response.errorCode == Success_Code) {
         nonce = response.result.nonce;
     } else {
-        dispatch_async(dispatch_get_main_queue(), ^{
-            [[HUDHelper sharedInstance] syncStopLoadingMessage:[ErrorTypeTool getDescription:response.errorCode]];
-        });
+        [MBProgressHUD showTipMessageInWindow:[ErrorTypeTool getDescription:response.errorCode]];
     }
     return nonce;
 }
@@ -595,9 +587,7 @@ static int64_t const gasPrice = 1000;
     if (buildBlobResponse.errorCode == Success_Code) {
         hash = buildBlobResponse.result.transactionHash;
     } else {
-        dispatch_async(dispatch_get_main_queue(), ^{
-            [[HUDHelper sharedInstance] syncStopLoadingMessage:[ErrorTypeTool getDescription:buildBlobResponse.errorCode]];
-        });
+        [MBProgressHUD showTipMessageInWindow:[ErrorTypeTool getDescription:buildBlobResponse.errorCode]];
         return nil;
     }
     
@@ -608,9 +598,7 @@ static int64_t const gasPrice = 1000;
     TransactionSignResponse * signResponse = [transactionServer sign : signRequest];
     if (signResponse.errorCode == Success_Code) {
     } else {
-        dispatch_async(dispatch_get_main_queue(), ^{
-            [[HUDHelper sharedInstance] syncStopLoadingMessage:[ErrorTypeTool getDescription:signResponse.errorCode]];
-        });
+        [MBProgressHUD showTipMessageInWindow:[ErrorTypeTool getDescription:signResponse.errorCode]];
         return nil;
     }
     // Submission of transactions
@@ -620,9 +608,7 @@ static int64_t const gasPrice = 1000;
     TransactionSubmitResponse *submitResponse = [transactionServer submit : submitRequest];
     if (submitResponse.errorCode == Success_Code) {
     } else {
-        dispatch_async(dispatch_get_main_queue(), ^{
-            [[HUDHelper sharedInstance] syncStopLoadingMessage:[ErrorTypeTool getDescription:submitResponse.errorCode]];
-        });
+        [MBProgressHUD showTipMessageInWindow:[ErrorTypeTool getDescription:submitResponse.errorCode]];
         return nil;
     }
     return hash;
@@ -633,7 +619,7 @@ static int64_t const gasPrice = 1000;
                          success:(void (^)(TransactionResultModel * resultModel))success
                          failure:(void (^)(TransactionResultModel * resultModel))failure
 {
-    [[HUDHelper sharedInstance] syncLoading];
+    [MBProgressHUD showActivityMessageInWindow:Localized(@"Loading")];
     __block TransactionGetInfoResponse *response = [TransactionGetInfoResponse new];
     __block TransactionResultModel * resultModel = [[TransactionResultModel alloc] init];
     resultModel.transactionHash = hash;
@@ -661,7 +647,7 @@ static int64_t const gasPrice = 1000;
     dispatch_group_notify(group, dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_DEFAULT, 0), ^{
         if (state == Maximum_Number) {
             dispatch_async(dispatch_get_main_queue(), ^{
-                [[HUDHelper sharedInstance] syncStopLoading];
+                [MBProgressHUD hideHUD];
                 if(failure != nil)
                 {
                     resultModel.errorCode = response.errorCode;
@@ -671,7 +657,7 @@ static int64_t const gasPrice = 1000;
             });
         } else {
             dispatch_async(dispatch_get_main_queue(), ^{
-                [[HUDHelper sharedInstance] syncStopLoading];
+                [MBProgressHUD hideHUD];
                 if(success != nil)
                 {
                     TransactionHistory * history = response.result.transactions[0];

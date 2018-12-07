@@ -92,19 +92,19 @@
 - (void)submitAction
 {
     if (self.feedback.length > SuggestionsContent_MAX) {
-        [[HUDHelper sharedInstance] syncStopLoadingMessage:Localized(@"SuggestionsContentOverlength")];
+        [MBProgressHUD showTipMessageInWindow:Localized(@"SuggestionsContentOverlength")];
         return;
     }
     if (self.contact.length > MAX_LENGTH) {
-        [[HUDHelper sharedInstance] syncStopLoadingMessage:Localized(@"ContactOverlength")];
+        [MBProgressHUD showTipMessageInWindow:Localized(@"ContactOverlength")];
         return;
     }
     [[HTTPManager shareManager] getFeedbackDataWithContent:self.feedback contact:self.contact success:^(id responseObject) {
         NSInteger code = [[responseObject objectForKey:@"errCode"] integerValue];
         if (code == Success_Code) {
-            [[HUDHelper sharedInstance] syncStopLoadingMessage:Localized(@"SubmissionOfSuccess")];
+            [MBProgressHUD showTipMessageInWindow:Localized(@"SubmissionOfSuccess")];
         } else {
-            [[HUDHelper sharedInstance] syncStopLoadingMessage:[ErrorTypeTool getDescriptionWithErrorCode:code]];
+            [MBProgressHUD showTipMessageInWindow:[ErrorTypeTool getDescriptionWithErrorCode:code]];
         }
     } failure:^(NSError *error) {
         
