@@ -7,7 +7,7 @@
 */
 //"LaunchTitle" = "小布口袋";
 //"LaunchBriefIntroduction" = "泛在价值流通区块链网络";
-"NoNetWork" = "您的网络好像不太给力，请稍后再试";
+"NoNetWork" = "网络不给力，请稍后再试";
 "Reload" = "重新加载";
 "MyTitle" = "我的";
 "AssetsTitle" = "资产";
@@ -73,7 +73,7 @@
 "IdentityIDTitle" = "身份ID";
 "BackupIdentity" = "备份身份";
 "ExitCurrentIdentity" = "退出当前身份";
-"ExitCurrentIdentityPrompt" = "即将移除身份，请确保身份已备份";
+"ExitCurrentIdentityPrompt" = "即将退出当前身份，请确保身份已备份";
 "IdentityIDInfo" = "用来维护你存储在区块链上的数据，这些信息会以分布式存储的方式进行保存，只有拥有该身份的人可以动用数据，充分确保你的数据主权不受侵犯。";
 // 修改密码
 "OldPassword" = "旧密码";
@@ -182,7 +182,7 @@
 "TotalAmountOfToken" = "资产总量";
 "TotalAmountOfDistribution" = "发行总量";
 "DistributionCost" = "预估交易费";
-"ActualTransactionCost" = "实际交易费";
+"ActualTransactionCost" = "实际交易费用";
 "ConfirmationOfDistribution" = "确认发行";
 "DistributionAssetsDetail" = "资产发行详情";
 "DistributionSuccess" = "发行成功";
@@ -214,9 +214,7 @@
 // alert Massage
 "Loading" = "加载中...";
 // SDK
-"RandomGenerationFailure" = "随机数生成失败";
-"IdentityFailure" = "身份账户生成失败";
-"WalletAccountFailure" = "钱包账户生成失败";
+"CreateIdentityFailure" = "身份创建失败";
 "IssueNumberIsIncorrect" = "发行数量有误";
 // Accout
 "IDNameFormatIncorrect" = "身份名只允许输入字母、汉字、数字、下划线，并且长度不能超过20个字符";

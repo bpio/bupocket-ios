@@ -209,13 +209,10 @@
                     [self pushDistributionVC];
                 } else {
                     // limited
-                    CGFloat isOverFlow = [self.distributionModel.totalSupply floatValue] - [self.distributionModel.actualSupply floatValue] - self.registeredModel.amount;
+                    
                     if ([self.distributionModel.totalSupply floatValue] == [self.distributionModel.actualSupply floatValue]) {
                         // You have issued the asset
                         [self alertViewWithMessage:Localized(@"IssuedAssets")];
-                    } else if (isOverFlow < 0) {
-                        // Your tokens issued exceed the total amount of tokens registered
-                        [self alertViewWithMessage:Localized(@"CirculationExceeded")];
                     } else {
                         [self pushDistributionVC];
                     }

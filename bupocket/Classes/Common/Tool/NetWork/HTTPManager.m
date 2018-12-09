@@ -412,11 +412,11 @@ static int64_t const gasPrice = 1000;
     NSString * purseAddress = [Keypair getEncAddress : [Keypair getEncPublicKey: [privateKeys lastObject]]];
     NSString * purseKey = [NSString generateKeyStoreWithPW:password key:[privateKeys lastObject]];
     if (randomKey == nil) {
-        [MBProgressHUD showTipMessageInWindow:Localized(@"RandomGenerationFailure")];
+        [MBProgressHUD showTipMessageInWindow:Localized(@"CreateIdentityFailure")];
     } else if (identityKey == nil) {
-        [MBProgressHUD showTipMessageInWindow:@"IdentityFailure"];
+        [MBProgressHUD showTipMessageInWindow:@"CreateIdentityFailure"];
     } else if (purseKey == nil) {
-        [MBProgressHUD showTipMessageInWindow:Localized(@"WalletAccountFailure")];
+        [MBProgressHUD showTipMessageInWindow:Localized(@"CreateIdentityFailure")];
     } else {
         [MBProgressHUD hideHUD];
         if(success != nil)

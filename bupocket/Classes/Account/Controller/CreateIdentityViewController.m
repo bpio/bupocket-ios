@@ -151,7 +151,7 @@
             
         }];
     } else {
-        [MBProgressHUD showTipMessageInWindow:Localized(@"RandomGenerationFailure")];
+        [MBProgressHUD showTipMessageInWindow:Localized(@"CreateIdentityFailure")];
     }
 }
 

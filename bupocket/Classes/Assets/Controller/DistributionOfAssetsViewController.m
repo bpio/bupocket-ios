@@ -49,7 +49,21 @@ static NSString * const Issue_Leave = @"leaveRoomForApp";
     backButton.frame = CGRectMake(0, 0, ScreenScale(44), Margin_30);
     backButton.contentHorizontalAlignment = UIControlContentHorizontalAlignmentLeft;
     self.navigationItem.leftBarButtonItem = [[UIBarButtonItem alloc]initWithCustomView:backButton];
+    CGFloat isOverFlow = [self.distributionModel.totalSupply floatValue] - [self.distributionModel.actualSupply floatValue] - self.registeredModel.amount;
+    if (isOverFlow < 0) {
+        // Your tokens issued exceed the total amount of tokens registered
+        [self alertViewWithMessage:Localized(@"CirculationExceeded")];
+    }
     // Do any additional setup after loading the view.
+}
+- (void)alertViewWithMessage:(NSString *)message
+{
+    UIAlertController * alertController = [UIAlertController alertControllerWithTitle:message message:nil preferredStyle:UIAlertControllerStyleAlert];
+    UIAlertAction * cancelAction = [UIAlertAction actionWithTitle:Localized(@"IGotIt") style:UIAlertActionStyleCancel handler:^(UIAlertAction * _Nonnull action) {
+        [self cancelAction];
+    }];
+    [alertController addAction:cancelAction];
+    [self presentViewController:alertController animated:YES completion:nil];
 }
 - (void)connectSocket
 {

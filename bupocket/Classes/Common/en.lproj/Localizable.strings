@@ -13,7 +13,7 @@
 "AppSize" = "The size of the new version：";
 "UpdateVersion" = "Update";
 
-"NoNetWork" = "Your network is interrupted. Please try again later.";
+"NoNetWork" = "Network failure, please try again later";
 "Reload" = "Reload";
 "MyTitle" = "Profile";
 "AssetsTitle" = "Tokens";
@@ -33,7 +33,7 @@
 "ConfirmPassword" = "Please confirm your password";
 "Create" = "Create";
 "CreatePWPrompt" = "Tips";
-"CreatePWWarn" = "The password must be strong as it is used to encrypt and protect the private key, transfer coins, call contracts, etc. Please bear in mind that Bu Pocket does not store passwords, and can't help you retrieve passwords.";
+"CreatePWWarn" = "The password must be strong as it is used to encrypt and protect the private key, transfer coins, call contracts, etc. Please bear in mind that BU Pocket does not store passwords, and can't help you retrieve passwords.";
 "CreatePWInfo" = "The length is 8~20 characters. It is recommended to mix uppercase and lowercase letters plus numbers.";
 "Confirm" = "Confirm";
 "Cancel" = "Cancel";
@@ -67,8 +67,8 @@
 "MultiLingual" = "Language";
 "VersionNumber" = "Version";
 "Save" = "Save";
-"MonetaryUnit" = "Currency Unit";
-"SwitchedNetwork" = "Switch the test network";
+"MonetaryUnit" = "Currency unit";
+"SwitchedNetwork" = "Switch to the test network";
 // My identity
 "MyIdentity" = "My identity";
 "IdentityNameTitle" = "Identity name";
@@ -76,7 +76,7 @@
 "BackupIdentity" = "Backup identity";
 "ExitCurrentIdentity" = "Exit the current identity";
 "IdentityIDInfo" = "It is used to secure the data that you store on the blockchain, which is stored in a distributed manner. Only those who have the identity can use the data, so as to ensure that your data sovereignty is not violated";
-"ExitCurrentIdentityPrompt" = "The identity is removed soon. Please ensure that your identity has been backed up";
+"ExitCurrentIdentityPrompt" = "The identity will be removed soon. Please ensure that your identity has been backed up";
 // Revise password
 "OldPassword" = "Old password";
 "NewPassword" = "New password";
@@ -93,7 +93,7 @@
 "SimplifiedChinese" = "Simplified Chinese";
 "English" = "English";
 // Switch network
-"SwitchToTestNetwork" = "Switch to the test network?";
+"SwitchToTestNetwork" = "Whether to switch to the test network?";
 "YES" = "Yes";
 "NO" = "No";
 "ClosedTestNetwork" = "You have stopped the test network";
@@ -121,7 +121,7 @@
 // Details of tokens
 "AssetsDetailScan" = "Scan";
 "TransferAccounts" = "Transfer coins";
-"RecentTransactionRecords" = "Recent transactions";
+"RecentTransactionRecords" = "Transaction history";
 "NoTransactionRecord" = "No transaction records";
 // Transfer coins
 //"TransferTitle" = "BU transfer";
@@ -129,7 +129,7 @@
 "reciprocalAccount" = "Recipient account";
 "PhoneOrAddress" = "Please enter the recipient address";
 //"AmountOfTransfer" = "Transfer amount(BU)*";
-"AmountOfTransfer" = "Transfer amount";
+"AmountOfTransfer" = "Amount to transfer";
 "AvailableBalance" = "Available balance";
 //"MostOnce" = "Each transaction cannot exceed 10000 BU";
 "AmountOfTransferPlaceholder" = "Please enter the amount to be transferred";
@@ -182,7 +182,7 @@
 "CumulativeCirculation" = "All issued";
 "RemainingUnissuedVolume" = "Unissued";
 "TotalAmountOfToken" = "Total tokens";
-"TotalAmountOfDistribution" = "Total amount to be issued";
+"TotalAmountOfDistribution" = "Total issuance";
 "DistributionCost" = "Estimated transaction fee";
 "ActualTransactionCost" = "Actual transaction fee";
 "ConfirmationOfDistribution" = "Confirm to issue";
@@ -215,12 +215,10 @@
 // alert Massage
 "Loading" = "Loading...";
 // SDK
-"RandomGenerationFailure" = "Failed to generate random numbers";
-"IdentityFailure" = "Failed to generate the identity account";
-"WalletAccountFailure" = "Failed to generate the wallet account";
+"CreateIdentityFailure" = "Failed to create an identity";
 "IssueNumberIsIncorrect" = "The amount issued is incorrect";
 // Accout
-"IDNameFormatIncorrect" = "The name is only allowed to enter letters, characters, numbers, underscores, and it cannot exceed 20 characters in length.";
+"IDNameFormatIncorrect" = "The identity name is only allowed to enter letters, characters, numbers, underscores, and it cannot exceed 20 characters in length";
 "WalletNameFormatIncorrect" = "The wallet names is only allowed to enter letters, characters, numbers, underscores, and it cannot exceed 20 characters in length.";
 "PasswordIsDifferent" = "Passwords do not match";
 "MnemonicIsIncorrect" = "The mnemonics input are incorrect. Please enter again";
