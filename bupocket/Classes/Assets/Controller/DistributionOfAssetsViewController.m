@@ -49,22 +49,9 @@ static NSString * const Issue_Leave = @"leaveRoomForApp";
     backButton.frame = CGRectMake(0, 0, ScreenScale(44), Margin_30);
     backButton.contentHorizontalAlignment = UIControlContentHorizontalAlignmentLeft;
     self.navigationItem.leftBarButtonItem = [[UIBarButtonItem alloc]initWithCustomView:backButton];
-    CGFloat isOverFlow = [self.distributionModel.totalSupply floatValue] - [self.distributionModel.actualSupply floatValue] - self.registeredModel.amount;
-    if (isOverFlow < 0) {
-        // Your tokens issued exceed the total amount of tokens registered
-        [self alertViewWithMessage:Localized(@"CirculationExceeded")];
-    }
     // Do any additional setup after loading the view.
 }
-- (void)alertViewWithMessage:(NSString *)message
-{
-    UIAlertController * alertController = [UIAlertController alertControllerWithTitle:message message:nil preferredStyle:UIAlertControllerStyleAlert];
-    UIAlertAction * cancelAction = [UIAlertAction actionWithTitle:Localized(@"IGotIt") style:UIAlertActionStyleCancel handler:^(UIAlertAction * _Nonnull action) {
-        [self cancelAction];
-    }];
-    [alertController addAction:cancelAction];
-    [self presentViewController:alertController animated:YES completion:nil];
-}
+
 - (void)connectSocket
 {
     NSURL* url = [[NSURL alloc] initWithString:[HTTPManager shareManager].pushMessageSocketUrl];
@@ -150,10 +137,25 @@ static NSString * const Issue_Leave = @"leaveRoomForApp";
 
 - (void)confirmationAction
 {
+    CGFloat isOverFlow = [self.distributionModel.totalSupply integerValue] - [self.distributionModel.actualSupply integerValue] - self.registeredModel.amount;
+    if ([self.distributionModel.totalSupply integerValue] != 0 && isOverFlow < 0) {
+        // Your tokens issued exceed the total amount of tokens registered
+        [self alertViewWithMessage:Localized(@"CirculationExceeded")];
+        return;
+    }
+    NSString * totalAsset = [NSString stringWithFormat:@"%zd", self.registeredModel.amount + [self.distributionModel.actualSupply integerValue]];
+    NSInteger issueAsset = [[[NSDecimalNumber decimalNumberWithString:totalAsset] decimalNumberByMultiplyingByPowerOf10: self.distributionModel.decimals] integerValue];
+    if (issueAsset > NSIntegerMax) {
+        [MBProgressHUD showTipMessageInWindow:Localized(@"IssueNumberOverflowMax")];
+        return;
+    } else if (issueAsset < 1) {
+        [MBProgressHUD showTipMessageInWindow:Localized(@"IssueNumberIsIncorrect")];
+        return;
+    }
     __weak typeof(self) weakSelf = self;
     NSOperationQueue * queue = [[NSOperationQueue alloc] init];
     [queue addOperationWithBlock:^{
-        CGFloat amount = [[HTTPManager shareManager] getDataWithBalanceJudgmentWithCost:Distribution_Cost ifShowLoading:YES];
+        double amount = [[HTTPManager shareManager] getDataWithBalanceJudgmentWithCost:Distribution_Cost ifShowLoading:YES];
         [[NSOperationQueue mainQueue] addOperationWithBlock:^{
             if (amount < 0) {
                 [MBProgressHUD showTipMessageInWindow:Localized(@"DistributionNotSufficientFunds")];
@@ -170,8 +172,9 @@ static NSString * const Issue_Leave = @"leaveRoomForApp";
 }
 - (void)getIssueAssetDataWithPassword:(NSString *)password
 {
-    NSString * amount = [NSString stringWithFormat:@"%zd", self.registeredModel.amount];
-    [[HTTPManager shareManager] getIssueAssetDataWithPassword:password assetCode: self.registeredModel.code assetAmount:amount decimals:self.distributionModel.decimals success:^(TransactionResultModel *resultModel) {
+    NSString * assetAmount = [NSString stringWithFormat:@"%zd", self.registeredModel.amount];
+    NSInteger issueAsset = [[[NSDecimalNumber decimalNumberWithString:assetAmount] decimalNumberByMultiplyingByPowerOf10: self.distributionModel.decimals] integerValue];
+    [[HTTPManager shareManager] getIssueAssetDataWithPassword:password assetCode: self.registeredModel.code assetAmount:issueAsset decimals:self.distributionModel.decimals success:^(TransactionResultModel *resultModel) {
         self.distributionModel.transactionHash = resultModel.transactionHash;
         self.distributionModel.distributionFee = resultModel.actualFee;
         [self loadDataWithIsOvertime:NO resultModel:resultModel];
@@ -283,6 +286,15 @@ static NSString * const Issue_Leave = @"leaveRoomForApp";
         make.width.mas_lessThanOrEqualTo(DEVICE_WIDTH - ScreenScale(140));
     }];
     return assetInfo;
+}
+- (void)alertViewWithMessage:(NSString *)message
+{
+    UIAlertController * alertController = [UIAlertController alertControllerWithTitle:message message:nil preferredStyle:UIAlertControllerStyleAlert];
+    UIAlertAction * cancelAction = [UIAlertAction actionWithTitle:Localized(@"IGotIt") style:UIAlertActionStyleCancel handler:^(UIAlertAction * _Nonnull action) {
+        [self cancelAction];
+    }];
+    [alertController addAction:cancelAction];
+    [self presentViewController:alertController animated:YES completion:nil];
 }
 /*
 #pragma mark - Navigation

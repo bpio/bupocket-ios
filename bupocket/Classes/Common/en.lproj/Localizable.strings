@@ -25,7 +25,7 @@
 "TermsOfUse" = "Terms of service";
 "TermsOfUseFileName" = "Terms of use_EN";
 "Continue" = "Continue";
-"ReadAndAgree" = "I have read and agreed to the above terms and conditions.";
+"ReadAndAgree" = "Agreed";
 // Create an identity
 "CreateIdentity" = "Create an identity";
 "IdentityName" = "Please create your identity name";
@@ -151,7 +151,8 @@
 "RequestTimeout" = "Request timeout";
 "IGotIt" = "Got it";
 // Order details
-"OrderDetails" = "Order details";
+//"OrderDetails" = "Order details";
+"TransactionDetail" = "Transaction detail";
 "Success" = "Success";
 "Failure" = "Failure";
 "OriginatorAdress" = "Sending address";
@@ -163,7 +164,7 @@
 "ConfirmRegistrationInformation" = "Please confirm the following token registration information";
 "ConfirmationOfRegistration" = "Confirm registration";
 "RegistrationIdentityCipherPrompt" = "Please fill in the identity password to confirm the registration";
-"RegisteredAssetsDetail" = "Details of token registration";
+//"RegisteredAssetsDetail" = "Details of token registration";
 "RegistrationSuccess" = "Registration succeeded";
 "RegistrationFailure" = "Registration failed";
 "RegistrationTimeout" = "Registration timeout";
@@ -186,7 +187,8 @@
 "DistributionCost" = "Estimated transaction fee";
 "ActualTransactionCost" = "Actual transaction fee";
 "ConfirmationOfDistribution" = "Confirm to issue";
-"DistributionAssetsDetail" = "Details of token issuance";
+"IssueNumberOverflowMax" = "Your total tokens to be issued exceed the upper limit";
+//"DistributionAssetsDetail" = "Details of token issuance";
 "DistributionSuccess" = "Issued successfully";
 "DistributionFailure" = "Failed to issue";
 "DistributionTimeout" = "Issuance timeout";
@@ -198,10 +200,13 @@
 "Hash" = "Hash";
 // scan
 // 待定
-"UnableToAccessAlbum" = "Can not use photo album";
-//"Can not use camera" = "无法使用相机";
-"Allow %@ to access your album in \"Settings -> Privacy -> Photos\"" = "Allow %@ to access your album in \"Settings -> Privacy -> Photos\"";
-"Please allow %@ to access your camera in \"Settings -> Privacy -> Camera\"" = "Please allow %@ to access your camera in \"Settings -> Privacy -> Camera\"";
+"UnableToAccessAlbum" = "Photos are not accessible";
+//"Can not use camera" = "Camera is not accessible";
+"Allow %@ to access your album in \"Settings -> Privacy -> Photos\"" = "Please allow %@ to access your photos by selecting the option in \"Settings -> Privacy -> Photos\" of your iPhone";
+"Please allow %@ to access your camera in \"Settings -> Privacy -> Camera\"" = "Please allow %@ to access your camera by selecting the option in \"Settings -> Privacy -> Camera\" of your iPhone";
+"OK" = "OK";
+//"Can not jump to the privacy settings page, please go to the settings page by self, thank you" = "Failed to jump to the Privacy setting page. Please go to the setting page manually. Thank You";
+"RecognitionFailure" = "Failed to scan the QR code. Please select another photo";
 
 "Close" = "Close";
 "Album" = "Album";
@@ -216,7 +221,7 @@
 "Loading" = "Loading...";
 // SDK
 "CreateIdentityFailure" = "Failed to create an identity";
-"IssueNumberIsIncorrect" = "The amount issued is incorrect";
+"IssueNumberIsIncorrect" = "Invalid circulation";
 // Accout
 "IDNameFormatIncorrect" = "The identity name is only allowed to enter letters, characters, numbers, underscores, and it cannot exceed 20 characters in length";
 "WalletNameFormatIncorrect" = "The wallet names is only allowed to enter letters, characters, numbers, underscores, and it cannot exceed 20 characters in length.";

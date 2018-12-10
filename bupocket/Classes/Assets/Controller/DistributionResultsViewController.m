@@ -32,7 +32,7 @@ static NSString * const DistributionDetailCellID = @"DistributionDetailCellID";
 
 - (void)viewDidLoad {
     [super viewDidLoad];
-    self.navigationItem.title = Localized(@"DistributionAssetsDetail");
+//    self.navigationItem.title = Localized(@"DistributionAssetsDetail");
     [self setData];
     [self setupView];
     // Do any additional setup after loading the view.
@@ -94,7 +94,7 @@ static NSString * const DistributionDetailCellID = @"DistributionDetailCellID";
             result = Localized(@"DistributionSuccess");
         } else if (self.distributionResultState == DistributionResultFailure) {
             imageName = @"assetsFailure";
-            result = Localized(@"TransferFailure");
+            result = Localized(@"DistributionFailure");
         } else if (self.distributionResultState == DistributionResultOvertime) {
             imageName = @"assetsTimeout";
             result = Localized(@"DistributionTimeout");

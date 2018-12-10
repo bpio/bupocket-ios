@@ -40,7 +40,7 @@ static NSInteger const TxInfoNormalCount = 6;
 
 - (void)viewDidLoad {
     [super viewDidLoad];
-    self.navigationItem.title = Localized(@"OrderDetails");
+    self.navigationItem.title = Localized(@"TransactionDetail");
     NSString * outOrIn;
     if (self.listModel.outinType == Transaction_Type_TurnOut) {
         outOrIn = @"-";

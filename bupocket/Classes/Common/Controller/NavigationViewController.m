@@ -16,6 +16,8 @@
 #import "TransferResultsViewController.h"
 #import "OrderDetailsViewController.h"
 #import "RequestTimeoutViewController.h"
+#import "RegisteredResultViewController.h"
+#import "DistributionResultsViewController.h"
 
 @interface NavigationViewController ()<UINavigationControllerDelegate>
 
@@ -63,6 +65,8 @@
 //                             [viewController isKindOfClass:[AddAssetsViewController class]] ||
                              [viewController isKindOfClass:[AssetsDetailViewController class]] ||
                              [viewController isKindOfClass:[TransferResultsViewController class]] ||
+                             [viewController isKindOfClass:[RegisteredResultViewController class]] ||
+                             [viewController isKindOfClass:[DistributionResultsViewController class]] ||
                              [viewController isKindOfClass:[RequestTimeoutViewController class]] ||
                              [viewController isKindOfClass:[OrderDetailsViewController class]]);
     if (@available(iOS 11.0, *)) {

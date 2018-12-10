@@ -340,10 +340,21 @@
 }
 - (void)scanAction
 {
+    __weak typeof (self) weakself = self;
     HMScannerController *scanner = [HMScannerController scannerWithCardName:nil avatar:nil completion:^(NSString *stringValue) {
-        self.destinationAddress.text = stringValue;
-        [self.destinationAddress sendActionsForControlEvents:UIControlEventEditingChanged];
-        [self IsActivatedWithAddress:stringValue];
+        NSOperationQueue * queue = [[NSOperationQueue alloc] init];
+        [queue addOperationWithBlock:^{
+            BOOL isCorrectAddress = [Keypair isAddressValid: stringValue];
+            [[NSOperationQueue mainQueue] addOperationWithBlock:^{
+                if (isCorrectAddress) {
+                    weakself.destinationAddress.text = stringValue;
+                    [weakself.destinationAddress sendActionsForControlEvents:UIControlEventEditingChanged];
+                    [weakself IsActivatedWithAddress:stringValue];
+                } else {
+                    [MBProgressHUD showTipMessageInWindow:Localized(@"ScanFailure")];
+                }
+            }];
+        }];
     }];
     [scanner setTitleColor:[UIColor whiteColor] tintColor:MAIN_COLOR];
     [self showDetailViewController:scanner sender:nil];

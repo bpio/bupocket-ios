@@ -146,7 +146,7 @@ static NSString * const Register_Leave = @"leaveRoomForApp";
     __weak typeof(self) weakSelf = self;
     NSOperationQueue * queue = [[NSOperationQueue alloc] init];
     [queue addOperationWithBlock:^{
-        CGFloat amount = [[HTTPManager shareManager] getDataWithBalanceJudgmentWithCost:Registered_Cost ifShowLoading:YES];
+        double amount = [[HTTPManager shareManager] getDataWithBalanceJudgmentWithCost:Registered_Cost ifShowLoading:YES];
         [[NSOperationQueue mainQueue] addOperationWithBlock:^{
             if (amount < 0) {
                 [MBProgressHUD showTipMessageInWindow:Localized(@"RegisteredNotSufficientFunds")];

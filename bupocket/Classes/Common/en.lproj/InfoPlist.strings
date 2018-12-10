@@ -9,6 +9,6 @@ CFBundleDisplayName = "BU Pocket";
 
 NSCameraUsageDescription = "Bupocket needs to visit your camera, in order to help you scan the two-dimensional code.";
 NSPhotoLibraryUsageDescription = "Bupocket needs to visit your photo album, in order to help you scan related pictures.";
-NSAppleMusicUsageDescription = "允许此权限才能访问：媒体资料库，为了帮您进行相关图片的扫描";
-NSMicrophoneUsageDescription = "允许此权限才能访问：麦克风";
-NSContactsUsageDescription = "允许此权限才能访问：通讯录";
+NSAppleMusicUsageDescription = "Media database helpful to scan related photos is accessible after being authorized this permission";
+NSMicrophoneUsageDescription = "Microphone is accessible after being authorized this permission";
+NSContactsUsageDescription = "Contact is accessible after being authorized this permission";

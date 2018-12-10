@@ -204,13 +204,12 @@
         } else if ([self.scanDic[@"action"] isEqualToString:@"token.issue"]) {
             if (code == Success_Code) {
                 // has been registered
-                if ([self.distributionModel.totalSupply floatValue] == 0) {
+                if ([self.distributionModel.totalSupply integerValue] == 0) {
                     // Unrestricted
                     [self pushDistributionVC];
                 } else {
                     // limited
-                    
-                    if ([self.distributionModel.totalSupply floatValue] == [self.distributionModel.actualSupply floatValue]) {
+                    if ([self.distributionModel.totalSupply integerValue] == [self.distributionModel.actualSupply integerValue]) {
                         // You have issued the asset
                         [self alertViewWithMessage:Localized(@"IssuedAssets")];
                     } else {

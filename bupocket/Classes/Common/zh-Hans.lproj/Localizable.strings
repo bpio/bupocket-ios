@@ -149,7 +149,8 @@
 "RequestTimeout" = "请求超时";
 "IGotIt" = "我知道了";
 // 订单详情
-"OrderDetails" = "订单详情";
+//"OrderDetails" = "订单详情";
+"TransactionDetail" = "交易详情";
 "Success" = "成功";
 "Failure" = "失败";
 "OriginatorAdress" = "发送方地址";
@@ -161,7 +162,7 @@
 "ConfirmRegistrationInformation" = "请确认以下登记资产信息";
 "ConfirmationOfRegistration" = "确认登记";
 "RegistrationIdentityCipherPrompt" = "请填写身份密码以确认登记";
-"RegisteredAssetsDetail" = "资产登记详情";
+//"RegisteredAssetsDetail" = "资产登记详情";
 "RegistrationSuccess" = "登记成功";
 "RegistrationFailure" = "登记失败";
 "RegistrationTimeout" = "登记超时";
@@ -184,7 +185,8 @@
 "DistributionCost" = "预估交易费";
 "ActualTransactionCost" = "实际交易费用";
 "ConfirmationOfDistribution" = "确认发行";
-"DistributionAssetsDetail" = "资产发行详情";
+"IssueNumberOverflowMax" = "您的资产发行总量超过了最大上限";
+//"DistributionAssetsDetail" = "资产发行详情";
 "DistributionSuccess" = "发行成功";
 "DistributionFailure" = "发行失败";
 "DistributionTimeout" = "发行超时";
@@ -215,7 +217,7 @@
 "Loading" = "加载中...";
 // SDK
 "CreateIdentityFailure" = "身份创建失败";
-"IssueNumberIsIncorrect" = "发行数量有误";
+"IssueNumberIsIncorrect" = "无效的发行量";
 // Accout
 "IDNameFormatIncorrect" = "身份名只允许输入字母、汉字、数字、下划线，并且长度不能超过20个字符";
 "WalletNameFormatIncorrect" = "钱包名只允许输入字母、汉字、数字、下划线，并且长度不能超过20个字符";

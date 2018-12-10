@@ -32,7 +32,7 @@ static NSString * const DistributionDetailCellID = @"DistributionDetailCellID";
 
 - (void)viewDidLoad {
     [super viewDidLoad];
-    self.navigationItem.title = Localized(@"RegisteredAssetsDetail");
+//    self.navigationItem.title = Localized(@"RegisteredAssetsDetail");
     [self setData];
     [self setupView];
     // Do any additional setup after loading the view.

@@ -53,7 +53,7 @@
                                pageIndex:(NSInteger)pageIndex
                                  success:(void (^)(id responseObject))success
                                  failure:(void (^)(NSError *error))failure;
-// OrderDetails
+// Transaction detail
 - (void)getOrderDetailsDataWithAddress:(NSString *)address
                                  optNo:(NSInteger)optNo
                                success:(void (^)(id responseObject))success
@@ -80,7 +80,7 @@
 // Obtain minimum asset limits and fuel unit prices for accounts in designated blocks
 - (void)getBlockFees;
 // Balance judgment
-- (CGFloat)getDataWithBalanceJudgmentWithCost:(double)cost ifShowLoading:(BOOL)ifShowLoading;
+- (double)getDataWithBalanceJudgmentWithCost:(double)cost ifShowLoading:(BOOL)ifShowLoading;
 // Balance of assets
 - (int64_t)getAssetInfoWithAddress:(NSString *)address code:(NSString *)code issuer:(NSString *)issuer;
 
@@ -115,7 +115,7 @@
 // Issue
 - (void)getIssueAssetDataWithPassword:(NSString *)password
                             assetCode:(NSString *)assetCode
-                          assetAmount:(NSString *)assetAmount
+                          assetAmount:(NSInteger)assetAmount
                              decimals:(NSInteger)decimals
                               success:(void (^)(TransactionResultModel * resultModel))success
                               failure:(void (^)(TransactionResultModel * resultModel))failure;

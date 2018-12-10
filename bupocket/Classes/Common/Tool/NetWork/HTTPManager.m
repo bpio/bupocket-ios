@@ -189,7 +189,7 @@ static int64_t const gasPrice = 1000;
         }
     }];
 }
-// OrderDetails
+// Transaction detail
 - (void)getOrderDetailsDataWithAddress:(NSString *)address
                                  optNo:(NSInteger)optNo
                                success:(void (^)(id responseObject))success
@@ -330,7 +330,7 @@ static int64_t const gasPrice = 1000;
     [defaults synchronize];
 }
 // Balance judgment
-- (CGFloat)getDataWithBalanceJudgmentWithCost:(double)cost ifShowLoading:(BOOL)ifShowLoading
+- (double)getDataWithBalanceJudgmentWithCost:(double)cost ifShowLoading:(BOOL)ifShowLoading
 {
     if (ifShowLoading == YES) {
         dispatch_async(dispatch_get_main_queue(), ^{
@@ -339,21 +339,27 @@ static int64_t const gasPrice = 1000;
     }
     double balance = 0;
     double baseReserve = [[[NSUserDefaults standardUserDefaults] objectForKey:Minimum_Asset_Limitation] doubleValue];
+    double amount = 0;
     AccountService *accountService = [[[SDK sharedInstance] setUrl:_bumoNodeUrl] getAccountService];
     AccountGetBalanceRequest * request = [AccountGetBalanceRequest new];
     [request setAddress : [AccountTool account].purseAccount];
     AccountGetBalanceResponse *response = [accountService getBalance : request];
     if (response.errorCode == Success_Code) {
-        balance = [Tools MO2BU:response.result.balance];
-    } else {
-        if (ifShowLoading == YES) {
-            dispatch_async(dispatch_get_main_queue(), ^{
+        dispatch_async(dispatch_get_main_queue(), ^{
+            if (ifShowLoading == YES) {
                 [MBProgressHUD hideHUD];
-            });
-        }
-//        [MBProgressHUD showErrorMessage:response.errorDesc];
+            }
+        });
+        balance = [Tools MO2BU:response.result.balance];
+        amount = balance - baseReserve - cost;
+    } else {
+        dispatch_async(dispatch_get_main_queue(), ^{
+            if (ifShowLoading == YES) {
+                [MBProgressHUD hideHUD];
+            }
+            [MBProgressHUD showTipMessageInWindow:response.errorDesc];
+        });
     }
-    CGFloat amount = balance - baseReserve - cost;
 //    if (amount < 0) {
 //        amount = 0;
 //    }
@@ -372,7 +378,7 @@ static int64_t const gasPrice = 1000;
         AssetInfo *assetInfo = response.result.assets[0];
         return assetInfo.amount;
     } else {
-        [MBProgressHUD showErrorMessage:[ErrorTypeTool getDescription:response.errorCode]];
+        [MBProgressHUD showTipMessageInWindow:[ErrorTypeTool getDescription:response.errorCode]];
         return 0;
     }
 }
@@ -451,7 +457,7 @@ static int64_t const gasPrice = 1000;
     NSString * sourceAddress = [AccountTool account].purseAccount;
     NSString * privateKey = [NSString decipherKeyStoreWithPW:password keyStoreValueStr:[AccountTool account].purseKey];
     if ([Tools isEmpty:privateKey]) {
-        [MBProgressHUD showWarnMessage:Localized(@"PasswordIsIncorrect")];
+        [MBProgressHUD showTipMessageInWindow:Localized(@"PasswordIsIncorrect")];
         return;
     }
     int64_t fee = [[[NSDecimalNumber decimalNumberWithString:feeLimit] decimalNumberByMultiplyingByPowerOf10: Decimals_BU] integerValue];
@@ -512,7 +518,7 @@ static int64_t const gasPrice = 1000;
     [operation setValue : value];
     NSString * privateKey = [NSString decipherKeyStoreWithPW:password keyStoreValueStr:[AccountTool account].purseKey];
     if ([Tools isEmpty:privateKey]) {
-        [MBProgressHUD showWarnMessage:Localized(@"PasswordIsIncorrect")];
+        [MBProgressHUD showTipMessageInWindow:Localized(@"PasswordIsIncorrect")];
         return;
     }
     int64_t feeLimit = [Tools BU2MO: Registered_Cost];
@@ -526,7 +532,7 @@ static int64_t const gasPrice = 1000;
 // Issue
 - (void)getIssueAssetDataWithPassword:(NSString *)password
                             assetCode:(NSString *)assetCode
-                           assetAmount:(NSString *)assetAmount
+                           assetAmount:(NSInteger)assetAmount
                              decimals:(NSInteger)decimals
                               success:(void (^)(TransactionResultModel * resultModel))success
                               failure:(void (^)(TransactionResultModel * resultModel))failure
@@ -534,18 +540,13 @@ static int64_t const gasPrice = 1000;
     NSString * sourceAddress = [AccountTool account].purseAccount;
     // Asset amount
 //    int64_t amount = [assetAmount longLongValue] * powl(10, decimals);
-    NSInteger amount = [[[NSDecimalNumber decimalNumberWithString:assetAmount] decimalNumberByMultiplyingByPowerOf10: decimals] integerValue];
-    if (amount < 1) {
-        [MBProgressHUD showWarnMessage:Localized(@"IssueNumberIsIncorrect")];
-        return;
-    }
     AssetIssueOperation *operation = [AssetIssueOperation new];
     [operation setSourceAddress: sourceAddress];
     [operation setCode: assetCode];
-    [operation setAmount: amount];
+    [operation setAmount: assetAmount];
     NSString * privateKey = [NSString decipherKeyStoreWithPW:password keyStoreValueStr:[AccountTool account].purseKey];
     if ([Tools isEmpty:privateKey]) {
-        [MBProgressHUD showWarnMessage:Localized(@"PasswordIsIncorrect")];
+        [MBProgressHUD showTipMessageInWindow:Localized(@"PasswordIsIncorrect")];
         return;
     }
     int64_t feeLimit = [Tools BU2MO: Distribution_Cost];

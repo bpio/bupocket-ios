@@ -225,11 +225,24 @@
 #pragma mark - scanAction
 - (void)scanAction:(UIButton *)button
 {
+    __weak typeof (self) weakself = self;
     HMScannerController *scanner = [HMScannerController scannerWithCardName:nil avatar:nil completion:^(NSString *stringValue) {
-        TransferAccountsViewController * VC = [[TransferAccountsViewController alloc] init];
-        VC.listModel = self.listModel;
-        VC.address = stringValue;
-        [self.navigationController pushViewController:VC animated:YES];
+        NSOperationQueue * queue = [[NSOperationQueue alloc] init];
+        [queue addOperationWithBlock:^{
+            BOOL isCorrectAddress = [Keypair isAddressValid: stringValue];
+            [[NSOperationQueue mainQueue] addOperationWithBlock:^{
+                if (isCorrectAddress) {
+                    TransferAccountsViewController * VC = [[TransferAccountsViewController alloc] init];
+                    VC.listModel = weakself.listModel;
+                    VC.address = stringValue;
+                    [weakself.navigationController pushViewController:VC animated:YES];
+                } else {
+                    [MBProgressHUD showTipMessageInWindow:Localized(@"ScanFailure")];
+                }
+            }];
+        }];
+        
+        
     }];
     [scanner setTitleColor:[UIColor whiteColor] tintColor:MAIN_COLOR];
     [self showDetailViewController:scanner sender:nil];
