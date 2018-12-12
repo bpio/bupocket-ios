@@ -32,7 +32,6 @@ static NSString * const DistributionDetailCellID = @"DistributionDetailCellID";
 
 - (void)viewDidLoad {
     [super viewDidLoad];
-//    self.navigationItem.title = Localized(@"RegisteredAssetsDetail");
     [self setData];
     [self setupView];
     // Do any additional setup after loading the view.
@@ -85,19 +84,6 @@ static NSString * const DistributionDetailCellID = @"DistributionDetailCellID";
         } else if (self.registeredResultState == RegisteredResultOvertime) {
             imageName = @"assetsTimeout";
             result = Localized(@"RegistrationTimeout");
-            UILabel * prompt = [[UILabel alloc] init];
-            prompt.font = TITLE_FONT;
-            prompt.textColor = COLOR_9;
-            prompt.numberOfLines = 0;
-            prompt.textAlignment = NSTextAlignmentCenter;
-            [headerView addSubview:prompt];
-            [prompt mas_makeConstraints:^(MASConstraintMaker *make) {
-                make.bottom.equalTo(headerView.mas_bottom).offset(-ScreenScale(17));
-                make.centerX.equalTo(headerView);
-                make.width.mas_equalTo(ScreenScale(275));
-            }];
-            prompt.text = Localized(@"DistributionPrompt");
-            headerViewH = ScreenScale(170);
         }
         headerView.frame = CGRectMake(0, 0, DEVICE_WIDTH, headerViewH);
         CustomButton * state = [[CustomButton alloc] init];

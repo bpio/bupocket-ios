@@ -53,7 +53,7 @@
     IQKeyboardManager * keyboardManager = [IQKeyboardManager sharedManager];
     keyboardManager.shouldResignOnTouchOutside = YES;
 //    keyboardManager.enableAutoToolbar = NO;
-//    keyboardManager.keyboardDistanceFromTextField = Margin_15;
+    keyboardManager.keyboardDistanceFromTextField = Margin_15;
 }
 
 - (void)setRootVC

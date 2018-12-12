@@ -122,19 +122,7 @@
     UIAlertController * alertController = [Encapsulation alertControllerWithCancelTitle:Localized(@"Cancel") title:Localized(@"ExitCurrentIdentity") message:Localized(@"ExitCurrentIdentityPrompt")];
     UIAlertAction * okAction = [UIAlertAction actionWithTitle:Localized(@"Confirm") style:UIAlertActionStyleDefault handler:^(UIAlertAction * _Nonnull action) {
         PurseCipherAlertView * alertView = [[PurseCipherAlertView alloc] initWithPrompt:Localized(@"IdentityCipherWarning") confrimBolck:^(NSString * _Nonnull password, NSArray * _Nonnull words) {
-            NSString * privateKey = [NSString decipherKeyStoreWithPW:password keyStoreValueStr:[AccountTool account].purseKey];
-            if ([Tools isEmpty:privateKey]) {
-                [MBProgressHUD showTipMessageInWindow:Localized(@"PasswordIsIncorrect")];
-                return;
-            }
-           [ClearCacheTool cleanCache:^{
-               [ClearCacheTool cleanUserDefaults];
-               [[LanguageManager shareInstance] setDefaultLocale];
-               [[HTTPManager shareManager] initNetWork];
-               // Minimum Asset Limitation
-               [[HTTPManager shareManager] getBlockFees];
-               [UIApplication sharedApplication].keyWindow.rootViewController = [[NavigationViewController alloc] initWithRootViewController:[[IdentityViewController alloc] init]];
-            }];
+            [self exitIDDataWithPassword:password];
         } cancelBlock:^{
             
         }];
@@ -142,6 +130,29 @@
     }];
     [alertController addAction:okAction];
     [self presentViewController:alertController animated:YES completion:nil];
+}
+- (void)exitIDDataWithPassword:(NSString *)password
+{
+    [MBProgressHUD showActivityMessageInWindow:Localized(@"Loading")];
+    NSOperationQueue * queue = [[NSOperationQueue alloc] init];
+    [queue addOperationWithBlock:^{
+        NSString * privateKey = [NSString decipherKeyStoreWithPW:password keyStoreValueStr:[AccountTool account].purseKey];
+        if ([Tools isEmpty:privateKey]) {
+            [MBProgressHUD showTipMessageInWindow:Localized(@"PasswordIsIncorrect")];
+            return;
+        }
+        [ClearCacheTool cleanUserDefaults];
+        [[LanguageManager shareInstance] setDefaultLocale];
+        [[HTTPManager shareManager] initNetWork];
+        // Minimum Asset Limitation
+        [[HTTPManager shareManager] getBlockFees];
+        [ClearCacheTool cleanCache:^{
+            [[NSOperationQueue mainQueue] addOperationWithBlock:^{
+                [MBProgressHUD hideHUD];
+                [UIApplication sharedApplication].keyWindow.rootViewController = [[NavigationViewController alloc] initWithRootViewController:[[IdentityViewController alloc] init]];
+            }];
+        }];
+    }];
 }
 - (void)identityIDInfo:(UIButton *)button
 {

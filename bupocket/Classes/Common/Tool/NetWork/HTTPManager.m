@@ -68,7 +68,6 @@ static int64_t const gasPrice = 1000;
 - (void)getVersionDataWithSuccess:(void (^)(id responseObject))success
                           failure:(void (^)(NSError *error))failure
 {
-//    [[HUDHelper sharedInstance] syncLoading];
     NSString * url = SERVER_COMBINE_API(_webServerDomain, Version_Update);
     [[HttpTool shareTool] GET:url parameters:nil success:^(id responseObject) {
         if(success != nil)
@@ -79,7 +78,6 @@ static int64_t const gasPrice = 1000;
         if(failure != nil)
         {
             failure(error);
-//            [[HUDHelper sharedInstance] syncStopLoadingMessage:Localized(@"NoNetWork")];
         }
     }];
 }
@@ -131,14 +129,6 @@ static int64_t const gasPrice = 1000;
     }];
 }
 // AssetsDetail Transaction_Record
-//- (void)getAssetsDetailDataWithTokenType:(NSInteger)tokenType
-//                               assetCode:(NSString *)assetCode
-//                                  issuer:(NSString *)issuer
-//                                 address:(NSString *)address
-//                            currencyType:(NSString *)currencyType
-//                               pageIndex:(NSInteger)pageIndex
-//                                 success:(void (^)(id responseObject))success
-//                                 failure:(void (^)(NSError *error))failure
 - (void)getAssetsDetailDataWithTokenType:(NSInteger)tokenType
                             currencyType:(NSString *)currencyType
                                assetCode:(NSString *)assetCode
@@ -158,25 +148,6 @@ static int64_t const gasPrice = 1000;
                                            @"startPage" : @(pageIndex),
                                            @"pageSize" : @(PageSize_Max)
                                            }];
-    /*
-    NSString * url;
-    NSMutableDictionary * parmenters = [NSMutableDictionary dictionary];
-    [parmenters addEntriesFromDictionary:@{@"startPage" : @(pageIndex),
-                                           @"pageSize" : @(PageSize_Max),
-                                           @"currencyType": currencyType
-                                           }];
-    if (tokenType == Token_Type_BU) {
-        url = SERVER_COMBINE_API(_webServerDomain, Transaction_Record_BU);
-        [parmenters setObject:address forKey:@"walletAddress"];
-    } else {
-        url = SERVER_COMBINE_API(_webServerDomain, Transaction_Record);
-        [parmenters addEntriesFromDictionary:@{@"assetCode" : assetCode,
-                                               @"issuer" : issuer,
-                                               @"address" : address,
-                                               }];
-        //        [[HUDHelper sharedInstance] syncLoading];
-    }
-     */
     [[HttpTool shareTool] POST:url parameters:parmenters success:^(id responseObject) {
         if(success != nil)
         {
@@ -200,7 +171,6 @@ static int64_t const gasPrice = 1000;
                                   @"address" : address,
                                   @"optNo": @(optNo)
                                   };
-//    [[HUDHelper sharedInstance] syncLoading];
     [[HttpTool shareTool] POST:url parameters:parmenters success:^(id responseObject) {
         if(success != nil)
         {
@@ -313,33 +283,38 @@ static int64_t const gasPrice = 1000;
     [request setBlockNumber: 617247];
     BlockService *service = [[[SDK sharedInstance] setUrl: _bumoNodeUrl] getBlockService];
     BlockGetFeesResponse *response = [service getFees: request];
-    double minAssetLimit = 0.1;
+    NSString * minAssetLimit = @"0.1";
+    NSUserDefaults * defaults = [NSUserDefaults standardUserDefaults];
     if (response.errorCode == Success_Code) {
 //        dispatch_async(dispatch_get_main_queue(), ^{
 //            [[HUDHelper sharedInstance] syncStopLoading];
 //        });
-        minAssetLimit = [Tools MO2BU:response.result.fees.baseReserve];
+        minAssetLimit = [[[NSDecimalNumber decimalNumberWithString:[NSString stringWithFormat:@"%lld", response.result.fees.baseReserve]] decimalNumberByMultiplyingByPowerOf10: -Decimals_BU] stringValue];
+//        minAssetLimit = [Tools MO2BU:response.result.fees.baseReserve];
+        [defaults setObject:minAssetLimit forKey:Minimum_Asset_Limitation];
     } else {
 //        dispatch_async(dispatch_get_main_queue(), ^{
 //            [[HUDHelper sharedInstance] syncStopLoading];
 //            [[HUDHelper sharedInstance] syncStopLoadingMessage:[ErrorTypeTool getDescription:response.errorCode]];
 //        });
+        [defaults setObject:minAssetLimit forKey:Minimum_Asset_Limitation];
     }
-    NSUserDefaults * defaults = [NSUserDefaults standardUserDefaults];
-    [defaults setObject:@(minAssetLimit) forKey:Minimum_Asset_Limitation];
+    
     [defaults synchronize];
 }
 // Balance judgment
-- (double)getDataWithBalanceJudgmentWithCost:(double)cost ifShowLoading:(BOOL)ifShowLoading
+- (NSDecimalNumber *)getDataWithBalanceJudgmentWithCost:(NSString *)cost ifShowLoading:(BOOL)ifShowLoading
 {
     if (ifShowLoading == YES) {
         dispatch_async(dispatch_get_main_queue(), ^{
             [MBProgressHUD showActivityMessageInWindow:Localized(@"Loading")];
         });
     }
-    double balance = 0;
-    double baseReserve = [[[NSUserDefaults standardUserDefaults] objectForKey:Minimum_Asset_Limitation] doubleValue];
-    double amount = 0;
+    NSDecimalNumber * balance = 0;
+//    double baseReserve = [[[NSUserDefaults standardUserDefaults] objectForKey:Minimum_Asset_Limitation] doubleValue];
+    NSDecimalNumber * minLimitationNumber = [NSDecimalNumber decimalNumberWithString:[[NSUserDefaults standardUserDefaults] objectForKey:Minimum_Asset_Limitation]];
+    NSDecimalNumber * costNumber = [NSDecimalNumber decimalNumberWithString:cost];
+    NSDecimalNumber * amount = 0;
     AccountService *accountService = [[[SDK sharedInstance] setUrl:_bumoNodeUrl] getAccountService];
     AccountGetBalanceRequest * request = [AccountGetBalanceRequest new];
     [request setAddress : [AccountTool account].purseAccount];
@@ -350,8 +325,10 @@ static int64_t const gasPrice = 1000;
                 [MBProgressHUD hideHUD];
             }
         });
-        balance = [Tools MO2BU:response.result.balance];
-        amount = balance - baseReserve - cost;
+        balance = [[NSDecimalNumber decimalNumberWithString:[NSString stringWithFormat:@"%lld", response.result.balance]] decimalNumberByMultiplyingByPowerOf10: -Decimals_BU] ;
+//        balance = [Tools MO2BU:response.result.balance];
+        amount = [[balance decimalNumberBySubtracting:minLimitationNumber] decimalNumberBySubtracting: costNumber];
+//        balance - baseReserve - cost;
     } else {
         dispatch_async(dispatch_get_main_queue(), ^{
             if (ifShowLoading == YES) {
@@ -391,7 +368,7 @@ static int64_t const gasPrice = 1000;
     AccountGetInfoResponse *response = [accountService getInfo : request];
     if (response.errorCode == 0) {
         //        NSLog(@"%@", [response.result yy_modelToJSONString]);
-        return [NSString stringWithFormat:@"%.2f", TransactionCost_MIN];
+        return TransactionCost_MIN;
     } else if (response.errorCode == 4) {
         return [NSString stringWithFormat:@"%.2f", TransactionCost_NotActive_MIN];
     } else {
@@ -407,37 +384,39 @@ static int64_t const gasPrice = 1000;
                          failure:(void (^)(NSError *error))failure
 {
     [MBProgressHUD showActivityMessageInWindow:Localized(@"Loading")];
-    // Random number -> mnemonic
-    NSArray * words = [Mnemonic generateMnemonicCode: [random copy]];
-    NSMutableArray * hdPaths = [NSMutableArray arrayWithObjects:@"M/44H/526H/0H/0/0", @"M/44H/526H/1H/0/0", nil];
-    NSArray *privateKeys = [Mnemonic generatePrivateKeys: words : hdPaths];
-    NSString * randomKey = [NSString generateKeyStoreWithPW:password randomKey:random];
-    // private key -> address
-    NSString * identityAddress = [Keypair getEncAddress : [Keypair getEncPublicKey: [privateKeys firstObject]]];
-    NSString * identityKey = [NSString generateKeyStoreWithPW:password key:[privateKeys firstObject]];
-    NSString * purseAddress = [Keypair getEncAddress : [Keypair getEncPublicKey: [privateKeys lastObject]]];
-    NSString * purseKey = [NSString generateKeyStoreWithPW:password key:[privateKeys lastObject]];
-    if (randomKey == nil) {
-        [MBProgressHUD showTipMessageInWindow:Localized(@"CreateIdentityFailure")];
-    } else if (identityKey == nil) {
-        [MBProgressHUD showTipMessageInWindow:@"CreateIdentityFailure"];
-    } else if (purseKey == nil) {
-        [MBProgressHUD showTipMessageInWindow:Localized(@"CreateIdentityFailure")];
-    } else {
-        [MBProgressHUD hideHUD];
-        if(success != nil)
-        {
-            AccountModel * account = [[AccountModel alloc] init];
-            account.identityName = identityName;
-            account.randomNumber = randomKey;
-            account.identityAccount = identityAddress;
-            account.purseAccount = purseAddress;
-            account.identityKey = identityKey;
-            account.purseKey = purseKey;
-            [AccountTool save:account];
-            success(words);
-        }
-    }
+//    __weak typeof(self) weakSelf = self;
+    NSOperationQueue * queue = [[NSOperationQueue alloc] init];
+    [queue addOperationWithBlock:^{
+        // Random number -> mnemonic
+        NSArray * words = [Mnemonic generateMnemonicCode: [random copy]];
+        NSMutableArray * hdPaths = [NSMutableArray arrayWithObjects:@"M/44H/526H/0H/0/0", @"M/44H/526H/1H/0/0", nil];
+        NSArray *privateKeys = [Mnemonic generatePrivateKeys: words : hdPaths];
+        NSString * randomKey = [NSString generateKeyStoreWithPW:password randomKey:random];
+        // private key -> address
+        NSString * identityAddress = [Keypair getEncAddress : [Keypair getEncPublicKey: [privateKeys firstObject]]];
+        NSString * identityKey = [NSString generateKeyStoreWithPW:password key:[privateKeys firstObject]];
+        NSString * purseAddress = [Keypair getEncAddress : [Keypair getEncPublicKey: [privateKeys lastObject]]];
+        NSString * purseKey = [NSString generateKeyStoreWithPW:password key:[privateKeys lastObject]];
+        [[NSOperationQueue mainQueue] addOperationWithBlock:^{
+            if (randomKey == nil || identityKey == nil || purseKey == nil) {
+                [MBProgressHUD showTipMessageInWindow:Localized(@"CreateIdentityFailure")];
+            } else {
+                [MBProgressHUD hideHUD];
+                if(success != nil)
+                {
+                    AccountModel * account = [[AccountModel alloc] init];
+                    account.identityName = identityName;
+                    account.randomNumber = randomKey;
+                    account.identityAccount = identityAddress;
+                    account.purseAccount = purseAddress;
+                    account.identityKey = identityKey;
+                    account.purseKey = purseKey;
+                    [AccountTool save:account];
+                    success(words);
+                }
+            }
+        }];
+    }];
 }
 
 // Transfer accounts
@@ -460,13 +439,13 @@ static int64_t const gasPrice = 1000;
         [MBProgressHUD showTipMessageInWindow:Localized(@"PasswordIsIncorrect")];
         return;
     }
-    int64_t fee = [[[NSDecimalNumber decimalNumberWithString:feeLimit] decimalNumberByMultiplyingByPowerOf10: Decimals_BU] integerValue];
+    int64_t fee = [[[NSDecimalNumber decimalNumberWithString:feeLimit] decimalNumberByMultiplyingByPowerOf10: Decimals_BU] longLongValue];
     int64_t nonce = [[HTTPManager shareManager] getAccountNonce: sourceAddress] + 1;
     if (nonce == 0) return;
     NSString * hash;
     if (tokenType == Token_Type_BU) {
         // BU
-        int64_t amount = [[[NSDecimalNumber decimalNumberWithString:assets] decimalNumberByMultiplyingByPowerOf10: Decimals_BU] integerValue];
+        int64_t amount = [[[NSDecimalNumber decimalNumberWithString:assets] decimalNumberByMultiplyingByPowerOf10: Decimals_BU] longLongValue];
         BUSendOperation *operation = [BUSendOperation new];
         [operation setSourceAddress: sourceAddress];
         [operation setDestAddress: destAddress];
@@ -474,7 +453,7 @@ static int64_t const gasPrice = 1000;
         hash = [[HTTPManager shareManager] buildBlobAndSignAndSubmit:privateKey :sourceAddress :nonce :gasPrice :fee :operation :notes];
     } else {
         // Other currencies
-        NSInteger amount = [[[NSDecimalNumber decimalNumberWithString:assets] decimalNumberByMultiplyingByPowerOf10: decimals] integerValue];
+        int64_t amount = [[[NSDecimalNumber decimalNumberWithString:assets] decimalNumberByMultiplyingByPowerOf10: decimals] longLongValue];
 //        int64_t amount = multiplierNumber * powl(10, decimals);
         AssetSendOperation *operation = [AssetSendOperation new];
         [operation setSourceAddress: sourceAddress];
@@ -498,7 +477,7 @@ static int64_t const gasPrice = 1000;
     NSString * sourceAddress = [AccountTool account].purseAccount;
     NSString *key = [NSString stringWithFormat: @"asset_property_%@", registeredModel.code];
     AtpProperty * atpProperty = [[AtpProperty alloc] init];
-    NSInteger total = [[[NSDecimalNumber decimalNumberWithString:[NSString stringWithFormat:@"%zd", registeredModel.amount]] decimalNumberByMultiplyingByPowerOf10: registeredModel.decimals] integerValue];
+    int64_t total = [[[NSDecimalNumber decimalNumberWithString:[NSString stringWithFormat:@"%zd", registeredModel.amount]] decimalNumberByMultiplyingByPowerOf10: registeredModel.decimals] longLongValue];
 //    int64_t total = registeredModel.amount * pow(10, registeredModel.decimals);
     if (registeredModel.amount != 0 && total < 1) {
         [MBProgressHUD showTipMessageInWindow:Localized(@"IssueNumberIsIncorrect")];
@@ -521,7 +500,7 @@ static int64_t const gasPrice = 1000;
         [MBProgressHUD showTipMessageInWindow:Localized(@"PasswordIsIncorrect")];
         return;
     }
-    int64_t feeLimit = [Tools BU2MO: Registered_Cost];
+    int64_t feeLimit = [Tools BU2MO: [Registered_Cost doubleValue]];
     int64_t nonce = [[HTTPManager shareManager] getAccountNonce: sourceAddress] + 1;
     if (nonce == 0) return;
     NSString * hash = [[HTTPManager shareManager] buildBlobAndSignAndSubmit:privateKey :sourceAddress :nonce :gasPrice :feeLimit :operation :nil];
@@ -549,7 +528,7 @@ static int64_t const gasPrice = 1000;
         [MBProgressHUD showTipMessageInWindow:Localized(@"PasswordIsIncorrect")];
         return;
     }
-    int64_t feeLimit = [Tools BU2MO: Distribution_Cost];
+    int64_t feeLimit = [Tools BU2MO: [Distribution_Cost doubleValue]];
     int64_t nonce = [[HTTPManager shareManager] getAccountNonce: sourceAddress] + 1;
     if (nonce == 0) return;
     NSString * hash = [[HTTPManager shareManager] buildBlobAndSignAndSubmit:privateKey :sourceAddress :nonce :gasPrice :feeLimit :operation :nil];

@@ -11,7 +11,6 @@
 "Reload" = "重新加载";
 "MyTitle" = "我的";
 "AssetsTitle" = "资产";
-//"VersionUpdate" = "版本更新";
 "IfUpdate" = "是否更新到版本";
 "AppSize" = "新版本大小：";
 "UpdateVersion" = "更新版本";
@@ -64,7 +63,7 @@
 "Feedback" = "帮助与反馈";
 "MultiLingual" = "多语言";
 "VersionNumber" = "版本号";
-"Save" = "保存";
+//"Save" = "保存";
 "MonetaryUnit" = "货币单位";
 "SwitchedNetwork" = "切换测试网";
 // 我的身份
@@ -101,7 +100,6 @@
 // 资产
 "TotalAssets" = "总资产";
 "MyAssets" = "我的资产";
-//"PleaseBackup" = "请备份";
 "PaymentCode" = "收款码";
 "SafetyTipsTitle" = "安全提示";
 "SafetyTips" = "您的钱包助记词尚未备份，为防止忘记密码、删除App或丢失手机等情况导致资产损失，请务必备份助记词";
@@ -122,11 +120,9 @@
 "RecentTransactionRecords" = "最近交易记录";
 "NoTransactionRecord" = "暂无交易记录";
 // 转账
-//"TransferTitle" = "BU转账";
 "ReciprocalAccount" = "对方账户（BU地址）*";
 "reciprocalAccount" = "对方账户";
 "PhoneOrAddress" = "请输入接收方地址";
-//"AmountOfTransfer" = "转账数量（BU）*";
 "AmountOfTransfer" = "转账数量";
 "AvailableBalance" = "可用余额";
 //"MostOnce" = "单笔不可超过10000 BU";
@@ -149,7 +145,6 @@
 "RequestTimeout" = "请求超时";
 "IGotIt" = "我知道了";
 // 订单详情
-//"OrderDetails" = "订单详情";
 "TransactionDetail" = "交易详情";
 "Success" = "成功";
 "Failure" = "失败";
@@ -162,7 +157,6 @@
 "ConfirmRegistrationInformation" = "请确认以下登记资产信息";
 "ConfirmationOfRegistration" = "确认登记";
 "RegistrationIdentityCipherPrompt" = "请填写身份密码以确认登记";
-//"RegisteredAssetsDetail" = "资产登记详情";
 "RegistrationSuccess" = "登记成功";
 "RegistrationFailure" = "登记失败";
 "RegistrationTimeout" = "登记超时";
@@ -174,7 +168,7 @@
 // 发行资产确认
 "IssueAssetsConfirmation" = "发行资产确认";
 "ConfirmAssetInformation" = "请确认以下发行资产信息";
-"IssueIdentityCipherPrompt" = "请填写身份密码以确认登记";
+"IssueIdentityCipherPrompt" = "请填写身份密码以确认发行";
 "TokenName" = "资产名称";
 "TokenCode" = "资产代码";
 "TheIssueVolume" = "本次发行量";
@@ -186,11 +180,9 @@
 "ActualTransactionCost" = "实际交易费用";
 "ConfirmationOfDistribution" = "确认发行";
 "IssueNumberOverflowMax" = "您的资产发行总量超过了最大上限";
-//"DistributionAssetsDetail" = "资产发行详情";
 "DistributionSuccess" = "发行成功";
 "DistributionFailure" = "发行失败";
 "DistributionTimeout" = "发行超时";
-"DistributionPrompt" = "请复制下方哈希地址，前往BUMO浏览器中查询发行结果";
 "TokenDecimalDigits" = "资产小数位数";
 "ATPVersion" = "ATP版本";
 "TokenDescription" = "资产描述";
@@ -228,9 +220,9 @@
 // registered
 "ScanFailure" = "扫描结果无效";
 "RegisteredAsset" = "您已登记过该资产！";
-"TemporarilyRegisteredAssets" = "您所发行的资产代码：";
+"The code of your issued tokens:%@ has not been registered yet, so it cannot be issued" = "您所发行的资产代码：%@暂未登记，无法发行";
 "InabilityToIssue" = "暂未登记，无法发行！";
-"IssuedAssets" = "您已发行过该资产！";
+//"IssuedAssets" = "您已发行过该资产！";
 "RegisteredNotSufficientFunds" = "您的BU余额不足，无法登记资产，请充值!";
 "DistributionNotSufficientFunds" = "您的BU余额不足，无法发行资产，请充值!";
 //"CirculationDoesNotMatch" = "您的资产发行量与登记总量不符";

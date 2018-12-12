@@ -31,8 +31,6 @@
 #define Version_Update @"wallet/version?appType=2"
 #define Assets_List @"wallet/token/list"
 #define Transaction_Record @"wallet/v2/tx/list"
-//#define Transaction_Record @"wallet/token/tx/list"
-//#define Transaction_Record_BU @"wallet/user/tx/list"
 #define Order_Details @"wallet/v2/tx/detail"
 #define Transaction_Details @"wallet/tx/detail"
 #define Assets_Search @"wallet/query/token"

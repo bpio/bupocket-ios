@@ -80,8 +80,8 @@
         if (code == Success_Code) {
             [self.tableView addSubview:self.headerBg];
             [self.tableView insertSubview:self.headerBg atIndex:0];
-            NSNumber * balance = [NSNumber numberWithDouble:[responseObject[@"data"][@"assetData"][@"balance"] doubleValue]];
-            self.assets.text = [NSString stringWithFormat:@"%@ %@", balance, self.listModel.assetCode];
+            NSDecimalNumber * balanceNumber = [NSDecimalNumber decimalNumberWithString:responseObject[@"data"][@"assetData"][@"balance"]];
+            self.assets.text = [NSString stringWithFormat:@"%@ %@", balanceNumber, self.listModel.assetCode];
             NSString * amountStr = responseObject[@"data"][@"assetData"][@"totalAmount"];
             NSString * currencyUnit = [AssetCurrencyModel getCurrencyUnitWithAssetCurrency:[[[NSUserDefaults standardUserDefaults] objectForKey:Current_Currency] integerValue]];
             self.amount.text = [amountStr isEqualToString:@"~"] ? amountStr : [NSString stringWithFormat:@"≈%@%@", currencyUnit, amountStr];

@@ -8,7 +8,6 @@
 
 //"LaunchTitle" = "BU Pocket";
 //"LaunchBriefIntroduction" = "A ubiquitous trust blockchain network of value circulation";
-//"VersionUpdate" = "Version update";
 "IfUpdate" = "Whether to update to the new version";
 "AppSize" = "The size of the new version：";
 "UpdateVersion" = "Update";
@@ -66,7 +65,7 @@
 "Feedback" = "Feedback";
 "MultiLingual" = "Language";
 "VersionNumber" = "Version";
-"Save" = "Save";
+//"Save" = "Save";
 "MonetaryUnit" = "Currency unit";
 "SwitchedNetwork" = "Switch to the test network";
 // My identity
@@ -103,7 +102,6 @@
 // Tokens
 "TotalAssets" = "Total tokens";
 "MyAssets" = "My tokens";
-//"PleaseBackup" = "Please back up";
 "PaymentCode" = "Payment code";
 "SafetyTipsTitle" = "Safety tips";
 "SafetyTips" = "Your wallet mnemonics have not been backed up. To prevent loss of tokens due to forgetting passwords, deleting apps, or losing your phone, be sure to back up your mnemonics.";
@@ -124,11 +122,9 @@
 "RecentTransactionRecords" = "Transaction history";
 "NoTransactionRecord" = "No transaction records";
 // Transfer coins
-//"TransferTitle" = "BU transfer";
 "ReciprocalAccount" = "Recipient account（BU address）*";
 "reciprocalAccount" = "Recipient account";
 "PhoneOrAddress" = "Please enter the recipient address";
-//"AmountOfTransfer" = "Transfer amount(BU)*";
 "AmountOfTransfer" = "Amount to transfer";
 "AvailableBalance" = "Available balance";
 //"MostOnce" = "Each transaction cannot exceed 10000 BU";
@@ -151,7 +147,6 @@
 "RequestTimeout" = "Request timeout";
 "IGotIt" = "Got it";
 // Order details
-//"OrderDetails" = "Order details";
 "TransactionDetail" = "Transaction detail";
 "Success" = "Success";
 "Failure" = "Failure";
@@ -164,7 +159,6 @@
 "ConfirmRegistrationInformation" = "Please confirm the following token registration information";
 "ConfirmationOfRegistration" = "Confirm registration";
 "RegistrationIdentityCipherPrompt" = "Please fill in the identity password to confirm the registration";
-//"RegisteredAssetsDetail" = "Details of token registration";
 "RegistrationSuccess" = "Registration succeeded";
 "RegistrationFailure" = "Registration failed";
 "RegistrationTimeout" = "Registration timeout";
@@ -188,11 +182,9 @@
 "ActualTransactionCost" = "Actual transaction fee";
 "ConfirmationOfDistribution" = "Confirm to issue";
 "IssueNumberOverflowMax" = "Your total tokens to be issued exceed the upper limit";
-//"DistributionAssetsDetail" = "Details of token issuance";
 "DistributionSuccess" = "Issued successfully";
 "DistributionFailure" = "Failed to issue";
 "DistributionTimeout" = "Issuance timeout";
-"DistributionPrompt" = "Please copy the following hash address to check the issuance result in the BUMO explorer";
 "TokenDecimalDigits" = "Decimal places of tokens";
 "ATPVersion" = "ATP version";
 "TokenDescription" = "Token description";
@@ -232,9 +224,10 @@
 // registered
 "ScanFailure" = "Failed to scan";
 "RegisteredAsset" = "You have already registered this token!";
-"TemporarilyRegisteredAssets" = "The code of the token you issued:";
+//"TemporarilyRegisteredAssets" = "The code of the token you issued:";
 "InabilityToIssue" = "The token is not registered yet, so it cannot be issued!";
-"IssuedAssets" = "You have already issued this token!";
+"The code of your issued tokens:%@ has not been registered yet, so it cannot be issued" = "The code of your issued tokens:%@ has not been registered yet, so it cannot be issued";
+//"IssuedAssets" = "You have already issued this token!";
 "RegisteredNotSufficientFunds" = "Your BU balance is insufficient and you cannot register your tokens. Please recharge!";
 "DistributionNotSufficientFunds" = "Your BU balance is insufficient and you cannot issue tokens. Please recharge!";
 //"CirculationDoesNotMatch" = "Your tokens issued do not match the total amount of tokens registered";

@@ -209,16 +209,11 @@
                     [self pushDistributionVC];
                 } else {
                     // limited
-                    if ([self.distributionModel.totalSupply integerValue] == [self.distributionModel.actualSupply integerValue]) {
-                        // You have issued the asset
-                        [self alertViewWithMessage:Localized(@"IssuedAssets")];
-                    } else {
-                        [self pushDistributionVC];
-                    }
+                    [self pushDistributionVC];
                 }
             } else {
                 // unregistered
-                [self alertViewWithMessage:[NSString stringWithFormat:@"%@%@ %@", Localized(@"TemporarilyRegisteredAssets"), self.registeredModel.code, Localized(@"InabilityToIssue")]];
+                [self alertViewWithMessage:[NSString stringWithFormat:Localized(@"The code of your issued tokens:%@ has not been registered yet, so it cannot be issued"), self.registeredModel.code]];
             }
         }
     } failure:^(NSError *error) {

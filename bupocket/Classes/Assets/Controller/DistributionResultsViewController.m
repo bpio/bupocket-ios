@@ -32,7 +32,6 @@ static NSString * const DistributionDetailCellID = @"DistributionDetailCellID";
 
 - (void)viewDidLoad {
     [super viewDidLoad];
-//    self.navigationItem.title = Localized(@"DistributionAssetsDetail");
     [self setData];
     [self setupView];
     // Do any additional setup after loading the view.
@@ -48,7 +47,7 @@ static NSString * const DistributionDetailCellID = @"DistributionDetailCellID";
     }
     NSString * actualSupply;
     if (self.distributionResultState == DistributionResultSuccess) {
-        actualSupply = [NSString stringWithFormat:@"%zd", self.registeredModel.amount + [self.distributionModel.actualSupply integerValue]];
+        actualSupply = [NSString stringWithFormat:@"%lld", self.registeredModel.amount + [self.distributionModel.actualSupply longLongValue]];
     } else if (self.distributionResultState == DistributionResultFailure) {
         actualSupply = self.distributionModel.actualSupply;
     }
@@ -60,7 +59,7 @@ static NSString * const DistributionDetailCellID = @"DistributionDetailCellID";
     } else {
         [array insertObject:@{Localized(@"TotalAmountOfToken"): self.distributionModel.totalSupply} atIndex:2];
         if (self.distributionResultState != DistributionResultOvertime) {
-            NSString * remainingVolume = [NSString stringWithFormat:@"%zd", [self.distributionModel.totalSupply integerValue] - [actualSupply integerValue]];
+            NSString * remainingVolume = [NSString stringWithFormat:@"%lld", [self.distributionModel.totalSupply longLongValue] - [actualSupply longLongValue]];
             [array insertObject:@{Localized(@"RemainingUnissuedVolume"): remainingVolume} atIndex:4];
         }
     }
@@ -98,19 +97,6 @@ static NSString * const DistributionDetailCellID = @"DistributionDetailCellID";
         } else if (self.distributionResultState == DistributionResultOvertime) {
             imageName = @"assetsTimeout";
             result = Localized(@"DistributionTimeout");
-            UILabel * prompt = [[UILabel alloc] init];
-            prompt.font = TITLE_FONT;
-            prompt.textColor = COLOR_9;
-            prompt.numberOfLines = 0;
-            prompt.textAlignment = NSTextAlignmentCenter;
-            [headerView addSubview:prompt];
-            [prompt mas_makeConstraints:^(MASConstraintMaker *make) {
-                make.bottom.equalTo(headerView.mas_bottom).offset(-ScreenScale(17));
-                make.centerX.equalTo(headerView);
-                make.width.mas_equalTo(ScreenScale(275));
-            }];
-            prompt.text = Localized(@"DistributionPrompt");
-            headerViewH = ScreenScale(170);
         }
         headerView.frame = CGRectMake(0, 0, DEVICE_WIDTH, headerViewH);
         CustomButton * state = [[CustomButton alloc] init];

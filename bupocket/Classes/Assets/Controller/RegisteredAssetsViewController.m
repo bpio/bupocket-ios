@@ -92,7 +92,7 @@ static NSString * const Register_Leave = @"leaveRoomForApp";
         make.width.mas_lessThanOrEqualTo(DEVICE_WIDTH - Margin_40);
     }];
     
-    self.registeredArray = [NSMutableArray arrayWithArray:@[@{Localized(@"TokenName"): self.registeredModel.name}, @{Localized(@"TokenCode"): self.registeredModel.code}, @{Localized(@"DistributionCost"): Registered_CostBU}]];
+    self.registeredArray = [NSMutableArray arrayWithArray:@[@{Localized(@"TokenName"): self.registeredModel.name}, @{Localized(@"TokenCode"): self.registeredModel.code}, @{Localized(@"DistributionCost"): [NSString stringAppendingBUWithStr:Registered_Cost]}]];
     NSString * amount = [NSString stringWithFormat:@"%zd", self.registeredModel.amount];
     if (self.registeredModel.amount == 0) {
         [self.registeredArray insertObject:@{Localized(@"TotalAmountOfToken"): Localized(@"UnrestrictedIssue")} atIndex:2];
@@ -146,9 +146,9 @@ static NSString * const Register_Leave = @"leaveRoomForApp";
     __weak typeof(self) weakSelf = self;
     NSOperationQueue * queue = [[NSOperationQueue alloc] init];
     [queue addOperationWithBlock:^{
-        double amount = [[HTTPManager shareManager] getDataWithBalanceJudgmentWithCost:Registered_Cost ifShowLoading:YES];
+        NSString * amount = [[[HTTPManager shareManager] getDataWithBalanceJudgmentWithCost:Registered_Cost ifShowLoading:YES] stringValue];
         [[NSOperationQueue mainQueue] addOperationWithBlock:^{
-            if (amount < 0) {
+            if ([amount hasPrefix:@"-"]) {
                 [MBProgressHUD showTipMessageInWindow:Localized(@"RegisteredNotSufficientFunds")];
                 return;
             }

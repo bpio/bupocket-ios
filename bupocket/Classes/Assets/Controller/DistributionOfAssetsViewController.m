@@ -88,7 +88,7 @@ static NSString * const Issue_Leave = @"leaveRoomForApp";
         make.height.mas_equalTo(ScreenScale(150));
     }];
     NSString * amount = [NSString stringWithFormat:@"%zd", self.registeredModel.amount];
-    self.distributionArray = [NSMutableArray arrayWithObjects:@{Localized(@"TokenName"): self.distributionModel.assetName}, @{Localized(@"TokenCode"): self.distributionModel.assetCode}, @{Localized(@"TheIssueVolume"): amount}, @{Localized(@"CumulativeCirculation"): self.distributionModel.actualSupply}, @{Localized(@"DistributionCost"): Distribution_CostBU}, nil];
+    self.distributionArray = [NSMutableArray arrayWithObjects:@{Localized(@"TokenName"): self.distributionModel.assetName}, @{Localized(@"TokenCode"): self.distributionModel.assetCode}, @{Localized(@"TheIssueVolume"): amount}, @{Localized(@"CumulativeCirculation"): self.distributionModel.actualSupply}, @{Localized(@"DistributionCost"): [NSString stringAppendingBUWithStr:Distribution_Cost]}, nil];
     if ([self.distributionModel.totalSupply longLongValue] == 0) {
     } else {
         [self.distributionArray insertObject:@{Localized(@"TotalAmountOfDistribution"): self.distributionModel.totalSupply} atIndex:4];
@@ -137,15 +137,19 @@ static NSString * const Issue_Leave = @"leaveRoomForApp";
 
 - (void)confirmationAction
 {
-    CGFloat isOverFlow = [self.distributionModel.totalSupply integerValue] - [self.distributionModel.actualSupply integerValue] - self.registeredModel.amount;
-    if ([self.distributionModel.totalSupply integerValue] != 0 && isOverFlow < 0) {
+//    if ([self.distributionModel.totalSupply integerValue] == [self.distributionModel.actualSupply integerValue]) {
+//        // You have issued the asset
+//        [self alertViewWithMessage:Localized(@"IssuedAssets")];
+//    }
+    CGFloat isOverFlow = [self.distributionModel.totalSupply longLongValue] - [self.distributionModel.actualSupply longLongValue] - self.registeredModel.amount;
+    if ([self.distributionModel.totalSupply longLongValue] != 0 && isOverFlow < 0) {
         // Your tokens issued exceed the total amount of tokens registered
         [self alertViewWithMessage:Localized(@"CirculationExceeded")];
         return;
     }
-    NSString * totalAsset = [NSString stringWithFormat:@"%zd", self.registeredModel.amount + [self.distributionModel.actualSupply integerValue]];
-    NSInteger issueAsset = [[[NSDecimalNumber decimalNumberWithString:totalAsset] decimalNumberByMultiplyingByPowerOf10: self.distributionModel.decimals] integerValue];
-    if (issueAsset > NSIntegerMax) {
+    NSString * totalAsset = [NSString stringWithFormat:@"%lld", self.registeredModel.amount + [self.distributionModel.actualSupply longLongValue]];
+    NSInteger issueAsset = [[[NSDecimalNumber decimalNumberWithString:totalAsset] decimalNumberByMultiplyingByPowerOf10: self.distributionModel.decimals] longLongValue];
+    if (issueAsset > INT64_MAX) {
         [MBProgressHUD showTipMessageInWindow:Localized(@"IssueNumberOverflowMax")];
         return;
     } else if (issueAsset < 1) {
@@ -155,9 +159,9 @@ static NSString * const Issue_Leave = @"leaveRoomForApp";
     __weak typeof(self) weakSelf = self;
     NSOperationQueue * queue = [[NSOperationQueue alloc] init];
     [queue addOperationWithBlock:^{
-        double amount = [[HTTPManager shareManager] getDataWithBalanceJudgmentWithCost:Distribution_Cost ifShowLoading:YES];
+        NSString * amount = [[[HTTPManager shareManager] getDataWithBalanceJudgmentWithCost:Distribution_Cost ifShowLoading:YES] stringValue];
         [[NSOperationQueue mainQueue] addOperationWithBlock:^{
-            if (amount < 0) {
+            if ([amount hasPrefix:@"-"]) {
                 [MBProgressHUD showTipMessageInWindow:Localized(@"DistributionNotSufficientFunds")];
                 return;
             }
@@ -173,7 +177,7 @@ static NSString * const Issue_Leave = @"leaveRoomForApp";
 - (void)getIssueAssetDataWithPassword:(NSString *)password
 {
     NSString * assetAmount = [NSString stringWithFormat:@"%zd", self.registeredModel.amount];
-    NSInteger issueAsset = [[[NSDecimalNumber decimalNumberWithString:assetAmount] decimalNumberByMultiplyingByPowerOf10: self.distributionModel.decimals] integerValue];
+    NSInteger issueAsset = [[[NSDecimalNumber decimalNumberWithString:assetAmount] decimalNumberByMultiplyingByPowerOf10: self.distributionModel.decimals] longLongValue];
     [[HTTPManager shareManager] getIssueAssetDataWithPassword:password assetCode: self.registeredModel.code assetAmount:issueAsset decimals:self.distributionModel.decimals success:^(TransactionResultModel *resultModel) {
         self.distributionModel.transactionHash = resultModel.transactionHash;
         self.distributionModel.distributionFee = resultModel.actualFee;

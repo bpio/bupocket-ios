@@ -37,14 +37,6 @@
                                  success:(void (^)(id responseObject))success
                                  failure:(void (^)(NSError *error))failure;
 // AssetsDetail Transaction_Record
-//- (void)getAssetsDetailDataWithTokenType:(NSInteger)tokenType
-//                               assetCode:(NSString *)assetCode
-//                                  issuer:(NSString *)issuer
-//                                 address:(NSString *)address
-//                            currencyType:(NSString *)currencyType
-//                               pageIndex:(NSInteger)pageIndex
-//                                 success:(void (^)(id responseObject))success
-//                                 failure:(void (^)(NSError *error))failure;
 - (void)getAssetsDetailDataWithTokenType:(NSInteger)tokenType
                             currencyType:(NSString *)currencyType
                                assetCode:(NSString *)assetCode
@@ -80,7 +72,7 @@
 // Obtain minimum asset limits and fuel unit prices for accounts in designated blocks
 - (void)getBlockFees;
 // Balance judgment
-- (double)getDataWithBalanceJudgmentWithCost:(double)cost ifShowLoading:(BOOL)ifShowLoading;
+- (NSDecimalNumber *)getDataWithBalanceJudgmentWithCost:(NSString *)cost ifShowLoading:(BOOL)ifShowLoading;
 // Balance of assets
 - (int64_t)getAssetInfoWithAddress:(NSString *)address code:(NSString *)code issuer:(NSString *)issuer;
 
