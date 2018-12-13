@@ -39,15 +39,15 @@ static NSString * const DistributionDetailCellID = @"DistributionDetailCellID";
 
 - (void)setData
 {
-    NSString * amount = [NSString stringWithFormat:@"%lld", self.registeredModel.amount];
+//    NSString * amount = [NSString stringWithFormat:@"%lld", self.registeredModel.amount];
     NSString * decimal  = [NSString stringWithFormat:@"%zd", self.distributionModel.decimals];
-    NSMutableArray * array = [NSMutableArray arrayWithObjects:@{Localized(@"TokenName"): self.distributionModel.assetName}, @{Localized(@"TokenCode"): self.distributionModel.assetCode}, @{Localized(@"TheIssueVolume"): amount}, @{Localized(@"TokenDecimalDigits"): decimal}, @{Localized(@"ATPVersion"): self.distributionModel.version}, nil];
+    NSMutableArray * array = [NSMutableArray arrayWithObjects:@{Localized(@"TokenName"): self.distributionModel.assetName}, @{Localized(@"TokenCode"): self.distributionModel.assetCode}, @{Localized(@"TheIssueVolume"): self.registeredModel.amount}, @{Localized(@"TokenDecimalDigits"): decimal}, @{Localized(@"ATPVersion"): self.distributionModel.version}, nil];
     if (self.distributionModel.tokenDescription) {
         [array addObject:@{Localized(@"TokenDescription"): self.distributionModel.tokenDescription}];
     }
     NSString * actualSupply;
     if (self.distributionResultState == DistributionResultSuccess) {
-        actualSupply = [NSString stringWithFormat:@"%lld", self.registeredModel.amount + [self.distributionModel.actualSupply longLongValue]];
+        actualSupply = [NSString stringWithFormat:@"%lld", [self.registeredModel.amount longLongValue] + [self.distributionModel.actualSupply longLongValue]];
     } else if (self.distributionResultState == DistributionResultFailure) {
         actualSupply = self.distributionModel.actualSupply;
     }

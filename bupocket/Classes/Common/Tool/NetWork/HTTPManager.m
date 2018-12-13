@@ -314,7 +314,7 @@ static int64_t const gasPrice = 1000;
 //    double baseReserve = [[[NSUserDefaults standardUserDefaults] objectForKey:Minimum_Asset_Limitation] doubleValue];
     NSDecimalNumber * minLimitationNumber = [NSDecimalNumber decimalNumberWithString:[[NSUserDefaults standardUserDefaults] objectForKey:Minimum_Asset_Limitation]];
     NSDecimalNumber * costNumber = [NSDecimalNumber decimalNumberWithString:cost];
-    NSDecimalNumber * amount = 0;
+    __block NSDecimalNumber * amount = 0;
     AccountService *accountService = [[[SDK sharedInstance] setUrl:_bumoNodeUrl] getAccountService];
     AccountGetBalanceRequest * request = [AccountGetBalanceRequest new];
     [request setAddress : [AccountTool account].purseAccount];
@@ -325,7 +325,7 @@ static int64_t const gasPrice = 1000;
                 [MBProgressHUD hideHUD];
             }
         });
-        balance = [[NSDecimalNumber decimalNumberWithString:[NSString stringWithFormat:@"%lld", response.result.balance]] decimalNumberByMultiplyingByPowerOf10: -Decimals_BU] ;
+        balance = [[NSDecimalNumber decimalNumberWithString:[NSString stringWithFormat:@"%lld", response.result.balance]] decimalNumberByMultiplyingByPowerOf10: -Decimals_BU];
 //        balance = [Tools MO2BU:response.result.balance];
         amount = [[balance decimalNumberBySubtracting:minLimitationNumber] decimalNumberBySubtracting: costNumber];
 //        balance - baseReserve - cost;
@@ -334,7 +334,8 @@ static int64_t const gasPrice = 1000;
             if (ifShowLoading == YES) {
                 [MBProgressHUD hideHUD];
             }
-            [MBProgressHUD showTipMessageInWindow:response.errorDesc];
+            amount = [NSDecimalNumber decimalNumberWithString:@"-1"];
+            [MBProgressHUD showTipMessageInWindow:[ErrorTypeTool getDescription:response.errorCode]];
         });
     }
 //    if (amount < 0) {
@@ -478,12 +479,8 @@ static int64_t const gasPrice = 1000;
     NSString * sourceAddress = [AccountTool account].purseAccount;
     NSString *key = [NSString stringWithFormat: @"asset_property_%@", registeredModel.code];
     AtpProperty * atpProperty = [[AtpProperty alloc] init];
-    int64_t total = [[[NSDecimalNumber decimalNumberWithString:[NSString stringWithFormat:@"%lld", registeredModel.amount]] decimalNumberByMultiplyingByPowerOf10: registeredModel.decimals] longLongValue];
+    int64_t total = [[[NSDecimalNumber decimalNumberWithString:registeredModel.amount] decimalNumberByMultiplyingByPowerOf10: registeredModel.decimals] longLongValue];
 //    int64_t total = registeredModel.amount * pow(10, registeredModel.decimals);
-    if (registeredModel.amount != 0 && total < 1) {
-        [MBProgressHUD showTipMessageInWindow:Localized(@"IssueNumberIsIncorrect")];
-        return;
-    }
     atpProperty.name = registeredModel.name;
     atpProperty.code = registeredModel.code;
     atpProperty.totalSupply = total;
@@ -632,7 +629,6 @@ static int64_t const gasPrice = 1000;
                 if(failure != nil)
                 {
                     resultModel.errorCode = response.errorCode;
-                    resultModel.errorDesc = response.errorDesc;
                     failure(resultModel);
                 }
             });
@@ -645,7 +641,6 @@ static int64_t const gasPrice = 1000;
                     resultModel.transactionTime = history.closeTime;
                     resultModel.actualFee = history.actualFee;
                     resultModel.errorCode = history.errorCode;
-                    resultModel.errorDesc = history.errorDesc;
                     success(resultModel);
                 }
             });

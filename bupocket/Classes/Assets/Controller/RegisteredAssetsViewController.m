@@ -93,11 +93,11 @@ static NSString * const Register_Leave = @"leaveRoomForApp";
     }];
     
     self.registeredArray = [NSMutableArray arrayWithArray:@[@{Localized(@"TokenName"): self.registeredModel.name}, @{Localized(@"TokenCode"): self.registeredModel.code}, @{Localized(@"DistributionCost"): [NSString stringAppendingBUWithStr:Registered_Cost]}]];
-    NSString * amount = [NSString stringWithFormat:@"%lld", self.registeredModel.amount];
+//    NSString * amount = [NSString stringWithFormat:@"%lld", self.registeredModel.amount];
     if (self.registeredModel.amount == 0) {
         [self.registeredArray insertObject:@{Localized(@"TotalAmountOfToken"): Localized(@"UnrestrictedIssue")} atIndex:2];
     } else {
-        [self.registeredArray insertObject:@{Localized(@"TotalAmountOfToken"): amount} atIndex:2];
+        [self.registeredArray insertObject:@{Localized(@"TotalAmountOfToken"): self.registeredModel.amount} atIndex:2];
     }
     
     CGFloat assetInfoBgH = Margin_10 + [self.registeredArray count] * Margin_40;
@@ -143,6 +143,12 @@ static NSString * const Register_Leave = @"leaveRoomForApp";
 
 - (void)confirmationAction
 {
+    NSString * totalAsset = [[[NSDecimalNumber decimalNumberWithString:self.registeredModel.amount] decimalNumberByMultiplyingByPowerOf10: self.registeredModel.decimals] stringValue];
+    NSString * intMax = [NSString stringWithFormat: @"%lld", INT64_MAX];
+    if (self.registeredModel.amount != 0 && [totalAsset compare:intMax] == NSOrderedDescending) {
+        [MBProgressHUD showTipMessageInWindow:Localized(@"RegisteredNumberOverflowMax")];
+        return;
+    }
     __weak typeof(self) weakSelf = self;
     NSOperationQueue * queue = [[NSOperationQueue alloc] init];
     [queue addOperationWithBlock:^{
@@ -220,7 +226,7 @@ static NSString * const Register_Leave = @"leaveRoomForApp";
     NSDictionary * dic = @{
                            @"name": self.registeredModel.name,
                            @"code": self.registeredModel.code,
-                           @"total": @(self.registeredModel.amount),
+                           @"total": self.registeredModel.amount,
                            @"decimals": @(self.registeredModel.decimals),
                            @"version": ATP_Version,
                            @"desc": self.registeredModel.desc,

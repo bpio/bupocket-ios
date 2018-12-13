@@ -87,8 +87,8 @@ static NSString * const Issue_Leave = @"leaveRoomForApp";
         make.centerX.mas_equalTo(0);
         make.height.mas_equalTo(ScreenScale(150));
     }];
-    NSString * amount = [NSString stringWithFormat:@"%lld", self.registeredModel.amount];
-    self.distributionArray = [NSMutableArray arrayWithObjects:@{Localized(@"TokenName"): self.distributionModel.assetName}, @{Localized(@"TokenCode"): self.distributionModel.assetCode}, @{Localized(@"TheIssueVolume"): amount}, @{Localized(@"CumulativeCirculation"): self.distributionModel.actualSupply}, @{Localized(@"DistributionCost"): [NSString stringAppendingBUWithStr:Distribution_Cost]}, nil];
+//    NSString * amount = [NSString stringWithFormat:@"%lld", self.registeredModel.amount];
+    self.distributionArray = [NSMutableArray arrayWithObjects:@{Localized(@"TokenName"): self.distributionModel.assetName}, @{Localized(@"TokenCode"): self.distributionModel.assetCode}, @{Localized(@"TheIssueVolume"): self.registeredModel.amount}, @{Localized(@"CumulativeCirculation"): self.distributionModel.actualSupply}, @{Localized(@"DistributionCost"): [NSString stringAppendingBUWithStr:Distribution_Cost]}, nil];
     if ([self.distributionModel.totalSupply longLongValue] == 0) {
     } else {
         [self.distributionArray insertObject:@{Localized(@"TotalAmountOfDistribution"): self.distributionModel.totalSupply} atIndex:4];
@@ -141,21 +141,24 @@ static NSString * const Issue_Leave = @"leaveRoomForApp";
 //        // You have issued the asset
 //        [self alertViewWithMessage:Localized(@"IssuedAssets")];
 //    }
-    CGFloat isOverFlow = [self.distributionModel.totalSupply longLongValue] - [self.distributionModel.actualSupply longLongValue] - self.registeredModel.amount;
+    NSString * totalAsset = [NSString stringWithFormat:@"%lld", [self.registeredModel.amount longLongValue] + [self.distributionModel.actualSupply longLongValue]];
+    NSString * issueAsset = [[[NSDecimalNumber decimalNumberWithString:totalAsset] decimalNumberByMultiplyingByPowerOf10: self.distributionModel.decimals] stringValue];
+    NSString * intMax = [NSString stringWithFormat: @"%lld", INT64_MAX];
+    if ([issueAsset compare:intMax] == NSOrderedDescending) {
+        [MBProgressHUD showTipMessageInWindow:Localized(@"IssueNumberOverflowMax")];
+        return;
+    }
+    CGFloat isOverFlow = [self.distributionModel.totalSupply longLongValue] - [self.distributionModel.actualSupply longLongValue] - [self.registeredModel.amount longLongValue];
     if ([self.distributionModel.totalSupply longLongValue] != 0 && isOverFlow < 0) {
         // Your tokens issued exceed the total amount of tokens registered
         [self alertViewWithMessage:Localized(@"CirculationExceeded")];
         return;
     }
-    NSString * totalAsset = [NSString stringWithFormat:@"%lld", self.registeredModel.amount + [self.distributionModel.actualSupply longLongValue]];
-    int64_t issueAsset = [[[NSDecimalNumber decimalNumberWithString:totalAsset] decimalNumberByMultiplyingByPowerOf10: self.distributionModel.decimals] longLongValue];
-    if (issueAsset > INT64_MAX) {
-        [MBProgressHUD showTipMessageInWindow:Localized(@"IssueNumberOverflowMax")];
-        return;
-    } else if (issueAsset < 1) {
-        [MBProgressHUD showTipMessageInWindow:Localized(@"IssueNumberIsIncorrect")];
-        return;
-    }
+//    if (issueAsset > INT64_MAX) {
+//    } else if (issueAsset < 1) {
+//        [MBProgressHUD showTipMessageInWindow:Localized(@"IssueNumberIsIncorrect")];
+//        return;
+//    }
     __weak typeof(self) weakSelf = self;
     NSOperationQueue * queue = [[NSOperationQueue alloc] init];
     [queue addOperationWithBlock:^{
@@ -176,8 +179,8 @@ static NSString * const Issue_Leave = @"leaveRoomForApp";
 }
 - (void)getIssueAssetDataWithPassword:(NSString *)password
 {
-    NSString * assetAmount = [NSString stringWithFormat:@"%lld", self.registeredModel.amount];
-    int64_t issueAsset = [[[NSDecimalNumber decimalNumberWithString:assetAmount] decimalNumberByMultiplyingByPowerOf10: self.distributionModel.decimals] longLongValue];
+//    NSString * assetAmount = [NSString stringWithFormat:@"%lld", self.registeredModel.amount];
+    int64_t issueAsset = [[[NSDecimalNumber decimalNumberWithString:self.registeredModel.amount] decimalNumberByMultiplyingByPowerOf10: self.distributionModel.decimals] longLongValue];
     [[HTTPManager shareManager] getIssueAssetDataWithPassword:password assetCode: self.registeredModel.code assetAmount:issueAsset decimals:self.distributionModel.decimals success:^(TransactionResultModel *resultModel) {
         self.distributionModel.transactionHash = resultModel.transactionHash;
         self.distributionModel.distributionFee = resultModel.actualFee;
@@ -243,7 +246,7 @@ static NSString * const Issue_Leave = @"leaveRoomForApp";
                          @"fee": self.distributionModel.distributionFee,
                          @"hash": self.distributionModel.transactionHash,
                          @"address": [AccountTool account].purseAccount,
-                         @"issueTotal": @(self.registeredModel.amount)
+                         @"issueTotal": self.registeredModel.amount
                          }];
     if (self.distributionModel.tokenDescription) {
         [dic setValue:self.distributionModel.tokenDescription forKey:@"desc"];

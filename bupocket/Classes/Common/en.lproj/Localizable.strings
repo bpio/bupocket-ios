@@ -158,6 +158,7 @@
 "ConfirmationOfRegisteredAssets" = "Confirm token registration";
 "ConfirmRegistrationInformation" = "Please confirm the following token registration information";
 "ConfirmationOfRegistration" = "Confirm registration";
+"RegisteredNumberOverflowMax" = "The tokens you have registered have exceeded the maximum limit";
 "RegistrationIdentityCipherPrompt" = "Please fill in the identity password to confirm the registration";
 "RegistrationSuccess" = "Registration succeeded";
 "RegistrationFailure" = "Registration failed";

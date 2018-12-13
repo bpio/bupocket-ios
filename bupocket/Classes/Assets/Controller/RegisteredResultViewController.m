@@ -40,7 +40,7 @@ static NSString * const DistributionDetailCellID = @"DistributionDetailCellID";
 - (void)setData
 {
     NSString * decimal = [NSString stringWithFormat:@"%zd", self.registeredModel.decimals];
-    NSString * amount = [NSString stringWithFormat:@"%lld", self.registeredModel.amount];
+//    NSString * amount = [NSString stringWithFormat:@"%lld", self.registeredModel.amount];
     NSMutableArray * array = [NSMutableArray arrayWithObjects:@{Localized(@"TokenName"): self.registeredModel.name}, @{Localized(@"TokenCode"): self.registeredModel.code}, @{Localized(@"TokenDecimalDigits"): decimal}, @{Localized(@"ATPVersion"): ATP_Version}, nil];
     if (self.registeredModel.desc.length > 0) {
         [array addObject:@{Localized(@"TokenDescription"): self.registeredModel.desc}];
@@ -48,7 +48,7 @@ static NSString * const DistributionDetailCellID = @"DistributionDetailCellID";
     if (self.registeredModel.amount == 0) {
         [array insertObject:@{Localized(@"TotalAmountOfToken"): Localized(@"UnrestrictedIssue")} atIndex:2];
     } else {
-        [array insertObject:@{Localized(@"TotalAmountOfToken"): amount} atIndex:2];
+        [array insertObject:@{Localized(@"TotalAmountOfToken"): self.registeredModel.amount} atIndex:2];
     }
     [self.listArray addObject:array];
     

@@ -156,6 +156,7 @@
 "ConfirmationOfRegisteredAssets" = "登记资产确认";
 "ConfirmRegistrationInformation" = "请确认以下登记资产信息";
 "ConfirmationOfRegistration" = "确认登记";
+"RegisteredNumberOverflowMax" = "您的资产登记总量超过了最大上限";
 "RegistrationIdentityCipherPrompt" = "请填写身份密码以确认登记";
 "RegistrationSuccess" = "登记成功";
 "RegistrationFailure" = "登记失败";
