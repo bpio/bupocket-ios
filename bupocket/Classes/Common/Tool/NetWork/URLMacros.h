@@ -18,7 +18,6 @@
  */
 
 #define WEB_SERVER_DOMAIN @"https://api-bp.bumo.io/"
-//#define WEB_SERVER_DOMAIN @"http://52.80.218.114:8081/"
 #define BUMO_NODE_URL @"https://wallet-node.bumo.io"
 #define PUSH_MESSAGE_SOCKET_URL @"https://ws-tools.bumo.io"
 
