@@ -256,7 +256,6 @@
         self.availableBalance.numberOfLines = 0;
         [header addSubview:self.availableBalance];
 //        double amount = [self.listModel.amount doubleValue];
-//        NSString * amount = self.listModel.amount;
         if (self.listModel.type == Token_Type_BU) {
             NSDecimalNumber * amountNumber = [NSDecimalNumber decimalNumberWithString:self.listModel.amount];
             NSDecimalNumber * minLimitationNumber = [NSDecimalNumber decimalNumberWithString:[[NSUserDefaults standardUserDefaults] objectForKey:Minimum_Asset_Limitation]];
@@ -264,6 +263,8 @@
             if ([self.availableAmount hasPrefix:@"-"]) {
                 self.availableAmount = @"0";
             }
+        } else {
+            self.availableAmount = self.listModel.amount;
         }
         self.availableBalance.attributedText = [Encapsulation attrWithString:[NSString stringWithFormat:@"%@\n%@ %@", Localized(@"AvailableBalance"), self.availableAmount, self.listModel.assetCode] preFont:FONT(12) preColor:COLOR_6 index:[Localized(@"AvailableBalance") length] sufFont:FONT(12) sufColor:MAIN_COLOR lineSpacing:ScreenScale(7)];
         self.availableBalance.textAlignment = NSTextAlignmentRight;
@@ -320,6 +321,7 @@
         [self IsActivatedWithAddress:textField.text];
     }
 }
+/*
 - (BOOL)textField:(UITextField *)textField shouldChangeCharactersInRange:(NSRange)range replacementString:(NSString *)string
 {
     NSString * str = [textField.text stringByReplacingCharactersInRange:range withString:string];
@@ -336,6 +338,7 @@
     }
     return YES;
 }
+ */
 - (void)scanAction
 {
     __weak typeof (self) weakself = self;

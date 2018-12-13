@@ -93,7 +93,7 @@ static NSString * const Register_Leave = @"leaveRoomForApp";
     }];
     
     self.registeredArray = [NSMutableArray arrayWithArray:@[@{Localized(@"TokenName"): self.registeredModel.name}, @{Localized(@"TokenCode"): self.registeredModel.code}, @{Localized(@"DistributionCost"): [NSString stringAppendingBUWithStr:Registered_Cost]}]];
-    NSString * amount = [NSString stringWithFormat:@"%zd", self.registeredModel.amount];
+    NSString * amount = [NSString stringWithFormat:@"%lld", self.registeredModel.amount];
     if (self.registeredModel.amount == 0) {
         [self.registeredArray insertObject:@{Localized(@"TotalAmountOfToken"): Localized(@"UnrestrictedIssue")} atIndex:2];
     } else {

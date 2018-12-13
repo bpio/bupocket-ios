@@ -52,7 +52,7 @@
 // Transfer payment expenses
 #define TransactionCost_MIN @"0.01"
 #define TransactionCost_MAX @"10"
-#define TransactionCost_NotActive_MIN 0.03
+#define TransactionCost_NotActive_MIN @"0.03"
 // BU decimals
 #define Decimals_BU 8
 // 转账发送数量

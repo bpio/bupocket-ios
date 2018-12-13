@@ -370,7 +370,7 @@ static int64_t const gasPrice = 1000;
         //        NSLog(@"%@", [response.result yy_modelToJSONString]);
         return TransactionCost_MIN;
     } else if (response.errorCode == 4) {
-        return [NSString stringWithFormat:@"%.2f", TransactionCost_NotActive_MIN];
+        return TransactionCost_NotActive_MIN;
     } else {
         return nil;
     }
@@ -399,6 +399,7 @@ static int64_t const gasPrice = 1000;
         NSString * purseKey = [NSString generateKeyStoreWithPW:password key:[privateKeys lastObject]];
         [[NSOperationQueue mainQueue] addOperationWithBlock:^{
             if (randomKey == nil || identityKey == nil || purseKey == nil) {
+                [MBProgressHUD hideHUD];
                 [MBProgressHUD showTipMessageInWindow:Localized(@"CreateIdentityFailure")];
             } else {
                 [MBProgressHUD hideHUD];
@@ -477,7 +478,7 @@ static int64_t const gasPrice = 1000;
     NSString * sourceAddress = [AccountTool account].purseAccount;
     NSString *key = [NSString stringWithFormat: @"asset_property_%@", registeredModel.code];
     AtpProperty * atpProperty = [[AtpProperty alloc] init];
-    int64_t total = [[[NSDecimalNumber decimalNumberWithString:[NSString stringWithFormat:@"%zd", registeredModel.amount]] decimalNumberByMultiplyingByPowerOf10: registeredModel.decimals] longLongValue];
+    int64_t total = [[[NSDecimalNumber decimalNumberWithString:[NSString stringWithFormat:@"%lld", registeredModel.amount]] decimalNumberByMultiplyingByPowerOf10: registeredModel.decimals] longLongValue];
 //    int64_t total = registeredModel.amount * pow(10, registeredModel.decimals);
     if (registeredModel.amount != 0 && total < 1) {
         [MBProgressHUD showTipMessageInWindow:Localized(@"IssueNumberIsIncorrect")];
@@ -511,7 +512,7 @@ static int64_t const gasPrice = 1000;
 // Issue
 - (void)getIssueAssetDataWithPassword:(NSString *)password
                             assetCode:(NSString *)assetCode
-                           assetAmount:(NSInteger)assetAmount
+                           assetAmount:(int64_t)assetAmount
                              decimals:(NSInteger)decimals
                               success:(void (^)(TransactionResultModel * resultModel))success
                               failure:(void (^)(TransactionResultModel * resultModel))failure

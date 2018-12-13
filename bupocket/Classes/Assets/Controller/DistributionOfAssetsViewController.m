@@ -87,7 +87,7 @@ static NSString * const Issue_Leave = @"leaveRoomForApp";
         make.centerX.mas_equalTo(0);
         make.height.mas_equalTo(ScreenScale(150));
     }];
-    NSString * amount = [NSString stringWithFormat:@"%zd", self.registeredModel.amount];
+    NSString * amount = [NSString stringWithFormat:@"%lld", self.registeredModel.amount];
     self.distributionArray = [NSMutableArray arrayWithObjects:@{Localized(@"TokenName"): self.distributionModel.assetName}, @{Localized(@"TokenCode"): self.distributionModel.assetCode}, @{Localized(@"TheIssueVolume"): amount}, @{Localized(@"CumulativeCirculation"): self.distributionModel.actualSupply}, @{Localized(@"DistributionCost"): [NSString stringAppendingBUWithStr:Distribution_Cost]}, nil];
     if ([self.distributionModel.totalSupply longLongValue] == 0) {
     } else {
@@ -148,7 +148,7 @@ static NSString * const Issue_Leave = @"leaveRoomForApp";
         return;
     }
     NSString * totalAsset = [NSString stringWithFormat:@"%lld", self.registeredModel.amount + [self.distributionModel.actualSupply longLongValue]];
-    NSInteger issueAsset = [[[NSDecimalNumber decimalNumberWithString:totalAsset] decimalNumberByMultiplyingByPowerOf10: self.distributionModel.decimals] longLongValue];
+    int64_t issueAsset = [[[NSDecimalNumber decimalNumberWithString:totalAsset] decimalNumberByMultiplyingByPowerOf10: self.distributionModel.decimals] longLongValue];
     if (issueAsset > INT64_MAX) {
         [MBProgressHUD showTipMessageInWindow:Localized(@"IssueNumberOverflowMax")];
         return;
@@ -176,8 +176,8 @@ static NSString * const Issue_Leave = @"leaveRoomForApp";
 }
 - (void)getIssueAssetDataWithPassword:(NSString *)password
 {
-    NSString * assetAmount = [NSString stringWithFormat:@"%zd", self.registeredModel.amount];
-    NSInteger issueAsset = [[[NSDecimalNumber decimalNumberWithString:assetAmount] decimalNumberByMultiplyingByPowerOf10: self.distributionModel.decimals] longLongValue];
+    NSString * assetAmount = [NSString stringWithFormat:@"%lld", self.registeredModel.amount];
+    int64_t issueAsset = [[[NSDecimalNumber decimalNumberWithString:assetAmount] decimalNumberByMultiplyingByPowerOf10: self.distributionModel.decimals] longLongValue];
     [[HTTPManager shareManager] getIssueAssetDataWithPassword:password assetCode: self.registeredModel.code assetAmount:issueAsset decimals:self.distributionModel.decimals success:^(TransactionResultModel *resultModel) {
         self.distributionModel.transactionHash = resultModel.transactionHash;
         self.distributionModel.distributionFee = resultModel.actualFee;

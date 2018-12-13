@@ -31,10 +31,10 @@
         _sureBlock = confrimBlock;
         _cancleBlock = cancelBlock;
         [self setupViewWithVerType:verType];
-        self.versionUpdateTitle.text = [NSString stringWithFormat:@"%@%@？", Localized(@"IfUpdate"), versionNumber];
+        self.versionUpdateTitle.text = [NSString stringWithFormat:@"%@ %@？", Localized(@"IfUpdate"), versionNumber];
         self.versionSize.text = [NSString stringWithFormat:@"%@%@", Localized(@"AppSize"), versionSize];
         self.updateContent.text = content;
-        CGFloat height = [Encapsulation rectWithText:self.updateContent.text font:_updateContent.font textWidth:DEVICE_WIDTH - ScreenScale(80)].size.height + ScreenScale(370);
+        CGFloat height = [Encapsulation rectWithText:self.versionUpdateTitle.text font:_versionUpdateTitle.font textWidth:DEVICE_WIDTH - ScreenScale(80)].size.height + [Encapsulation rectWithText:self.versionSize.text font:_versionSize.font textWidth:DEVICE_WIDTH - ScreenScale(80)].size.height + [Encapsulation rectWithText:self.updateContent.text font:_updateContent.font textWidth:DEVICE_WIDTH - ScreenScale(80)].size.height + ScreenScale(310);
         self.bounds = CGRectMake(0, 0, DEVICE_WIDTH - Margin_40, height);
     }
     return self;
@@ -136,6 +136,7 @@
         _versionUpdateTitle = [[UILabel alloc] init];
         _versionUpdateTitle.textColor = TITLE_COLOR;
         _versionUpdateTitle.font = FONT(18);
+        _versionUpdateTitle.numberOfLines = 0;
 //        _versionUpdateTitle.text = Localized(@"VersionUpdate");
     }
     return _versionUpdateTitle;
@@ -146,6 +147,7 @@
         _versionSize = [[UILabel alloc] init];
         _versionSize.textColor = COLOR_6;
         _versionSize.font = TITLE_FONT;
+        _versionSize.numberOfLines = 0;
     }
     return _versionSize;
 }

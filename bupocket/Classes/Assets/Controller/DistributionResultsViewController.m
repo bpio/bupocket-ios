@@ -39,7 +39,7 @@ static NSString * const DistributionDetailCellID = @"DistributionDetailCellID";
 
 - (void)setData
 {
-    NSString * amount = [NSString stringWithFormat:@"%zd", self.registeredModel.amount];
+    NSString * amount = [NSString stringWithFormat:@"%lld", self.registeredModel.amount];
     NSString * decimal  = [NSString stringWithFormat:@"%zd", self.distributionModel.decimals];
     NSMutableArray * array = [NSMutableArray arrayWithObjects:@{Localized(@"TokenName"): self.distributionModel.assetName}, @{Localized(@"TokenCode"): self.distributionModel.assetCode}, @{Localized(@"TheIssueVolume"): amount}, @{Localized(@"TokenDecimalDigits"): decimal}, @{Localized(@"ATPVersion"): self.distributionModel.version}, nil];
     if (self.distributionModel.tokenDescription) {

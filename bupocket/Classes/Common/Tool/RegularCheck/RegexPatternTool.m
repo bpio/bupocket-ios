@@ -255,21 +255,21 @@
 //验证只能输入n位的数字
 -(BOOL)validateIsOnlyManyNumber:(NSString *)targetString withFigure:(NSInteger)figure{
     
-    NSString *regex = [NSString stringWithFormat:@"^\\d{%ld}$",figure];
+    NSString *regex = [NSString stringWithFormat:@"^\\d{%zd}$",figure];
     return [self regexPatternResultWithRegex:regex TargetString:targetString];
 }
 
 //验证只能输入至少n位的数字
 -(BOOL)validateIsOnlyLeastManyNumber:(NSString *)targetString withFigure:(NSInteger)figure{
     
-    NSString *regex = [NSString stringWithFormat:@"^\\d{%ld,}$",figure];
+    NSString *regex = [NSString stringWithFormat:@"^\\d{%zd,}$",figure];
     return [self regexPatternResultWithRegex:regex TargetString:targetString];
 }
 
 //验证只能输入m~n位的数字
 -(BOOL)validateIsOnlyNumber:(NSString *)targetString fromFigure:(NSInteger)fromFigure toFigure:(NSInteger)toFigure{
     
-    NSString *regex = [NSString stringWithFormat:@"^\\d{%ld,%ld}$",fromFigure,toFigure];
+    NSString *regex = [NSString stringWithFormat:@"^\\d{%zd,%zd}$",fromFigure,toFigure];
     return [self regexPatternResultWithRegex:regex TargetString:targetString];
 }
 

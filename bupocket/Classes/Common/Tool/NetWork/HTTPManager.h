@@ -107,7 +107,7 @@
 // Issue
 - (void)getIssueAssetDataWithPassword:(NSString *)password
                             assetCode:(NSString *)assetCode
-                          assetAmount:(NSInteger)assetAmount
+                          assetAmount:(int64_t)assetAmount
                              decimals:(NSInteger)decimals
                               success:(void (^)(TransactionResultModel * resultModel))success
                               failure:(void (^)(TransactionResultModel * resultModel))failure;

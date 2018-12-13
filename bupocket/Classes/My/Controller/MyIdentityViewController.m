@@ -138,15 +138,16 @@
     [queue addOperationWithBlock:^{
         NSString * privateKey = [NSString decipherKeyStoreWithPW:password keyStoreValueStr:[AccountTool account].purseKey];
         if ([Tools isEmpty:privateKey]) {
+            [MBProgressHUD hideHUD];
             [MBProgressHUD showTipMessageInWindow:Localized(@"PasswordIsIncorrect")];
             return;
         }
-        [ClearCacheTool cleanUserDefaults];
-        [[LanguageManager shareInstance] setDefaultLocale];
-        [[HTTPManager shareManager] initNetWork];
-        // Minimum Asset Limitation
-        [[HTTPManager shareManager] getBlockFees];
         [ClearCacheTool cleanCache:^{
+            [ClearCacheTool cleanUserDefaults];
+            [[LanguageManager shareInstance] setDefaultLocale];
+            [[HTTPManager shareManager] initNetWork];
+            // Minimum Asset Limitation
+            [[HTTPManager shareManager] getBlockFees];
             [[NSOperationQueue mainQueue] addOperationWithBlock:^{
                 [MBProgressHUD hideHUD];
                 [UIApplication sharedApplication].keyWindow.rootViewController = [[NavigationViewController alloc] initWithRootViewController:[[IdentityViewController alloc] init]];
