@@ -41,7 +41,7 @@ static NSString * const AddAssetsCellID = @"AddAssetsCellID";
         [self.contentView addSubview:self.title];
         [self.contentView addSubview:self.detailTitle];
         [self.contentView addSubview:self.infoTitle];
-        [self.contentView addSubview:self.addBtn];
+        [self.contentView addSubview:self.switchControl];
         [self.contentView addSubview:self.lineView];
     }
     return self;
@@ -68,12 +68,12 @@ static NSString * const AddAssetsCellID = @"AddAssetsCellID";
     [self.title mas_makeConstraints:^(MASConstraintMaker *make) {
         make.top.equalTo(self.listImage);
         make.left.equalTo(self.listImage.mas_right).offset(Margin_15);
-        make.right.mas_lessThanOrEqualTo(self.addBtn.mas_left).offset(-Margin_10);
+        make.right.mas_lessThanOrEqualTo(self.switchControl.mas_left).offset(-Margin_10);
     }];
     [self.detailTitle mas_makeConstraints:^(MASConstraintMaker *make) {
         make.top.equalTo(self.title.mas_bottom).offset(Margin_10);
         make.left.equalTo(self.title);
-        make.right.mas_lessThanOrEqualTo(self.addBtn.mas_left).offset(-Margin_10);
+        make.right.mas_lessThanOrEqualTo(self.switchControl.mas_left).offset(-Margin_10);
     }];
     [self.infoTitle mas_makeConstraints:^(MASConstraintMaker *make) {
         make.top.equalTo(self.detailTitle.mas_bottom).offset(Margin_10);
@@ -85,13 +85,9 @@ static NSString * const AddAssetsCellID = @"AddAssetsCellID";
         make.top.equalTo(self.infoTitle.mas_bottom).offset(Margin_15);
         make.size.mas_equalTo(CGSizeMake(DEVICE_WIDTH - Margin_40, LINE_WIDTH));
     }];
-    CGSize size = CGSizeMake(ScreenScale(53), Margin_25);
-    [self.addBtn setViewSize:size borderWidth:0 borderColor:nil borderRadius:ScreenScale(2)];
-    [self.addBtn setContentCompressionResistancePriority:UILayoutPriorityRequired forAxis:UILayoutConstraintAxisHorizontal];
-    [self.addBtn mas_makeConstraints:^(MASConstraintMaker *make) {
+    [self.switchControl mas_makeConstraints:^(MASConstraintMaker *make) {
         make.centerY.equalTo(self.listImage);
         make.right.equalTo(self.contentView.mas_right).offset(-Margin_20);
-        make.size.mas_equalTo(size);
         make.left.mas_greaterThanOrEqualTo(self.detailTitle.mas_right).offset(Margin_10);
     }];
 }
@@ -102,17 +98,16 @@ static NSString * const AddAssetsCellID = @"AddAssetsCellID";
     _title.text = searchAssetsModel.assetCode;
     _detailTitle.text = searchAssetsModel.assetName;
     _infoTitle.text = searchAssetsModel.issuer;
-    _addBtn.hidden = !searchAssetsModel.recommend;
+    // 0-Recommendation (Hide) 1-Non-Recommendation (Display)
+    self.switchControl.hidden = !searchAssetsModel.recommend;
     if (searchAssetsModel.recommend) {
         NSUserDefaults * defaults = [NSUserDefaults standardUserDefaults];
         self.addAssetsArray = [NSMutableArray arrayWithArray:[defaults objectForKey:self.addAssetsKey]];
         for (NSDictionary * dic in self.addAssetsArray) {
             if ([searchAssetsModel.assetCode isEqualToString:dic[@"assetCode"]] && [searchAssetsModel.issuer isEqualToString:dic[@"issuer"]]) {
-                _addBtn.selected = YES;
-                _addBtn.backgroundColor = WARNING_COLOR;
+                [self.switchControl setOn:YES];
             } else {
-                _addBtn.selected = NO;
-                _addBtn.backgroundColor = MAIN_COLOR;
+                [self.switchControl setOn:NO];
             }
         }
     }
@@ -175,34 +170,31 @@ static NSString * const AddAssetsCellID = @"AddAssetsCellID";
     }
     return _lineView;
 }
-- (UIButton *)addBtn
+- (UISwitch *)switchControl
 {
-    if (!_addBtn) {
-        _addBtn = [UIButton createButtonWithTitle:Localized(@"Add") TextFont:14 TextColor:[UIColor whiteColor] Target:self Selector:@selector(addAction:)];
-        [_addBtn setTitle:Localized(@"Delete") forState:UIControlStateSelected];
-        _addBtn.backgroundColor = MAIN_COLOR;
+    if (!_switchControl) {
+        _switchControl = [[UISwitch alloc] init];
+        [_switchControl addTarget:self action:@selector(switchChange:) forControlEvents:UIControlEventValueChanged];
+//        [_switchControl setOn:[[NSUserDefaults standardUserDefaults] boolForKey:If_Switch_TestNetwork] animated:YES];
     }
-    return _addBtn;
+    return _switchControl;
 }
-- (void)addAction:(UIButton *)button
+- (void)switchChange:(UISwitch *)sender
 {
-    button.selected = !button.selected;
+    sender.on = !sender.on;
     NSDictionary * assetsDic = @{
                                  @"assetCode" : _searchAssetsModel.assetCode,
                                  @"issuer" : _searchAssetsModel.issuer
                                  };
     NSUserDefaults * defaults = [NSUserDefaults standardUserDefaults];
     self.addAssetsArray = [NSMutableArray arrayWithArray:[defaults objectForKey:self.addAssetsKey]];
-    if (button.selected == YES) {
-        button.backgroundColor = WARNING_COLOR;
+    if (sender.isOn == YES) {
         [self.addAssetsArray addObject:assetsDic];
     } else {
-        button.backgroundColor = MAIN_COLOR;
         [self.addAssetsArray removeObject:assetsDic];
     }
     [defaults setObject:self.addAssetsArray forKey:self.addAssetsKey];
     [defaults synchronize];
-    
 }
 - (void)awakeFromNib {
     [super awakeFromNib];

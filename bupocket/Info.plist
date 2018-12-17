@@ -15,9 +15,9 @@
 	<key>CFBundlePackageType</key>
 	<string>APPL</string>
 	<key>CFBundleShortVersionString</key>
-	<string>1.4.0</string>
+	<string>1.4.1</string>
 	<key>CFBundleVersion</key>
-	<string>1.4.0</string>
+	<string>1.4.1</string>
 	<key>LSRequiresIPhoneOS</key>
 	<true/>
 	<key>NSAppTransportSecurity</key>
@@ -25,10 +25,14 @@
 		<key>NSAllowsArbitraryLoads</key>
 		<true/>
 	</dict>
+	<key>NSAppleMusicUsageDescription</key>
+	<string>允许此权限才能访问：媒体资料库，为了帮您进行相关图片的扫描</string>
 	<key>NSCameraUsageDescription</key>
 	<string>bupocket需要访问您的相机，为了帮您进行扫描二维码</string>
+	<key>NSContactsUsageDescription</key>
+	<string>允许此权限才能访问：通讯录</string>
 	<key>NSMicrophoneUsageDescription</key>
-	<string>bupocket需要访问您的相册，为了帮您进行相关图片的扫描</string>
+	<string>允许此权限才能访问：麦克风</string>
 	<key>NSPhotoLibraryUsageDescription</key>
 	<string>bupocket需要访问您的相册，为了帮您进行相关图片的扫描</string>
 	<key>UILaunchImages</key>

@@ -16,6 +16,8 @@
 
 + (instancetype)shareManager;
 
+- (void)initNetWork;
+
 // Switched network
 - (void)SwitchedNetworkWithIsTest:(BOOL)isTest;
 
@@ -35,14 +37,6 @@
                                  success:(void (^)(id responseObject))success
                                  failure:(void (^)(NSError *error))failure;
 // AssetsDetail Transaction_Record
-//- (void)getAssetsDetailDataWithTokenType:(NSInteger)tokenType
-//                               assetCode:(NSString *)assetCode
-//                                  issuer:(NSString *)issuer
-//                                 address:(NSString *)address
-//                            currencyType:(NSString *)currencyType
-//                               pageIndex:(NSInteger)pageIndex
-//                                 success:(void (^)(id responseObject))success
-//                                 failure:(void (^)(NSError *error))failure;
 - (void)getAssetsDetailDataWithTokenType:(NSInteger)tokenType
                             currencyType:(NSString *)currencyType
                                assetCode:(NSString *)assetCode
@@ -51,7 +45,7 @@
                                pageIndex:(NSInteger)pageIndex
                                  success:(void (^)(id responseObject))success
                                  failure:(void (^)(NSError *error))failure;
-// OrderDetails
+// Transaction detail
 - (void)getOrderDetailsDataWithAddress:(NSString *)address
                                  optNo:(NSInteger)optNo
                                success:(void (^)(id responseObject))success
@@ -76,11 +70,14 @@
 - (int64_t)getAccountBalance;
 // Query cost standard
 // Obtain minimum asset limits and fuel unit prices for accounts in designated blocks
-- (void)getBlockFees;
+- (void)getBlockLatestFees;
 // Balance judgment
-- (CGFloat)getDataWithBalanceJudgmentWithCost:(double)cost ifShowLoading:(BOOL)ifShowLoading;
+- (NSDecimalNumber *)getDataWithBalanceJudgmentWithCost:(NSString *)cost ifShowLoading:(BOOL)ifShowLoading;
 // Balance of assets
 - (int64_t)getAssetInfoWithAddress:(NSString *)address code:(NSString *)code issuer:(NSString *)issuer;
+
+// Query account / Is it activated?
+- (NSString *)getAccountInfoWithAddress:(NSString *)address;
 
 // identity data
 - (void)setAccountDataWithRandom:(NSData *)random
@@ -92,7 +89,8 @@
 - (void)setTransferDataWithTokenType:(NSInteger)tokenType
                             password:(NSString *)password
                          destAddress:(NSString *)destAddress
-                            BUAmount:(NSString *)BUAmount
+                              assets:(NSString *)assets
+                            decimals:(NSInteger)decimals
                             feeLimit:(NSString *)feeLimit
                                notes:(NSString *)notes
                                 code:(NSString *)code
@@ -109,7 +107,7 @@
 // Issue
 - (void)getIssueAssetDataWithPassword:(NSString *)password
                             assetCode:(NSString *)assetCode
-                          assetAmount:(NSString *)assetAmount
+                          assetAmount:(int64_t)assetAmount
                              decimals:(NSInteger)decimals
                               success:(void (^)(TransactionResultModel * resultModel))success
                               failure:(void (^)(TransactionResultModel * resultModel))failure;

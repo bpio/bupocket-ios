@@ -38,7 +38,7 @@
     [attr addAttributes:dic range:NSMakeRange(index, str.length - index)];
     NSMutableDictionary * paraStyleDic = [NSMutableDictionary dictionary];
     NSMutableParagraphStyle *paraStyle = [[NSMutableParagraphStyle alloc] init];
-    paraStyle.lineBreakMode =NSLineBreakByCharWrapping;
+//    paraStyle.lineBreakMode =NSLineBreakByCharWrapping;
     paraStyle.alignment =NSTextAlignmentLeft;
     paraStyle.lineSpacing = ScreenScale(lineSpacing); //设置行间距
     paraStyle.hyphenationFactor = 1.0;
@@ -79,7 +79,7 @@
 + (CGSize)getSizeSpaceLabelWithStr:(NSString *)str font:(UIFont *)font width:(CGFloat)width height:(CGFloat)height lineSpacing:(CGFloat)lineSpacing
 {
     NSMutableParagraphStyle *paraStyle = [[NSMutableParagraphStyle alloc] init];
-    paraStyle.lineBreakMode =NSLineBreakByCharWrapping;
+//    paraStyle.lineBreakMode =NSLineBreakByCharWrapping;
     paraStyle.alignment = NSTextAlignmentLeft;
     paraStyle.lineSpacing = lineSpacing;
     paraStyle.hyphenationFactor = 1.0;

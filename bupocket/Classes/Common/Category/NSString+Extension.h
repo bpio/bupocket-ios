@@ -27,6 +27,7 @@ NS_ASSUME_NONNULL_BEGIN
 // base64 Decode
 + (NSString *)dencode:(NSString *)base64String;
 
+
 @end
 
 NS_ASSUME_NONNULL_END

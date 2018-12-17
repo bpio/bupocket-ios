@@ -44,14 +44,17 @@
 // Random number length
 #define Random_Length 16
 // Estimated registration fees
-#define Registered_CostBU @"0.02 BU"
-#define Registered_Cost 0.02
+//#define Registered_CostBU @"0.02 BU"
+#define Registered_Cost @"0.02"
 // Estimated issuance cost
-#define Distribution_CostBU @"50.01 BU"
-#define Distribution_Cost 50.01
+//#define Distribution_CostBU @"50.01 BU"
+#define Distribution_Cost @"50.01"
 // Transfer payment expenses
-#define TransactionCost_MIN 0.01
-#define TransactionCost_MAX 10
+#define TransactionCost_MIN @"0.01"
+#define TransactionCost_MAX @"10"
+#define TransactionCost_NotActive_MIN @"0.03"
+// BU decimals
+#define Decimals_BU 8
 // 转账发送数量
 //#define SendingQuantity_MIN 0.00000001
 //#define SendingQuantity_MAX 10000

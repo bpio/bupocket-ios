@@ -8,24 +8,23 @@
 
 //"LaunchTitle" = "BU Pocket";
 //"LaunchBriefIntroduction" = "A ubiquitous trust blockchain network of value circulation";
-//"VersionUpdate" = "Version update";
 "IfUpdate" = "Whether to update to the new version";
 "AppSize" = "The size of the new version：";
 "UpdateVersion" = "Update";
 
-"NoNetWork" = "Your network is interrupted. Please try again later.";
+"NoNetWork" = "Network failure, please try again later";
 "Reload" = "Reload";
 "MyTitle" = "Profile";
 "AssetsTitle" = "Tokens";
 // Identity
-"CreateDigitalIdentity" = "Create an digital identity";
+"CreateDigitalIdentity" = "Create a digital identity";
 "ImmediateCreation" = "Create now";
-"RestoreIdentity" = "Restore your identity";
+"RestoreIdentity" = "Restore identity";
 // Terms of use
-"TermsOfUse" = "Terms of use";
-"TermsOfUseFileName" = "Terms of use_CN";
+"TermsOfUse" = "Terms of service";
+"TermsOfUseFileName" = "Terms of use_EN";
 "Continue" = "Continue";
-"ReadAndAgree" = "I have read and agreed to the above terms and conditions.";
+"ReadAndAgree" = "Agreed";
 // Create an identity
 "CreateIdentity" = "Create an identity";
 "IdentityName" = "Please create your identity name";
@@ -33,7 +32,7 @@
 "ConfirmPassword" = "Please confirm your password";
 "Create" = "Create";
 "CreatePWPrompt" = "Tips";
-"CreatePWWarn" = "The password must be strong as it is used to encrypt and protect the private key, transfer coins, call contracts, etc. Please bear in mind that Bu Pocket does not store passwords, and can't help you retrieve passwords.";
+"CreatePWWarn" = "The password must be strong as it is used to encrypt and protect the private key, transfer coins, call contracts, etc. Please bear in mind that BU Pocket does not store passwords, and can't help you retrieve passwords.";
 "CreatePWInfo" = "The length is 8~20 characters. It is recommended to mix uppercase and lowercase letters plus numbers.";
 "Confirm" = "Confirm";
 "Cancel" = "Cancel";
@@ -66,9 +65,9 @@
 "Feedback" = "Feedback";
 "MultiLingual" = "Language";
 "VersionNumber" = "Version";
-"Save" = "Save";
-"MonetaryUnit" = "Currency Unit";
-"SwitchedNetwork" = "Switch the test network";
+//"Save" = "Save";
+"MonetaryUnit" = "Currency unit";
+"SwitchedNetwork" = "Switch to the test network";
 // My identity
 "MyIdentity" = "My identity";
 "IdentityNameTitle" = "Identity name";
@@ -76,7 +75,7 @@
 "BackupIdentity" = "Backup identity";
 "ExitCurrentIdentity" = "Exit the current identity";
 "IdentityIDInfo" = "It is used to secure the data that you store on the blockchain, which is stored in a distributed manner. Only those who have the identity can use the data, so as to ensure that your data sovereignty is not violated";
-"ExitCurrentIdentityPrompt" = "The identity is removed soon. Please ensure that your identity has been backed up";
+"ExitCurrentIdentityPrompt" = "The identity will be removed soon. Please ensure that your identity has been backed up";
 // Revise password
 "OldPassword" = "Old password";
 "NewPassword" = "New password";
@@ -93,7 +92,7 @@
 "SimplifiedChinese" = "Simplified Chinese";
 "English" = "English";
 // Switch network
-"SwitchToTestNetwork" = "Switch to the test network?";
+"SwitchToTestNetwork" = "Whether to switch to the test network?";
 "YES" = "Yes";
 "NO" = "No";
 "ClosedTestNetwork" = "You have stopped the test network";
@@ -103,11 +102,9 @@
 // Tokens
 "TotalAssets" = "Total tokens";
 "MyAssets" = "My tokens";
-//"PleaseBackup" = "Please back up";
 "PaymentCode" = "Payment code";
 "SafetyTipsTitle" = "Safety tips";
-"SafetyTips" = "Your wallet mnemonics have not been backed up. To prevent loss of assets due to forgetting passwords, deleting apps, or losing your phone, be sure to back up your mnemonics.";
-// 待定
+"SafetyTips" = "Your wallet mnemonics have not been backed up. To prevent loss of tokens due to forgetting passwords, deleting apps, or losing your phone, be sure to back up your mnemonics.";
 "ImmediateBackup" = "Back up now";
 // Wallet address
 "PurseAddressTitle" = "Wallet address";
@@ -117,20 +114,18 @@
 "AddAssets" = "Add tokens";
 "Add" = "Add";
 "Delete" = "Delete";
-"InputAssetName" = "Please enter the complete asset code";
+"InputAssetName" = "Please enter the complete token code";
 "NoSearchResults" = "No search results found";
 // Details of tokens
 "AssetsDetailScan" = "Scan";
 "TransferAccounts" = "Transfer coins";
-"RecentTransactionRecords" = "Recent transactions";
+"RecentTransactionRecords" = "Transaction history";
 "NoTransactionRecord" = "No transaction records";
 // Transfer coins
-//"TransferTitle" = "BU transfer";
 "ReciprocalAccount" = "Recipient account（BU address）*";
 "reciprocalAccount" = "Recipient account";
 "PhoneOrAddress" = "Please enter the recipient address";
-//"AmountOfTransfer" = "Transfer amount(BU)*";
-"AmountOfTransfer" = "Transfer amount";
+"AmountOfTransfer" = "Amount to transfer";
 "AvailableBalance" = "Available balance";
 //"MostOnce" = "Each transaction cannot exceed 10000 BU";
 "AmountOfTransferPlaceholder" = "Please enter the amount to be transferred";
@@ -152,7 +147,7 @@
 "RequestTimeout" = "Request timeout";
 "IGotIt" = "Got it";
 // Order details
-"OrderDetails" = "Order details";
+"TransactionDetail" = "Transaction detail";
 "Success" = "Success";
 "Failure" = "Failure";
 "OriginatorAdress" = "Sending address";
@@ -163,8 +158,8 @@
 "ConfirmationOfRegisteredAssets" = "Confirm token registration";
 "ConfirmRegistrationInformation" = "Please confirm the following token registration information";
 "ConfirmationOfRegistration" = "Confirm registration";
+"RegisteredNumberOverflowMax" = "The tokens you have registered have exceeded the maximum limit";
 "RegistrationIdentityCipherPrompt" = "Please fill in the identity password to confirm the registration";
-"RegisteredAssetsDetail" = "Details of token registration";
 "RegistrationSuccess" = "Registration succeeded";
 "RegistrationFailure" = "Registration failed";
 "RegistrationTimeout" = "Registration timeout";
@@ -183,21 +178,29 @@
 "CumulativeCirculation" = "All issued";
 "RemainingUnissuedVolume" = "Unissued";
 "TotalAmountOfToken" = "Total tokens";
-"TotalAmountOfDistribution" = "Total amount to be issued";
+"TotalAmountOfDistribution" = "Total issuance";
 "DistributionCost" = "Estimated transaction fee";
 "ActualTransactionCost" = "Actual transaction fee";
 "ConfirmationOfDistribution" = "Confirm to issue";
-"DistributionAssetsDetail" = "Details of token issuance";
+"IssueNumberOverflowMax" = "Your total tokens to be issued exceed the upper limit";
 "DistributionSuccess" = "Issued successfully";
 "DistributionFailure" = "Failed to issue";
 "DistributionTimeout" = "Issuance timeout";
-"DistributionPrompt" = "Please copy the following hash address to check the issuance result in the BUMO explorer";
 "TokenDecimalDigits" = "Decimal places of tokens";
 "ATPVersion" = "ATP version";
 "TokenDescription" = "Token description";
 "IssuerAddress" = "Issuer address";
 "Hash" = "Hash";
 // scan
+// 待定
+"UnableToAccessAlbum" = "Photos are not accessible";
+//"Can not use camera" = "Camera is not accessible";
+"Allow %@ to access your album in \"Settings -> Privacy -> Photos\"" = "Please allow %@ to access your photos by selecting the option in \"Settings -> Privacy -> Photos\" of your iPhone";
+"Please allow %@ to access your camera in \"Settings -> Privacy -> Camera\"" = "Please allow %@ to access your camera by selecting the option in \"Settings -> Privacy -> Camera\" of your iPhone";
+"OK" = "OK";
+//"Can not jump to the privacy settings page, please go to the settings page by self, thank you" = "Failed to jump to the Privacy setting page. Please go to the setting page manually. Thank You";
+"RecognitionFailure" = "Failed to scan the QR code. Please select another photo";
+
 "Close" = "Close";
 "Album" = "Album";
 "ScanPrompt" = "Automatically scan the QR code in the box";
@@ -210,12 +213,10 @@
 // alert Massage
 "Loading" = "Loading...";
 // SDK
-"RandomGenerationFailure" = "Failed to generate random numbers";
-"IdentityFailure" = "Failed to generate the identity account";
-"WalletAccountFailure" = "Failed to generate the wallet account";
-"IssueNumberIsIncorrect" = "The amount issued is incorrect";
+"CreateIdentityFailure" = "Failed to create an identity";
+"IssueNumberIsIncorrect" = "Invalid circulation";
 // Accout
-"IDNameFormatIncorrect" = "The name is only allowed to enter letters, characters, numbers, underscores, and it cannot exceed 20 characters in length.";
+"IDNameFormatIncorrect" = "The identity name is only allowed to enter letters, characters, numbers, underscores, and it cannot exceed 20 characters in length";
 "WalletNameFormatIncorrect" = "The wallet names is only allowed to enter letters, characters, numbers, underscores, and it cannot exceed 20 characters in length.";
 "PasswordIsDifferent" = "Passwords do not match";
 "MnemonicIsIncorrect" = "The mnemonics input are incorrect. Please enter again";
@@ -224,9 +225,10 @@
 // registered
 "ScanFailure" = "Failed to scan";
 "RegisteredAsset" = "You have already registered this token!";
-"TemporarilyRegisteredAssets" = "The code of the token you issued:";
+//"TemporarilyRegisteredAssets" = "The code of the token you issued:";
 "InabilityToIssue" = "The token is not registered yet, so it cannot be issued!";
-"IssuedAssets" = "You have already issued this token!";
+"The code of your issued tokens:%@ has not been registered yet, so it cannot be issued" = "The code of your issued tokens:%@ has not been registered yet, so it cannot be issued";
+//"IssuedAssets" = "You have already issued this token!";
 "RegisteredNotSufficientFunds" = "Your BU balance is insufficient and you cannot register your tokens. Please recharge!";
 "DistributionNotSufficientFunds" = "Your BU balance is insufficient and you cannot issue tokens. Please recharge!";
 //"CirculationDoesNotMatch" = "Your tokens issued do not match the total amount of tokens registered";
@@ -240,8 +242,9 @@
 
 "PasswordIsIncorrect" = "The password is incorrect. Please enter again";
 // Transfer coins
+//"%@AddressIsIncorrect" = "The %@ address is incorrect. Please enter again";
 "BUAddressIsIncorrect" = "The BU address is incorrect. Please enter again";
-"SendingQuantityIsIncorrect" = "The format for sending BU is incorrect. Please enter again";
+"SendingQuantityIsIncorrect" = "Invalid transfer amount";
 //"SendingQuantityMin" = "The transfer amount cannot be less than 0.00000001 BU per transaction";
 //"SendingQuantityMax" = "The transfer amount cannot exceed 10,000 BU per transaction";
 "NotSufficientFunds" = "Available balance is insufficient";
@@ -259,67 +262,5 @@
 
 // SDK Errors
 "SYSTEM_ERROR" = "System error";
-
-"ACCOUNT_CREATE_ERROR" = "Failed to create the account";
-"INVALID_SOURCEADDRESS_ERROR" = "Invalid sourceAddress";
-"INVALID_DESTADDRESS_ERROR" = "Invalid destAddress";
-"INVALID_INITBALANCE_ERROR" = "InitBalance must be between 1 and int64_t.MAX_VALUE";
-"SOURCEADDRESS_EQUAL_DESTADDRESS_ERROR" = "SourceAddress cannot be equal to destAddress";
 "INVALID_ADDRESS_ERROR" = "Invalid address";
-"CONNECTNETWORK_ERROR" = "Failed to connect to the network";
-"INVALID_ISSUE_AMOUNT_ERROR" = "Amount of the token to be issued must be between 1 and int64_t.MAX_VALUE";
-"NO_ASSET_ERROR" = "The account does not have the asset";
-"NO_METADATA_ERROR" = "The account does not have the metadata";
-"INVALID_DATAKEY_ERROR" = "The length of key must be between 1 and 1024";
-"INVALID_DATAVALUE_ERROR" = "The length of value must be between 0 and 256000";
-"INVALID_DATAVERSION_ERROR" = "The version must be equal to or greater than 0";
-"INVALID_MASTERWEIGHT_ERROR" = "MasterWeight must be between 0 and (int32_t.MAX_VALUE * 2L + 1)";
-"INVALID_SIGNER_ADDRESS_ERROR" = "Invalid signer address";
-"INVALID_SIGNER_WEIGHT_ERROR" = "Signer weight must be between 0 and (int32_t.MAX_VALUE * 2L + 1)";
-"INVALID_TX_THRESHOLD_ERROR" = "TxThreshold must be between 0 and int64_t.MAX_VALUE";
-"INVALID_OPERATION_TYPE_ERROR" = "Operation type must be between 1 and 100";
-"INVALID_TYPE_THRESHOLD_ERROR" = "TypeThreshold must be between 0 and int64_t.MAX_VALUE";
-"INVALID_ASSET_CODE_ERROR" = "The length of key must be between 1 and 64";
-"INVALID_ASSET_AMOUNT_ERROR" = "AssetAmount must be between 0 and int64_t.MAX_VALUE";
-"INVALID_BU_AMOUNT_ERROR" = "BuAmount must be between 0 and int64_t.MAX_VALUE";
-"INVALID_ISSUER_ADDRESS_ERROR" = "Invalid issuer address";
-"NO_SUCH_TOKEN_ERROR" = "No such token";
-"INVALID_TOKEN_NAME_ERROR" = "The length of token name must be between 1 and 1024";
-"INVALID_TOKEN_SIMBOL_ERROR" = "The length of symbol must be between 1 and 1024";
-"INVALID_TOKEN_DECIMALS_ERROR" = "Decimals must be between 0 and 8";
-"INVALID_TOKEN_TOTALSUPPLY_ERROR" = "TotalSupply must be between 1 and int64_t.MAX_VALUE";
-"INVALID_TOKENOWNER_ERRPR" = "Invalid token owner";
-"INVALID_CONTRACTADDRESS_ERROR" = "Invalid contract address";
-"CONTRACTADDRESS_NOT_CONTRACTACCOUNT_ERROR" = "contractAddress is not a contract account";
-"INVALID_TOKEN_AMOUNT_ERROR" = "TokenAmount must be between 1 and int64_t.MAX_VALUE";
-"SOURCEADDRESS_EQUAL_CONTRACTADDRESS_ERROR" = "SourceAddress cannot be equal to contractAddress";
-"INVALID_FROMADDRESS_ERROR" = "Invalid fromAddress";
-"FROMADDRESS_EQUAL_DESTADDRESS_ERROR" = "FromAddress cannot be equal to destAddress";
-"INVALID_SPENDER_ERROR" = "Invalid spender";
-"PAYLOAD_EMPTY_ERROR" = "Payload cannot be empty";
-"INVALID_LOG_TOPIC_ERROR" = "The length of a log topic must be between 1 and 128";
-"INVALID_LOG_DATA_ERROR" = "The length of one piece of log data must be between 1 and1024";
-"INVALID_CONTRACT_TYPE_ERROR" = "Invalid contract type";
-"INVALID_NONCE_ERROR" = "Nonce must be between 1 and int64_t.MAX_VALUE";
-"INVALID_GASPRICE_ERROR" = "GasPrice must be between 1000 and int64_t.MAX_VALUE";
-"INVALID_FEELIMIT_ERROR" = "FeeLimit must be between 1 and int64_t.MAX_VALUE";
-"OPERATIONS_EMPTY_ERROR" = "Operations cannot be empty";
-"INVALID_CEILLEDGERSEQ_ERROR" = "CeilLedgerSeq must be equal to or greater than 0";
-"OPERATIONS_ONE_ERROR" = "One of the operations cannot be resolved";
-"INVALID_SIGNATURENUMBER_ERROR" = "SignagureNumber must be between 1 and int32_t.MAX_VALUE";
-"INVALID_HASH_ERROR" = "Invalid transaction hash";
-"INVALID_BLOB_ERROR" = "Invalid blob";
-"PRIVATEKEY_NULL_ERROR" = "PrivateKeys cannot be empty";
-"PRIVATEKEY_ONE_ERROR" = "One of privateKeys is invalid";
-"SIGNDATA_NULL_ERROR" = "SignData cannot be empty";
-"INVALID_BLOCKNUMBER_ERROR" = "BlockNumber must be bigger than 0";
-"PUBLICKEY_NULL_ERROR" = "PublicKey cannot be empty";
-"URL_EMPTY_ERROR" = "Url cannot be empty";
-"CONTRACTADDRESS_CODE_BOTH_NULL_ERROR" = "ContractAddress and code cannot be empty at the same time";
-"INVALID_OPTTYPE_ERROR" = "OptType must be between 0 and 2";
-"GET_ALLOWANCE_ERROR" = "Failed to get allowance";
-"GET_TOKEN_INFO_ERROR" = "Failed to get token info";
-"SIGNATURE_EMPTY_ERROR" =  "The signatures cannot be empty";
-"REQUEST_NULL_ERROR" = "Request parameter cannot be null";
-"CONNECTN_BLOCKCHAIN_ERROR" = "Failed to connect to the blockchain";
 

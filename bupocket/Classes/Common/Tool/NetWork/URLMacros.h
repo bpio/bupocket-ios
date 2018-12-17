@@ -18,7 +18,6 @@
  */
 
 #define WEB_SERVER_DOMAIN @"https://api-bp.bumo.io/"
-//#define WEB_SERVER_DOMAIN @"http://52.80.218.114:8081/"
 #define BUMO_NODE_URL @"https://wallet-node.bumo.io"
 #define PUSH_MESSAGE_SOCKET_URL @"https://ws-tools.bumo.io"
 
@@ -27,12 +26,10 @@
 //#define WEB_SERVER_DOMAIN_TEST @"https://api-bp.bumotest.io/"
 #define BUMO_NODE_URL_TEST @"https://wallet-node.bumotest.io"
 #define PUSH_MESSAGE_SOCKET_URL_TEST @"https://ws-tools.bumotest.io"
-
+// App type 1-android 2-iOS
 #define Version_Update @"wallet/version?appType=2"
 #define Assets_List @"wallet/token/list"
 #define Transaction_Record @"wallet/v2/tx/list"
-//#define Transaction_Record @"wallet/token/tx/list"
-//#define Transaction_Record_BU @"wallet/user/tx/list"
 #define Order_Details @"wallet/v2/tx/detail"
 #define Transaction_Details @"wallet/tx/detail"
 #define Assets_Search @"wallet/query/token"

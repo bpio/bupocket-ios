@@ -131,6 +131,41 @@
     return self;
 }
 
+- (void)setupSession
+{
+    AVAuthorizationStatus authStatus = [AVCaptureDevice authorizationStatusForMediaType:AVMediaTypeVideo];
+    // AVAuthorizationStatusRestricted：此应用程序没有被授权访问的照片数据。可能是家长控制权限
+    // AVAuthorizationStatusDenied：用户已经明确否认了这一照片数据的应用程序访问
+    if ((authStatus == AVAuthorizationStatusRestricted || authStatus == AVAuthorizationStatusDenied)) {
+        // 无权限 做一个友好的提示
+        NSString *appName = [[NSBundle mainBundle].infoDictionary valueForKey:@"CFBundleDisplayName"];
+        if (!appName) appName = [[NSBundle mainBundle].infoDictionary valueForKey:@"CFBundleName"];
+        NSString *message = [NSString stringWithFormat:Localized(@"Please allow %@ to access your camera in \"Settings -> Privacy -> Camera\""),appName];
+        UIAlertController * alertController = [UIAlertController alertControllerWithTitle:message message:nil preferredStyle:UIAlertControllerStyleAlert];
+        UIAlertAction * okAction = [UIAlertAction actionWithTitle:Localized(@"OK") style:UIAlertActionStyleDefault handler:^(UIAlertAction * _Nonnull action) {
+            NSURL *url = [NSURL URLWithString:UIApplicationOpenSettingsURLString];
+            if ([[UIApplication sharedApplication] canOpenURL:url]) {
+                [[UIApplication sharedApplication] openURL:url];
+            }
+        }];
+        [alertController addAction:okAction];
+        [[UIApplication topViewController:[[UIApplication sharedApplication] keyWindow].rootViewController] presentViewController:alertController animated:YES completion:nil];
+    } else if (authStatus == AVAuthorizationStatusNotDetermined) {
+        // fix issue 466, 防止用户首次拍照拒绝授权时相机页黑屏
+        [AVCaptureDevice requestAccessForMediaType:AVMediaTypeVideo completionHandler:^(BOOL granted) {
+            if (granted) {
+                dispatch_async(dispatch_get_main_queue(), ^{
+                    //配置扫描view
+                    [self loadScanView];
+                });
+            }
+        }];
+    } else {
+        //配置扫描view
+        [self loadScanView];
+    }
+}
+
 #pragma mark - 公共方法
 /// 开始扫描
 - (void)startScan {
@@ -268,7 +303,7 @@
 }
 
 /// 设置扫描会话
-- (void)setupSession {
+- (void)loadScanView {
     
     // 1> 输入设备
     AVCaptureDevice *device = [AVCaptureDevice defaultDeviceWithMediaType:AVMediaTypeVideo];

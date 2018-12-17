@@ -28,6 +28,7 @@
     [self setupView];
     [self showCreateTips];
 }
+
 - (void)showCreateTips
 {
     CreateTipsAlertView * alertView = [[CreateTipsAlertView alloc] initWithConfrimBolck:^{
@@ -38,9 +39,7 @@
 - (void)setupView
 {
     self.view.backgroundColor = [UIColor whiteColor];
-    UITapGestureRecognizer *tap = [[UITapGestureRecognizer alloc] initWithTarget:self action:@selector(keyBoardHidden)];
-    [self.view addGestureRecognizer:tap];
-    
+
     _identityName = [UITextField textFieldWithplaceholder:Localized(@"IdentityName")];
     _identityName.delegate = self;
     [_identityName addTarget:self action:@selector(textChange:) forControlEvents:UIControlEventEditingChanged];
@@ -100,10 +99,6 @@
         _createIdentity.backgroundColor = DISABLED_COLOR;
     }
 }
-- (void)keyBoardHidden
-{
-    [self.view endEditing:YES];
-}
 - (void)secureAction:(UIButton *)button
 {
     button.selected = !button.selected;
@@ -157,7 +152,7 @@
             
         }];
     } else {
-        [MBProgressHUD showTipMessageInWindow:Localized(@"RandomGenerationFailure")];
+        [MBProgressHUD showTipMessageInWindow:Localized(@"CreateIdentityFailure")];
     }
 }
 

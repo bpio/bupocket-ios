@@ -1,4 +1,4 @@
-/* 
+/*
   Localizable.strings
   bupocket
 
@@ -7,11 +7,10 @@
 */
 //"LaunchTitle" = "小布口袋";
 //"LaunchBriefIntroduction" = "泛在价值流通区块链网络";
-"NoNetWork" = "您的网络好像不太给力，请稍后再试";
+"NoNetWork" = "网络不给力，请稍后再试";
 "Reload" = "重新加载";
 "MyTitle" = "我的";
 "AssetsTitle" = "资产";
-//"VersionUpdate" = "版本更新";
 "IfUpdate" = "是否更新到版本";
 "AppSize" = "新版本大小：";
 "UpdateVersion" = "更新版本";
@@ -64,7 +63,7 @@
 "Feedback" = "帮助与反馈";
 "MultiLingual" = "多语言";
 "VersionNumber" = "版本号";
-"Save" = "保存";
+//"Save" = "保存";
 "MonetaryUnit" = "货币单位";
 "SwitchedNetwork" = "切换测试网";
 // 我的身份
@@ -73,7 +72,7 @@
 "IdentityIDTitle" = "身份ID";
 "BackupIdentity" = "备份身份";
 "ExitCurrentIdentity" = "退出当前身份";
-"ExitCurrentIdentityPrompt" = "即将移除身份，请确保身份已备份";
+"ExitCurrentIdentityPrompt" = "即将退出当前身份，请确保身份已备份";
 "IdentityIDInfo" = "用来维护你存储在区块链上的数据，这些信息会以分布式存储的方式进行保存，只有拥有该身份的人可以动用数据，充分确保你的数据主权不受侵犯。";
 // 修改密码
 "OldPassword" = "旧密码";
@@ -101,7 +100,6 @@
 // 资产
 "TotalAssets" = "总资产";
 "MyAssets" = "我的资产";
-//"PleaseBackup" = "请备份";
 "PaymentCode" = "收款码";
 "SafetyTipsTitle" = "安全提示";
 "SafetyTips" = "您的钱包助记词尚未备份，为防止忘记密码、删除App或丢失手机等情况导致资产损失，请务必备份助记词";
@@ -122,11 +120,9 @@
 "RecentTransactionRecords" = "最近交易记录";
 "NoTransactionRecord" = "暂无交易记录";
 // 转账
-//"TransferTitle" = "BU转账";
 "ReciprocalAccount" = "对方账户（BU地址）*";
 "reciprocalAccount" = "对方账户";
 "PhoneOrAddress" = "请输入接收方地址";
-//"AmountOfTransfer" = "转账数量（BU）*";
 "AmountOfTransfer" = "转账数量";
 "AvailableBalance" = "可用余额";
 //"MostOnce" = "单笔不可超过10000 BU";
@@ -149,7 +145,7 @@
 "RequestTimeout" = "请求超时";
 "IGotIt" = "我知道了";
 // 订单详情
-"OrderDetails" = "订单详情";
+"TransactionDetail" = "交易详情";
 "Success" = "成功";
 "Failure" = "失败";
 "OriginatorAdress" = "发送方地址";
@@ -160,8 +156,8 @@
 "ConfirmationOfRegisteredAssets" = "登记资产确认";
 "ConfirmRegistrationInformation" = "请确认以下登记资产信息";
 "ConfirmationOfRegistration" = "确认登记";
+"RegisteredNumberOverflowMax" = "您的资产登记总量超过了最大上限";
 "RegistrationIdentityCipherPrompt" = "请填写身份密码以确认登记";
-"RegisteredAssetsDetail" = "资产登记详情";
 "RegistrationSuccess" = "登记成功";
 "RegistrationFailure" = "登记失败";
 "RegistrationTimeout" = "登记超时";
@@ -173,7 +169,7 @@
 // 发行资产确认
 "IssueAssetsConfirmation" = "发行资产确认";
 "ConfirmAssetInformation" = "请确认以下发行资产信息";
-"IssueIdentityCipherPrompt" = "请填写身份密码以确认登记";
+"IssueIdentityCipherPrompt" = "请填写身份密码以确认发行";
 "TokenName" = "资产名称";
 "TokenCode" = "资产代码";
 "TheIssueVolume" = "本次发行量";
@@ -182,19 +178,25 @@
 "TotalAmountOfToken" = "资产总量";
 "TotalAmountOfDistribution" = "发行总量";
 "DistributionCost" = "预估交易费";
-"ActualTransactionCost" = "实际交易费";
+"ActualTransactionCost" = "实际交易费用";
 "ConfirmationOfDistribution" = "确认发行";
-"DistributionAssetsDetail" = "资产发行详情";
+"IssueNumberOverflowMax" = "您的资产发行总量超过了最大上限";
 "DistributionSuccess" = "发行成功";
 "DistributionFailure" = "发行失败";
 "DistributionTimeout" = "发行超时";
-"DistributionPrompt" = "请复制下方哈希地址，前往BUMO浏览器中查询发行结果";
 "TokenDecimalDigits" = "资产小数位数";
 "ATPVersion" = "ATP版本";
 "TokenDescription" = "资产描述";
 "IssuerAddress" = "发行方地址";
 "Hash" = "哈希";
 // scan
+"UnableToAccessAlbum" = "无法访问相册";
+//"Can not use camera" = "无法使用相机";
+"Allow %@ to access your album in \"Settings -> Privacy -> Photos\"" = "请在iPhone的\"设置-隐私-照片\"选项中，允许%@访问你的相册";
+"Please allow %@ to access your camera in \"Settings -> Privacy -> Camera\"" = "请在iPhone的\"设置-隐私-相机\"选项中，允许%@访问你的相机";
+"OK" = "好";
+//"Can not jump to the privacy settings page, please go to the settings page by self, thank you" = "无法跳转到隐私设置页面，请手动前往设置页面，谢谢";
+"RecognitionFailure" = "没有识别到二维码，请选择其他照片";
 "Close" = "关闭";
 "Album" = "相册";
 "ScanPrompt" = "将二维码放入框中，即可自动扫描";
@@ -207,10 +209,8 @@
 // alert Massage
 "Loading" = "加载中...";
 // SDK
-"RandomGenerationFailure" = "随机数生成失败";
-"IdentityFailure" = "身份账户生成失败";
-"WalletAccountFailure" = "钱包账户生成失败";
-"IssueNumberIsIncorrect" = "发行数量有误";
+"CreateIdentityFailure" = "身份创建失败";
+"IssueNumberIsIncorrect" = "无效的发行量";
 // Accout
 "IDNameFormatIncorrect" = "身份名只允许输入字母、汉字、数字、下划线，并且长度不能超过20个字符";
 "WalletNameFormatIncorrect" = "钱包名只允许输入字母、汉字、数字、下划线，并且长度不能超过20个字符";
@@ -221,9 +221,9 @@
 // registered
 "ScanFailure" = "扫描结果无效";
 "RegisteredAsset" = "您已登记过该资产！";
-"TemporarilyRegisteredAssets" = "您所发行的资产代码：";
+"The code of your issued tokens:%@ has not been registered yet, so it cannot be issued" = "您所发行的资产代码：%@暂未登记，无法发行";
 "InabilityToIssue" = "暂未登记，无法发行！";
-"IssuedAssets" = "您已发行过该资产！";
+//"IssuedAssets" = "您已发行过该资产！";
 "RegisteredNotSufficientFunds" = "您的BU余额不足，无法登记资产，请充值!";
 "DistributionNotSufficientFunds" = "您的BU余额不足，无法发行资产，请充值!";
 //"CirculationDoesNotMatch" = "您的资产发行量与登记总量不符";
@@ -238,7 +238,7 @@
 "PasswordIsIncorrect" = "密码不正确，请重新输入";
 // 转账
 "BUAddressIsIncorrect" = "BU地址不正确，请重新输入";
-"SendingQuantityIsIncorrect" = "发送数量格式有误，请重新输入";
+"SendingQuantityIsIncorrect" = "无效的转账数量";
 //"SendingQuantityMin" = "转账数量单笔不可少于0.00000001 BU";
 //"SendingQuantityMax" = "转账数量单笔不可超过10000 BU";
 "NotSufficientFunds" = "可用余额不足";
@@ -255,69 +255,7 @@
 "LoadFailure" = "加载失败";
 // SDK Errors
 "SYSTEM_ERROR" = "系统错误";
-
-"ACCOUNT_CREATE_ERROR" = "Failed to create the account";
-"INVALID_SOURCEADDRESS_ERROR" = "Invalid sourceAddress";
-"INVALID_DESTADDRESS_ERROR" = "Invalid destAddress";
-"INVALID_INITBALANCE_ERROR" = "InitBalance must be between 1 and int64_t.MAX_VALUE";
-"SOURCEADDRESS_EQUAL_DESTADDRESS_ERROR" = "SourceAddress cannot be equal to destAddress";
 "INVALID_ADDRESS_ERROR" = "无效地址";
-"CONNECTNETWORK_ERROR" = "Failed to connect to the network";
-"INVALID_ISSUE_AMOUNT_ERROR" = "Amount of the token to be issued must be between 1 and int64_t.MAX_VALUE";
-"NO_ASSET_ERROR" = "The account does not have the asset";
-"NO_METADATA_ERROR" = "The account does not have the metadata";
-"INVALID_DATAKEY_ERROR" = "The length of key must be between 1 and 1024";
-"INVALID_DATAVALUE_ERROR" = "The length of value must be between 0 and 256000";
-"INVALID_DATAVERSION_ERROR" = "The version must be equal to or greater than 0";
-"INVALID_MASTERWEIGHT_ERROR" = "MasterWeight must be between 0 and (int32_t.MAX_VALUE * 2L + 1)";
-"INVALID_SIGNER_ADDRESS_ERROR" = "Invalid signer address";
-"INVALID_SIGNER_WEIGHT_ERROR" = "Signer weight must be between 0 and (int32_t.MAX_VALUE * 2L + 1)";
-"INVALID_TX_THRESHOLD_ERROR" = "TxThreshold must be between 0 and int64_t.MAX_VALUE";
-"INVALID_OPERATION_TYPE_ERROR" = "Operation type must be between 1 and 100";
-"INVALID_TYPE_THRESHOLD_ERROR" = "TypeThreshold must be between 0 and int64_t.MAX_VALUE";
-"INVALID_ASSET_CODE_ERROR" = "The length of key must be between 1 and 64";
-"INVALID_ASSET_AMOUNT_ERROR" = "AssetAmount must be between 0 and int64_t.MAX_VALUE";
-"INVALID_BU_AMOUNT_ERROR" = "BuAmount must be between 0 and int64_t.MAX_VALUE";
-"INVALID_ISSUER_ADDRESS_ERROR" = "Invalid issuer address";
-"NO_SUCH_TOKEN_ERROR" = "No such token";
-"INVALID_TOKEN_NAME_ERROR" = "The length of token name must be between 1 and 1024";
-"INVALID_TOKEN_SIMBOL_ERROR" = "The length of symbol must be between 1 and 1024";
-"INVALID_TOKEN_DECIMALS_ERROR" = "Decimals must be between 0 and 8";
-"INVALID_TOKEN_TOTALSUPPLY_ERROR" = "TotalSupply must be between 1 and int64_t.MAX_VALUE";
-"INVALID_TOKENOWNER_ERRPR" = "Invalid token owner";
-"INVALID_CONTRACTADDRESS_ERROR" = "Invalid contract address";
-"CONTRACTADDRESS_NOT_CONTRACTACCOUNT_ERROR" = "contractAddress is not a contract account";
-"INVALID_TOKEN_AMOUNT_ERROR" = "TokenAmount must be between 1 and int64_t.MAX_VALUE";
-"SOURCEADDRESS_EQUAL_CONTRACTADDRESS_ERROR" = "SourceAddress cannot be equal to contractAddress";
-"INVALID_FROMADDRESS_ERROR" = "Invalid fromAddress";
-"FROMADDRESS_EQUAL_DESTADDRESS_ERROR" = "FromAddress cannot be equal to destAddress";
-"INVALID_SPENDER_ERROR" = "Invalid spender";
-"PAYLOAD_EMPTY_ERROR" = "Payload cannot be empty";
-"INVALID_LOG_TOPIC_ERROR" = "The length of a log topic must be between 1 and 128";
-"INVALID_LOG_DATA_ERROR" = "The length of one piece of log data must be between 1 and1024";
-"INVALID_CONTRACT_TYPE_ERROR" = "Invalid contract type";
-"INVALID_NONCE_ERROR" = "Nonce must be between 1 and int64_t.MAX_VALUE";
-"INVALID_GASPRICE_ERROR" = "GasPrice must be between 1000 and int64_t.MAX_VALUE";
-"INVALID_FEELIMIT_ERROR" = "FeeLimit must be between 1 and int64_t.MAX_VALUE";
-"OPERATIONS_EMPTY_ERROR" = "Operations cannot be empty";
-"INVALID_CEILLEDGERSEQ_ERROR" = "CeilLedgerSeq must be equal to or greater than 0";
-"OPERATIONS_ONE_ERROR" = "One of the operations cannot be resolved";
-"INVALID_SIGNATURENUMBER_ERROR" = "SignagureNumber must be between 1 and int32_t.MAX_VALUE";
-"INVALID_HASH_ERROR" = "Invalid transaction hash";
-"INVALID_BLOB_ERROR" = "Invalid blob";
-"PRIVATEKEY_NULL_ERROR" = "PrivateKeys cannot be empty";
-"PRIVATEKEY_ONE_ERROR" = "One of privateKeys is invalid";
-"SIGNDATA_NULL_ERROR" = "SignData cannot be empty";
-"INVALID_BLOCKNUMBER_ERROR" = "BlockNumber must be bigger than 0";
-"PUBLICKEY_NULL_ERROR" = "PublicKey cannot be empty";
-"URL_EMPTY_ERROR" = "Url cannot be empty";
-"CONTRACTADDRESS_CODE_BOTH_NULL_ERROR" = "ContractAddress and code cannot be empty at the same time";
-"INVALID_OPTTYPE_ERROR" = "OptType must be between 0 and 2";
-"GET_ALLOWANCE_ERROR" = "Failed to get allowance";
-"GET_TOKEN_INFO_ERROR" = "Failed to get token info";
-"SIGNATURE_EMPTY_ERROR" =  "The signatures cannot be empty";
-"REQUEST_NULL_ERROR" = "Request parameter cannot be null";
-"CONNECTN_BLOCKCHAIN_ERROR" = "Failed to connect to the blockchain";
 
 
 

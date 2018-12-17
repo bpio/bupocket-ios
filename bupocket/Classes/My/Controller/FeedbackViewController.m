@@ -14,6 +14,8 @@
 @property (nonatomic, strong) PlaceholderTextView * feedbackText;
 @property (nonatomic, strong) UITextField * contactField;
 @property (nonatomic, strong) UIButton * submit;
+@property (nonatomic, strong) NSString * feedback;
+@property (nonatomic, strong) NSString * contact;
 
 @end
 
@@ -59,7 +61,7 @@
     textField.font = FONT(16);
     textField.placeholder = Localized(@"PleaseEnterContact");
     textField.clearButtonMode = UITextFieldViewModeWhileEditing;
-    textField.keyboardType = UIKeyboardTypePhonePad;
+//    textField.keyboardType = UIKeyboardTypePhonePad;
     textField.delegate = self;
     [textField addTarget:self action:@selector(textChange:) forControlEvents:UIControlEventEditingChanged];
     [self.view addSubview:textField];
@@ -87,22 +89,17 @@
     self.submit = submit;
 }
 
-
 - (void)submitAction
 {
-    if (self.feedbackText.text.length > SuggestionsContent_MAX) {
+    if (self.feedback.length > SuggestionsContent_MAX) {
         [MBProgressHUD showTipMessageInWindow:Localized(@"SuggestionsContentOverlength")];
         return;
     }
-    if (self.contactField.text.length > MAX_LENGTH) {
+    if (self.contact.length > MAX_LENGTH) {
         [MBProgressHUD showTipMessageInWindow:Localized(@"ContactOverlength")];
         return;
     }
-    [self getData];
-}
-- (void)getData
-{
-    [[HTTPManager shareManager] getFeedbackDataWithContent:self.feedbackText.text contact:self.contactField.text success:^(id responseObject) {
+    [[HTTPManager shareManager] getFeedbackDataWithContent:self.feedback contact:self.contact success:^(id responseObject) {
         NSInteger code = [[responseObject objectForKey:@"errCode"] integerValue];
         if (code == Success_Code) {
             [MBProgressHUD showTipMessageInWindow:Localized(@"SubmissionOfSuccess")];
@@ -137,7 +134,10 @@
 }
 - (void)judgeHasText
 {
-    if (self.contactField.hasText && self.feedbackText.hasText) {
+    self.feedback = [self.feedbackText.text stringByTrimmingCharactersInSet:[NSCharacterSet whitespaceAndNewlineCharacterSet]];
+    self.feedback = [self.feedback stringByReplacingOccurrencesOfString:@"\n" withString:@""];
+    self.contact = [self.contactField.text stringByTrimmingCharactersInSet:[NSCharacterSet whitespaceAndNewlineCharacterSet]];
+    if (self.feedback.length > 0 && self.contact.length > 0) {
         self.submit.enabled = YES;
         self.submit.backgroundColor = MAIN_COLOR;
     } else {
@@ -158,6 +158,7 @@
     }];
     return viewBg;
 }
+/*
 - (BOOL)textField:(UITextField *)textField shouldChangeCharactersInRange:(NSRange)range replacementString:(NSString *)string
 {
     NSString * str = [textField.text stringByReplacingCharactersInRange:range withString:string];
@@ -174,6 +175,7 @@
     }
     return YES;
 }
+ */
 /*
 #pragma mark - Navigation
 

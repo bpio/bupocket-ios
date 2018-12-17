@@ -73,15 +73,13 @@
 - (void)getDataWithPageindex:(NSInteger)pageindex
 {
     NSString * currentCurrency = [AssetCurrencyModel getAssetCurrencyTypeWithAssetCurrency:[[[NSUserDefaults standardUserDefaults] objectForKey:Current_Currency] integerValue]];
-    [[HTTPManager shareManager] getAssetsDetailDataWithTokenType:self.listModel.type currencyType:currentCurrency assetCode:self.listModel.assetCode issuer:self.listModel.issuer address:[AccountTool account].purseAccount pageIndex:pageindex
-//     [[HTTPManager shareManager] getAssetsDetailDataWithTokenType:self.listModel.type assetCode:self.listModel.assetCode issuer:self.listModel.issuer address:[AccountTool account].purseAccount currencyType:currentCurrency pageIndex:pageindex
-                                                          success:^(id responseObject) {
+    [[HTTPManager shareManager] getAssetsDetailDataWithTokenType:self.listModel.type currencyType:currentCurrency assetCode:self.listModel.assetCode issuer:self.listModel.issuer address:[AccountTool account].purseAccount pageIndex:pageindex success:^(id responseObject) {
         NSInteger code = [[responseObject objectForKey:@"errCode"] integerValue];
         if (code == Success_Code) {
             [self.tableView addSubview:self.headerBg];
             [self.tableView insertSubview:self.headerBg atIndex:0];
-            NSNumber * balance = [NSNumber numberWithDouble:[responseObject[@"data"][@"assetData"][@"balance"] doubleValue]];
-            self.assets.text = [NSString stringWithFormat:@"%@ %@", balance, self.listModel.assetCode];
+            NSDecimalNumber * balanceNumber = [NSDecimalNumber decimalNumberWithString:responseObject[@"data"][@"assetData"][@"balance"]];
+            self.assets.text = [NSString stringWithFormat:@"%@ %@", balanceNumber, self.listModel.assetCode];
             NSString * amountStr = responseObject[@"data"][@"assetData"][@"totalAmount"];
             NSString * currencyUnit = [AssetCurrencyModel getCurrencyUnitWithAssetCurrency:[[[NSUserDefaults standardUserDefaults] objectForKey:Current_Currency] integerValue]];
             self.amount.text = [amountStr isEqualToString:@"~"] ? amountStr : [NSString stringWithFormat:@"≈%@%@", currencyUnit, amountStr];
@@ -225,11 +223,24 @@
 #pragma mark - scanAction
 - (void)scanAction:(UIButton *)button
 {
+    __weak typeof (self) weakself = self;
     HMScannerController *scanner = [HMScannerController scannerWithCardName:nil avatar:nil completion:^(NSString *stringValue) {
-        TransferAccountsViewController * VC = [[TransferAccountsViewController alloc] init];
-        VC.listModel = self.listModel;
-        VC.address = stringValue;
-        [self.navigationController pushViewController:VC animated:YES];
+        NSOperationQueue * queue = [[NSOperationQueue alloc] init];
+        [queue addOperationWithBlock:^{
+            BOOL isCorrectAddress = [Keypair isAddressValid: stringValue];
+            [[NSOperationQueue mainQueue] addOperationWithBlock:^{
+                if (isCorrectAddress) {
+                    TransferAccountsViewController * VC = [[TransferAccountsViewController alloc] init];
+                    VC.listModel = weakself.listModel;
+                    VC.address = stringValue;
+                    [weakself.navigationController pushViewController:VC animated:YES];
+                } else {
+                    [MBProgressHUD showTipMessageInWindow:Localized(@"ScanFailure")];
+                }
+            }];
+        }];
+        
+        
     }];
     [scanner setTitleColor:[UIColor whiteColor] tintColor:MAIN_COLOR];
     [self showDetailViewController:scanner sender:nil];

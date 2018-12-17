@@ -20,7 +20,7 @@ NS_ASSUME_NONNULL_BEGIN
 @property (nonatomic, copy) NSString * verContents;
 @property (nonatomic, copy) NSString * verNumber;
 @property (nonatomic, copy) NSString * verNumberCode;
-@property (nonatomic, copy) NSString * verType;
+@property (nonatomic, assign) NSInteger verType;
 
 @end
 

@@ -51,8 +51,6 @@
 		83379AE22180630300C222A5 /* TxDetailModel.m in Sources */ = {isa = PBXBuildFile; fileRef = 83379AE12180630300C222A5 /* TxDetailModel.m */; };
 		83379AE52180631200C222A5 /* TxInfoModel.m in Sources */ = {isa = PBXBuildFile; fileRef = 83379AE42180631200C222A5 /* TxInfoModel.m */; };
 		83379AE8218066FE00C222A5 /* BlockInfoModel.m in Sources */ = {isa = PBXBuildFile; fileRef = 83379AE7218066FE00C222A5 /* BlockInfoModel.m */; };
-		834695552192D93E007B9AA3 /* MBProgressHUD+JDragon.bundle in Resources */ = {isa = PBXBuildFile; fileRef = 834695532192D93D007B9AA3 /* MBProgressHUD+JDragon.bundle */; };
-		834695562192D93E007B9AA3 /* MBProgressHUD+JDragon.m in Sources */ = {isa = PBXBuildFile; fileRef = 834695542192D93D007B9AA3 /* MBProgressHUD+JDragon.m */; };
 		835A45262174C14D005BFCDD /* main.m in Sources */ = {isa = PBXBuildFile; fileRef = 835A45242174C14D005BFCDD /* main.m */; };
 		835A45272174C14D005BFCDD /* AppDelegate.m in Sources */ = {isa = PBXBuildFile; fileRef = 835A45252174C14D005BFCDD /* AppDelegate.m */; };
 		8369BCED218B3DF5002F8903 /* AtpProperty.m in Sources */ = {isa = PBXBuildFile; fileRef = 8369BCEC218B3DF5002F8903 /* AtpProperty.m */; };
@@ -106,11 +104,13 @@
 		9549EC66219C0CF800307255 /* CreateTipsAlertView.m in Sources */ = {isa = PBXBuildFile; fileRef = 9549EC65219C0CF800307255 /* CreateTipsAlertView.m */; };
 		9549EC70219D075F00307255 /* ClearCacheTool.m in Sources */ = {isa = PBXBuildFile; fileRef = 9549EC6F219D075E00307255 /* ClearCacheTool.m */; };
 		956CD42121B016D1004DC1FA /* ListModel.m in Sources */ = {isa = PBXBuildFile; fileRef = 956CD42021B016D1004DC1FA /* ListModel.m */; };
+		9579EB2321B5356B00051EDB /* sdk_ios.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 9579EB2221B5355E00051EDB /* sdk_ios.framework */; };
+		9579EB2421B5356B00051EDB /* sdk_ios.framework in Embed Frameworks */ = {isa = PBXBuildFile; fileRef = 9579EB2221B5355E00051EDB /* sdk_ios.framework */; settings = {ATTRIBUTES = (CodeSignOnCopy, RemoveHeadersOnCopy, ); }; };
+		9579EB5221BABE6300051EDB /* MBProgressHUD+JDragon.bundle in Resources */ = {isa = PBXBuildFile; fileRef = 9579EB5021BABE6300051EDB /* MBProgressHUD+JDragon.bundle */; };
+		9579EB5321BABE6300051EDB /* MBProgressHUD+JDragon.m in Sources */ = {isa = PBXBuildFile; fileRef = 9579EB5121BABE6300051EDB /* MBProgressHUD+JDragon.m */; };
 		958127EF219ABD9D0081A02E /* VersionUpdateAlertView.m in Sources */ = {isa = PBXBuildFile; fileRef = 958127EE219ABD9D0081A02E /* VersionUpdateAlertView.m */; };
 		958127F2219AC82A0081A02E /* VersionModel.m in Sources */ = {isa = PBXBuildFile; fileRef = 958127F1219AC82A0081A02E /* VersionModel.m */; };
 		958AA69821A2A89600BEA50C /* CustomRefreshFooter.m in Sources */ = {isa = PBXBuildFile; fileRef = 958AA69721A2A89600BEA50C /* CustomRefreshFooter.m */; };
-		958AAE5221A3D37F00BEA50C /* sdk_ios.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 958AAE5121A3D36800BEA50C /* sdk_ios.framework */; };
-		958AAE5321A3D37F00BEA50C /* sdk_ios.framework in Embed Frameworks */ = {isa = PBXBuildFile; fileRef = 958AAE5121A3D36800BEA50C /* sdk_ios.framework */; settings = {ATTRIBUTES = (CodeSignOnCopy, RemoveHeadersOnCopy, ); }; };
 		95A8A3B1219D1352008E978E /* LanguageManager.m in Sources */ = {isa = PBXBuildFile; fileRef = 95A8A3AF219D1352008E978E /* LanguageManager.m */; };
 		95A8A3B5219D157C008E978E /* DateTool.m in Sources */ = {isa = PBXBuildFile; fileRef = 95A8A3B4219D157C008E978E /* DateTool.m */; };
 		95A8A3B9219D15D8008E978E /* RegexPatternTool.m in Sources */ = {isa = PBXBuildFile; fileRef = 95A8A3B8219D15D8008E978E /* RegexPatternTool.m */; };
@@ -138,16 +138,16 @@
 			remoteGlobalIDString = 83B4659F21745C9300187961;
 			remoteInfo = bupocket;
 		};
-		958AAE5021A3D36800BEA50C /* PBXContainerItemProxy */ = {
+		9579EB2121B5355E00051EDB /* PBXContainerItemProxy */ = {
 			isa = PBXContainerItemProxy;
-			containerPortal = 958AAE4C21A3D36800BEA50C /* sdk-ios.xcodeproj */;
+			containerPortal = 9579EB1D21B5355E00051EDB /* sdk-ios.xcodeproj */;
 			proxyType = 2;
 			remoteGlobalIDString = 58FED02C2117EF6F00702DDB;
 			remoteInfo = "sdk-ios";
 		};
-		958AAE5421A3D37F00BEA50C /* PBXContainerItemProxy */ = {
+		9579EB2521B5356B00051EDB /* PBXContainerItemProxy */ = {
 			isa = PBXContainerItemProxy;
-			containerPortal = 958AAE4C21A3D36800BEA50C /* sdk-ios.xcodeproj */;
+			containerPortal = 9579EB1D21B5355E00051EDB /* sdk-ios.xcodeproj */;
 			proxyType = 1;
 			remoteGlobalIDString = 58FED02B2117EF6F00702DDB;
 			remoteInfo = "sdk-ios";
@@ -155,13 +155,13 @@
 /* End PBXContainerItemProxy section */
 
 /* Begin PBXCopyFilesBuildPhase section */
-		838DC7622182DDDB002FF276 /* Embed Frameworks */ = {
+		9579E74A21B5329300051EDB /* Embed Frameworks */ = {
 			isa = PBXCopyFilesBuildPhase;
 			buildActionMask = 2147483647;
 			dstPath = "";
 			dstSubfolderSpec = 10;
 			files = (
-				958AAE5321A3D37F00BEA50C /* sdk_ios.framework in Embed Frameworks */,
+				9579EB2421B5356B00051EDB /* sdk_ios.framework in Embed Frameworks */,
 			);
 			name = "Embed Frameworks";
 			runOnlyForDeploymentPostprocessing = 0;
@@ -261,9 +261,6 @@
 		83379AE42180631200C222A5 /* TxInfoModel.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = TxInfoModel.m; sourceTree = "<group>"; };
 		83379AE6218066FE00C222A5 /* BlockInfoModel.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = BlockInfoModel.h; sourceTree = "<group>"; };
 		83379AE7218066FE00C222A5 /* BlockInfoModel.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = BlockInfoModel.m; sourceTree = "<group>"; };
-		834695522192D93D007B9AA3 /* MBProgressHUD+JDragon.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "MBProgressHUD+JDragon.h"; sourceTree = "<group>"; };
-		834695532192D93D007B9AA3 /* MBProgressHUD+JDragon.bundle */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.plug-in"; path = "MBProgressHUD+JDragon.bundle"; sourceTree = "<group>"; };
-		834695542192D93D007B9AA3 /* MBProgressHUD+JDragon.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "MBProgressHUD+JDragon.m"; sourceTree = "<group>"; };
 		835A45232174C14D005BFCDD /* AppDelegate.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = AppDelegate.h; sourceTree = "<group>"; };
 		835A45242174C14D005BFCDD /* main.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = main.m; sourceTree = "<group>"; };
 		835A45252174C14D005BFCDD /* AppDelegate.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = AppDelegate.m; sourceTree = "<group>"; };
@@ -373,13 +370,22 @@
 		9549EC6F219D075E00307255 /* ClearCacheTool.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ClearCacheTool.m; sourceTree = "<group>"; };
 		956CD41F21B016D1004DC1FA /* ListModel.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = ListModel.h; sourceTree = "<group>"; };
 		956CD42021B016D1004DC1FA /* ListModel.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = ListModel.m; sourceTree = "<group>"; };
+		9579E71121B4D39B00051EDB /* CoreSpotlight.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = CoreSpotlight.framework; path = System/Library/Frameworks/CoreSpotlight.framework; sourceTree = SDKROOT; };
+		9579E71421B4D3AE00051EDB /* SystemConfiguration.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = SystemConfiguration.framework; path = System/Library/Frameworks/SystemConfiguration.framework; sourceTree = SDKROOT; };
+		9579E71621B4D3C400051EDB /* Security.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Security.framework; path = System/Library/Frameworks/Security.framework; sourceTree = SDKROOT; };
+		9579E71821B4D3CF00051EDB /* WebKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = WebKit.framework; path = System/Library/Frameworks/WebKit.framework; sourceTree = SDKROOT; };
+		9579E71A21B4D3D900051EDB /* StoreKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = StoreKit.framework; path = System/Library/Frameworks/StoreKit.framework; sourceTree = SDKROOT; };
+		9579E71C21B4D48900051EDB /* bupocket.entitlements */ = {isa = PBXFileReference; lastKnownFileType = text.plist.entitlements; path = bupocket.entitlements; sourceTree = "<group>"; };
+		9579EB1D21B5355E00051EDB /* sdk-ios.xcodeproj */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.pb-project"; path = "sdk-ios.xcodeproj"; sourceTree = "<group>"; };
+		9579EB4F21BABE6300051EDB /* MBProgressHUD+JDragon.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "MBProgressHUD+JDragon.h"; sourceTree = "<group>"; };
+		9579EB5021BABE6300051EDB /* MBProgressHUD+JDragon.bundle */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.plug-in"; path = "MBProgressHUD+JDragon.bundle"; sourceTree = "<group>"; };
+		9579EB5121BABE6300051EDB /* MBProgressHUD+JDragon.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "MBProgressHUD+JDragon.m"; sourceTree = "<group>"; };
 		958127ED219ABD9D0081A02E /* VersionUpdateAlertView.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = VersionUpdateAlertView.h; sourceTree = "<group>"; };
 		958127EE219ABD9D0081A02E /* VersionUpdateAlertView.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = VersionUpdateAlertView.m; sourceTree = "<group>"; };
 		958127F0219AC82A0081A02E /* VersionModel.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = VersionModel.h; sourceTree = "<group>"; };
 		958127F1219AC82A0081A02E /* VersionModel.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = VersionModel.m; sourceTree = "<group>"; };
 		958AA69621A2A89600BEA50C /* CustomRefreshFooter.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = CustomRefreshFooter.h; sourceTree = "<group>"; };
 		958AA69721A2A89600BEA50C /* CustomRefreshFooter.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = CustomRefreshFooter.m; sourceTree = "<group>"; };
-		958AAE4C21A3D36800BEA50C /* sdk-ios.xcodeproj */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.pb-project"; name = "sdk-ios.xcodeproj"; path = "sdk-ios/sdk-ios.xcodeproj"; sourceTree = "<group>"; };
 		95A8A3AF219D1352008E978E /* LanguageManager.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = LanguageManager.m; sourceTree = "<group>"; };
 		95A8A3B0219D1352008E978E /* LanguageManager.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = LanguageManager.h; sourceTree = "<group>"; };
 		95A8A3B3219D157B008E978E /* DateTool.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = DateTool.h; sourceTree = "<group>"; };
@@ -407,7 +413,7 @@
 			buildActionMask = 2147483647;
 			files = (
 				E0A64C5CAFFFD9486B7713D7 /* Pods_bupocket.framework in Frameworks */,
-				958AAE5221A3D37F00BEA50C /* sdk_ios.framework in Frameworks */,
+				9579EB2321B5356B00051EDB /* sdk_ios.framework in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -433,16 +439,16 @@
 		833799292177091500C222A5 /* Tool */ = {
 			isa = PBXGroup;
 			children = (
-				958AAA7421A3D28D00BEA50C /* Lib */,
+				9579E74D21B5353700051EDB /* Lib */,
 				95A8A415219D5FE2008E978E /* YBPopupMenu */,
 				95A8A3B6219D15AB008E978E /* RegularCheck */,
 				95A8A3B2219D155E008E978E /* Date */,
 				95A8A3A8219D12B1008E978E /* Internationalization */,
 				9549EC6D219D074200307255 /* ClearCache */,
-				834695512192D93D007B9AA3 /* MBProgressHUD+JDragon */,
 				83F94D6621927EFE004E981A /* Refresh */,
 				83FB442621904AA300D68569 /* QRCode */,
 				83379A9C217EF20100C222A5 /* NetWork */,
+				9579EB4E21BABE6300051EDB /* MBProgressHUD+JDragon */,
 			);
 			path = Tool;
 			sourceTree = "<group>";
@@ -493,16 +499,6 @@
 				83379AC2217F3F3000C222A5 /* BaseModel.m */,
 			);
 			path = Model;
-			sourceTree = "<group>";
-		};
-		834695512192D93D007B9AA3 /* MBProgressHUD+JDragon */ = {
-			isa = PBXGroup;
-			children = (
-				834695522192D93D007B9AA3 /* MBProgressHUD+JDragon.h */,
-				834695532192D93D007B9AA3 /* MBProgressHUD+JDragon.bundle */,
-				834695542192D93D007B9AA3 /* MBProgressHUD+JDragon.m */,
-			);
-			path = "MBProgressHUD+JDragon";
 			sourceTree = "<group>";
 		};
 		835A45202174C14D005BFCDD /* Classes */ = {
@@ -798,6 +794,7 @@
 		83B465A221745C9300187961 /* bupocket */ = {
 			isa = PBXGroup;
 			children = (
+				9579E71C21B4D48900051EDB /* bupocket.entitlements */,
 				835A45202174C14D005BFCDD /* Classes */,
 				83B465A621745C9300187961 /* ViewController.h */,
 				83B465A721745C9300187961 /* ViewController.m */,
@@ -880,21 +877,38 @@
 			path = ClearCache;
 			sourceTree = "<group>";
 		};
-		958AAA7421A3D28D00BEA50C /* Lib */ = {
+		9579E74D21B5353700051EDB /* Lib */ = {
 			isa = PBXGroup;
 			children = (
-				958AAE4C21A3D36800BEA50C /* sdk-ios.xcodeproj */,
+				9579E74E21B5353700051EDB /* sdk-ios */,
 			);
-			name = Lib;
-			path = "New Group";
+			path = Lib;
 			sourceTree = "<group>";
 		};
-		958AAE4D21A3D36800BEA50C /* Products */ = {
+		9579E74E21B5353700051EDB /* sdk-ios */ = {
 			isa = PBXGroup;
 			children = (
-				958AAE5121A3D36800BEA50C /* sdk_ios.framework */,
+				9579EB1D21B5355E00051EDB /* sdk-ios.xcodeproj */,
+			);
+			path = "sdk-ios";
+			sourceTree = "<group>";
+		};
+		9579EB1E21B5355E00051EDB /* Products */ = {
+			isa = PBXGroup;
+			children = (
+				9579EB2221B5355E00051EDB /* sdk_ios.framework */,
 			);
 			name = Products;
+			sourceTree = "<group>";
+		};
+		9579EB4E21BABE6300051EDB /* MBProgressHUD+JDragon */ = {
+			isa = PBXGroup;
+			children = (
+				9579EB4F21BABE6300051EDB /* MBProgressHUD+JDragon.h */,
+				9579EB5021BABE6300051EDB /* MBProgressHUD+JDragon.bundle */,
+				9579EB5121BABE6300051EDB /* MBProgressHUD+JDragon.m */,
+			);
+			path = "MBProgressHUD+JDragon";
 			sourceTree = "<group>";
 		};
 		95A8A3A8219D12B1008E978E /* Internationalization */ = {
@@ -940,6 +954,11 @@
 		AAA27303C314FA52BBDCAB7B /* Frameworks */ = {
 			isa = PBXGroup;
 			children = (
+				9579E71A21B4D3D900051EDB /* StoreKit.framework */,
+				9579E71821B4D3CF00051EDB /* WebKit.framework */,
+				9579E71621B4D3C400051EDB /* Security.framework */,
+				9579E71421B4D3AE00051EDB /* SystemConfiguration.framework */,
+				9579E71121B4D39B00051EDB /* CoreSpotlight.framework */,
 				EB267DD938A42BAD30A164A2 /* Pods_bupocket.framework */,
 				248F98B6791F2F7C55E77E0E /* Pods_bupocketTests.framework */,
 				9D915F385F1A78B38EC83B6E /* Pods_bupocketUITests.framework */,
@@ -971,13 +990,13 @@
 				83B4659C21745C9300187961 /* Sources */,
 				83B4659D21745C9300187961 /* Frameworks */,
 				83B4659E21745C9300187961 /* Resources */,
-				838DC7622182DDDB002FF276 /* Embed Frameworks */,
 				6C9857D402B444A8F985E58F /* [CP] Embed Pods Frameworks */,
+				9579E74A21B5329300051EDB /* Embed Frameworks */,
 			);
 			buildRules = (
 			);
 			dependencies = (
-				958AAE5521A3D37F00BEA50C /* PBXTargetDependency */,
+				9579EB2621B5356B00051EDB /* PBXTargetDependency */,
 			);
 			name = bupocket;
 			productName = bupocket;
@@ -1033,6 +1052,11 @@
 				TargetAttributes = {
 					83B4659F21745C9300187961 = {
 						CreatedOnToolsVersion = 10.0;
+						SystemCapabilities = {
+							com.apple.SafariKeychain = {
+								enabled = 0;
+							};
+						};
 					};
 					83B465B721745C9400187961 = {
 						CreatedOnToolsVersion = 10.0;
@@ -1058,8 +1082,8 @@
 			projectDirPath = "";
 			projectReferences = (
 				{
-					ProductGroup = 958AAE4D21A3D36800BEA50C /* Products */;
-					ProjectRef = 958AAE4C21A3D36800BEA50C /* sdk-ios.xcodeproj */;
+					ProductGroup = 9579EB1E21B5355E00051EDB /* Products */;
+					ProjectRef = 9579EB1D21B5355E00051EDB /* sdk-ios.xcodeproj */;
 				},
 			);
 			projectRoot = "";
@@ -1072,11 +1096,11 @@
 /* End PBXProject section */
 
 /* Begin PBXReferenceProxy section */
-		958AAE5121A3D36800BEA50C /* sdk_ios.framework */ = {
+		9579EB2221B5355E00051EDB /* sdk_ios.framework */ = {
 			isa = PBXReferenceProxy;
 			fileType = wrapper.framework;
 			path = sdk_ios.framework;
-			remoteRef = 958AAE5021A3D36800BEA50C /* PBXContainerItemProxy */;
+			remoteRef = 9579EB2121B5355E00051EDB /* PBXContainerItemProxy */;
 			sourceTree = BUILT_PRODUCTS_DIR;
 		};
 /* End PBXReferenceProxy section */
@@ -1095,7 +1119,7 @@
 				83379A4F21787F2500C222A5 /* Default-iPhone6.png in Resources */,
 				83379A5021787F2500C222A5 /* Default@2x.png in Resources */,
 				83B465B021745C9400187961 /* LaunchScreen.storyboard in Resources */,
-				834695552192D93E007B9AA3 /* MBProgressHUD+JDragon.bundle in Resources */,
+				9579EB5221BABE6300051EDB /* MBProgressHUD+JDragon.bundle in Resources */,
 				83379A5421787F2500C222A5 /* Default.png in Resources */,
 				83FB443821904AA400D68569 /* HMScanner.bundle in Resources */,
 				8337991F2176FD4400C222A5 /* InfoPlist.strings in Resources */,
@@ -1245,7 +1269,6 @@
 				83379A80217B524D00C222A5 /* UIApplication+Extension.m in Sources */,
 				9549EC66219C0CF800307255 /* CreateTipsAlertView.m in Sources */,
 				83379AE52180631200C222A5 /* TxInfoModel.m in Sources */,
-				834695562192D93E007B9AA3 /* MBProgressHUD+JDragon.m in Sources */,
 				83379A8C217DB25A00C222A5 /* TransferAccountsViewController.m in Sources */,
 				83FB443621904AA400D68569 /* HMScannerViewController.m in Sources */,
 				8337991A2176E80D00C222A5 /* MultilingualViewController.m in Sources */,
@@ -1299,6 +1322,7 @@
 				83379A86217D9C8A00C222A5 /* AssetsDetailViewController.m in Sources */,
 				83379A92217DE12600C222A5 /* TransferResultsViewController.m in Sources */,
 				8372C8632174CBF100FF9506 /* TabBarViewController.m in Sources */,
+				9579EB5321BABE6300051EDB /* MBProgressHUD+JDragon.m in Sources */,
 				83379AC3217F3F3000C222A5 /* BaseModel.m in Sources */,
 				83D5BCD12182AB8200BF1FF1 /* AccountTool.m in Sources */,
 				8372C872217588D100FF9506 /* IdentityViewController.m in Sources */,
@@ -1362,10 +1386,10 @@
 			target = 83B4659F21745C9300187961 /* bupocket */;
 			targetProxy = 83B465C421745C9400187961 /* PBXContainerItemProxy */;
 		};
-		958AAE5521A3D37F00BEA50C /* PBXTargetDependency */ = {
+		9579EB2621B5356B00051EDB /* PBXTargetDependency */ = {
 			isa = PBXTargetDependency;
 			name = "sdk-ios";
-			targetProxy = 958AAE5421A3D37F00BEA50C /* PBXContainerItemProxy */;
+			targetProxy = 9579EB2521B5356B00051EDB /* PBXContainerItemProxy */;
 		};
 /* End PBXTargetDependency section */
 
@@ -1592,8 +1616,8 @@
 			buildSettings = {
 				ALWAYS_EMBED_SWIFT_STANDARD_LIBRARIES = YES;
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
-				CODE_SIGN_IDENTITY = "iPhone Developer: Sicheng Li (5K8YJQAA49)";
-				CODE_SIGN_STYLE = Manual;
+				CODE_SIGN_IDENTITY = "iPhone Developer";
+				CODE_SIGN_STYLE = Automatic;
 				DEFINES_MODULE = YES;
 				DEVELOPMENT_TEAM = 3DPSH636RT;
 				FRAMEWORK_SEARCH_PATHS = (
@@ -1609,11 +1633,14 @@
 					"$(inherited)",
 					"@executable_path/Frameworks",
 				);
-				LIBRARY_SEARCH_PATHS = "$(inherited)";
+				LIBRARY_SEARCH_PATHS = (
+					"$(inherited)",
+					"$(PROJECT_DIR)/bupocket/Classes/Common/Tool/Lib/sdk-ios/crypto/openssl/lib",
+				);
 				PRODUCT_BUNDLE_IDENTIFIER = com.bupocket;
 				PRODUCT_NAME = "$(TARGET_NAME)";
-				PROVISIONING_PROFILE_SPECIFIER = bupocket_Development;
-				TARGETED_DEVICE_FAMILY = "1,2";
+				PROVISIONING_PROFILE_SPECIFIER = "";
+				TARGETED_DEVICE_FAMILY = 1;
 			};
 			name = Debug;
 		};
@@ -1623,8 +1650,8 @@
 			buildSettings = {
 				ALWAYS_EMBED_SWIFT_STANDARD_LIBRARIES = YES;
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
-				CODE_SIGN_IDENTITY = "iPhone Developer: Sicheng Li (5K8YJQAA49)";
-				CODE_SIGN_STYLE = Manual;
+				CODE_SIGN_IDENTITY = "iPhone Developer";
+				CODE_SIGN_STYLE = Automatic;
 				DEFINES_MODULE = YES;
 				DEVELOPMENT_TEAM = 3DPSH636RT;
 				FRAMEWORK_SEARCH_PATHS = (
@@ -1640,11 +1667,14 @@
 					"$(inherited)",
 					"@executable_path/Frameworks",
 				);
-				LIBRARY_SEARCH_PATHS = "$(inherited)";
+				LIBRARY_SEARCH_PATHS = (
+					"$(inherited)",
+					"$(PROJECT_DIR)/bupocket/Classes/Common/Tool/Lib/sdk-ios/crypto/openssl/lib",
+				);
 				PRODUCT_BUNDLE_IDENTIFIER = com.bupocket;
 				PRODUCT_NAME = "$(TARGET_NAME)";
-				PROVISIONING_PROFILE_SPECIFIER = bupocket_Development;
-				TARGETED_DEVICE_FAMILY = "1,2";
+				PROVISIONING_PROFILE_SPECIFIER = "";
+				TARGETED_DEVICE_FAMILY = 1;
 			};
 			name = Release;
 		};

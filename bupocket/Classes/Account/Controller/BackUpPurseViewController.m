@@ -82,7 +82,7 @@
         make.left.width.height.equalTo(backupMnemonics);
     }];
     [self.view layoutIfNeeded];
-    self.scrollView.contentSize = CGSizeMake(0, CGRectGetMaxY(temporaryBackup.frame) + ContentSizeBottom + Margin_50);
+    self.scrollView.contentSize = CGSizeMake(0, CGRectGetMaxY(temporaryBackup.frame) + ContentSizeBottom + ScreenScale(100));
 }
 
 - (void)backupMnemonicsAction

@@ -189,7 +189,7 @@ static NSString * const ListCellID = @"ListCellID";
 {
     if ([[NSUserDefaults standardUserDefaults] boolForKey:If_Show_Switch_Network]) return;
     if (self.acceptEventInterval <= 0) {
-        self.acceptEventInterval = 3;
+        self.acceptEventInterval = 2;
     }
     BOOL needSendAction = (NSDate.date.timeIntervalSince1970 - self.acceptEventTime >= self.acceptEventInterval);
     if (self.acceptEventInterval > 0) {
@@ -201,7 +201,7 @@ static NSString * const ListCellID = @"ListCellID";
         self.touchCounter = 0;
     }
 //    if (self.touchCounter == 3) {
-//        [MBProgressHUD showTipMessageInWindow:@"您已点击4次"];
+//        [[HUDHelper sharedInstance] syncStopLoadingMessage:@"您已点击4次"];
 //    }
     if (self.touchCounter == 4) {
         self.touchCounter = 0;

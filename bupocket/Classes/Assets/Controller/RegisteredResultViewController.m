@@ -32,7 +32,6 @@ static NSString * const DistributionDetailCellID = @"DistributionDetailCellID";
 
 - (void)viewDidLoad {
     [super viewDidLoad];
-    self.navigationItem.title = Localized(@"RegisteredAssetsDetail");
     [self setData];
     [self setupView];
     // Do any additional setup after loading the view.
@@ -41,15 +40,14 @@ static NSString * const DistributionDetailCellID = @"DistributionDetailCellID";
 - (void)setData
 {
     NSString * decimal = [NSString stringWithFormat:@"%zd", self.registeredModel.decimals];
-    NSString * amount = [NSString stringWithFormat:@"%zd", self.registeredModel.amount];
     NSMutableArray * array = [NSMutableArray arrayWithObjects:@{Localized(@"TokenName"): self.registeredModel.name}, @{Localized(@"TokenCode"): self.registeredModel.code}, @{Localized(@"TokenDecimalDigits"): decimal}, @{Localized(@"ATPVersion"): ATP_Version}, nil];
     if (self.registeredModel.desc.length > 0) {
         [array addObject:@{Localized(@"TokenDescription"): self.registeredModel.desc}];
     }
-    if (self.registeredModel.amount == 0) {
+    if ([self.registeredModel.amount longLongValue] == 0) {
         [array insertObject:@{Localized(@"TotalAmountOfToken"): Localized(@"UnrestrictedIssue")} atIndex:2];
     } else {
-        [array insertObject:@{Localized(@"TotalAmountOfToken"): amount} atIndex:2];
+        [array insertObject:@{Localized(@"TotalAmountOfToken"): self.registeredModel.amount} atIndex:2];
     }
     [self.listArray addObject:array];
     
@@ -85,19 +83,6 @@ static NSString * const DistributionDetailCellID = @"DistributionDetailCellID";
         } else if (self.registeredResultState == RegisteredResultOvertime) {
             imageName = @"assetsTimeout";
             result = Localized(@"RegistrationTimeout");
-            UILabel * prompt = [[UILabel alloc] init];
-            prompt.font = TITLE_FONT;
-            prompt.textColor = COLOR_9;
-            prompt.numberOfLines = 0;
-            prompt.textAlignment = NSTextAlignmentCenter;
-            [headerView addSubview:prompt];
-            [prompt mas_makeConstraints:^(MASConstraintMaker *make) {
-                make.bottom.equalTo(headerView.mas_bottom).offset(-ScreenScale(17));
-                make.centerX.equalTo(headerView);
-                make.width.mas_equalTo(ScreenScale(275));
-            }];
-            prompt.text = Localized(@"DistributionPrompt");
-            headerViewH = ScreenScale(170);
         }
         headerView.frame = CGRectMake(0, 0, DEVICE_WIDTH, headerViewH);
         CustomButton * state = [[CustomButton alloc] init];

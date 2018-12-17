@@ -14,7 +14,7 @@ NS_ASSUME_NONNULL_BEGIN
 
 @property (nonatomic, copy) NSString * name;
 @property (nonatomic, copy) NSString * code;
-@property (nonatomic, assign) NSUInteger totalSupply;
+@property (nonatomic, assign) int64_t totalSupply;
 @property (nonatomic, assign) NSInteger decimals;
 @property (nonatomic, copy) NSString * Description;
 @property (nonatomic, copy) NSString * icon;

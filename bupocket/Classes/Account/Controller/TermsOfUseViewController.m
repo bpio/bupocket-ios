@@ -15,6 +15,7 @@
 
 @end
 
+
 @implementation TermsOfUseViewController
 
 - (void)viewDidLoad {
@@ -34,6 +35,8 @@
     self.wkWebView.height = DEVICE_HEIGHT - NavBarH - SafeAreaBottomH - ScreenScale(55);
     self.isNavHidden = NO;
     UIButton * ifReaded = [UIButton createButtonWithTitle:[NSString stringWithFormat:@"  %@", Localized(@"ReadAndAgree")] TextFont:14 TextNormalColor:COLOR_6 TextSelectedColor:COLOR_6 NormalImage:@"ifReaded_n" SelectedImage:@"ifReaded_s" Target:self Selector:@selector(agreeAction:)];
+    ifReaded.titleLabel.numberOfLines = 0;
+    ifReaded.contentHorizontalAlignment = UIControlContentHorizontalAlignmentLeft;
     ifReaded.contentEdgeInsets = UIEdgeInsetsMake(0, Margin_10, 0, Margin_10);
     ifReaded.backgroundColor = COLOR(@"FAFAFA");
     [self.view addSubview:ifReaded];

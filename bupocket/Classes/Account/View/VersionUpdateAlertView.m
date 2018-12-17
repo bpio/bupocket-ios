@@ -16,31 +16,31 @@
 @property (nonatomic, strong) UILabel * versionSize;
 @property (nonatomic, strong) UILabel * updateContent;
 @property (nonatomic, strong) UIButton * updateBtn;
-//@property (nonatomic, strong) UIButton * closeBtn;
-//@property (nonatomic, strong) UIView * lineView;
+@property (nonatomic, strong) UIButton * closeBtn;
+@property (nonatomic, strong) UIView * lineView;
 
 @end
 
 
 @implementation VersionUpdateAlertView
 
-- (instancetype)initWithUpdateVersionNumber:(NSString *)versionNumber versionSize:(NSString *)versionSize content:(NSString *)content confrimBolck:(nonnull void (^)(void))confrimBlock cancelBlock:(nonnull void (^)(void))cancelBlock
+- (instancetype)initWithUpdateVersionNumber:(NSString *)versionNumber versionSize:(NSString *)versionSize content:(NSString *)content verType:(NSInteger)verType confrimBolck:(nonnull void (^)(void))confrimBlock cancelBlock:(nonnull void (^)(void))cancelBlock
 {
     self = [super init];
     if (self) {
         _sureBlock = confrimBlock;
         _cancleBlock = cancelBlock;
-        [self setupView];
-        self.versionUpdateTitle.text = [NSString stringWithFormat:@"%@%@？", Localized(@"IfUpdate"), versionNumber];
+        [self setupViewWithVerType:verType];
+        self.versionUpdateTitle.text = [NSString stringWithFormat:@"%@ %@？", Localized(@"IfUpdate"), versionNumber];
         self.versionSize.text = [NSString stringWithFormat:@"%@%@", Localized(@"AppSize"), versionSize];
         self.updateContent.text = content;
-        CGFloat height = [Encapsulation rectWithText:self.updateContent.text font:_updateContent.font textWidth:DEVICE_WIDTH - ScreenScale(80)].size.height + ScreenScale(370);
+        CGFloat height = [Encapsulation rectWithText:self.versionUpdateTitle.text font:_versionUpdateTitle.font textWidth:DEVICE_WIDTH - ScreenScale(80)].size.height + [Encapsulation rectWithText:self.versionSize.text font:_versionSize.font textWidth:DEVICE_WIDTH - ScreenScale(80)].size.height + [Encapsulation rectWithText:self.updateContent.text font:_updateContent.font textWidth:DEVICE_WIDTH - ScreenScale(80)].size.height + ScreenScale(350);
         self.bounds = CGRectMake(0, 0, DEVICE_WIDTH - Margin_40, height);
     }
     return self;
 }
 
-- (void)setupView {
+- (void)setupViewWithVerType:(NSInteger)verType {
     
     [self addSubview:self.updateBg];
     
@@ -53,10 +53,21 @@
     [self addSubview:self.updateContent];
     
     [self addSubview:self.updateBtn];
-    
-//    [self addSubview:self.lineView];
-    
-//    [self addSubview:self.closeBtn];
+    // Update type (0: non-mandatory, 1: mandatory)
+    if (verType == 0) {
+        [self addSubview:self.lineView];
+        [self addSubview:self.closeBtn];
+        [self.lineView mas_makeConstraints:^(MASConstraintMaker *make) {
+            make.top.equalTo(self.updateBg.mas_bottom);
+            make.centerX.equalTo(self);
+            make.size.mas_equalTo(CGSizeMake(ScreenScale(1), Margin_50));
+        }];
+        [self.closeBtn mas_makeConstraints:^(MASConstraintMaker *make) {
+            make.top.equalTo(self.lineView.mas_bottom);
+            make.centerX.equalTo(self);
+            make.size.mas_equalTo(CGSizeMake(ScreenScale(32), ScreenScale(32)));
+        }];
+    }
 }
 
 - (void)layoutSubviews
@@ -91,16 +102,6 @@
         make.height.mas_equalTo(MAIN_HEIGHT);
         make.bottom.equalTo(self.updateBg.mas_bottom).offset(-Margin_20);
     }];
-//    [self.lineView mas_makeConstraints:^(MASConstraintMaker *make) {
-//        make.top.equalTo(self.updateBg.mas_bottom);
-//        make.centerX.equalTo(self);
-//        make.size.mas_equalTo(CGSizeMake(ScreenScale(1), Margin_50));
-//    }];
-//    [self.closeBtn mas_makeConstraints:^(MASConstraintMaker *make) {
-//        make.top.equalTo(self.lineView.mas_bottom);
-//        make.centerX.equalTo(self);
-//        make.size.mas_equalTo(CGSizeMake(ScreenScale(32), ScreenScale(32)));
-//    }];
 }
 - (UIView *)updateBg
 {
@@ -112,7 +113,7 @@
     }
     return _updateBg;
 }
-/*
+
 - (UIView *)lineView
 {
     if (!_lineView) {
@@ -128,13 +129,14 @@
     }
     return _closeBtn;
 }
-*/
+
 - (UILabel *)versionUpdateTitle
 {
     if (!_versionUpdateTitle) {
         _versionUpdateTitle = [[UILabel alloc] init];
         _versionUpdateTitle.textColor = TITLE_COLOR;
         _versionUpdateTitle.font = FONT(18);
+        _versionUpdateTitle.numberOfLines = 0;
 //        _versionUpdateTitle.text = Localized(@"VersionUpdate");
     }
     return _versionUpdateTitle;
@@ -145,6 +147,7 @@
         _versionSize = [[UILabel alloc] init];
         _versionSize.textColor = COLOR_6;
         _versionSize.font = TITLE_FONT;
+        _versionSize.numberOfLines = 0;
     }
     return _versionSize;
 }

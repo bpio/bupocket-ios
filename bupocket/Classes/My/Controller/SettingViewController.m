@@ -27,9 +27,9 @@ static NSString * const SettingCellID = @"SettingCellID";
     [super viewDidLoad];
     self.navigationItem.title = Localized(@"Setting");
     if ([[NSUserDefaults standardUserDefaults] boolForKey:If_Show_Switch_Network]) {
-        self.listArray = @[Localized(@"MultiLingual"), Localized(@"MonetaryUnit"), Localized(@"SwitchedNetwork")];
+        self.listArray = @[Localized(@"MonetaryUnit"), Localized(@"MultiLingual"), Localized(@"SwitchedNetwork")];
     } else {
-       self.listArray = @[Localized(@"MultiLingual"), Localized(@"MonetaryUnit")];
+       self.listArray = @[Localized(@"MonetaryUnit"), Localized(@"MultiLingual")];
     }
     [self setupView];
     
@@ -85,13 +85,13 @@ static NSString * const SettingCellID = @"SettingCellID";
     } else {
         cell.detailImage.hidden = NO;
         if (indexPath.row == 0) {
+            cell.detailTitle.text = [AssetCurrencyModel getAssetCurrencyTypeWithAssetCurrency:[[[NSUserDefaults standardUserDefaults] objectForKey:Current_Currency] integerValue]];
+        } else if (indexPath.row == 1) {
             if ([CurrentAppLanguage isEqualToString:ZhHans]) {
                 cell.detailTitle.text = Localized(@"SimplifiedChinese");
             } else if ([CurrentAppLanguage isEqualToString:EN]) {
                 cell.detailTitle.text = Localized(@"English");
             }
-        } else if (indexPath.row == 1) {
-            cell.detailTitle.text = [AssetCurrencyModel getAssetCurrencyTypeWithAssetCurrency:[[[NSUserDefaults standardUserDefaults] objectForKey:Current_Currency] integerValue]];
         }
     }
     return cell;
@@ -101,10 +101,10 @@ static NSString * const SettingCellID = @"SettingCellID";
 {
     [tableView deselectRowAtIndexPath:indexPath animated:YES];
     if (indexPath.row == 0) {
-        MultilingualViewController * VC = [[MultilingualViewController alloc] init];
+        MonetaryUnitViewController * VC = [[MonetaryUnitViewController alloc] init];
         [self.navigationController pushViewController:VC animated:YES];
     } else if (indexPath.row == 1) {
-        MonetaryUnitViewController * VC = [[MonetaryUnitViewController alloc] init];
+        MultilingualViewController * VC = [[MultilingualViewController alloc] init];
         [self.navigationController pushViewController:VC animated:YES];
     }
 }
