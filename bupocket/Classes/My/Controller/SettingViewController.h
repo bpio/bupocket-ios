@@ -12,8 +12,6 @@ NS_ASSUME_NONNULL_BEGIN
 
 @interface SettingViewController : BaseViewController
 
-@property (nonatomic, strong) NSArray * listArray;
-
 @end
 
 NS_ASSUME_NONNULL_END

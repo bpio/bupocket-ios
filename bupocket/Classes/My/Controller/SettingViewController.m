@@ -8,12 +8,14 @@
 
 #import "SettingViewController.h"
 #import "MultilingualViewController.h"
+#import "MonetaryUnitViewController.h"
 #import "ListTableViewCell.h"
 
 @interface SettingViewController ()<UITableViewDelegate, UITableViewDataSource>
 
 @property (nonatomic, strong) UITableView * tableView;
 @property (nonatomic, strong) UISwitch * switchControl;
+@property (nonatomic, strong) NSArray * listArray;
 
 @end
 
@@ -24,6 +26,11 @@ static NSString * const SettingCellID = @"SettingCellID";
 - (void)viewDidLoad {
     [super viewDidLoad];
     self.navigationItem.title = Localized(@"Setting");
+    if ([[NSUserDefaults standardUserDefaults] boolForKey:If_Show_Switch_Network]) {
+        self.listArray = @[Localized(@"MonetaryUnit"), Localized(@"MultiLingual"), Localized(@"SwitchedNetwork")];
+    } else {
+       self.listArray = @[Localized(@"MonetaryUnit"), Localized(@"MultiLingual")];
+    }
     [self setupView];
     
     // Do any additional setup after loading the view.
@@ -45,7 +52,7 @@ static NSString * const SettingCellID = @"SettingCellID";
 }
 - (CGFloat)tableView:(UITableView *)tableView heightForFooterInSection:(NSInteger)section
 {
-    return SafeAreaBottomH + NavBarH + Margin_10;
+    return ContentSizeBottom;
 }
 - (CGFloat)tableView:(UITableView *)tableView heightForRowAtIndexPath:(NSIndexPath *)indexPath
 {
@@ -78,13 +85,13 @@ static NSString * const SettingCellID = @"SettingCellID";
     } else {
         cell.detailImage.hidden = NO;
         if (indexPath.row == 0) {
+            cell.detailTitle.text = [AssetCurrencyModel getAssetCurrencyTypeWithAssetCurrency:[[[NSUserDefaults standardUserDefaults] objectForKey:Current_Currency] integerValue]];
+        } else if (indexPath.row == 1) {
             if ([CurrentAppLanguage isEqualToString:ZhHans]) {
                 cell.detailTitle.text = Localized(@"SimplifiedChinese");
             } else if ([CurrentAppLanguage isEqualToString:EN]) {
                 cell.detailTitle.text = Localized(@"English");
             }
-        } else {
-            cell.detailTitle.text = nil;
         }
     }
     return cell;
@@ -94,10 +101,11 @@ static NSString * const SettingCellID = @"SettingCellID";
 {
     [tableView deselectRowAtIndexPath:indexPath animated:YES];
     if (indexPath.row == 0) {
-        MultilingualViewController * VC = [[MultilingualViewController alloc] init];
+        MonetaryUnitViewController * VC = [[MonetaryUnitViewController alloc] init];
         [self.navigationController pushViewController:VC animated:YES];
     } else if (indexPath.row == 1) {
-        // 货币单位
+        MultilingualViewController * VC = [[MultilingualViewController alloc] init];
+        [self.navigationController pushViewController:VC animated:YES];
     }
 }
 - (UISwitch *)switchControl
@@ -105,8 +113,7 @@ static NSString * const SettingCellID = @"SettingCellID";
     if (!_switchControl) {
         _switchControl = [[UISwitch alloc] init];
         [_switchControl addTarget:self action:@selector(switchChange:) forControlEvents:UIControlEventValueChanged];
-        [_switchControl setOn:YES animated:YES];
-        [[HTTPManager shareManager] SwitchedNetworkWithIsTest:YES];
+        [_switchControl setOn:[[NSUserDefaults standardUserDefaults] boolForKey:If_Switch_TestNetwork] animated:YES];
     }
     return _switchControl;
 }

@@ -24,8 +24,8 @@ static NSString * const TransferResultsCellID = @"DetailListCellID";
 - (void)viewDidLoad {
     [super viewDidLoad];
     [self setupView];
-    self.listArray = @[@[Localized(@"reciprocalAccount"), Localized(@"amountOfTransfer"), Localized(@"TransactionCost"), Localized(@"Remarks"), Localized(@"TransferTime")], self.transferInfoArray];
-    [self popToRootVC];
+    
+    self.listArray = @[@[Localized(@"reciprocalAccount"), Localized(@"AmountOfTransfer"), Localized(@"TransactionCost"), Localized(@"Remarks"), Localized(@"TransferTime")], self.transferInfoArray];
     // Do any additional setup after loading the view.
 }
 - (void)setupView
@@ -57,14 +57,16 @@ static NSString * const TransferResultsCellID = @"DetailListCellID";
 }
 - (CGFloat)tableView:(UITableView *)tableView heightForFooterInSection:(NSInteger)section
 {
-    return SafeAreaBottomH + NavBarH + Margin_10;
+    return ContentSizeBottom;
 }
 - (CGFloat)tableView:(UITableView *)tableView heightForRowAtIndexPath:(NSIndexPath *)indexPath
 {
-    if (indexPath.row == 0) {
-        return ScreenScale(70);
+    if (indexPath.row == [self.listArray[0] count] - 2) {
+       return ([self.listArray[0] count] != [self.listArray[1] count]) ? MAIN_HEIGHT : ([Encapsulation rectWithText:self.listArray[1][indexPath.row] font:FONT(15) textWidth:Info_Width_Max].size.height + Margin_30);
+    } else if (indexPath.row == [self.listArray[0] count] - 1) {
+        return [Encapsulation rectWithText:[self.listArray[1] lastObject] font:FONT(15) textWidth:Info_Width_Max].size.height + Margin_30;
     } else {
-        return MAIN_HEIGHT;
+        return [Encapsulation rectWithText:self.listArray[1][indexPath.row] font:FONT(15) textWidth:Info_Width_Max].size.height + Margin_30;
     }
 }
 - (NSInteger)numberOfSectionsInTableView:(UITableView *)tableView

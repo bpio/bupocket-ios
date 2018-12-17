@@ -20,6 +20,7 @@ NS_ASSUME_NONNULL_BEGIN
 @property (nonatomic, assign) NSInteger txStatus;
 @property (nonatomic, copy) NSString * txTime;
 @property (nonatomic, copy) NSString * txHash;
+@property (nonatomic, assign) NSInteger optNo;
 
 @end
 

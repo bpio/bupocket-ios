@@ -86,7 +86,7 @@
     [self.copyBtn mas_makeConstraints:^(MASConstraintMaker *make) {
         make.top.equalTo(self.purseAddressTitle.mas_bottom).offset(Margin_60);
         make.centerX.equalTo(self);
-        make.size.mas_equalTo(CGSizeMake(ScreenScale(210), MAIN_HEIGHT));
+        make.size.mas_equalTo(CGSizeMake(ScreenScale(220), MAIN_HEIGHT));
     }];
     
     [self.lineView mas_makeConstraints:^(MASConstraintMaker *make) {
@@ -152,7 +152,7 @@
 {
     if (!_QRCodeImage) {
         _QRCodeImage = [[UIImageView alloc] init];
-        _QRCodeImage.image = [UIImage imageNamed:@"placeholder"];
+        _QRCodeImage.image = [UIImage imageNamed:@"placeholderBg"];
     }
     return _QRCodeImage;
 }

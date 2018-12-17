@@ -1,0 +1,14 @@
+/* 
+  InfoPlist.strings
+  bupocket
+
+  Created by bupocket on 2018/10/17.
+  Copyright © 2018年 bupocket. All rights reserved.
+*/
+CFBundleDisplayName = "BU Pocket";
+
+NSCameraUsageDescription = "Bupocket needs to visit your camera, in order to help you scan the two-dimensional code.";
+NSPhotoLibraryUsageDescription = "Bupocket needs to visit your photo album, in order to help you scan related pictures.";
+NSAppleMusicUsageDescription = "Media database helpful to scan related photos is accessible after being authorized this permission";
+NSMicrophoneUsageDescription = "Microphone is accessible after being authorized this permission";
+NSContactsUsageDescription = "Contact is accessible after being authorized this permission";

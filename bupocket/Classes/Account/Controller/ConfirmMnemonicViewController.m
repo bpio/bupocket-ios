@@ -55,7 +55,7 @@
 - (void)setupView
 {
     self.scrollView = [[UIScrollView alloc] initWithFrame:CGRectMake(0, 0, DEVICE_WIDTH, DEVICE_HEIGHT)];
-    self.scrollView.contentInset = UIEdgeInsetsMake(0, 0, SafeAreaBottomH + NavBarH + Margin_10, 0);
+//    self.scrollView.contentInset = UIEdgeInsetsMake(0, 0, SafeAreaBottomH + NavBarH + Margin_10, 0);
     self.scrollView.keyboardDismissMode = UIScrollViewKeyboardDismissModeOnDrag;
     [self.view addSubview:self.scrollView];
     UILabel * confirmPrompt = [[UILabel alloc] init];
@@ -122,13 +122,13 @@
     }];
     self.finish = finish;
     [self.view layoutIfNeeded];
-    self.scrollView.contentSize = CGSizeMake(0, CGRectGetMaxY(finish.frame) + Margin_50);
+    self.scrollView.contentSize = CGSizeMake(0, CGRectGetMaxY(finish.frame) + ContentSizeBottom + ScreenScale(100));
 }
 - (void)tagAction:(UIButton *)button
 {
     button.selected = !button.selected;
     if (button.selected) {
-        button.backgroundColor = MAIN_COLOR;
+        button.backgroundColor = TAGBG_COLOR;
         [self.tagArray addObject:button.titleLabel.text];
         UIButton * tagButton = [UIButton createButtonWithTitle:button.titleLabel.text TextFont:15 TextColor:COLOR_6 Target:nil Selector:nil];
         [tagButton sizeToFit];

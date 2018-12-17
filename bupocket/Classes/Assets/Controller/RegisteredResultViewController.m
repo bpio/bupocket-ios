@@ -32,29 +32,26 @@ static NSString * const DistributionDetailCellID = @"DistributionDetailCellID";
 
 - (void)viewDidLoad {
     [super viewDidLoad];
-    self.navigationItem.title = Localized(@"RegisteredAssetsDetail");
     [self setData];
     [self setupView];
-    [self popToRootVC];
     // Do any additional setup after loading the view.
 }
 
 - (void)setData
 {
     NSString * decimal = [NSString stringWithFormat:@"%zd", self.registeredModel.decimals];
-    NSString * amount = [NSString stringWithFormat:@"%zd", self.registeredModel.amount];
     NSMutableArray * array = [NSMutableArray arrayWithObjects:@{Localized(@"TokenName"): self.registeredModel.name}, @{Localized(@"TokenCode"): self.registeredModel.code}, @{Localized(@"TokenDecimalDigits"): decimal}, @{Localized(@"ATPVersion"): ATP_Version}, nil];
     if (self.registeredModel.desc.length > 0) {
         [array addObject:@{Localized(@"TokenDescription"): self.registeredModel.desc}];
     }
-    if (self.registeredModel.amount == 0) {
+    if ([self.registeredModel.amount longLongValue] == 0) {
         [array insertObject:@{Localized(@"TotalAmountOfToken"): Localized(@"UnrestrictedIssue")} atIndex:2];
     } else {
-        [array insertObject:@{Localized(@"TotalAmountOfToken"): amount} atIndex:2];
+        [array insertObject:@{Localized(@"TotalAmountOfToken"): self.registeredModel.amount} atIndex:2];
     }
     [self.listArray addObject:array];
     
-    if (self.resultSate != ResultSateOvertime) {
+    if (self.registeredResultState != RegisteredResultOvertime) {
         NSArray * transactionArray = @[@{Localized(@"ActualTransactionCost"): [NSString stringAppendingBUWithStr:self.registeredModel.registeredFee]}, @{Localized(@"RegisteredAddress"): [AccountTool account].purseAccount}, @{Localized(@"Hash"): self.registeredModel.transactionHash}];
         [self.listArray addObject:transactionArray];
     }
@@ -77,28 +74,15 @@ static NSString * const DistributionDetailCellID = @"DistributionDetailCellID";
         NSString * imageName;
         NSString * result;
         CGFloat headerViewH = ScreenScale(110);
-        if (self.resultSate == ResultSateSuccess) {
+        if (self.registeredResultState == RegisteredResultSuccess) {
             imageName = @"assetsSuccess";
             result = Localized(@"RegistrationSuccess");
-        } else if (self.resultSate == ResultSateFailure) {
+        } else if (self.registeredResultState == RegisteredResultFailure) {
             imageName = @"assetsFailure";
             result = Localized(@"RegistrationFailure");
-        } else if (self.resultSate == ResultSateOvertime) {
+        } else if (self.registeredResultState == RegisteredResultOvertime) {
             imageName = @"assetsTimeout";
             result = Localized(@"RegistrationTimeout");
-            UILabel * prompt = [[UILabel alloc] init];
-            prompt.font = TITLE_FONT;
-            prompt.textColor = COLOR_9;
-            prompt.numberOfLines = 0;
-            prompt.textAlignment = NSTextAlignmentCenter;
-            [headerView addSubview:prompt];
-            [prompt mas_makeConstraints:^(MASConstraintMaker *make) {
-                make.bottom.equalTo(headerView.mas_bottom).offset(-ScreenScale(17));
-                make.centerX.equalTo(headerView);
-                make.width.mas_equalTo(ScreenScale(275));
-            }];
-            prompt.text = Localized(@"DistributionPrompt");
-            headerViewH = ScreenScale(170);
         }
         headerView.frame = CGRectMake(0, 0, DEVICE_WIDTH, headerViewH);
         CustomButton * state = [[CustomButton alloc] init];
@@ -124,7 +108,7 @@ static NSString * const DistributionDetailCellID = @"DistributionDetailCellID";
 - (CGFloat)tableView:(UITableView *)tableView heightForFooterInSection:(NSInteger)section
 {
     if (section == self.listArray.count - 1) {
-        return SafeAreaBottomH + NavBarH + Margin_10;
+        return ContentSizeBottom;
     } else {
         return CGFLOAT_MIN;        
     }
@@ -133,7 +117,7 @@ static NSString * const DistributionDetailCellID = @"DistributionDetailCellID";
 - (CGFloat)tableView:(UITableView *)tableView heightForRowAtIndexPath:(NSIndexPath *)indexPath
 {
     if ((self.registeredModel.desc.length > 0 && indexPath.section == 0 && indexPath.row == [self.listArray[0] count] - 1) || (indexPath.section == 1 && indexPath.row > 0)) {
-        CGFloat rowHeight = [Encapsulation rectWithText:[[self.listArray[indexPath.section][indexPath.row] allValues] firstObject] fontSize:15 textWidth: DEVICE_WIDTH - Margin_40].size.height + ScreenScale(55);
+        CGFloat rowHeight = [Encapsulation rectWithText:[[self.listArray[indexPath.section][indexPath.row] allValues] firstObject] font:FONT(15) textWidth: DEVICE_WIDTH - Margin_40].size.height + ScreenScale(55);
         return rowHeight;
     } else {
         return MAIN_HEIGHT;

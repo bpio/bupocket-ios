@@ -8,8 +8,6 @@
 
 /* Begin PBXBuildFile section */
 		291C7F6EF8764B65A7DFB7BC /* Pods_bupocketUITests.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 9D915F385F1A78B38EC83B6E /* Pods_bupocketUITests.framework */; };
-		831789F22189AAAE003B5731 /* sdk_ios.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 831789F12189AA9B003B5731 /* sdk_ios.framework */; };
-		831789F32189AAAE003B5731 /* sdk_ios.framework in Embed Frameworks */ = {isa = PBXBuildFile; fileRef = 831789F12189AA9B003B5731 /* sdk_ios.framework */; settings = {ATTRIBUTES = (CodeSignOnCopy, RemoveHeadersOnCopy, ); }; };
 		833799172176E1E600C222A5 /* ListTableViewCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 833799162176E1E600C222A5 /* ListTableViewCell.m */; };
 		8337991A2176E80D00C222A5 /* MultilingualViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 833799192176E80D00C222A5 /* MultilingualViewController.m */; };
 		8337991F2176FD4400C222A5 /* InfoPlist.strings in Resources */ = {isa = PBXBuildFile; fileRef = 833799212176FD4400C222A5 /* InfoPlist.strings */; };
@@ -34,7 +32,6 @@
 		83379A6B2179C1D500C222A5 /* ChangePasswordViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 83379A6A2179C1D500C222A5 /* ChangePasswordViewController.m */; };
 		83379A6E2179CB9E00C222A5 /* FeedbackViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 83379A6D2179CB9E00C222A5 /* FeedbackViewController.m */; };
 		83379A742179D62300C222A5 /* MyIdentityViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 83379A732179D62300C222A5 /* MyIdentityViewController.m */; };
-		83379A7A217B4EA700C222A5 /* AppDelegate+Extension.m in Sources */ = {isa = PBXBuildFile; fileRef = 83379A79217B4EA700C222A5 /* AppDelegate+Extension.m */; };
 		83379A80217B524D00C222A5 /* UIApplication+Extension.m in Sources */ = {isa = PBXBuildFile; fileRef = 83379A7F217B524D00C222A5 /* UIApplication+Extension.m */; };
 		83379A83217D805300C222A5 /* PurseAddressAlertView.m in Sources */ = {isa = PBXBuildFile; fileRef = 83379A82217D805300C222A5 /* PurseAddressAlertView.m */; };
 		83379A86217D9C8A00C222A5 /* AssetsDetailViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 83379A85217D9C8A00C222A5 /* AssetsDetailViewController.m */; };
@@ -54,8 +51,6 @@
 		83379AE22180630300C222A5 /* TxDetailModel.m in Sources */ = {isa = PBXBuildFile; fileRef = 83379AE12180630300C222A5 /* TxDetailModel.m */; };
 		83379AE52180631200C222A5 /* TxInfoModel.m in Sources */ = {isa = PBXBuildFile; fileRef = 83379AE42180631200C222A5 /* TxInfoModel.m */; };
 		83379AE8218066FE00C222A5 /* BlockInfoModel.m in Sources */ = {isa = PBXBuildFile; fileRef = 83379AE7218066FE00C222A5 /* BlockInfoModel.m */; };
-		834695552192D93E007B9AA3 /* MBProgressHUD+JDragon.bundle in Resources */ = {isa = PBXBuildFile; fileRef = 834695532192D93D007B9AA3 /* MBProgressHUD+JDragon.bundle */; };
-		834695562192D93E007B9AA3 /* MBProgressHUD+JDragon.m in Sources */ = {isa = PBXBuildFile; fileRef = 834695542192D93D007B9AA3 /* MBProgressHUD+JDragon.m */; };
 		835A45262174C14D005BFCDD /* main.m in Sources */ = {isa = PBXBuildFile; fileRef = 835A45242174C14D005BFCDD /* main.m */; };
 		835A45272174C14D005BFCDD /* AppDelegate.m in Sources */ = {isa = PBXBuildFile; fileRef = 835A45252174C14D005BFCDD /* AppDelegate.m */; };
 		8369BCED218B3DF5002F8903 /* AtpProperty.m in Sources */ = {isa = PBXBuildFile; fileRef = 8369BCEC218B3DF5002F8903 /* AtpProperty.m */; };
@@ -101,36 +96,34 @@
 		83FB443921904AA400D68569 /* HMScanerCardViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 83FB442F21904AA300D68569 /* HMScanerCardViewController.m */; };
 		83FB443A21904AA400D68569 /* HMScannerController.m in Sources */ = {isa = PBXBuildFile; fileRef = 83FB443121904AA300D68569 /* HMScannerController.m */; };
 		83FB4443219131EC00D68569 /* UINavigationController+Extension.m in Sources */ = {isa = PBXBuildFile; fileRef = 83FB4442219131EC00D68569 /* UINavigationController+Extension.m */; };
+		950E4145219E6ADD002C7900 /* AssetCurrencyModel.m in Sources */ = {isa = PBXBuildFile; fileRef = 950E4144219E6ADD002C7900 /* AssetCurrencyModel.m */; };
+		950EF2A3219D801300F5121A /* MonetaryUnitViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 950EF2A2219D801300F5121A /* MonetaryUnitViewController.m */; };
 		9510A3CC219A91D4007A49A4 /* ErrorTypeTool.m in Sources */ = {isa = PBXBuildFile; fileRef = 9510A3CB219A91D4007A49A4 /* ErrorTypeTool.m */; };
+		952ADD0D21A65B4B00BEE51B /* SocketIOHandler.m in Sources */ = {isa = PBXBuildFile; fileRef = 952ADD0C21A65B4B00BEE51B /* SocketIOHandler.m */; };
 		954371742199234100915BBE /* SettingViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 954371732199234100915BBE /* SettingViewController.m */; };
 		9549EC66219C0CF800307255 /* CreateTipsAlertView.m in Sources */ = {isa = PBXBuildFile; fileRef = 9549EC65219C0CF800307255 /* CreateTipsAlertView.m */; };
 		9549EC70219D075F00307255 /* ClearCacheTool.m in Sources */ = {isa = PBXBuildFile; fileRef = 9549EC6F219D075E00307255 /* ClearCacheTool.m */; };
+		956CD42121B016D1004DC1FA /* ListModel.m in Sources */ = {isa = PBXBuildFile; fileRef = 956CD42021B016D1004DC1FA /* ListModel.m */; };
+		9579EB2321B5356B00051EDB /* sdk_ios.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 9579EB2221B5355E00051EDB /* sdk_ios.framework */; };
+		9579EB2421B5356B00051EDB /* sdk_ios.framework in Embed Frameworks */ = {isa = PBXBuildFile; fileRef = 9579EB2221B5355E00051EDB /* sdk_ios.framework */; settings = {ATTRIBUTES = (CodeSignOnCopy, RemoveHeadersOnCopy, ); }; };
+		9579EB5221BABE6300051EDB /* MBProgressHUD+JDragon.bundle in Resources */ = {isa = PBXBuildFile; fileRef = 9579EB5021BABE6300051EDB /* MBProgressHUD+JDragon.bundle */; };
+		9579EB5321BABE6300051EDB /* MBProgressHUD+JDragon.m in Sources */ = {isa = PBXBuildFile; fileRef = 9579EB5121BABE6300051EDB /* MBProgressHUD+JDragon.m */; };
 		958127EF219ABD9D0081A02E /* VersionUpdateAlertView.m in Sources */ = {isa = PBXBuildFile; fileRef = 958127EE219ABD9D0081A02E /* VersionUpdateAlertView.m */; };
 		958127F2219AC82A0081A02E /* VersionModel.m in Sources */ = {isa = PBXBuildFile; fileRef = 958127F1219AC82A0081A02E /* VersionModel.m */; };
+		958AA69821A2A89600BEA50C /* CustomRefreshFooter.m in Sources */ = {isa = PBXBuildFile; fileRef = 958AA69721A2A89600BEA50C /* CustomRefreshFooter.m */; };
 		95A8A3B1219D1352008E978E /* LanguageManager.m in Sources */ = {isa = PBXBuildFile; fileRef = 95A8A3AF219D1352008E978E /* LanguageManager.m */; };
 		95A8A3B5219D157C008E978E /* DateTool.m in Sources */ = {isa = PBXBuildFile; fileRef = 95A8A3B4219D157C008E978E /* DateTool.m */; };
 		95A8A3B9219D15D8008E978E /* RegexPatternTool.m in Sources */ = {isa = PBXBuildFile; fileRef = 95A8A3B8219D15D8008E978E /* RegexPatternTool.m */; };
 		95A8A3BC219D161D008E978E /* CustomRefreshHeader.m in Sources */ = {isa = PBXBuildFile; fileRef = 95A8A3BB219D161D008E978E /* CustomRefreshHeader.m */; };
 		95A8A3BF219D166D008E978E /* Encapsulation.m in Sources */ = {isa = PBXBuildFile; fileRef = 95A8A3BE219D166D008E978E /* Encapsulation.m */; };
+		95A8A41C219D5FF7008E978E /* YBPopupMenu.m in Sources */ = {isa = PBXBuildFile; fileRef = 95A8A417219D5FF6008E978E /* YBPopupMenu.m */; };
+		95A8A41D219D5FF7008E978E /* YBRectConst.m in Sources */ = {isa = PBXBuildFile; fileRef = 95A8A41A219D5FF7008E978E /* YBRectConst.m */; };
+		95A8A41E219D5FF7008E978E /* YBPopupMenuPath.m in Sources */ = {isa = PBXBuildFile; fileRef = 95A8A41B219D5FF7008E978E /* YBPopupMenuPath.m */; };
 		C78AA58ABD5C4F75C67B6250 /* Pods_bupocketTests.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 248F98B6791F2F7C55E77E0E /* Pods_bupocketTests.framework */; };
 		E0A64C5CAFFFD9486B7713D7 /* Pods_bupocket.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = EB267DD938A42BAD30A164A2 /* Pods_bupocket.framework */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
-		831789F02189AA9B003B5731 /* PBXContainerItemProxy */ = {
-			isa = PBXContainerItemProxy;
-			containerPortal = 831789EC2189AA9B003B5731 /* sdk-ios.xcodeproj */;
-			proxyType = 2;
-			remoteGlobalIDString = 58FED02C2117EF6F00702DDB;
-			remoteInfo = "sdk-ios";
-		};
-		831789F42189AAAE003B5731 /* PBXContainerItemProxy */ = {
-			isa = PBXContainerItemProxy;
-			containerPortal = 831789EC2189AA9B003B5731 /* sdk-ios.xcodeproj */;
-			proxyType = 1;
-			remoteGlobalIDString = 58FED02B2117EF6F00702DDB;
-			remoteInfo = "sdk-ios";
-		};
 		83B465B921745C9400187961 /* PBXContainerItemProxy */ = {
 			isa = PBXContainerItemProxy;
 			containerPortal = 83B4659821745C9300187961 /* Project object */;
@@ -145,16 +138,30 @@
 			remoteGlobalIDString = 83B4659F21745C9300187961;
 			remoteInfo = bupocket;
 		};
+		9579EB2121B5355E00051EDB /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = 9579EB1D21B5355E00051EDB /* sdk-ios.xcodeproj */;
+			proxyType = 2;
+			remoteGlobalIDString = 58FED02C2117EF6F00702DDB;
+			remoteInfo = "sdk-ios";
+		};
+		9579EB2521B5356B00051EDB /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = 9579EB1D21B5355E00051EDB /* sdk-ios.xcodeproj */;
+			proxyType = 1;
+			remoteGlobalIDString = 58FED02B2117EF6F00702DDB;
+			remoteInfo = "sdk-ios";
+		};
 /* End PBXContainerItemProxy section */
 
 /* Begin PBXCopyFilesBuildPhase section */
-		838DC7622182DDDB002FF276 /* Embed Frameworks */ = {
+		9579E74A21B5329300051EDB /* Embed Frameworks */ = {
 			isa = PBXCopyFilesBuildPhase;
 			buildActionMask = 2147483647;
 			dstPath = "";
 			dstSubfolderSpec = 10;
 			files = (
-				831789F32189AAAE003B5731 /* sdk_ios.framework in Embed Frameworks */,
+				9579EB2421B5356B00051EDB /* sdk_ios.framework in Embed Frameworks */,
 			);
 			name = "Embed Frameworks";
 			runOnlyForDeploymentPostprocessing = 0;
@@ -167,7 +174,6 @@
 		44BC1912ECE099E51261AEA7 /* Pods-bupocketTests.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-bupocketTests.debug.xcconfig"; path = "Pods/Target Support Files/Pods-bupocketTests/Pods-bupocketTests.debug.xcconfig"; sourceTree = "<group>"; };
 		47A14785E0485B48F5A66934 /* Pods-bupocketUITests.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-bupocketUITests.release.xcconfig"; path = "Pods/Target Support Files/Pods-bupocketUITests/Pods-bupocketUITests.release.xcconfig"; sourceTree = "<group>"; };
 		63EBCC7FB77633A1A5E3F9DB /* Pods-bupocketUITests.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-bupocketUITests.debug.xcconfig"; path = "Pods/Target Support Files/Pods-bupocketUITests/Pods-bupocketUITests.debug.xcconfig"; sourceTree = "<group>"; };
-		831789EC2189AA9B003B5731 /* sdk-ios.xcodeproj */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.pb-project"; name = "sdk-ios.xcodeproj"; path = "sdk-ios/sdk-ios.xcodeproj"; sourceTree = "<group>"; };
 		833799152176E1E600C222A5 /* ListTableViewCell.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = ListTableViewCell.h; sourceTree = "<group>"; };
 		833799162176E1E600C222A5 /* ListTableViewCell.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = ListTableViewCell.m; sourceTree = "<group>"; };
 		833799182176E80D00C222A5 /* MultilingualViewController.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = MultilingualViewController.h; sourceTree = "<group>"; };
@@ -216,8 +222,6 @@
 		83379A6D2179CB9E00C222A5 /* FeedbackViewController.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = FeedbackViewController.m; sourceTree = "<group>"; };
 		83379A722179D62300C222A5 /* MyIdentityViewController.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = MyIdentityViewController.h; sourceTree = "<group>"; };
 		83379A732179D62300C222A5 /* MyIdentityViewController.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = MyIdentityViewController.m; sourceTree = "<group>"; };
-		83379A78217B4EA600C222A5 /* AppDelegate+Extension.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = "AppDelegate+Extension.h"; sourceTree = "<group>"; };
-		83379A79217B4EA700C222A5 /* AppDelegate+Extension.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = "AppDelegate+Extension.m"; sourceTree = "<group>"; };
 		83379A7E217B524D00C222A5 /* UIApplication+Extension.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "UIApplication+Extension.h"; sourceTree = "<group>"; };
 		83379A7F217B524D00C222A5 /* UIApplication+Extension.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "UIApplication+Extension.m"; sourceTree = "<group>"; };
 		83379A81217D805300C222A5 /* PurseAddressAlertView.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = PurseAddressAlertView.h; sourceTree = "<group>"; };
@@ -257,9 +261,6 @@
 		83379AE42180631200C222A5 /* TxInfoModel.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = TxInfoModel.m; sourceTree = "<group>"; };
 		83379AE6218066FE00C222A5 /* BlockInfoModel.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = BlockInfoModel.h; sourceTree = "<group>"; };
 		83379AE7218066FE00C222A5 /* BlockInfoModel.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = BlockInfoModel.m; sourceTree = "<group>"; };
-		834695522192D93D007B9AA3 /* MBProgressHUD+JDragon.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "MBProgressHUD+JDragon.h"; sourceTree = "<group>"; };
-		834695532192D93D007B9AA3 /* MBProgressHUD+JDragon.bundle */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.plug-in"; path = "MBProgressHUD+JDragon.bundle"; sourceTree = "<group>"; };
-		834695542192D93D007B9AA3 /* MBProgressHUD+JDragon.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "MBProgressHUD+JDragon.m"; sourceTree = "<group>"; };
 		835A45232174C14D005BFCDD /* AppDelegate.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = AppDelegate.h; sourceTree = "<group>"; };
 		835A45242174C14D005BFCDD /* main.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = main.m; sourceTree = "<group>"; };
 		835A45252174C14D005BFCDD /* AppDelegate.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = AppDelegate.m; sourceTree = "<group>"; };
@@ -353,18 +354,38 @@
 		83FB4441219131EC00D68569 /* UINavigationController+Extension.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = "UINavigationController+Extension.h"; sourceTree = "<group>"; };
 		83FB4442219131EC00D68569 /* UINavigationController+Extension.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = "UINavigationController+Extension.m"; sourceTree = "<group>"; };
 		8BAFA7A3EC4992591E7450DA /* Pods-bupocket.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-bupocket.release.xcconfig"; path = "Pods/Target Support Files/Pods-bupocket/Pods-bupocket.release.xcconfig"; sourceTree = "<group>"; };
+		950E4143219E6ADD002C7900 /* AssetCurrencyModel.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = AssetCurrencyModel.h; sourceTree = "<group>"; };
+		950E4144219E6ADD002C7900 /* AssetCurrencyModel.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = AssetCurrencyModel.m; sourceTree = "<group>"; };
+		950EF2A1219D801300F5121A /* MonetaryUnitViewController.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = MonetaryUnitViewController.h; sourceTree = "<group>"; };
+		950EF2A2219D801300F5121A /* MonetaryUnitViewController.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = MonetaryUnitViewController.m; sourceTree = "<group>"; };
 		9510A3CA219A91D4007A49A4 /* ErrorTypeTool.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = ErrorTypeTool.h; sourceTree = "<group>"; };
 		9510A3CB219A91D4007A49A4 /* ErrorTypeTool.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = ErrorTypeTool.m; sourceTree = "<group>"; };
+		952ADD0B21A65B4B00BEE51B /* SocketIOHandler.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = SocketIOHandler.h; sourceTree = "<group>"; };
+		952ADD0C21A65B4B00BEE51B /* SocketIOHandler.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = SocketIOHandler.m; sourceTree = "<group>"; };
 		954371722199234100915BBE /* SettingViewController.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = SettingViewController.h; sourceTree = "<group>"; };
 		954371732199234100915BBE /* SettingViewController.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = SettingViewController.m; sourceTree = "<group>"; };
 		9549EC64219C0CF800307255 /* CreateTipsAlertView.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = CreateTipsAlertView.h; sourceTree = "<group>"; };
 		9549EC65219C0CF800307255 /* CreateTipsAlertView.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = CreateTipsAlertView.m; sourceTree = "<group>"; };
 		9549EC6E219D075E00307255 /* ClearCacheTool.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ClearCacheTool.h; sourceTree = "<group>"; };
 		9549EC6F219D075E00307255 /* ClearCacheTool.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ClearCacheTool.m; sourceTree = "<group>"; };
+		956CD41F21B016D1004DC1FA /* ListModel.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = ListModel.h; sourceTree = "<group>"; };
+		956CD42021B016D1004DC1FA /* ListModel.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = ListModel.m; sourceTree = "<group>"; };
+		9579E71121B4D39B00051EDB /* CoreSpotlight.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = CoreSpotlight.framework; path = System/Library/Frameworks/CoreSpotlight.framework; sourceTree = SDKROOT; };
+		9579E71421B4D3AE00051EDB /* SystemConfiguration.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = SystemConfiguration.framework; path = System/Library/Frameworks/SystemConfiguration.framework; sourceTree = SDKROOT; };
+		9579E71621B4D3C400051EDB /* Security.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Security.framework; path = System/Library/Frameworks/Security.framework; sourceTree = SDKROOT; };
+		9579E71821B4D3CF00051EDB /* WebKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = WebKit.framework; path = System/Library/Frameworks/WebKit.framework; sourceTree = SDKROOT; };
+		9579E71A21B4D3D900051EDB /* StoreKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = StoreKit.framework; path = System/Library/Frameworks/StoreKit.framework; sourceTree = SDKROOT; };
+		9579E71C21B4D48900051EDB /* bupocket.entitlements */ = {isa = PBXFileReference; lastKnownFileType = text.plist.entitlements; path = bupocket.entitlements; sourceTree = "<group>"; };
+		9579EB1D21B5355E00051EDB /* sdk-ios.xcodeproj */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.pb-project"; path = "sdk-ios.xcodeproj"; sourceTree = "<group>"; };
+		9579EB4F21BABE6300051EDB /* MBProgressHUD+JDragon.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "MBProgressHUD+JDragon.h"; sourceTree = "<group>"; };
+		9579EB5021BABE6300051EDB /* MBProgressHUD+JDragon.bundle */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.plug-in"; path = "MBProgressHUD+JDragon.bundle"; sourceTree = "<group>"; };
+		9579EB5121BABE6300051EDB /* MBProgressHUD+JDragon.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "MBProgressHUD+JDragon.m"; sourceTree = "<group>"; };
 		958127ED219ABD9D0081A02E /* VersionUpdateAlertView.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = VersionUpdateAlertView.h; sourceTree = "<group>"; };
 		958127EE219ABD9D0081A02E /* VersionUpdateAlertView.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = VersionUpdateAlertView.m; sourceTree = "<group>"; };
 		958127F0219AC82A0081A02E /* VersionModel.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = VersionModel.h; sourceTree = "<group>"; };
 		958127F1219AC82A0081A02E /* VersionModel.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = VersionModel.m; sourceTree = "<group>"; };
+		958AA69621A2A89600BEA50C /* CustomRefreshFooter.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = CustomRefreshFooter.h; sourceTree = "<group>"; };
+		958AA69721A2A89600BEA50C /* CustomRefreshFooter.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = CustomRefreshFooter.m; sourceTree = "<group>"; };
 		95A8A3AF219D1352008E978E /* LanguageManager.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = LanguageManager.m; sourceTree = "<group>"; };
 		95A8A3B0219D1352008E978E /* LanguageManager.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = LanguageManager.h; sourceTree = "<group>"; };
 		95A8A3B3219D157B008E978E /* DateTool.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = DateTool.h; sourceTree = "<group>"; };
@@ -375,6 +396,12 @@
 		95A8A3BB219D161D008E978E /* CustomRefreshHeader.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = CustomRefreshHeader.m; sourceTree = "<group>"; };
 		95A8A3BD219D166D008E978E /* Encapsulation.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = Encapsulation.h; sourceTree = "<group>"; };
 		95A8A3BE219D166D008E978E /* Encapsulation.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = Encapsulation.m; sourceTree = "<group>"; };
+		95A8A416219D5FF6008E978E /* YBRectConst.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = YBRectConst.h; sourceTree = "<group>"; };
+		95A8A417219D5FF6008E978E /* YBPopupMenu.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = YBPopupMenu.m; sourceTree = "<group>"; };
+		95A8A418219D5FF6008E978E /* YBPopupMenu.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = YBPopupMenu.h; sourceTree = "<group>"; };
+		95A8A419219D5FF7008E978E /* YBPopupMenuPath.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = YBPopupMenuPath.h; sourceTree = "<group>"; };
+		95A8A41A219D5FF7008E978E /* YBRectConst.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = YBRectConst.m; sourceTree = "<group>"; };
+		95A8A41B219D5FF7008E978E /* YBPopupMenuPath.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = YBPopupMenuPath.m; sourceTree = "<group>"; };
 		9D915F385F1A78B38EC83B6E /* Pods_bupocketUITests.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_bupocketUITests.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		A61F11E76D6541BC859B703E /* Pods-bupocket.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-bupocket.debug.xcconfig"; path = "Pods/Target Support Files/Pods-bupocket/Pods-bupocket.debug.xcconfig"; sourceTree = "<group>"; };
 		EB267DD938A42BAD30A164A2 /* Pods_bupocket.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_bupocket.framework; sourceTree = BUILT_PRODUCTS_DIR; };
@@ -386,7 +413,7 @@
 			buildActionMask = 2147483647;
 			files = (
 				E0A64C5CAFFFD9486B7713D7 /* Pods_bupocket.framework in Frameworks */,
-				831789F22189AAAE003B5731 /* sdk_ios.framework in Frameworks */,
+				9579EB2321B5356B00051EDB /* sdk_ios.framework in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -409,34 +436,19 @@
 /* End PBXFrameworksBuildPhase section */
 
 /* Begin PBXGroup section */
-		831786122189A714003B5731 /* Framework */ = {
-			isa = PBXGroup;
-			children = (
-				831789EC2189AA9B003B5731 /* sdk-ios.xcodeproj */,
-			);
-			path = Framework;
-			sourceTree = "<group>";
-		};
-		831789ED2189AA9B003B5731 /* Products */ = {
-			isa = PBXGroup;
-			children = (
-				831789F12189AA9B003B5731 /* sdk_ios.framework */,
-			);
-			name = Products;
-			sourceTree = "<group>";
-		};
 		833799292177091500C222A5 /* Tool */ = {
 			isa = PBXGroup;
 			children = (
+				9579E74D21B5353700051EDB /* Lib */,
+				95A8A415219D5FE2008E978E /* YBPopupMenu */,
 				95A8A3B6219D15AB008E978E /* RegularCheck */,
 				95A8A3B2219D155E008E978E /* Date */,
 				95A8A3A8219D12B1008E978E /* Internationalization */,
 				9549EC6D219D074200307255 /* ClearCache */,
-				834695512192D93D007B9AA3 /* MBProgressHUD+JDragon */,
 				83F94D6621927EFE004E981A /* Refresh */,
 				83FB442621904AA300D68569 /* QRCode */,
-				831786122189A714003B5731 /* Framework */,
 				83379A9C217EF20100C222A5 /* NetWork */,
+				9579EB4E21BABE6300051EDB /* MBProgressHUD+JDragon */,
 			);
 			path = Tool;
 			sourceTree = "<group>";
@@ -489,23 +501,13 @@
 			path = Model;
 			sourceTree = "<group>";
 		};
-		834695512192D93D007B9AA3 /* MBProgressHUD+JDragon */ = {
-			isa = PBXGroup;
-			children = (
-				834695522192D93D007B9AA3 /* MBProgressHUD+JDragon.h */,
-				834695532192D93D007B9AA3 /* MBProgressHUD+JDragon.bundle */,
-				834695542192D93D007B9AA3 /* MBProgressHUD+JDragon.m */,
-			);
-			path = "MBProgressHUD+JDragon";
-			sourceTree = "<group>";
-		};
 		835A45202174C14D005BFCDD /* Classes */ = {
 			isa = PBXGroup;
 			children = (
 				835A45212174C14D005BFCDD /* Account */,
 				835A45322174C212005BFCDD /* Assets */,
 				835A452E2174C212005BFCDD /* My */,
-				835A45222174C14D005BFCDD /* Main */,
+				835A45222174C14D005BFCDD /* Common */,
 			);
 			path = Classes;
 			sourceTree = "<group>";
@@ -520,7 +522,7 @@
 			path = Account;
 			sourceTree = "<group>";
 		};
-		835A45222174C14D005BFCDD /* Main */ = {
+		835A45222174C14D005BFCDD /* Common */ = {
 			isa = PBXGroup;
 			children = (
 				83379A3921787F2500C222A5 /* launchImages */,
@@ -532,8 +534,6 @@
 				83379AC0217F3F1E00C222A5 /* Model */,
 				835A45232174C14D005BFCDD /* AppDelegate.h */,
 				835A45252174C14D005BFCDD /* AppDelegate.m */,
-				83379A78217B4EA600C222A5 /* AppDelegate+Extension.h */,
-				83379A79217B4EA700C222A5 /* AppDelegate+Extension.m */,
 				835A45242174C14D005BFCDD /* main.m */,
 				835A45382174C47E005BFCDD /* PrefixHeader.pch */,
 				83A66A2D218B323300E071B9 /* Constant.h */,
@@ -541,7 +541,7 @@
 				833799212176FD4400C222A5 /* InfoPlist.strings */,
 				833799272176FE4800C222A5 /* Localizable.strings */,
 			);
-			path = Main;
+			path = Common;
 			sourceTree = "<group>";
 		};
 		835A45282174C1F9005BFCDD /* Controller */ = {
@@ -614,6 +614,8 @@
 				83379A6A2179C1D500C222A5 /* ChangePasswordViewController.m */,
 				83379A6C2179CB9E00C222A5 /* FeedbackViewController.h */,
 				83379A6D2179CB9E00C222A5 /* FeedbackViewController.m */,
+				950EF2A1219D801300F5121A /* MonetaryUnitViewController.h */,
+				950EF2A2219D801300F5121A /* MonetaryUnitViewController.m */,
 				833799182176E80D00C222A5 /* MultilingualViewController.h */,
 				833799192176E80D00C222A5 /* MultilingualViewController.m */,
 			);
@@ -678,6 +680,8 @@
 		835A45342174C212005BFCDD /* Model */ = {
 			isa = PBXGroup;
 			children = (
+				950E4143219E6ADD002C7900 /* AssetCurrencyModel.h */,
+				950E4144219E6ADD002C7900 /* AssetCurrencyModel.m */,
 				83379AC4217F3F4200C222A5 /* AssetsListModel.h */,
 				83379AC5217F3F4200C222A5 /* AssetsListModel.m */,
 				83FB4421219035B700D68569 /* SearchAssetsModel.h */,
@@ -698,6 +702,10 @@
 				8395AF302189496E0082EA30 /* DistributionModel.m */,
 				8395AF32218958840082EA30 /* TransactionResultModel.h */,
 				8395AF33218958840082EA30 /* TransactionResultModel.m */,
+				956CD41F21B016D1004DC1FA /* ListModel.h */,
+				956CD42021B016D1004DC1FA /* ListModel.m */,
+				952ADD0B21A65B4B00BEE51B /* SocketIOHandler.h */,
+				952ADD0C21A65B4B00BEE51B /* SocketIOHandler.m */,
 			);
 			path = Model;
 			sourceTree = "<group>";
@@ -786,6 +794,7 @@
 		83B465A221745C9300187961 /* bupocket */ = {
 			isa = PBXGroup;
 			children = (
+				9579E71C21B4D48900051EDB /* bupocket.entitlements */,
 				835A45202174C14D005BFCDD /* Classes */,
 				83B465A621745C9300187961 /* ViewController.h */,
 				83B465A721745C9300187961 /* ViewController.m */,
@@ -833,6 +842,8 @@
 			children = (
 				95A8A3BA219D161C008E978E /* CustomRefreshHeader.h */,
 				95A8A3BB219D161D008E978E /* CustomRefreshHeader.m */,
+				958AA69621A2A89600BEA50C /* CustomRefreshFooter.h */,
+				958AA69721A2A89600BEA50C /* CustomRefreshFooter.m */,
 			);
 			path = Refresh;
 			sourceTree = "<group>";
@@ -866,6 +877,40 @@
 			path = ClearCache;
 			sourceTree = "<group>";
 		};
+		9579E74D21B5353700051EDB /* Lib */ = {
+			isa = PBXGroup;
+			children = (
+				9579E74E21B5353700051EDB /* sdk-ios */,
+			);
+			path = Lib;
+			sourceTree = "<group>";
+		};
+		9579E74E21B5353700051EDB /* sdk-ios */ = {
+			isa = PBXGroup;
+			children = (
+				9579EB1D21B5355E00051EDB /* sdk-ios.xcodeproj */,
+			);
+			path = "sdk-ios";
+			sourceTree = "<group>";
+		};
+		9579EB1E21B5355E00051EDB /* Products */ = {
+			isa = PBXGroup;
+			children = (
+				9579EB2221B5355E00051EDB /* sdk_ios.framework */,
+			);
+			name = Products;
+			sourceTree = "<group>";
+		};
+		9579EB4E21BABE6300051EDB /* MBProgressHUD+JDragon */ = {
+			isa = PBXGroup;
+			children = (
+				9579EB4F21BABE6300051EDB /* MBProgressHUD+JDragon.h */,
+				9579EB5021BABE6300051EDB /* MBProgressHUD+JDragon.bundle */,
+				9579EB5121BABE6300051EDB /* MBProgressHUD+JDragon.m */,
+			);
+			path = "MBProgressHUD+JDragon";
+			sourceTree = "<group>";
+		};
 		95A8A3A8219D12B1008E978E /* Internationalization */ = {
 			isa = PBXGroup;
 			children = (
@@ -893,9 +938,27 @@
 			path = RegularCheck;
 			sourceTree = "<group>";
 		};
+		95A8A415219D5FE2008E978E /* YBPopupMenu */ = {
+			isa = PBXGroup;
+			children = (
+				95A8A418219D5FF6008E978E /* YBPopupMenu.h */,
+				95A8A417219D5FF6008E978E /* YBPopupMenu.m */,
+				95A8A419219D5FF7008E978E /* YBPopupMenuPath.h */,
+				95A8A41B219D5FF7008E978E /* YBPopupMenuPath.m */,
+				95A8A416219D5FF6008E978E /* YBRectConst.h */,
+				95A8A41A219D5FF7008E978E /* YBRectConst.m */,
+			);
+			path = YBPopupMenu;
+			sourceTree = "<group>";
+		};
 		AAA27303C314FA52BBDCAB7B /* Frameworks */ = {
 			isa = PBXGroup;
 			children = (
+				9579E71A21B4D3D900051EDB /* StoreKit.framework */,
+				9579E71821B4D3CF00051EDB /* WebKit.framework */,
+				9579E71621B4D3C400051EDB /* Security.framework */,
+				9579E71421B4D3AE00051EDB /* SystemConfiguration.framework */,
+				9579E71121B4D39B00051EDB /* CoreSpotlight.framework */,
 				EB267DD938A42BAD30A164A2 /* Pods_bupocket.framework */,
 				248F98B6791F2F7C55E77E0E /* Pods_bupocketTests.framework */,
 				9D915F385F1A78B38EC83B6E /* Pods_bupocketUITests.framework */,
@@ -927,13 +990,13 @@
 				83B4659C21745C9300187961 /* Sources */,
 				83B4659D21745C9300187961 /* Frameworks */,
 				83B4659E21745C9300187961 /* Resources */,
-				838DC7622182DDDB002FF276 /* Embed Frameworks */,
 				6C9857D402B444A8F985E58F /* [CP] Embed Pods Frameworks */,
+				9579E74A21B5329300051EDB /* Embed Frameworks */,
 			);
 			buildRules = (
 			);
 			dependencies = (
-				831789F52189AAAE003B5731 /* PBXTargetDependency */,
+				9579EB2621B5356B00051EDB /* PBXTargetDependency */,
 			);
 			name = bupocket;
 			productName = bupocket;
@@ -984,11 +1047,16 @@
 		83B4659821745C9300187961 /* Project object */ = {
 			isa = PBXProject;
 			attributes = {
-				LastUpgradeCheck = 1000;
+				LastUpgradeCheck = 1010;
 				ORGANIZATIONNAME = bupocket;
 				TargetAttributes = {
 					83B4659F21745C9300187961 = {
 						CreatedOnToolsVersion = 10.0;
+						SystemCapabilities = {
+							com.apple.SafariKeychain = {
+								enabled = 0;
+							};
+						};
 					};
 					83B465B721745C9400187961 = {
 						CreatedOnToolsVersion = 10.0;
@@ -1014,8 +1082,8 @@
 			projectDirPath = "";
 			projectReferences = (
 				{
-					ProductGroup = 831789ED2189AA9B003B5731 /* Products */;
-					ProjectRef = 831789EC2189AA9B003B5731 /* sdk-ios.xcodeproj */;
+					ProductGroup = 9579EB1E21B5355E00051EDB /* Products */;
+					ProjectRef = 9579EB1D21B5355E00051EDB /* sdk-ios.xcodeproj */;
 				},
 			);
 			projectRoot = "";
@@ -1028,11 +1096,11 @@
 /* End PBXProject section */
 
 /* Begin PBXReferenceProxy section */
-		831789F12189AA9B003B5731 /* sdk_ios.framework */ = {
+		9579EB2221B5355E00051EDB /* sdk_ios.framework */ = {
 			isa = PBXReferenceProxy;
 			fileType = wrapper.framework;
 			path = sdk_ios.framework;
-			remoteRef = 831789F02189AA9B003B5731 /* PBXContainerItemProxy */;
+			remoteRef = 9579EB2121B5355E00051EDB /* PBXContainerItemProxy */;
 			sourceTree = BUILT_PRODUCTS_DIR;
 		};
 /* End PBXReferenceProxy section */
@@ -1051,7 +1119,7 @@
 				83379A4F21787F2500C222A5 /* Default-iPhone6.png in Resources */,
 				83379A5021787F2500C222A5 /* Default@2x.png in Resources */,
 				83B465B021745C9400187961 /* LaunchScreen.storyboard in Resources */,
-				834695552192D93E007B9AA3 /* MBProgressHUD+JDragon.bundle in Resources */,
+				9579EB5221BABE6300051EDB /* MBProgressHUD+JDragon.bundle in Resources */,
 				83379A5421787F2500C222A5 /* Default.png in Resources */,
 				83FB443821904AA400D68569 /* HMScanner.bundle in Resources */,
 				8337991F2176FD4400C222A5 /* InfoPlist.strings in Resources */,
@@ -1134,7 +1202,6 @@
 				"${BUILT_PRODUCTS_DIR}/AFNetworking/AFNetworking.framework",
 				"${BUILT_PRODUCTS_DIR}/FMDB/FMDB.framework",
 				"${BUILT_PRODUCTS_DIR}/IQKeyboardManager/IQKeyboardManager.framework",
-				"${BUILT_PRODUCTS_DIR}/JSONModel/JSONModel.framework",
 				"${BUILT_PRODUCTS_DIR}/MBProgressHUD/MBProgressHUD.framework",
 				"${BUILT_PRODUCTS_DIR}/MJExtension/MJExtension.framework",
 				"${BUILT_PRODUCTS_DIR}/MJRefresh/MJRefresh.framework",
@@ -1152,7 +1219,6 @@
 				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/AFNetworking.framework",
 				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/FMDB.framework",
 				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/IQKeyboardManager.framework",
-				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/JSONModel.framework",
 				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/MBProgressHUD.framework",
 				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/MJExtension.framework",
 				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/MJRefresh.framework",
@@ -1200,11 +1266,9 @@
 				83379A6B2179C1D500C222A5 /* ChangePasswordViewController.m in Sources */,
 				8372C86C2174CCB000FF9506 /* MyViewController.m in Sources */,
 				83379A58217880C700C222A5 /* BackUpPurseViewController.m in Sources */,
-				83379A7A217B4EA700C222A5 /* AppDelegate+Extension.m in Sources */,
 				83379A80217B524D00C222A5 /* UIApplication+Extension.m in Sources */,
 				9549EC66219C0CF800307255 /* CreateTipsAlertView.m in Sources */,
 				83379AE52180631200C222A5 /* TxInfoModel.m in Sources */,
-				834695562192D93E007B9AA3 /* MBProgressHUD+JDragon.m in Sources */,
 				83379A8C217DB25A00C222A5 /* TransferAccountsViewController.m in Sources */,
 				83FB443621904AA400D68569 /* HMScannerViewController.m in Sources */,
 				8337991A2176E80D00C222A5 /* MultilingualViewController.m in Sources */,
@@ -1214,12 +1278,14 @@
 				83379AAA217F006600C222A5 /* HttpTool.m in Sources */,
 				8372C86F2174D03F00FF9506 /* UIButton+Extension.m in Sources */,
 				83379A8F217DC0C700C222A5 /* TransferDetailsAlertView.m in Sources */,
+				950EF2A3219D801300F5121A /* MonetaryUnitViewController.m in Sources */,
 				83D5B1EB2181741200BF1FF1 /* AddAssetsViewCell.m in Sources */,
 				95A8A3B1219D1352008E978E /* LanguageManager.m in Sources */,
 				8395AF22218725D20082EA30 /* RegisteredAssetsViewController.m in Sources */,
 				8337992F21772E0300C222A5 /* CustomButton.m in Sources */,
 				95A8A3B5219D157C008E978E /* DateTool.m in Sources */,
 				9549EC70219D075F00307255 /* ClearCacheTool.m in Sources */,
+				952ADD0D21A65B4B00BEE51B /* SocketIOHandler.m in Sources */,
 				83B594B12175E6FA009F91BA /* PlaceholderTextView.m in Sources */,
 				8395AF312189496E0082EA30 /* DistributionModel.m in Sources */,
 				83379AA9217F006600C222A5 /* HTTPManager.m in Sources */,
@@ -1241,6 +1307,7 @@
 				8372C8622174CBF100FF9506 /* NavigationViewController.m in Sources */,
 				8372C8592174CB9800FF9506 /* UITextField+Extension.m in Sources */,
 				95A8A3BF219D166D008E978E /* Encapsulation.m in Sources */,
+				958AA69821A2A89600BEA50C /* CustomRefreshFooter.m in Sources */,
 				83D5BCCE2182A87B00BF1FF1 /* AccountModel.m in Sources */,
 				83FB443921904AA400D68569 /* HMScanerCardViewController.m in Sources */,
 				83379AC6217F3F4200C222A5 /* AssetsListModel.m in Sources */,
@@ -1255,14 +1322,17 @@
 				83379A86217D9C8A00C222A5 /* AssetsDetailViewController.m in Sources */,
 				83379A92217DE12600C222A5 /* TransferResultsViewController.m in Sources */,
 				8372C8632174CBF100FF9506 /* TabBarViewController.m in Sources */,
+				9579EB5321BABE6300051EDB /* MBProgressHUD+JDragon.m in Sources */,
 				83379AC3217F3F3000C222A5 /* BaseModel.m in Sources */,
 				83D5BCD12182AB8200BF1FF1 /* AccountTool.m in Sources */,
 				8372C872217588D100FF9506 /* IdentityViewController.m in Sources */,
+				95A8A41C219D5FF7008E978E /* YBPopupMenu.m in Sources */,
 				83B594AA2175954F009F91BA /* CreateIdentityViewController.m in Sources */,
 				83EE39422181633A0017CDE5 /* AddAssetsViewController.m in Sources */,
 				83379A83217D805300C222A5 /* PurseAddressAlertView.m in Sources */,
 				8395AF2B218843650082EA30 /* RegisteredModel.m in Sources */,
 				8395AF25218725FF0082EA30 /* RegisteredResultViewController.m in Sources */,
+				950E4145219E6ADD002C7900 /* AssetCurrencyModel.m in Sources */,
 				83379A6E2179CB9E00C222A5 /* FeedbackViewController.m in Sources */,
 				83D5BCC72181BF9500BF1FF1 /* UIColor+Extension.m in Sources */,
 				9510A3CC219A91D4007A49A4 /* ErrorTypeTool.m in Sources */,
@@ -1275,12 +1345,15 @@
 				833799322177305A00C222A5 /* UIView+Extension.m in Sources */,
 				83379A98217EB79B00C222A5 /* RequestTimeoutViewController.m in Sources */,
 				835A45272174C14D005BFCDD /* AppDelegate.m in Sources */,
+				956CD42121B016D1004DC1FA /* ListModel.m in Sources */,
 				83379AE22180630300C222A5 /* TxDetailModel.m in Sources */,
+				95A8A41D219D5FF7008E978E /* YBRectConst.m in Sources */,
 				833799172176E1E600C222A5 /* ListTableViewCell.m in Sources */,
 				95A8A3BC219D161D008E978E /* CustomRefreshHeader.m in Sources */,
 				83379A5B2178825300C222A5 /* PurseCipherAlertView.m in Sources */,
 				83379A092178509300C222A5 /* WKWebViewController.m in Sources */,
 				83379A6221797BDD00C222A5 /* ConfirmMnemonicViewController.m in Sources */,
+				95A8A41E219D5FF7008E978E /* YBPopupMenuPath.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -1303,11 +1376,6 @@
 /* End PBXSourcesBuildPhase section */
 
 /* Begin PBXTargetDependency section */
-		831789F52189AAAE003B5731 /* PBXTargetDependency */ = {
-			isa = PBXTargetDependency;
-			name = "sdk-ios";
-			targetProxy = 831789F42189AAAE003B5731 /* PBXContainerItemProxy */;
-		};
 		83B465BA21745C9400187961 /* PBXTargetDependency */ = {
 			isa = PBXTargetDependency;
 			target = 83B4659F21745C9300187961 /* bupocket */;
@@ -1317,6 +1385,11 @@
 			isa = PBXTargetDependency;
 			target = 83B4659F21745C9300187961 /* bupocket */;
 			targetProxy = 83B465C421745C9400187961 /* PBXContainerItemProxy */;
+		};
+		9579EB2621B5356B00051EDB /* PBXTargetDependency */ = {
+			isa = PBXTargetDependency;
+			name = "sdk-ios";
+			targetProxy = 9579EB2521B5356B00051EDB /* PBXContainerItemProxy */;
 		};
 /* End PBXTargetDependency section */
 
@@ -1541,19 +1614,19 @@
 			isa = XCBuildConfiguration;
 			baseConfigurationReference = A61F11E76D6541BC859B703E /* Pods-bupocket.debug.xcconfig */;
 			buildSettings = {
+				ALWAYS_EMBED_SWIFT_STANDARD_LIBRARIES = YES;
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				CODE_SIGN_IDENTITY = "iPhone Developer";
 				CODE_SIGN_STYLE = Automatic;
 				DEFINES_MODULE = YES;
-				DEVELOPMENT_TEAM = JX3449XAKF;
+				DEVELOPMENT_TEAM = 3DPSH636RT;
 				FRAMEWORK_SEARCH_PATHS = (
 					"$(inherited)",
-					"$(PROJECT_DIR)/bupocket/Classes/Main/Tool/src",
 					"$(PROJECT_DIR)",
-					"$(PROJECT_DIR)/bupocket/Classes/Main/Tool",
+					"$(PROJECT_DIR)/bupocket/Classes/Common/Tool",
 				);
 				GCC_PRECOMPILE_PREFIX_HEADER = YES;
-				GCC_PREFIX_HEADER = "$(SRCROOT)/bupocket/Classes/Main/PrefixHeader.pch";
+				GCC_PREFIX_HEADER = "$(SRCROOT)/bupocket/Classes/Common/PrefixHeader.pch";
 				INFOPLIST_FILE = bupocket/Info.plist;
 				IPHONEOS_DEPLOYMENT_TARGET = 9.0;
 				LD_RUNPATH_SEARCH_PATHS = (
@@ -1562,14 +1635,12 @@
 				);
 				LIBRARY_SEARCH_PATHS = (
 					"$(inherited)",
-					"$(PROJECT_DIR)/bupocket/Classes/Main/Tool/src/crypto/openssl/lib",
-					"$(PROJECT_DIR)/src/crypto/openssl/lib",
-					"$(PROJECT_DIR)/bupocket/Classes/Main/Tool/Framework/sdk-ios/crypto/openssl/lib",
+					"$(PROJECT_DIR)/bupocket/Classes/Common/Tool/Lib/sdk-ios/crypto/openssl/lib",
 				);
-				PRODUCT_BUNDLE_IDENTIFIER = com.bumo.bupocket;
+				PRODUCT_BUNDLE_IDENTIFIER = com.bupocket;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				PROVISIONING_PROFILE_SPECIFIER = "";
-				TARGETED_DEVICE_FAMILY = "1,2";
+				TARGETED_DEVICE_FAMILY = 1;
 			};
 			name = Debug;
 		};
@@ -1577,19 +1648,19 @@
 			isa = XCBuildConfiguration;
 			baseConfigurationReference = 8BAFA7A3EC4992591E7450DA /* Pods-bupocket.release.xcconfig */;
 			buildSettings = {
+				ALWAYS_EMBED_SWIFT_STANDARD_LIBRARIES = YES;
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				CODE_SIGN_IDENTITY = "iPhone Developer";
 				CODE_SIGN_STYLE = Automatic;
 				DEFINES_MODULE = YES;
-				DEVELOPMENT_TEAM = JX3449XAKF;
+				DEVELOPMENT_TEAM = 3DPSH636RT;
 				FRAMEWORK_SEARCH_PATHS = (
 					"$(inherited)",
-					"$(PROJECT_DIR)/bupocket/Classes/Main/Tool/src",
 					"$(PROJECT_DIR)",
-					"$(PROJECT_DIR)/bupocket/Classes/Main/Tool",
+					"$(PROJECT_DIR)/bupocket/Classes/Common/Tool",
 				);
 				GCC_PRECOMPILE_PREFIX_HEADER = YES;
-				GCC_PREFIX_HEADER = "$(SRCROOT)/bupocket/Classes/Main/PrefixHeader.pch";
+				GCC_PREFIX_HEADER = "$(SRCROOT)/bupocket/Classes/Common/PrefixHeader.pch";
 				INFOPLIST_FILE = bupocket/Info.plist;
 				IPHONEOS_DEPLOYMENT_TARGET = 9.0;
 				LD_RUNPATH_SEARCH_PATHS = (
@@ -1598,14 +1669,12 @@
 				);
 				LIBRARY_SEARCH_PATHS = (
 					"$(inherited)",
-					"$(PROJECT_DIR)/bupocket/Classes/Main/Tool/src/crypto/openssl/lib",
-					"$(PROJECT_DIR)/src/crypto/openssl/lib",
-					"$(PROJECT_DIR)/bupocket/Classes/Main/Tool/Framework/sdk-ios/crypto/openssl/lib",
+					"$(PROJECT_DIR)/bupocket/Classes/Common/Tool/Lib/sdk-ios/crypto/openssl/lib",
 				);
-				PRODUCT_BUNDLE_IDENTIFIER = com.bumo.bupocket;
+				PRODUCT_BUNDLE_IDENTIFIER = com.bupocket;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				PROVISIONING_PROFILE_SPECIFIER = "";
-				TARGETED_DEVICE_FAMILY = "1,2";
+				TARGETED_DEVICE_FAMILY = 1;
 			};
 			name = Release;
 		};

@@ -17,11 +17,14 @@ NS_ASSUME_NONNULL_BEGIN
 
 @property (nonatomic, strong) SearchAssetsModel * searchAssetsModel;
 
+@property (nonatomic, strong) UIImageView * listImageBg;
 @property (nonatomic, strong) UIImageView * listImage;
 @property (nonatomic, strong) UILabel * title;
 @property (nonatomic, strong) UILabel * detailTitle;
 @property (nonatomic, strong) UILabel * infoTitle;
-@property (nonatomic, strong) UIButton * addBtn;
+@property (nonatomic, strong) UISwitch * switchControl;
+//@property (nonatomic, strong) UIButton * addBtn;
+@property (nonatomic, strong) UIView * lineView;
 
 @end
 

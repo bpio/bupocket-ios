@@ -32,41 +32,38 @@ static NSString * const DistributionDetailCellID = @"DistributionDetailCellID";
 
 - (void)viewDidLoad {
     [super viewDidLoad];
-    self.navigationItem.title = Localized(@"DistributionAssetsDetail");
     [self setData];
     [self setupView];
-    [self popToRootVC];
     // Do any additional setup after loading the view.
 }
 
 - (void)setData
 {
-    NSString * amount = [NSString stringWithFormat:@"%zd", self.registeredModel.amount];
     NSString * decimal  = [NSString stringWithFormat:@"%zd", self.distributionModel.decimals];
-    NSMutableArray * array = [NSMutableArray arrayWithObjects:@{Localized(@"TokenName"): self.distributionModel.assetName}, @{Localized(@"TokenCode"): self.distributionModel.assetCode}, @{Localized(@"TheIssueVolume"): amount}, @{Localized(@"TokenDecimalDigits"): decimal}, @{Localized(@"ATPVersion"): self.distributionModel.version}, nil];
+    NSMutableArray * array = [NSMutableArray arrayWithObjects:@{Localized(@"TokenName"): self.distributionModel.assetName}, @{Localized(@"TokenCode"): self.distributionModel.assetCode}, @{Localized(@"TheIssueVolume"): self.registeredModel.amount}, @{Localized(@"TokenDecimalDigits"): decimal}, @{Localized(@"ATPVersion"): self.distributionModel.version}, nil];
     if (self.distributionModel.tokenDescription) {
         [array addObject:@{Localized(@"TokenDescription"): self.distributionModel.tokenDescription}];
     }
     NSString * actualSupply;
-    if (self.resultSate == ResultSateSuccess) {
-        actualSupply = [NSString stringWithFormat:@"%zd", self.registeredModel.amount + [self.distributionModel.actualSupply integerValue]];
-    } else if (self.resultSate == ResultSateFailure) {
+    if (self.distributionResultState == DistributionResultSuccess) {
+        actualSupply = [NSString stringWithFormat:@"%lld", [self.registeredModel.amount longLongValue] + [self.distributionModel.actualSupply longLongValue]];
+    } else if (self.distributionResultState == DistributionResultFailure) {
         actualSupply = self.distributionModel.actualSupply;
     }
     if ([self.distributionModel.totalSupply longLongValue] == 0) {
         [array insertObject:@{Localized(@"TotalAmountOfToken"): Localized(@"UnrestrictedIssue")} atIndex:2];
-        if (self.resultSate != ResultSateOvertime) {
+        if (self.distributionResultState != DistributionResultOvertime) {
             [array insertObject:@{Localized(@"CumulativeCirculation"): actualSupply} atIndex:4];
         }
     } else {
         [array insertObject:@{Localized(@"TotalAmountOfToken"): self.distributionModel.totalSupply} atIndex:2];
-        if (self.resultSate != ResultSateOvertime) {
-            NSString * remainingVolume = [NSString stringWithFormat:@"%zd", [self.distributionModel.totalSupply integerValue] - [actualSupply integerValue]];
+        if (self.distributionResultState != DistributionResultOvertime) {
+            NSString * remainingVolume = [NSString stringWithFormat:@"%lld", [self.distributionModel.totalSupply longLongValue] - [actualSupply longLongValue]];
             [array insertObject:@{Localized(@"RemainingUnissuedVolume"): remainingVolume} atIndex:4];
         }
     }
     [self.listArray addObject:array];
-    if (self.resultSate != ResultSateOvertime) {
+    if (self.distributionResultState != DistributionResultOvertime) {
         NSArray * transactionArray = @[@{Localized(@"ActualTransactionCost"): [NSString stringAppendingBUWithStr:self.distributionModel.distributionFee]}, @{Localized(@"IssuerAddress"): [AccountTool account].purseAccount}, @{Localized(@"Hash"): self.distributionModel.transactionHash}];
         [self.listArray addObject:transactionArray];
     }
@@ -90,28 +87,15 @@ static NSString * const DistributionDetailCellID = @"DistributionDetailCellID";
         NSString * imageName;
         NSString * result;
         CGFloat headerViewH = ScreenScale(110);
-        if (self.resultSate == ResultSateSuccess) {
+        if (self.distributionResultState == DistributionResultSuccess) {
             imageName = @"assetsSuccess";
             result = Localized(@"DistributionSuccess");
-        } else if (self.resultSate == ResultSateFailure) {
+        } else if (self.distributionResultState == DistributionResultFailure) {
             imageName = @"assetsFailure";
-            result = Localized(@"TransferFailure");
-        } else if (self.resultSate == ResultSateOvertime) {
+            result = Localized(@"DistributionFailure");
+        } else if (self.distributionResultState == DistributionResultOvertime) {
             imageName = @"assetsTimeout";
             result = Localized(@"DistributionTimeout");
-            UILabel * prompt = [[UILabel alloc] init];
-            prompt.font = TITLE_FONT;
-            prompt.textColor = COLOR_9;
-            prompt.numberOfLines = 0;
-            prompt.textAlignment = NSTextAlignmentCenter;
-            [headerView addSubview:prompt];
-            [prompt mas_makeConstraints:^(MASConstraintMaker *make) {
-                make.bottom.equalTo(headerView.mas_bottom).offset(-ScreenScale(17));
-                make.centerX.equalTo(headerView);
-                make.width.mas_equalTo(ScreenScale(275));
-            }];
-            prompt.text = Localized(@"DistributionPrompt");
-            headerViewH = ScreenScale(170);
         }
         headerView.frame = CGRectMake(0, 0, DEVICE_WIDTH, headerViewH);
         CustomButton * state = [[CustomButton alloc] init];
@@ -136,7 +120,7 @@ static NSString * const DistributionDetailCellID = @"DistributionDetailCellID";
 - (CGFloat)tableView:(UITableView *)tableView heightForFooterInSection:(NSInteger)section
 {
     if (section == self.listArray.count - 1) {
-        return SafeAreaBottomH + NavBarH + Margin_10;
+        return ContentSizeBottom;
     } else {
         return CGFLOAT_MIN;
     }
@@ -145,7 +129,7 @@ static NSString * const DistributionDetailCellID = @"DistributionDetailCellID";
 - (CGFloat)tableView:(UITableView *)tableView heightForRowAtIndexPath:(NSIndexPath *)indexPath
 {
     if ((self.distributionModel.tokenDescription && indexPath.section == 0 && indexPath.row == [self.listArray[0] count] - 1) || (indexPath.section == 1 && indexPath.row > 0)) {
-        CGFloat rowHeight = [Encapsulation rectWithText:[[self.listArray[indexPath.section][indexPath.row] allValues] firstObject] fontSize:15 textWidth: DEVICE_WIDTH - Margin_40].size.height + ScreenScale(55);
+        CGFloat rowHeight = [Encapsulation rectWithText:[[self.listArray[indexPath.section][indexPath.row] allValues] firstObject] font:FONT(15) textWidth: DEVICE_WIDTH - Margin_40].size.height + ScreenScale(55);
         return rowHeight;
     } else {
         return MAIN_HEIGHT;

@@ -10,14 +10,15 @@
 #import "AddAssetsViewCell.h"
 #import "SearchAssetsModel.h"
 
-@interface AddAssetsViewController ()<UISearchControllerDelegate, UISearchResultsUpdating, UISearchBarDelegate, UITableViewDelegate, UITableViewDataSource>
+@interface AddAssetsViewController ()<UITableViewDelegate, UITableViewDataSource, UITextFieldDelegate>
 
 @property (nonatomic, strong) UITableView * tableView;
-@property (nonatomic, strong) UISearchController * searchController;
-@property (nonatomic, strong) NSMutableArray *results;
+@property (nonatomic, strong) UITextField * searchTextField;
+@property (nonatomic, strong) NSMutableArray * listArray;
 @property (nonatomic, strong) UIView * noData;
 @property (nonatomic, assign) NSInteger pageindex;
 @property (nonatomic, strong) UIView * noNetWork;
+@property (nonatomic, strong) NSString * searchText;
 
 @end
 
@@ -25,28 +26,25 @@
 
 static NSString * const SearchID = @"SearchID";
 
-- (NSMutableArray *)results {
-    if (!_results) {
-        _results = [NSMutableArray array];
-    }
-    return _results;
-}
+//- (NSMutableArray *)results {
+//    if (!_results) {
+//        _results = [NSMutableArray array];
+//    }
+//    return _results;
+//}
 
+- (NSMutableArray *)listArray
+{
+    if (!_listArray) {
+        _listArray = [NSMutableArray array];
+    }
+    return _listArray;
+}
 - (void)viewDidLoad {
     [super viewDidLoad];
     self.navigationItem.title = Localized(@"AddAssets");
-    if (@available(iOS 11.0, *)) {
-        self.navigationItem.hidesSearchBarWhenScrolling = YES;
-    } else {
-        // Fallback on earlier versions
-    }
     [self setupView];
-     self.noNetWork = [Encapsulation showNoNetWorkWithSuperView:self.view target:self action:@selector(reloadData)];
-    UIButton * backButton = [UIButton createButtonWithNormalImage:@"nav_goback_n" SelectedImage:@"nav_goback_n" Target:self Selector:@selector(cancelAction)];
-    backButton.frame = CGRectMake(0, 0, ScreenScale(44), Margin_30);
-    backButton.contentHorizontalAlignment = UIControlContentHorizontalAlignmentLeft;
-    self.navigationItem.leftBarButtonItem = [[UIBarButtonItem alloc]initWithCustomView:backButton];
-    [self setupRefresh];
+    self.noNetWork = [Encapsulation showNoNetWorkWithSuperView:self.view target:self action:@selector(reloadData)];
     // Do any additional setup after loading the view.
 }
 - (void)reloadData
@@ -54,38 +52,42 @@ static NSString * const SearchID = @"SearchID";
     self.noNetWork.hidden = YES;
     [self.tableView.mj_header beginRefreshing];
 }
-- (void)cancelAction
-{
-    self.searchController.active = NO;
-    [self.navigationController popViewControllerAnimated:YES];
-}
 - (void)setupRefresh
 {
     self.tableView.mj_header = [CustomRefreshHeader headerWithRefreshingTarget:self refreshingAction:@selector(loadNewData)];
     self.tableView.mj_header.automaticallyChangeAlpha = YES;
-    self.tableView.mj_footer = [MJRefreshAutoNormalFooter footerWithRefreshingTarget:self refreshingAction:@selector(loadMoreData)];
-    self.tableView.mj_footer.hidden = YES;
+    self.tableView.mj_footer = [CustomRefreshFooter footerWithRefreshingTarget:self refreshingAction:@selector(loadMoreData)];
+    [self.tableView.mj_header beginRefreshing];
+    self.tableView.mj_footer.ignoredScrollViewContentInsetBottom = -(ContentSizeBottom);
 }
 - (void)loadNewData
 {
-    [self getDataWithPageindex: PageIndex_Default];
+    if (self.searchText.length > 0) {
+        [self getDataWithPageindex: PageIndex_Default];
+    } else {
+        [self.tableView.mj_header endRefreshing];
+    }
 }
 - (void)loadMoreData
 {
-    [self getDataWithPageindex:self.pageindex];
+    if (self.searchText.length > 0) {
+        [self getDataWithPageindex:self.pageindex];
+    } else {
+        [self.tableView.mj_footer endRefreshing];
+    }
 }
 - (void)getDataWithPageindex:(NSInteger)pageindex
 {
-    [[HTTPManager shareManager] getSearchAssetsDataWithAssetCode:_searchController.searchBar.text pageIndex:1 success:^(id responseObject) {
+    [[HTTPManager shareManager] getSearchAssetsDataWithAssetCode:_searchText pageIndex:pageindex success:^(id responseObject) {
         NSInteger code = [[responseObject objectForKey:@"errCode"] integerValue];
         if (code == Success_Code) {
             NSArray * listArray = [SearchAssetsModel mj_objectArrayWithKeyValuesArray:responseObject[@"data"] [@"tokenList"]];
             if (pageindex == PageIndex_Default) {
-                [self.results removeAllObjects];
+                [self.listArray removeAllObjects];
                 self.pageindex = PageIndex_Default;
             }
             self.pageindex = self.pageindex + 1;
-            [self.results addObjectsFromArray:listArray];
+            [self.listArray addObjectsFromArray:listArray];
             if (listArray.count < PageSize_Max) {
                 [self.tableView.mj_footer endRefreshingWithNoMoreData];
             } else {
@@ -96,7 +98,8 @@ static NSString * const SearchID = @"SearchID";
             [MBProgressHUD showTipMessageInWindow:[ErrorTypeTool getDescriptionWithErrorCode:code]];
         }
         [self.tableView.mj_header endRefreshing];
-        (self.results.count > 0) ? (self.tableView.tableFooterView = [UIView new]) : (self.tableView.tableFooterView = self.noData);
+        (self.listArray.count > 0) ? (self.tableView.tableFooterView = [UIView new]) : (self.tableView.tableFooterView = self.noData);
+        self.tableView.mj_footer.hidden = (self.listArray.count == 0);
         self.noNetWork.hidden = YES;
     } failure:^(NSError *error) {
         [self.tableView.mj_header endRefreshing];
@@ -104,45 +107,74 @@ static NSString * const SearchID = @"SearchID";
         self.noNetWork.hidden = NO;
     }];
 }
-- (UISearchController *)searchController
+- (void)viewDidAppear:(BOOL)animated
 {
-    if (!_searchController) {
-        _searchController = [[UISearchController alloc] initWithSearchResultsController:nil];
-        _searchController.searchResultsUpdater = self;
-        _searchController.delegate = self;
-        _searchController.searchBar.delegate = self;
-        _searchController.dimsBackgroundDuringPresentation = NO;
-        _searchController.hidesNavigationBarDuringPresentation = NO;
-        _searchController.searchBar.placeholder = Localized(@"InputAssetName");
-        _searchController.searchBar.tintColor = MAIN_COLOR;
-        _searchController.searchBar.barTintColor = [UIColor whiteColor];
-        UIImageView *barImageView = [[[_searchController.searchBar.subviews firstObject] subviews] firstObject];
-        barImageView.layer.borderColor = LINE_COLOR.CGColor;
-        barImageView.layer.borderWidth = LINE_WIDTH;
-        UITextField * textField = [_searchController.searchBar valueForKey:@"_searchField"];
-        textField.textColor = TITLE_COLOR;
-        textField.font = FONT(16);
-    }
-    return _searchController;
+    [super viewDidAppear:animated];
+    [_searchTextField becomeFirstResponder];
 }
-
+- (void)viewWillDisappear:(BOOL)animated
+{
+    [super viewWillDisappear:animated];
+    [_searchTextField resignFirstResponder];
+}
 - (void)setupView
 {
-    self.definesPresentationContext = NO;
-    [self setExtendedLayoutIncludesOpaqueBars:YES];
-    CGFloat searchBarH = self.searchController.searchBar.height;
-    self.tableView = [[UITableView alloc] initWithFrame:CGRectMake(0, searchBarH, DEVICE_WIDTH, DEVICE_HEIGHT - searchBarH) style:UITableViewStyleGrouped];
+    self.tableView = [[UITableView alloc] initWithFrame:self.view.frame style:UITableViewStyleGrouped];
     self.tableView.delegate = self;
     self.tableView.dataSource = self;
-    [self.view addSubview:self.searchController.searchBar];
+    self.tableView.backgroundColor = [UIColor whiteColor];
+    self.tableView.separatorStyle = UITableViewCellSeparatorStyleNone;
     [self.view addSubview:self.tableView];
-    self.automaticallyAdjustsScrollViewInsets = NO;
+    [self setupHeaderView];
 }
+
+- (void)setupHeaderView
+{
+    UIView * headerView = [[UIView alloc] initWithFrame:CGRectMake(0, 0, DEVICE_WIDTH, MAIN_HEIGHT)];
+    headerView.backgroundColor = [UIColor whiteColor];
+    self.tableView.tableHeaderView = headerView;
+    _searchTextField = [[UITextField alloc] init];
+    _searchTextField.placeholder = Localized(@"InputAssetName");
+    _searchTextField.font = FONT(16);
+    _searchTextField.textColor = TITLE_COLOR;
+    _searchTextField.delegate = self;
+    _searchTextField.tintColor = MAIN_COLOR;
+    _searchTextField.clearButtonMode = UITextFieldViewModeWhileEditing;
+    _searchTextField.returnKeyType = UIReturnKeySearch;
+    [_searchTextField addTarget:self action:@selector(textChange:) forControlEvents:UIControlEventEditingChanged];
+    [headerView addSubview:_searchTextField];
+    
+    UIButton * searchBtn = [UIButton createButtonWithNormalImage:@"search" SelectedImage:@"search" Target:self Selector:@selector(searchAction)];
+    [headerView addSubview:searchBtn];
+    [searchBtn mas_makeConstraints:^(MASConstraintMaker *make) {
+        make.top.bottom.equalTo(headerView);
+        make.right.equalTo(headerView.mas_right).offset(-Margin_20);
+        make.width.mas_equalTo(ScreenScale(22));
+    }];
+    
+    [_searchTextField mas_makeConstraints:^(MASConstraintMaker *make) {
+        make.left.equalTo(headerView.mas_left).offset(Margin_20);
+        make.top.bottom.equalTo(headerView);
+        make.right.equalTo(searchBtn.mas_left).offset(-Margin_10);
+    }];
+    UIView * lineView = [[UIView alloc] init];
+    lineView.backgroundColor = LINE_COLOR;
+    [headerView addSubview:lineView];
+    [lineView mas_makeConstraints:^(MASConstraintMaker *make) {
+        make.left.equalTo(self.searchTextField);
+        make.right.equalTo(searchBtn);
+        make.height.mas_equalTo(LINE_WIDTH);
+        make.bottom.equalTo(headerView);
+    }];
+}
+
 - (UIView *)noData
 {
     if (!_noData) {
-        _noData = [[UIView alloc] initWithFrame:CGRectMake(0, 0, DEVICE_WIDTH, ScreenScale(270))];
-        UIButton * noDataBtn = [Encapsulation showNoDataWithTitle:Localized(@"NoSearchResults") imageName:@"noSearchResults" superView:self.noData frame:CGRectMake(0, Margin_50, DEVICE_WIDTH, ScreenScale(160))];
+        CGFloat contentSizeH = ContentSizeBottom;
+        CGFloat noDataH = DEVICE_HEIGHT - MAIN_HEIGHT - 3 * contentSizeH;
+        _noData = [[UIView alloc] initWithFrame:CGRectMake(0, 0, DEVICE_WIDTH, noDataH)];
+        UIButton * noDataBtn = [Encapsulation showNoDataWithTitle:Localized(@"NoSearchResults") imageName:@"noSearchResults" superView:self.noData frame:CGRectMake(0, (noDataH - ScreenScale(160)) / 2, DEVICE_WIDTH, ScreenScale(160))];
         noDataBtn.hidden = NO;
         [_noData addSubview:noDataBtn];
     }
@@ -154,80 +186,65 @@ static NSString * const SearchID = @"SearchID";
 }
 - (NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section
 {
-    if (self.searchController.active) {
-        return self.results.count ;
-    }
-    return 0;
+    return self.listArray.count;
 }
 - (CGFloat)tableView:(UITableView *)tableView heightForHeaderInSection:(NSInteger)section
 {
     return CGFLOAT_MIN;
 }
+- (void)searchAction
+{
+    [self.searchTextField resignFirstResponder];
+    self.searchText = [self.searchTextField.text stringByTrimmingCharactersInSet:[NSCharacterSet whitespaceAndNewlineCharacterSet]];
+    if (self.searchText.length > 0) {
+        if (!self.tableView.mj_header) {
+            [self setupRefresh];
+        } else {
+            [self.tableView.mj_header beginRefreshing];
+        }
+    }
+}
+- (void)textChange:(UITextField *)textField
+{
+    
+}
+- (BOOL)textFieldShouldReturn:(UITextField *)textField
+{
+    [self searchAction];
+    return YES;
+}
 - (CGFloat)tableView:(UITableView *)tableView heightForFooterInSection:(NSInteger)section
 {
-    return SafeAreaBottomH + NavBarH + Margin_10;
+    return ContentSizeBottom;
+}
+- (CGFloat)tableView:(UITableView *)tableView estimatedHeightForRowAtIndexPath:(NSIndexPath *)indexPath
+{
+    return ScreenScale(130);
 }
 - (CGFloat)tableView:(UITableView *)tableView heightForRowAtIndexPath:(NSIndexPath *)indexPath
 {
-    return ScreenScale(120);
+//    return ScreenScale(130);
+    SearchAssetsModel * searchAssetsModel = self.listArray[indexPath.row];
+    return searchAssetsModel.cellHeight;
 }
 - (UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath
 {
     AddAssetsViewCell * cell = [AddAssetsViewCell cellWithTableView:tableView];
-    cell.searchAssetsModel = self.results[indexPath.row];
+    cell.searchAssetsModel = self.listArray[indexPath.row];
     cell.selectionStyle = UITableViewCellSelectionStyleNone;
     return cell;
 }
 - (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath {
     [tableView deselectRowAtIndexPath:indexPath animated:YES];
 }
-
-- (void)viewDidAppear:(BOOL)animated {
-    [super viewDidAppear:animated];
-    self.searchController.active = true;
-}
-- (void)didPresentSearchController:(UISearchController *)searchController {
-    [UIView animateWithDuration:0.1 animations:^{} completion:^(BOOL finished) {
-        [self.searchController.searchBar becomeFirstResponder];
-    }];
-}
-
-#pragma mark - UISearchResultsUpdating
-- (void)updateSearchResultsForSearchController:(UISearchController *)searchController {
-    self.edgesForExtendedLayout = UIRectEdgeNone;//不加的话，UISearchBar返回后会上移
-    [_searchController.searchBar setShowsCancelButton:YES animated:YES];
-    [_searchController.searchBar setValue:@"Cancel" forKey:@"_cancelButtonText"];
-    UIButton * cancelButton = [self.searchController.searchBar valueForKey:@"cancelButton"];
-    if (cancelButton) {
-        [cancelButton setTitle:Localized(@"Cancel") forState:UIControlStateNormal];
-        [cancelButton setTitleColor:MAIN_COLOR forState:UIControlStateNormal];
-    }
-}
-#pragma mark - UISearchBarDelegate
-- (void)searchBarTextDidBeginEditing:(UISearchBar *)searchBar {
-
-}
-- (void)searchBarTextDidEndEditing:(UISearchBar *)searchBar {
-
-}
-- (void)searchBarSearchButtonClicked:(UISearchBar *)searchBar
-{
-    [searchBar resignFirstResponder];
-    [self loadNewData];
-}
-- (void)searchBarCancelButtonClicked:(UISearchBar *)searchBar
-{
-    [self.results removeAllObjects];
-    [self.tableView reloadData];
-}
 /*
-#pragma mark - Navigation
-
-// In a storyboard-based application, you will often want to do a little preparation before navigation
-- (void)prepareForSegue:(UIStoryboardSegue *)segue sender:(id)sender {
-    // Get the new view controller using [segue destinationViewController].
-    // Pass the selected object to the new view controller.
-}
-*/
+ #pragma mark - Navigation
+ 
+ // In a storyboard-based application, you will often want to do a little preparation before navigation
+ - (void)prepareForSegue:(UIStoryboardSegue *)segue sender:(id)sender {
+ // Get the new view controller using [segue destinationViewController].
+ // Pass the selected object to the new view controller.
+ }
+ */
 
 @end

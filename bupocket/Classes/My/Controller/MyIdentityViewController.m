@@ -11,8 +11,12 @@
 #import "PurseCipherAlertView.h"
 #import "BackupMnemonicsViewController.h"
 #import "ClearCacheTool.h"
+#import "YBPopupMenu.h"
 
 @interface MyIdentityViewController ()
+
+@property (nonatomic, strong) YBPopupMenu *popupMenu;
+@property (nonatomic, strong) CustomButton * identityIDTitle;
 
 @end
 
@@ -28,7 +32,7 @@
 - (void)setupView
 {
     self.view.backgroundColor = COLOR(@"F2F2F2");
-    UIView * myIdentityBg = [[UIView alloc] initWithFrame:CGRectMake(Margin_15, Margin_10, DEVICE_WIDTH - Margin_30, ScreenScale(110))];
+    UIView * myIdentityBg = [[UIView alloc] initWithFrame:CGRectMake(Margin_15, Margin_10, DEVICE_WIDTH - Margin_30, ScreenScale(90))];
     myIdentityBg.backgroundColor = [UIColor whiteColor];
     [myIdentityBg setViewSize:myIdentityBg.size borderWidth:0 borderColor:nil borderRadius:BG_CORNER];
     [self.view addSubview:myIdentityBg];
@@ -38,42 +42,51 @@
     IDNameTitle.textColor = COLOR_9;
     IDNameTitle.text = Localized(@"IdentityNameTitle");
     [myIdentityBg addSubview:IDNameTitle];
-    [IDNameTitle mas_makeConstraints:^(MASConstraintMaker *make) {
-        make.top.equalTo(myIdentityBg.mas_top).offset(ScreenScale(17));
-        make.left.equalTo(myIdentityBg.mas_left).offset(Margin_10);
-    }];
-    
     UILabel * IDName = [[UILabel alloc] init];
     IDName.font = FONT(15);
     IDName.textColor = COLOR_6;
     IDName.text = [AccountTool account].identityName;
     [myIdentityBg addSubview:IDName];
+    [IDNameTitle setContentCompressionResistancePriority:UILayoutPriorityRequired forAxis:UILayoutConstraintAxisHorizontal];
+    [IDNameTitle mas_makeConstraints:^(MASConstraintMaker *make) {
+        make.top.equalTo(myIdentityBg.mas_top).offset(Margin_15);
+        make.left.equalTo(myIdentityBg.mas_left).offset(Margin_10);
+        make.right.mas_lessThanOrEqualTo(IDName.mas_left).offset(-Margin_10);
+    }];
+    
     [IDName mas_makeConstraints:^(MASConstraintMaker *make) {
         make.top.equalTo(IDNameTitle);
         make.right.equalTo(myIdentityBg.mas_right).offset(-Margin_10);
+        make.left.mas_greaterThanOrEqualTo(IDNameTitle.mas_right).offset(Margin_10);
     }];
     
-    UILabel * IdentityIDTitle = [[UILabel alloc] init];
-    IdentityIDTitle.font = IDNameTitle.font;
-    IdentityIDTitle.textColor = IDNameTitle.textColor;
-    IdentityIDTitle.text = Localized(@"IdentityIDTitle");
-    [myIdentityBg addSubview:IdentityIDTitle];
-    [IdentityIDTitle mas_makeConstraints:^(MASConstraintMaker *make) {
-        make.top.equalTo(IDNameTitle.mas_bottom).offset(Margin_25);
-        make.left.equalTo(IDNameTitle);
-    }];
+    self.identityIDTitle = [[CustomButton alloc] init];
+    self.identityIDTitle.layoutMode = HorizontalInverted;
+    self.identityIDTitle.titleLabel.font = IDNameTitle.font;
+    [self.identityIDTitle setTitleColor:IDNameTitle.textColor forState:UIControlStateNormal];
+    [self.identityIDTitle setTitle:Localized(@"IdentityIDTitle") forState:UIControlStateNormal];
+    [self.identityIDTitle setImage:[UIImage imageNamed:@"identityIDInfo"] forState:UIControlStateNormal];
+    [self.identityIDTitle addTarget:self action:@selector(identityIDInfo:) forControlEvents:UIControlEventTouchUpInside];
+    [myIdentityBg addSubview:self.identityIDTitle];
     
     UILabel * IdentityID = [[UILabel alloc] init];
     IdentityID.font = IDName.font;
     IdentityID.textColor = IDName.textColor;
-    IdentityID.text = [AccountTool account].identityAccount;
+    IdentityID.text = [NSString stringEllipsisWithStr:[AccountTool account].identityAccount];
     IdentityID.numberOfLines = 0;
     IdentityID.textAlignment = NSTextAlignmentRight;
     [myIdentityBg addSubview:IdentityID];
+    
+    [self.identityIDTitle setContentCompressionResistancePriority:UILayoutPriorityRequired forAxis:UILayoutConstraintAxisHorizontal];
+    [self.identityIDTitle mas_makeConstraints:^(MASConstraintMaker *make) {
+        make.top.equalTo(IDNameTitle.mas_bottom).offset(Margin_25);
+        make.left.equalTo(IDNameTitle);
+        make.right.mas_lessThanOrEqualTo(IdentityID.mas_left).offset(-Margin_10);
+    }];
     [IdentityID mas_makeConstraints:^(MASConstraintMaker *make) {
-        make.top.equalTo(IdentityIDTitle);
+        make.top.equalTo(self.identityIDTitle);
         make.right.equalTo(IDName);
-        make.width.mas_equalTo(ScreenScale(200));
+        make.left.mas_greaterThanOrEqualTo(self.identityIDTitle.mas_right).offset(Margin_10);
     }];
     
     CGSize btnSize = CGSizeMake(DEVICE_WIDTH - Margin_30, MAIN_HEIGHT);
@@ -98,7 +111,8 @@
     PurseCipherAlertView * alertView = [[PurseCipherAlertView alloc] initWithPrompt:Localized(@"IdentityCipherPrompt") confrimBolck:^(NSString * _Nonnull password, NSArray * _Nonnull words) {
         BackupMnemonicsViewController * VC = [[BackupMnemonicsViewController alloc] init];
         VC.mnemonicArray = words;
-        [UIApplication sharedApplication].keyWindow.rootViewController = [[NavigationViewController alloc] initWithRootViewController:VC];
+        [self.navigationController pushViewController:VC animated:YES];
+//        [UIApplication sharedApplication].keyWindow.rootViewController = [[NavigationViewController alloc] initWithRootViewController:VC];
     } cancelBlock:^{
         
     }];
@@ -109,15 +123,7 @@
     UIAlertController * alertController = [Encapsulation alertControllerWithCancelTitle:Localized(@"Cancel") title:Localized(@"ExitCurrentIdentity") message:Localized(@"ExitCurrentIdentityPrompt")];
     UIAlertAction * okAction = [UIAlertAction actionWithTitle:Localized(@"Confirm") style:UIAlertActionStyleDefault handler:^(UIAlertAction * _Nonnull action) {
         PurseCipherAlertView * alertView = [[PurseCipherAlertView alloc] initWithPrompt:Localized(@"IdentityCipherWarning") confrimBolck:^(NSString * _Nonnull password, NSArray * _Nonnull words) {
-            NSString * privateKey = [NSString decipherKeyStoreWithPW:password keyStoreValueStr:[AccountTool account].purseKey];
-            if ([Tools isEmpty:privateKey]) {
-                [MBProgressHUD showWarnMessage:Localized(@"PasswordIsIncorrect")];
-                return;
-            }
-           [ClearCacheTool cleanCache:^{
-               [ClearCacheTool cleanUserDefaults];
-               [UIApplication sharedApplication].keyWindow.rootViewController = [[NavigationViewController alloc] initWithRootViewController:[[IdentityViewController alloc] init]];
-            }];
+            [self exitIDDataWithPassword:password];
         } cancelBlock:^{
             
         }];
@@ -125,6 +131,48 @@
     }];
     [alertController addAction:okAction];
     [self presentViewController:alertController animated:YES completion:nil];
+}
+- (void)exitIDDataWithPassword:(NSString *)password
+{
+    [MBProgressHUD showActivityMessageInWindow:Localized(@"Loading")];
+    NSOperationQueue * queue = [[NSOperationQueue alloc] init];
+    [queue addOperationWithBlock:^{
+        NSString * privateKey = [NSString decipherKeyStoreWithPW:password keyStoreValueStr:[AccountTool account].purseKey];
+        if ([Tools isEmpty:privateKey]) {
+            [MBProgressHUD hideHUD];
+            [MBProgressHUD showTipMessageInWindow:Localized(@"PasswordIsIncorrect")];
+            return;
+        }
+        [ClearCacheTool cleanCache:^{
+            [ClearCacheTool cleanUserDefaults];
+//            [[LanguageManager shareInstance] setDefaultLocale];
+            [[HTTPManager shareManager] initNetWork];
+            // Minimum Asset Limitation
+            [[HTTPManager shareManager] getBlockLatestFees];
+            [[NSOperationQueue mainQueue] addOperationWithBlock:^{
+                [MBProgressHUD hideHUD];
+                [UIApplication sharedApplication].keyWindow.rootViewController = [[NavigationViewController alloc] initWithRootViewController:[[IdentityViewController alloc] init]];
+            }];
+        }];
+    }];
+}
+- (void)identityIDInfo:(UIButton *)button
+{
+    NSString * title = Localized(@"IdentityIDInfo");
+    CGFloat titleHeight = [Encapsulation rectWithText:title font:TITLE_FONT textWidth:DEVICE_WIDTH - ScreenScale(120)].size.height;
+    _popupMenu = [YBPopupMenu showRelyOnView:button.imageView titles:@[title] icons:nil menuWidth:DEVICE_WIDTH - ScreenScale(100) otherSettings:^(YBPopupMenu * popupMenu) {
+        popupMenu.priorityDirection = YBPopupMenuPriorityDirectionTop;
+        popupMenu.itemHeight = titleHeight + Margin_30;
+        popupMenu.dismissOnTouchOutside = YES;
+        popupMenu.dismissOnSelected = NO;
+        popupMenu.fontSize = TITLE_FONT;
+        popupMenu.textColor = [UIColor whiteColor];
+        popupMenu.backColor = COLOR(@"56526D");
+        popupMenu.tableView.separatorStyle = UITableViewCellSeparatorStyleNone;
+        popupMenu.tableView.scrollEnabled = NO;
+        popupMenu.tableView.allowsSelection = NO;
+        popupMenu.height = titleHeight + Margin_40;
+    }];
 }
 /*
 #pragma mark - Navigation

@@ -51,6 +51,7 @@ static NSString * const Issue_Leave = @"leaveRoomForApp";
     self.navigationItem.leftBarButtonItem = [[UIBarButtonItem alloc]initWithCustomView:backButton];
     // Do any additional setup after loading the view.
 }
+
 - (void)connectSocket
 {
     NSURL* url = [[NSURL alloc] initWithString:[HTTPManager shareManager].pushMessageSocketUrl];
@@ -58,7 +59,7 @@ static NSString * const Issue_Leave = @"leaveRoomForApp";
     self.socket = self.manager.defaultSocket;
     __weak typeof(self) weakself = self;
     [self.socket on:@"connect" callback:^(NSArray* data, SocketAckEmitter* ack) {
-        [weakself.socket emit:Issue_Join with:@[weakself.uuid]];
+        [weakself.socket emit:Issue_Join with:[NSArray arrayWithObjects:weakself.uuid, nil]];
     }];
     [self.socket on:Issue_Join callback:^(NSArray* data, SocketAckEmitter* ack) {
         [weakself.socket emit:Issue_ScanSuccess with:@[]];
@@ -71,7 +72,7 @@ static NSString * const Issue_Leave = @"leaveRoomForApp";
 - (void)setupView
 {
     self.scrollView = [[UIScrollView alloc] initWithFrame:CGRectMake(0, 0, DEVICE_WIDTH, DEVICE_HEIGHT)];
-    self.scrollView.contentInset = UIEdgeInsetsMake(0, 0, SafeAreaBottomH + NavBarH + Margin_10, 0);
+//    self.scrollView.contentInset = UIEdgeInsetsMake(0, 0, SafeAreaBottomH + NavBarH + Margin_10, 0);
     [self.view addSubview:self.scrollView];
     
     CustomButton * confirmationPrompt = [[CustomButton alloc] init];
@@ -86,8 +87,7 @@ static NSString * const Issue_Leave = @"leaveRoomForApp";
         make.centerX.mas_equalTo(0);
         make.height.mas_equalTo(ScreenScale(150));
     }];
-    NSString * amount = [NSString stringWithFormat:@"%zd", self.registeredModel.amount];
-    self.distributionArray = [NSMutableArray arrayWithObjects:@{Localized(@"TokenName"): self.distributionModel.assetName}, @{Localized(@"TokenCode"): self.distributionModel.assetCode}, @{Localized(@"TheIssueVolume"): amount}, @{Localized(@"CumulativeCirculation"): self.distributionModel.actualSupply}, @{Localized(@"DistributionCost"): Distribution_CostBU}, nil];
+    self.distributionArray = [NSMutableArray arrayWithObjects:@{Localized(@"TokenName"): self.distributionModel.assetName}, @{Localized(@"TokenCode"): self.distributionModel.assetCode}, @{Localized(@"TheIssueVolume"): self.registeredModel.amount}, @{Localized(@"CumulativeCirculation"): self.distributionModel.actualSupply}, @{Localized(@"DistributionCost"): [NSString stringAppendingBUWithStr:Distribution_Cost]}, nil];
     if ([self.distributionModel.totalSupply longLongValue] == 0) {
     } else {
         [self.distributionArray insertObject:@{Localized(@"TotalAmountOfDistribution"): self.distributionModel.totalSupply} atIndex:4];
@@ -96,7 +96,7 @@ static NSString * const Issue_Leave = @"leaveRoomForApp";
     UIView * assetInfoBg = [[UIView alloc] init];
     [self.scrollView addSubview:assetInfoBg];
     CGSize size = CGSizeMake(DEVICE_WIDTH - Margin_20, Margin_10 + self.distributionArray.count * Margin_40);
-    [assetInfoBg setViewSize:size borderWidth:LINE_WIDTH borderColor:COLOR(@"E3E3E3") borderRadius:BG_CORNER];
+    [assetInfoBg setViewSize:size borderWidth:LINE_WIDTH borderColor:LINE_COLOR borderRadius:BG_CORNER];
     [assetInfoBg mas_makeConstraints:^(MASConstraintMaker *make) {
         make.top.equalTo(confirmationPrompt.mas_bottom).offset(Margin_20);
         make.centerX.mas_equalTo(0);
@@ -131,17 +131,35 @@ static NSString * const Issue_Leave = @"leaveRoomForApp";
         make.size.centerX.equalTo(confirmation);
     }];
     [self.view layoutIfNeeded];
-    self.scrollView.contentSize = CGSizeMake(0, CGRectGetMaxY(cancel.frame) + Margin_50);
+    self.scrollView.contentSize = CGSizeMake(0, CGRectGetMaxY(cancel.frame) + ContentSizeBottom + ScreenScale(100));
 }
 
 - (void)confirmationAction
 {
+    NSDecimalNumber * amountNumber = [[NSDecimalNumber decimalNumberWithString:self.registeredModel.amount] decimalNumberByMultiplyingByPowerOf10: self.distributionModel.decimals];
+    NSDecimalNumber * actualSupplyNumber = [[NSDecimalNumber decimalNumberWithString:self.distributionModel.actualSupply] decimalNumberByMultiplyingByPowerOf10: self.distributionModel.decimals];
+    NSString * issueAsset = [[amountNumber decimalNumberByAdding:actualSupplyNumber] stringValue];
+    NSString * intMax = [NSString stringWithFormat: @"%lld", INT64_MAX];
+    if ([issueAsset compare:intMax] == NSOrderedDescending) {
+        [MBProgressHUD showTipMessageInWindow:Localized(@"IssueNumberOverflowMax")];
+        return;
+    }
+    CGFloat isOverFlow = [self.distributionModel.totalSupply longLongValue] - [self.distributionModel.actualSupply longLongValue] - [self.registeredModel.amount longLongValue];
+    if ([self.distributionModel.totalSupply longLongValue] != 0 && isOverFlow < 0) {
+        // Your tokens issued exceed the total amount of tokens registered
+        [self alertViewWithMessage:Localized(@"CirculationExceeded")];
+        return;
+    }
     __weak typeof(self) weakSelf = self;
     NSOperationQueue * queue = [[NSOperationQueue alloc] init];
     [queue addOperationWithBlock:^{
-        int64_t amount = [[HTTPManager shareManager] getDataWithBalanceJudgmentWithCost:Distribution_Cost ifShowLoading:YES];
+        NSDecimalNumber * amountNumber = [[HTTPManager shareManager] getDataWithBalanceJudgmentWithCost:Distribution_Cost ifShowLoading:YES];
+        NSString * amount = [amountNumber stringValue];
         [[NSOperationQueue mainQueue] addOperationWithBlock:^{
-            if (amount < 0) {
+            if (!NULLString(amount) || [amountNumber isEqualToNumber:NSDecimalNumber.notANumber]) {
+                return;
+            }
+            if ([amount hasPrefix:@"-"]) {
                 [MBProgressHUD showTipMessageInWindow:Localized(@"DistributionNotSufficientFunds")];
                 return;
             }
@@ -156,8 +174,8 @@ static NSString * const Issue_Leave = @"leaveRoomForApp";
 }
 - (void)getIssueAssetDataWithPassword:(NSString *)password
 {
-    NSString * amount = [NSString stringWithFormat:@"%zd", self.registeredModel.amount];
-    [[HTTPManager shareManager] getIssueAssetDataWithPassword:password assetCode: self.registeredModel.code assetAmount:amount decimals:self.distributionModel.decimals success:^(TransactionResultModel *resultModel) {
+    int64_t issueAsset = [[[NSDecimalNumber decimalNumberWithString:self.registeredModel.amount] decimalNumberByMultiplyingByPowerOf10: self.distributionModel.decimals] longLongValue];
+    [[HTTPManager shareManager] getIssueAssetDataWithPassword:password assetCode: self.registeredModel.code assetAmount:issueAsset decimals:self.distributionModel.decimals success:^(TransactionResultModel *resultModel) {
         self.distributionModel.transactionHash = resultModel.transactionHash;
         self.distributionModel.distributionFee = resultModel.actualFee;
         [self loadDataWithIsOvertime:NO resultModel:resultModel];
@@ -170,32 +188,32 @@ static NSString * const Issue_Leave = @"leaveRoomForApp";
 
 - (void)loadDataWithIsOvertime:(BOOL)overtime resultModel:(TransactionResultModel *)resultModel
 {
-    [[HTTPManager shareManager] getOrderDetailsDataWithHash:self.distributionModel.transactionHash success:^(id responseObject) {
+    [[HTTPManager shareManager] getTransactionDetailsDataWithHash:self.distributionModel.transactionHash success:^(id responseObject) {
         NSInteger code = [[responseObject objectForKey:@"errCode"] integerValue];
         if (code == Success_Code) {
             self.distributionModel.distributionFee = responseObject[@"data"][@"txDeatilRespBo"][@"fee"];
             DistributionResultsViewController * VC = [[DistributionResultsViewController alloc] init];
             if (overtime == NO) {
                 if (resultModel.errorCode == Success_Code) { // 成功
-                    VC.resultSate = ResultSateSuccess;
+                    VC.distributionResultState = DistributionResultSuccess;
                     NSString * json = [self setResultDataWithCode:0 message:@"issue success"];
-                    [self.socket emit:Issue_Success with:@[json]];
+                    [self.socket emit:Issue_Success with:[NSArray arrayWithObjects:json, nil]];
                     [self.socket on:Issue_Success callback:^(NSArray* data, SocketAckEmitter* ack) {
                         [self.socket disconnect];
                     }];
                 } else {
-                    VC.resultSate = ResultSateFailure;
+                    VC.distributionResultState = DistributionResultFailure;
                     NSString * json = [self setResultDataWithCode:1 message:@"issue failure"];
-                    [self.socket emit:Issue_Failure with:@[json]];
+                    [self.socket emit:Issue_Failure with:[NSArray arrayWithObjects:json, nil]];
                     [self.socket on:Issue_Failure callback:^(NSArray* data, SocketAckEmitter* ack) {
                         [self.socket disconnect];
                     }];
                     [MBProgressHUD showTipMessageInWindow:[ErrorTypeTool getDescription:resultModel.errorCode]];
                 }
             } else {
-                VC.resultSate = ResultSateOvertime;
+                VC.distributionResultState = DistributionResultOvertime;
                 NSString * json = [self setResultDataWithCode:2 message:@"issue timeout"];
-                [self.socket emit:Issue_Timeout with:@[json]];
+                [self.socket emit:Issue_Timeout with:[NSArray arrayWithObjects:json, nil]];
                 [self.socket on:Issue_Timeout callback:^(NSArray* data, SocketAckEmitter* ack) {
                     [self.socket disconnect];
                 }];
@@ -222,7 +240,7 @@ static NSString * const Issue_Leave = @"leaveRoomForApp";
                          @"fee": self.distributionModel.distributionFee,
                          @"hash": self.distributionModel.transactionHash,
                          @"address": [AccountTool account].purseAccount,
-                         @"issueTotal": @(self.registeredModel.amount)
+                         @"issueTotal": self.registeredModel.amount
                          }];
     if (self.distributionModel.tokenDescription) {
         [dic setValue:self.distributionModel.tokenDescription forKey:@"desc"];
@@ -239,7 +257,7 @@ static NSString * const Issue_Leave = @"leaveRoomForApp";
 {
     [self.socket emit:Issue_Cancel with:@[Localized(@"Cancel")]];
     [self.socket on:Issue_Cancel callback:^(NSArray* data, SocketAckEmitter* ack) {
-        [self.socket emit:Issue_Leave with:@[self.uuid]];
+        [self.socket emit:Issue_Leave with:[NSArray arrayWithObjects:self.uuid, nil]];
     }];
     [self.socket on:Issue_Leave callback:^(NSArray* data, SocketAckEmitter* ack) {
         [self.socket disconnect];
@@ -266,8 +284,18 @@ static NSString * const Issue_Leave = @"leaveRoomForApp";
     [detailLabel mas_makeConstraints:^(MASConstraintMaker *make) {
         make.right.mas_equalTo(-Margin_10);
         make.centerY.equalTo(titleLabel);
+        make.width.mas_lessThanOrEqualTo(DEVICE_WIDTH - ScreenScale(140));
     }];
     return assetInfo;
+}
+- (void)alertViewWithMessage:(NSString *)message
+{
+    UIAlertController * alertController = [UIAlertController alertControllerWithTitle:message message:nil preferredStyle:UIAlertControllerStyleAlert];
+    UIAlertAction * cancelAction = [UIAlertAction actionWithTitle:Localized(@"IGotIt") style:UIAlertActionStyleCancel handler:^(UIAlertAction * _Nonnull action) {
+        [self cancelAction];
+    }];
+    [alertController addAction:cancelAction];
+    [self presentViewController:alertController animated:YES completion:nil];
 }
 /*
 #pragma mark - Navigation

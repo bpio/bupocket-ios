@@ -41,6 +41,7 @@ static NSString * const ListCellID = @"ListCellID";
     self.tableView.dataSource = self;
     self.tableView.separatorInset = UIEdgeInsetsZero;
     self.tableView.separatorStyle = UITableViewCellSeparatorStyleNone;
+    self.tableView.backgroundColor = [UIColor whiteColor];
     [self.view addSubview:self.tableView];
 }
 - (CGFloat)tableView:(UITableView *)tableView heightForRowAtIndexPath:(NSIndexPath *)indexPath
@@ -53,7 +54,7 @@ static NSString * const ListCellID = @"ListCellID";
 }
 - (CGFloat)tableView:(UITableView *)tableView heightForFooterInSection:(NSInteger)section
 {
-    return SafeAreaBottomH + NavBarH + Margin_10;
+    return ContentSizeBottom;
 }
 - (NSInteger)numberOfSectionsInTableView:(UITableView *)tableView
 {
@@ -68,7 +69,7 @@ static NSString * const ListCellID = @"ListCellID";
     ListTableViewCell * cell = [ListTableViewCell cellWithTableView:tableView identifier:ListCellID];
     cell.selectionStyle = UITableViewCellSelectionStyleNone;
     cell.listImage.image = [UIImage imageNamed:[NSString stringWithFormat:@"multilingual_list_%zd", indexPath.row]];
-    cell.detailImage.image = [UIImage imageNamed:@"multilingual_checked"];
+    cell.detailImage.image = [UIImage imageNamed:@"checked"];
     cell.title.text = self.listArray[indexPath.row];
     cell.detailTitle.text = nil;
     if (_index == indexPath.row) {

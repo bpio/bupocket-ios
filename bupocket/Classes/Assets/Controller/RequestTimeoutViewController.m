@@ -17,7 +17,6 @@
 - (void)viewDidLoad {
     [super viewDidLoad];
     [self setupView];
-    [self popToRootVC];
     // Do any additional setup after loading the view.
 }
 - (void)setupView

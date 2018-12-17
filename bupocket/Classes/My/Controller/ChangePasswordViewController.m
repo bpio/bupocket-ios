@@ -8,8 +8,9 @@
 
 #import "ChangePasswordViewController.h"
 
-@interface ChangePasswordViewController ()
+@interface ChangePasswordViewController ()<UITextFieldDelegate>
 
+@property (nonatomic, strong) UIScrollView * scrollView;
 @property (nonatomic, strong) UITextField * PWOld;
 @property (nonatomic, strong) UITextField * PWNew;
 @property (nonatomic, strong) UITextField * PWConfirm;
@@ -27,28 +28,25 @@
 }
 - (void)setupView
 {
-    UITapGestureRecognizer *tap = [[UITapGestureRecognizer alloc] initWithTarget:self action:@selector(keyBoardHidden)];
-    [self.view addGestureRecognizer:tap];
-    
+    self.scrollView = [[UIScrollView alloc] initWithFrame:CGRectMake(0, 0, DEVICE_WIDTH, DEVICE_HEIGHT)];
+    self.scrollView.keyboardDismissMode = UIScrollViewKeyboardDismissModeOnDrag;
+    [self.view addSubview:self.scrollView];
     NSArray * array = @[@[Localized(@"OldPassword"), Localized(@"NewPassword"), Localized(@"ConfirmedPassword")], @[Localized(@"PleaseEnterOldPW"), Localized(@"PleaseEnterNewPW"), Localized(@"ConfirmPassword")]];
     for (NSInteger i = 0; i < 3; i++) {
-        UIView * PWView = [self setViewWithTitle:[array firstObject][i] placeholder:[array lastObject][i] index:i];
-        [self.view addSubview:PWView];
-        [PWView mas_makeConstraints:^(MASConstraintMaker *make) {
-            make.top.equalTo(self.view.mas_top).offset((ScreenScale(95) * i));
-            make.left.right.equalTo(self.view);
-            make.height.mas_equalTo(ScreenScale(95));
-        }];
+        [self setViewWithTitle:[array firstObject][i] placeholder:[array lastObject][i] index:i];
     }
     
     _confirm = [UIButton createButtonWithTitle:Localized(@"Confirm") isEnabled:NO Target:self Selector:@selector(confirmAction)];
-    [self.view addSubview:_confirm];
+    [self.scrollView addSubview:_confirm];
     [_confirm mas_makeConstraints:^(MASConstraintMaker *make) {
-        make.bottom.equalTo(self.view.mas_bottom).offset(-Margin_30 - SafeAreaBottomH);
-        make.left.equalTo(self.view.mas_left).offset(Margin_20);
-        make.right.equalTo(self.view.mas_right).offset(-Margin_20);
+        make.bottom.mas_equalTo(DEVICE_HEIGHT - Margin_30 - SafeAreaBottomH - NavBarH - MAIN_HEIGHT);
+        make.left.mas_equalTo(Margin_20);
+        make.width.mas_equalTo(DEVICE_WIDTH - Margin_40);
+//        make.top.mas_equalTo(ScreenScale(33) + (ScreenScale(95) * 3) + ScreenScale(190));
         make.height.mas_equalTo(MAIN_HEIGHT);
     }];
+    [self.scrollView layoutIfNeeded];
+    self.scrollView.contentSize = CGSizeMake(0, CGRectGetMaxY(_confirm.frame) + ContentSizeBottom + ScreenScale(100));
 }
 - (void)confirmAction
 {
@@ -85,16 +83,16 @@
     [self presentViewController:alertController animated:YES completion:nil];
 }
 
-- (UIView *)setViewWithTitle:(NSString *)title placeholder:(NSString *)placeholder index:(NSInteger)index
+- (void)setViewWithTitle:(NSString *)title placeholder:(NSString *)placeholder index:(NSInteger)index
 {
-    UIView * viewBg = [[UIView alloc] init];
+//    UIView * viewBg = [[UIView alloc] init];
     UILabel * header = [[UILabel alloc] init];
-    [viewBg addSubview:header];
+    [self.scrollView addSubview:header];
     header.attributedText = [Encapsulation attrTitle:title ifRequired:NO];
     [header mas_makeConstraints:^(MASConstraintMaker *make) {
-        make.top.equalTo(viewBg.mas_top).offset(ScreenScale(33));
-        make.left.equalTo(viewBg.mas_left).offset(Margin_20);
-        make.right.equalTo(viewBg.mas_right).offset(-Margin_20);
+        make.top.mas_equalTo(ScreenScale(33) + (ScreenScale(95) * index));
+        make.left.mas_equalTo(Margin_20);
+        make.width.mas_equalTo(DEVICE_WIDTH - Margin_40);
     }];
     UITextField * textField = [[UITextField alloc] init];
     textField.textColor = TITLE_COLOR;
@@ -102,19 +100,20 @@
     textField.placeholder = placeholder;
     textField.secureTextEntry = YES;
     textField.clearButtonMode = UITextFieldViewModeWhileEditing;
-    [viewBg addSubview:textField];
+    textField.delegate = self;
+    [self.scrollView addSubview:textField];
     [textField addTarget:self action:@selector(textChange:) forControlEvents:UIControlEventEditingChanged];
     [textField mas_makeConstraints:^(MASConstraintMaker *make) {
         make.top.equalTo(header.mas_bottom).offset(Margin_5);
-        make.left.right.equalTo(header);
-        make.height.mas_equalTo(ScreenScale(39));
+        make.left.width.equalTo(header);
+        make.height.mas_equalTo(Margin_40);
     }];
     UIView * lineView = [[UIView alloc] init];
-    lineView.backgroundColor = COLOR(@"E3E3E3");
-    [viewBg addSubview:lineView];
+    lineView.backgroundColor = LINE_COLOR;
+    [self.scrollView addSubview:lineView];
     [lineView mas_makeConstraints:^(MASConstraintMaker *make) {
         make.top.equalTo(textField.mas_bottom);
-        make.left.right.equalTo(header);
+        make.left.width.equalTo(header);
         make.height.mas_equalTo(LINE_WIDTH);
     }];
     switch (index) {
@@ -130,11 +129,6 @@
         default:
             break;
     }
-    return viewBg;
-}
-- (void)keyBoardHidden
-{
-    [self.view endEditing:YES];
 }
 - (void)textChange:(UITextField *)textField
 {
@@ -145,6 +139,33 @@
         _confirm.enabled = NO;
         _confirm.backgroundColor = DISABLED_COLOR;
     }
+}
+- (BOOL)textFieldShouldReturn:(UITextField *)textField
+{
+    if (textField == _PWOld) {
+        [_PWOld resignFirstResponder];
+        [_PWNew becomeFirstResponder];
+    } else if (textField == _PWNew) {
+        [_PWNew resignFirstResponder];
+        [_PWConfirm becomeFirstResponder];
+    } else if (textField == _PWConfirm) {
+        [_PWConfirm resignFirstResponder];
+    }
+    return YES;
+}
+- (BOOL)textField:(UITextField *)textField shouldChangeCharactersInRange:(NSRange)range replacementString:(NSString *)string
+{
+    NSString * str = [textField.text stringByReplacingCharactersInRange:range withString:string];
+    if (string.length == 0) {
+        return YES;
+    }
+    if (str.length > MAX_LENGTH) {
+        textField.text = [str substringToIndex:MAX_LENGTH];
+        return NO;
+    } else {
+        return YES;
+    }
+    return YES;
 }
 /*
 #pragma mark - Navigation

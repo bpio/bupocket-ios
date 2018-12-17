@@ -30,9 +30,10 @@ pod 'IQKeyboardManager'
 pod 'FMDB'
 pod 'XHToast'
 pod 'SocketRocket'
+#pod 'LinkedME_LinkPage'
+#pod 'FDFullscreenPopGesture'
 
-
-pod 'JSONModel'
+#pod 'JSONModel'
 #pod 'QCloudCOSXML'
 
 use_frameworks!
