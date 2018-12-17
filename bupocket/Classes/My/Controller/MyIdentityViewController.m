@@ -111,7 +111,8 @@
     PurseCipherAlertView * alertView = [[PurseCipherAlertView alloc] initWithPrompt:Localized(@"IdentityCipherPrompt") confrimBolck:^(NSString * _Nonnull password, NSArray * _Nonnull words) {
         BackupMnemonicsViewController * VC = [[BackupMnemonicsViewController alloc] init];
         VC.mnemonicArray = words;
-        [UIApplication sharedApplication].keyWindow.rootViewController = [[NavigationViewController alloc] initWithRootViewController:VC];
+        [self.navigationController pushViewController:VC animated:YES];
+//        [UIApplication sharedApplication].keyWindow.rootViewController = [[NavigationViewController alloc] initWithRootViewController:VC];
     } cancelBlock:^{
         
     }];
@@ -144,10 +145,10 @@
         }
         [ClearCacheTool cleanCache:^{
             [ClearCacheTool cleanUserDefaults];
-            [[LanguageManager shareInstance] setDefaultLocale];
+//            [[LanguageManager shareInstance] setDefaultLocale];
             [[HTTPManager shareManager] initNetWork];
             // Minimum Asset Limitation
-            [[HTTPManager shareManager] getBlockFees];
+            [[HTTPManager shareManager] getBlockLatestFees];
             [[NSOperationQueue mainQueue] addOperationWithBlock:^{
                 [MBProgressHUD hideHUD];
                 [UIApplication sharedApplication].keyWindow.rootViewController = [[NavigationViewController alloc] initWithRootViewController:[[IdentityViewController alloc] init]];

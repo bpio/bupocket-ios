@@ -31,7 +31,7 @@
 @property (nonatomic, strong) UIView * headerViewBg;
 @property (nonatomic, strong) UIImageView * headerImageView;
 @property (nonatomic, strong) UIImage * headerImage;
-@property (nonatomic, strong) UIButton * noBackup;
+//@property (nonatomic, strong) UIButton * noBackup;
 // Switch the test network
 @property (nonatomic, strong) UILabel * networkPrompt;
 
@@ -49,6 +49,8 @@
 @end
 
 @implementation AssetsViewController
+
+static UIButton * _noBackup;
 
 - (NSMutableArray *)listArray
 {
@@ -205,7 +207,7 @@
         } else if ([self.scanDic[@"action"] isEqualToString:@"token.issue"]) {
             if (code == Success_Code) {
                 // has been registered
-                if ([self.distributionModel.totalSupply integerValue] == 0) {
+                if ([self.distributionModel.totalSupply longLongValue] == 0) {
                     // Unrestricted
                     [self pushDistributionVC];
                 } else {
@@ -452,7 +454,7 @@
 {
     if (section == 0) {
         NSUserDefaults * defaults = [NSUserDefaults standardUserDefaults];
-        if (![defaults boolForKey:If_Backup] && self.noBackup.selected == NO) {
+        if (![defaults boolForKey:If_Backup] && _noBackup.selected == NO) {
             return ScreenScale(150) + [Encapsulation rectWithText:Localized(@"SafetyTips") font:TITLE_FONT textWidth:DEVICE_WIDTH - Margin_40].size.height;
 //            return ScreenScale(210);
         } else {
@@ -468,7 +470,7 @@
     UIView * headerView = [[UIView alloc] init];
     if (section == 0) {
         NSUserDefaults * defaults = [NSUserDefaults standardUserDefaults];
-        if (![defaults boolForKey:If_Backup] && self.noBackup.selected == NO) {
+        if (![defaults boolForKey:If_Backup] && _noBackup.selected == NO) {
             UIView * backupBg = [[UIView alloc] init];
             backupBg.backgroundColor = [UIColor whiteColor];
             backupBg.layer.masksToBounds = YES;
@@ -504,12 +506,12 @@
             }];
             
             CGFloat btnW = (DEVICE_WIDTH - ScreenScale(65)) / 2;
-            self.noBackup = [UIButton createButtonWithTitle:Localized(@"TemporaryBackup") TextFont:16 TextColor:COLOR(@"9298BD") Target:self Selector:@selector(noBackupAction:)];
-            self.noBackup.backgroundColor = COLOR(@"DADDF3");
-            self.noBackup.layer.masksToBounds = YES;
-            self.noBackup.layer.cornerRadius = MAIN_CORNER;
-            [backupBg addSubview:self.noBackup];
-            [self.noBackup mas_makeConstraints:^(MASConstraintMaker *make) {
+            _noBackup = [UIButton createButtonWithTitle:Localized(@"TemporaryBackup") TextFont:16 TextColor:COLOR(@"9298BD") Target:self Selector:@selector(noBackupAction:)];
+            _noBackup.backgroundColor = COLOR(@"DADDF3");
+            _noBackup.layer.masksToBounds = YES;
+            _noBackup.layer.cornerRadius = MAIN_CORNER;
+            [backupBg addSubview:_noBackup];
+            [_noBackup mas_makeConstraints:^(MASConstraintMaker *make) {
                 make.top.equalTo(safetyTips.mas_bottom).offset(Margin_10);
                 make.left.equalTo(safetyTipsTitle);
                 make.bottom.equalTo(backupBg.mas_bottom).offset(-Margin_15);
@@ -522,7 +524,7 @@
             [backupBg addSubview:backup];
             [backup mas_makeConstraints:^(MASConstraintMaker *make) {
                 make.right.equalTo(safetyTipsTitle);
-                make.size.bottom.equalTo(self.noBackup);
+                make.size.bottom.equalTo(_noBackup);
             }];
         }
         UILabel * header = [[UILabel alloc] init];
@@ -545,13 +547,16 @@
 }
 - (void)noBackupAction:(UIButton *)button
 {
-    [self.tableView beginUpdates];
     button.selected = YES;
+//    [self.tableView beginUpdates];
+    [self.tableView reloadData];
+//    [self.tableView endUpdates];
+//    [UIView performWithoutAnimation:^{
+//        [self.tableView reloadSections:[NSIndexSet indexSetWithIndex:0] withRowAnimation:UITableViewRowAnimationNone];
+//    }];
     NSUserDefaults * defaults = [NSUserDefaults standardUserDefaults];
     [defaults setBool:YES forKey:If_Skip];
     [defaults synchronize];
-    [self.tableView reloadData];
-    [self.tableView endUpdates];
 }
 
 - (CGFloat)tableView:(UITableView *)tableView heightForFooterInSection:(NSInteger)section

@@ -73,8 +73,10 @@
     NSUserDefaults * defaults = [NSUserDefaults standardUserDefaults];
     NSDictionary * dic = [defaults dictionaryRepresentation];
     for (NSString * key in [dic allKeys]) {
-        [defaults removeObjectForKey:key];
-        [defaults synchronize];
+        if (![key isEqualToString:AppLanguage]) {
+            [defaults removeObjectForKey:key];
+            [defaults synchronize];
+        }
     }
 }
 

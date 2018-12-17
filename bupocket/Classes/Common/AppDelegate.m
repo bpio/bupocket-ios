@@ -33,7 +33,7 @@
     [self setVersionUpdate];
     [self setRootVC];
     // Minimum Asset Limitation
-    [[HTTPManager shareManager] getBlockFees];
+    [[HTTPManager shareManager] getBlockLatestFees];
     return YES;
 }
 - (void)initializationSettings

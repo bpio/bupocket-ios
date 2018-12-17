@@ -60,7 +60,7 @@ static NSString * const Register_Leave = @"leaveRoomForApp";
     self.socket = self.manager.defaultSocket;
     __weak typeof(self) weakself = self;
     [self.socket on:@"connect" callback:^(NSArray* data, SocketAckEmitter* ack) {
-        [weakself.socket emit:Register_Join with:@[weakself.uuid]];
+        [weakself.socket emit:Register_Join with:[NSArray arrayWithObjects:weakself.uuid, nil]];
     }];
     [self.socket on:Register_Join callback:^(NSArray* data, SocketAckEmitter* ack) {
         [weakself.socket emit:Register_ScanSuccess with:@[]];
@@ -93,8 +93,7 @@ static NSString * const Register_Leave = @"leaveRoomForApp";
     }];
     
     self.registeredArray = [NSMutableArray arrayWithArray:@[@{Localized(@"TokenName"): self.registeredModel.name}, @{Localized(@"TokenCode"): self.registeredModel.code}, @{Localized(@"DistributionCost"): [NSString stringAppendingBUWithStr:Registered_Cost]}]];
-//    NSString * amount = [NSString stringWithFormat:@"%lld", self.registeredModel.amount];
-    if (self.registeredModel.amount == 0) {
+    if ([self.registeredModel.amount longLongValue] == 0) {
         [self.registeredArray insertObject:@{Localized(@"TotalAmountOfToken"): Localized(@"UnrestrictedIssue")} atIndex:2];
     } else {
         [self.registeredArray insertObject:@{Localized(@"TotalAmountOfToken"): self.registeredModel.amount} atIndex:2];
@@ -145,15 +144,19 @@ static NSString * const Register_Leave = @"leaveRoomForApp";
 {
     NSString * totalAsset = [[[NSDecimalNumber decimalNumberWithString:self.registeredModel.amount] decimalNumberByMultiplyingByPowerOf10: self.registeredModel.decimals] stringValue];
     NSString * intMax = [NSString stringWithFormat: @"%lld", INT64_MAX];
-    if (self.registeredModel.amount != 0 && [totalAsset compare:intMax] == NSOrderedDescending) {
+    if ([totalAsset compare:intMax] == NSOrderedDescending) {
         [MBProgressHUD showTipMessageInWindow:Localized(@"RegisteredNumberOverflowMax")];
         return;
     }
     __weak typeof(self) weakSelf = self;
     NSOperationQueue * queue = [[NSOperationQueue alloc] init];
     [queue addOperationWithBlock:^{
-        NSString * amount = [[[HTTPManager shareManager] getDataWithBalanceJudgmentWithCost:Registered_Cost ifShowLoading:YES] stringValue];
+        NSDecimalNumber * amountNumber = [[HTTPManager shareManager] getDataWithBalanceJudgmentWithCost:Registered_Cost ifShowLoading:YES];
+        NSString * amount = [amountNumber stringValue];
         [[NSOperationQueue mainQueue] addOperationWithBlock:^{
+            if (!NULLString(amount) || [amountNumber isEqualToNumber:NSDecimalNumber.notANumber]) {
+                return;
+            }
             if ([amount hasPrefix:@"-"]) {
                 [MBProgressHUD showTipMessageInWindow:Localized(@"RegisteredNotSufficientFunds")];
                 return;
@@ -191,14 +194,14 @@ static NSString * const Register_Leave = @"leaveRoomForApp";
                 if (resultModel.errorCode == Success_Code) {
                     VC.registeredResultState = RegisteredResultSuccess;
                     NSString * json = [self setResultDataWithCode:0 message:@"register success"];
-                    [self.socket emit:Register_Success with:@[json]];
+                    [self.socket emit:Register_Success with:[NSArray arrayWithObjects:json, nil]];
                     [self.socket on:Register_Success callback:^(NSArray* data, SocketAckEmitter* ack) {
                         [self.socket disconnect];
                     }];
                 } else {
                     VC.registeredResultState = RegisteredResultFailure;
                     NSString * json = [self setResultDataWithCode:1 message:@"register failure"];
-                    [self.socket emit:Register_Failure with:@[json]];
+                    [self.socket emit:Register_Failure with:[NSArray arrayWithObjects:json, nil]];
                     [self.socket on:Register_Failure callback:^(NSArray* data, SocketAckEmitter* ack) {
                         [self.socket disconnect];
                     }];
@@ -207,7 +210,7 @@ static NSString * const Register_Leave = @"leaveRoomForApp";
             } else {
                 VC.registeredResultState = RegisteredResultOvertime;
                 NSString * json = [self setResultDataWithCode:2 message:@"register timeout"];
-                [self.socket emit:Register_Timeout with:@[json]];
+                [self.socket emit:Register_Timeout with:[NSArray arrayWithObjects:json, nil]];
                 [self.socket on:Register_Timeout callback:^(NSArray* data, SocketAckEmitter* ack) {
                     [self.socket disconnect];
                 }];
@@ -247,7 +250,7 @@ static NSString * const Register_Leave = @"leaveRoomForApp";
 {
     [self.socket emit:Register_Cancel with:@[Localized(@"Cancel")]];
     [self.socket on:Register_Cancel callback:^(NSArray* data, SocketAckEmitter* ack) {
-        [self.socket emit:Register_Leave with:@[self.uuid]];
+        [self.socket emit:Register_Leave with:[NSArray arrayWithObjects:self.uuid, nil]];
     }];
     [self.socket on:Register_Leave callback:^(NSArray* data, SocketAckEmitter* ack) {
         [self.socket disconnect];

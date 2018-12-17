@@ -59,7 +59,7 @@ static NSString * const Issue_Leave = @"leaveRoomForApp";
     self.socket = self.manager.defaultSocket;
     __weak typeof(self) weakself = self;
     [self.socket on:@"connect" callback:^(NSArray* data, SocketAckEmitter* ack) {
-        [weakself.socket emit:Issue_Join with:@[weakself.uuid]];
+        [weakself.socket emit:Issue_Join with:[NSArray arrayWithObjects:weakself.uuid, nil]];
     }];
     [self.socket on:Issue_Join callback:^(NSArray* data, SocketAckEmitter* ack) {
         [weakself.socket emit:Issue_ScanSuccess with:@[]];
@@ -87,7 +87,6 @@ static NSString * const Issue_Leave = @"leaveRoomForApp";
         make.centerX.mas_equalTo(0);
         make.height.mas_equalTo(ScreenScale(150));
     }];
-//    NSString * amount = [NSString stringWithFormat:@"%lld", self.registeredModel.amount];
     self.distributionArray = [NSMutableArray arrayWithObjects:@{Localized(@"TokenName"): self.distributionModel.assetName}, @{Localized(@"TokenCode"): self.distributionModel.assetCode}, @{Localized(@"TheIssueVolume"): self.registeredModel.amount}, @{Localized(@"CumulativeCirculation"): self.distributionModel.actualSupply}, @{Localized(@"DistributionCost"): [NSString stringAppendingBUWithStr:Distribution_Cost]}, nil];
     if ([self.distributionModel.totalSupply longLongValue] == 0) {
     } else {
@@ -137,12 +136,9 @@ static NSString * const Issue_Leave = @"leaveRoomForApp";
 
 - (void)confirmationAction
 {
-//    if ([self.distributionModel.totalSupply integerValue] == [self.distributionModel.actualSupply integerValue]) {
-//        // You have issued the asset
-//        [self alertViewWithMessage:Localized(@"IssuedAssets")];
-//    }
-    NSString * totalAsset = [NSString stringWithFormat:@"%lld", [self.registeredModel.amount longLongValue] + [self.distributionModel.actualSupply longLongValue]];
-    NSString * issueAsset = [[[NSDecimalNumber decimalNumberWithString:totalAsset] decimalNumberByMultiplyingByPowerOf10: self.distributionModel.decimals] stringValue];
+    NSDecimalNumber * amountNumber = [[NSDecimalNumber decimalNumberWithString:self.registeredModel.amount] decimalNumberByMultiplyingByPowerOf10: self.distributionModel.decimals];
+    NSDecimalNumber * actualSupplyNumber = [[NSDecimalNumber decimalNumberWithString:self.distributionModel.actualSupply] decimalNumberByMultiplyingByPowerOf10: self.distributionModel.decimals];
+    NSString * issueAsset = [[amountNumber decimalNumberByAdding:actualSupplyNumber] stringValue];
     NSString * intMax = [NSString stringWithFormat: @"%lld", INT64_MAX];
     if ([issueAsset compare:intMax] == NSOrderedDescending) {
         [MBProgressHUD showTipMessageInWindow:Localized(@"IssueNumberOverflowMax")];
@@ -154,16 +150,15 @@ static NSString * const Issue_Leave = @"leaveRoomForApp";
         [self alertViewWithMessage:Localized(@"CirculationExceeded")];
         return;
     }
-//    if (issueAsset > INT64_MAX) {
-//    } else if (issueAsset < 1) {
-//        [MBProgressHUD showTipMessageInWindow:Localized(@"IssueNumberIsIncorrect")];
-//        return;
-//    }
     __weak typeof(self) weakSelf = self;
     NSOperationQueue * queue = [[NSOperationQueue alloc] init];
     [queue addOperationWithBlock:^{
-        NSString * amount = [[[HTTPManager shareManager] getDataWithBalanceJudgmentWithCost:Distribution_Cost ifShowLoading:YES] stringValue];
+        NSDecimalNumber * amountNumber = [[HTTPManager shareManager] getDataWithBalanceJudgmentWithCost:Distribution_Cost ifShowLoading:YES];
+        NSString * amount = [amountNumber stringValue];
         [[NSOperationQueue mainQueue] addOperationWithBlock:^{
+            if (!NULLString(amount) || [amountNumber isEqualToNumber:NSDecimalNumber.notANumber]) {
+                return;
+            }
             if ([amount hasPrefix:@"-"]) {
                 [MBProgressHUD showTipMessageInWindow:Localized(@"DistributionNotSufficientFunds")];
                 return;
@@ -179,7 +174,6 @@ static NSString * const Issue_Leave = @"leaveRoomForApp";
 }
 - (void)getIssueAssetDataWithPassword:(NSString *)password
 {
-//    NSString * assetAmount = [NSString stringWithFormat:@"%lld", self.registeredModel.amount];
     int64_t issueAsset = [[[NSDecimalNumber decimalNumberWithString:self.registeredModel.amount] decimalNumberByMultiplyingByPowerOf10: self.distributionModel.decimals] longLongValue];
     [[HTTPManager shareManager] getIssueAssetDataWithPassword:password assetCode: self.registeredModel.code assetAmount:issueAsset decimals:self.distributionModel.decimals success:^(TransactionResultModel *resultModel) {
         self.distributionModel.transactionHash = resultModel.transactionHash;
@@ -203,14 +197,14 @@ static NSString * const Issue_Leave = @"leaveRoomForApp";
                 if (resultModel.errorCode == Success_Code) { // 成功
                     VC.distributionResultState = DistributionResultSuccess;
                     NSString * json = [self setResultDataWithCode:0 message:@"issue success"];
-                    [self.socket emit:Issue_Success with:@[json]];
+                    [self.socket emit:Issue_Success with:[NSArray arrayWithObjects:json, nil]];
                     [self.socket on:Issue_Success callback:^(NSArray* data, SocketAckEmitter* ack) {
                         [self.socket disconnect];
                     }];
                 } else {
                     VC.distributionResultState = DistributionResultFailure;
                     NSString * json = [self setResultDataWithCode:1 message:@"issue failure"];
-                    [self.socket emit:Issue_Failure with:@[json]];
+                    [self.socket emit:Issue_Failure with:[NSArray arrayWithObjects:json, nil]];
                     [self.socket on:Issue_Failure callback:^(NSArray* data, SocketAckEmitter* ack) {
                         [self.socket disconnect];
                     }];
@@ -219,7 +213,7 @@ static NSString * const Issue_Leave = @"leaveRoomForApp";
             } else {
                 VC.distributionResultState = DistributionResultOvertime;
                 NSString * json = [self setResultDataWithCode:2 message:@"issue timeout"];
-                [self.socket emit:Issue_Timeout with:@[json]];
+                [self.socket emit:Issue_Timeout with:[NSArray arrayWithObjects:json, nil]];
                 [self.socket on:Issue_Timeout callback:^(NSArray* data, SocketAckEmitter* ack) {
                     [self.socket disconnect];
                 }];
@@ -263,7 +257,7 @@ static NSString * const Issue_Leave = @"leaveRoomForApp";
 {
     [self.socket emit:Issue_Cancel with:@[Localized(@"Cancel")]];
     [self.socket on:Issue_Cancel callback:^(NSArray* data, SocketAckEmitter* ack) {
-        [self.socket emit:Issue_Leave with:@[self.uuid]];
+        [self.socket emit:Issue_Leave with:[NSArray arrayWithObjects:self.uuid, nil]];
     }];
     [self.socket on:Issue_Leave callback:^(NSArray* data, SocketAckEmitter* ack) {
         [self.socket disconnect];

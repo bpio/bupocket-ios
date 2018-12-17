@@ -275,28 +275,19 @@ static int64_t const gasPrice = 1000;
 
 // Query cost standard
 // Obtain minimum asset limits and fuel unit prices for accounts in designated blocks
-- (void)getBlockFees {
-//    dispatch_async(dispatch_get_main_queue(), ^{
-//        [[HUDHelper sharedInstance] syncLoading];
-//    });
-    BlockGetFeesRequest *request = [BlockGetFeesRequest new];
-    [request setBlockNumber: 617247];
+- (void)getBlockLatestFees {
+//    BlockGetFeesRequest *request = [BlockGetFeesRequest new];
+//    [request setBlockNumber: 617247];
     BlockService *service = [[[SDK sharedInstance] setUrl: _bumoNodeUrl] getBlockService];
-    BlockGetFeesResponse *response = [service getFees: request];
-    NSString * minAssetLimit = @"0.1";
+    BlockGetLatestFeesResponse * response = [service getLatestFees];
+//    BlockGetFeesResponse *response = [service getFees: request];
+    NSString * minAssetLimit = @"0.01";
     NSUserDefaults * defaults = [NSUserDefaults standardUserDefaults];
     if (response.errorCode == Success_Code) {
-//        dispatch_async(dispatch_get_main_queue(), ^{
-//            [[HUDHelper sharedInstance] syncStopLoading];
-//        });
         minAssetLimit = [[[NSDecimalNumber decimalNumberWithString:[NSString stringWithFormat:@"%lld", response.result.fees.baseReserve]] decimalNumberByMultiplyingByPowerOf10: -Decimals_BU] stringValue];
 //        minAssetLimit = [Tools MO2BU:response.result.fees.baseReserve];
         [defaults setObject:minAssetLimit forKey:Minimum_Asset_Limitation];
     } else {
-//        dispatch_async(dispatch_get_main_queue(), ^{
-//            [[HUDHelper sharedInstance] syncStopLoading];
-//            [[HUDHelper sharedInstance] syncStopLoadingMessage:[ErrorTypeTool getDescription:response.errorCode]];
-//        });
         [defaults setObject:minAssetLimit forKey:Minimum_Asset_Limitation];
     }
     
@@ -334,7 +325,7 @@ static int64_t const gasPrice = 1000;
             if (ifShowLoading == YES) {
                 [MBProgressHUD hideHUD];
             }
-            amount = [NSDecimalNumber decimalNumberWithString:@"-1"];
+            amount = [NSDecimalNumber decimalNumberWithString:@""];
             [MBProgressHUD showTipMessageInWindow:[ErrorTypeTool getDescription:response.errorCode]];
         });
     }
@@ -480,7 +471,6 @@ static int64_t const gasPrice = 1000;
     NSString *key = [NSString stringWithFormat: @"asset_property_%@", registeredModel.code];
     AtpProperty * atpProperty = [[AtpProperty alloc] init];
     int64_t total = [[[NSDecimalNumber decimalNumberWithString:registeredModel.amount] decimalNumberByMultiplyingByPowerOf10: registeredModel.decimals] longLongValue];
-//    int64_t total = registeredModel.amount * pow(10, registeredModel.decimals);
     atpProperty.name = registeredModel.name;
     atpProperty.code = registeredModel.code;
     atpProperty.totalSupply = total;

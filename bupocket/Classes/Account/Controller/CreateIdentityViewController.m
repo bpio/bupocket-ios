@@ -28,6 +28,7 @@
     [self setupView];
     [self showCreateTips];
 }
+
 - (void)showCreateTips
 {
     CreateTipsAlertView * alertView = [[CreateTipsAlertView alloc] initWithConfrimBolck:^{

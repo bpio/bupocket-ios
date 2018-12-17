@@ -238,7 +238,7 @@
 "PasswordIsIncorrect" = "密码不正确，请重新输入";
 // 转账
 "BUAddressIsIncorrect" = "BU地址不正确，请重新输入";
-"SendingQuantityIsIncorrect" = "发送数量格式有误，请重新输入";
+"SendingQuantityIsIncorrect" = "无效的转账数量";
 //"SendingQuantityMin" = "转账数量单笔不可少于0.00000001 BU";
 //"SendingQuantityMax" = "转账数量单笔不可超过10000 BU";
 "NotSufficientFunds" = "可用余额不足";

@@ -350,7 +350,9 @@
                 if (isCorrectAddress) {
                     weakself.destinationAddress.text = stringValue;
                     [weakself.destinationAddress sendActionsForControlEvents:UIControlEventEditingChanged];
-                    [weakself IsActivatedWithAddress:stringValue];
+                    if (![weakself.transactionCosts hasText]) {
+                        [weakself IsActivatedWithAddress:stringValue];
+                    }
                 } else {
                     [MBProgressHUD showTipMessageInWindow:Localized(@"ScanFailure")];
                 }

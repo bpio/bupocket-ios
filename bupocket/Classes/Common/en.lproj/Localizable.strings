@@ -242,8 +242,9 @@
 
 "PasswordIsIncorrect" = "The password is incorrect. Please enter again";
 // Transfer coins
+//"%@AddressIsIncorrect" = "The %@ address is incorrect. Please enter again";
 "BUAddressIsIncorrect" = "The BU address is incorrect. Please enter again";
-"SendingQuantityIsIncorrect" = "The format for sending BU is incorrect. Please enter again";
+"SendingQuantityIsIncorrect" = "Invalid transfer amount";
 //"SendingQuantityMin" = "The transfer amount cannot be less than 0.00000001 BU per transaction";
 //"SendingQuantityMax" = "The transfer amount cannot exceed 10,000 BU per transaction";
 "NotSufficientFunds" = "Available balance is insufficient";
