@@ -17,13 +17,6 @@
 		833799382177427500C222A5 /* AssetsListViewCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 833799372177427500C222A5 /* AssetsListViewCell.m */; };
 		83379A092178509300C222A5 /* WKWebViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 83379A082178509300C222A5 /* WKWebViewController.m */; };
 		83379A182178682100C222A5 /* UIView+CustomAlertView.m in Sources */ = {isa = PBXBuildFile; fileRef = 83379A172178682100C222A5 /* UIView+CustomAlertView.m */; };
-		83379A4F21787F2500C222A5 /* Default-iPhone6.png in Resources */ = {isa = PBXBuildFile; fileRef = 83379A3A21787F2500C222A5 /* Default-iPhone6.png */; };
-		83379A5021787F2500C222A5 /* Default@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 83379A3C21787F2500C222A5 /* Default@2x.png */; };
-		83379A5121787F2500C222A5 /* Default-iPhone6Plus.png in Resources */ = {isa = PBXBuildFile; fileRef = 83379A3E21787F2500C222A5 /* Default-iPhone6Plus.png */; };
-		83379A5221787F2500C222A5 /* Default-568h@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 83379A4021787F2500C222A5 /* Default-568h@2x.png */; };
-		83379A5321787F2500C222A5 /* Default-812h@3x.png in Resources */ = {isa = PBXBuildFile; fileRef = 83379A4221787F2500C222A5 /* Default-812h@3x.png */; };
-		83379A5421787F2500C222A5 /* Default.png in Resources */ = {isa = PBXBuildFile; fileRef = 83379A4421787F2500C222A5 /* Default.png */; };
-		83379A5521787F2500C222A5 /* Default-896h@3x.png in Resources */ = {isa = PBXBuildFile; fileRef = 83379A4621787F2500C222A5 /* Default-896h@3x.png */; };
 		83379A58217880C700C222A5 /* BackUpPurseViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 83379A57217880C700C222A5 /* BackUpPurseViewController.m */; };
 		83379A5B2178825300C222A5 /* PurseCipherAlertView.m in Sources */ = {isa = PBXBuildFile; fileRef = 83379A5A2178825300C222A5 /* PurseCipherAlertView.m */; };
 		83379A5E21796BFC00C222A5 /* Terms of use_EN.html in Resources */ = {isa = PBXBuildFile; fileRef = 83379A5C21796BFC00C222A5 /* Terms of use_EN.html */; };
@@ -72,7 +65,6 @@
 		83B465A821745C9300187961 /* ViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 83B465A721745C9300187961 /* ViewController.m */; };
 		83B465AB21745C9300187961 /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 83B465A921745C9300187961 /* Main.storyboard */; };
 		83B465AD21745C9400187961 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 83B465AC21745C9400187961 /* Assets.xcassets */; };
-		83B465B021745C9400187961 /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 83B465AE21745C9400187961 /* LaunchScreen.storyboard */; };
 		83B465BD21745C9400187961 /* bupocketTests.m in Sources */ = {isa = PBXBuildFile; fileRef = 83B465BC21745C9400187961 /* bupocketTests.m */; };
 		83B465C821745C9400187961 /* bupocketUITests.m in Sources */ = {isa = PBXBuildFile; fileRef = 83B465C721745C9400187961 /* bupocketUITests.m */; };
 		83B594AA2175954F009F91BA /* CreateIdentityViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 83B594A92175954F009F91BA /* CreateIdentityViewController.m */; };
@@ -100,6 +92,7 @@
 		950EF2A3219D801300F5121A /* MonetaryUnitViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 950EF2A2219D801300F5121A /* MonetaryUnitViewController.m */; };
 		9510A3CC219A91D4007A49A4 /* ErrorTypeTool.m in Sources */ = {isa = PBXBuildFile; fileRef = 9510A3CB219A91D4007A49A4 /* ErrorTypeTool.m */; };
 		952ADD0D21A65B4B00BEE51B /* SocketIOHandler.m in Sources */ = {isa = PBXBuildFile; fileRef = 952ADD0C21A65B4B00BEE51B /* SocketIOHandler.m */; };
+		952FE9D721C8DF9900634291 /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 952FE9D521C8DF9900634291 /* LaunchScreen.storyboard */; };
 		954371742199234100915BBE /* SettingViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 954371732199234100915BBE /* SettingViewController.m */; };
 		9549EC66219C0CF800307255 /* CreateTipsAlertView.m in Sources */ = {isa = PBXBuildFile; fileRef = 9549EC65219C0CF800307255 /* CreateTipsAlertView.m */; };
 		9549EC70219D075F00307255 /* ClearCacheTool.m in Sources */ = {isa = PBXBuildFile; fileRef = 9549EC6F219D075E00307255 /* ClearCacheTool.m */; };
@@ -179,7 +172,6 @@
 		833799182176E80D00C222A5 /* MultilingualViewController.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = MultilingualViewController.h; sourceTree = "<group>"; };
 		833799192176E80D00C222A5 /* MultilingualViewController.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = MultilingualViewController.m; sourceTree = "<group>"; };
 		8337991B2176FCA800C222A5 /* zh-Hans */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = "zh-Hans"; path = "zh-Hans.lproj/Main.strings"; sourceTree = "<group>"; };
-		8337991C2176FCA900C222A5 /* zh-Hans */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = "zh-Hans"; path = "zh-Hans.lproj/LaunchScreen.strings"; sourceTree = "<group>"; };
 		833799202176FD4400C222A5 /* zh-Hans */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = "zh-Hans"; path = "zh-Hans.lproj/InfoPlist.strings"; sourceTree = "<group>"; };
 		833799222176FD6600C222A5 /* en */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = en; path = en.lproj/InfoPlist.strings; sourceTree = "<group>"; };
 		833799262176FE4800C222A5 /* zh-Hans */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = "zh-Hans"; path = "zh-Hans.lproj/Localizable.strings"; sourceTree = "<group>"; };
@@ -194,20 +186,6 @@
 		83379A082178509300C222A5 /* WKWebViewController.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = WKWebViewController.m; sourceTree = "<group>"; };
 		83379A162178682100C222A5 /* UIView+CustomAlertView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "UIView+CustomAlertView.h"; sourceTree = "<group>"; };
 		83379A172178682100C222A5 /* UIView+CustomAlertView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "UIView+CustomAlertView.m"; sourceTree = "<group>"; };
-		83379A3B21787F2500C222A5 /* zh-Hans */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = "zh-Hans"; path = "zh-Hans.lproj/Default-iPhone6.png"; sourceTree = "<group>"; };
-		83379A3D21787F2500C222A5 /* zh-Hans */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = "zh-Hans"; path = "zh-Hans.lproj/Default@2x.png"; sourceTree = "<group>"; };
-		83379A3F21787F2500C222A5 /* zh-Hans */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = "zh-Hans"; path = "zh-Hans.lproj/Default-iPhone6Plus.png"; sourceTree = "<group>"; };
-		83379A4121787F2500C222A5 /* zh-Hans */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = "zh-Hans"; path = "zh-Hans.lproj/Default-568h@2x.png"; sourceTree = "<group>"; };
-		83379A4321787F2500C222A5 /* zh-Hans */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = "zh-Hans"; path = "zh-Hans.lproj/Default-812h@3x.png"; sourceTree = "<group>"; };
-		83379A4521787F2500C222A5 /* zh-Hans */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = "zh-Hans"; path = "zh-Hans.lproj/Default.png"; sourceTree = "<group>"; };
-		83379A4721787F2500C222A5 /* zh-Hans */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = "zh-Hans"; path = "zh-Hans.lproj/Default-896h@3x.png"; sourceTree = "<group>"; };
-		83379A4821787F2500C222A5 /* en */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = en; path = "en.lproj/Default-iPhone6.png"; sourceTree = "<group>"; };
-		83379A4921787F2500C222A5 /* en */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = en; path = "en.lproj/Default@2x.png"; sourceTree = "<group>"; };
-		83379A4A21787F2500C222A5 /* en */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = en; path = "en.lproj/Default-iPhone6Plus.png"; sourceTree = "<group>"; };
-		83379A4B21787F2500C222A5 /* en */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = en; path = "en.lproj/Default-568h@2x.png"; sourceTree = "<group>"; };
-		83379A4C21787F2500C222A5 /* en */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = en; path = "en.lproj/Default-812h@3x.png"; sourceTree = "<group>"; };
-		83379A4D21787F2500C222A5 /* en */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = en; path = en.lproj/Default.png; sourceTree = "<group>"; };
-		83379A4E21787F2500C222A5 /* en */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = en; path = "en.lproj/Default-896h@3x.png"; sourceTree = "<group>"; };
 		83379A56217880C700C222A5 /* BackUpPurseViewController.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = BackUpPurseViewController.h; sourceTree = "<group>"; };
 		83379A57217880C700C222A5 /* BackUpPurseViewController.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = BackUpPurseViewController.m; sourceTree = "<group>"; };
 		83379A592178825300C222A5 /* PurseCipherAlertView.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = PurseCipherAlertView.h; sourceTree = "<group>"; };
@@ -304,7 +282,6 @@
 		83B465A721745C9300187961 /* ViewController.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = ViewController.m; sourceTree = "<group>"; };
 		83B465AA21745C9300187961 /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/Main.storyboard; sourceTree = "<group>"; };
 		83B465AC21745C9400187961 /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
-		83B465AF21745C9400187961 /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/LaunchScreen.storyboard; sourceTree = "<group>"; };
 		83B465B121745C9400187961 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		83B465B821745C9400187961 /* bupocketTests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = bupocketTests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
 		83B465BC21745C9400187961 /* bupocketTests.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = bupocketTests.m; sourceTree = "<group>"; };
@@ -362,6 +339,7 @@
 		9510A3CB219A91D4007A49A4 /* ErrorTypeTool.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = ErrorTypeTool.m; sourceTree = "<group>"; };
 		952ADD0B21A65B4B00BEE51B /* SocketIOHandler.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = SocketIOHandler.h; sourceTree = "<group>"; };
 		952ADD0C21A65B4B00BEE51B /* SocketIOHandler.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = SocketIOHandler.m; sourceTree = "<group>"; };
+		952FE9D621C8DF9900634291 /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/LaunchScreen.storyboard; sourceTree = "<group>"; };
 		954371722199234100915BBE /* SettingViewController.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = SettingViewController.h; sourceTree = "<group>"; };
 		954371732199234100915BBE /* SettingViewController.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = SettingViewController.m; sourceTree = "<group>"; };
 		9549EC64219C0CF800307255 /* CreateTipsAlertView.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = CreateTipsAlertView.h; sourceTree = "<group>"; };
@@ -462,20 +440,6 @@
 			path = Resource;
 			sourceTree = "<group>";
 		};
-		83379A3921787F2500C222A5 /* launchImages */ = {
-			isa = PBXGroup;
-			children = (
-				83379A3A21787F2500C222A5 /* Default-iPhone6.png */,
-				83379A3C21787F2500C222A5 /* Default@2x.png */,
-				83379A3E21787F2500C222A5 /* Default-iPhone6Plus.png */,
-				83379A4021787F2500C222A5 /* Default-568h@2x.png */,
-				83379A4221787F2500C222A5 /* Default-812h@3x.png */,
-				83379A4421787F2500C222A5 /* Default.png */,
-				83379A4621787F2500C222A5 /* Default-896h@3x.png */,
-			);
-			path = launchImages;
-			sourceTree = "<group>";
-		};
 		83379A9C217EF20100C222A5 /* NetWork */ = {
 			isa = PBXGroup;
 			children = (
@@ -525,7 +489,6 @@
 		835A45222174C14D005BFCDD /* Common */ = {
 			isa = PBXGroup;
 			children = (
-				83379A3921787F2500C222A5 /* launchImages */,
 				83379A0A2178588800C222A5 /* Resource */,
 				833799292177091500C222A5 /* Tool */,
 				83B594AE2175E6FA009F91BA /* View */,
@@ -798,9 +761,9 @@
 				835A45202174C14D005BFCDD /* Classes */,
 				83B465A621745C9300187961 /* ViewController.h */,
 				83B465A721745C9300187961 /* ViewController.m */,
+				952FE9D521C8DF9900634291 /* LaunchScreen.storyboard */,
 				83B465A921745C9300187961 /* Main.storyboard */,
 				83B465AC21745C9400187961 /* Assets.xcassets */,
-				83B465AE21745C9400187961 /* LaunchScreen.storyboard */,
 				83B465B121745C9400187961 /* Info.plist */,
 			);
 			path = bupocket;
@@ -1112,19 +1075,12 @@
 			files = (
 				83379A5E21796BFC00C222A5 /* Terms of use_EN.html in Resources */,
 				833799252176FE4800C222A5 /* Localizable.strings in Resources */,
-				83379A5221787F2500C222A5 /* Default-568h@2x.png in Resources */,
-				83379A5521787F2500C222A5 /* Default-896h@3x.png in Resources */,
 				83379A5F21796BFC00C222A5 /* Terms of use_CN.html in Resources */,
-				83379A5321787F2500C222A5 /* Default-812h@3x.png in Resources */,
-				83379A4F21787F2500C222A5 /* Default-iPhone6.png in Resources */,
-				83379A5021787F2500C222A5 /* Default@2x.png in Resources */,
-				83B465B021745C9400187961 /* LaunchScreen.storyboard in Resources */,
+				952FE9D721C8DF9900634291 /* LaunchScreen.storyboard in Resources */,
 				9579EB5221BABE6300051EDB /* MBProgressHUD+JDragon.bundle in Resources */,
-				83379A5421787F2500C222A5 /* Default.png in Resources */,
 				83FB443821904AA400D68569 /* HMScanner.bundle in Resources */,
 				8337991F2176FD4400C222A5 /* InfoPlist.strings in Resources */,
 				83B465AD21745C9400187961 /* Assets.xcassets in Resources */,
-				83379A5121787F2500C222A5 /* Default-iPhone6Plus.png in Resources */,
 				83B465AB21745C9300187961 /* Main.storyboard in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -1412,69 +1368,6 @@
 			name = Localizable.strings;
 			sourceTree = "<group>";
 		};
-		83379A3A21787F2500C222A5 /* Default-iPhone6.png */ = {
-			isa = PBXVariantGroup;
-			children = (
-				83379A3B21787F2500C222A5 /* zh-Hans */,
-				83379A4821787F2500C222A5 /* en */,
-			);
-			name = "Default-iPhone6.png";
-			sourceTree = "<group>";
-		};
-		83379A3C21787F2500C222A5 /* Default@2x.png */ = {
-			isa = PBXVariantGroup;
-			children = (
-				83379A3D21787F2500C222A5 /* zh-Hans */,
-				83379A4921787F2500C222A5 /* en */,
-			);
-			name = "Default@2x.png";
-			sourceTree = "<group>";
-		};
-		83379A3E21787F2500C222A5 /* Default-iPhone6Plus.png */ = {
-			isa = PBXVariantGroup;
-			children = (
-				83379A3F21787F2500C222A5 /* zh-Hans */,
-				83379A4A21787F2500C222A5 /* en */,
-			);
-			name = "Default-iPhone6Plus.png";
-			sourceTree = "<group>";
-		};
-		83379A4021787F2500C222A5 /* Default-568h@2x.png */ = {
-			isa = PBXVariantGroup;
-			children = (
-				83379A4121787F2500C222A5 /* zh-Hans */,
-				83379A4B21787F2500C222A5 /* en */,
-			);
-			name = "Default-568h@2x.png";
-			sourceTree = "<group>";
-		};
-		83379A4221787F2500C222A5 /* Default-812h@3x.png */ = {
-			isa = PBXVariantGroup;
-			children = (
-				83379A4321787F2500C222A5 /* zh-Hans */,
-				83379A4C21787F2500C222A5 /* en */,
-			);
-			name = "Default-812h@3x.png";
-			sourceTree = "<group>";
-		};
-		83379A4421787F2500C222A5 /* Default.png */ = {
-			isa = PBXVariantGroup;
-			children = (
-				83379A4521787F2500C222A5 /* zh-Hans */,
-				83379A4D21787F2500C222A5 /* en */,
-			);
-			name = Default.png;
-			sourceTree = "<group>";
-		};
-		83379A4621787F2500C222A5 /* Default-896h@3x.png */ = {
-			isa = PBXVariantGroup;
-			children = (
-				83379A4721787F2500C222A5 /* zh-Hans */,
-				83379A4E21787F2500C222A5 /* en */,
-			);
-			name = "Default-896h@3x.png";
-			sourceTree = "<group>";
-		};
 		83B465A921745C9300187961 /* Main.storyboard */ = {
 			isa = PBXVariantGroup;
 			children = (
@@ -1484,11 +1377,10 @@
 			name = Main.storyboard;
 			sourceTree = "<group>";
 		};
-		83B465AE21745C9400187961 /* LaunchScreen.storyboard */ = {
+		952FE9D521C8DF9900634291 /* LaunchScreen.storyboard */ = {
 			isa = PBXVariantGroup;
 			children = (
-				83B465AF21745C9400187961 /* Base */,
-				8337991C2176FCA900C222A5 /* zh-Hans */,
+				952FE9D621C8DF9900634291 /* Base */,
 			);
 			name = LaunchScreen.storyboard;
 			sourceTree = "<group>";
@@ -1529,7 +1421,7 @@
 				CLANG_WARN_UNGUARDED_AVAILABILITY = YES_AGGRESSIVE;
 				CLANG_WARN_UNREACHABLE_CODE = YES;
 				CLANG_WARN__DUPLICATE_METHOD_MATCH = YES;
-				CODE_SIGN_IDENTITY = "iPhone Developer";
+				CODE_SIGN_IDENTITY = "iPhone Distribution";
 				COPY_PHASE_STRIP = NO;
 				DEBUG_INFORMATION_FORMAT = dwarf;
 				ENABLE_STRICT_OBJC_MSGSEND = YES;
@@ -1589,7 +1481,7 @@
 				CLANG_WARN_UNGUARDED_AVAILABILITY = YES_AGGRESSIVE;
 				CLANG_WARN_UNREACHABLE_CODE = YES;
 				CLANG_WARN__DUPLICATE_METHOD_MATCH = YES;
-				CODE_SIGN_IDENTITY = "iPhone Developer";
+				CODE_SIGN_IDENTITY = "iPhone Distribution";
 				COPY_PHASE_STRIP = NO;
 				DEBUG_INFORMATION_FORMAT = "dwarf-with-dsym";
 				ENABLE_NS_ASSERTIONS = NO;
@@ -1616,8 +1508,9 @@
 			buildSettings = {
 				ALWAYS_EMBED_SWIFT_STANDARD_LIBRARIES = YES;
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
-				CODE_SIGN_IDENTITY = "iPhone Developer";
-				CODE_SIGN_STYLE = Automatic;
+				ASSETCATALOG_COMPILER_LAUNCHIMAGE_NAME = LaunchImage;
+				CODE_SIGN_IDENTITY = "iPhone Distribution";
+				CODE_SIGN_STYLE = Manual;
 				DEFINES_MODULE = YES;
 				DEVELOPMENT_TEAM = 3DPSH636RT;
 				FRAMEWORK_SEARCH_PATHS = (
@@ -1639,7 +1532,7 @@
 				);
 				PRODUCT_BUNDLE_IDENTIFIER = com.bupocket;
 				PRODUCT_NAME = "$(TARGET_NAME)";
-				PROVISIONING_PROFILE_SPECIFIER = "";
+				PROVISIONING_PROFILE_SPECIFIER = BupocketDistribution;
 				TARGETED_DEVICE_FAMILY = 1;
 			};
 			name = Debug;
@@ -1650,8 +1543,9 @@
 			buildSettings = {
 				ALWAYS_EMBED_SWIFT_STANDARD_LIBRARIES = YES;
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
-				CODE_SIGN_IDENTITY = "iPhone Developer";
-				CODE_SIGN_STYLE = Automatic;
+				ASSETCATALOG_COMPILER_LAUNCHIMAGE_NAME = LaunchImage;
+				CODE_SIGN_IDENTITY = "iPhone Distribution";
+				CODE_SIGN_STYLE = Manual;
 				DEFINES_MODULE = YES;
 				DEVELOPMENT_TEAM = 3DPSH636RT;
 				FRAMEWORK_SEARCH_PATHS = (
@@ -1673,7 +1567,7 @@
 				);
 				PRODUCT_BUNDLE_IDENTIFIER = com.bupocket;
 				PRODUCT_NAME = "$(TARGET_NAME)";
-				PROVISIONING_PROFILE_SPECIFIER = "";
+				PROVISIONING_PROFILE_SPECIFIER = BupocketDistribution;
 				TARGETED_DEVICE_FAMILY = 1;
 			};
 			name = Release;
