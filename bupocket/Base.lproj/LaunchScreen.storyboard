@@ -17,35 +17,7 @@
                     <view key="view" contentMode="scaleToFill" id="Ze5-6b-2t3">
                         <rect key="frame" x="0.0" y="0.0" width="375" height="667"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
-                        <subviews>
-                            <imageView userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="identity_bg" translatesAutoresizingMaskIntoConstraints="NO" id="IcO-Vp-PU6">
-                                <rect key="frame" x="0.0" y="0.0" width="375" height="667"/>
-                            </imageView>
-                            <imageView userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="logo" translatesAutoresizingMaskIntoConstraints="NO" id="3eF-wi-hTF">
-                                <rect key="frame" x="137.5" y="110" width="100" height="100"/>
-                                <constraints>
-                                    <constraint firstAttribute="height" constant="100" id="KFK-A6-YNz"/>
-                                    <constraint firstAttribute="width" constant="100" id="MIV-sd-Sbh"/>
-                                </constraints>
-                            </imageView>
-                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Label" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="Q4F-cY-REt">
-                                <rect key="frame" x="156.5" y="235" width="62" height="29"/>
-                                <fontDescription key="fontDescription" type="boldSystem" pointSize="24"/>
-                                <color key="textColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
-                                <nil key="highlightedColor"/>
-                            </label>
-                        </subviews>
                         <color key="backgroundColor" red="1" green="1" blue="1" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
-                        <constraints>
-                            <constraint firstItem="3eF-wi-hTF" firstAttribute="top" secondItem="kUI-rd-LsT" secondAttribute="top" constant="90" id="B9a-x0-0po"/>
-                            <constraint firstItem="Q4F-cY-REt" firstAttribute="centerX" secondItem="Ze5-6b-2t3" secondAttribute="centerX" id="F48-Dd-ehz"/>
-                            <constraint firstItem="kUI-rd-LsT" firstAttribute="trailing" secondItem="IcO-Vp-PU6" secondAttribute="trailing" id="Imv-0l-mv0"/>
-                            <constraint firstItem="3eF-wi-hTF" firstAttribute="centerX" secondItem="IcO-Vp-PU6" secondAttribute="centerX" id="S4Z-Hk-Lse"/>
-                            <constraint firstItem="IcO-Vp-PU6" firstAttribute="top" secondItem="Ze5-6b-2t3" secondAttribute="top" id="fkK-3Q-qeg"/>
-                            <constraint firstItem="kUI-rd-LsT" firstAttribute="bottom" secondItem="IcO-Vp-PU6" secondAttribute="bottom" id="kIE-mH-90v"/>
-                            <constraint firstItem="IcO-Vp-PU6" firstAttribute="leading" secondItem="kUI-rd-LsT" secondAttribute="leading" id="ln5-XQ-2gf"/>
-                            <constraint firstItem="Q4F-cY-REt" firstAttribute="top" secondItem="3eF-wi-hTF" secondAttribute="bottom" constant="25" id="vJI-b6-mkV"/>
-                        </constraints>
                         <viewLayoutGuide key="safeArea" id="kUI-rd-LsT"/>
                     </view>
                 </viewController>
@@ -54,8 +26,4 @@
             <point key="canvasLocation" x="53" y="375"/>
         </scene>
     </scenes>
-    <resources>
-        <image name="identity_bg" width="375" height="666"/>
-        <image name="logo" width="100" height="100"/>
-    </resources>
 </document>
