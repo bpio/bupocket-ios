@@ -114,6 +114,7 @@ static int64_t const gasPrice = 1000;
     NSString * url = SERVER_COMBINE_API(_webServerDomain, Assets_Search);
     NSDictionary * parmenters = @{@"address": [[AccountTool account] purseAccount],
                                   @"assetCode" : assetCode,
+                                  @"supportFuzzy" : @"true",
                                   @"startPage" : @(pageIndex),
                                   @"pageSize" : @(PageSize_Max)};
     [[HttpTool shareTool] POST:url parameters:parmenters success:^(id responseObject) {

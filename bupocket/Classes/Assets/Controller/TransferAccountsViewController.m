@@ -79,30 +79,11 @@
     [MBProgressHUD showActivityMessageInWindow:Localized(@"Loading")];
     __weak typeof(self) weakSelf = self;
     __block NSString * destAddress = self.destinationAddress.text;
-//    __block double sendingQuantity = 0;
-//    __block double cost = [self.transactionCosts.text doubleValue];
-    __block NSDecimalNumber * sendingQuantity = [NSDecimalNumber decimalNumberWithString:@"0"];
+    __block NSDecimalNumber * sendNumber = [NSDecimalNumber decimalNumberWithString: self.transferVolume.text];
     __block NSDecimalNumber * cost = [NSDecimalNumber decimalNumberWithString:self.transactionCosts.text];
     dispatch_group_t group = dispatch_group_create();
     dispatch_group_enter(group);
-    BOOL isCorrectAddress = [Keypair isAddressValid: destAddress];
     dispatch_async(dispatch_get_main_queue(), ^{
-        if (self.listModel.type == Token_Type_BU) {
-            sendingQuantity = [NSDecimalNumber decimalNumberWithString: self.transferVolume.text];
-//            sendingQuantity = [self.transferVolume.text doubleValue];
-        } else {
-            if ([self.transferVolume.text doubleValue] > [self.listModel.amount doubleValue]) {
-                [MBProgressHUD hideHUD];
-                [MBProgressHUD showTipMessageInWindow:Localized(@"NotSufficientFunds")];
-                return;
-            }
-        }
-        if (!isCorrectAddress) {
-            [MBProgressHUD hideHUD];
-            [MBProgressHUD showTipMessageInWindow:Localized(@"BUAddressIsIncorrect")];
-            return;
-        }
-        
         if ([destAddress isEqualToString:[[AccountTool account] purseAccount]]) {
             [MBProgressHUD hideHUD];
             [MBProgressHUD showTipMessageInWindow:Localized(@"CannotTransferToOneself")];
@@ -111,30 +92,58 @@
         RegexPatternTool * regex = [[RegexPatternTool alloc] init];
         NSInteger decimals = self.listModel.decimals < 0 ? 0 : self.listModel.decimals;
         BOOL transferVolumeRegx = [regex validateIsPositiveFloatingPoint:weakSelf.transferVolume.text] && [regex validateIsPositiveFloatingPoint:weakSelf.transferVolume.text decimals:decimals];
+        
+        NSDecimalNumber * minSendingQuantity = [NSDecimalNumber decimalNumberWithString:SendingQuantity_MIN];
+        NSString * minSending  = [[sendNumber decimalNumberBySubtracting:minSendingQuantity] stringValue];
+        
+        NSString * amount  = [[[NSDecimalNumber decimalNumberWithString:self.availableAmount] decimalNumberBySubtracting:sendNumber] stringValue];
+        
+        NSDecimalNumber * maxSendingQuantity = [NSDecimalNumber decimalNumberWithString:SendingQuantity_MAX];
+        NSString * maxSending  = [[maxSendingQuantity decimalNumberBySubtracting:sendNumber] stringValue];
+        
         if (transferVolumeRegx == NO) {
             [MBProgressHUD hideHUD];
             [MBProgressHUD showTipMessageInWindow:Localized(@"SendingQuantityIsIncorrect")];
             return;
         }
+        if ([minSending hasPrefix:@"-"]) {
+            [MBProgressHUD hideHUD];
+            [MBProgressHUD showTipMessageInWindow:[NSString stringWithFormat:Localized(@"SendingQuantityMin%@"), SendingQuantity_MIN]];
+            return;
+        }
+        if ([amount hasPrefix:@"-"]) {
+            [MBProgressHUD hideHUD];
+            [MBProgressHUD showTipMessageInWindow:Localized(@"NotSufficientFunds")];
+            return;
+        }
+        
+        if ([maxSending hasPrefix:@"-"]) {
+            [MBProgressHUD hideHUD];
+            [MBProgressHUD showTipMessageInWindow:[NSString stringWithFormat:Localized(@"SendingQuantityMax%@"), SendingQuantity_MAX_Division]];
+            return;
+        }
+        
         if (weakSelf.remarks.text.length > MAX_LENGTH) {
             [MBProgressHUD hideHUD];
             [MBProgressHUD showTipMessageInWindow:Localized(@"ExtraLongNotes")];
             return;
         }
-        BOOL transactionCostsRegx = [regex validateIsPositiveFloatingPoint:weakSelf.transactionCosts.text] && [regex validateIsPositiveFloatingPoint:weakSelf.transactionCosts.text decimals:Decimals_BU];
-        NSDecimalNumber * minTransactionCost = [NSDecimalNumber decimalNumberWithString:TransactionCost_MIN];
-        NSString * minCost  = [[cost decimalNumberBySubtracting:minTransactionCost] stringValue];
+        BOOL transactionCostsRegx = [regex validateIsPositiveFloatingPoint:weakSelf.transferVolume.text] && [regex validateIsPositiveFloatingPoint:weakSelf.transferVolume.text decimals:decimals];
+//        NSDecimalNumber * minTransactionCost = [NSDecimalNumber decimalNumberWithString:TransactionCost_MIN];
+//        NSString * minCost  = [[cost decimalNumberBySubtracting:minTransactionCost] stringValue];
         NSDecimalNumber * maxTransactionCost = [NSDecimalNumber decimalNumberWithString:TransactionCost_MAX];
         NSString * maxCost  = [[maxTransactionCost decimalNumberBySubtracting:cost] stringValue];
-        if (transactionCostsRegx == NO) {
+        if (transactionCostsRegx == NO || [self.transactionCosts.text isEqualToString:@"0"]) {
             [MBProgressHUD hideHUD];
             [MBProgressHUD showTipMessageInWindow:Localized(@"TransactionCostIsIncorrect")];
             return;
-        } else if ([minCost hasPrefix:@"-"]) {
-            [MBProgressHUD hideHUD];
-            [MBProgressHUD showTipMessageInWindow:Localized(@"TransactionCostMin")];
-            return;
-        } else if ([maxCost hasPrefix:@"-"]) {
+        }
+//        else if ([minCost hasPrefix:@"-"]) {
+//            [MBProgressHUD hideHUD];
+//            [MBProgressHUD showTipMessageInWindow:Localized(@"TransactionCostMin")];
+//            return;
+//        }
+        else if ([maxCost hasPrefix:@"-"]) {
             [MBProgressHUD hideHUD];
             [MBProgressHUD showTipMessageInWindow:Localized(@"TransactionCostMax")];
             return;
@@ -147,17 +156,17 @@
             dispatch_async(dispatch_get_main_queue(), ^{
                 [MBProgressHUD showActivityMessageInWindow:Localized(@"Loading")];
             });
-            NSDecimalNumber * totalNumber = [sendingQuantity decimalNumberByAdding:cost];
+//            NSDecimalNumber * totalNumber = [sendingQuantity decimalNumberByAdding:cost];
 //            double amount = [self.availableAmount doubleValue] - (sendingQuantity + cost);
-            NSString * amount  = [[[NSDecimalNumber decimalNumberWithString:self.availableAmount] decimalNumberBySubtracting:totalNumber] stringValue];
+//            NSString * amount  = [[[NSDecimalNumber decimalNumberWithString:self.availableAmount] decimalNumberBySubtracting:totalNumber] stringValue];
             dispatch_async(dispatch_get_main_queue(), ^{
-                if ([amount hasPrefix:@"-"]) {
-                    [MBProgressHUD hideHUD];
-                    [MBProgressHUD showTipMessageInWindow:Localized(@"NotSufficientFunds")];
-                    return;
-                }
+//                if ([amount hasPrefix:@"-"]) {
+//                    [MBProgressHUD hideHUD];
+//                    [MBProgressHUD showTipMessageInWindow:Localized(@"NotSufficientFunds")];
+//                    return;
+//                }
                 [MBProgressHUD hideHUD];
-                weakSelf.transferInfoArray = [NSMutableArray arrayWithObjects:destAddress, [NSString stringWithFormat:@"%@ %@", weakSelf.transferVolume.text, self.listModel.assetCode], [NSString stringAppendingBUWithStr:weakSelf.transactionCosts.text], nil];
+                weakSelf.transferInfoArray = [NSMutableArray arrayWithObjects:destAddress, [NSString stringWithFormat:@"%@ %@", [sendNumber stringValue], self.listModel.assetCode], [NSString stringAppendingBUWithStr:[cost stringValue]], nil];
                 if ([weakSelf.remarks hasText]) {
                     [weakSelf.transferInfoArray addObject:weakSelf.remarks.text];
                 }
@@ -256,18 +265,6 @@
         self.availableBalance.numberOfLines = 0;
         [header addSubview:self.availableBalance];
 //        double amount = [self.listModel.amount doubleValue];
-        if (self.listModel.type == Token_Type_BU) {
-            NSDecimalNumber * amountNumber = [NSDecimalNumber decimalNumberWithString:self.listModel.amount];
-            NSDecimalNumber * minLimitationNumber = [NSDecimalNumber decimalNumberWithString:[[NSUserDefaults standardUserDefaults] objectForKey:Minimum_Asset_Limitation]];
-            self.availableAmount = [[amountNumber decimalNumberBySubtracting:minLimitationNumber] stringValue];
-            if ([self.availableAmount hasPrefix:@"-"]) {
-                self.availableAmount = @"0";
-            }
-        } else {
-            self.availableAmount = self.listModel.amount;
-        }
-        self.availableBalance.attributedText = [Encapsulation attrWithString:[NSString stringWithFormat:@"%@\n%@ %@", Localized(@"AvailableBalance"), self.availableAmount, self.listModel.assetCode] preFont:FONT(12) preColor:COLOR_6 index:[Localized(@"AvailableBalance") length] sufFont:FONT(12) sufColor:MAIN_COLOR lineSpacing:ScreenScale(7)];
-        self.availableBalance.textAlignment = NSTextAlignmentRight;
         [self.availableBalance mas_makeConstraints:^(MASConstraintMaker *make) {
             make.right.top.equalTo(header);
             make.width.mas_lessThanOrEqualTo(DEVICE_WIDTH - Margin_40);
@@ -277,6 +274,21 @@
     } else if (index == 3) {
         self.transactionCosts = textField;
     }
+    if (self.listModel.type == Token_Type_BU) {
+        NSDecimalNumber * amountNumber = [NSDecimalNumber decimalNumberWithString:self.listModel.amount];
+        NSDecimalNumber * minLimitationNumber = [NSDecimalNumber decimalNumberWithString:[[NSUserDefaults standardUserDefaults] objectForKey:Minimum_Asset_Limitation]];
+        NSDecimalNumber * minTransactionCost = [NSDecimalNumber decimalNumberWithString:TransactionCost_MIN];
+        NSDecimalNumber * minNumber = [minLimitationNumber decimalNumberByAdding:minTransactionCost];
+        self.availableAmount = [[amountNumber decimalNumberBySubtracting:minNumber] stringValue];
+        if ([self.availableAmount hasPrefix:@"-"]) {
+            self.availableAmount = @"0";
+        }
+        self.transactionCosts.text = TransactionCost_MIN;
+    } else {
+        self.availableAmount = self.listModel.amount;
+    }
+    self.availableBalance.attributedText = [Encapsulation attrWithString:[NSString stringWithFormat:@"%@\n%@ %@", Localized(@"AvailableBalance"), self.availableAmount, self.listModel.assetCode] preFont:FONT(12) preColor:COLOR_6 index:[Localized(@"AvailableBalance") length] sufFont:FONT(12) sufColor:MAIN_COLOR lineSpacing:ScreenScale(7)];
+    self.availableBalance.textAlignment = NSTextAlignmentRight;
 }
 - (BOOL)textFieldShouldReturn:(UITextField *)textField
 {
@@ -306,19 +318,33 @@
 }
 - (void)IsActivatedWithAddress:(NSString *)address
 {
-    __weak typeof(self) weakSelf = self;
-    NSOperationQueue * queue = [[NSOperationQueue alloc] init];
-    [queue addOperationWithBlock:^{
-        NSString * costs = [[HTTPManager shareManager] getAccountInfoWithAddress:address];
-        [[NSOperationQueue mainQueue] addOperationWithBlock:^{
-            weakSelf.transactionCosts.text = costs;
+    if (self.listModel.type == Token_Type_BU) return;
+    if ([self.transactionCosts hasText]) return;
+        __weak typeof(self) weakSelf = self;
+        NSOperationQueue * queue = [[NSOperationQueue alloc] init];
+        [queue addOperationWithBlock:^{
+            NSString * costs = [[HTTPManager shareManager] getAccountInfoWithAddress:address];
+            [[NSOperationQueue mainQueue] addOperationWithBlock:^{
+                weakSelf.transactionCosts.text = costs;
+            }];
         }];
-    }];
 }
 - (void)textFieldDidEndEditing:(UITextField *)textField
 {
     if (textField == _destinationAddress && _destinationAddress.text.length > 0) {
-        [self IsActivatedWithAddress:textField.text];
+        __weak typeof (self) weakself = self;
+        NSOperationQueue * queue = [[NSOperationQueue alloc] init];
+        [queue addOperationWithBlock:^{
+            BOOL isCorrectAddress = [Keypair isAddressValid: weakself.destinationAddress.text];
+            [[NSOperationQueue mainQueue] addOperationWithBlock:^{
+                if (isCorrectAddress) {
+                    [self IsActivatedWithAddress:textField.text];
+                } else {
+                    weakself.destinationAddress.text = nil;
+                    [MBProgressHUD showTipMessageInWindow:Localized(@"BUAddressIsIncorrect")];
+                }
+            }];
+        }];
     }
 }
 /*
@@ -350,9 +376,7 @@
                 if (isCorrectAddress) {
                     weakself.destinationAddress.text = stringValue;
                     [weakself.destinationAddress sendActionsForControlEvents:UIControlEventEditingChanged];
-                    if (![weakself.transactionCosts hasText]) {
-                        [weakself IsActivatedWithAddress:stringValue];
-                    }
+                    [weakself IsActivatedWithAddress:stringValue];
                 } else {
                     [MBProgressHUD showTipMessageInWindow:Localized(@"ScanFailure")];
                 }
