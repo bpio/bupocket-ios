@@ -195,7 +195,6 @@ static NSString * const SearchID = @"SearchID";
 - (void)searchAction
 {
     [self.searchTextField resignFirstResponder];
-    self.searchText = [self.searchTextField.text stringByTrimmingCharactersInSet:[NSCharacterSet whitespaceAndNewlineCharacterSet]];
     if (self.searchText.length > 0) {
         if (!self.tableView.mj_header) {
             [self setupRefresh];
@@ -206,7 +205,7 @@ static NSString * const SearchID = @"SearchID";
 }
 - (void)textChange:(UITextField *)textField
 {
-    
+    self.searchText = [self.searchTextField.text stringByTrimmingCharactersInSet:[NSCharacterSet whitespaceAndNewlineCharacterSet]];
 }
 - (BOOL)textFieldShouldReturn:(UITextField *)textField
 {

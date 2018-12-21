@@ -56,7 +56,7 @@
 // BU decimals
 #define Decimals_BU 8
 // 转账发送数量
-#define SendingQuantity_MIN @"0.00000001"
+//#define SendingQuantity_MIN @"0.00000001"
 #define SendingQuantity_MAX @"1000000"
 #define SendingQuantity_MAX_Division @"1,000,000"
 // Maximum length of ID and password / Transaction memo length / Length of feedback contact mode

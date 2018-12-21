@@ -76,105 +76,65 @@
 }
 - (void)DataJudgment
 {
-    [MBProgressHUD showActivityMessageInWindow:Localized(@"Loading")];
-    __weak typeof(self) weakSelf = self;
-    __block NSString * destAddress = self.destinationAddress.text;
-    __block NSDecimalNumber * sendNumber = [NSDecimalNumber decimalNumberWithString: self.transferVolume.text];
-    __block NSDecimalNumber * cost = [NSDecimalNumber decimalNumberWithString:self.transactionCosts.text];
-    dispatch_group_t group = dispatch_group_create();
-    dispatch_group_enter(group);
-    dispatch_async(dispatch_get_main_queue(), ^{
-        if ([destAddress isEqualToString:[[AccountTool account] purseAccount]]) {
-            [MBProgressHUD hideHUD];
-            [MBProgressHUD showTipMessageInWindow:Localized(@"CannotTransferToOneself")];
-            return;
-        }
-        RegexPatternTool * regex = [[RegexPatternTool alloc] init];
-        NSInteger decimals = self.listModel.decimals < 0 ? 0 : self.listModel.decimals;
-        BOOL transferVolumeRegx = [regex validateIsPositiveFloatingPoint:weakSelf.transferVolume.text] && [regex validateIsPositiveFloatingPoint:weakSelf.transferVolume.text decimals:decimals];
-        
-        NSDecimalNumber * minSendingQuantity = [NSDecimalNumber decimalNumberWithString:SendingQuantity_MIN];
-        NSString * minSending  = [[sendNumber decimalNumberBySubtracting:minSendingQuantity] stringValue];
-        
-        NSString * amount  = [[[NSDecimalNumber decimalNumberWithString:self.availableAmount] decimalNumberBySubtracting:sendNumber] stringValue];
-        
+    NSString * destAddress = self.destinationAddress.text;
+    NSDecimalNumber * sendNumber = [NSDecimalNumber decimalNumberWithString: self.transferVolume.text];
+    NSDecimalNumber * cost = [NSDecimalNumber decimalNumberWithString:self.transactionCosts.text];
+    if ([destAddress isEqualToString:[[AccountTool account] purseAccount]]) {
+        [MBProgressHUD hideHUD];
+        [MBProgressHUD showTipMessageInWindow:Localized(@"CannotTransferToOneself")];
+        return;
+    }
+    RegexPatternTool * regex = [[RegexPatternTool alloc] init];
+    NSInteger decimals = self.listModel.decimals < 0 ? 0 : self.listModel.decimals;
+    BOOL transferVolumeRegx = [regex validateIsPositiveFloatingPoint:self.transferVolume.text] && [regex validateIsPositiveFloatingPoint:self.transferVolume.text decimals:decimals];
+    NSString * amount  = [[[NSDecimalNumber decimalNumberWithString:self.availableAmount] decimalNumberBySubtracting:sendNumber] stringValue];
+    
+    if (transferVolumeRegx == NO) {
+        [MBProgressHUD hideHUD];
+        [MBProgressHUD showTipMessageInWindow:Localized(@"SendingQuantityIsIncorrect")];
+        return;
+    }
+    if ([amount hasPrefix:@"-"]) {
+        [MBProgressHUD hideHUD];
+        [MBProgressHUD showTipMessageInWindow:Localized(@"NotSufficientFunds")];
+        return;
+    }
+    if (self.listModel.type == Token_Type_BU) {
         NSDecimalNumber * maxSendingQuantity = [NSDecimalNumber decimalNumberWithString:SendingQuantity_MAX];
         NSString * maxSending  = [[maxSendingQuantity decimalNumberBySubtracting:sendNumber] stringValue];
-        
-        if (transferVolumeRegx == NO) {
-            [MBProgressHUD hideHUD];
-            [MBProgressHUD showTipMessageInWindow:Localized(@"SendingQuantityIsIncorrect")];
-            return;
-        }
-        if ([minSending hasPrefix:@"-"]) {
-            [MBProgressHUD hideHUD];
-            [MBProgressHUD showTipMessageInWindow:[NSString stringWithFormat:Localized(@"SendingQuantityMin%@"), SendingQuantity_MIN]];
-            return;
-        }
-        if ([amount hasPrefix:@"-"]) {
-            [MBProgressHUD hideHUD];
-            [MBProgressHUD showTipMessageInWindow:Localized(@"NotSufficientFunds")];
-            return;
-        }
-        
         if ([maxSending hasPrefix:@"-"]) {
             [MBProgressHUD hideHUD];
             [MBProgressHUD showTipMessageInWindow:[NSString stringWithFormat:Localized(@"SendingQuantityMax%@"), SendingQuantity_MAX_Division]];
             return;
         }
-        
-        if (weakSelf.remarks.text.length > MAX_LENGTH) {
-            [MBProgressHUD hideHUD];
-            [MBProgressHUD showTipMessageInWindow:Localized(@"ExtraLongNotes")];
-            return;
+    }
+    
+    if (self.remarks.text.length > MAX_LENGTH) {
+        [MBProgressHUD hideHUD];
+        [MBProgressHUD showTipMessageInWindow:Localized(@"ExtraLongNotes")];
+        return;
+    }
+    BOOL transactionCostsRegx = [regex validateIsPositiveFloatingPoint:self.transactionCosts.text] && [regex validateIsPositiveFloatingPoint:self.transactionCosts.text decimals:Decimals_BU];
+    NSDecimalNumber * maxTransactionCost = [NSDecimalNumber decimalNumberWithString:TransactionCost_MAX];
+    NSString * maxCost  = [[maxTransactionCost decimalNumberBySubtracting:cost] stringValue];
+    if (transactionCostsRegx == NO || [self.transactionCosts.text isEqualToString:@"0"]) {
+        [MBProgressHUD hideHUD];
+        [MBProgressHUD showTipMessageInWindow:Localized(@"TransactionCostIsIncorrect")];
+        return;
+    }
+    else if ([maxCost hasPrefix:@"-"]) {
+        [MBProgressHUD hideHUD];
+        [MBProgressHUD showTipMessageInWindow:Localized(@"TransactionCostMax")];
+        return;
+    }
+    self.isCorrectText = YES;
+    if (self.isCorrectText == YES) {
+        self.transferInfoArray = [NSMutableArray arrayWithObjects:destAddress, [NSString stringWithFormat:@"%@ %@", [sendNumber stringValue], self.listModel.assetCode], [NSString stringAppendingBUWithStr:[cost stringValue]], nil];
+        if ([self.remarks hasText]) {
+            [self.transferInfoArray addObject:self.remarks.text];
         }
-        BOOL transactionCostsRegx = [regex validateIsPositiveFloatingPoint:weakSelf.transferVolume.text] && [regex validateIsPositiveFloatingPoint:weakSelf.transferVolume.text decimals:decimals];
-//        NSDecimalNumber * minTransactionCost = [NSDecimalNumber decimalNumberWithString:TransactionCost_MIN];
-//        NSString * minCost  = [[cost decimalNumberBySubtracting:minTransactionCost] stringValue];
-        NSDecimalNumber * maxTransactionCost = [NSDecimalNumber decimalNumberWithString:TransactionCost_MAX];
-        NSString * maxCost  = [[maxTransactionCost decimalNumberBySubtracting:cost] stringValue];
-        if (transactionCostsRegx == NO || [self.transactionCosts.text isEqualToString:@"0"]) {
-            [MBProgressHUD hideHUD];
-            [MBProgressHUD showTipMessageInWindow:Localized(@"TransactionCostIsIncorrect")];
-            return;
-        }
-//        else if ([minCost hasPrefix:@"-"]) {
-//            [MBProgressHUD hideHUD];
-//            [MBProgressHUD showTipMessageInWindow:Localized(@"TransactionCostMin")];
-//            return;
-//        }
-        else if ([maxCost hasPrefix:@"-"]) {
-            [MBProgressHUD hideHUD];
-            [MBProgressHUD showTipMessageInWindow:Localized(@"TransactionCostMax")];
-            return;
-        }
-        weakSelf.isCorrectText = YES;
-        dispatch_group_leave(group);
-    });
-    dispatch_group_notify(group, dispatch_get_main_queue(), ^{
-        if (weakSelf.isCorrectText == YES) {
-            dispatch_async(dispatch_get_main_queue(), ^{
-                [MBProgressHUD showActivityMessageInWindow:Localized(@"Loading")];
-            });
-//            NSDecimalNumber * totalNumber = [sendingQuantity decimalNumberByAdding:cost];
-//            double amount = [self.availableAmount doubleValue] - (sendingQuantity + cost);
-//            NSString * amount  = [[[NSDecimalNumber decimalNumberWithString:self.availableAmount] decimalNumberBySubtracting:totalNumber] stringValue];
-            dispatch_async(dispatch_get_main_queue(), ^{
-//                if ([amount hasPrefix:@"-"]) {
-//                    [MBProgressHUD hideHUD];
-//                    [MBProgressHUD showTipMessageInWindow:Localized(@"NotSufficientFunds")];
-//                    return;
-//                }
-                [MBProgressHUD hideHUD];
-                weakSelf.transferInfoArray = [NSMutableArray arrayWithObjects:destAddress, [NSString stringWithFormat:@"%@ %@", [sendNumber stringValue], self.listModel.assetCode], [NSString stringAppendingBUWithStr:[cost stringValue]], nil];
-                if ([weakSelf.remarks hasText]) {
-                    [weakSelf.transferInfoArray addObject:weakSelf.remarks.text];
-                }
-                [weakSelf showTransferInfo];
-            });
-        }
-        
-    });
+        [self showTransferInfo];
+    }
 }
 - (void)showTransferInfo
 {

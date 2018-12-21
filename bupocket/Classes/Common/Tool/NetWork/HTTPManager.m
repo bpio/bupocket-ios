@@ -259,17 +259,23 @@ static int64_t const gasPrice = 1000;
 #pragma mark - SDK
 // Check the balance
 - (int64_t)getAccountBalance {
-    [MBProgressHUD showActivityMessageInWindow:Localized(@"Loading")];
+    dispatch_async(dispatch_get_main_queue(), ^{
+        [MBProgressHUD showActivityMessageInWindow:Localized(@"Loading")];
+    });
     AccountService *accountService = [[[SDK sharedInstance] setUrl:_bumoNodeUrl] getAccountService];
     AccountGetBalanceRequest * request = [AccountGetBalanceRequest new];
     [request setAddress : [AccountTool account].purseAccount];
     AccountGetBalanceResponse *response = [accountService getBalance : request];
     if (response.errorCode == Success_Code) {
-        [MBProgressHUD hideHUD];
+        dispatch_async(dispatch_get_main_queue(), ^{
+            [MBProgressHUD hideHUD];
+        });
         return response.result.balance;
     } else {
-        [MBProgressHUD hideHUD];
-        [MBProgressHUD showTipMessageInWindow:[ErrorTypeTool getDescription:response.errorCode]];
+        dispatch_async(dispatch_get_main_queue(), ^{
+            [MBProgressHUD hideHUD];
+            [MBProgressHUD showTipMessageInWindow:[ErrorTypeTool getDescription:response.errorCode]];
+        });
         return 0;
     }
 }
@@ -277,16 +283,12 @@ static int64_t const gasPrice = 1000;
 // Query cost standard
 // Obtain minimum asset limits and fuel unit prices for accounts in designated blocks
 - (void)getBlockLatestFees {
-//    BlockGetFeesRequest *request = [BlockGetFeesRequest new];
-//    [request setBlockNumber: 617247];
     BlockService *service = [[[SDK sharedInstance] setUrl: _bumoNodeUrl] getBlockService];
     BlockGetLatestFeesResponse * response = [service getLatestFees];
-//    BlockGetFeesResponse *response = [service getFees: request];
     NSString * minAssetLimit = @"0.01";
     NSUserDefaults * defaults = [NSUserDefaults standardUserDefaults];
     if (response.errorCode == Success_Code) {
         minAssetLimit = [[[NSDecimalNumber decimalNumberWithString:[NSString stringWithFormat:@"%lld", response.result.fees.baseReserve]] decimalNumberByMultiplyingByPowerOf10: -Decimals_BU] stringValue];
-//        minAssetLimit = [Tools MO2BU:response.result.fees.baseReserve];
         [defaults setObject:minAssetLimit forKey:Minimum_Asset_Limitation];
     } else {
         [defaults setObject:minAssetLimit forKey:Minimum_Asset_Limitation];
@@ -303,7 +305,6 @@ static int64_t const gasPrice = 1000;
         });
     }
     NSDecimalNumber * balance = 0;
-//    double baseReserve = [[[NSUserDefaults standardUserDefaults] objectForKey:Minimum_Asset_Limitation] doubleValue];
     NSDecimalNumber * minLimitationNumber = [NSDecimalNumber decimalNumberWithString:[[NSUserDefaults standardUserDefaults] objectForKey:Minimum_Asset_Limitation]];
     NSDecimalNumber * costNumber = [NSDecimalNumber decimalNumberWithString:cost];
     __block NSDecimalNumber * amount = 0;
@@ -330,9 +331,6 @@ static int64_t const gasPrice = 1000;
             [MBProgressHUD showTipMessageInWindow:[ErrorTypeTool getDescription:response.errorCode]];
         });
     }
-//    if (amount < 0) {
-//        amount = 0;
-//    }
     return amount;
 }
 // Balance of assets
@@ -355,16 +353,29 @@ static int64_t const gasPrice = 1000;
 
 // Query account / Is it activated?
 - (NSString *)getAccountInfoWithAddress:(NSString *)address {
+    dispatch_async(dispatch_get_main_queue(), ^{
+        [MBProgressHUD showActivityMessageInWindow:Localized(@"Loading")];
+    });
     AccountService * accountService = [[[SDK sharedInstance] setUrl:_bumoNodeUrl] getAccountService];
     AccountGetInfoRequest *request = [AccountGetInfoRequest new];
     [request setAddress : address];
     AccountGetInfoResponse *response = [accountService getInfo : request];
     if (response.errorCode == 0) {
         //        NSLog(@"%@", [response.result yy_modelToJSONString]);
+        dispatch_async(dispatch_get_main_queue(), ^{
+            [MBProgressHUD hideHUD];
+        });
         return TransactionCost_MIN;
     } else if (response.errorCode == 4) {
+        dispatch_async(dispatch_get_main_queue(), ^{
+            [MBProgressHUD hideHUD];
+        });
         return TransactionCost_NotActive_MIN;
     } else {
+        dispatch_async(dispatch_get_main_queue(), ^{
+            [MBProgressHUD hideHUD];
+            [MBProgressHUD showTipMessageInWindow:[ErrorTypeTool getDescription:response.errorCode]];
+        });
         return nil;
     }
 }
@@ -539,7 +550,7 @@ static int64_t const gasPrice = 1000;
     }
     return nonce;
 }
-
+// transaction information
 - (NSString *) buildBlobAndSignAndSubmit : (NSString *) privateKey : (NSString *) sourceAddress : (int64_t) nonce : (int64_t) gasPrice : (int64_t) feeLimit : (BaseOperation *)operation : (NSString *) notes {
     TransactionBuildBlobRequest *buildBlobRequest = [TransactionBuildBlobRequest new];
     [buildBlobRequest setSourceAddress : sourceAddress];

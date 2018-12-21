@@ -239,7 +239,7 @@
 // 转账
 "BUAddressIsIncorrect" = "BU地址不正确，请重新输入";
 "SendingQuantityIsIncorrect" = "无效的转账数量";
-"SendingQuantityMin%@" = "转账数量单笔不可少于%@ BU";
+//"SendingQuantityMin%@" = "转账数量单笔不可少于%@ BU";
 "SendingQuantityMax%@" = "转账数量单笔不可超过%@ BU";
 "NotSufficientFunds" = "可用余额不足";
 "TransactionCostIsIncorrect" = "最多支付交易费用格式有误，请重新输入";

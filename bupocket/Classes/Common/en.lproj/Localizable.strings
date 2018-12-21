@@ -245,7 +245,7 @@
 //"%@AddressIsIncorrect" = "The %@ address is incorrect. Please enter again";
 "BUAddressIsIncorrect" = "The BU address is incorrect. Please enter again";
 "SendingQuantityIsIncorrect" = "Invalid transfer amount";
-"SendingQuantityMin%@" = "The transfer amount cannot be less than %@ BU per transaction";
+//"SendingQuantityMin%@" = "The transfer amount cannot be less than %@ BU per transaction";
 "SendingQuantityMax%@" = "The transfer amount cannot exceed %@ BU per transaction";
 "NotSufficientFunds" = "Available balance is insufficient";
 "TransactionCostIsIncorrect" = "The format of maximum payment transaction fee is incorrect. Please enter again";
