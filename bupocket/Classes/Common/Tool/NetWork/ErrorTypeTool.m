@@ -14,6 +14,9 @@
 {
     NSString *errorDesc;
     switch(errorCode) {
+            // 底层 ERRCODE_ACCOUNT_LOW_RESERVE
+        case ERRCODE_ACCOUNT_LOW_RESERVE: errorDesc = Localized(@"NotSufficientFunds");
+            break;
             // getBalance
         case INVALID_ADDRESS_ERROR: errorDesc = Localized(@"INVALID_ADDRESS_ERROR");
             break;

@@ -156,11 +156,12 @@
             if (granted) {
                 dispatch_async(dispatch_get_main_queue(), ^{
                     //配置扫描view
-                    [self loadScanView];
+                    [self setupSession];
                 });
             }
         }];
     } else {
+        // AVAuthorizationStatusAuthorized
         //配置扫描view
         [self loadScanView];
     }
@@ -277,12 +278,12 @@
 - (void)setupLayers {
     
     if (self.parentView == nil) {
-//        NSLog(@"父视图不存在");
+        NSLog(@"父视图不存在");
         return;
     }
     
     if (session == nil) {
-//        NSLog(@"拍摄会话不存在");
+        NSLog(@"拍摄会话不存在");
         return;
     }
     
@@ -307,7 +308,11 @@
     
     // 1> 输入设备
     AVCaptureDevice *device = [AVCaptureDevice defaultDeviceWithMediaType:AVMediaTypeVideo];
-    AVCaptureDeviceInput *videoInput = [AVCaptureDeviceInput deviceInputWithDevice:device error:nil];
+    NSError *videoInputError = nil;
+    AVCaptureDeviceInput *videoInput = [AVCaptureDeviceInput deviceInputWithDevice:device error:&videoInputError];
+    if (videoInputError) {
+        HSSLog(@"videoInputError == %@",videoInputError);
+    }
     
     if (videoInput == nil) {
         HSSLog(@"创建输入设备失败");

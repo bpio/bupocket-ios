@@ -82,7 +82,11 @@
 - (BOOL)validateIsPositiveFloatingPoint:(NSString *)targetString decimals:(NSInteger)decimals
 {
 //    "(^0(\\.[0-9]{0," + (decimals - 1) + "}[1-9])?$)|(^[1-9][0-9]{0," + (18 - decimals) + "}(\\.[0-9]{0," + (decimals - 1) + "}[1-9])?$)"
-    NSString *regex = [NSString stringWithFormat:@"^[0-9]{1,11}(\\.[0-9]{0,%zd})?$", decimals];
+    NSString * regex = [NSString stringWithFormat:@"(^0(\\.[0-9]{0,%zd}[1-9])?$)|(^[1-9][0-9]{0,%zd}(\\.[0-9]{0,%zd}[1-9])?$)", decimals - 1, 18 - decimals, decimals - 1];
+    if (decimals == 0) {
+        regex = [NSString stringWithFormat:@"(^0(\\.[0-9]{0,0}[1-9])?$)|(^[1-9][0-9]{0,%zd}(\\.[0-9]{0,0}[1-9])?$)", 18 - decimals];
+    }
+//    NSString *regex = [NSString stringWithFormat:@"^[0-9]{1,11}(\\.[0-9]{0,%zd})?$", decimals];
     return [self regexPatternResultWithRegex:regex TargetString:targetString];
 }
 //验证字符串是否为非正浮点数

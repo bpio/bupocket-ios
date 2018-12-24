@@ -116,7 +116,11 @@
         /**
          * 当某些情况下PHAuthorizationStatus == PHAuthorizationStatusNotDetermined时，无法弹出系统首次使用的授权alertView，系统应用设置里亦没有相册的设置，此时将无法使用，故作以下操作，弹出系统首次使用的授权alertView
          */
-        [self requestAuthorizationWithCompletion:nil];
+        [self requestAuthorizationWithCompletion:^{
+            dispatch_async(dispatch_get_main_queue(), ^{
+                [self clickAlbumButton];
+            });
+        }];
     } else {
         [self openPhotoPicker];
     }

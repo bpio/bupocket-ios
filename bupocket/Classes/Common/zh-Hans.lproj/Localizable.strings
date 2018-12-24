@@ -239,12 +239,12 @@
 // 转账
 "BUAddressIsIncorrect" = "BU地址不正确，请重新输入";
 "SendingQuantityIsIncorrect" = "无效的转账数量";
-//"SendingQuantityMin" = "转账数量单笔不可少于0.00000001 BU";
-//"SendingQuantityMax" = "转账数量单笔不可超过10000 BU";
+//"SendingQuantityMin%@" = "转账数量单笔不可少于%@ BU";
+"SendingQuantityMax%@" = "转账数量单笔不可超过%@ BU";
 "NotSufficientFunds" = "可用余额不足";
 "TransactionCostIsIncorrect" = "最多支付交易费用格式有误，请重新输入";
-"TransactionCostMin" = "最多支付交易费用不可少于0.01 BU";
-"TransactionCostMax" = "最多支付交易费用不可超过10 BU";
+//"TransactionCostMin" = "最多支付交易费用不可少于0.01 BU";
+"TransactionCostMax%@" = "最多支付交易费用不可超过%@ BU";
 "ExtraLongNotes" = "备注信息不能超过20个字";
 // 帮助反馈
 "SuggestionsContentOverlength" = "问题或建议内容过长，不能超过100个字";
