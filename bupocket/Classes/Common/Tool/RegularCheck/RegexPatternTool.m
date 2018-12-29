@@ -82,9 +82,9 @@
 - (BOOL)validateIsPositiveFloatingPoint:(NSString *)targetString decimals:(NSInteger)decimals
 {
 //    "(^0(\\.[0-9]{0," + (decimals - 1) + "}[1-9])?$)|(^[1-9][0-9]{0," + (18 - decimals) + "}(\\.[0-9]{0," + (decimals - 1) + "}[1-9])?$)"
-    NSString * regex = [NSString stringWithFormat:@"(^0(\\.[0-9]{0,%zd}[1-9])?$)|(^[1-9][0-9]{0,%zd}(\\.[0-9]{0,%zd}[1-9])?$)", decimals - 1, 18 - decimals, decimals - 1];
+    NSString * regex = [NSString stringWithFormat:@"(^0(\\.[0-9]{0,%zd})?$)|(^[1-9][0-9]{0,%zd}(\\.[0-9]{0,%zd})?$)", decimals, 18 - decimals, decimals];
     if (decimals == 0) {
-        regex = [NSString stringWithFormat:@"(^0(\\.[0-9]{0,0}[1-9])?$)|(^[1-9][0-9]{0,%zd}(\\.[0-9]{0,0}[1-9])?$)", 18 - decimals];
+        regex = [NSString stringWithFormat:@"(^0?$)|(^[1-9][0-9]{0,18}?$)"];
     }
 //    NSString *regex = [NSString stringWithFormat:@"^[0-9]{1,11}(\\.[0-9]{0,%zd})?$", decimals];
     return [self regexPatternResultWithRegex:regex TargetString:targetString];

@@ -158,12 +158,13 @@
 {
     [[HTTPManager shareManager] setTransferDataWithTokenType:self.listModel.type password:password destAddress:_destinationAddress.text assets:_transferVolume.text decimals:self.listModel.decimals feeLimit:_transactionCosts.text notes:_remarks.text code:self.listModel.assetCode issuer:self.listModel.issuer success:^(TransactionResultModel *resultModel) {
         [self.transferInfoArray addObject:[DateTool getDateStringWithTimeStr:[NSString stringWithFormat:@"%lld", resultModel.transactionTime]]];
+        [self.transferInfoArray replaceObjectAtIndex:2 withObject:[NSString stringAppendingBUWithStr:resultModel.actualFee]];
         TransferResultsViewController * VC = [[TransferResultsViewController alloc] init];
         if (resultModel.errorCode == Success_Code) {
             VC.state = YES;
         } else {
             VC.state = NO;
-            [MBProgressHUD showTipMessageInWindow:[ErrorTypeTool getDescription:resultModel.errorCode]];
+//            [MBProgressHUD showTipMessageInWindow:[ErrorTypeTool getDescription:resultModel.errorCode]];
         }
         VC.transferInfoArray = self.transferInfoArray;
         [self.navigationController pushViewController:VC animated:YES];
@@ -234,6 +235,7 @@
     } else if (index == 3) {
         self.transactionCosts = textField;
     }
+    self.transactionCosts.text = TransactionCost_MIN;
     if (self.listModel.type == Token_Type_BU) {
         NSDecimalNumber * amountNumber = [NSDecimalNumber decimalNumberWithString:self.listModel.amount];
         NSDecimalNumber * minLimitationNumber = [NSDecimalNumber decimalNumberWithString:[[NSUserDefaults standardUserDefaults] objectForKey:Minimum_Asset_Limitation]];
@@ -243,7 +245,6 @@
         if ([self.availableAmount hasPrefix:@"-"]) {
             self.availableAmount = @"0";
         }
-        self.transactionCosts.text = TransactionCost_MIN;
     } else {
         self.availableAmount = self.listModel.amount;
     }
@@ -279,7 +280,7 @@
 - (void)IsActivatedWithAddress:(NSString *)address
 {
     if (self.listModel.type == Token_Type_BU) return;
-    if ([self.transactionCosts hasText]) return;
+//    if ([self.transactionCosts hasText]) return;
         __weak typeof(self) weakSelf = self;
         NSOperationQueue * queue = [[NSOperationQueue alloc] init];
         [queue addOperationWithBlock:^{

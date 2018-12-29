@@ -353,29 +353,29 @@ static int64_t const gasPrice = 1000;
 
 // Query account / Is it activated?
 - (NSString *)getAccountInfoWithAddress:(NSString *)address {
-    dispatch_async(dispatch_get_main_queue(), ^{
-        [MBProgressHUD showActivityMessageInWindow:Localized(@"Loading")];
-    });
+//    dispatch_async(dispatch_get_main_queue(), ^{
+//        [MBProgressHUD showActivityMessageInWindow:Localized(@"Loading")];
+//    });
     AccountService * accountService = [[[SDK sharedInstance] setUrl:_bumoNodeUrl] getAccountService];
     AccountGetInfoRequest *request = [AccountGetInfoRequest new];
     [request setAddress : address];
     AccountGetInfoResponse *response = [accountService getInfo : request];
     if (response.errorCode == 0) {
         //        NSLog(@"%@", [response.result yy_modelToJSONString]);
-        dispatch_async(dispatch_get_main_queue(), ^{
-            [MBProgressHUD hideHUD];
-        });
+//        dispatch_async(dispatch_get_main_queue(), ^{
+//            [MBProgressHUD hideHUD];
+//        });
         return TransactionCost_MIN;
     } else if (response.errorCode == 4) {
-        dispatch_async(dispatch_get_main_queue(), ^{
-            [MBProgressHUD hideHUD];
-        });
+//        dispatch_async(dispatch_get_main_queue(), ^{
+//            [MBProgressHUD hideHUD];
+//        });
         return TransactionCost_NotActive_MIN;
     } else {
-        dispatch_async(dispatch_get_main_queue(), ^{
-            [MBProgressHUD hideHUD];
-            [MBProgressHUD showTipMessageInWindow:[ErrorTypeTool getDescription:response.errorCode]];
-        });
+//        dispatch_async(dispatch_get_main_queue(), ^{
+//            [MBProgressHUD hideHUD];
+//            [MBProgressHUD showTipMessageInWindow:[ErrorTypeTool getDescription:response.errorCode]];
+//        });
         return nil;
     }
 }
@@ -500,7 +500,8 @@ static int64_t const gasPrice = 1000;
         [MBProgressHUD showTipMessageInWindow:Localized(@"PasswordIsIncorrect")];
         return;
     }
-    int64_t feeLimit = [Tools BU2MO: [Registered_Cost doubleValue]];
+    NSDecimalNumber * feeLimitNumber = [Tools BU2MO: Registered_Cost];
+    int64_t feeLimit = [feeLimitNumber longLongValue];
     int64_t nonce = [[HTTPManager shareManager] getAccountNonce: sourceAddress] + 1;
     if (nonce == 0) return;
     NSString * hash = [[HTTPManager shareManager] buildBlobAndSignAndSubmit:privateKey :sourceAddress :nonce :gasPrice :feeLimit :operation :nil];
@@ -528,7 +529,8 @@ static int64_t const gasPrice = 1000;
         [MBProgressHUD showTipMessageInWindow:Localized(@"PasswordIsIncorrect")];
         return;
     }
-    int64_t feeLimit = [Tools BU2MO: [Distribution_Cost doubleValue]];
+    NSDecimalNumber * feeLimitNumber = [Tools BU2MO: Distribution_Cost];
+    int64_t feeLimit = [feeLimitNumber longLongValue];
     int64_t nonce = [[HTTPManager shareManager] getAccountNonce: sourceAddress] + 1;
     if (nonce == 0) return;
     NSString * hash = [[HTTPManager shareManager] buildBlobAndSignAndSubmit:privateKey :sourceAddress :nonce :gasPrice :feeLimit :operation :nil];
@@ -641,7 +643,7 @@ static int64_t const gasPrice = 1000;
                 {
                     TransactionHistory * history = response.result.transactions[0];
                     resultModel.transactionTime = history.closeTime;
-                    resultModel.actualFee = history.actualFee;
+                    resultModel.actualFee = [[[NSDecimalNumber decimalNumberWithString:history.actualFee] decimalNumberByMultiplyingByPowerOf10: -Decimals_BU] stringValue];
                     resultModel.errorCode = history.errorCode;
                     success(resultModel);
                 }

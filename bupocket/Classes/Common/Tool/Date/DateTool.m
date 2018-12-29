@@ -36,18 +36,18 @@ static int timeStampLength = 13;
             NSDateComponents *cmps = [date deltaWithNow];
             if (cmps.hour >= 1) {
                 // At least 1 hours ago.
-                return [NSString stringWithFormat:@"%zd%@", cmps.hour, Localized(@"HoursAgo")];
+                return [NSString stringWithFormat:@"%zd %@", cmps.hour, Localized(@"HoursAgo")];
             } else if (cmps.minute >= 1) {
                 // 1~59 minutes ago
-                return [NSString stringWithFormat:@"%zd%@", cmps.minute, Localized(@"MinutesAgo")];
+                return [NSString stringWithFormat:@"%zd %@", cmps.minute, Localized(@"MinutesAgo")];
             } else {
                 // In 1 minutes
                 return Localized(@"Just");
             }
         } else if (date.isYesterday) {
             // Yesterday
-            formatter.dateFormat = [NSString stringWithFormat:@"%@ HH:mm:ss", Localized(@"Yesterday")];
-            return [formatter stringFromDate:date];
+            formatter.dateFormat = @"HH:mm:ss";
+            return [NSString stringWithFormat:@"%@ %@", Localized(@"Yesterday"), [formatter stringFromDate:date]];
         } else {
             // At least the day before yesterday.
             formatter.dateFormat = @"MM.dd HH:mm:ss";

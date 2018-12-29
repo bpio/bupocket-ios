@@ -130,7 +130,6 @@ static NSString * const SettingCellID = @"SettingCellID";
             [UIApplication sharedApplication].keyWindow.rootViewController = [[TabBarViewController alloc] init];
         }];
     }
-    sender.on = !sender.on;
 }
 - (void)showAlertWithMessage:(NSString *)message handler:(void (^)(UIAlertAction * action))handler
 {

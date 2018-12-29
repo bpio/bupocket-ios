@@ -86,7 +86,6 @@
 "PleaseEnterQOrS" = "请输入您遇到的问题或建议";
 "PleaseEnterContact" = "请输入您的联系方式";
 // 多语言
-"Multilingual" = "多语言";
 "SimplifiedChinese" = "简体中文";
 "English" = "English";
 // 切换网络
@@ -140,8 +139,8 @@
 "Submission" = "提交";
 "TransactionCost" = "交易费";
 "TransferTime" = "转账时间";
-"TransferSuccess" = "转账成功";
-"TransferFailure" = "转账失败";
+//"TransferSuccess" = "转账成功";
+//"TransferFailure" = "转账失败";
 "RequestTimeout" = "请求超时";
 "IGotIt" = "我知道了";
 // 订单详情
@@ -256,6 +255,8 @@
 // SDK Errors
 "SYSTEM_ERROR" = "系统错误";
 "INVALID_ADDRESS_ERROR" = "无效地址";
+// 底层 错误信息
+"ERRCODE_FEE_NOT_ENOUGH" = "交易费用不足";
 
 
 

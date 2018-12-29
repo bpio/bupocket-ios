@@ -156,7 +156,7 @@
             if (granted) {
                 dispatch_async(dispatch_get_main_queue(), ^{
                     //配置扫描view
-                    [self setupSession];
+                    [self loadScanView];
                 });
             }
         }];
