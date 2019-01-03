@@ -203,7 +203,8 @@
 "HoursAgo" = "小时前";
 "MinutesAgo" = "分钟前";
 "Just" = "刚刚";
-"Yesterday" = "昨天";
+//"Yesterday" = "昨天";
+"DaysAgo" = "天前";
 
 // alert Massage
 "Loading" = "加载中...";

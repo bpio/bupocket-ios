@@ -207,7 +207,8 @@
 "HoursAgo" = "hours ago";
 "MinutesAgo" = "minutes ago";
 "Just" = "Just now";
-"Yesterday" = "Yesterday";
+//"Yesterday" = "Yesterday";
+"DaysAgo" = "days ago";
 
 // alert Massage
 "Loading" = "Loading...";
