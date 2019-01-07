@@ -185,7 +185,7 @@ static NSInteger const TxInfoNormalCount = 6;
             make.top.equalTo(orderResults.mas_bottom).offset(Margin_10);
             make.centerX.equalTo(self.headerViewBg);
         }];
-        state.text = (self.listModel.txStatus == 0) ? Localized(@"TransferSuccess") : Localized(@"TransferFailure");
+        state.text = (self.listModel.txStatus == 0) ? Localized(@"Success") : Localized(@"Failure");
         _headerView = headerView;
     }
     return _headerView;

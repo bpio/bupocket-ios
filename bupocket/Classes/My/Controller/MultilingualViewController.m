@@ -23,7 +23,7 @@ static NSString * const ListCellID = @"ListCellID";
 
 - (void)viewDidLoad {
     [super viewDidLoad];
-    self.navigationItem.title = Localized(@"Multilingual");
+    self.navigationItem.title = Localized(@"MultiLingual");
     if ([CurrentAppLanguage isEqualToString:ZhHans]) {
         self.index = 0;
     } else if ([CurrentAppLanguage isEqualToString:EN]) {

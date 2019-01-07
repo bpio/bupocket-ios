@@ -61,9 +61,9 @@
 "Finished" = "Completed";
 // Profile
 "Setting" = "Setting";
-"ModifyPassword" = "Modify password";
+"ModifyPassword" = "Change password";
 "Feedback" = "Feedback";
-"MultiLingual" = "Language";
+"MultiLingual" = "Languages";
 "VersionNumber" = "Version";
 //"Save" = "Save";
 "MonetaryUnit" = "Currency unit";
@@ -88,7 +88,6 @@
 "PleaseEnterQOrS" = "Please enter your questions or suggestions";
 "PleaseEnterContact" = "Please enter your contacts";
 // Language
-"Multilingual" = "Language";
 "SimplifiedChinese" = "Simplified Chinese";
 "English" = "English";
 // Switch network
@@ -102,7 +101,7 @@
 // Tokens
 "TotalAssets" = "Total tokens";
 "MyAssets" = "My tokens";
-"PaymentCode" = "Payment code";
+"PaymentCode" = "Receive";
 "SafetyTipsTitle" = "Safety tips";
 "SafetyTips" = "Your wallet mnemonics have not been backed up. To prevent loss of tokens due to forgetting passwords, deleting apps, or losing your phone, be sure to back up your mnemonics.";
 "ImmediateBackup" = "Back up now";
@@ -118,7 +117,7 @@
 "NoSearchResults" = "No search results found";
 // Details of tokens
 "AssetsDetailScan" = "Scan";
-"TransferAccounts" = "Transfer coins";
+"TransferAccounts" = "Transfer";
 "RecentTransactionRecords" = "Transaction history";
 "NoTransactionRecord" = "No transaction records";
 // Transfer coins
@@ -142,8 +141,8 @@
 "Submission" = "Submit";
 "TransactionCost" = "Transaction fee";
 "TransferTime" = "Time";
-"TransferSuccess" = "Succeeded";
-"TransferFailure" = "Failed";
+//"TransferSuccess" = "Succeeded";
+//"TransferFailure" = "Failed";
 "RequestTimeout" = "Request timeout";
 "IGotIt" = "Got it";
 // Order details
@@ -205,10 +204,11 @@
 "Album" = "Album";
 "ScanPrompt" = "Automatically scan the QR code in the box";
 // date
-"HoursAgo" = "Hour ago";
-"MinutesAgo" = "Minute ago";
+"HoursAgo" = "hours ago";
+"MinutesAgo" = "minutes ago";
 "Just" = "Just now";
-"Yesterday" = "Yesterday";
+//"Yesterday" = "Yesterday";
+"DaysAgo" = "days ago";
 
 // alert Massage
 "Loading" = "Loading...";
@@ -263,4 +263,6 @@
 // SDK Errors
 "SYSTEM_ERROR" = "System error";
 "INVALID_ADDRESS_ERROR" = "Invalid address";
+// 底层 错误信息
+"ERRCODE_FEE_NOT_ENOUGH" = "Transaction not enough";
 

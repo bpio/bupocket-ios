@@ -31,30 +31,24 @@ static int timeStampLength = 13;
     formatter.dateFormat = @"EEE MMM dd HH:mm:ss Z yyyy";
     formatter.locale = [[NSLocale alloc] initWithLocaleIdentifier:@"en_US"];
     // This year
-    if (date.isThisYear) {
-        if (date.isToday) {
-            NSDateComponents *cmps = [date deltaWithNow];
-            if (cmps.hour >= 1) {
-                // At least 1 hours ago.
-                return [NSString stringWithFormat:@"%zd%@", cmps.hour, Localized(@"HoursAgo")];
-            } else if (cmps.minute >= 1) {
-                // 1~59 minutes ago
-                return [NSString stringWithFormat:@"%zd%@", cmps.minute, Localized(@"MinutesAgo")];
-            } else {
-                // In 1 minutes
-                return Localized(@"Just");
-            }
-        } else if (date.isYesterday) {
-            // Yesterday
-            formatter.dateFormat = [NSString stringWithFormat:@"%@ HH:mm:ss", Localized(@"Yesterday")];
-            return [formatter stringFromDate:date];
+    NSDateComponents *cmps = [date deltaWithNow];
+    if (date.isToday) {
+        if (cmps.hour >= 1) {
+            // At least 1 hours ago.
+            return [NSString stringWithFormat:@"%zd %@", cmps.hour, Localized(@"HoursAgo")];
+        } else if (cmps.minute >= 1) {
+            // 1~59 minutes ago
+            return [NSString stringWithFormat:@"%zd %@", cmps.minute, Localized(@"MinutesAgo")];
         } else {
-            // At least the day before yesterday.
-            formatter.dateFormat = @"MM.dd HH:mm:ss";
-            return [formatter stringFromDate:date];
+            // In 1 minutes
+            return Localized(@"Just");
         }
-    } else { 
-        formatter.dateFormat = @"yyyy.MM.dd HH:mm:ss";
+    } else if (date.isThisWeek) {
+        // A few days ago
+        return [NSString stringWithFormat:@"%zd %@", cmps.day, Localized(@"DaysAgo")];
+    } else {
+        // At least a week ago
+        formatter.dateFormat = @"dd/MM/yyyy";
         return [formatter stringFromDate:date];
     }
 }

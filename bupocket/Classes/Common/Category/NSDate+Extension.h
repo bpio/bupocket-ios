@@ -16,6 +16,8 @@ NS_ASSUME_NONNULL_BEGIN
 
 - (BOOL)isYesterday;
 
+- (BOOL)isThisWeek;
+
 - (BOOL)isThisYear;
 
 // Year/Month/Day
