@@ -20,6 +20,12 @@ typedef NS_ENUM(NSInteger, ErrorType) {
     ErrorTypePurseAddress = 100008, // 非法钱包地址
 };
 
+// 底层错误类型
+typedef NS_ENUM(NSInteger, ErrorCode) {
+    ERRCODE_ACCOUNT_LOW_RESERVE = 100, // 余额不足
+    ERRCODE_FEE_NOT_ENOUGH = 111, // 交易费用不足
+};
+
 + (NSString *)getDescriptionWithErrorCode:(NSInteger)errorCode;
 
 @end

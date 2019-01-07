@@ -34,6 +34,15 @@
     return cmps.day == 1;
 }
 
+- (BOOL)isThisWeek
+{
+    NSDate *nowDate = [[NSDate date] dateWithYMD];
+    NSDate *selfDate = [self dateWithYMD];
+    NSCalendar *calendar = [NSCalendar currentCalendar];
+    NSDateComponents *cmps = [calendar components:NSCalendarUnitDay fromDate:selfDate toDate:nowDate options:0];
+    return cmps.day < 7;
+}
+
 - (NSDate *)dateWithYMD
 {
     NSDateFormatter *fmt = [[NSDateFormatter alloc] init];
@@ -54,7 +63,7 @@
 - (NSDateComponents *)deltaWithNow
 {
     NSCalendar *calendar = [NSCalendar currentCalendar];
-    int unit = NSCalendarUnitHour | NSCalendarUnitMinute | NSCalendarUnitSecond;
+    int unit = NSCalendarUnitDay | NSCalendarUnitHour | NSCalendarUnitMinute | NSCalendarUnitSecond;
     return [calendar components:unit fromDate:self toDate:[NSDate date] options:0];
 }
 

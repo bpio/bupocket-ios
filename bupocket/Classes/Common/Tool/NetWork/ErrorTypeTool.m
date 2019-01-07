@@ -14,9 +14,15 @@
 {
     NSString *errorDesc;
     switch(errorCode) {
-            // getBalance
+        // 底层 ERRCODE_ACCOUNT_LOW_RESERVE
+        case ERRCODE_ACCOUNT_LOW_RESERVE: errorDesc = Localized(@"NotSufficientFunds");
+        break;
+        case ERRCODE_FEE_NOT_ENOUGH: errorDesc = Localized(@"ERRCODE_FEE_NOT_ENOUGH");
+        break;
+        
+        // getBalance
         case INVALID_ADDRESS_ERROR: errorDesc = Localized(@"INVALID_ADDRESS_ERROR");
-            break;
+        break;
 //            INVALID_ADDRESS_ERROR 11006无效地址
 //            The account does not have the asset  帐户没有资产
 //        case NO_ASSET_ERROR: errorDesc = Localized(@"");

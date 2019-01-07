@@ -26,6 +26,8 @@
 @property (nonatomic, strong) UIView * noData;
 @property (nonatomic, assign) NSInteger pageindex;
 @property (nonatomic, strong) UIView * noNetWork;
+@property (nonatomic, strong) NSString * assetsStr;
+@property (nonatomic, strong) NSString * amountStr;
 
 @end
 
@@ -42,7 +44,13 @@
 - (void)viewDidLoad {
     [super viewDidLoad];
     self.navigationItem.title = self.listModel.assetCode;
-    _headerViewH = ScreenScale(240);
+    
+    self.assetsStr = [NSString stringWithFormat:@"%@ %@", self.listModel.amount, self.listModel.assetCode];
+    NSString * currencyUnit = [AssetCurrencyModel getCurrencyUnitWithAssetCurrency:[[[NSUserDefaults standardUserDefaults] objectForKey:Current_Currency] integerValue]];
+    self.amountStr = [self.listModel.assetAmount isEqualToString:@"~"] ? self.listModel.assetAmount : [NSString stringWithFormat:@"≈%@%@", currencyUnit, self.listModel.assetAmount];
+    CGFloat assetsH = [Encapsulation rectWithText:self.assetsStr font:FONT_Bold(24) textWidth:DEVICE_WIDTH - Margin_40].size.height;
+    CGFloat amountH = [Encapsulation rectWithText:self.amountStr font:FONT(15) textWidth:DEVICE_WIDTH - Margin_40].size.height;
+    self.headerViewH = ScreenScale(200) + assetsH + amountH;
     [self setupView];
     self.noNetWork = [Encapsulation showNoNetWorkWithSuperView:self.view target:self action:@selector(reloadData)];
     [self setupRefresh];
@@ -78,11 +86,7 @@
         if (code == Success_Code) {
             [self.tableView addSubview:self.headerBg];
             [self.tableView insertSubview:self.headerBg atIndex:0];
-            NSDecimalNumber * balanceNumber = [NSDecimalNumber decimalNumberWithString:responseObject[@"data"][@"assetData"][@"balance"]];
-            self.assets.text = [NSString stringWithFormat:@"%@ %@", balanceNumber, self.listModel.assetCode];
-            NSString * amountStr = responseObject[@"data"][@"assetData"][@"totalAmount"];
-            NSString * currencyUnit = [AssetCurrencyModel getCurrencyUnitWithAssetCurrency:[[[NSUserDefaults standardUserDefaults] objectForKey:Current_Currency] integerValue]];
-            self.amount.text = [amountStr isEqualToString:@"~"] ? amountStr : [NSString stringWithFormat:@"≈%@%@", currencyUnit, amountStr];
+//            NSDecimalNumber * balanceNumber = [NSDecimalNumber decimalNumberWithString:responseObject[@"data"][@"assetData"][@"balance"]];
             NSArray * listArray = [AssetsDetailModel mj_objectArrayWithKeyValuesArray:responseObject[@"data"] [@"txRecord"]];
             if (pageindex == PageIndex_Default) {
                 [self.listArray removeAllObjects];
@@ -119,7 +123,6 @@
     self.tableView.contentInset = UIEdgeInsetsMake(_headerViewH, 0, 0, 0);
     [self.view addSubview:self.tableView];
 }
-
 - (UIView *)noData
 {
     if (!_noData) {
@@ -158,6 +161,9 @@
         self.assets = [[UILabel alloc] init];
         self.assets.textColor = TITLE_COLOR;
         self.assets.font = FONT_Bold(24);
+        self.assets.numberOfLines = 0;
+        self.assets.textAlignment = NSTextAlignmentCenter;
+        self.assets.text = self.assetsStr;
         [self.headerViewBg addSubview:self.assets];
         [self.assets mas_makeConstraints:^(MASConstraintMaker *make) {
             make.top.equalTo(assetsIcon.mas_bottom).offset(Margin_15);
@@ -167,6 +173,9 @@
         self.amount = [[UILabel alloc] init];
         self.amount.font = FONT(15);
         self.amount.textColor = COLOR_9;
+        self.amount.numberOfLines = 0;
+        self.amount.textAlignment = NSTextAlignmentCenter;
+        self.amount.text = self.amountStr;
         [self.headerViewBg addSubview:self.amount];
         [self.amount mas_makeConstraints:^(MASConstraintMaker *make) {
             make.top.equalTo(self.assets.mas_bottom).offset(Margin_15);

@@ -181,7 +181,6 @@ static NSString * const AddAssetsCellID = @"AddAssetsCellID";
 }
 - (void)switchChange:(UISwitch *)sender
 {
-    sender.on = !sender.on;
     NSDictionary * assetsDic = @{
                                  @"assetCode" : _searchAssetsModel.assetCode,
                                  @"issuer" : _searchAssetsModel.issuer

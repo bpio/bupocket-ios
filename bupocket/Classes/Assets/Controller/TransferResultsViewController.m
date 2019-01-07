@@ -41,10 +41,10 @@ static NSString * const TransferResultsCellID = @"DetailListCellID";
     [transferResults setTitleColor:COLOR_6 forState:UIControlStateNormal];
     transferResults.titleLabel.font = FONT(16);
     if (self.state == YES) {
-        [transferResults setTitle:Localized(@"TransferSuccess") forState:UIControlStateNormal];
+        [transferResults setTitle:Localized(@"Success") forState:UIControlStateNormal];
         [transferResults setImage:[UIImage imageNamed:@"transferSuccess"] forState:UIControlStateNormal];
     } else {
-        [transferResults setTitle:Localized(@"TransferFailure") forState:UIControlStateNormal];
+        [transferResults setTitle:Localized(@"Failure") forState:UIControlStateNormal];
         [transferResults setImage:[UIImage imageNamed:@"transferFailure"] forState:UIControlStateNormal];
     }
     transferResults.bounds = CGRectMake(0, 0, DEVICE_WIDTH, ScreenScale(120));

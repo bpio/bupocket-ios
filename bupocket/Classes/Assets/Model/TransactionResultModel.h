@@ -14,7 +14,7 @@ NS_ASSUME_NONNULL_BEGIN
 
 @property (nonatomic, copy) NSString * transactionHash;
 @property (nonatomic, assign) int64_t transactionTime;
-@property (nonatomic, copy) NSString *actualFee;
+@property (nonatomic, strong) NSString *actualFee;
 @property (nonatomic, assign) int32_t errorCode;
 
 

@@ -12,7 +12,7 @@
 #import "SettingViewController.h"
 #import "ChangePasswordViewController.h"
 #import "FeedbackViewController.h"
-#import "UINavigationController+Extension.h"
+//#import "UINavigationController+Extension.h"
 
 @interface MyViewController ()<UITableViewDelegate, UITableViewDataSource, UIGestureRecognizerDelegate>
 

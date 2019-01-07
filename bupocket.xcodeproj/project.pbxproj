@@ -96,9 +96,8 @@
 		954371742199234100915BBE /* SettingViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 954371732199234100915BBE /* SettingViewController.m */; };
 		9549EC66219C0CF800307255 /* CreateTipsAlertView.m in Sources */ = {isa = PBXBuildFile; fileRef = 9549EC65219C0CF800307255 /* CreateTipsAlertView.m */; };
 		9549EC70219D075F00307255 /* ClearCacheTool.m in Sources */ = {isa = PBXBuildFile; fileRef = 9549EC6F219D075E00307255 /* ClearCacheTool.m */; };
+		9569288321D7541400B7721A /* libc++.tbd in Frameworks */ = {isa = PBXBuildFile; fileRef = 9569288221D7541400B7721A /* libc++.tbd */; };
 		956CD42121B016D1004DC1FA /* ListModel.m in Sources */ = {isa = PBXBuildFile; fileRef = 956CD42021B016D1004DC1FA /* ListModel.m */; };
-		9579EB2321B5356B00051EDB /* sdk_ios.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 9579EB2221B5355E00051EDB /* sdk_ios.framework */; };
-		9579EB2421B5356B00051EDB /* sdk_ios.framework in Embed Frameworks */ = {isa = PBXBuildFile; fileRef = 9579EB2221B5355E00051EDB /* sdk_ios.framework */; settings = {ATTRIBUTES = (CodeSignOnCopy, RemoveHeadersOnCopy, ); }; };
 		9579EB5221BABE6300051EDB /* MBProgressHUD+JDragon.bundle in Resources */ = {isa = PBXBuildFile; fileRef = 9579EB5021BABE6300051EDB /* MBProgressHUD+JDragon.bundle */; };
 		9579EB5321BABE6300051EDB /* MBProgressHUD+JDragon.m in Sources */ = {isa = PBXBuildFile; fileRef = 9579EB5121BABE6300051EDB /* MBProgressHUD+JDragon.m */; };
 		958127EF219ABD9D0081A02E /* VersionUpdateAlertView.m in Sources */ = {isa = PBXBuildFile; fileRef = 958127EE219ABD9D0081A02E /* VersionUpdateAlertView.m */; };
@@ -112,6 +111,7 @@
 		95A8A41C219D5FF7008E978E /* YBPopupMenu.m in Sources */ = {isa = PBXBuildFile; fileRef = 95A8A417219D5FF6008E978E /* YBPopupMenu.m */; };
 		95A8A41D219D5FF7008E978E /* YBRectConst.m in Sources */ = {isa = PBXBuildFile; fileRef = 95A8A41A219D5FF7008E978E /* YBRectConst.m */; };
 		95A8A41E219D5FF7008E978E /* YBPopupMenuPath.m in Sources */ = {isa = PBXBuildFile; fileRef = 95A8A41B219D5FF7008E978E /* YBPopupMenuPath.m */; };
+		95FAA18B21D769D30095E22D /* sdk_ios.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 95FAA18A21D769D30095E22D /* sdk_ios.framework */; };
 		C78AA58ABD5C4F75C67B6250 /* Pods_bupocketTests.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 248F98B6791F2F7C55E77E0E /* Pods_bupocketTests.framework */; };
 		E0A64C5CAFFFD9486B7713D7 /* Pods_bupocket.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = EB267DD938A42BAD30A164A2 /* Pods_bupocket.framework */; };
 /* End PBXBuildFile section */
@@ -131,20 +131,6 @@
 			remoteGlobalIDString = 83B4659F21745C9300187961;
 			remoteInfo = bupocket;
 		};
-		9579EB2121B5355E00051EDB /* PBXContainerItemProxy */ = {
-			isa = PBXContainerItemProxy;
-			containerPortal = 9579EB1D21B5355E00051EDB /* sdk-ios.xcodeproj */;
-			proxyType = 2;
-			remoteGlobalIDString = 58FED02C2117EF6F00702DDB;
-			remoteInfo = "sdk-ios";
-		};
-		9579EB2521B5356B00051EDB /* PBXContainerItemProxy */ = {
-			isa = PBXContainerItemProxy;
-			containerPortal = 9579EB1D21B5355E00051EDB /* sdk-ios.xcodeproj */;
-			proxyType = 1;
-			remoteGlobalIDString = 58FED02B2117EF6F00702DDB;
-			remoteInfo = "sdk-ios";
-		};
 /* End PBXContainerItemProxy section */
 
 /* Begin PBXCopyFilesBuildPhase section */
@@ -154,7 +140,6 @@
 			dstPath = "";
 			dstSubfolderSpec = 10;
 			files = (
-				9579EB2421B5356B00051EDB /* sdk_ios.framework in Embed Frameworks */,
 			);
 			name = "Embed Frameworks";
 			runOnlyForDeploymentPostprocessing = 0;
@@ -346,6 +331,7 @@
 		9549EC65219C0CF800307255 /* CreateTipsAlertView.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = CreateTipsAlertView.m; sourceTree = "<group>"; };
 		9549EC6E219D075E00307255 /* ClearCacheTool.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ClearCacheTool.h; sourceTree = "<group>"; };
 		9549EC6F219D075E00307255 /* ClearCacheTool.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ClearCacheTool.m; sourceTree = "<group>"; };
+		9569288221D7541400B7721A /* libc++.tbd */ = {isa = PBXFileReference; lastKnownFileType = "sourcecode.text-based-dylib-definition"; name = "libc++.tbd"; path = "usr/lib/libc++.tbd"; sourceTree = SDKROOT; };
 		956CD41F21B016D1004DC1FA /* ListModel.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = ListModel.h; sourceTree = "<group>"; };
 		956CD42021B016D1004DC1FA /* ListModel.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = ListModel.m; sourceTree = "<group>"; };
 		9579E71121B4D39B00051EDB /* CoreSpotlight.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = CoreSpotlight.framework; path = System/Library/Frameworks/CoreSpotlight.framework; sourceTree = SDKROOT; };
@@ -354,7 +340,6 @@
 		9579E71821B4D3CF00051EDB /* WebKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = WebKit.framework; path = System/Library/Frameworks/WebKit.framework; sourceTree = SDKROOT; };
 		9579E71A21B4D3D900051EDB /* StoreKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = StoreKit.framework; path = System/Library/Frameworks/StoreKit.framework; sourceTree = SDKROOT; };
 		9579E71C21B4D48900051EDB /* bupocket.entitlements */ = {isa = PBXFileReference; lastKnownFileType = text.plist.entitlements; path = bupocket.entitlements; sourceTree = "<group>"; };
-		9579EB1D21B5355E00051EDB /* sdk-ios.xcodeproj */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.pb-project"; path = "sdk-ios.xcodeproj"; sourceTree = "<group>"; };
 		9579EB4F21BABE6300051EDB /* MBProgressHUD+JDragon.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "MBProgressHUD+JDragon.h"; sourceTree = "<group>"; };
 		9579EB5021BABE6300051EDB /* MBProgressHUD+JDragon.bundle */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.plug-in"; path = "MBProgressHUD+JDragon.bundle"; sourceTree = "<group>"; };
 		9579EB5121BABE6300051EDB /* MBProgressHUD+JDragon.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "MBProgressHUD+JDragon.m"; sourceTree = "<group>"; };
@@ -380,6 +365,7 @@
 		95A8A419219D5FF7008E978E /* YBPopupMenuPath.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = YBPopupMenuPath.h; sourceTree = "<group>"; };
 		95A8A41A219D5FF7008E978E /* YBRectConst.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = YBRectConst.m; sourceTree = "<group>"; };
 		95A8A41B219D5FF7008E978E /* YBPopupMenuPath.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = YBPopupMenuPath.m; sourceTree = "<group>"; };
+		95FAA18A21D769D30095E22D /* sdk_ios.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; path = sdk_ios.framework; sourceTree = "<group>"; };
 		9D915F385F1A78B38EC83B6E /* Pods_bupocketUITests.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_bupocketUITests.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		A61F11E76D6541BC859B703E /* Pods-bupocket.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-bupocket.debug.xcconfig"; path = "Pods/Target Support Files/Pods-bupocket/Pods-bupocket.debug.xcconfig"; sourceTree = "<group>"; };
 		EB267DD938A42BAD30A164A2 /* Pods_bupocket.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_bupocket.framework; sourceTree = BUILT_PRODUCTS_DIR; };
@@ -390,8 +376,9 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				9569288321D7541400B7721A /* libc++.tbd in Frameworks */,
+				95FAA18B21D769D30095E22D /* sdk_ios.framework in Frameworks */,
 				E0A64C5CAFFFD9486B7713D7 /* Pods_bupocket.framework in Frameworks */,
-				9579EB2321B5356B00051EDB /* sdk_ios.framework in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -843,25 +830,9 @@
 		9579E74D21B5353700051EDB /* Lib */ = {
 			isa = PBXGroup;
 			children = (
-				9579E74E21B5353700051EDB /* sdk-ios */,
+				95FAA18A21D769D30095E22D /* sdk_ios.framework */,
 			);
 			path = Lib;
-			sourceTree = "<group>";
-		};
-		9579E74E21B5353700051EDB /* sdk-ios */ = {
-			isa = PBXGroup;
-			children = (
-				9579EB1D21B5355E00051EDB /* sdk-ios.xcodeproj */,
-			);
-			path = "sdk-ios";
-			sourceTree = "<group>";
-		};
-		9579EB1E21B5355E00051EDB /* Products */ = {
-			isa = PBXGroup;
-			children = (
-				9579EB2221B5355E00051EDB /* sdk_ios.framework */,
-			);
-			name = Products;
 			sourceTree = "<group>";
 		};
 		9579EB4E21BABE6300051EDB /* MBProgressHUD+JDragon */ = {
@@ -917,6 +888,7 @@
 		AAA27303C314FA52BBDCAB7B /* Frameworks */ = {
 			isa = PBXGroup;
 			children = (
+				9569288221D7541400B7721A /* libc++.tbd */,
 				9579E71A21B4D3D900051EDB /* StoreKit.framework */,
 				9579E71821B4D3CF00051EDB /* WebKit.framework */,
 				9579E71621B4D3C400051EDB /* Security.framework */,
@@ -959,7 +931,6 @@
 			buildRules = (
 			);
 			dependencies = (
-				9579EB2621B5356B00051EDB /* PBXTargetDependency */,
 			);
 			name = bupocket;
 			productName = bupocket;
@@ -1043,12 +1014,6 @@
 			mainGroup = 83B4659721745C9300187961;
 			productRefGroup = 83B465A121745C9300187961 /* Products */;
 			projectDirPath = "";
-			projectReferences = (
-				{
-					ProductGroup = 9579EB1E21B5355E00051EDB /* Products */;
-					ProjectRef = 9579EB1D21B5355E00051EDB /* sdk-ios.xcodeproj */;
-				},
-			);
 			projectRoot = "";
 			targets = (
 				83B4659F21745C9300187961 /* bupocket */,
@@ -1057,16 +1022,6 @@
 			);
 		};
 /* End PBXProject section */
-
-/* Begin PBXReferenceProxy section */
-		9579EB2221B5355E00051EDB /* sdk_ios.framework */ = {
-			isa = PBXReferenceProxy;
-			fileType = wrapper.framework;
-			path = sdk_ios.framework;
-			remoteRef = 9579EB2121B5355E00051EDB /* PBXContainerItemProxy */;
-			sourceTree = BUILT_PRODUCTS_DIR;
-		};
-/* End PBXReferenceProxy section */
 
 /* Begin PBXResourcesBuildPhase section */
 		83B4659E21745C9300187961 /* Resources */ = {
@@ -1342,11 +1297,6 @@
 			target = 83B4659F21745C9300187961 /* bupocket */;
 			targetProxy = 83B465C421745C9400187961 /* PBXContainerItemProxy */;
 		};
-		9579EB2621B5356B00051EDB /* PBXTargetDependency */ = {
-			isa = PBXTargetDependency;
-			name = "sdk-ios";
-			targetProxy = 9579EB2521B5356B00051EDB /* PBXContainerItemProxy */;
-		};
 /* End PBXTargetDependency section */
 
 /* Begin PBXVariantGroup section */
@@ -1506,10 +1456,9 @@
 			isa = XCBuildConfiguration;
 			baseConfigurationReference = A61F11E76D6541BC859B703E /* Pods-bupocket.debug.xcconfig */;
 			buildSettings = {
-				ALWAYS_EMBED_SWIFT_STANDARD_LIBRARIES = YES;
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				ASSETCATALOG_COMPILER_LAUNCHIMAGE_NAME = LaunchImage;
-				CODE_SIGN_IDENTITY = "iPhone Distribution";
+				CODE_SIGN_IDENTITY = "iPhone Developer";
 				CODE_SIGN_STYLE = Manual;
 				DEFINES_MODULE = YES;
 				DEVELOPMENT_TEAM = 3DPSH636RT;
@@ -1517,6 +1466,7 @@
 					"$(inherited)",
 					"$(PROJECT_DIR)",
 					"$(PROJECT_DIR)/bupocket/Classes/Common/Tool",
+					"$(PROJECT_DIR)/bupocket/Classes/Common/Tool/Lib",
 				);
 				GCC_PRECOMPILE_PREFIX_HEADER = YES;
 				GCC_PREFIX_HEADER = "$(SRCROOT)/bupocket/Classes/Common/PrefixHeader.pch";
@@ -1530,9 +1480,37 @@
 					"$(inherited)",
 					"$(PROJECT_DIR)/bupocket/Classes/Common/Tool/Lib/sdk-ios/crypto/openssl/lib",
 				);
+				OTHER_LDFLAGS = (
+					"$(inherited)",
+					"-framework",
+					"\"AFNetworking\"",
+					"-framework",
+					"\"FMDB\"",
+					"-framework",
+					"\"IQKeyboardManager\"",
+					"-framework",
+					"\"MBProgressHUD\"",
+					"-framework",
+					"\"MJExtension\"",
+					"-framework",
+					"\"MJRefresh\"",
+					"-framework",
+					"\"Masonry\"",
+					"-framework",
+					"\"SDWebImage\"",
+					"-framework",
+					"\"SocketIO\"",
+					"-framework",
+					"\"SocketRocket\"",
+					"-framework",
+					"\"Starscream\"",
+					"-framework",
+					"\"XHToast\"",
+					"-ObjC",
+				);
 				PRODUCT_BUNDLE_IDENTIFIER = com.bupocket;
 				PRODUCT_NAME = "$(TARGET_NAME)";
-				PROVISIONING_PROFILE_SPECIFIER = BupocketDistribution;
+				PROVISIONING_PROFILE_SPECIFIER = bupocket_Development;
 				TARGETED_DEVICE_FAMILY = 1;
 			};
 			name = Debug;
@@ -1541,10 +1519,9 @@
 			isa = XCBuildConfiguration;
 			baseConfigurationReference = 8BAFA7A3EC4992591E7450DA /* Pods-bupocket.release.xcconfig */;
 			buildSettings = {
-				ALWAYS_EMBED_SWIFT_STANDARD_LIBRARIES = YES;
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				ASSETCATALOG_COMPILER_LAUNCHIMAGE_NAME = LaunchImage;
-				CODE_SIGN_IDENTITY = "iPhone Distribution";
+				CODE_SIGN_IDENTITY = "iPhone Developer";
 				CODE_SIGN_STYLE = Manual;
 				DEFINES_MODULE = YES;
 				DEVELOPMENT_TEAM = 3DPSH636RT;
@@ -1552,6 +1529,7 @@
 					"$(inherited)",
 					"$(PROJECT_DIR)",
 					"$(PROJECT_DIR)/bupocket/Classes/Common/Tool",
+					"$(PROJECT_DIR)/bupocket/Classes/Common/Tool/Lib",
 				);
 				GCC_PRECOMPILE_PREFIX_HEADER = YES;
 				GCC_PREFIX_HEADER = "$(SRCROOT)/bupocket/Classes/Common/PrefixHeader.pch";
@@ -1565,9 +1543,37 @@
 					"$(inherited)",
 					"$(PROJECT_DIR)/bupocket/Classes/Common/Tool/Lib/sdk-ios/crypto/openssl/lib",
 				);
+				OTHER_LDFLAGS = (
+					"$(inherited)",
+					"-framework",
+					"\"AFNetworking\"",
+					"-framework",
+					"\"FMDB\"",
+					"-framework",
+					"\"IQKeyboardManager\"",
+					"-framework",
+					"\"MBProgressHUD\"",
+					"-framework",
+					"\"MJExtension\"",
+					"-framework",
+					"\"MJRefresh\"",
+					"-framework",
+					"\"Masonry\"",
+					"-framework",
+					"\"SDWebImage\"",
+					"-framework",
+					"\"SocketIO\"",
+					"-framework",
+					"\"SocketRocket\"",
+					"-framework",
+					"\"Starscream\"",
+					"-framework",
+					"\"XHToast\"",
+					"-ObjC",
+				);
 				PRODUCT_BUNDLE_IDENTIFIER = com.bupocket;
 				PRODUCT_NAME = "$(TARGET_NAME)";
-				PROVISIONING_PROFILE_SPECIFIER = BupocketDistribution;
+				PROVISIONING_PROFILE_SPECIFIER = bupocket_Development;
 				TARGETED_DEVICE_FAMILY = 1;
 			};
 			name = Release;
