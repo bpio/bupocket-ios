@@ -26,35 +26,39 @@ static NSString * const MonetaryUnitCellID = @"MonetaryUnitCellID";
 - (instancetype)initWithStyle:(UITableViewCellStyle)style reuseIdentifier:(NSString *)reuseIdentifier
 {
     if (self = [super initWithStyle:style reuseIdentifier:reuseIdentifier]) {
-        [self.contentView addSubview:self.listImage];
-        [self.contentView addSubview:self.title];
-        [self.contentView addSubview:self.detailTitle];
-        [self.contentView addSubview:self.detailImage];
+        [self.contentView addSubview:self.listBg];
+        [self.listBg addSubview:self.listImage];
+        [self.listBg addSubview:self.title];
+        [self.listBg addSubview:self.detailTitle];
+        [self.listBg addSubview:self.detailImage];
     }
     return self;
 }
 - (void)layoutSubviews
 {
     [super layoutSubviews];
+    [self.listBg mas_makeConstraints:^(MASConstraintMaker *make) {
+        make.edges.equalTo(self.contentView);
+    }];
     if ([self.reuseIdentifier isEqualToString:MonetaryUnitCellID]) {
         [self.title mas_makeConstraints:^(MASConstraintMaker *make) {
-            make.left.equalTo(self.contentView.mas_left).offset(Margin_20);
-            make.top.height.equalTo(self.contentView);
+            make.left.equalTo(self.listBg.mas_left).offset(Margin_20);
+            make.top.height.equalTo(self.listBg);
         }];
     } else {
         [self.listImage mas_makeConstraints:^(MASConstraintMaker *make) {
             make.left.equalTo(self.contentView.mas_left).offset(Margin_20);
-            make.centerY.equalTo(self.contentView);
+            make.centerY.equalTo(self.listBg);
             make.width.height.mas_equalTo(Margin_20);
         }];
         [self.title mas_makeConstraints:^(MASConstraintMaker *make) {
             make.left.equalTo(self.listImage.mas_right).offset(Margin_10);
-            make.top.height.equalTo(self.contentView);
+            make.top.height.equalTo(self.listBg);
         }];
     }
     [self.detailImage mas_makeConstraints:^(MASConstraintMaker *make) {
-        make.right.equalTo(self.contentView.mas_right).offset(-Margin_20);
-        make.centerY.equalTo(self.contentView);
+        make.right.equalTo(self.listBg.mas_right).offset(-Margin_20);
+        make.centerY.equalTo(self.listBg);
     }];
     if ([self.reuseIdentifier isEqualToString:SettingCellID]) {
         [self.detailTitle mas_makeConstraints:^(MASConstraintMaker *make) {
@@ -62,12 +66,20 @@ static NSString * const MonetaryUnitCellID = @"MonetaryUnitCellID";
         }];
     } else {
         [self.detailTitle mas_makeConstraints:^(MASConstraintMaker *make) {
-            make.right.equalTo(self.contentView.mas_right).offset(-Margin_20);
+            make.right.equalTo(self.listBg.mas_right).offset(-Margin_20);
         }];
     }
     [self.detailTitle mas_makeConstraints:^(MASConstraintMaker *make) {
-        make.centerY.equalTo(self.contentView);
+        make.centerY.equalTo(self.listBg);
     }];
+}
+- (UIView *)listBg
+{
+    if (!_listBg) {
+        _listBg = [[UIView alloc] init];
+        _listBg.backgroundColor = [UIColor whiteColor];
+    }
+    return _listBg;
 }
 - (UIImageView *)listImage
 {

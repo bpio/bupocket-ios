@@ -17,6 +17,7 @@
 #import "RegisteredAssetsViewController.h"
 #import "DistributionOfAssetsViewController.h"
 #import "TransferAccountsViewController.h"
+#import "WalletManagementViewController.h"
 
 #import "RegisteredModel.h"
 #import "DistributionModel.h"
@@ -269,16 +270,24 @@ static UIButton * _noBackup;
         _headerViewBg = [[UIView alloc] initWithFrame:CGRectMake(0, 0, DEVICE_WIDTH, _headerViewH)];
         [headerBg addSubview:_headerViewBg];
         
+        UIButton * wallet = [UIButton createButtonWithNormalImage:@"nav_wallet" SelectedImage:@"nav_wallet" Target:self Selector:@selector(walletAction)];
+        [_headerViewBg addSubview:wallet];
+        [wallet mas_makeConstraints:^(MASConstraintMaker *make) {
+            make.top.equalTo(self.headerViewBg.mas_top).offset(StatusBarHeight);
+            make.right.equalTo(self.headerViewBg.mas_right).offset(-Margin_15);
+            make.height.mas_equalTo(Margin_40);
+        }];
+        
         _networkPrompt = [[UILabel alloc] init];
         _networkPrompt.font = FONT(15);
         _networkPrompt.textColor = MAIN_COLOR;
         _networkPrompt.numberOfLines = 0;
-        _networkPrompt.preferredMaxLayoutWidth = DEVICE_WIDTH - Margin_40;
+        _networkPrompt.preferredMaxLayoutWidth = DEVICE_WIDTH - Margin_50;
         [_headerViewBg addSubview:_networkPrompt];
         [self.networkPrompt mas_makeConstraints:^(MASConstraintMaker *make) {
             make.top.equalTo(self.headerViewBg.mas_top).offset(StatusBarHeight + Margin_10);
-            make.centerX.equalTo(self.headerViewBg);
-            make.width.mas_lessThanOrEqualTo(DEVICE_WIDTH - Margin_40);
+            make.centerX.equalTo(self.headerViewBg).offset(-Margin_10);
+            make.width.mas_lessThanOrEqualTo(DEVICE_WIDTH - Margin_50);
         }];
         
         _totalAssets = [[UILabel alloc] init];
@@ -368,6 +377,11 @@ static UIButton * _noBackup;
     UIAlertAction * cancelAction = [UIAlertAction actionWithTitle:Localized(@"IGotIt") style:UIAlertActionStyleCancel handler:nil];
     [alertController addAction:cancelAction];
     [self presentViewController:alertController animated:YES completion:nil];
+}
+- (void)walletAction
+{
+    WalletManagementViewController * VC = [[WalletManagementViewController alloc] init];
+    [self.navigationController pushViewController:VC animated:YES];
 }
 #pragma mark - assets operation
 - (void)operationAction:(UIButton *)button

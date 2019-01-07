@@ -256,6 +256,13 @@
 "SuggestionsContentOverlength" = "Your question or suggestion cannot exceed 100 words";
 "ContactOverlength" = "Your contact information cannot exceed 20 words";
 "SubmissionOfSuccess" = "Submitted successfully";
+// 钱包管理
+"WalletManagement" = "钱包管理";
+"CurrentIdentity" = "当前身份下的钱包";
+"ImportedWallet" = "导入的钱包";
+"ImmediateImport" = "立即导入";
+"CurrentUse" = "Current Use";
+"Manage" = "Manage";
 
 // Errors
 "LoadFailure" = "Failed to load";

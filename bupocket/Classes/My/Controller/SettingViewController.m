@@ -42,6 +42,7 @@ static NSString * const SettingCellID = @"SettingCellID";
     self.tableView.dataSource = self;
     self.tableView.separatorInset = UIEdgeInsetsZero;
     self.tableView.separatorStyle = UITableViewCellSeparatorStyleNone;
+    self.tableView.backgroundColor = [UIColor whiteColor];
     [self.view addSubview:self.tableView];
     self.tableView.bounces = NO;
 }

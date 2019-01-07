@@ -103,6 +103,8 @@
 		958127EF219ABD9D0081A02E /* VersionUpdateAlertView.m in Sources */ = {isa = PBXBuildFile; fileRef = 958127EE219ABD9D0081A02E /* VersionUpdateAlertView.m */; };
 		958127F2219AC82A0081A02E /* VersionModel.m in Sources */ = {isa = PBXBuildFile; fileRef = 958127F1219AC82A0081A02E /* VersionModel.m */; };
 		958AA69821A2A89600BEA50C /* CustomRefreshFooter.m in Sources */ = {isa = PBXBuildFile; fileRef = 958AA69721A2A89600BEA50C /* CustomRefreshFooter.m */; };
+		959726B821E334C20022CB78 /* WalletManagementViewCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 959726B721E334C20022CB78 /* WalletManagementViewCell.m */; };
+		959726BC21E358A10022CB78 /* ExportViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 959726BB21E358A10022CB78 /* ExportViewController.m */; };
 		95A8A3B1219D1352008E978E /* LanguageManager.m in Sources */ = {isa = PBXBuildFile; fileRef = 95A8A3AF219D1352008E978E /* LanguageManager.m */; };
 		95A8A3B5219D157C008E978E /* DateTool.m in Sources */ = {isa = PBXBuildFile; fileRef = 95A8A3B4219D157C008E978E /* DateTool.m */; };
 		95A8A3B9219D15D8008E978E /* RegexPatternTool.m in Sources */ = {isa = PBXBuildFile; fileRef = 95A8A3B8219D15D8008E978E /* RegexPatternTool.m */; };
@@ -111,6 +113,7 @@
 		95A8A41C219D5FF7008E978E /* YBPopupMenu.m in Sources */ = {isa = PBXBuildFile; fileRef = 95A8A417219D5FF6008E978E /* YBPopupMenu.m */; };
 		95A8A41D219D5FF7008E978E /* YBRectConst.m in Sources */ = {isa = PBXBuildFile; fileRef = 95A8A41A219D5FF7008E978E /* YBRectConst.m */; };
 		95A8A41E219D5FF7008E978E /* YBPopupMenuPath.m in Sources */ = {isa = PBXBuildFile; fileRef = 95A8A41B219D5FF7008E978E /* YBPopupMenuPath.m */; };
+		95DC83C821E2FD3B00F745E6 /* WalletManagementViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 95DC83C721E2FD3B00F745E6 /* WalletManagementViewController.m */; };
 		95FAA18B21D769D30095E22D /* sdk_ios.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 95FAA18A21D769D30095E22D /* sdk_ios.framework */; };
 		C78AA58ABD5C4F75C67B6250 /* Pods_bupocketTests.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 248F98B6791F2F7C55E77E0E /* Pods_bupocketTests.framework */; };
 		E0A64C5CAFFFD9486B7713D7 /* Pods_bupocket.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = EB267DD938A42BAD30A164A2 /* Pods_bupocket.framework */; };
@@ -349,6 +352,10 @@
 		958127F1219AC82A0081A02E /* VersionModel.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = VersionModel.m; sourceTree = "<group>"; };
 		958AA69621A2A89600BEA50C /* CustomRefreshFooter.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = CustomRefreshFooter.h; sourceTree = "<group>"; };
 		958AA69721A2A89600BEA50C /* CustomRefreshFooter.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = CustomRefreshFooter.m; sourceTree = "<group>"; };
+		959726B621E334C20022CB78 /* WalletManagementViewCell.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = WalletManagementViewCell.h; sourceTree = "<group>"; };
+		959726B721E334C20022CB78 /* WalletManagementViewCell.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = WalletManagementViewCell.m; sourceTree = "<group>"; };
+		959726BA21E358A10022CB78 /* ExportViewController.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = ExportViewController.h; sourceTree = "<group>"; };
+		959726BB21E358A10022CB78 /* ExportViewController.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = ExportViewController.m; sourceTree = "<group>"; };
 		95A8A3AF219D1352008E978E /* LanguageManager.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = LanguageManager.m; sourceTree = "<group>"; };
 		95A8A3B0219D1352008E978E /* LanguageManager.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = LanguageManager.h; sourceTree = "<group>"; };
 		95A8A3B3219D157B008E978E /* DateTool.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = DateTool.h; sourceTree = "<group>"; };
@@ -365,6 +372,8 @@
 		95A8A419219D5FF7008E978E /* YBPopupMenuPath.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = YBPopupMenuPath.h; sourceTree = "<group>"; };
 		95A8A41A219D5FF7008E978E /* YBRectConst.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = YBRectConst.m; sourceTree = "<group>"; };
 		95A8A41B219D5FF7008E978E /* YBPopupMenuPath.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = YBPopupMenuPath.m; sourceTree = "<group>"; };
+		95DC83C621E2FD3B00F745E6 /* WalletManagementViewController.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = WalletManagementViewController.h; sourceTree = "<group>"; };
+		95DC83C721E2FD3B00F745E6 /* WalletManagementViewController.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = WalletManagementViewController.m; sourceTree = "<group>"; };
 		95FAA18A21D769D30095E22D /* sdk_ios.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; path = sdk_ios.framework; sourceTree = "<group>"; };
 		9D915F385F1A78B38EC83B6E /* Pods_bupocketUITests.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_bupocketUITests.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		A61F11E76D6541BC859B703E /* Pods-bupocket.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-bupocket.debug.xcconfig"; path = "Pods/Target Support Files/Pods-bupocket/Pods-bupocket.debug.xcconfig"; sourceTree = "<group>"; };
@@ -623,6 +632,10 @@
 				838DC7642186A114002FF276 /* DistributionOfAssetsViewController.m */,
 				838DC7662186AFFB002FF276 /* DistributionResultsViewController.h */,
 				838DC7672186AFFB002FF276 /* DistributionResultsViewController.m */,
+				95DC83C621E2FD3B00F745E6 /* WalletManagementViewController.h */,
+				95DC83C721E2FD3B00F745E6 /* WalletManagementViewController.m */,
+				959726BA21E358A10022CB78 /* ExportViewController.h */,
+				959726BB21E358A10022CB78 /* ExportViewController.m */,
 			);
 			path = Controller;
 			sourceTree = "<group>";
@@ -675,6 +688,8 @@
 				83379A8E217DC0C700C222A5 /* TransferDetailsAlertView.m */,
 				83379A93217EB08600C222A5 /* DetailListViewCell.h */,
 				83379A94217EB08600C222A5 /* DetailListViewCell.m */,
+				959726B621E334C20022CB78 /* WalletManagementViewCell.h */,
+				959726B721E334C20022CB78 /* WalletManagementViewCell.m */,
 			);
 			path = View;
 			sourceTree = "<group>";
@@ -1226,6 +1241,7 @@
 				83B594B72175FC8B009F91BA /* BackupMnemonicsViewController.m in Sources */,
 				83FB443421904AA400D68569 /* HMScannerBorder.m in Sources */,
 				83B594AD2175E4D9009F91BA /* RestoreIdentityViewController.m in Sources */,
+				959726BC21E358A10022CB78 /* ExportViewController.m in Sources */,
 				83FB443A21904AA400D68569 /* HMScannerController.m in Sources */,
 				83379AE8218066FE00C222A5 /* BlockInfoModel.m in Sources */,
 				958127F2219AC82A0081A02E /* VersionModel.m in Sources */,
@@ -1255,6 +1271,7 @@
 				83B465A821745C9300187961 /* ViewController.m in Sources */,
 				833799322177305A00C222A5 /* UIView+Extension.m in Sources */,
 				83379A98217EB79B00C222A5 /* RequestTimeoutViewController.m in Sources */,
+				959726B821E334C20022CB78 /* WalletManagementViewCell.m in Sources */,
 				835A45272174C14D005BFCDD /* AppDelegate.m in Sources */,
 				956CD42121B016D1004DC1FA /* ListModel.m in Sources */,
 				83379AE22180630300C222A5 /* TxDetailModel.m in Sources */,
@@ -1262,6 +1279,7 @@
 				833799172176E1E600C222A5 /* ListTableViewCell.m in Sources */,
 				95A8A3BC219D161D008E978E /* CustomRefreshHeader.m in Sources */,
 				83379A5B2178825300C222A5 /* PurseCipherAlertView.m in Sources */,
+				95DC83C821E2FD3B00F745E6 /* WalletManagementViewController.m in Sources */,
 				83379A092178509300C222A5 /* WKWebViewController.m in Sources */,
 				83379A6221797BDD00C222A5 /* ConfirmMnemonicViewController.m in Sources */,
 				95A8A41E219D5FF7008E978E /* YBPopupMenuPath.m in Sources */,

@@ -250,6 +250,13 @@
 "SuggestionsContentOverlength" = "问题或建议内容过长，不能超过100个字";
 "ContactOverlength" = "联系方式内容过长，不能超过20个字";
 "SubmissionOfSuccess" = "提交成功";
+// 钱包管理
+"WalletManagement" = "钱包管理";
+"CurrentIdentity" = "当前身份下的钱包";
+"ImportedWallet" = "导入的钱包";
+"ImmediateImport" = "立即导入";
+"CurrentUse" = "当前使用";
+"Manage" = "管理";
 
 // 错误信息
 "LoadFailure" = "加载失败";

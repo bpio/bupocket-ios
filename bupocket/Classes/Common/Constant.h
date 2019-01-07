@@ -24,6 +24,8 @@
 #define EN @"en"
 // Current currency index 0：CNY（¥）, 1：USD（$）, 2：JPY（¥）, 3：KRW（₩）,
 #define Current_Currency @"CurrentCurrency"
+// Current Wallet Address
+#define Current_WalletAddress @"CurrentWalletAddress"
 // Network request timeout limit time
 #define Timeout_Interval 30.0
 #define Assets_HomePage_CacheData @"AssetsHomePageCacheData"

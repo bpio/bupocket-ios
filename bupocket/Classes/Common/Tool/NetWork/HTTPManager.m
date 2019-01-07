@@ -417,6 +417,9 @@ static int64_t const gasPrice = 1000;
                     account.identityKey = identityKey;
                     account.purseKey = purseKey;
                     [AccountTool save:account];
+                    NSUserDefaults * defaults = [NSUserDefaults standardUserDefaults];
+                    [defaults setObject:purseAddress forKey:Current_WalletAddress];
+                    [defaults synchronize];
                     success(words);
                 }
             }
