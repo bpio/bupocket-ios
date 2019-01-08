@@ -18,6 +18,7 @@
         self.randomNumber = [aDecoder decodeObjectForKey:@"randomNumber"];
         self.identityAccount = [aDecoder decodeObjectForKey:@"identityAccount"];
         self.identityKey = [aDecoder decodeObjectForKey:@"identityKey"];
+        self.walletName = [aDecoder decodeObjectForKey:@"walletName"];
         self.purseAccount = [aDecoder decodeObjectForKey:@"purseAccount"];
         self.purseKey = [aDecoder decodeObjectForKey:@"purseKey"];
     }
@@ -30,6 +31,7 @@
     [aCoder encodeObject:self.randomNumber forKey:@"randomNumber"];
     [aCoder encodeObject:self.identityAccount forKey:@"identityAccount"];
     [aCoder encodeObject:self.identityKey forKey:@"identityKey"];
+    [aCoder encodeObject:self.walletName forKey:@"walletName"];
     [aCoder encodeObject:self.purseAccount forKey:@"purseAccount"];
     [aCoder encodeObject:self.purseKey forKey:@"purseKey"];
 }

@@ -1,8 +1,8 @@
 //
-//  ExportViewController.h
+//  ExportKeystoreViewController.h
 //  bupocket
 //
-//  Created by huoss on 2019/1/7.
+//  Created by huoss on 2019/1/8.
 //  Copyright © 2019年 bupocket. All rights reserved.
 //
 
@@ -11,7 +11,7 @@
 
 NS_ASSUME_NONNULL_BEGIN
 
-@interface ExportViewController : BaseViewController
+@interface ExportKeystoreViewController : BaseViewController
 
 @property (nonatomic, strong) WalletModel * walletModel;
 

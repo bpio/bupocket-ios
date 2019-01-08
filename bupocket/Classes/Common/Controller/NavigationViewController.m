@@ -18,6 +18,8 @@
 #import "RequestTimeoutViewController.h"
 #import "RegisteredResultViewController.h"
 #import "DistributionResultsViewController.h"
+#import "ExportKeystoreViewController.h"
+#import "ExportPrivateKeyViewController.h"
 
 @interface NavigationViewController ()<UINavigationControllerDelegate>
 
@@ -68,7 +70,10 @@
                              [viewController isKindOfClass:[RegisteredResultViewController class]] ||
                              [viewController isKindOfClass:[DistributionResultsViewController class]] ||
                              [viewController isKindOfClass:[RequestTimeoutViewController class]] ||
-                             [viewController isKindOfClass:[OrderDetailsViewController class]]);
+                             [viewController isKindOfClass:[OrderDetailsViewController class]] ||
+                             [viewController isKindOfClass:[ExportKeystoreViewController class]] ||
+                             [viewController isKindOfClass:[ExportPrivateKeyViewController class]]
+                             );
     if (@available(iOS 11.0, *)) {
         [self.navigationBar setPrefersLargeTitles:!isSetLargeTitles];
     } else {

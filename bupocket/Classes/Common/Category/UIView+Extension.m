@@ -97,6 +97,15 @@
     [self.layer insertSublayer:borderLayer atIndex:0];
     [self.layer setMask:maskLayer];
 }
+- (void)setViewSize:(CGSize)size borderRadius:(CGFloat)borderRadius corners:(UIRectCorner)corners
+{
+    CGRect rect = CGRectMake(0, 0, size.width, size.height);
+    CAShapeLayer * maskLayer = [CAShapeLayer layer];
+    maskLayer.frame = rect;
+    UIBezierPath * bezierPath = [UIBezierPath bezierPathWithRoundedRect:rect byRoundingCorners:corners cornerRadii:CGSizeMake(borderRadius, borderRadius)];
+    maskLayer.path = bezierPath.CGPath;
+    [self.layer setMask:maskLayer];
+}
 
 - (void)drawDashLine
 {

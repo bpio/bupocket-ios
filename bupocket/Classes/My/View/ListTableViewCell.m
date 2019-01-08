@@ -11,6 +11,7 @@
 static NSString * const ListCellID = @"ListCellID";
 static NSString * const SettingCellID = @"SettingCellID";
 static NSString * const MonetaryUnitCellID = @"MonetaryUnitCellID";
+static NSString * const ExportCellID = @"ExportCellID";
 
 @implementation ListTableViewCell
 
@@ -37,9 +38,18 @@ static NSString * const MonetaryUnitCellID = @"MonetaryUnitCellID";
 - (void)layoutSubviews
 {
     [super layoutSubviews];
-    [self.listBg mas_makeConstraints:^(MASConstraintMaker *make) {
-        make.edges.equalTo(self.contentView);
-    }];
+    if ([self.reuseIdentifier isEqualToString:ExportCellID]) {
+        [self.listBg mas_makeConstraints:^(MASConstraintMaker *make) {
+            make.left.equalTo(self.contentView.mas_left).offset(Margin_10);
+            make.right.equalTo(self.contentView.mas_right).offset(-Margin_10);
+            make.top.bottom.equalTo(self.contentView);
+        }];
+        self.contentView.backgroundColor = self.contentView.superview.superview.backgroundColor;
+    } else {
+        [self.listBg mas_makeConstraints:^(MASConstraintMaker *make) {
+            make.edges.equalTo(self.contentView);
+        }];
+    }
     if ([self.reuseIdentifier isEqualToString:MonetaryUnitCellID]) {
         [self.title mas_makeConstraints:^(MASConstraintMaker *make) {
             make.left.equalTo(self.listBg.mas_left).offset(Margin_20);

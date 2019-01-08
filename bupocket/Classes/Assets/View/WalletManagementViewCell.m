@@ -9,14 +9,15 @@
 #import "WalletManagementViewCell.h"
 
 static NSString * const WalletManagementCellID = @"WalletManagementCellID";
+static NSString * const WalletCellID = @"WalletCellID";
 
 @implementation WalletManagementViewCell
 
-+ (instancetype)cellWithTableView:(UITableView *)tableView
++ (instancetype)cellWithTableView:(UITableView *)tableView identifier:(NSString *)identifier
 {
-    WalletManagementViewCell * cell = [tableView dequeueReusableCellWithIdentifier:WalletManagementCellID];
+    WalletManagementViewCell * cell = [tableView dequeueReusableCellWithIdentifier:identifier];
     if (cell == nil) {
-        cell = [[WalletManagementViewCell alloc] initWithStyle:UITableViewCellStyleValue1 reuseIdentifier:WalletManagementCellID];
+        cell = [[WalletManagementViewCell alloc] initWithStyle:UITableViewCellStyleValue1 reuseIdentifier:identifier];
     }
     return cell;
 }
@@ -25,8 +26,13 @@ static NSString * const WalletManagementCellID = @"WalletManagementCellID";
     if (self = [super initWithStyle:style reuseIdentifier:reuseIdentifier]) {
         [self.contentView addSubview:self.walletName];
         [self.contentView addSubview:self.walletAddress];
-        [self.contentView addSubview:self.currentUse];
-        [self.contentView addSubview:self.manage];
+        if ([reuseIdentifier isEqualToString:WalletManagementCellID]) {
+            [self.contentView addSubview:self.currentUse];
+            [self.contentView addSubview:self.manage];
+        } else if ([reuseIdentifier isEqualToString:WalletCellID]) {
+            [self.contentView addSubview:self.detailImage];
+            self.walletName.font = FONT(18);
+        }
     }
     return self;
 }
@@ -38,20 +44,34 @@ static NSString * const WalletManagementCellID = @"WalletManagementCellID";
         make.left.equalTo(self.contentView.mas_left).offset(Margin_15);
         make.height.mas_equalTo(ScreenScale(16));
     }];
-    [self.currentUse mas_makeConstraints:^(MASConstraintMaker *make) {
-        make.left.equalTo(self.walletName.mas_right).offset(Margin_10);
-        make.centerY.equalTo(self.walletName);
-        make.height.mas_equalTo(Margin_20);
-    }];
-    [self.manage mas_makeConstraints:^(MASConstraintMaker *make) {
-        make.right.equalTo(self.contentView.mas_right).offset(-Margin_15);
-        make.centerY.equalTo(self.contentView);
-        make.height.mas_equalTo(Margin_25);
-    }];
+    if ([self.reuseIdentifier isEqualToString:WalletManagementCellID]) {
+        [self.manage mas_makeConstraints:^(MASConstraintMaker *make) {
+            make.right.equalTo(self.contentView.mas_right).offset(-Margin_15);
+            make.centerY.equalTo(self.contentView);
+            make.height.mas_equalTo(Margin_25);
+        }];
+        [self.currentUse mas_makeConstraints:^(MASConstraintMaker *make) {
+            make.left.equalTo(self.walletName.mas_right).offset(Margin_10);
+            make.centerY.equalTo(self.walletName);
+            make.height.mas_equalTo(Margin_20);
+            make.right.mas_lessThanOrEqualTo(self.manage.mas_left).offset(-Margin_10);
+        }];
+        [self.currentUse setContentCompressionResistancePriority:UILayoutPriorityRequired forAxis:UILayoutConstraintAxisHorizontal];
+    } else if ([self.reuseIdentifier isEqualToString:WalletCellID]) {
+        [self.detailImage mas_makeConstraints:^(MASConstraintMaker *make) {
+            make.right.equalTo(self.contentView.mas_right).offset(-Margin_20);
+            make.centerY.equalTo(self.walletName);
+        }];
+        [self.walletName mas_makeConstraints:^(MASConstraintMaker *make) {
+            make.right.mas_lessThanOrEqualTo(self.detailImage.mas_left).offset(-Margin_10);
+        }];
+        [self.detailImage setContentCompressionResistancePriority:UILayoutPriorityRequired forAxis:UILayoutConstraintAxisHorizontal];
+    }
+    
     [self.walletAddress mas_makeConstraints:^(MASConstraintMaker *make) {
         make.left.equalTo(self.walletName);
         make.bottom.equalTo(self.contentView.mas_bottom).offset(-Margin_20);
-        make.right.equalTo(self.manage.mas_left).offset(-Margin_10);
+        make.height.mas_equalTo(Margin_15);
     }];
     [self setViewSize:CGSizeMake(DEVICE_WIDTH - Margin_20, ScreenScale(85)) borderWidth:0 borderColor:nil borderRadius:BG_CORNER];
 }
@@ -99,19 +119,29 @@ static NSString * const WalletManagementCellID = @"WalletManagementCellID";
     }
     return _manage;
 }
+- (UIImageView *)detailImage
+{
+    if (!_detailImage) {
+        _detailImage = [[UIImageView alloc] init];
+        _detailImage.image = [UIImage imageNamed:@"list_arrow"];
+    }
+    return _detailImage;
+}
 - (void)manageAction
 {
     if (self.manageClick) {
         self.manageClick();
     }
 }
-- (void)setWalletDic:(NSDictionary *)walletDic
+- (void)setWalletModel:(WalletModel *)walletModel
 {
-    _walletDic = walletDic;
-    NSString * currentWalletAddress = [[NSUserDefaults standardUserDefaults] objectForKey:Current_WalletAddress];
-    self.walletName.text = walletDic[@"walletName"];
-    self.walletAddress.text = walletDic[@"walletAddress"];
-    self.currentUse.hidden = ![self.walletAddress.text isEqualToString:currentWalletAddress];
+    _walletModel = walletModel;
+    self.walletName.text = walletModel.walletName;
+    self.walletAddress.text = [NSString stringEllipsisWithStr:walletModel.walletAddress];
+    if ([self.reuseIdentifier isEqualToString:WalletManagementCellID]) {
+        NSString * currentWalletAddress = [[NSUserDefaults standardUserDefaults] objectForKey:Current_WalletAddress];
+        self.currentUse.hidden = ![self.walletAddress.text isEqualToString:currentWalletAddress];
+    }
 }
 - (void)setFrame:(CGRect)frame
 {

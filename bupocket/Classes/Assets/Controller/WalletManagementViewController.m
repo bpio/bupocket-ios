@@ -9,13 +9,17 @@
 #import "WalletManagementViewController.h"
 #import "WalletManagementViewCell.h"
 #import "ExportViewController.h"
+#import "WalletModel.h"
 
 @interface WalletManagementViewController ()<UITableViewDelegate, UITableViewDataSource>
     
 @property (nonatomic, strong) NSMutableArray * listArray;
 @property (nonatomic, strong) UITableView * tableView;
+@property (nonatomic, strong) WalletModel * currentIdentityModel;
 
 @end
+
+static NSString * const WalletManagementCellID = @"WalletManagementCellID";
 
 @implementation WalletManagementViewController
 
@@ -32,6 +36,28 @@
     self.navigationItem.title = Localized(@"WalletManagement");
     [self setupView];
     // Do any additional setup after loading the view.
+}
+- (void)viewWillAppear:(BOOL)animated
+{
+    [super viewWillAppear:animated];
+    NSString * walletName = [[AccountTool account] walletName] == nil ? @"Wallet-1" : [[AccountTool account] walletName];
+    NSDictionary * currentIdentity = @{
+                                       @"walletName": walletName,
+                                       @"walletAddress": [[AccountTool account] purseAccount],
+                                       @"walletKeyStore": [[AccountTool account] purseKey]
+                                       };
+    self.currentIdentityModel = [WalletModel mj_objectWithKeyValues:currentIdentity];
+    self.listArray = [WalletModel mj_objectArrayWithKeyValuesArray: @[@{
+                                                                          @"walletName": @"Wallet-2",
+                                                                          @"walletAddress": @"walletAddress-2",
+                                                                          @"walletKeyStore": [[AccountTool account] purseKey]
+                                                                          },
+                                                                      @{
+                                                                          @"walletName": @"Wallet-3",
+                                                                          @"walletAddress": @"walletAddress-3",
+                                                                          @"walletKeyStore": [[AccountTool account] purseKey]
+                                                                          }]];
+    [self.tableView reloadData];
 }
 - (void)setupView
 {
@@ -132,19 +158,19 @@
 }
 - (UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath
 {
-    WalletManagementViewCell * cell = [WalletManagementViewCell cellWithTableView:tableView];
+    WalletManagementViewCell * cell = [WalletManagementViewCell cellWithTableView:tableView identifier:WalletManagementCellID];
     cell.selectionStyle = UITableViewCellSelectionStyleNone;
+    NSString * currentWalletAddress = [[NSUserDefaults standardUserDefaults] objectForKey:Current_WalletAddress];
     if (indexPath.section == 0) {
-        cell.walletDic = @{
-                           @"walletName": @"Wallet-1",
-                           @"walletAddress": [[AccountTool account] purseAccount],
-                           @"walletKeyStore": [[AccountTool account] purseKey]
-                           };
-        NSString * currentWalletAddress = [[NSUserDefaults standardUserDefaults] objectForKey:Current_WalletAddress];
+        cell.walletModel = self.currentIdentityModel;
         cell.currentUse.hidden = !(currentWalletAddress == nil || [cell.walletAddress.text isEqualToString:currentWalletAddress]);
+    } else {
+        cell.walletModel = self.listArray[indexPath.row];
     }
+    __weak typeof (cell) weakCell = cell;
     cell.manageClick = ^{
         ExportViewController * VC = [[ExportViewController alloc] init];
+        VC.walletModel = weakCell.walletModel;
         [self.navigationController pushViewController:VC animated:YES];
     };
     return cell;

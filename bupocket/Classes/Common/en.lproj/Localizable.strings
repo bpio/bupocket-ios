@@ -261,8 +261,14 @@
 "CurrentIdentity" = "当前身份下的钱包";
 "ImportedWallet" = "导入的钱包";
 "ImmediateImport" = "立即导入";
-"CurrentUse" = "Current Use";
-"Manage" = "Manage";
+"CurrentUse" = "当前使用";
+"Manage" = "管理";
+"ExportKeystore" = "导出Keystore";
+"ExportPrivateKey" = "导出私钥";
+"DeleteWallet" = "删除钱包";
+"ModifyWalletName" = "更改钱包名称";
+"CopyKeystorePrompt" = "请复制keystore文件到安全的地方保存";
+"CopyKeystore" = "复制Keystore";
 
 // Errors
 "LoadFailure" = "Failed to load";

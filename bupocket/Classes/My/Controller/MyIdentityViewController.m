@@ -91,7 +91,7 @@
     
     CGSize btnSize = CGSizeMake(DEVICE_WIDTH - Margin_30, MAIN_HEIGHT);
     UIButton * exitID = [UIButton createButtonWithTitle:Localized(@"ExitCurrentIdentity") isEnabled:YES Target:self Selector:@selector(exitIDAction)];
-    [exitID setTitleColor:COLOR(@"FF6363") forState:UIControlStateNormal];
+    [exitID setTitleColor:WARNING_COLOR forState:UIControlStateNormal];
     exitID.backgroundColor = [UIColor whiteColor];
     [self.view addSubview:exitID];
     [exitID mas_makeConstraints:^(MASConstraintMaker *make) {
