@@ -109,6 +109,8 @@
 		959726C221E44FFB0022CB78 /* ModifyAlertView.m in Sources */ = {isa = PBXBuildFile; fileRef = 959726C121E44FFB0022CB78 /* ModifyAlertView.m */; };
 		959726C521E487F10022CB78 /* ExportKeystoreViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 959726C421E487F10022CB78 /* ExportKeystoreViewController.m */; };
 		959726C821E4893F0022CB78 /* ExportPrivateKeyViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 959726C721E4893F0022CB78 /* ExportPrivateKeyViewController.m */; };
+		959726CB21E5A8640022CB78 /* ImportWalletViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 959726CA21E5A8640022CB78 /* ImportWalletViewController.m */; };
+		959726D721E5E76F0022CB78 /* ImportWalletModeViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 959726D621E5E76F0022CB78 /* ImportWalletModeViewController.m */; };
 		95A8A3B1219D1352008E978E /* LanguageManager.m in Sources */ = {isa = PBXBuildFile; fileRef = 95A8A3AF219D1352008E978E /* LanguageManager.m */; };
 		95A8A3B5219D157C008E978E /* DateTool.m in Sources */ = {isa = PBXBuildFile; fileRef = 95A8A3B4219D157C008E978E /* DateTool.m */; };
 		95A8A3B9219D15D8008E978E /* RegexPatternTool.m in Sources */ = {isa = PBXBuildFile; fileRef = 95A8A3B8219D15D8008E978E /* RegexPatternTool.m */; };
@@ -368,6 +370,10 @@
 		959726C421E487F10022CB78 /* ExportKeystoreViewController.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = ExportKeystoreViewController.m; sourceTree = "<group>"; };
 		959726C621E4893F0022CB78 /* ExportPrivateKeyViewController.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = ExportPrivateKeyViewController.h; sourceTree = "<group>"; };
 		959726C721E4893F0022CB78 /* ExportPrivateKeyViewController.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = ExportPrivateKeyViewController.m; sourceTree = "<group>"; };
+		959726C921E5A8640022CB78 /* ImportWalletViewController.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = ImportWalletViewController.h; sourceTree = "<group>"; };
+		959726CA21E5A8640022CB78 /* ImportWalletViewController.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = ImportWalletViewController.m; sourceTree = "<group>"; };
+		959726D521E5E76F0022CB78 /* ImportWalletModeViewController.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = ImportWalletModeViewController.h; sourceTree = "<group>"; };
+		959726D621E5E76F0022CB78 /* ImportWalletModeViewController.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = ImportWalletModeViewController.m; sourceTree = "<group>"; };
 		95A8A3AF219D1352008E978E /* LanguageManager.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = LanguageManager.m; sourceTree = "<group>"; };
 		95A8A3B0219D1352008E978E /* LanguageManager.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = LanguageManager.h; sourceTree = "<group>"; };
 		95A8A3B3219D157B008E978E /* DateTool.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = DateTool.h; sourceTree = "<group>"; };
@@ -652,6 +658,10 @@
 				959726C421E487F10022CB78 /* ExportKeystoreViewController.m */,
 				959726C621E4893F0022CB78 /* ExportPrivateKeyViewController.h */,
 				959726C721E4893F0022CB78 /* ExportPrivateKeyViewController.m */,
+				959726C921E5A8640022CB78 /* ImportWalletViewController.h */,
+				959726CA21E5A8640022CB78 /* ImportWalletViewController.m */,
+				959726D521E5E76F0022CB78 /* ImportWalletModeViewController.h */,
+				959726D621E5E76F0022CB78 /* ImportWalletModeViewController.m */,
 			);
 			path = Controller;
 			sourceTree = "<group>";
@@ -1221,6 +1231,7 @@
 				833799382177427500C222A5 /* AssetsListViewCell.m in Sources */,
 				83379A95217EB08600C222A5 /* DetailListViewCell.m in Sources */,
 				83B594B42175F46E009F91BA /* TermsOfUseViewController.m in Sources */,
+				959726CB21E5A8640022CB78 /* ImportWalletViewController.m in Sources */,
 				83379AAA217F006600C222A5 /* HttpTool.m in Sources */,
 				8372C86F2174D03F00FF9506 /* UIButton+Extension.m in Sources */,
 				83379A8F217DC0C700C222A5 /* TransferDetailsAlertView.m in Sources */,
@@ -1247,6 +1258,7 @@
 				835A45262174C14D005BFCDD /* main.m in Sources */,
 				83379AD921802FA900C222A5 /* AssetsDetailModel.m in Sources */,
 				83379A89217DA4F900C222A5 /* AssetsDetailListViewCell.m in Sources */,
+				959726D721E5E76F0022CB78 /* ImportWalletModeViewController.m in Sources */,
 				83D5B1EE21818F7700BF1FF1 /* NSString+Extension.m in Sources */,
 				83FB4443219131EC00D68569 /* UINavigationController+Extension.m in Sources */,
 				83379A9B217EC01900C222A5 /* OrderDetailsViewController.m in Sources */,
@@ -1500,10 +1512,11 @@
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				ASSETCATALOG_COMPILER_LAUNCHIMAGE_NAME = LaunchImage;
-				CODE_SIGN_IDENTITY = "iPhone Developer";
+				CODE_SIGN_IDENTITY = "iPhone Distribution";
 				CODE_SIGN_STYLE = Manual;
 				DEFINES_MODULE = YES;
 				DEVELOPMENT_TEAM = 3DPSH636RT;
+				ENABLE_BITCODE = NO;
 				FRAMEWORK_SEARCH_PATHS = (
 					"$(inherited)",
 					"$(PROJECT_DIR)",
@@ -1552,7 +1565,7 @@
 				);
 				PRODUCT_BUNDLE_IDENTIFIER = com.bupocket;
 				PRODUCT_NAME = "$(TARGET_NAME)";
-				PROVISIONING_PROFILE_SPECIFIER = bupocket_Development;
+				PROVISIONING_PROFILE_SPECIFIER = BupocketDistribution;
 				TARGETED_DEVICE_FAMILY = 1;
 			};
 			name = Debug;
@@ -1563,10 +1576,11 @@
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				ASSETCATALOG_COMPILER_LAUNCHIMAGE_NAME = LaunchImage;
-				CODE_SIGN_IDENTITY = "iPhone Developer";
+				CODE_SIGN_IDENTITY = "iPhone Distribution";
 				CODE_SIGN_STYLE = Manual;
 				DEFINES_MODULE = YES;
 				DEVELOPMENT_TEAM = 3DPSH636RT;
+				ENABLE_BITCODE = NO;
 				FRAMEWORK_SEARCH_PATHS = (
 					"$(inherited)",
 					"$(PROJECT_DIR)",
@@ -1615,7 +1629,7 @@
 				);
 				PRODUCT_BUNDLE_IDENTIFIER = com.bupocket;
 				PRODUCT_NAME = "$(TARGET_NAME)";
-				PROVISIONING_PROFILE_SPECIFIER = bupocket_Development;
+				PROVISIONING_PROFILE_SPECIFIER = BupocketDistribution;
 				TARGETED_DEVICE_FAMILY = 1;
 			};
 			name = Release;

@@ -36,7 +36,7 @@
     keystorePrompt.titleLabel.font = TITLE_FONT;
     keystorePrompt.titleLabel.numberOfLines = 0;
     [self.scrollView addSubview:keystorePrompt];
-    CGFloat promptH = [Encapsulation rectWithText:Localized(@"CopyKeystore") font:TITLE_FONT textWidth:DEVICE_WIDTH - Margin_40].size.height;
+    CGFloat promptH = [Encapsulation rectWithText:Localized(@"CopyKeystorePrompt") font:TITLE_FONT textWidth:DEVICE_WIDTH - Margin_40].size.height;
     [keystorePrompt mas_makeConstraints:^(MASConstraintMaker *make) {
         make.centerX.mas_equalTo(0);
         make.top.mas_equalTo(ScreenScale(Margin_20));
@@ -44,7 +44,7 @@
         make.width.mas_lessThanOrEqualTo(DEVICE_WIDTH - Margin_40);
     }];
     
-    UIButton * keystore = [UIButton createButtonWithTitle:self.walletModel.walletKeyStore TextFont:15 TextColor:COLOR_6 Target:nil Selector:nil];
+    UIButton * keystore = [UIButton createButtonWithTitle:self.walletModel.walletKeyStore TextFont:15 TextNormalColor:COLOR_6 TextSelectedColor:COLOR_6 Target:nil Selector:nil];
     keystore.titleLabel.numberOfLines = 0;
     keystore.contentEdgeInsets = UIEdgeInsetsMake(0, Margin_15, 0, Margin_15);
     keystore.layer.borderColor = LINE_COLOR.CGColor;

@@ -10,6 +10,7 @@
 #import "WalletManagementViewCell.h"
 #import "ExportViewController.h"
 #import "WalletModel.h"
+#import "ImportWalletViewController.h"
 
 @interface WalletManagementViewController ()<UITableViewDelegate, UITableViewDataSource>
     
@@ -69,7 +70,7 @@ static NSString * const WalletManagementCellID = @"WalletManagementCellID";
 }
 - (UIButton *)setupHeaderTitle:(NSString *)title
 {
-    UIButton * titleBtn = [UIButton createButtonWithTitle:title TextFont:15 TextColor:COLOR_6 Target:nil Selector:nil];
+    UIButton * titleBtn = [UIButton createButtonWithTitle:title TextFont:15 TextNormalColor:COLOR_6 TextSelectedColor:COLOR_6 Target:nil Selector:nil];
     titleBtn.contentHorizontalAlignment = UIControlContentHorizontalAlignmentLeft;
     titleBtn.contentEdgeInsets = UIEdgeInsetsMake(0, Margin_15, 0, 0);
     titleBtn.frame = CGRectMake(0, 0, DEVICE_WIDTH, MAIN_HEIGHT);
@@ -142,7 +143,8 @@ static NSString * const WalletManagementCellID = @"WalletManagementCellID";
 }
 - (void)importedAction
 {
-    
+    ImportWalletViewController * VC = [[ImportWalletViewController alloc] init];
+    [self.navigationController pushViewController:VC animated:YES];
 }
 - (NSInteger)numberOfSectionsInTableView:(UITableView *)tableView
 {

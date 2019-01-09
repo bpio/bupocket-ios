@@ -164,7 +164,7 @@ static NSString * const Issue_Leave = @"leaveRoomForApp";
                 return;
             }
             [weakSelf.socket emit:Issue_Processing with:@[]];
-            PurseCipherAlertView * alertView = [[PurseCipherAlertView alloc] initWithPrompt:Localized(@"IssueIdentityCipherPrompt") confrimBolck:^(NSString * _Nonnull password, NSArray * _Nonnull words) {
+            PurseCipherAlertView * alertView = [[PurseCipherAlertView alloc] initWithPrompt:Localized(@"DistributionWalletPWPrompt") confrimBolck:^(NSString * _Nonnull password, NSArray * _Nonnull words) {
                 [weakSelf getIssueAssetDataWithPassword:password];
             } cancelBlock:^{
             }];

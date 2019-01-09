@@ -18,6 +18,7 @@
 #import "RequestTimeoutViewController.h"
 #import "RegisteredResultViewController.h"
 #import "DistributionResultsViewController.h"
+#import "ImportWalletViewController.h"
 #import "ExportKeystoreViewController.h"
 #import "ExportPrivateKeyViewController.h"
 
@@ -71,6 +72,7 @@
                              [viewController isKindOfClass:[DistributionResultsViewController class]] ||
                              [viewController isKindOfClass:[RequestTimeoutViewController class]] ||
                              [viewController isKindOfClass:[OrderDetailsViewController class]] ||
+                             [viewController isKindOfClass:[ImportWalletViewController class]] ||
                              [viewController isKindOfClass:[ExportKeystoreViewController class]] ||
                              [viewController isKindOfClass:[ExportPrivateKeyViewController class]]
                              );

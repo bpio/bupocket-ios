@@ -7,10 +7,14 @@
 //
 
 #import "BaseViewController.h"
+#import "WalletModel.h"
 
 NS_ASSUME_NONNULL_BEGIN
 
 @interface ExportPrivateKeyViewController : BaseViewController
+
+@property (nonatomic, strong) WalletModel * walletModel;
+@property (nonatomic, strong) NSString * password;
 
 @end
 

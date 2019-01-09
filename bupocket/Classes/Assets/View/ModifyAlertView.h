@@ -11,13 +11,13 @@
 
 NS_ASSUME_NONNULL_BEGIN
 
-typedef void (^OnCancleButtonClick)(void);
-typedef void (^OnSureButtonClick)(NSString * text);
+typedef void (^OnCancleClick)(void);
+typedef void (^OnSureClick)(NSString * text);
 
 @interface ModifyAlertView : UIView
 
-@property (nonatomic, copy) OnCancleButtonClick cancleBlock;
-@property (nonatomic, copy) OnSureButtonClick sureBlock;
+@property (nonatomic, copy) OnCancleClick cancleBlock;
+@property (nonatomic, copy) OnSureClick sureBlock;
 
 - (instancetype)initWithText:(NSString *)text confrimBolck:(void (^)(NSString * text))confrimBlock cancelBlock:(void (^)(void))cancelBlock;
 

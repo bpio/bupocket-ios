@@ -135,7 +135,8 @@
 "TransactionCostPlaceholder" = "Please enter the transaction fee";
 "Next" = "Next";
 "CannotTransferToOneself" = "You can\'t transfer BU to yourself";
-"TransactionIdentityCipherPrompt" = "Please fill in the identity password to confirm the transfer";
+//"TransactionIdentityCipherPrompt" = "Please fill in the identity password to confirm the transfer";
+"TransactionWalletPWPrompt" = "请填写钱包密码以确认转出";
 "ConfirmationOfTransfer" = "Confirm";
 "TransferPrompt" = "Please confirm whether the transfer information is correct.";
 "Submission" = "Submit";
@@ -158,7 +159,8 @@
 "ConfirmRegistrationInformation" = "Please confirm the following token registration information";
 "ConfirmationOfRegistration" = "Confirm registration";
 "RegisteredNumberOverflowMax" = "The tokens you have registered have exceeded the maximum limit";
-"RegistrationIdentityCipherPrompt" = "Please fill in the identity password to confirm the registration";
+//"RegistrationWalletPWPrompt" = "Please fill in the identity password to confirm the registration";
+"RegistrationWalletPWPrompt" = "请填写钱包密码以确认登记";
 "RegistrationSuccess" = "Registration succeeded";
 "RegistrationFailure" = "Registration failed";
 "RegistrationTimeout" = "Registration timeout";
@@ -170,7 +172,8 @@
 // Confirm token issuance
 "IssueAssetsConfirmation" = "Confirm token issuance";
 "ConfirmAssetInformation" = "Please confirm the following token issuance information";
-"IssueIdentityCipherPrompt" = "Please fill in the identity password to confirm the issuance";
+//"IssueIdentityCipherPrompt" = "Please fill in the identity password to confirm the issuance";
+"DistributionWalletPWPrompt" = "请填写钱包密码以确认发行";
 "TokenName" = "Token name";
 "TokenCode" = "Token code";
 "TheIssueVolume" = "The amount issued this time";
@@ -263,12 +266,27 @@
 "ImmediateImport" = "立即导入";
 "CurrentUse" = "当前使用";
 "Manage" = "管理";
+
+"ImportWallet" = "导入钱包";
+"Mnemonics" = "助记词";
+"Keystore" = "Keystore";
+"PrivateKey" = "私钥";
+"ImportMnemonicsPrompt" = "请输入钱包助记词（12个英文单词），按空格分离";
+"PleaseEnterMnemonics" = "请输入助记词";
+
 "ExportKeystore" = "导出Keystore";
 "ExportPrivateKey" = "导出私钥";
 "DeleteWallet" = "删除钱包";
 "ModifyWalletName" = "更改钱包名称";
+"WalletPWPrompt" = "请填写钱包密码";
+
 "CopyKeystorePrompt" = "请复制keystore文件到安全的地方保存";
 "CopyKeystore" = "复制Keystore";
+
+"CopyPrivateKeyPrompt" = "为了保证您的账户资产安全，请注意周围是否有他人在浏览您的隐私信息！";
+"WalletAddress" = "钱包地址";
+"WalletPrivateKeys" = "钱包私钥";
+"CopyPrivateKeys" = "复制私钥";
 
 // Errors
 "LoadFailure" = "Failed to load";

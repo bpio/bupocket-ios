@@ -26,6 +26,8 @@
 {
     UIView * promptBg = [[UIView alloc] init];
     promptBg.backgroundColor = VIEWBG_COLOR;
+    promptBg.clipsToBounds = YES;
+    promptBg.layer.masksToBounds = YES;
     promptBg.layer.cornerRadius = ScreenScale(1);
     [self.view addSubview:promptBg];
     [promptBg mas_makeConstraints:^(MASConstraintMaker *make) {
@@ -70,7 +72,7 @@
     CGFloat tagW = (DEVICE_WIDTH - ScreenScale(70)) / 4;
     CGFloat tagH = Margin_40;
     for (NSInteger i = 0; i < self.mnemonicArray.count; i ++) {
-        UIButton * tagBtn = [UIButton createButtonWithTitle:self.mnemonicArray[i] TextFont:14 TextColor:COLOR_9 Target:nil Selector:nil];
+        UIButton * tagBtn = [UIButton createButtonWithTitle:self.mnemonicArray[i] TextFont:14 TextNormalColor:COLOR_9 TextSelectedColor:COLOR_9 Target:nil Selector:nil];
         tagBtn.backgroundColor = VIEWBG_COLOR;
         tagBtn.layer.cornerRadius = TAG_CORNER;
         [self.view addSubview:tagBtn];

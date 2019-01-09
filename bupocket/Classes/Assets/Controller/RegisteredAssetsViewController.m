@@ -162,7 +162,7 @@ static NSString * const Register_Leave = @"leaveRoomForApp";
                 return;
             }
             [weakSelf.socket emit:Register_Processing with:@[]];
-            PurseCipherAlertView * alertView = [[PurseCipherAlertView alloc] initWithPrompt:Localized(@"RegistrationIdentityCipherPrompt") confrimBolck:^(NSString * _Nonnull password, NSArray * _Nonnull words) {
+            PurseCipherAlertView * alertView = [[PurseCipherAlertView alloc] initWithPrompt:Localized(@"RegistrationWalletPWPrompt") confrimBolck:^(NSString * _Nonnull password, NSArray * _Nonnull words) {
                 [weakSelf getRegisteredDataWithPassword:password];
             } cancelBlock:^{
             }];

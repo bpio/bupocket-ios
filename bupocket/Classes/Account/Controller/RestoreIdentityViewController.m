@@ -88,6 +88,7 @@
         _memorizingWords = [[PlaceholderTextView alloc] init];
         _memorizingWords.placeholder = Localized(@"MnemonicPrompt");
         _memorizingWords.delegate = self;
+        _memorizingWords.clipsToBounds = YES;
         _memorizingWords.layer.masksToBounds = YES;
         _memorizingWords.layer.cornerRadius = BG_CORNER;
         _memorizingWords.backgroundColor = VIEWBG_COLOR;

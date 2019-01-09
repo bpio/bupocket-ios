@@ -12,6 +12,7 @@
 #import "ModifyAlertView.h"
 #import "ExportKeystoreViewController.h"
 #import "ExportPrivateKeyViewController.h"
+#import "PurseCipherAlertView.h"
 
 @interface ExportViewController ()<UITableViewDelegate, UITableViewDataSource>
 
@@ -135,14 +136,20 @@ static NSString * const ExportCellID = @"ExportCellID";
         }];
         [alertView showInWindowWithMode:CustomAnimationModeAlert inView:nil bgAlpha:0.2 needEffectView:NO];        
     } else {
-        if (indexPath.row == 0) {
-            ExportKeystoreViewController * VC = [[ExportKeystoreViewController alloc] init];
-            VC.walletModel = self.walletModel;
-            [self.navigationController pushViewController:VC animated:YES];
-        } else if (indexPath.row == 1) {
-            ExportPrivateKeyViewController * VC = [[ExportPrivateKeyViewController alloc] init];
-            [self.navigationController pushViewController:VC animated:YES];
-        }
+        PurseCipherAlertView * alertView = [[PurseCipherAlertView alloc] initWithPrompt:Localized(@"WalletPWPrompt") confrimBolck:^(NSString * _Nonnull password, NSArray * _Nonnull words) {
+            if (indexPath.row == 0) {
+                ExportKeystoreViewController * VC = [[ExportKeystoreViewController alloc] init];
+                VC.walletModel = self.walletModel;
+                [self.navigationController pushViewController:VC animated:YES];
+            } else if (indexPath.row == 1) {
+                ExportPrivateKeyViewController * VC = [[ExportPrivateKeyViewController alloc] init];
+                VC.walletModel = self.walletModel;
+                VC.password = password;
+                [self.navigationController pushViewController:VC animated:YES];
+            }
+        } cancelBlock:^{
+        }];
+        [alertView showInWindowWithMode:CustomAnimationModeAlert inView:nil bgAlpha:0.2 needEffectView:NO];
     }
 }
 /*

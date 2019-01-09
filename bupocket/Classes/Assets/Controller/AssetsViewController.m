@@ -520,7 +520,7 @@ static UIButton * _noBackup;
             }];
             
             CGFloat btnW = (DEVICE_WIDTH - ScreenScale(65)) / 2;
-            _noBackup = [UIButton createButtonWithTitle:Localized(@"TemporaryBackup") TextFont:16 TextColor:COLOR(@"9298BD") Target:self Selector:@selector(noBackupAction:)];
+            _noBackup = [UIButton createButtonWithTitle:Localized(@"TemporaryBackup") TextFont:16 TextNormalColor:COLOR(@"9298BD") TextSelectedColor:COLOR(@"9298BD") Target:self Selector:@selector(noBackupAction:)];
             _noBackup.backgroundColor = COLOR(@"DADDF3");
             _noBackup.layer.masksToBounds = YES;
             _noBackup.layer.cornerRadius = MAIN_CORNER;
@@ -531,7 +531,7 @@ static UIButton * _noBackup;
                 make.bottom.equalTo(backupBg.mas_bottom).offset(-Margin_15);
                 make.size.mas_equalTo(CGSizeMake(btnW, Margin_40));
             }];
-            UIButton * backup = [UIButton createButtonWithTitle:Localized(@"ImmediateBackup") TextFont:16 TextColor:[UIColor whiteColor] Target:self Selector:@selector(backupAction)];
+            UIButton * backup = [UIButton createButtonWithTitle:Localized(@"ImmediateBackup") TextFont:16 TextNormalColor:[UIColor whiteColor] TextSelectedColor:[UIColor whiteColor] Target:self Selector:@selector(backupAction)];
             backup.backgroundColor = MAIN_COLOR;
             backup.layer.masksToBounds = YES;
             backup.layer.cornerRadius = MAIN_CORNER;

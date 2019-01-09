@@ -133,7 +133,7 @@
 "TransactionCostPlaceholder" = "请输交易费用";
 "Next" = "下一步";
 "CannotTransferToOneself" = "不能给自己转账";
-"TransactionIdentityCipherPrompt" = "请填写身份密码以确认转出";
+"TransactionWalletPWPrompt" = "请填写钱包密码以确认转出";
 "ConfirmationOfTransfer" = "确认转账";
 "TransferPrompt" = "请确认转账信息是否有误";
 "Submission" = "提交";
@@ -156,7 +156,7 @@
 "ConfirmRegistrationInformation" = "请确认以下登记资产信息";
 "ConfirmationOfRegistration" = "确认登记";
 "RegisteredNumberOverflowMax" = "您的资产登记总量超过了最大上限";
-"RegistrationIdentityCipherPrompt" = "请填写身份密码以确认登记";
+"RegistrationWalletPWPrompt" = "请填写钱包密码以确认登记";
 "RegistrationSuccess" = "登记成功";
 "RegistrationFailure" = "登记失败";
 "RegistrationTimeout" = "登记超时";
@@ -168,7 +168,7 @@
 // 发行资产确认
 "IssueAssetsConfirmation" = "发行资产确认";
 "ConfirmAssetInformation" = "请确认以下发行资产信息";
-"IssueIdentityCipherPrompt" = "请填写身份密码以确认发行";
+"DistributionWalletPWPrompt" = "请填写钱包密码以确认发行";
 "TokenName" = "资产名称";
 "TokenCode" = "资产代码";
 "TheIssueVolume" = "本次发行量";
@@ -257,12 +257,27 @@
 "ImmediateImport" = "立即导入";
 "CurrentUse" = "当前使用";
 "Manage" = "管理";
+
+"ImportWallet" = "导入钱包";
+"Mnemonics" = "助记词";
+"Keystore" = "Keystore";
+"PrivateKey" = "私钥";
+"ImportMnemonicsPrompt" = "请输入钱包助记词（12个英文单词），按空格分离";
+"PleaseEnterMnemonics" = "请输入助记词";
+
 "ExportKeystore" = "导出Keystore";
 "ExportPrivateKey" = "导出私钥";
 "DeleteWallet" = "删除钱包";
 "ModifyWalletName" = "更改钱包名称";
+"WalletPWPrompt" = "请填写钱包密码";
+
 "CopyKeystorePrompt" = "请复制keystore文件到安全的地方保存";
 "CopyKeystore" = "复制Keystore";
+
+"CopyPrivateKeyPrompt" = "为了保证您的账户资产安全，请注意周围是否有他人在浏览您的隐私信息！";
+"WalletAddress" = "钱包地址";
+"WalletPrivateKeys" = "钱包私钥";
+"CopyPrivateKeys" = "复制私钥";
 
 // 错误信息
 "LoadFailure" = "加载失败";

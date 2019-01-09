@@ -20,7 +20,7 @@
 @implementation RegisteredResultViewController
 
 static NSString * const DetailListCellID = @"DetailListCellID";
-static NSString * const DistributionDetailCellID = @"DistributionDetailCellID";
+static NSString * const DetailListID = @"DetailListID";
 
 - (NSMutableArray *)listArray
 {
@@ -135,7 +135,7 @@ static NSString * const DistributionDetailCellID = @"DistributionDetailCellID";
 {
     NSString * cellID = DetailListCellID;
     if ((self.registeredModel.desc.length > 0 && indexPath.section == 0 && indexPath.row == [self.listArray[0] count] - 1) || (indexPath.section == 1 && indexPath.row > 0)) {
-        cellID = DistributionDetailCellID;
+        cellID = DetailListID;
     }
     DetailListViewCell * cell = [DetailListViewCell cellWithTableView:tableView identifier:cellID];
     cell.title.text = [[self.listArray[indexPath.section][indexPath.row] allKeys] firstObject];

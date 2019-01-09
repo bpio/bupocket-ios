@@ -72,7 +72,7 @@
         make.height.mas_equalTo(LINE_WIDTH);
     }];
     
-    UIButton * cancel = [UIButton createButtonWithTitle:Localized(@"Cancel") TextFont:18 TextColor:COLOR_9 Target:self Selector:@selector(cancleBtnClick)];
+    UIButton * cancel = [UIButton createButtonWithTitle:Localized(@"Cancel") TextFont:18 TextNormalColor:COLOR_9 TextSelectedColor:COLOR_9 Target:self Selector:@selector(cancleBtnClick)];
     [self addSubview:cancel];
     [cancel mas_makeConstraints:^(MASConstraintMaker *make) {
         make.top.equalTo(line.mas_bottom);
@@ -80,7 +80,7 @@
         make.left.equalTo(self.textField);
         make.size.mas_equalTo(CGSizeMake(DEVICE_WIDTH / 2 - Margin_40, ScreenScale(55)));
     }];
-    UIButton * Confirm = [UIButton createButtonWithTitle:Localized(@"Confirm") TextFont:18 TextColor:MAIN_COLOR Target:self Selector:@selector(sureBtnClick)];
+    UIButton * Confirm = [UIButton createButtonWithTitle:Localized(@"Confirm") TextFont:18 TextNormalColor:MAIN_COLOR TextSelectedColor:MAIN_COLOR Target:self Selector:@selector(sureBtnClick)];
     [self addSubview:Confirm];
     [Confirm mas_makeConstraints:^(MASConstraintMaker *make) {
         make.size.top.bottom.equalTo(cancel);

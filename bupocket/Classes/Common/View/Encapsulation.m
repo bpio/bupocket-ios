@@ -170,7 +170,7 @@
         make.top.equalTo(noNetWorkImage.mas_bottom).offset(ScreenScale(50));
     }];
     
-    UIButton * reloadBtn = [UIButton createButtonWithTitle:Localized(@"Reload") TextFont:18 TextColor:[UIColor whiteColor] Target:target Selector:action];
+    UIButton * reloadBtn = [UIButton createButtonWithTitle:Localized(@"Reload") TextFont:18 TextNormalColor:[UIColor whiteColor] TextSelectedColor:[UIColor whiteColor] Target:target Selector:action];
     reloadBtn.layer.masksToBounds = YES;
     reloadBtn.clipsToBounds = YES;
     reloadBtn.layer.cornerRadius = MAIN_CORNER;

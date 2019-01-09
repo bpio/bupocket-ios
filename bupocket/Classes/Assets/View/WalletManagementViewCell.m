@@ -97,7 +97,7 @@ static NSString * const WalletCellID = @"WalletCellID";
 - (UIButton *)currentUse
 {
     if (!_currentUse) {
-        _currentUse = [UIButton createButtonWithTitle:Localized(@"CurrentUse") TextFont:13 TextColor:[UIColor whiteColor] Target:nil Selector:nil];
+        _currentUse = [UIButton createButtonWithTitle:Localized(@"CurrentUse") TextFont:13 TextNormalColor:[UIColor whiteColor] TextSelectedColor:[UIColor whiteColor] Target:nil Selector:nil];
         _currentUse.layer.masksToBounds = YES;
         _currentUse.clipsToBounds = YES;
         _currentUse.layer.cornerRadius = MAIN_CORNER;
@@ -109,7 +109,7 @@ static NSString * const WalletCellID = @"WalletCellID";
 - (UIButton *)manage
 {
     if (!_manage) {
-        _manage = [UIButton createButtonWithTitle:Localized(@"Manage") TextFont:15 TextColor:MAIN_COLOR Target:self Selector:@selector(manageAction)];
+        _manage = [UIButton createButtonWithTitle:Localized(@"Manage") TextFont:15 TextNormalColor:MAIN_COLOR TextSelectedColor:MAIN_COLOR Target:self Selector:@selector(manageAction)];
         _manage.layer.masksToBounds = YES;
         _manage.clipsToBounds = YES;
         _manage.layer.cornerRadius = MAIN_CORNER;
