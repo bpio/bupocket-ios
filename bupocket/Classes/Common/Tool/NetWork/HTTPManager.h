@@ -85,6 +85,12 @@
                     identityName:(NSString *)identityName
                          success:(void (^)(id responseObject))success
                          failure:(void (^)(NSError *error))failure;
+// Wallet data
+- (void)setWalletDataWithMnemonics:(NSArray *)mnemonics
+                          password:(NSString *)password
+                        walletName:(NSString *)walletName
+                           success:(void (^)(id responseObject))success
+                           failure:(void (^)(NSError *error))failure;
 // Transfer accounts
 - (void)setTransferDataWithTokenType:(NSInteger)tokenType
                             password:(NSString *)password

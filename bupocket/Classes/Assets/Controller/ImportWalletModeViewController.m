@@ -7,17 +7,37 @@
 //
 
 #import "ImportWalletModeViewController.h"
+#import "TextFieldViewCell.h"
 #import "PlaceholderTextView.h"
+#import "WalletModel.h"
 
-@interface ImportWalletModeViewController ()<UITextViewDelegate, UITextFieldDelegate>
+@interface ImportWalletModeViewController ()<UITextViewDelegate, UITextFieldDelegate, UITableViewDelegate, UITableViewDataSource>
+
+@property (nonatomic, strong) UITableView * tableView;
+@property (nonatomic, strong) NSMutableArray * listArray;
 
 @property (nonatomic, strong) PlaceholderTextView * importText;
 @property (nonatomic, strong) UITextField * contactField;
-@property (nonatomic, strong) UIButton * submit;
+@property (nonatomic, strong) UIButton * import;
+
+@property (nonatomic, strong) UITextField * walletNameText;
+@property (nonatomic, strong) UITextField * walletPWText;
+@property (nonatomic, strong) UITextField * confirmPWText;
 
 @end
 
+static NSString * const TextFieldCellID = @"TextFieldCellID";
+static NSString * const TextFieldPWCellID = @"TextFieldPWCellID";
+
 @implementation ImportWalletModeViewController
+
+- (NSMutableArray *)listArray
+{
+    if (!_listArray) {
+        _listArray = [NSMutableArray array];
+    }
+    return _listArray;
+}
 
 - (void)viewDidLoad {
     [super viewDidLoad];
@@ -26,15 +46,27 @@
 }
 - (void)setupView
 {
+    self.tableView = [[UITableView alloc] initWithFrame:self.view.bounds style:UITableViewStylePlain];
+    self.tableView.delegate = self;
+    self.tableView.dataSource = self;
+    self.tableView.separatorStyle = UITableViewCellSeparatorStyleNone;
+    self.tableView.backgroundColor = [UIColor whiteColor];
+    [self.view addSubview:self.tableView];
+    [self.tableView mas_makeConstraints:^(MASConstraintMaker *make) {
+        make.edges.equalTo(self.view);
+    }];
+    
+    UIView * headerView = [[UIView alloc] init];
+    self.tableView.tableHeaderView = headerView;
     UILabel * importPrompt = [[UILabel alloc] init];
     importPrompt.textColor = COLOR_9;
     importPrompt.font = TITLE_FONT;
     importPrompt.numberOfLines = 0;
-    [self.view addSubview:importPrompt];
+    [headerView addSubview:importPrompt];
     [importPrompt mas_makeConstraints:^(MASConstraintMaker *make) {
-        make.top.equalTo(self.view.mas_top).offset(Margin_15);
-        make.left.equalTo(self.view.mas_left).offset(Margin_15);
-        make.right.equalTo(self.view.mas_right).offset(-Margin_15);
+        make.top.equalTo(headerView.mas_top).offset(Margin_15);
+        make.left.equalTo(headerView.mas_left).offset(Margin_15);
+        make.right.equalTo(headerView.mas_right).offset(-Margin_15);
     }];
     
     self.importText = [[PlaceholderTextView alloc] init];
@@ -42,101 +74,178 @@
     self.importText.backgroundColor = VIEWBG_COLOR;
     self.importText.layer.masksToBounds = YES;
     self.importText.layer.cornerRadius = BG_CORNER;
-    [self.view addSubview:self.importText];
+    [headerView addSubview:self.importText];
     [self.importText mas_makeConstraints:^(MASConstraintMaker *make) {
         make.top.equalTo(importPrompt.mas_bottom).offset(Margin_15);
         make.left.right.equalTo(importPrompt);
         make.height.mas_equalTo(ScreenScale(120));
     }];
+    
+    
+    UIView * footerView = [[UIView alloc] initWithFrame:CGRectMake(0, 0, DEVICE_WIDTH, ScreenScale(150) + SafeAreaBottomH)];
+    self.tableView.tableFooterView = footerView;
+    
+    self.import = [UIButton createButtonWithTitle:Localized(@"StartImporting") isEnabled:NO Target:self Selector:@selector(importAction)];
+    [footerView addSubview:self.import];
+    [self.import mas_makeConstraints:^(MASConstraintMaker *make) {
+        make.top.equalTo(footerView.mas_top).offset(Margin_25);
+        make.left.equalTo(footerView.mas_left).offset(Margin_15);
+        make.right.equalTo(footerView.mas_right).offset(-Margin_15);
+        make.height.mas_equalTo(MAIN_HEIGHT);
+    }];
+    
+    CustomButton * explain = [[CustomButton alloc] init];
+    explain.layoutMode = HorizontalInverted;
+    explain.titleLabel.font = TITLE_FONT;
+    [explain setTitleColor:COLOR_9 forState:UIControlStateNormal];
+    [explain setImage:[UIImage imageNamed:@"explain"] forState:UIControlStateNormal];
+    [explain addTarget:self action:@selector(explainInfo:) forControlEvents:UIControlEventTouchUpInside];
+    [footerView addSubview:explain];
+    [explain mas_makeConstraints:^(MASConstraintMaker *make) {
+        make.top.equalTo(self.import.mas_bottom).offset(Margin_15);
+        make.right.equalTo(self.import);
+        make.height.mas_equalTo(Margin_30);
+    }];
+    
+    self.listArray = [NSMutableArray arrayWithObjects:@[Localized(@"WalletName"), Localized(@"EnterWalletName")], @[Localized(@"SetThePW"), Localized(@"PWPlaceholder")], @[Localized(@"ConfirmedPassword"), Localized(@"PWPlaceholder")], nil];
     if ([self.title isEqualToString:Localized(@"Mnemonics")]) {
         importPrompt.text = Localized(@"ImportMnemonicsPrompt");
         self.importText.placeholder = Localized(@"PleaseEnterMnemonics");
+        [explain setTitle:Localized(@"UnderstandingMnemonics") forState:UIControlStateNormal];
+    } else if ([self.title isEqualToString:Localized(@"Keystore")]) {
+        importPrompt.text = Localized(@"ImportKeystorePrompt");
+        self.importText.placeholder = Localized(@"PleaseEnterKeystore");
+        self.listArray = [NSMutableArray arrayWithObjects:@[Localized(@"WalletName"), Localized(@"EnterWalletName")], @[Localized(@"KeystorePW"), Localized(@"PleaseEnterKeystorePW")], nil];
+        [explain setTitle:Localized(@"UnderstandingKeystore") forState:UIControlStateNormal];
+    } else if ([self.title isEqualToString:Localized(@"PrivateKey")]) {
+        importPrompt.text = Localized(@"ImportPrivateKeyPrompt");
+        self.importText.placeholder = Localized(@"PleaseEnterPrivateKey");
+        [explain setTitle:Localized(@"UnderstandingPrivateKey") forState:UIControlStateNormal];
     }
-//    NSArray * array = @[Localized(@"QuestionsOrSuggestions"), Localized(@"YourContact")];
-//    for (NSInteger i = 0; i < array.count; i++) {
-//        UIView * titleView = [self setViewWithTitle:array[i]];
-//        [self.view addSubview:titleView];
-//        [titleView mas_makeConstraints:^(MASConstraintMaker *make) {
-//            make.top.equalTo(self.view.mas_top).offset(Margin_15 + (ScreenScale(170) * i));
-//            make.left.right.equalTo(self.view);
-//            make.height.mas_equalTo(MAIN_HEIGHT);
-//        }];
-//    }
-    
-    UITextField * textField = [[UITextField alloc] init];
-    textField.textColor = TITLE_COLOR;
-    textField.font = FONT(16);
-    textField.placeholder = Localized(@"PleaseEnterContact");
-    textField.clearButtonMode = UITextFieldViewModeWhileEditing;
-    //    textField.keyboardType = UIKeyboardTypePhonePad;
-    textField.delegate = self;
-    [textField addTarget:self action:@selector(textChange:) forControlEvents:UIControlEventEditingChanged];
-    [self.view addSubview:textField];
-    [textField mas_makeConstraints:^(MASConstraintMaker *make) {
-        make.top.equalTo(self.importText.mas_bottom).offset(ScreenScale(55));
-        make.left.right.equalTo(importPrompt);
-        make.height.mas_equalTo(Margin_40);
-    }];
-    self.contactField = textField;
-    UIView * line = [[UIView alloc] init];
-    line.backgroundColor = LINE_COLOR;
-    [self.view addSubview:line];
-    [line mas_makeConstraints:^(MASConstraintMaker *make) {
-        make.top.equalTo(textField.mas_bottom);
-        make.left.right.equalTo(importPrompt);
-        make.height.mas_equalTo(LINE_WIDTH);
-    }];
-    UIButton * submit = [UIButton createButtonWithTitle:Localized(@"Submission") isEnabled:NO Target:self Selector:@selector(submitAction)];
-    [self.view addSubview:submit];
-    [submit mas_makeConstraints:^(MASConstraintMaker *make) {
-        make.bottom.equalTo(self.view.mas_bottom).offset(-Margin_30 - SafeAreaBottomH);
-        make.left.right.equalTo(importPrompt);
-        make.height.mas_equalTo(MAIN_HEIGHT);
-    }];
-    self.submit = submit;
+    CGFloat headerViewH = Margin_30 + [Encapsulation rectWithText:importPrompt.text font:importPrompt.font textWidth:DEVICE_WIDTH - Margin_30].size.height + ScreenScale(120);
+    headerView.frame = CGRectMake(0, 0, DEVICE_WIDTH, headerViewH);
 }
-
-- (void)submitAction
+- (CGFloat)tableView:(UITableView *)tableView heightForRowAtIndexPath:(NSIndexPath *)indexPath
+{
+    return ScreenScale(85);
+}
+- (CGFloat)tableView:(UITableView *)tableView heightForHeaderInSection:(NSInteger)section
+{
+    return CGFLOAT_MIN;
+}
+- (CGFloat)tableView:(UITableView *)tableView heightForFooterInSection:(NSInteger)section
+{
+    return CGFLOAT_MIN;
+}
+- (NSInteger)numberOfSectionsInTableView:(UITableView *)tableView
+{
+    return 1;
+}
+- (NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section
+{
+    return self.listArray.count;
+}
+- (UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath
+{
+    NSString * cellID = TextFieldPWCellID;
+    if (indexPath.row == 0) {
+        cellID = TextFieldCellID;
+    }
+    TextFieldViewCell * cell = [TextFieldViewCell cellWithTableView:tableView identifier:cellID];
+    cell.title.text = [self.listArray[indexPath.row] firstObject];
+    cell.textField.placeholder = [self.listArray[indexPath.row] lastObject];
+    cell.selectionStyle = UITableViewCellSelectionStyleNone;
+    switch (indexPath.row) {
+        case 0:
+            self.walletNameText = cell.textField;
+            break;
+        case 1:
+            self.walletPWText = cell.textField;
+            break;
+        case 2:
+            self.confirmPWText = cell.textField;
+            break;
+        default:
+            break;
+    }
+    cell.textChange = ^(UITextField * _Nonnull textField) {
+        [self judgeHasText];
+    };
+    return cell;
+}
+- (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath
+{
+    [tableView deselectRowAtIndexPath:indexPath animated:YES];
+}
+- (void)importAction
+{
+    NSArray * words = [_importText.text componentsSeparatedByString:@" "];
+    if (words.count != NumberOf_MnemonicWords) {
+        [MBProgressHUD showTipMessageInWindow:Localized(@"MnemonicIsIncorrect")];
+        return;
+    }
+    if ([RegexPatternTool validateUserName:_walletNameText.text] == NO) {
+        [MBProgressHUD showTipMessageInWindow:Localized(@"WalletNameFormatIncorrect")];
+        return;
+    }
+    if ([RegexPatternTool validatePassword:_walletPWText.text] == NO) {
+        [MBProgressHUD showTipMessageInWindow:Localized(@"CryptographicFormat")];
+        return;
+    }
+    if (![_walletPWText.text isEqualToString:_confirmPWText.text]) {
+        [MBProgressHUD showTipMessageInWindow:Localized(@"PasswordIsDifferent")];
+        return;
+    }
+    if ([self.title isEqualToString:Localized(@"Mnemonics")]) {
+        [self setData];
+    }
+}
+- (void)setData
+{
+    NSArray * words = [_importText.text componentsSeparatedByString:@" "];
+    [[HTTPManager shareManager] setWalletDataWithMnemonics:words password:_walletPWText.text walletName:_walletNameText.text success:^(id responseObject) {
+        
+    } failure:^(NSError *error) {
+        
+    }];
+}
+- (void)explainInfo:(UIButton *)button
 {
 }
+//- (void)alertViewWithMessage:(NSString *)message
+//{
+//    UIAlertController * alertController = [UIAlertController alertControllerWithTitle:message message:nil preferredStyle:UIAlertControllerStyleAlert];
+//    UIAlertAction * cancelAction = [UIAlertAction actionWithTitle:Localized(@"IGotIt") style:UIAlertActionStyleCancel handler:nil];
+//    [alertController addAction:cancelAction];
+//    [self presentViewController:alertController animated:YES completion:nil];
+//}
 - (void)textViewDidChange:(UITextView *)textView
 {
     [self judgeHasText];
-    NSString * content = textView.text;
-    if (content.length > SuggestionsContent_MAX) {
-        NSString * contentText = [content substringToIndex:SuggestionsContent_MAX];
-        [textView setText:contentText];
-    }
 }
-- (void)textChange:(UITextField *)textField
-{
-    [self judgeHasText];
-}
+//- (BOOL)textFieldShouldReturn:(UITextField *)textField
+//{
+//    if (textField == _walletNameText) {
+//        [_walletNameText resignFirstResponder];
+//        [_walletPWText becomeFirstResponder];
+//    } else if (textField == _walletPWText) {
+//        [_walletPWText resignFirstResponder];
+//        [_confirmPWText becomeFirstResponder];
+//    } else if (textField == _confirmPWText) {
+//        [_confirmPWText resignFirstResponder];
+//    }
+//    return YES;
+//}
+
 - (void)judgeHasText
 {
-//    self.feedback = [self.feedbackText.text stringByTrimmingCharactersInSet:[NSCharacterSet whitespaceAndNewlineCharacterSet]];
-//    self.feedback = [self.feedback stringByReplacingOccurrencesOfString:@"\n" withString:@""];
-//    self.contact = [self.contactField.text stringByTrimmingCharactersInSet:[NSCharacterSet whitespaceAndNewlineCharacterSet]];
-//    if (self.feedback.length > 0 && self.contact.length > 0) {
-//        self.submit.enabled = YES;
-//        self.submit.backgroundColor = MAIN_COLOR;
-//    } else {
-//        self.submit.enabled = NO;
-//        self.submit.backgroundColor = DISABLED_COLOR;
-//    }
-}
-- (UIView *)setViewWithTitle:(NSString *)title
-{
-    UIView * viewBg = [[UIView alloc] init];
-    UILabel * header = [[UILabel alloc] init];
-    [viewBg addSubview:header];
-    header.attributedText = [Encapsulation attrTitle:title ifRequired:NO];
-    [header mas_makeConstraints:^(MASConstraintMaker *make) {
-        make.top.bottom.equalTo(viewBg);
-        make.left.equalTo(viewBg.mas_left).offset(Margin_20);
-        make.right.equalTo(viewBg.mas_right).offset(-Margin_20);
-    }];
-    return viewBg;
+    if ([self.importText hasText] && [self.walletNameText hasText] && [self.walletPWText hasText] && (!self.confirmPWText || [self.confirmPWText hasText])) {
+        self.import.enabled = YES;
+        self.import.backgroundColor = MAIN_COLOR;
+    } else {
+        self.import.enabled = NO;
+        self.import.backgroundColor = DISABLED_COLOR;
+    }
 }
 /*
  - (BOOL)textField:(UITextField *)textField shouldChangeCharactersInRange:(NSRange)range replacementString:(NSString *)string

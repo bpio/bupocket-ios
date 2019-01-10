@@ -9,6 +9,7 @@
 #import "HTTPManager.h"
 #import "HttpTool.h"
 #import "AtpProperty.h"
+#import "WalletModel.h"
 
 @implementation HTTPManager
 
@@ -421,6 +422,55 @@ static int64_t const gasPrice = 1000;
                     [defaults setObject:purseAddress forKey:Current_WalletAddress];
                     [defaults synchronize];
                     success(words);
+                }
+            }
+        }];
+    }];
+}
+
+// Wallet data
+- (void)setWalletDataWithMnemonics:(NSArray *)mnemonics
+                          password:(NSString *)password
+                        walletName:(NSString *)walletName
+                           success:(void (^)(id responseObject))success
+                           failure:(void (^)(NSError *error))failure
+{
+    [MBProgressHUD showActivityMessageInWindow:Localized(@"Loading")];
+    //    __weak typeof(self) weakSelf = self;
+    NSOperationQueue * queue = [[NSOperationQueue alloc] init];
+    [queue addOperationWithBlock:^{
+        // Random number -> mnemonic
+        NSMutableArray * hdPaths = [NSMutableArray arrayWithObjects:@"M/44H/526H/0H/0/0", @"M/44H/526H/1H/0/0", nil];
+        NSArray * privateKeys = [Mnemonic generatePrivateKeys: mnemonics : hdPaths];
+        // private key -> address
+        NSString * walletAddress = [Keypair getEncAddress : [Keypair getEncPublicKey: [privateKeys lastObject]]];
+        NSString * walletKeyStore = [NSString generateKeyStoreWithPW:password key:[privateKeys lastObject]];
+        [[NSOperationQueue mainQueue] addOperationWithBlock:^{
+            if (walletKeyStore == nil) {
+                [MBProgressHUD hideHUD];
+                [MBProgressHUD showTipMessageInWindow:Localized(@"ImportedWalletFailure")];
+            } else {
+                [MBProgressHUD hideHUD];
+                if(success != nil)
+                {
+                    success(walletAddress);
+                    NSUserDefaults * defaults = [NSUserDefaults standardUserDefaults];
+                    NSArray * importedWalletArray = [defaults objectForKey:imported_Wallet];
+                    for (WalletModel * walletModel in importedWalletArray) {
+                        if ([walletModel.walletAddress isEqualToString:walletAddress]) {
+                            [MBProgressHUD showTipMessageInWindow:Localized(@"该钱包已导入")];
+                        } else {
+                            NSMutableArray * importedWallet = [NSMutableArray array];
+                            [importedWallet addObjectsFromArray:importedWalletArray];
+                            WalletModel * walletModel = [[WalletModel alloc] init];
+                            walletModel.walletName = walletName;
+                            walletModel.walletAddress = walletAddress;
+                            walletModel.walletKeyStore = walletKeyStore;
+                            [importedWallet addObject:walletModel];
+                            [defaults setObject:importedWallet forKey:imported_Wallet];
+                            [defaults synchronize];
+                        }
+                    }
                 }
             }
         }];

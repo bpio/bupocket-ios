@@ -273,6 +273,21 @@
 "PrivateKey" = "私钥";
 "ImportMnemonicsPrompt" = "请输入钱包助记词（12个英文单词），按空格分离";
 "PleaseEnterMnemonics" = "请输入助记词";
+"WalletName" = "钱包名称";
+"EnterWalletName" = "输入钱包名称，以便区分其它钱包";
+"SetThePW" = "设置密码";
+"StartImporting" = "开始导入";
+"UnderstandingMnemonics" = "了解助记词";
+"ImportKeystorePrompt" = "复制粘贴BUMO官方钱包Keystore文件内容至输入框";
+"PleaseEnterKeystore" = "Keystore文件内容";
+"KeystorePW" = "Keystore密码";
+"PleaseEnterKeystorePW" = "请输入原Keystore文件内容的密码";
+"UnderstandingKeystore" = "了解Keystore";
+"ImportPrivateKeyPrompt" = "粘贴私钥（Private Key）字符串";
+"PleaseEnterPrivateKey" = "私钥（Private key）字符串";
+"UnderstandingPrivateKey" = "了解私钥字符串";
+
+"ImportedWalletFailure" = "导入钱包失败";
 
 "ExportKeystore" = "导出Keystore";
 "ExportPrivateKey" = "导出私钥";

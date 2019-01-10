@@ -295,7 +295,7 @@ static UIButton * _noBackup;
         _totalAssets.textColor = [UIColor whiteColor];
         [_headerViewBg addSubview:_totalAssets];
         [self.totalAssets mas_makeConstraints:^(MASConstraintMaker *make) {
-            make.top.equalTo(self.headerViewBg.mas_top).offset(StatusBarHeight + Margin_50);
+            make.top.equalTo(self.headerViewBg.mas_top).offset(StatusBarHeight + MAIN_HEIGHT);
             make.centerX.equalTo(self.headerViewBg);
             make.width.mas_lessThanOrEqualTo(DEVICE_WIDTH - Margin_40);
         }];
@@ -306,7 +306,7 @@ static UIButton * _noBackup;
         totalAssetsTitle.text = Localized(@"TotalAssets");
         [self.headerViewBg addSubview:totalAssetsTitle];
         [totalAssetsTitle mas_makeConstraints:^(MASConstraintMaker *make) {
-            make.top.equalTo(self.totalAssets.mas_bottom).offset(Margin_15);
+            make.top.equalTo(self.totalAssets.mas_bottom).offset(Margin_10);
             make.centerX.equalTo(self.headerViewBg);
         }];
         

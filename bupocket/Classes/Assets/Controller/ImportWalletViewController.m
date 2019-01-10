@@ -55,16 +55,25 @@
             self.selectedButton = navBtn;
         }
     }
+    [self.selectedButton layoutIfNeeded];
+    UIView * lineView = [[UIView alloc] init];
+    lineView.backgroundColor = VIEWBG_COLOR;
+    [self.view addSubview:lineView];
+    [lineView mas_makeConstraints:^(MASConstraintMaker *make) {
+        make.left.right.equalTo(self.view);
+        make.bottom.equalTo(self.selectedButton);
+        make.height.mas_equalTo(ScreenScale(1.5));
+    }];
     self.line = [[UIView alloc] init];
     self.line.backgroundColor = MAIN_COLOR;
     [self.view addSubview:self.line];
 //    CGFloat lineW = [Encapsulation rectWithText:self.typeArray[0] font:FONT(16) textHeight:ScreenScale(16)].size.width;
-    [self.selectedButton layoutIfNeeded];
     [self.line mas_makeConstraints:^(MASConstraintMaker *make) {
         make.centerX.bottom.equalTo(self.selectedButton);
         make.height.mas_equalTo(ScreenScale(3));
         make.width.mas_equalTo(self.selectedButton.titleLabel.width);
     }];
+    
     
     _contentScrollView = [[UIScrollView alloc] initWithFrame:CGRectMake(0, MAIN_HEIGHT, DEVICE_WIDTH, DEVICE_HEIGHT - (NavBarH + MAIN_HEIGHT))];
     _contentScrollView.pagingEnabled = YES;
