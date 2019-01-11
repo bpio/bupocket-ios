@@ -51,41 +51,33 @@
 - (void)confirmAction
 {
     if ([RegexPatternTool validatePassword:_PWOld.text] == NO) {
-        [self showAlertControllerWithMessage:Localized(@"CryptographicFormat") handler:nil];
+        [Encapsulation showAlertControllerWithMessage:Localized(@"CryptographicFormat") handler:nil];
         return;
     }
     if ([RegexPatternTool validatePassword:_PWNew.text] == NO) {
-        [self showAlertControllerWithMessage:Localized(@"CryptographicFormat") handler:nil];
+        [Encapsulation showAlertControllerWithMessage:Localized(@"CryptographicFormat") handler:nil];
         return;
     }
     if (![_PWNew.text isEqualToString:_PWConfirm.text]) {
-        [self showAlertControllerWithMessage:Localized(@"NewPasswordIsDifferent") handler:nil];
+        [Encapsulation showAlertControllerWithMessage:Localized(@"NewPasswordIsDifferent") handler:nil];
         return;
     }
     NSData * random = [NSString decipherKeyStoreWithPW:_PWOld.text randomKeyStoreValueStr:[AccountTool account].randomNumber];
     if (random) {
         [[HTTPManager shareManager] setAccountDataWithRandom:random password:self.PWNew.text identityName:[AccountTool account].identityName success:^(id responseObject) {
-            [self showAlertControllerWithMessage:Localized(@"PasswordModifiedSuccessfully") handler:^(UIAlertAction *action) {
+            [Encapsulation showAlertControllerWithMessage:Localized(@"PasswordModifiedSuccessfully") handler:^(UIAlertAction *action) {
                 [self.navigationController popViewControllerAnimated:YES];
             }];
         } failure:^(NSError *error) {
             
         }];
     } else {
-        [self showAlertControllerWithMessage:Localized(@"OldPasswordIncorrect") handler:nil];
+        [Encapsulation showAlertControllerWithMessage:Localized(@"OldPasswordIncorrect") handler:nil];
     }
-}
-- (void)showAlertControllerWithMessage:(NSString *)message handler:(void(^)(UIAlertAction * action))handle
-{
-    UIAlertController * alertController = [UIAlertController alertControllerWithTitle:message message:nil preferredStyle:UIAlertControllerStyleAlert];
-    UIAlertAction * cancelAction = [UIAlertAction actionWithTitle:Localized(@"IGotIt") style:UIAlertActionStyleCancel handler:handle];
-    [alertController addAction:cancelAction];
-    [self presentViewController:alertController animated:YES completion:nil];
 }
 
 - (void)setViewWithTitle:(NSString *)title placeholder:(NSString *)placeholder index:(NSInteger)index
 {
-//    UIView * viewBg = [[UIView alloc] init];
     UILabel * header = [[UILabel alloc] init];
     [self.scrollView addSubview:header];
     header.attributedText = [Encapsulation attrTitle:title ifRequired:NO];

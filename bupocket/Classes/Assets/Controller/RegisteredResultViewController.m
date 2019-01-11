@@ -52,7 +52,7 @@ static NSString * const DetailListID = @"DetailListID";
     [self.listArray addObject:array];
     
     if (self.registeredResultState != RegisteredResultOvertime) {
-        NSArray * transactionArray = @[@{Localized(@"ActualTransactionCost"): [NSString stringAppendingBUWithStr:self.registeredModel.registeredFee]}, @{Localized(@"RegisteredAddress"): [AccountTool account].purseAccount}, @{Localized(@"Hash"): self.registeredModel.transactionHash}];
+        NSArray * transactionArray = @[@{Localized(@"ActualTransactionCost"): [NSString stringAppendingBUWithStr:self.registeredModel.registeredFee]}, @{Localized(@"RegisteredAddress"): [AccountTool account].walletAddress}, @{Localized(@"Hash"): self.registeredModel.transactionHash}];
         [self.listArray addObject:transactionArray];
     }
 }
@@ -141,6 +141,11 @@ static NSString * const DetailListID = @"DetailListID";
     cell.title.text = [[self.listArray[indexPath.section][indexPath.row] allKeys] firstObject];
     cell.infoTitle.text = [[self.listArray[indexPath.section][indexPath.row] allValues] firstObject];
     cell.selectionStyle = UITableViewCellSelectionStyleNone;
+    if ([cell.title.text isEqualToString:Localized(@"RegisteredAddress")] || [cell.title.text isEqualToString:Localized(@"Hash")]) {
+        cell.infoTitle.copyable = YES;
+    } else {
+        cell.infoTitle.copyable = NO;
+    }
     return cell;
 }
 - (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath

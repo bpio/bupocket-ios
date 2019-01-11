@@ -44,20 +44,11 @@ static NSString * const WalletManagementCellID = @"WalletManagementCellID";
     NSString * walletName = [[AccountTool account] walletName] == nil ? @"Wallet-1" : [[AccountTool account] walletName];
     NSDictionary * currentIdentity = @{
                                        @"walletName": walletName,
-                                       @"walletAddress": [[AccountTool account] purseAccount],
-                                       @"walletKeyStore": [[AccountTool account] purseKey]
+                                       @"walletAddress": [[AccountTool account] walletAddress],
+                                       @"walletKeyStore": [[AccountTool account] walletKeyStore]
                                        };
     self.currentIdentityModel = [WalletModel mj_objectWithKeyValues:currentIdentity];
-    self.listArray = [WalletModel mj_objectArrayWithKeyValuesArray: @[@{
-                                                                          @"walletName": @"Wallet-2",
-                                                                          @"walletAddress": @"walletAddress-2",
-                                                                          @"walletKeyStore": [[AccountTool account] purseKey]
-                                                                          },
-                                                                      @{
-                                                                          @"walletName": @"Wallet-3",
-                                                                          @"walletAddress": @"walletAddress-3",
-                                                                          @"walletKeyStore": [[AccountTool account] purseKey]
-                                                                          }]];
+    self.listArray = [NSMutableArray arrayWithArray:[[WalletTool shareTool] walletArray]];
     [self.tableView reloadData];
 }
 - (void)setupView
@@ -94,12 +85,16 @@ static NSString * const WalletManagementCellID = @"WalletManagementCellID";
 }
 - (CGFloat)tableView:(UITableView *)tableView heightForRowAtIndexPath:(NSIndexPath *)indexPath
 {
-    return ScreenScale(95);
+    return ScreenScale(100);
 }
 - (CGFloat)tableView:(UITableView *)tableView heightForFooterInSection:(NSInteger)section
 {
     if (section == 0) {
-        return MAIN_HEIGHT;
+        if (self.listArray.count == 0) {
+            return ScreenScale(115);
+        } else {
+            return MAIN_HEIGHT;
+        }
     } else if (section == self.listArray.count) {
         return SafeAreaBottomH + Margin_10;
     } else {
@@ -121,6 +116,7 @@ static NSString * const WalletManagementCellID = @"WalletManagementCellID";
             importBtn.layer.masksToBounds = YES;
             importBtn.clipsToBounds = YES;
             importBtn.layer.cornerRadius = MAIN_CORNER;
+            [importBtn addTarget:self action:@selector(importedAction) forControlEvents:UIControlEventTouchUpInside];
             [importBtn mas_makeConstraints:^(MASConstraintMaker *make) {
                 make.top.equalTo(titleBtn.mas_bottom).offset(Margin_25);
                 make.centerX.equalTo(importBg);
@@ -173,6 +169,8 @@ static NSString * const WalletManagementCellID = @"WalletManagementCellID";
     cell.manageClick = ^{
         ExportViewController * VC = [[ExportViewController alloc] init];
         VC.walletModel = weakCell.walletModel;
+        VC.walletArray = self.listArray;
+        VC.index = indexPath.row;
         [self.navigationController pushViewController:VC animated:YES];
     };
     return cell;

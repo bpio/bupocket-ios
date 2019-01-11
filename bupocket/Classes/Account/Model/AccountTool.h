@@ -17,7 +17,7 @@ NS_ASSUME_NONNULL_BEGIN
 
 + (AccountModel *)account;
 
-+ (BOOL)clearCache;
++ (void)clearCache;
 
 @end
 

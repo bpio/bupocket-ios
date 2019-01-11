@@ -9,7 +9,6 @@
 #import "HTTPManager.h"
 #import "HttpTool.h"
 #import "AtpProperty.h"
-#import "WalletModel.h"
 
 @implementation HTTPManager
 
@@ -113,7 +112,7 @@ static int64_t const gasPrice = 1000;
                                  failure:(void (^)(NSError *error))failure
 {
     NSString * url = SERVER_COMBINE_API(_webServerDomain, Assets_Search);
-    NSDictionary * parmenters = @{@"address": [[AccountTool account] purseAccount],
+    NSDictionary * parmenters = @{@"address": [[AccountTool account] walletAddress],
                                   @"assetCode" : assetCode,
                                   @"supportFuzzy" : @"true",
                                   @"startPage" : @(pageIndex),
@@ -265,7 +264,7 @@ static int64_t const gasPrice = 1000;
     });
     AccountService *accountService = [[[SDK sharedInstance] setUrl:_bumoNodeUrl] getAccountService];
     AccountGetBalanceRequest * request = [AccountGetBalanceRequest new];
-    [request setAddress : [AccountTool account].purseAccount];
+    [request setAddress : [AccountTool account].walletAddress];
     AccountGetBalanceResponse *response = [accountService getBalance : request];
     if (response.errorCode == Success_Code) {
         dispatch_async(dispatch_get_main_queue(), ^{
@@ -311,7 +310,7 @@ static int64_t const gasPrice = 1000;
     __block NSDecimalNumber * amount = 0;
     AccountService *accountService = [[[SDK sharedInstance] setUrl:_bumoNodeUrl] getAccountService];
     AccountGetBalanceRequest * request = [AccountGetBalanceRequest new];
-    [request setAddress : [AccountTool account].purseAccount];
+    [request setAddress : [AccountTool account].walletAddress];
     AccountGetBalanceResponse *response = [accountService getBalance : request];
     if (response.errorCode == Success_Code) {
         dispatch_async(dispatch_get_main_queue(), ^{
@@ -399,11 +398,11 @@ static int64_t const gasPrice = 1000;
         NSString * randomKey = [NSString generateKeyStoreWithPW:password randomKey:random];
         // private key -> address
         NSString * identityAddress = [Keypair getEncAddress : [Keypair getEncPublicKey: [privateKeys firstObject]]];
-        NSString * identityKey = [NSString generateKeyStoreWithPW:password key:[privateKeys firstObject]];
-        NSString * purseAddress = [Keypair getEncAddress : [Keypair getEncPublicKey: [privateKeys lastObject]]];
-        NSString * purseKey = [NSString generateKeyStoreWithPW:password key:[privateKeys lastObject]];
+        NSString * identityKeyStore = [NSString generateKeyStoreWithPW:password key:[privateKeys firstObject]];
+        NSString * walletAddress = [Keypair getEncAddress : [Keypair getEncPublicKey: [privateKeys lastObject]]];
+        NSString * walletKeyStore = [NSString generateKeyStoreWithPW:password key:[privateKeys lastObject]];
         [[NSOperationQueue mainQueue] addOperationWithBlock:^{
-            if (randomKey == nil || identityKey == nil || purseKey == nil) {
+            if (randomKey == nil || identityKeyStore == nil || walletKeyStore == nil) {
                 [MBProgressHUD hideHUD];
                 [MBProgressHUD showTipMessageInWindow:Localized(@"CreateIdentityFailure")];
             } else {
@@ -413,13 +412,13 @@ static int64_t const gasPrice = 1000;
                     AccountModel * account = [[AccountModel alloc] init];
                     account.identityName = identityName;
                     account.randomNumber = randomKey;
-                    account.identityAccount = identityAddress;
-                    account.purseAccount = purseAddress;
-                    account.identityKey = identityKey;
-                    account.purseKey = purseKey;
+                    account.identityAddress = identityAddress;
+                    account.walletAddress = walletAddress;
+                    account.identityKeyStore = identityKeyStore;
+                    account.walletKeyStore = walletKeyStore;
                     [AccountTool save:account];
                     NSUserDefaults * defaults = [NSUserDefaults standardUserDefaults];
-                    [defaults setObject:purseAddress forKey:Current_WalletAddress];
+                    [defaults setObject:walletAddress forKey:Current_WalletAddress];
                     [defaults synchronize];
                     success(words);
                 }
@@ -448,35 +447,48 @@ static int64_t const gasPrice = 1000;
         [[NSOperationQueue mainQueue] addOperationWithBlock:^{
             if (walletKeyStore == nil) {
                 [MBProgressHUD hideHUD];
-                [MBProgressHUD showTipMessageInWindow:Localized(@"ImportedWalletFailure")];
+                [MBProgressHUD showTipMessageInWindow:Localized(@"FailureToImportWallet")];
             } else {
                 [MBProgressHUD hideHUD];
                 if(success != nil)
                 {
-                    success(walletAddress);
-                    NSUserDefaults * defaults = [NSUserDefaults standardUserDefaults];
-                    NSArray * importedWalletArray = [defaults objectForKey:imported_Wallet];
-                    for (WalletModel * walletModel in importedWalletArray) {
-                        if ([walletModel.walletAddress isEqualToString:walletAddress]) {
-                            [MBProgressHUD showTipMessageInWindow:Localized(@"该钱包已导入")];
-                        } else {
-                            NSMutableArray * importedWallet = [NSMutableArray array];
-                            [importedWallet addObjectsFromArray:importedWalletArray];
-                            WalletModel * walletModel = [[WalletModel alloc] init];
-                            walletModel.walletName = walletName;
-                            walletModel.walletAddress = walletAddress;
-                            walletModel.walletKeyStore = walletKeyStore;
-                            [importedWallet addObject:walletModel];
-                            [defaults setObject:importedWallet forKey:imported_Wallet];
-                            [defaults synchronize];
-                        }
+                    BOOL ifImportSuccess = [self importWalletDataWalletName:walletName walletAddress:walletAddress walletKeyStore:walletKeyStore];
+                    if (ifImportSuccess) {
+                        success(walletAddress);
                     }
                 }
             }
         }];
     }];
 }
-
+- (BOOL)importWalletDataWalletName:(NSString *)walletName
+                     walletAddress:(NSString *)walletAddress
+                    walletKeyStore:(NSString *)walletKeyStore
+{
+    BOOL imported = NO;
+    if ([walletAddress isEqualToString:[[AccountTool account] walletAddress]]) {
+        [MBProgressHUD showTipMessageInWindow:Localized(@"WalletDuplicateImport")];
+        imported = YES;
+    }
+    NSArray * importedWalletArray = [[WalletTool shareTool] walletArray];
+    for (WalletModel * walletModel in importedWalletArray) {
+        if ([walletModel.walletAddress isEqualToString:walletAddress]) {
+            [MBProgressHUD showTipMessageInWindow:Localized(@"WalletDuplicateImport")];
+            imported = YES;
+        }
+    }
+    if (imported == NO) {
+        NSMutableArray * importedWallet = [NSMutableArray array];
+        [importedWallet addObjectsFromArray:importedWalletArray];
+        WalletModel * walletModel = [[WalletModel alloc] init];
+        walletModel.walletName = walletName;
+        walletModel.walletAddress = walletAddress;
+        walletModel.walletKeyStore = walletKeyStore;
+        [importedWallet addObject:walletModel];
+        [[WalletTool shareTool] save:importedWallet];
+    }
+    return !imported;
+}
 // Transfer accounts
 - (void)setTransferDataWithTokenType:(NSInteger)tokenType
                             password:(NSString *)password
@@ -491,8 +503,8 @@ static int64_t const gasPrice = 1000;
                              failure:(void (^)(TransactionResultModel * resultModel))failure
 {
     // Build BUSendOperation
-    NSString * sourceAddress = [AccountTool account].purseAccount;
-    NSString * privateKey = [NSString decipherKeyStoreWithPW:password keyStoreValueStr:[AccountTool account].purseKey];
+    NSString * sourceAddress = [AccountTool account].walletAddress;
+    NSString * privateKey = [NSString decipherKeyStoreWithPW:password keyStoreValueStr:[AccountTool account].walletKeyStore];
     if ([Tools isEmpty:privateKey]) {
         [MBProgressHUD showTipMessageInWindow:Localized(@"PasswordIsIncorrect")];
         return;
@@ -532,7 +544,7 @@ static int64_t const gasPrice = 1000;
                               success:(void (^)(TransactionResultModel * resultModel))success
                               failure:(void (^)(TransactionResultModel * resultModel))failure
 {
-    NSString * sourceAddress = [AccountTool account].purseAccount;
+    NSString * sourceAddress = [AccountTool account].walletAddress;
     NSString *key = [NSString stringWithFormat: @"asset_property_%@", registeredModel.code];
     AtpProperty * atpProperty = [[AtpProperty alloc] init];
     int64_t total = [[[NSDecimalNumber decimalNumberWithString:registeredModel.amount] decimalNumberByMultiplyingByPowerOf10: registeredModel.decimals] longLongValue];
@@ -548,7 +560,7 @@ static int64_t const gasPrice = 1000;
     [operation setSourceAddress : sourceAddress];
     [operation setKey : key];
     [operation setValue : value];
-    NSString * privateKey = [NSString decipherKeyStoreWithPW:password keyStoreValueStr:[AccountTool account].purseKey];
+    NSString * privateKey = [NSString decipherKeyStoreWithPW:password keyStoreValueStr:[AccountTool account].walletKeyStore];
     if ([Tools isEmpty:privateKey]) {
         [MBProgressHUD showTipMessageInWindow:Localized(@"PasswordIsIncorrect")];
         return;
@@ -570,14 +582,14 @@ static int64_t const gasPrice = 1000;
                               success:(void (^)(TransactionResultModel * resultModel))success
                               failure:(void (^)(TransactionResultModel * resultModel))failure
 {
-    NSString * sourceAddress = [AccountTool account].purseAccount;
+    NSString * sourceAddress = [AccountTool account].walletAddress;
     // Asset amount
 //    int64_t amount = [assetAmount longLongValue] * powl(10, decimals);
     AssetIssueOperation *operation = [AssetIssueOperation new];
     [operation setSourceAddress: sourceAddress];
     [operation setCode: assetCode];
     [operation setAmount: assetAmount];
-    NSString * privateKey = [NSString decipherKeyStoreWithPW:password keyStoreValueStr:[AccountTool account].purseKey];
+    NSString * privateKey = [NSString decipherKeyStoreWithPW:password keyStoreValueStr:[AccountTool account].walletKeyStore];
     if ([Tools isEmpty:privateKey]) {
         [MBProgressHUD showTipMessageInWindow:Localized(@"PasswordIsIncorrect")];
         return;

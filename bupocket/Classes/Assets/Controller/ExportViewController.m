@@ -12,7 +12,6 @@
 #import "ModifyAlertView.h"
 #import "ExportKeystoreViewController.h"
 #import "ExportPrivateKeyViewController.h"
-#import "PurseCipherAlertView.h"
 
 @interface ExportViewController ()<UITableViewDelegate, UITableViewDataSource>
 
@@ -25,6 +24,14 @@ static NSString * const WalletCellID = @"WalletCellID";
 static NSString * const ExportCellID = @"ExportCellID";
 
 @implementation ExportViewController
+
+- (NSMutableArray *)walletArray
+{
+    if (!_walletArray) {
+        _walletArray = [NSMutableArray array];
+    }
+    return _walletArray;
+}
 
 - (void)viewDidLoad {
     [super viewDidLoad];
@@ -45,7 +52,7 @@ static NSString * const ExportCellID = @"ExportCellID";
 - (CGFloat)tableView:(UITableView *)tableView heightForRowAtIndexPath:(NSIndexPath *)indexPath
 {
     if (indexPath.section == 0) {
-        return ScreenScale(95);
+        return ScreenScale(100);
     } else {
         return ScreenScale(60);
     }
@@ -56,7 +63,7 @@ static NSString * const ExportCellID = @"ExportCellID";
 }
 - (CGFloat)tableView:(UITableView *)tableView heightForFooterInSection:(NSInteger)section
 {
-    if (section == 0 || [self.walletModel.walletAddress isEqualToString:[[AccountTool account] purseAccount]]) {
+    if (section == 0 || [self.walletModel.walletAddress isEqualToString:[[AccountTool account] walletAddress]]) {
         return CGFLOAT_MIN;
     } else {
         return ScreenScale(200);
@@ -64,7 +71,7 @@ static NSString * const ExportCellID = @"ExportCellID";
 }
 - (UIView *)tableView:(UITableView *)tableView viewForFooterInSection:(NSInteger)section
 {
-    if (section == 0 || [self.walletModel.walletAddress isEqualToString:[[AccountTool account] purseAccount]]) {
+    if (section == 0 || [self.walletModel.walletAddress isEqualToString:[[AccountTool account] walletAddress]]) {
         return [[UIView alloc] init];
     } else {
         UIView * footerView = [[UIView alloc] initWithFrame:CGRectMake(0, 0, DEVICE_WIDTH, ScreenScale(200))];
@@ -83,6 +90,15 @@ static NSString * const ExportCellID = @"ExportCellID";
 }
 - (void)deleteAction
 {
+    PasswordAlertView * alertView = [[PasswordAlertView alloc] initWithPrompt:Localized(@"WalletPWPrompt") isAutomaticClosing:YES confrimBolck:^(NSString * _Nonnull password, NSArray * _Nonnull words) {
+        [self.walletArray removeObject:self.walletModel];
+        [[WalletTool shareTool] save:self.walletArray];
+        [Encapsulation showAlertControllerWithMessage:Localized(@"DeleteWalletSuccessfully") handler:^(UIAlertAction *action) {
+            [self.navigationController popViewControllerAnimated:YES];
+        }];
+    } cancelBlock:^{
+    }];
+    [alertView showInWindowWithMode:CustomAnimationModeAlert inView:nil bgAlpha:0.2 needEffectView:NO];
 }
 - (NSInteger)numberOfSectionsInTableView:(UITableView *)tableView
 {
@@ -125,18 +141,22 @@ static NSString * const ExportCellID = @"ExportCellID";
         WalletManagementViewCell * cell = [tableView cellForRowAtIndexPath:walletIndex];
         ModifyAlertView * alertView = [[ModifyAlertView alloc] initWithText:self.walletModel.walletName confrimBolck:^(NSString * _Nonnull text) {
             cell.walletName.text = text;
-            if ([self.walletModel.walletAddress isEqualToString:[[AccountTool account] purseAccount]]) {
+            if ([self.walletModel.walletAddress isEqualToString:[[AccountTool account] walletAddress]]) {
                 AccountModel * account = [[AccountModel alloc] init];
                 account = [AccountTool account];
                 account.walletName = text;
                 [AccountTool save:account];
+            } else {
+                self.walletModel.walletName = text;
+                [self.walletArray replaceObjectAtIndex:self.index withObject:self.walletModel];
+                [[WalletTool shareTool] save:self.walletArray];
             }
         } cancelBlock:^{
             
         }];
         [alertView showInWindowWithMode:CustomAnimationModeAlert inView:nil bgAlpha:0.2 needEffectView:NO];        
     } else {
-        PurseCipherAlertView * alertView = [[PurseCipherAlertView alloc] initWithPrompt:Localized(@"WalletPWPrompt") confrimBolck:^(NSString * _Nonnull password, NSArray * _Nonnull words) {
+        PasswordAlertView * alertView = [[PasswordAlertView alloc] initWithPrompt:Localized(@"WalletPWPrompt") isAutomaticClosing:YES confrimBolck:^(NSString * _Nonnull password, NSArray * _Nonnull words) {
             if (indexPath.row == 0) {
                 ExportKeystoreViewController * VC = [[ExportKeystoreViewController alloc] init];
                 VC.walletModel = self.walletModel;

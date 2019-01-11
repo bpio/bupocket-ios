@@ -22,18 +22,21 @@
     return [NSKeyedUnarchiver unarchiveObjectWithFile:AccountFilePath];
 }
 
-+ (BOOL)clearCache
++ (void)clearCache
 {
-    NSArray *subPathArr = [[NSFileManager defaultManager] contentsOfDirectoryAtPath:AccountFilePath error:nil];
-    NSString *filePath = nil;
-    NSError *error = nil;
-    for (NSString *subPath in subPathArr) {
-        filePath = [AccountFilePath stringByAppendingPathComponent:subPath];
-        [[NSFileManager defaultManager] removeItemAtPath:filePath error:&error];
-        if (error) {
-            return NO;
-        }
+    if ([[NSFileManager defaultManager] isDeletableFileAtPath:AccountFilePath]) {
+        [[NSFileManager defaultManager] removeItemAtPath:AccountFilePath error:nil];
     }
-    return YES;
+//    NSArray *subPathArr = [[NSFileManager defaultManager] contentsOfDirectoryAtPath:AccountFilePath error:nil];
+//    NSString *filePath = nil;
+//    NSError *error = nil;
+//    for (NSString *subPath in subPathArr) {
+//        filePath = [AccountFilePath stringByAppendingPathComponent:subPath];
+//        [[NSFileManager defaultManager] removeItemAtPath:filePath error:&error];
+//        if (error) {
+//            return NO;
+//        }
+//    }
+//    return YES;
 }
 @end

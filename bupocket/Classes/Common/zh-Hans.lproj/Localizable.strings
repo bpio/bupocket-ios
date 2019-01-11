@@ -104,7 +104,7 @@
 "SafetyTips" = "您的钱包助记词尚未备份，为防止忘记密码、删除App或丢失手机等情况导致资产损失，请务必备份助记词";
 "ImmediateBackup" = "立即备份";
 // 钱包地址
-"PurseAddressTitle" = "钱包地址";
+"WalletAddressTitle" = "钱包地址";
 "DuplicateWalletAddress" = "复制钱包地址";
 "WalletAddressQRCode" = "钱包地址二维码";
 // 添加资产
@@ -257,7 +257,7 @@
 "ImmediateImport" = "立即导入";
 "CurrentUse" = "当前使用";
 "Manage" = "管理";
-
+// 导入钱包
 "ImportWallet" = "导入钱包";
 "Mnemonics" = "助记词";
 "Keystore" = "Keystore";
@@ -277,22 +277,32 @@
 "ImportPrivateKeyPrompt" = "粘贴私钥（Private Key）字符串";
 "PleaseEnterPrivateKey" = "私钥（Private key）字符串";
 "UnderstandingPrivateKey" = "了解私钥字符串";
-
-"ImportedWalletFailure" = "导入钱包失败";
-
+"ImportWalletSuccessfully" = "导入钱包成功";
+"FailureToImportWallet" = "导入钱包失败";
+"WalletDuplicateImport" = "该钱包已导入";
+"KeyStoreIsIncorrect" = "KeyStore输入有误，请重新输入";
+"PrivateKeyIsIncorrect" = "私钥输入有误，请重新输入";
+// 管理
 "ExportKeystore" = "导出Keystore";
 "ExportPrivateKey" = "导出私钥";
 "DeleteWallet" = "删除钱包";
 "ModifyWalletName" = "更改钱包名称";
 "WalletPWPrompt" = "请填写钱包密码";
-
+"DeleteWalletSuccessfully" = "删除钱包成功";
+// 导出Keystore
 "CopyKeystorePrompt" = "请复制keystore文件到安全的地方保存";
 "CopyKeystore" = "复制Keystore";
-
+// 导出私钥
 "CopyPrivateKeyPrompt" = "为了保证您的账户资产安全，请注意周围是否有他人在浏览您的隐私信息！";
 "WalletAddress" = "钱包地址";
 "WalletPrivateKeys" = "钱包私钥";
 "CopyPrivateKeys" = "复制私钥";
+// 数据加固
+"IdentityPWPrompt" = "请填写身份密码";
+"SafetyReinforcementTitle" = "私钥存储安全加固";
+"SafetyReinforcementPrompt" = "为了提升钱包私钥存储安全等级，需要对私钥存储进行安全加固";
+"StartReinforcement" = "开始加固";
+"SuccessfulReinforcement" = "恭喜您已完成私钥存储安全加固操作";
 
 // 错误信息
 "LoadFailure" = "加载失败";

@@ -89,6 +89,11 @@ static NSString * const TransferResultsCellID = @"DetailListCellID";
         cell.infoTitle.text = self.listArray[1][indexPath.row];
     }
     cell.selectionStyle = UITableViewCellSelectionStyleNone;
+    if ([cell.title.text isEqualToString:Localized(@"reciprocalAccount")]) {
+        cell.infoTitle.copyable = YES;
+    } else {
+        cell.infoTitle.copyable = NO;
+    }
     return cell;
 }
 - (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath

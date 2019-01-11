@@ -27,7 +27,7 @@
 // Current Wallet Address
 #define Current_WalletAddress @"CurrentWalletAddress"
 // imported Wallet
-#define imported_Wallet @"importedWallet"
+//#define imported_Wallet @"importedWallet"
 // Network request timeout limit time
 #define Timeout_Interval 30.0
 #define Assets_HomePage_CacheData @"AssetsHomePageCacheData"

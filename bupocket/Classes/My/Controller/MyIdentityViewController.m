@@ -8,7 +8,6 @@
 
 #import "MyIdentityViewController.h"
 #import "IdentityViewController.h"
-#import "PurseCipherAlertView.h"
 #import "BackupMnemonicsViewController.h"
 #import "ClearCacheTool.h"
 #import "YBPopupMenu.h"
@@ -72,7 +71,7 @@
     UILabel * IdentityID = [[UILabel alloc] init];
     IdentityID.font = IDName.font;
     IdentityID.textColor = IDName.textColor;
-    IdentityID.text = [NSString stringEllipsisWithStr:[AccountTool account].identityAccount];
+    IdentityID.text = [NSString stringEllipsisWithStr:[AccountTool account].identityAddress];
     IdentityID.numberOfLines = 0;
     IdentityID.textAlignment = NSTextAlignmentRight;
     [myIdentityBg addSubview:IdentityID];
@@ -108,7 +107,7 @@
 }
 - (void)backupIdentityAction
 {
-    PurseCipherAlertView * alertView = [[PurseCipherAlertView alloc] initWithPrompt:Localized(@"IdentityCipherPrompt") confrimBolck:^(NSString * _Nonnull password, NSArray * _Nonnull words) {
+    PasswordAlertView * alertView = [[PasswordAlertView alloc] initWithPrompt:Localized(@"IdentityCipherPrompt") isAutomaticClosing:YES confrimBolck:^(NSString * _Nonnull password, NSArray * _Nonnull words) {
         BackupMnemonicsViewController * VC = [[BackupMnemonicsViewController alloc] init];
         VC.mnemonicArray = words;
         [self.navigationController pushViewController:VC animated:YES];
@@ -120,31 +119,26 @@
 }
 - (void)exitIDAction
 {
-    UIAlertController * alertController = [Encapsulation alertControllerWithCancelTitle:Localized(@"Cancel") title:Localized(@"ExitCurrentIdentity") message:Localized(@"ExitCurrentIdentityPrompt")];
-    UIAlertAction * okAction = [UIAlertAction actionWithTitle:Localized(@"Confirm") style:UIAlertActionStyleDefault handler:^(UIAlertAction * _Nonnull action) {
-        PurseCipherAlertView * alertView = [[PurseCipherAlertView alloc] initWithPrompt:Localized(@"IdentityCipherWarning") confrimBolck:^(NSString * _Nonnull password, NSArray * _Nonnull words) {
+    [Encapsulation showAlertControllerWithTitle:Localized(@"ExitCurrentIdentity") message:Localized(@"ExitCurrentIdentityPrompt") cancelHandler:^(UIAlertAction *action) {
+        
+    } confirmHandler:^(UIAlertAction *action) {
+        PasswordAlertView * alertView = [[PasswordAlertView alloc] initWithPrompt:Localized(@"IdentityCipherWarning") isAutomaticClosing:YES confrimBolck:^(NSString * _Nonnull password, NSArray * _Nonnull words) {
             [self exitIDDataWithPassword:password];
         } cancelBlock:^{
             
         }];
         [alertView showInWindowWithMode:CustomAnimationModeAlert inView:nil bgAlpha:0.2 needEffectView:NO];
     }];
-    [alertController addAction:okAction];
-    [self presentViewController:alertController animated:YES completion:nil];
 }
 - (void)exitIDDataWithPassword:(NSString *)password
 {
     [MBProgressHUD showActivityMessageInWindow:Localized(@"Loading")];
     NSOperationQueue * queue = [[NSOperationQueue alloc] init];
     [queue addOperationWithBlock:^{
-        NSString * privateKey = [NSString decipherKeyStoreWithPW:password keyStoreValueStr:[AccountTool account].purseKey];
-        if ([Tools isEmpty:privateKey]) {
-            [MBProgressHUD hideHUD];
-            [MBProgressHUD showTipMessageInWindow:Localized(@"PasswordIsIncorrect")];
-            return;
-        }
         [ClearCacheTool cleanCache:^{
             [ClearCacheTool cleanUserDefaults];
+            [AccountTool clearCache];
+            [[WalletTool shareTool] clearCache];
 //            [[LanguageManager shareInstance] setDefaultLocale];
             [[HTTPManager shareManager] initNetWork];
             // Minimum Asset Limitation

@@ -10,6 +10,7 @@
 #import "TextFieldViewCell.h"
 #import "PlaceholderTextView.h"
 #import "WalletModel.h"
+#import "ExplainInfoViewController.h"
 
 @interface ImportWalletModeViewController ()<UITextViewDelegate, UITextFieldDelegate, UITableViewDelegate, UITableViewDataSource>
 
@@ -179,11 +180,47 @@ static NSString * const TextFieldPWCellID = @"TextFieldPWCellID";
 }
 - (void)importAction
 {
-    NSArray * words = [_importText.text componentsSeparatedByString:@" "];
-    if (words.count != NumberOf_MnemonicWords) {
-        [MBProgressHUD showTipMessageInWindow:Localized(@"MnemonicIsIncorrect")];
-        return;
+    if ([self.title isEqualToString:Localized(@"Mnemonics")]) {
+        NSArray * words = [_importText.text componentsSeparatedByString:@" "];
+        if (words.count != NumberOf_MnemonicWords) {
+            [MBProgressHUD showTipMessageInWindow:Localized(@"MnemonicIsIncorrect")];
+            return;
+        }
+        [self textRegexJudgeIfConfirmPW:YES];
+        [self importMnemonics];
+    } else if ([self.title isEqualToString:Localized(@"Keystore")]) {
+        // walletKeyStore -> walletPrivateKey
+        NSString * walletPrivateKey = [NSString decipherKeyStoreWithPW:_walletPWText.text keyStoreValueStr:_importText.text];
+        if (!walletPrivateKey) {
+            [MBProgressHUD showTipMessageInWindow:Localized(@"KeyStoreIsIncorrect")];
+            return;
+        }
+        [self textRegexJudgeIfConfirmPW:NO];
+        [self importWalletDataWithWalletPrivateKey:walletPrivateKey walletKeyStore:_importText.text];
+    } else if ([self.title isEqualToString:Localized(@"PrivateKey")]) {
+        // walletPrivateKey -> walletKeyStore
+        NSString * walletKeyStore = [NSString generateKeyStoreWithPW:_walletPWText.text key:_importText.text];
+        if (!walletKeyStore) {
+            [MBProgressHUD showTipMessageInWindow:Localized(@"PrivateKeyIsIncorrect")];
+            return;
+        }
+        [self textRegexJudgeIfConfirmPW:YES];
+        [self importWalletDataWithWalletPrivateKey:_importText.text walletKeyStore:walletKeyStore];
     }
+}
+- (void)importWalletDataWithWalletPrivateKey:(NSString *)walletPrivateKey walletKeyStore:(NSString *)walletKeyStore
+{
+    // walletPrivateKey -> walletAddress
+    NSString * walletAddress = [Keypair getEncAddress : [Keypair getEncPublicKey: walletPrivateKey]];
+    BOOL ifImportSuccess = [[HTTPManager shareManager] importWalletDataWalletName:_walletNameText.text walletAddress:walletAddress walletKeyStore:walletKeyStore];
+    if (ifImportSuccess) {
+        [Encapsulation showAlertControllerWithMessage:Localized(@"ImportWalletSuccessfully") handler:^(UIAlertAction *action) {
+            [self.navigationController popViewControllerAnimated:YES];
+        }];
+    }
+}
+- (void)textRegexJudgeIfConfirmPW:(BOOL)ifConfirmPW
+{
     if ([RegexPatternTool validateUserName:_walletNameText.text] == NO) {
         [MBProgressHUD showTipMessageInWindow:Localized(@"WalletNameFormatIncorrect")];
         return;
@@ -192,33 +229,32 @@ static NSString * const TextFieldPWCellID = @"TextFieldPWCellID";
         [MBProgressHUD showTipMessageInWindow:Localized(@"CryptographicFormat")];
         return;
     }
-    if (![_walletPWText.text isEqualToString:_confirmPWText.text]) {
-        [MBProgressHUD showTipMessageInWindow:Localized(@"PasswordIsDifferent")];
-        return;
-    }
-    if ([self.title isEqualToString:Localized(@"Mnemonics")]) {
-        [self setData];
+    if (ifConfirmPW) {
+        if (![_walletPWText.text isEqualToString:_confirmPWText.text]) {
+            [MBProgressHUD showTipMessageInWindow:Localized(@"PasswordIsDifferent")];
+            return;
+        }
     }
 }
-- (void)setData
+- (void)importMnemonics
 {
     NSArray * words = [_importText.text componentsSeparatedByString:@" "];
     [[HTTPManager shareManager] setWalletDataWithMnemonics:words password:_walletPWText.text walletName:_walletNameText.text success:^(id responseObject) {
-        
+        if (responseObject) {
+            [Encapsulation showAlertControllerWithMessage:Localized(@"ImportWalletSuccessfully") handler:^(UIAlertAction *action) {
+                [self.navigationController popViewControllerAnimated:YES];
+            }];
+        }
     } failure:^(NSError *error) {
         
     }];
 }
 - (void)explainInfo:(UIButton *)button
 {
+    ExplainInfoViewController * VC = [[ExplainInfoViewController alloc] init];
+    VC.navigationItem.title = self.title;
+    [self.navigationController pushViewController:VC animated:YES];
 }
-//- (void)alertViewWithMessage:(NSString *)message
-//{
-//    UIAlertController * alertController = [UIAlertController alertControllerWithTitle:message message:nil preferredStyle:UIAlertControllerStyleAlert];
-//    UIAlertAction * cancelAction = [UIAlertAction actionWithTitle:Localized(@"IGotIt") style:UIAlertActionStyleCancel handler:nil];
-//    [alertController addAction:cancelAction];
-//    [self presentViewController:alertController animated:YES completion:nil];
-//}
 - (void)textViewDidChange:(UITextView *)textView
 {
     [self judgeHasText];

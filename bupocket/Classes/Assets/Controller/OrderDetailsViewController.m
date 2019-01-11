@@ -74,7 +74,7 @@ static NSInteger const TxInfoNormalCount = 6;
 }
 - (void)loadData
 {
-    [[HTTPManager shareManager] getOrderDetailsDataWithAddress:[[AccountTool account] purseAccount] optNo:self.listModel.optNo success:^(id responseObject) {
+    [[HTTPManager shareManager] getOrderDetailsDataWithAddress:[[AccountTool account] walletAddress] optNo:self.listModel.optNo success:^(id responseObject) {
         NSInteger code = [[responseObject objectForKey:@"errCode"] integerValue];
         if (code == Success_Code) {
             [self.tableView addSubview:self.headerView];
@@ -290,6 +290,11 @@ static NSInteger const TxInfoNormalCount = 6;
         cell.infoTitle.text = self.infoArray[indexPath.section][indexPath.row];
     }
     cell.selectionStyle = UITableViewCellSelectionStyleNone;
+    if ([cell.title.text isEqualToString:Localized(@"OriginatorAdress")] || [cell.title.text isEqualToString:Localized(@"RecipientAddress")] || [cell.title.text isEqualToString:@"TX Hash"] || [cell.title.text isEqualToString:@"Source Address"] || [cell.title.text isEqualToString:@"Dest Address"] || [cell.title.text isEqualToString:@"Block Hash"] || [cell.title.text isEqualToString:@"Prev Block Hash"]) {
+        cell.infoTitle.copyable = YES;
+    } else {
+        cell.infoTitle.copyable = NO;
+    }
     return cell;
 }
 - (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath

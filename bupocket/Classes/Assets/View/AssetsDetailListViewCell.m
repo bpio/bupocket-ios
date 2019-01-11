@@ -25,7 +25,7 @@ static NSString * const AssetsDetailCellID = @"AssetsDetailCellID";
 {
     if (self = [super initWithStyle:style reuseIdentifier:reuseIdentifier]) {
         [self.contentView addSubview:self.listImage];
-        [self.contentView addSubview:self.purseAddress];
+        [self.contentView addSubview:self.walletAddress];
         [self.contentView addSubview:self.date];
         [self.contentView addSubview:self.assets];
         [self.contentView addSubview:self.state];
@@ -40,20 +40,20 @@ static NSString * const AssetsDetailCellID = @"AssetsDetailCellID";
         make.centerY.equalTo(self.contentView);
         make.width.height.mas_equalTo(ScreenScale(36));
     }];
-    [self.purseAddress setContentCompressionResistancePriority:UILayoutPriorityRequired forAxis:UILayoutConstraintAxisHorizontal];
-    [self.purseAddress mas_makeConstraints:^(MASConstraintMaker *make) {
+    [self.walletAddress setContentCompressionResistancePriority:UILayoutPriorityRequired forAxis:UILayoutConstraintAxisHorizontal];
+    [self.walletAddress mas_makeConstraints:^(MASConstraintMaker *make) {
         make.left.equalTo(self.listImage.mas_right).offset(Margin_10);
         make.top.equalTo(self.listImage);
         make.right.mas_lessThanOrEqualTo(self.assets.mas_left).offset(-Margin_10);
     }];
     [self.date mas_makeConstraints:^(MASConstraintMaker *make) {
-        make.left.equalTo(self.purseAddress);
+        make.left.equalTo(self.walletAddress);
         make.bottom.equalTo(self.listImage);
     }];
     [self.assets mas_makeConstraints:^(MASConstraintMaker *make) {
-        make.centerY.equalTo(self.purseAddress);
+        make.centerY.equalTo(self.walletAddress);
         make.right.equalTo(self.contentView.mas_right).offset(-Margin_10);
-        make.left.mas_greaterThanOrEqualTo(self.purseAddress.mas_right).offset(Margin_10);
+        make.left.mas_greaterThanOrEqualTo(self.walletAddress.mas_right).offset(Margin_10);
     }];
     [self.state mas_makeConstraints:^(MASConstraintMaker *make) {
         make.centerY.equalTo(self.date);
@@ -77,7 +77,7 @@ static NSString * const AssetsDetailCellID = @"AssetsDetailCellID";
         self.listImage.image = [UIImage imageNamed:@"receivables"];
     }
     if (addressStr.length > 10) {
-        self.purseAddress.text = [NSString stringEllipsisWithStr:addressStr];
+        self.walletAddress.text = [NSString stringEllipsisWithStr:addressStr];
     }
     self.date.text = [DateTool getDateProcessingWithTimeStr:listModel.txTime];
     self.assets.text = [listModel.amount isEqualToString:@"~"] ? listModel.amount : [NSString stringWithFormat:@"%@%@ %@", outOrIn, listModel.amount, self.assetCode];
@@ -96,14 +96,14 @@ static NSString * const AssetsDetailCellID = @"AssetsDetailCellID";
     }
     return _listImage;
 }
-- (UILabel *)purseAddress
+- (UILabel *)walletAddress
 {
-    if (!_purseAddress) {
-        _purseAddress = [[UILabel alloc] init];
-        _purseAddress.font = TITLE_FONT;
-        _purseAddress.textColor = COLOR_6;
+    if (!_walletAddress) {
+        _walletAddress = [[UILabel alloc] init];
+        _walletAddress.font = TITLE_FONT;
+        _walletAddress.textColor = COLOR_6;
     }
-    return _purseAddress;
+    return _walletAddress;
 }
 - (UILabel *)date
 {

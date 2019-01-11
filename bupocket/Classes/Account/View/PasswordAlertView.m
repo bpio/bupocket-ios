@@ -1,30 +1,31 @@
 //
-//  PurseCipherAlertView.m
+//  PasswordAlertView.m
 //  bupocket
 //
-//  Created by bupocket on 2018/10/18.
-//  Copyright © 2018年 bupocket. All rights reserved.
+//  Created by huoss on 2019/1/11.
+//  Copyright © 2019年 bupocket. All rights reserved.
 //
 
-#import "PurseCipherAlertView.h"
+#import "PasswordAlertView.h"
 
-@interface PurseCipherAlertView()<UITextFieldDelegate>
+@interface PasswordAlertView()<UITextFieldDelegate>
 
 @property (nonatomic, strong) UITextField * PWTextField;
-@property (nonatomic, assign) PurseCipherType purseCipherType;
+@property (nonatomic, assign) PasswordType passwordType;
 @property (nonatomic, assign) CGFloat bgHeight;
 @property (nonatomic, strong) UILabel * promptLabel;
 
 @end
 
-@implementation PurseCipherAlertView
+@implementation PasswordAlertView
 
-- (instancetype)initWithPrompt:(NSString *)prompt confrimBolck:(void (^)(NSString * password, NSArray * words))confrimBlock cancelBlock:(void (^)(void))cancelBlock
+- (instancetype)initWithPrompt:(NSString *)prompt isAutomaticClosing:(BOOL)isAutomaticClosing confrimBolck:(void (^)(NSString * password, NSArray * words))confrimBlock cancelBlock:(void (^)(void))cancelBlock
 {
     self = [super init];
     if (self) {
         _sureBlock = confrimBlock;
         _cancleBlock = cancelBlock;
+        self.isAutomaticClosing = isAutomaticClosing;
         [self setupView];
         _promptLabel.text = prompt;
         if ([_promptLabel.text isEqualToString:Localized(@"IdentityCipherWarning")]) {
@@ -41,13 +42,14 @@
 - (void)setupView {
     self.backgroundColor = [UIColor whiteColor];
     self.layer.cornerRadius = MAIN_CORNER;
-    
-    UIButton * closeBtn = [UIButton createButtonWithNormalImage:@"close" SelectedImage:@"close" Target:self Selector:@selector(cancleBtnClick)];
-    [self addSubview:closeBtn];
-    [closeBtn mas_makeConstraints:^(MASConstraintMaker *make) {
-        make.top.right.equalTo(self);
-        make.size.mas_equalTo(CGSizeMake(MAIN_HEIGHT, MAIN_HEIGHT));
-    }];
+    if (self.isAutomaticClosing) {
+        UIButton * closeBtn = [UIButton createButtonWithNormalImage:@"close" SelectedImage:@"close" Target:self Selector:@selector(cancleBtnClick)];
+        [self addSubview:closeBtn];
+        [closeBtn mas_makeConstraints:^(MASConstraintMaker *make) {
+            make.top.right.equalTo(self);
+            make.size.mas_equalTo(CGSizeMake(MAIN_HEIGHT, MAIN_HEIGHT));
+        }];
+    }
     
     UILabel * title = [UILabel new];
     title.font = FONT(25);
@@ -107,7 +109,9 @@
     }
 }
 - (void)sureBtnClick {
-    [self hideView];
+    if (self.isAutomaticClosing) {
+        [self hideView];
+    }
     if ([RegexPatternTool validatePassword:self.PWTextField.text] == NO) {
         [MBProgressHUD showTipMessageInWindow:Localized(@"CryptographicFormat")];
     } else {
@@ -135,6 +139,8 @@
         }];
     }
 }
+
+
 /*
 // Only override drawRect: if you perform custom drawing.
 // An empty implementation adversely affects performance during animation.

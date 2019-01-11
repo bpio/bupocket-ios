@@ -9,7 +9,7 @@
 #import "AssetsViewController.h"
 #import "AssetsListViewCell.h"
 #import "MyIdentityViewController.h"
-#import "PurseAddressAlertView.h"
+#import "WalletAddressAlertView.h"
 #import "AssetsDetailViewController.h"
 #import "AssetsListModel.h"
 #import "AddAssetsViewController.h"
@@ -163,7 +163,11 @@ static UIButton * _noBackup;
         assetsArray = [NSArray array];
     }
     NSString * currentCurrency = [AssetCurrencyModel getAssetCurrencyTypeWithAssetCurrency:[[defaults objectForKey:Current_Currency] integerValue]];
-    [[HTTPManager shareManager] getAssetsDataWithAddress:[[AccountTool account] purseAccount] currencyType:currentCurrency tokenList:assetsArray success:^(id responseObject) {
+    NSString * walletAddress = [[AccountTool account] walletAddress];
+    if (!walletAddress) {
+        walletAddress = [[AccountTool account] purseAccount];
+    }
+    [[HTTPManager shareManager] getAssetsDataWithAddress:walletAddress currencyType:currentCurrency tokenList:assetsArray success:^(id responseObject) {
         NSInteger code = [[responseObject objectForKey:@"errCode"] integerValue];
         if (code == Success_Code) {
             [self setDataWithResponseObject:responseObject];
@@ -191,13 +195,17 @@ static UIButton * _noBackup;
 
 - (void)getAssetsStateData
 {
-    [[HTTPManager shareManager] getRegisteredORDistributionDataWithAssetCode:self.registeredModel.code issueAddress:[[AccountTool account] purseAccount] success:^(id responseObject) {
+    NSString * walletAddress = [[AccountTool account] walletAddress];
+    if (!walletAddress) {
+        walletAddress = [[AccountTool account] purseAccount];
+    }
+    [[HTTPManager shareManager] getRegisteredORDistributionDataWithAssetCode:self.registeredModel.code issueAddress:walletAddress success:^(id responseObject) {
         NSInteger code = [[responseObject objectForKey:@"errCode"] integerValue];
         self.distributionModel = [DistributionModel mj_objectWithKeyValues:[responseObject objectForKey:@"data"]];
         if ([self.scanDic[@"action"] isEqualToString:@"token.register"]) {
             if (code == Success_Code) {
                 // has been registered
-                [self alertViewWithMessage:Localized(@"RegisteredAsset")];
+                [Encapsulation showAlertControllerWithMessage:Localized(@"RegisteredAsset") handler:nil];
             } else {
                 // unregistered
                 RegisteredAssetsViewController * VC = [[RegisteredAssetsViewController alloc] init];
@@ -217,7 +225,7 @@ static UIButton * _noBackup;
                 }
             } else {
                 // unregistered
-                [self alertViewWithMessage:[NSString stringWithFormat:Localized(@"The code of your issued tokens:%@ has not been registered yet, so it cannot be issued"), self.registeredModel.code]];
+                [Encapsulation showAlertControllerWithMessage:[NSString stringWithFormat:Localized(@"The code of your issued tokens:%@ has not been registered yet, so it cannot be issued"), self.registeredModel.code] handler:nil];
             }
         }
     } failure:^(NSError *error) {
@@ -371,13 +379,6 @@ static UIButton * _noBackup;
     _headerImageView.frame = CGRectMake(0, 0, DEVICE_WIDTH, _headerBg.height - Margin_15);
     _headerViewBg.y = _headerBg.height - _headerViewH;
 }
-- (void)alertViewWithMessage:(NSString *)message
-{
-    UIAlertController * alertController = [UIAlertController alertControllerWithTitle:message message:nil preferredStyle:UIAlertControllerStyleAlert];
-    UIAlertAction * cancelAction = [UIAlertAction actionWithTitle:Localized(@"IGotIt") style:UIAlertActionStyleCancel handler:nil];
-    [alertController addAction:cancelAction];
-    [self presentViewController:alertController animated:YES completion:nil];
-}
 - (void)walletAction
 {
     WalletManagementViewController * VC = [[WalletManagementViewController alloc] init];
@@ -438,9 +439,9 @@ static UIButton * _noBackup;
 #pragma mark - QRCode
 - (void)QRCodeAction
 {
-    NSString * address = [AccountTool account].purseAccount;
-    PurseAddressAlertView * alertView = [[PurseAddressAlertView alloc] initWithPurseAddress:address confrimBolck:^{
-        [[UIPasteboard generalPasteboard] setString:address];
+    NSString * walletAddress = [[AccountTool account] walletAddress];
+    WalletAddressAlertView * alertView = [[WalletAddressAlertView alloc] initWithWalletAddress:[[AccountTool account] walletAddress] confrimBolck:^{
+        [[UIPasteboard generalPasteboard] setString:walletAddress];
         [MBProgressHUD showTipMessageInWindow:Localized(@"Replicating")];
     } cancelBlock:^{
         

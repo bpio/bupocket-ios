@@ -7,7 +7,6 @@
 //
 
 #import "DistributionOfAssetsViewController.h"
-#import "PurseCipherAlertView.h"
 #import "DistributionResultsViewController.h"
 @import SocketIO;
 
@@ -147,7 +146,9 @@ static NSString * const Issue_Leave = @"leaveRoomForApp";
     CGFloat isOverFlow = [self.distributionModel.totalSupply longLongValue] - [self.distributionModel.actualSupply longLongValue] - [self.registeredModel.amount longLongValue];
     if ([self.distributionModel.totalSupply longLongValue] != 0 && isOverFlow < 0) {
         // Your tokens issued exceed the total amount of tokens registered
-        [self alertViewWithMessage:Localized(@"CirculationExceeded")];
+        [Encapsulation showAlertControllerWithMessage:Localized(@"CirculationExceeded") handler:^(UIAlertAction *action) {
+            [self cancelAction];
+        }];
         return;
     }
     __weak typeof(self) weakSelf = self;
@@ -164,7 +165,7 @@ static NSString * const Issue_Leave = @"leaveRoomForApp";
                 return;
             }
             [weakSelf.socket emit:Issue_Processing with:@[]];
-            PurseCipherAlertView * alertView = [[PurseCipherAlertView alloc] initWithPrompt:Localized(@"DistributionWalletPWPrompt") confrimBolck:^(NSString * _Nonnull password, NSArray * _Nonnull words) {
+            PasswordAlertView * alertView = [[PasswordAlertView alloc] initWithPrompt:Localized(@"DistributionWalletPWPrompt") isAutomaticClosing:YES confrimBolck:^(NSString * _Nonnull password, NSArray * _Nonnull words) {
                 [weakSelf getIssueAssetDataWithPassword:password];
             } cancelBlock:^{
             }];
@@ -239,7 +240,7 @@ static NSString * const Issue_Leave = @"leaveRoomForApp";
                          
                          @"fee": self.distributionModel.distributionFee,
                          @"hash": self.distributionModel.transactionHash,
-                         @"address": [AccountTool account].purseAccount,
+                         @"address": [AccountTool account].walletAddress,
                          @"issueTotal": self.registeredModel.amount
                          }];
     if (self.distributionModel.tokenDescription) {
@@ -287,15 +288,6 @@ static NSString * const Issue_Leave = @"leaveRoomForApp";
         make.width.mas_lessThanOrEqualTo(DEVICE_WIDTH - ScreenScale(140));
     }];
     return assetInfo;
-}
-- (void)alertViewWithMessage:(NSString *)message
-{
-    UIAlertController * alertController = [UIAlertController alertControllerWithTitle:message message:nil preferredStyle:UIAlertControllerStyleAlert];
-    UIAlertAction * cancelAction = [UIAlertAction actionWithTitle:Localized(@"IGotIt") style:UIAlertActionStyleCancel handler:^(UIAlertAction * _Nonnull action) {
-        [self cancelAction];
-    }];
-    [alertController addAction:cancelAction];
-    [self presentViewController:alertController animated:YES completion:nil];
 }
 /*
 #pragma mark - Navigation

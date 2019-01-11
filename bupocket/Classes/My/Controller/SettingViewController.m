@@ -120,24 +120,14 @@ static NSString * const SettingCellID = @"SettingCellID";
 }
 - (void)switchChange:(UISwitch *)sender
 {
-    if (sender.on == YES) {
-        [self showAlertWithMessage:Localized(@"OpenedTestNetwork") handler:^(UIAlertAction *action) {
-            [[HTTPManager shareManager] SwitchedNetworkWithIsTest:YES];
-            [UIApplication sharedApplication].keyWindow.rootViewController = [[TabBarViewController alloc] init];
-        }];
-    } else {
-        [self showAlertWithMessage:Localized(@"ClosedTestNetwork") handler:^(UIAlertAction *action) {
-            [[HTTPManager shareManager] SwitchedNetworkWithIsTest:NO];
-            [UIApplication sharedApplication].keyWindow.rootViewController = [[TabBarViewController alloc] init];
-        }];
+    NSString * message = Localized(@"OpenedTestNetwork");
+    if (sender.on == NO) {
+        message = Localized(@"ClosedTestNetwork");
     }
-}
-- (void)showAlertWithMessage:(NSString *)message handler:(void (^)(UIAlertAction * action))handler
-{
-    UIAlertController * alertController = [UIAlertController alertControllerWithTitle:message message:nil preferredStyle:UIAlertControllerStyleAlert];
-    UIAlertAction * okAction = [UIAlertAction actionWithTitle:Localized(@"IGotIt") style:UIAlertActionStyleDefault handler:handler];
-    [alertController addAction:okAction];
-    [self presentViewController:alertController animated:YES completion:nil];
+    [Encapsulation showAlertControllerWithMessage:message handler:^(UIAlertAction *action) {
+        [[HTTPManager shareManager] SwitchedNetworkWithIsTest:sender.on];
+        [UIApplication sharedApplication].keyWindow.rootViewController = [[TabBarViewController alloc] init];
+    }];
 }
 /*
 #pragma mark - Navigation

@@ -1,19 +1,19 @@
 //
-//  PurseAddressAlertView.m
+//  WalletAddressAlertView.m
 //  bupocket
 //
-//  Created by bupocket on 2018/10/22.
-//  Copyright © 2018年 bupocket. All rights reserved.
+//  Created by huoss on 2019/1/11.
+//  Copyright © 2019年 bupocket. All rights reserved.
 //
 
-#import "PurseAddressAlertView.h"
+#import "WalletAddressAlertView.h"
 #import "HMScannerController.h"
 
-@interface PurseAddressAlertView()
+@interface WalletAddressAlertView()
 
 @property (nonatomic, strong) UIButton * closeBtn;
-@property (nonatomic, strong) UILabel * purseAddressTitle;
-@property (nonatomic, strong) UILabel * purseAddress;
+@property (nonatomic, strong) UILabel * walletAddressTitle;
+@property (nonatomic, strong) UILabel * walletAddress;
 @property (nonatomic, strong) UIButton * copyBtn;
 @property (nonatomic, strong) UIView * lineView;
 @property (nonatomic, strong) UIImageView * QRCodeImage;
@@ -21,17 +21,17 @@
 
 @end
 
-@implementation PurseAddressAlertView
+@implementation WalletAddressAlertView
 
-- (instancetype)initWithPurseAddress:(NSString *)purseAddress confrimBolck:(nonnull void (^)(void))confrimBlock cancelBlock:(nonnull void (^)(void))cancelBlock
+- (instancetype)initWithWalletAddress:(NSString *)walletAddress confrimBolck:(nonnull void (^)(void))confrimBlock cancelBlock:(nonnull void (^)(void))cancelBlock
 {
     self = [super init];
     if (self) {
         _sureBlock = confrimBlock;
         _cancleBlock = cancelBlock;
         [self setupView];
-        self.purseAddress.text = purseAddress;
-        [HMScannerController cardImageWithCardName:purseAddress avatar:nil scale:0.2 completion:^(UIImage *image) {
+        self.walletAddress.text = walletAddress;
+        [HMScannerController cardImageWithCardName:walletAddress avatar:nil scale:0.2 completion:^(UIImage *image) {
             self.QRCodeImage.image = image;
         }];
     }
@@ -43,9 +43,9 @@
     
     [self addSubview:self.closeBtn];
     
-    [self addSubview:self.purseAddressTitle];
+    [self addSubview:self.walletAddressTitle];
     
-    [self addSubview:self.purseAddress];
+    [self addSubview:self.walletAddress];
     
     [self addSubview:self.copyBtn];
     
@@ -72,25 +72,25 @@
         make.size.mas_equalTo(CGSizeMake(MAIN_HEIGHT, MAIN_HEIGHT));
     }];
     
-    [self.purseAddressTitle mas_makeConstraints:^(MASConstraintMaker *make) {
+    [self.walletAddressTitle mas_makeConstraints:^(MASConstraintMaker *make) {
         make.top.equalTo(self).offset(ScreenScale(42));
         make.left.equalTo(self).offset(Margin_20);
     }];
     
-    [self.purseAddress mas_makeConstraints:^(MASConstraintMaker *make) {
-        make.top.equalTo(self.purseAddressTitle.mas_bottom).offset(Margin_10);
+    [self.walletAddress mas_makeConstraints:^(MASConstraintMaker *make) {
+        make.top.equalTo(self.walletAddressTitle.mas_bottom).offset(Margin_10);
         make.left.equalTo(self.mas_left).offset(Margin_20);
         make.right.equalTo(self.mas_right).offset(-Margin_20);
     }];
     
     [self.copyBtn mas_makeConstraints:^(MASConstraintMaker *make) {
-        make.top.equalTo(self.purseAddressTitle.mas_bottom).offset(Margin_60);
+        make.top.equalTo(self.walletAddressTitle.mas_bottom).offset(Margin_60);
         make.centerX.equalTo(self);
         make.size.mas_equalTo(CGSizeMake(ScreenScale(220), MAIN_HEIGHT));
     }];
     
     [self.lineView mas_makeConstraints:^(MASConstraintMaker *make) {
-        make.left.right.equalTo(self.purseAddress);
+        make.left.right.equalTo(self.walletAddress);
         make.top.equalTo(self.copyBtn.mas_bottom).offset(Margin_20);
     }];
     
@@ -112,25 +112,25 @@
     }
     return _closeBtn;
 }
-- (UILabel *)purseAddressTitle
+- (UILabel *)walletAddressTitle
 {
-    if (!_purseAddressTitle) {
-        _purseAddressTitle = [[UILabel alloc] init];
-        _purseAddressTitle.textColor = COLOR_9;
-        _purseAddressTitle.font = FONT(16);
-        _purseAddressTitle.text = Localized(@"PurseAddressTitle");
+    if (!_walletAddressTitle) {
+        _walletAddressTitle = [[UILabel alloc] init];
+        _walletAddressTitle.textColor = COLOR_9;
+        _walletAddressTitle.font = FONT(16);
+        _walletAddressTitle.text = Localized(@"walletAddressTitle");
     }
-    return _purseAddressTitle;
+    return _walletAddressTitle;
 }
-- (UILabel *)purseAddress
+- (UILabel *)walletAddress
 {
-    if (!_purseAddress) {
-        _purseAddress = [[UILabel alloc] init];
-        _purseAddress.textColor = TITLE_COLOR;
-        _purseAddress.font = FONT(15);
-        _purseAddress.numberOfLines = 0;
+    if (!_walletAddress) {
+        _walletAddress = [[UILabel alloc] init];
+        _walletAddress.textColor = TITLE_COLOR;
+        _walletAddress.font = FONT(15);
+        _walletAddress.numberOfLines = 0;
     }
-    return _purseAddress;
+    return _walletAddress;
 }
 - (UIButton *)copyBtn
 {
@@ -178,6 +178,7 @@
         _sureBlock();
     }
 }
+
 
 /*
 // Only override drawRect: if you perform custom drawing.

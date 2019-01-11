@@ -10,4 +10,21 @@
 
 @implementation WalletModel
 
+- (instancetype)initWithCoder:(NSCoder *)aDecoder
+{
+    if (self = [super init]) {
+        self.walletName = [aDecoder decodeObjectForKey:@"walletName"];
+        self.walletAddress = [aDecoder decodeObjectForKey:@"walletAddress"];
+        self.walletKeyStore = [aDecoder decodeObjectForKey:@"walletKeyStore"];
+    }
+    return self;
+}
+
+- (void)encodeWithCoder:(NSCoder *)aCoder
+{
+    [aCoder encodeObject:self.walletName forKey:@"walletName"];
+    [aCoder encodeObject:self.walletAddress forKey:@"walletAddress"];
+    [aCoder encodeObject:self.walletKeyStore forKey:@"walletKeyStore"];
+}
+
 @end

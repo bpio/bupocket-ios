@@ -19,19 +19,20 @@ NS_ASSUME_NONNULL_BEGIN
 @property (nonatomic, strong) NSString * randomNumber;
 
 /** 身份账户地址 */
-@property (nonatomic, strong) NSString * identityAccount;
+@property (nonatomic, strong) NSString * identityAddress;
 
 /** 通过身份私钥和密码生成的keystore */
-@property (nonatomic, strong) NSString * identityKey;
+@property (nonatomic, strong) NSString * identityKeyStore;
 
 /** 钱包名 */
 @property (nonatomic, strong) NSString * walletName;
 
 /** 钱包账户地址 */
+@property (nonatomic, strong) NSString * walletAddress;
 @property (nonatomic, strong) NSString * purseAccount;
 
 /** 通过钱包私钥和密码生成的keystore */
-@property (nonatomic, strong) NSString * purseKey;
+@property (nonatomic, strong) NSString * walletKeyStore;
 
 @end
 
