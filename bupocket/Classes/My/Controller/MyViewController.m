@@ -95,7 +95,7 @@ static NSString * const ListCellID = @"ListCellID";
     UILabel * userName = [[UILabel alloc] init];
     userName.font = FONT_Bold(18);
     userName.textColor = TITLE_COLOR;
-    userName.text = [AccountTool account].identityName;
+    userName.text = [[AccountTool shareTool] account].identityName;
     [self.headerBg addSubview:userName];
     [userName mas_makeConstraints:^(MASConstraintMaker *make) {
         make.top.equalTo(userIcon.mas_bottom).offset(Margin_5);

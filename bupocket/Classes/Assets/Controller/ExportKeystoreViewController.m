@@ -39,7 +39,7 @@
     CGFloat promptH = [Encapsulation rectWithText:Localized(@"CopyKeystorePrompt") font:TITLE_FONT textWidth:DEVICE_WIDTH - Margin_40].size.height;
     [keystorePrompt mas_makeConstraints:^(MASConstraintMaker *make) {
         make.centerX.mas_equalTo(0);
-        make.top.mas_equalTo(ScreenScale(Margin_20));
+        make.top.mas_equalTo(Margin_20);
         make.height.mas_equalTo(ScreenScale(130) + promptH);
         make.width.mas_lessThanOrEqualTo(DEVICE_WIDTH - Margin_40);
     }];

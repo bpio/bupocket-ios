@@ -112,7 +112,7 @@ static int64_t const gasPrice = 1000;
                                  failure:(void (^)(NSError *error))failure
 {
     NSString * url = SERVER_COMBINE_API(_webServerDomain, Assets_Search);
-    NSDictionary * parmenters = @{@"address": [[AccountTool account] walletAddress],
+    NSDictionary * parmenters = @{@"address": [[[AccountTool shareTool] account] walletAddress],
                                   @"assetCode" : assetCode,
                                   @"supportFuzzy" : @"true",
                                   @"startPage" : @(pageIndex),
@@ -264,7 +264,7 @@ static int64_t const gasPrice = 1000;
     });
     AccountService *accountService = [[[SDK sharedInstance] setUrl:_bumoNodeUrl] getAccountService];
     AccountGetBalanceRequest * request = [AccountGetBalanceRequest new];
-    [request setAddress : [AccountTool account].walletAddress];
+    [request setAddress : CurrentWalletAddress];
     AccountGetBalanceResponse *response = [accountService getBalance : request];
     if (response.errorCode == Success_Code) {
         dispatch_async(dispatch_get_main_queue(), ^{
@@ -310,7 +310,7 @@ static int64_t const gasPrice = 1000;
     __block NSDecimalNumber * amount = 0;
     AccountService *accountService = [[[SDK sharedInstance] setUrl:_bumoNodeUrl] getAccountService];
     AccountGetBalanceRequest * request = [AccountGetBalanceRequest new];
-    [request setAddress : [AccountTool account].walletAddress];
+    [request setAddress : CurrentWalletAddress];
     AccountGetBalanceResponse *response = [accountService getBalance : request];
     if (response.errorCode == Success_Code) {
         dispatch_async(dispatch_get_main_queue(), ^{
@@ -416,7 +416,7 @@ static int64_t const gasPrice = 1000;
                     account.walletAddress = walletAddress;
                     account.identityKeyStore = identityKeyStore;
                     account.walletKeyStore = walletKeyStore;
-                    [AccountTool save:account];
+                    [[AccountTool shareTool] save:account];
                     NSUserDefaults * defaults = [NSUserDefaults standardUserDefaults];
                     [defaults setObject:walletAddress forKey:Current_WalletAddress];
                     [defaults synchronize];
@@ -466,7 +466,7 @@ static int64_t const gasPrice = 1000;
                     walletKeyStore:(NSString *)walletKeyStore
 {
     BOOL imported = NO;
-    if ([walletAddress isEqualToString:[[AccountTool account] walletAddress]]) {
+    if ([walletAddress isEqualToString:[[[AccountTool shareTool] account] walletAddress]]) {
         [MBProgressHUD showTipMessageInWindow:Localized(@"WalletDuplicateImport")];
         imported = YES;
     }
@@ -503,8 +503,8 @@ static int64_t const gasPrice = 1000;
                              failure:(void (^)(TransactionResultModel * resultModel))failure
 {
     // Build BUSendOperation
-    NSString * sourceAddress = [AccountTool account].walletAddress;
-    NSString * privateKey = [NSString decipherKeyStoreWithPW:password keyStoreValueStr:[AccountTool account].walletKeyStore];
+    NSString * sourceAddress = CurrentWalletAddress;
+    NSString * privateKey = [NSString decipherKeyStoreWithPW:password keyStoreValueStr:[[AccountTool shareTool] account].walletKeyStore];
     if ([Tools isEmpty:privateKey]) {
         [MBProgressHUD showTipMessageInWindow:Localized(@"PasswordIsIncorrect")];
         return;
@@ -544,7 +544,7 @@ static int64_t const gasPrice = 1000;
                               success:(void (^)(TransactionResultModel * resultModel))success
                               failure:(void (^)(TransactionResultModel * resultModel))failure
 {
-    NSString * sourceAddress = [AccountTool account].walletAddress;
+    NSString * sourceAddress = CurrentWalletAddress;
     NSString *key = [NSString stringWithFormat: @"asset_property_%@", registeredModel.code];
     AtpProperty * atpProperty = [[AtpProperty alloc] init];
     int64_t total = [[[NSDecimalNumber decimalNumberWithString:registeredModel.amount] decimalNumberByMultiplyingByPowerOf10: registeredModel.decimals] longLongValue];
@@ -560,7 +560,7 @@ static int64_t const gasPrice = 1000;
     [operation setSourceAddress : sourceAddress];
     [operation setKey : key];
     [operation setValue : value];
-    NSString * privateKey = [NSString decipherKeyStoreWithPW:password keyStoreValueStr:[AccountTool account].walletKeyStore];
+    NSString * privateKey = [NSString decipherKeyStoreWithPW:password keyStoreValueStr:[[AccountTool shareTool] account].walletKeyStore];
     if ([Tools isEmpty:privateKey]) {
         [MBProgressHUD showTipMessageInWindow:Localized(@"PasswordIsIncorrect")];
         return;
@@ -582,14 +582,14 @@ static int64_t const gasPrice = 1000;
                               success:(void (^)(TransactionResultModel * resultModel))success
                               failure:(void (^)(TransactionResultModel * resultModel))failure
 {
-    NSString * sourceAddress = [AccountTool account].walletAddress;
+    NSString * sourceAddress = CurrentWalletAddress;
     // Asset amount
 //    int64_t amount = [assetAmount longLongValue] * powl(10, decimals);
     AssetIssueOperation *operation = [AssetIssueOperation new];
     [operation setSourceAddress: sourceAddress];
     [operation setCode: assetCode];
     [operation setAmount: assetAmount];
-    NSString * privateKey = [NSString decipherKeyStoreWithPW:password keyStoreValueStr:[AccountTool account].walletKeyStore];
+    NSString * privateKey = [NSString decipherKeyStoreWithPW:password keyStoreValueStr:[[AccountTool shareTool] account].walletKeyStore];
     if ([Tools isEmpty:privateKey]) {
         [MBProgressHUD showTipMessageInWindow:Localized(@"PasswordIsIncorrect")];
         return;

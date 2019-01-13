@@ -240,7 +240,7 @@ static NSString * const Issue_Leave = @"leaveRoomForApp";
                          
                          @"fee": self.distributionModel.distributionFee,
                          @"hash": self.distributionModel.transactionHash,
-                         @"address": [AccountTool account].walletAddress,
+                         @"address": CurrentWalletAddress,
                          @"issueTotal": self.registeredModel.amount
                          }];
     if (self.distributionModel.tokenDescription) {

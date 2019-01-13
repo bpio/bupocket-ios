@@ -120,7 +120,7 @@
         NSOperationQueue * queue = [[NSOperationQueue alloc] init];
         [queue addOperationWithBlock:^{
             [[NSOperationQueue mainQueue] addOperationWithBlock:^{
-                NSData * random = [NSString decipherKeyStoreWithPW:password randomKeyStoreValueStr:[AccountTool account].randomNumber];
+                NSData * random = [NSString decipherKeyStoreWithPW:password randomKeyStoreValueStr:[[AccountTool shareTool] account].randomNumber];
                 if (random) {
                     NSArray * words = [Mnemonic generateMnemonicCode: random];
                     dispatch_async(dispatch_get_main_queue(), ^{

@@ -235,7 +235,7 @@ static NSString * const Register_Leave = @"leaveRoomForApp";
                            
                            @"fee": self.registeredModel.registeredFee,
                            @"hash": self.registeredModel.transactionHash,
-                           @"address": [AccountTool account].walletAddress,
+                           @"address": CurrentWalletAddress,
                            };
     NSDictionary * data = @{
                             @"err_code": @(code),

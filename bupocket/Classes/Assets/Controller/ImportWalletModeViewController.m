@@ -252,7 +252,20 @@ static NSString * const TextFieldPWCellID = @"TextFieldPWCellID";
 - (void)explainInfo:(UIButton *)button
 {
     ExplainInfoViewController * VC = [[ExplainInfoViewController alloc] init];
-    VC.navigationItem.title = self.title;
+    if (button.titleLabel.text.length > 2) {
+        VC.navigationItem.title = [button.titleLabel.text substringFromIndex:2];
+    }
+//    Localized(@"Mnemonics"), Localized(@"Keystore"), Localized(@"PrivateKey")
+    if ([self.title isEqualToString:Localized(@"Mnemonics")]) {
+        VC.titleText = Localized(@"MnemonicsExplainTitle");
+        VC.explainInfoText = Localized(@"MnemonicsExplain");
+    } else if ([self.title isEqualToString:Localized(@"Keystore")]) {
+        VC.titleText = Localized(@"KeystoreExplainTitle");
+        VC.explainInfoText = Localized(@"KeystoreExplain");
+    } else if ([self.title isEqualToString:Localized(@"PrivateKey")]) {
+        VC.titleText = Localized(@"PrivateKeyExplainTitle");
+        VC.explainInfoText = Localized(@"PrivateKeyExplain");
+    }
     [self.navigationController pushViewController:VC animated:YES];
 }
 - (void)textViewDidChange:(UITextView *)textView

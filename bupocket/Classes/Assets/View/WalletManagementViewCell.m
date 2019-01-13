@@ -139,8 +139,7 @@ static NSString * const WalletCellID = @"WalletCellID";
     self.walletName.text = walletModel.walletName;
     self.walletAddress.text = [NSString stringEllipsisWithStr:walletModel.walletAddress];
     if ([self.reuseIdentifier isEqualToString:WalletManagementCellID]) {
-        NSString * currentWalletAddress = [[NSUserDefaults standardUserDefaults] objectForKey:Current_WalletAddress];
-        self.currentUse.hidden = ![self.walletAddress.text isEqualToString:currentWalletAddress];
+        self.currentUse.hidden = ![walletModel.walletAddress isEqualToString:CurrentWalletAddress];
     }
 }
 - (void)setFrame:(CGRect)frame

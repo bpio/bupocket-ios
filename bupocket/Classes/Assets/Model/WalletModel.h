@@ -12,9 +12,12 @@ NS_ASSUME_NONNULL_BEGIN
 
 @interface WalletModel : BaseModel
 
-@property (nonatomic, copy) NSString * walletName;
-@property (nonatomic, copy) NSString * walletAddress;
-@property (nonatomic, copy) NSString * walletKeyStore;
+/** 钱包名 */
+@property (nonatomic, strong) NSString * walletName;
+/** 钱包账户地址 */
+@property (nonatomic, strong) NSString * walletAddress;
+/** 通过钱包私钥和密码生成的keystore */
+@property (nonatomic, strong) NSString * walletKeyStore;
 
 @end
 

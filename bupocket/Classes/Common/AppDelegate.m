@@ -73,9 +73,11 @@
 }
 - (void)storageSafetyReinforcement
 {
-    NSString * currentVersion = [[[NSBundle mainBundle] infoDictionary] objectForKey:@"CFBundleShortVersionString"];
-    BOOL result = [currentVersion compare:@"1.4.3"] == NSOrderedDescending;
-    if (result) {
+    NSUserDefaults * defaults = [NSUserDefaults standardUserDefaults];
+    NSString * lastVersion = [defaults objectForKey:LastVersion];
+    if (!lastVersion || [@"1.4.3" compare:lastVersion] == NSOrderedDescending) {
+        NSString * currentVersion = [[[NSBundle mainBundle] infoDictionary] objectForKey:@"CFBundleShortVersionString"];
+        [defaults setObject:currentVersion forKey:LastVersion];
         SafetyReinforcementAlertView * alertView = [[SafetyReinforcementAlertView alloc] initWithTitle:Localized(@"SafetyReinforcementTitle") promptText:Localized(@"SafetyReinforcementPrompt") confrim:Localized(@"StartReinforcement") confrimBolck:^{
             dispatch_after(dispatch_time(DISPATCH_TIME_NOW, (int64_t)(0.5 * NSEC_PER_SEC)), dispatch_get_main_queue(), ^{
                 self.PWAlertView = [[PasswordAlertView alloc] initWithPrompt:Localized(@"IdentityCipherPrompt") isAutomaticClosing:NO confrimBolck:^(NSString * _Nonnull password, NSArray * _Nonnull words) {
@@ -93,10 +95,11 @@
 }
 - (void)upDateAccountDataWithRandom:(NSData *)random password:(NSString *)password
 {
-    [[HTTPManager shareManager] setAccountDataWithRandom:random password:password identityName:[AccountTool account].identityName success:^(id responseObject) {
+    [[HTTPManager shareManager] setAccountDataWithRandom:random password:password identityName:[[AccountTool shareTool] account].identityName success:^(id responseObject) {
         [self.PWAlertView hideView];
         [Encapsulation showAlertControllerWithMessage:Localized(@"SuccessfulReinforcement") handler:^(UIAlertAction *action) {
             [self getVersionData];
+            
         }];
     } failure:^(NSError *error) {
         

@@ -41,11 +41,11 @@ static NSString * const WalletManagementCellID = @"WalletManagementCellID";
 - (void)viewWillAppear:(BOOL)animated
 {
     [super viewWillAppear:animated];
-    NSString * walletName = [[AccountTool account] walletName] == nil ? @"Wallet-1" : [[AccountTool account] walletName];
+    NSString * walletName = [[[AccountTool shareTool] account] walletName] == nil ? @"Wallet-1" : [[[AccountTool shareTool] account] walletName];
     NSDictionary * currentIdentity = @{
                                        @"walletName": walletName,
-                                       @"walletAddress": [[AccountTool account] walletAddress],
-                                       @"walletKeyStore": [[AccountTool account] walletKeyStore]
+                                       @"walletAddress": [[[AccountTool shareTool] account] walletAddress],
+                                       @"walletKeyStore": [[[AccountTool shareTool] account] walletKeyStore]
                                        };
     self.currentIdentityModel = [WalletModel mj_objectWithKeyValues:currentIdentity];
     self.listArray = [NSMutableArray arrayWithArray:[[WalletTool shareTool] walletArray]];
@@ -158,10 +158,10 @@ static NSString * const WalletManagementCellID = @"WalletManagementCellID";
 {
     WalletManagementViewCell * cell = [WalletManagementViewCell cellWithTableView:tableView identifier:WalletManagementCellID];
     cell.selectionStyle = UITableViewCellSelectionStyleNone;
-    NSString * currentWalletAddress = [[NSUserDefaults standardUserDefaults] objectForKey:Current_WalletAddress];
+    NSString * currentWalletAddress = CurrentWalletAddress;
     if (indexPath.section == 0) {
         cell.walletModel = self.currentIdentityModel;
-        cell.currentUse.hidden = !(currentWalletAddress == nil || [cell.walletAddress.text isEqualToString:currentWalletAddress]);
+        cell.currentUse.hidden = !(currentWalletAddress == nil || [cell.walletModel.walletAddress isEqualToString:currentWalletAddress]);
     } else {
         cell.walletModel = self.listArray[indexPath.row];
     }
@@ -174,6 +174,16 @@ static NSString * const WalletManagementCellID = @"WalletManagementCellID";
         [self.navigationController pushViewController:VC animated:YES];
     };
     return cell;
+}
+- (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath
+{
+    [tableView deselectRowAtIndexPath:indexPath animated:YES];
+    WalletManagementViewCell * cell = [tableView cellForRowAtIndexPath:indexPath];
+    NSString * walletAddress = cell.walletModel.walletAddress;
+    NSUserDefaults * defaults = [NSUserDefaults standardUserDefaults];
+    [defaults setObject:walletAddress forKey:Current_WalletAddress];
+    [defaults synchronize];
+    [self.tableView reloadData];
 }
 
 /*

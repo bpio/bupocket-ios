@@ -12,6 +12,10 @@ NS_ASSUME_NONNULL_BEGIN
 
 @interface ExplainInfoViewController : BaseViewController
 
+@property (nonatomic, copy) NSString * titleText;
+@property (nonatomic, copy) NSString * explainInfoText;
+
+
 @end
 
 NS_ASSUME_NONNULL_END

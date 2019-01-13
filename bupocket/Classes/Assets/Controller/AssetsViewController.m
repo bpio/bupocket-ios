@@ -163,11 +163,11 @@ static UIButton * _noBackup;
         assetsArray = [NSArray array];
     }
     NSString * currentCurrency = [AssetCurrencyModel getAssetCurrencyTypeWithAssetCurrency:[[defaults objectForKey:Current_Currency] integerValue]];
-    NSString * walletAddress = [[AccountTool account] walletAddress];
-    if (!walletAddress) {
-        walletAddress = [[AccountTool account] purseAccount];
+    NSString * currentWalletAddress = CurrentWalletAddress;
+    if (!currentWalletAddress) {
+        currentWalletAddress = [[[AccountTool shareTool] account] purseAccount];
     }
-    [[HTTPManager shareManager] getAssetsDataWithAddress:walletAddress currencyType:currentCurrency tokenList:assetsArray success:^(id responseObject) {
+    [[HTTPManager shareManager] getAssetsDataWithAddress:currentWalletAddress currencyType:currentCurrency tokenList:assetsArray success:^(id responseObject) {
         NSInteger code = [[responseObject objectForKey:@"errCode"] integerValue];
         if (code == Success_Code) {
             [self setDataWithResponseObject:responseObject];
@@ -195,11 +195,11 @@ static UIButton * _noBackup;
 
 - (void)getAssetsStateData
 {
-    NSString * walletAddress = [[AccountTool account] walletAddress];
-    if (!walletAddress) {
-        walletAddress = [[AccountTool account] purseAccount];
+    NSString * currentWalletAddress = CurrentWalletAddress;
+    if (!currentWalletAddress) {
+        currentWalletAddress = [[[AccountTool shareTool] account] purseAccount];
     }
-    [[HTTPManager shareManager] getRegisteredORDistributionDataWithAssetCode:self.registeredModel.code issueAddress:walletAddress success:^(id responseObject) {
+    [[HTTPManager shareManager] getRegisteredORDistributionDataWithAssetCode:self.registeredModel.code issueAddress:currentWalletAddress success:^(id responseObject) {
         NSInteger code = [[responseObject objectForKey:@"errCode"] integerValue];
         self.distributionModel = [DistributionModel mj_objectWithKeyValues:[responseObject objectForKey:@"data"]];
         if ([self.scanDic[@"action"] isEqualToString:@"token.register"]) {
@@ -439,9 +439,8 @@ static UIButton * _noBackup;
 #pragma mark - QRCode
 - (void)QRCodeAction
 {
-    NSString * walletAddress = [[AccountTool account] walletAddress];
-    WalletAddressAlertView * alertView = [[WalletAddressAlertView alloc] initWithWalletAddress:[[AccountTool account] walletAddress] confrimBolck:^{
-        [[UIPasteboard generalPasteboard] setString:walletAddress];
+    WalletAddressAlertView * alertView = [[WalletAddressAlertView alloc] initWithWalletAddress:CurrentWalletAddress confrimBolck:^{
+        [[UIPasteboard generalPasteboard] setString:CurrentWalletAddress];
         [MBProgressHUD showTipMessageInWindow:Localized(@"Replicating")];
     } cancelBlock:^{
         

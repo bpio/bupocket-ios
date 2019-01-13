@@ -63,7 +63,7 @@ static NSString * const ExportCellID = @"ExportCellID";
 }
 - (CGFloat)tableView:(UITableView *)tableView heightForFooterInSection:(NSInteger)section
 {
-    if (section == 0 || [self.walletModel.walletAddress isEqualToString:[[AccountTool account] walletAddress]]) {
+    if (section == 0 || [self.walletModel.walletAddress isEqualToString:[[[AccountTool shareTool] account] walletAddress]]) {
         return CGFLOAT_MIN;
     } else {
         return ScreenScale(200);
@@ -71,7 +71,7 @@ static NSString * const ExportCellID = @"ExportCellID";
 }
 - (UIView *)tableView:(UITableView *)tableView viewForFooterInSection:(NSInteger)section
 {
-    if (section == 0 || [self.walletModel.walletAddress isEqualToString:[[AccountTool account] walletAddress]]) {
+    if (section == 0 || [self.walletModel.walletAddress isEqualToString:[[[AccountTool shareTool] account] walletAddress]]) {
         return [[UIView alloc] init];
     } else {
         UIView * footerView = [[UIView alloc] initWithFrame:CGRectMake(0, 0, DEVICE_WIDTH, ScreenScale(200))];
@@ -141,11 +141,11 @@ static NSString * const ExportCellID = @"ExportCellID";
         WalletManagementViewCell * cell = [tableView cellForRowAtIndexPath:walletIndex];
         ModifyAlertView * alertView = [[ModifyAlertView alloc] initWithText:self.walletModel.walletName confrimBolck:^(NSString * _Nonnull text) {
             cell.walletName.text = text;
-            if ([self.walletModel.walletAddress isEqualToString:[[AccountTool account] walletAddress]]) {
+            if ([self.walletModel.walletAddress isEqualToString:[[[AccountTool shareTool] account] walletAddress]]) {
                 AccountModel * account = [[AccountModel alloc] init];
-                account = [AccountTool account];
+                account = [[AccountTool shareTool] account];
                 account.walletName = text;
-                [AccountTool save:account];
+                [[AccountTool shareTool] save:account];
             } else {
                 self.walletModel.walletName = text;
                 [self.walletArray replaceObjectAtIndex:self.index withObject:self.walletModel];

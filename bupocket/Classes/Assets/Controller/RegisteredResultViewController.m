@@ -52,7 +52,7 @@ static NSString * const DetailListID = @"DetailListID";
     [self.listArray addObject:array];
     
     if (self.registeredResultState != RegisteredResultOvertime) {
-        NSArray * transactionArray = @[@{Localized(@"ActualTransactionCost"): [NSString stringAppendingBUWithStr:self.registeredModel.registeredFee]}, @{Localized(@"RegisteredAddress"): [AccountTool account].walletAddress}, @{Localized(@"Hash"): self.registeredModel.transactionHash}];
+        NSArray * transactionArray = @[@{Localized(@"ActualTransactionCost"): [NSString stringAppendingBUWithStr:self.registeredModel.registeredFee]}, @{Localized(@"RegisteredAddress"): CurrentWalletAddress}, @{Localized(@"Hash"): self.registeredModel.transactionHash}];
         [self.listArray addObject:transactionArray];
     }
 }

@@ -68,6 +68,10 @@
 #define COLOR_6 COLOR(@"666666")
 #define COLOR_9 COLOR(@"999999")
 
+// Current Wallet Address
+#define Current_WalletAddress @"CurrentWalletAddress"
+#define CurrentWalletAddress [[NSUserDefaults standardUserDefaults] objectForKey:Current_WalletAddress]
+
 // language
 #define CurrentAppLanguage [[NSUserDefaults standardUserDefaults] objectForKey: AppLanguage]
 #define Localized(key)  [[NSBundle bundleWithPath:[[NSBundle mainBundle] pathForResource:[NSString stringWithFormat:@"%@", CurrentAppLanguage] ofType:@"lproj"]] localizedStringForKey:(key) value:nil table:@"Localizable"]

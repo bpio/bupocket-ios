@@ -78,7 +78,7 @@
     NSString * destAddress = self.destinationAddress.text;
     NSDecimalNumber * sendNumber = [NSDecimalNumber decimalNumberWithString: self.transferVolume.text];
     NSDecimalNumber * cost = [NSDecimalNumber decimalNumberWithString:self.transactionCosts.text];
-    if ([destAddress isEqualToString:[[AccountTool account] walletAddress]]) {
+    if ([destAddress isEqualToString:[[[AccountTool shareTool] account] walletAddress]]) {
         [MBProgressHUD hideHUD];
         [MBProgressHUD showTipMessageInWindow:Localized(@"CannotTransferToOneself")];
         return;

@@ -62,9 +62,9 @@
         [Encapsulation showAlertControllerWithMessage:Localized(@"NewPasswordIsDifferent") handler:nil];
         return;
     }
-    NSData * random = [NSString decipherKeyStoreWithPW:_PWOld.text randomKeyStoreValueStr:[AccountTool account].randomNumber];
+    NSData * random = [NSString decipherKeyStoreWithPW:_PWOld.text randomKeyStoreValueStr:[[AccountTool shareTool] account].randomNumber];
     if (random) {
-        [[HTTPManager shareManager] setAccountDataWithRandom:random password:self.PWNew.text identityName:[AccountTool account].identityName success:^(id responseObject) {
+        [[HTTPManager shareManager] setAccountDataWithRandom:random password:self.PWNew.text identityName:[[AccountTool shareTool] account].identityName success:^(id responseObject) {
             [Encapsulation showAlertControllerWithMessage:Localized(@"PasswordModifiedSuccessfully") handler:^(UIAlertAction *action) {
                 [self.navigationController popViewControllerAnimated:YES];
             }];

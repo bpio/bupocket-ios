@@ -44,7 +44,7 @@
     UILabel * IDName = [[UILabel alloc] init];
     IDName.font = FONT(15);
     IDName.textColor = COLOR_6;
-    IDName.text = [AccountTool account].identityName;
+    IDName.text = [[AccountTool shareTool] account].identityName;
     [myIdentityBg addSubview:IDName];
     [IDNameTitle setContentCompressionResistancePriority:UILayoutPriorityRequired forAxis:UILayoutConstraintAxisHorizontal];
     [IDNameTitle mas_makeConstraints:^(MASConstraintMaker *make) {
@@ -71,7 +71,7 @@
     UILabel * IdentityID = [[UILabel alloc] init];
     IdentityID.font = IDName.font;
     IdentityID.textColor = IDName.textColor;
-    IdentityID.text = [NSString stringEllipsisWithStr:[AccountTool account].identityAddress];
+    IdentityID.text = [NSString stringEllipsisWithStr:[[AccountTool shareTool] account].identityAddress];
     IdentityID.numberOfLines = 0;
     IdentityID.textAlignment = NSTextAlignmentRight;
     [myIdentityBg addSubview:IdentityID];
@@ -137,7 +137,7 @@
     [queue addOperationWithBlock:^{
         [ClearCacheTool cleanCache:^{
             [ClearCacheTool cleanUserDefaults];
-            [AccountTool clearCache];
+            [[AccountTool shareTool] clearCache];
             [[WalletTool shareTool] clearCache];
 //            [[LanguageManager shareInstance] setDefaultLocale];
             [[HTTPManager shareManager] initNetWork];
