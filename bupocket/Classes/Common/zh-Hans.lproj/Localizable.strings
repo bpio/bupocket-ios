@@ -275,20 +275,20 @@
 "KeystorePW" = "Keystore密码";
 "PleaseEnterKeystorePW" = "请输入原Keystore文件内容的密码";
 "UnderstandingKeystore" = "了解Keystore";
-"ImportPrivateKeyPrompt" = "粘贴私钥（Private Key）字符串";
-"PleaseEnterPrivateKey" = "私钥（Private key）字符串";
-"UnderstandingPrivateKey" = "了解私钥字符串";
+"ImportPrivateKeyPrompt" = "粘贴私钥（Private Key）";
+"PleaseEnterPrivateKey" = "私钥（Private key）";
+"UnderstandingPrivateKey" = "了解私钥";
 "ImportWalletSuccessfully" = "钱包导入成功";
 "FailureToImportWallet" = "钱包导入失败，请重新导入";
 "WalletDuplicateImport" = "该钱包已导入，无需重复导入";
 "KeyStoreIsIncorrect" = "Keystore不合法或密码不正确，请进行修改";
 //"KeystorePWIsIncorrect" = "Keystore密码不正确";
-"PrivateKeyIsIncorrect" = "私钥字符串不合法，请进行修改";
+"PrivateKeyIsIncorrect" = "私钥不合法，请进行修改";
 "MnemonicsExplainTitle" = "什么是助记词？";
 "MnemonicsExplain" = "创建钱包后会出现12个英文单词，这12个单词就是助记词。助记词由一个随机字符串通过算法在2048个单词库中得出的12个单词。助记词算法可以派生出私钥，所以助记词是私钥的另一种表现形式。用助记词是为了帮助用户记忆复杂的私钥。任何人拿到了您的助记词，就可以拿走您的数字资产，因此必须保管好您的助记词。";
 "KeystoreExplainTitle" = "什么是Keystore？";
 "KeystoreExplain" = "Keystore 文件是钱包存储私钥的一种文件格式 (JSON)。它使用用户自定义密码加密，以起到一定程度上的保护作用，而保护的程度取决于用户加密该钱包的密码强度，如果类似于 123456 这样的密码，是极为不安全的。密码忘记是无法找回的，所以一定要保管好Keystore文件及密码。";
-"PrivateKeyExplainTitle" = "什么是私钥字符串？";
+"PrivateKeyExplainTitle" = "什么是私钥？";
 "PrivateKeyExplain" = "私钥是在区块链交易中用于生成交易签名，以证明账户身份。所以私钥必须安全保管，一旦私钥被任何人拿到，就可以拿走您的数字资产。";
 // 管理
 "ExportKeystore" = "导出Keystore";
