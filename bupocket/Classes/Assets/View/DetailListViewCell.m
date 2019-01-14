@@ -12,7 +12,8 @@
 
 static NSString * const DetailListCellID = @"DetailListCellID";
 static NSString * const OrderDetailsCellID = @"OrderDetailsCellID";
-static NSString * const DistributionDetailCellID = @"DistributionDetailCellID";
+static NSString * const DetailListID = @"DetailListID";
+static NSString * const ExportPrivateKeyID = @"ExportPrivateKeyID";
 
 + (instancetype)cellWithTableView:(UITableView *)tableView identifier:(NSString *)identifier
 {
@@ -33,6 +34,11 @@ static NSString * const DistributionDetailCellID = @"DistributionDetailCellID";
         } else {
             [self.contentView addSubview:self.title];
             [self.contentView addSubview:self.infoTitle];
+            if ([reuseIdentifier isEqualToString:ExportPrivateKeyID]) {
+                self.title.font = FONT(16);
+                self.title.textColor = COLOR_6;
+                self.infoTitle.font = FONT(14);
+            }
         }
     }
     return self;

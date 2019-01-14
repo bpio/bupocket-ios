@@ -70,6 +70,9 @@
     infoLabel.numberOfLines = 0;
     infoLabel.textAlignment = NSTextAlignmentRight;
     [self addSubview:infoLabel];
+    if ([titleLabel.text isEqualToString:Localized(@"reciprocalAccount")]) {
+        infoLabel.copyable = YES;
+    }
 //    infoLabel.preferredMaxLayoutWidth = ScreenScale(150);
 //    [infoLabel mas_makeConstraints:^(MASConstraintMaker *make) {
 //        make.bottom.equalTo(self.mas_bottom).offset(-ScreenScale(250) + MAIN_HEIGHT * index);

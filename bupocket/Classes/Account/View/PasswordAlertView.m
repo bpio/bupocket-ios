@@ -1,30 +1,38 @@
 //
-//  PurseCipherAlertView.m
+//  PasswordAlertView.m
 //  bupocket
 //
-//  Created by bupocket on 2018/10/18.
-//  Copyright © 2018年 bupocket. All rights reserved.
+//  Created by huoss on 2019/1/11.
+//  Copyright © 2019年 bupocket. All rights reserved.
 //
 
-#import "PurseCipherAlertView.h"
+#import "PasswordAlertView.h"
 
-@interface PurseCipherAlertView()<UITextFieldDelegate>
+@interface PasswordAlertView()<UITextFieldDelegate>
 
 @property (nonatomic, strong) UITextField * PWTextField;
-@property (nonatomic, assign) PurseCipherType purseCipherType;
+@property (nonatomic, assign) PasswordType passwordType;
 @property (nonatomic, assign) CGFloat bgHeight;
 @property (nonatomic, strong) UILabel * promptLabel;
+@property (nonatomic, strong) UIButton * sureBtn;
+
+@property (nonatomic, copy) OnCancleButtonClick cancleBlock;
+@property (nonatomic, copy) OnSureWalletPWClick sureBlock;
+@property (nonatomic, assign) BOOL isAutomaticClosing;
+@property (nonatomic, copy) NSString * walletKeyStore;
 
 @end
 
-@implementation PurseCipherAlertView
+@implementation PasswordAlertView
 
-- (instancetype)initWithPrompt:(NSString *)prompt confrimBolck:(void (^)(NSString * password, NSArray * words))confrimBlock cancelBlock:(void (^)(void))cancelBlock
+- (instancetype)initWithPrompt:(NSString *)prompt walletKeyStore:(NSString *)walletKeyStore isAutomaticClosing:(BOOL)isAutomaticClosing confrimBolck:(void (^)(NSString * password, NSArray * words))confrimBlock cancelBlock:(void (^)(void))cancelBlock
 {
     self = [super init];
     if (self) {
         _sureBlock = confrimBlock;
         _cancleBlock = cancelBlock;
+        self.isAutomaticClosing = isAutomaticClosing;
+        self.walletKeyStore = walletKeyStore;
         [self setupView];
         _promptLabel.text = prompt;
         if ([_promptLabel.text isEqualToString:Localized(@"IdentityCipherWarning")]) {
@@ -41,13 +49,14 @@
 - (void)setupView {
     self.backgroundColor = [UIColor whiteColor];
     self.layer.cornerRadius = MAIN_CORNER;
-    
-    UIButton * closeBtn = [UIButton createButtonWithNormalImage:@"close" SelectedImage:@"close" Target:self Selector:@selector(cancleBtnClick)];
-    [self addSubview:closeBtn];
-    [closeBtn mas_makeConstraints:^(MASConstraintMaker *make) {
-        make.top.right.equalTo(self);
-        make.size.mas_equalTo(CGSizeMake(MAIN_HEIGHT, MAIN_HEIGHT));
-    }];
+    if (self.isAutomaticClosing) {
+        UIButton * closeBtn = [UIButton createButtonWithNormalImage:@"close" SelectedImage:@"close" Target:self Selector:@selector(cancleBtnClick)];
+        [self addSubview:closeBtn];
+        [closeBtn mas_makeConstraints:^(MASConstraintMaker *make) {
+            make.top.right.equalTo(self);
+            make.size.mas_equalTo(CGSizeMake(MAIN_HEIGHT, MAIN_HEIGHT));
+        }];
+    }
     
     UILabel * title = [UILabel new];
     title.font = FONT(25);
@@ -83,6 +92,7 @@
     PWTextField.leftViewMode = UITextFieldViewModeAlways;
     PWTextField.rightView = [[UIView alloc] initWithFrame:CGRectMake(0, 0, Margin_10, MAIN_HEIGHT)];
     PWTextField.rightViewMode = UITextFieldViewModeAlways;
+    [PWTextField addTarget:self action:@selector(textChange:) forControlEvents:UIControlEventEditingChanged];
     [self addSubview:PWTextField];
     [PWTextField mas_makeConstraints:^(MASConstraintMaker *make) {
         make.top.equalTo(self.promptLabel.mas_bottom).offset(Margin_25);
@@ -91,15 +101,26 @@
         make.height.mas_equalTo(MAIN_HEIGHT);
     }];
     self.PWTextField = PWTextField;
-    UIButton * sureBtn = [UIButton createButtonWithTitle:Localized(@"Confirm") isEnabled:YES Target:self Selector:@selector(sureBtnClick)];
-    [self addSubview:sureBtn];
-    [sureBtn mas_makeConstraints:^(MASConstraintMaker *make) {
+    self.sureBtn = [UIButton createButtonWithTitle:Localized(@"Confirm") isEnabled:YES Target:self Selector:@selector(sureBtnClick)];
+    [self addSubview:self.sureBtn];
+    self.sureBtn.enabled = NO;
+    self.sureBtn.backgroundColor = DISABLED_COLOR;
+    [self.sureBtn mas_makeConstraints:^(MASConstraintMaker *make) {
         make.bottom.equalTo(self.mas_bottom).offset(-Margin_20);
         make.left.right.equalTo(PWTextField);
         make.height.mas_equalTo(MAIN_HEIGHT);
     }];
 }
-
+- (void)textChange:(UITextField *)textField
+{
+    if (textField.text.length > 0) {
+        self.sureBtn.enabled = YES;
+        self.sureBtn.backgroundColor = MAIN_COLOR;
+    } else {
+        self.sureBtn.enabled = NO;
+        self.sureBtn.backgroundColor = DISABLED_COLOR;
+    }
+}
 - (void)cancleBtnClick {
     [self hideView];
     if (_cancleBlock) {
@@ -107,7 +128,9 @@
     }
 }
 - (void)sureBtnClick {
-    [self hideView];
+    if (self.isAutomaticClosing) {
+        [self hideView];
+    }
     if ([RegexPatternTool validatePassword:self.PWTextField.text] == NO) {
         [MBProgressHUD showTipMessageInWindow:Localized(@"CryptographicFormat")];
     } else {
@@ -116,25 +139,50 @@
         NSOperationQueue * queue = [[NSOperationQueue alloc] init];
         [queue addOperationWithBlock:^{
             [[NSOperationQueue mainQueue] addOperationWithBlock:^{
-                NSData * random = [NSString decipherKeyStoreWithPW:password randomKeyStoreValueStr:[AccountTool account].randomNumber];
-                if (random) {
-                    NSArray * words = [Mnemonic generateMnemonicCode: random];
-                    dispatch_async(dispatch_get_main_queue(), ^{
-                        [MBProgressHUD hideHUD];
-                        if (self->_sureBlock) {
-                            self->_sureBlock(password, words);
-                        }
-                    });
-                } else {
-                    dispatch_async(dispatch_get_main_queue(), ^{
-                        [MBProgressHUD hideHUD];
-                        [MBProgressHUD showTipMessageInWindow:Localized(@"PasswordIsIncorrect")];
-                    });
-                }
+                [self checkPassword:password];
             }];
         }];
     }
 }
+- (void)checkPassword:(NSString *)password
+{
+    if (self.walletKeyStore.length > 0) {
+        // 钱包下密码
+        NSString * privateKey = [NSString decipherKeyStoreWithPW:password keyStoreValueStr:self.walletKeyStore];
+        if ([Tools isEmpty:privateKey]) {
+            dispatch_async(dispatch_get_main_queue(), ^{
+                [MBProgressHUD hideHUD];
+                [MBProgressHUD showTipMessageInWindow:Localized(@"PasswordIsIncorrect")];
+            });
+        } else {
+            dispatch_async(dispatch_get_main_queue(), ^{
+                [MBProgressHUD hideHUD];
+                if (self->_sureBlock) {
+                    self->_sureBlock(password, [NSArray array]);
+                }
+            });
+        }
+    } else {
+        // 身份下密码
+        NSData * random = [NSString decipherKeyStoreWithPW:password randomKeyStoreValueStr:[[AccountTool shareTool] account].randomNumber];
+        if (random) {
+            NSArray * words = [Mnemonic generateMnemonicCode: random];
+            dispatch_async(dispatch_get_main_queue(), ^{
+                [MBProgressHUD hideHUD];
+                if (self->_sureBlock) {
+                    self->_sureBlock(password, words);
+                }
+            });
+        } else {
+            dispatch_async(dispatch_get_main_queue(), ^{
+                [MBProgressHUD hideHUD];
+                [MBProgressHUD showTipMessageInWindow:Localized(@"PasswordIsIncorrect")];
+            });
+        }
+       
+    }
+}
+
 /*
 // Only override drawRect: if you perform custom drawing.
 // An empty implementation adversely affects performance during animation.

@@ -10,7 +10,7 @@
 
 @interface UIButton (Extension)
 
-+ (UIButton *)createButtonWithTitle:(NSString *)title TextFont:(CGFloat)textFont TextColor:(UIColor *)textColor Target:(id)target Selector:(SEL)selector;
++ (UIButton *)createButtonWithTitle:(NSString *)title TextFont:(CGFloat)textFont TextNormalColor:(UIColor *)textNormalColor TextSelectedColor:(UIColor *)textSelectedColor Target:(id)target Selector:(SEL)selector;
 
 + (UIButton *)createButtonWithNormalImage:(NSString *)normalImage SelectedImage:(NSString *)selectedImage Target:(id)target Selector:(SEL)selector;
 

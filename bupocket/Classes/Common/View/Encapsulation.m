@@ -92,15 +92,13 @@
     return size;
 }
 
-+ (UIAlertController *)alertControllerWithCancelTitle:(NSString *)cancelTitle title:(NSString *)title message:(NSString*)message
++ (void)showAlertControllerWithTitle:(NSString *)title message:(NSString*)message cancelHandler:(void(^)(UIAlertAction * action))cancelHandler confirmHandler:(void(^)(UIAlertAction * action))confirmHandler
 {
-    
     UIAlertController * alertController = [UIAlertController alertControllerWithTitle:title message:message preferredStyle:UIAlertControllerStyleAlert];
-    UIAlertAction * cancelAction = [UIAlertAction actionWithTitle:cancelTitle style:UIAlertActionStyleCancel handler:nil];
+    UIAlertAction * cancelAction = [UIAlertAction actionWithTitle:Localized(@"Cancel") style:UIAlertActionStyleCancel handler:cancelHandler];
     [alertController addAction:cancelAction];
-//    UIAlertAction * okAction = [UIAlertAction actionWithTitle:Localized(@"Confirm") style:UIAlertActionStyleDefault handler:^(UIAlertAction * _Nonnull action) {
-//    }];
-//    [alertController addAction:okAction];
+    UIAlertAction * confirmAction = [UIAlertAction actionWithTitle:Localized(@"Confirm") style:UIAlertActionStyleDefault handler:confirmHandler];
+    [alertController addAction:confirmAction];
     UIView * alertBg = alertController.view.subviews[0].subviews[0].subviews[0];
     alertBg.backgroundColor = [UIColor whiteColor];
     alertBg.layer.cornerRadius = BG_CORNER;
@@ -114,17 +112,17 @@
     NSMutableAttributedString * attr = [[NSMutableAttributedString alloc] initWithString:[NSString stringWithFormat:@"\n%@", message] attributes:@{NSForegroundColorAttributeName: COLOR_6, NSFontAttributeName: FONT(15)}];
     [alertController setValue:attr forKey:@"attributedMessage"];
     [cancelAction setValue:COLOR_9 forKey:@"titleTextColor"];
-    return alertController;
+    [confirmAction setValue:MAIN_COLOR forKey:@"titleTextColor"];
+    [[[UIApplication sharedApplication] keyWindow].rootViewController presentViewController:alertController animated:YES completion:nil];
 }
-//+ (void)showAlertControllerWithMessage:(NSString *)message btnText:(NSString *)btnText handler:(void(^)(UIAlertAction * action))handle
-//{
-//    UIAlertController * alertController = [UIAlertController alertControllerWithTitle:nil message:message preferredStyle:UIAlertControllerStyleAlert];
-//    UIAlertAction * cancelAction = [UIAlertAction actionWithTitle:Localized(@"IGotIt") style:UIAlertActionStyleCancel handler:^(UIAlertAction * _Nonnull action) {
-//        [self.navigationController popViewControllerAnimated:YES];
-//    }];
-//    [alertController addAction:cancelAction];
-//    [self presentViewController:alertController animated:YES completion:nil];
-//}
++ (void)showAlertControllerWithMessage:(NSString *)message handler:(void(^)(UIAlertAction * action))handle
+{
+    UIAlertController * alertController = [UIAlertController alertControllerWithTitle:nil message:message preferredStyle:UIAlertControllerStyleAlert];
+    UIAlertAction * cancelAction = [UIAlertAction actionWithTitle:Localized(@"IGotIt") style:UIAlertActionStyleCancel handler:handle];
+    [cancelAction setValue:MAIN_COLOR forKey:@"titleTextColor"];
+    [alertController addAction:cancelAction];
+    [[[UIApplication sharedApplication] keyWindow].rootViewController presentViewController:alertController animated:YES completion:nil];
+}
 
 + (UIButton *)showNoDataWithTitle:(NSString *)title imageName:(NSString *)imageName superView:(UIView *)superView frame:(CGRect)frame
 {
@@ -170,7 +168,7 @@
         make.top.equalTo(noNetWorkImage.mas_bottom).offset(ScreenScale(50));
     }];
     
-    UIButton * reloadBtn = [UIButton createButtonWithTitle:Localized(@"Reload") TextFont:18 TextColor:[UIColor whiteColor] Target:target Selector:action];
+    UIButton * reloadBtn = [UIButton createButtonWithTitle:Localized(@"Reload") TextFont:18 TextNormalColor:[UIColor whiteColor] TextSelectedColor:[UIColor whiteColor] Target:target Selector:action];
     reloadBtn.layer.masksToBounds = YES;
     reloadBtn.clipsToBounds = YES;
     reloadBtn.layer.cornerRadius = MAIN_CORNER;

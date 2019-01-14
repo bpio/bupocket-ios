@@ -7,7 +7,6 @@
 //
 
 #import "TransferAccountsViewController.h"
-#import "PurseCipherAlertView.h"
 #import "TransferDetailsAlertView.h"
 #import "TransferResultsViewController.h"
 #import "RequestTimeoutViewController.h"
@@ -79,7 +78,7 @@
     NSString * destAddress = self.destinationAddress.text;
     NSDecimalNumber * sendNumber = [NSDecimalNumber decimalNumberWithString: self.transferVolume.text];
     NSDecimalNumber * cost = [NSDecimalNumber decimalNumberWithString:self.transactionCosts.text];
-    if ([destAddress isEqualToString:[[AccountTool account] purseAccount]]) {
+    if ([destAddress isEqualToString:CurrentWalletAddress]) {
         [MBProgressHUD hideHUD];
         [MBProgressHUD showTipMessageInWindow:Localized(@"CannotTransferToOneself")];
         return;
@@ -141,7 +140,7 @@
     __weak typeof(self) weakSelf = self;
     TransferDetailsAlertView * transferDetailsAlertView = [[TransferDetailsAlertView alloc] initWithTransferInfoArray:self.transferInfoArray confrimBolck:^{
         dispatch_after(dispatch_time(DISPATCH_TIME_NOW, (int64_t)(0.5 * NSEC_PER_SEC)), dispatch_get_main_queue(), ^{
-            PurseCipherAlertView * alertView = [[PurseCipherAlertView alloc] initWithPrompt:Localized(@"TransactionIdentityCipherPrompt") confrimBolck:^(NSString * _Nonnull password, NSArray * _Nonnull words) {
+            PasswordAlertView * alertView = [[PasswordAlertView alloc] initWithPrompt:Localized(@"TransactionWalletPWPrompt") walletKeyStore:CurrentWalletKeyStore isAutomaticClosing:YES confrimBolck:^(NSString * _Nonnull password, NSArray * _Nonnull words) {
                 [weakSelf getDataWithPassword:password];
             } cancelBlock:^{
                 

@@ -12,8 +12,8 @@
 @interface RestoreIdentityViewController ()<UITextFieldDelegate, UITextViewDelegate>
 
 @property (nonatomic, strong) PlaceholderTextView * memorizingWords;
-@property (nonatomic, strong) UITextField * purseName;
-@property (nonatomic, strong) UITextField * pursePassword;
+@property (nonatomic, strong) UITextField * walletName;
+@property (nonatomic, strong) UITextField * walletPassword;
 @property (nonatomic, strong) UITextField * confirmPassword;
 @property (nonatomic, strong) UIButton * restoreIdentity;
 
@@ -46,14 +46,14 @@
         make.right.equalTo(self.view.mas_right).offset(-Margin_20);
         make.height.mas_equalTo(ScreenScale(130));
     }];
-    _purseName = [UITextField textFieldWithplaceholder:Localized(@"newIdentityName")];
-    _purseName.delegate = self;
-    _purseName.enablesReturnKeyAutomatically = YES;
-    [_purseName addTarget:self action:@selector(textChange:) forControlEvents:UIControlEventEditingChanged];
-    [self.view addSubview:_purseName];
+    _walletName = [UITextField textFieldWithplaceholder:Localized(@"newIdentityName")];
+    _walletName.delegate = self;
+    _walletName.enablesReturnKeyAutomatically = YES;
+    [_walletName addTarget:self action:@selector(textChange:) forControlEvents:UIControlEventEditingChanged];
+    [self.view addSubview:_walletName];
     
-    _pursePassword = [self setupPWPlaceholder:Localized(@"SetPassword")];
-    [self.view addSubview:_pursePassword];
+    _walletPassword = [self setupPWPlaceholder:Localized(@"SetPassword")];
+    [self.view addSubview:_walletPassword];
     
     _confirmPassword = [self setupPWPlaceholder:Localized(@"ConfirmPassword")];
     [self.view addSubview:_confirmPassword];
@@ -61,24 +61,24 @@
     _restoreIdentity = [UIButton createButtonWithTitle:Localized(@"Restore") isEnabled:NO Target:self Selector:@selector(restoreAction)];
     [self.view addSubview:_restoreIdentity];
     
-    [_purseName mas_makeConstraints:^(MASConstraintMaker *make) {
+    [_walletName mas_makeConstraints:^(MASConstraintMaker *make) {
         make.top.equalTo(self.memorizingWords.mas_bottom).offset(Margin_25);
         make.left.right.equalTo(self.memorizingWords);
         make.height.mas_equalTo(TEXTFIELD_HEIGHT);
     }];
-    [_pursePassword mas_makeConstraints:^(MASConstraintMaker *make) {
-        make.top.equalTo(self.purseName.mas_bottom).offset(Margin_25);
-        make.left.right.height.equalTo(self.purseName);
+    [_walletPassword mas_makeConstraints:^(MASConstraintMaker *make) {
+        make.top.equalTo(self.walletName.mas_bottom).offset(Margin_25);
+        make.left.right.height.equalTo(self.walletName);
     }];
     
     [_confirmPassword mas_makeConstraints:^(MASConstraintMaker *make) {
-        make.top.equalTo(self.pursePassword.mas_bottom).offset(Margin_25);
-        make.left.right.height.equalTo(self.purseName);
+        make.top.equalTo(self.walletPassword.mas_bottom).offset(Margin_25);
+        make.left.right.height.equalTo(self.walletName);
     }];
     
     [_restoreIdentity mas_makeConstraints:^(MASConstraintMaker *make) {
         make.top.equalTo(self.confirmPassword.mas_bottom).offset(MAIN_HEIGHT);
-        make.left.right.equalTo(self.purseName);
+        make.left.right.equalTo(self.walletName);
         make.height.mas_equalTo(MAIN_HEIGHT);
     }];
 }
@@ -88,6 +88,7 @@
         _memorizingWords = [[PlaceholderTextView alloc] init];
         _memorizingWords.placeholder = Localized(@"MnemonicPrompt");
         _memorizingWords.delegate = self;
+        _memorizingWords.clipsToBounds = YES;
         _memorizingWords.layer.masksToBounds = YES;
         _memorizingWords.layer.cornerRadius = BG_CORNER;
         _memorizingWords.backgroundColor = VIEWBG_COLOR;
@@ -116,7 +117,7 @@
 }
 - (void)ifEnable
 {
-    if (_purseName.text.length > 0 && _pursePassword.text.length > 0 && _confirmPassword.text.length > 0 && _memorizingWords.text.length > 0) {
+    if (_walletName.text.length > 0 && _walletPassword.text.length > 0 && _confirmPassword.text.length > 0 && _memorizingWords.text.length > 0) {
         _restoreIdentity.enabled = YES;
         _restoreIdentity.backgroundColor = MAIN_COLOR;
     } else {
@@ -132,11 +133,11 @@
 }
 - (BOOL)textFieldShouldReturn:(UITextField *)textField
 {
-    if (textField == _purseName) {
-        [_purseName resignFirstResponder];
-        [_pursePassword becomeFirstResponder];
-    } else if (textField == _pursePassword) {
-        [_pursePassword resignFirstResponder];
+    if (textField == _walletName) {
+        [_walletName resignFirstResponder];
+        [_walletPassword becomeFirstResponder];
+    } else if (textField == _walletPassword) {
+        [_walletPassword resignFirstResponder];
         [_confirmPassword becomeFirstResponder];
     } else if (textField == _confirmPassword) {
         [_confirmPassword resignFirstResponder];
@@ -161,7 +162,7 @@
 {
     NSArray * words = [_memorizingWords.text componentsSeparatedByString:@" "];
     NSData * random = [Mnemonic randomFromMnemonicCode: words];
-    [[HTTPManager shareManager] setAccountDataWithRandom:random password:self.pursePassword.text identityName:self.purseName.text success:^(id responseObject) {
+    [[HTTPManager shareManager] setAccountDataWithRandom:random password:self.walletPassword.text identityName:self.walletName.text success:^(id responseObject) {
         [UIApplication sharedApplication].keyWindow.rootViewController = [[TabBarViewController alloc] init];
         NSUserDefaults * defaults = [NSUserDefaults standardUserDefaults];
         [defaults setBool:YES forKey:If_Created];
@@ -179,24 +180,23 @@
         [MBProgressHUD showTipMessageInWindow:Localized(@"MnemonicIsIncorrect")];
         return;
     }
-    if ([RegexPatternTool validateUserName:_purseName.text] == NO) {
+    if ([RegexPatternTool validateUserName:_walletName.text] == NO) {
         [MBProgressHUD showTipMessageInWindow:Localized(@"WalletNameFormatIncorrect")];
         return;
     }
-    if ([RegexPatternTool validatePassword:_pursePassword.text] == NO) {
+    if ([RegexPatternTool validatePassword:_walletPassword.text] == NO) {
         [MBProgressHUD showTipMessageInWindow:Localized(@"CryptographicFormat")];
         return;
     }
-    if (![_pursePassword.text isEqualToString:_confirmPassword.text]) {
+    if (![_walletPassword.text isEqualToString:_confirmPassword.text]) {
         [MBProgressHUD showTipMessageInWindow:Localized(@"PasswordIsDifferent")];
         return;
     }
-    UIAlertController * alertController = [Encapsulation alertControllerWithCancelTitle:Localized(@"Cancel") title:nil message:Localized(@"ConfirmRecoveryID")];
-    UIAlertAction * okAction = [UIAlertAction actionWithTitle:Localized(@"Confirm") style:UIAlertActionStyleDefault handler:^(UIAlertAction * _Nonnull action) {
+    [Encapsulation showAlertControllerWithTitle:nil message:Localized(@"ConfirmRecoveryID") cancelHandler:^(UIAlertAction *action) {
+        
+    } confirmHandler:^(UIAlertAction *action) {
         [self setData];
     }];
-    [alertController addAction:okAction];
-    [self presentViewController:alertController animated:YES completion:nil];
 }
 - (void)didReceiveMemoryWarning
 {

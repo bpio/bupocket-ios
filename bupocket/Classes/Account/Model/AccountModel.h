@@ -18,17 +18,21 @@ NS_ASSUME_NONNULL_BEGIN
 /** 通过keystone存储的随机数 */
 @property (nonatomic, strong) NSString * randomNumber;
 
-/** 通过存储的身份账户 */
-@property (nonatomic, strong) NSString * identityAccount;
+/** 身份账户地址 */
+@property (nonatomic, strong) NSString * identityAddress;
 
-/** 通过存储的钱包账户 */
+/** 通过身份私钥和密码生成的keystore */
+@property (nonatomic, strong) NSString * identityKeyStore;
+
+/** 钱包名 */
+@property (nonatomic, strong) NSString * walletName;
+
+/** 钱包账户地址 */
+@property (nonatomic, strong) NSString * walletAddress;
 @property (nonatomic, strong) NSString * purseAccount;
 
-/** 通过keystone存储的身份账户 */
-@property (nonatomic, strong) NSString * identityKey;
-
-/** 通过keystone存储的钱包账户 */
-@property (nonatomic, strong) NSString * purseKey;
+/** 通过钱包私钥和密码生成的keystore */
+@property (nonatomic, strong) NSString * walletKeyStore;
 
 @end
 

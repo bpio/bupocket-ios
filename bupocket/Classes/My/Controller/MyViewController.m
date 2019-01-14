@@ -14,14 +14,13 @@
 #import "FeedbackViewController.h"
 //#import "UINavigationController+Extension.h"
 
-@interface MyViewController ()<UITableViewDelegate, UITableViewDataSource, UIGestureRecognizerDelegate>
+@interface MyViewController ()<UITableViewDelegate, UITableViewDataSource>
 
 @property (nonatomic, strong) UITableView * tableView;
 @property (nonatomic, strong) UIImage * headerImage;
 @property (nonatomic, strong) UIImageView * headerBg;
 @property (nonatomic, strong) UILabel * networkPrompt;
 @property (nonatomic, strong) NSArray * listArray;
-@property (nonatomic, strong)UITapGestureRecognizer * tapGestureRecognizer;
 // Repeat click interval
 @property (nonatomic, assign) NSTimeInterval acceptEventInterval;
 // Last click timestamp
@@ -96,7 +95,7 @@ static NSString * const ListCellID = @"ListCellID";
     UILabel * userName = [[UILabel alloc] init];
     userName.font = FONT_Bold(18);
     userName.textColor = TITLE_COLOR;
-    userName.text = [AccountTool account].identityName;
+    userName.text = [[AccountTool shareTool] account].identityName;
     [self.headerBg addSubview:userName];
     [userName mas_makeConstraints:^(MASConstraintMaker *make) {
         make.top.equalTo(userIcon.mas_bottom).offset(Margin_5);
@@ -113,7 +112,6 @@ static NSString * const ListCellID = @"ListCellID";
         }];
     }
     CGFloat headerH = ScreenScale(375 * self.headerImage.size.height / self.headerImage.size.width);
-//    self.headerBg.bounds = CGRectMake(0, 0, DEVICE_WIDTH, headerH);
     UIView * headerView = [[UIView alloc] initWithFrame:CGRectMake(0, 0, DEVICE_WIDTH, headerH + Margin_30)];
     [headerView addSubview:self.headerBg];
     [self.headerBg mas_makeConstraints:^(MASConstraintMaker *make) {
@@ -159,10 +157,6 @@ static NSString * const ListCellID = @"ListCellID";
         cell.detailImage.hidden = YES;
         NSString * currentVersion = [NSBundle mainBundle].infoDictionary[@"CFBundleVersion"];
         cell.detailTitle.text = [NSString stringWithFormat:@"V%@", currentVersion];
-        self.tapGestureRecognizer = [[UITapGestureRecognizer alloc]initWithTarget:self action:@selector(handleTaps:)];
-        self.tapGestureRecognizer.delegate = self;
-        [cell.contentView addGestureRecognizer:self.tapGestureRecognizer];
-        
     } else {
         cell.detailImage.hidden = NO;
         cell.detailTitle.text = nil;
@@ -185,39 +179,6 @@ static NSString * const ListCellID = @"ListCellID";
 {
     objc_setAssociatedObject(self, "UIControl_acceptEventTime", @(acceptEventTime), OBJC_ASSOCIATION_RETAIN_NONATOMIC);
 }
-- (void)handleTaps:(UITapGestureRecognizer *)paramSender
-{
-    if ([[NSUserDefaults standardUserDefaults] boolForKey:If_Show_Switch_Network]) return;
-    if (self.acceptEventInterval <= 0) {
-        self.acceptEventInterval = 2;
-    }
-    BOOL needSendAction = (NSDate.date.timeIntervalSince1970 - self.acceptEventTime >= self.acceptEventInterval);
-    if (self.acceptEventInterval > 0) {
-        self.acceptEventTime = NSDate.date.timeIntervalSince1970;
-    }
-    if (!needSendAction) {
-        self.touchCounter += 1;
-    } else {
-        self.touchCounter = 0;
-    }
-//    if (self.touchCounter == 3) {
-//        [[HUDHelper sharedInstance] syncStopLoadingMessage:@"您已点击4次"];
-//    }
-    if (self.touchCounter == 4) {
-        self.touchCounter = 0;
-        NSString * message = Localized(@"SwitchToTestNetwork");
-        UIAlertController * alertController = [UIAlertController alertControllerWithTitle:message message:nil preferredStyle:UIAlertControllerStyleAlert];
-        UIAlertAction * cancelAction = [UIAlertAction actionWithTitle:Localized(@"NO") style:UIAlertActionStyleDefault handler:nil];
-        [alertController addAction:cancelAction];
-        UIAlertAction * okAction = [UIAlertAction actionWithTitle:Localized(@"YES") style:UIAlertActionStyleDefault handler:^(UIAlertAction * _Nonnull action) {
-            SettingViewController * VC = [[SettingViewController alloc] init];
-            [[HTTPManager shareManager] SwitchedNetworkWithIsTest:YES];
-            [self.navigationController pushViewController:VC animated:YES];
-        }];
-        [alertController addAction:okAction];
-        [self presentViewController:alertController animated:YES completion:nil];
-    }
-}
 
 - (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath
 {
@@ -231,6 +192,34 @@ static NSString * const ListCellID = @"ListCellID";
     } else if (indexPath.row == 2) {
         FeedbackViewController * VC = [[FeedbackViewController alloc] init];
         [self.navigationController pushViewController:VC animated:YES];
+    } else if (indexPath.row == self.listArray.count - 1) {
+        if ([[NSUserDefaults standardUserDefaults] boolForKey:If_Show_Switch_Network]) return;
+        if (self.acceptEventInterval <= 0) {
+            self.acceptEventInterval = 2;
+        }
+        BOOL needSendAction = (NSDate.date.timeIntervalSince1970 - self.acceptEventTime >= self.acceptEventInterval);
+        if (self.acceptEventInterval > 0) {
+            self.acceptEventTime = NSDate.date.timeIntervalSince1970;
+        }
+        if (!needSendAction) {
+            self.touchCounter += 1;
+        } else {
+            self.touchCounter = 0;
+        }
+        if (self.touchCounter == 4) {
+            self.touchCounter = 0;
+            NSString * message = Localized(@"SwitchToTestNetwork");
+            UIAlertController * alertController = [UIAlertController alertControllerWithTitle:message message:nil preferredStyle:UIAlertControllerStyleAlert];
+            UIAlertAction * cancelAction = [UIAlertAction actionWithTitle:Localized(@"NO") style:UIAlertActionStyleDefault handler:nil];
+            [alertController addAction:cancelAction];
+            UIAlertAction * okAction = [UIAlertAction actionWithTitle:Localized(@"YES") style:UIAlertActionStyleDefault handler:^(UIAlertAction * _Nonnull action) {
+                SettingViewController * VC = [[SettingViewController alloc] init];
+                [[HTTPManager shareManager] SwitchedNetworkWithIsTest:YES];
+                [self.navigationController pushViewController:VC animated:YES];
+            }];
+            [alertController addAction:okAction];
+            [self presentViewController:alertController animated:YES completion:nil];
+        }
     }
 }
 - (BOOL)gestureRecognizer:(UIGestureRecognizer*)gestureRecognizer shouldReceiveTouch:(UITouch*)touch {
