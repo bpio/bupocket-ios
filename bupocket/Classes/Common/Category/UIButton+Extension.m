@@ -14,12 +14,13 @@ static NSString *_title;
 
 @implementation UIButton (Extension)
 
-+ (UIButton *)createButtonWithTitle:(NSString *)title TextFont:(CGFloat)textFont TextColor:(UIColor *)textColor Target:(id)target Selector:(SEL)selector
++ (UIButton *)createButtonWithTitle:(NSString *)title TextFont:(CGFloat)textFont TextNormalColor:(UIColor *)textNormalColor TextSelectedColor:(UIColor *)textSelectedColor Target:(id)target Selector:(SEL)selector
 {
     UIButton * button = [UIButton buttonWithType:UIButtonTypeCustom];
     [button setTitle:title forState:UIControlStateNormal];
-    button.titleLabel.font = FONT(textFont);
-    [button setTitleColor:textColor forState:UIControlStateNormal];
+    button.titleLabel.font = [UIFont systemFontOfSize:textFont];
+    [button setTitleColor:textNormalColor forState:UIControlStateNormal];
+    [button setTitleColor:textSelectedColor forState:UIControlStateSelected];
     [button addTarget:target action:selector forControlEvents:UIControlEventTouchUpInside];
     return button;
 }

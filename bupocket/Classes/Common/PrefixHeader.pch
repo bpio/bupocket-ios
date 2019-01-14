@@ -16,6 +16,7 @@
 #import "UITextField+Extension.h"
 #import "NSString+Extension.h"
 #import "UIColor+Extension.h"
+#import "UILabel+Extension.h"
 
 //#import "XHToast.h"
 #import <MJRefresh/MJRefresh.h>
@@ -32,12 +33,15 @@
 #import "DateTool.h"
 #import <sdk_ios/sdk_ios.h>
 #import "AccountTool.h"
+#import "WalletModel.h"
+#import "WalletTool.h"
 #import "RegexPatternTool.h"
 #import "AssetCurrencyModel.h"
 
 #import "LanguageManager.h"
 #import "Encapsulation.h"
 #import "UIView+Extension.h"
+#import "PasswordAlertView.h"
 #import "UIApplication+Extension.h"
 
 #import "NavigationViewController.h"
@@ -46,8 +50,6 @@
 #import "URLMacros.h"
 #import "Constant.h"
 #import "GlobalConfiguration.h"
-
-
 
 
 // Include any system framework and library headers here that should be included in all compilation units.

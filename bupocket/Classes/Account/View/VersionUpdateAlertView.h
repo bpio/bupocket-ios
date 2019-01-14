@@ -12,12 +12,12 @@
 NS_ASSUME_NONNULL_BEGIN
 
 typedef void (^OnCancleButtonClick)(void);
-typedef void (^OnSureButtonClick)(void);
+typedef void (^OnSureUpdateClick)(void);
 
 @interface VersionUpdateAlertView : UIView
 
 @property (nonatomic, copy) OnCancleButtonClick cancleBlock;
-@property (nonatomic, copy) OnSureButtonClick sureBlock;
+@property (nonatomic, copy) OnSureUpdateClick sureBlock;
 
 - (instancetype)initWithUpdateVersionNumber:(NSString *)versionNumber versionSize:(NSString *)versionSize content:(NSString *)content verType:(NSInteger)verType confrimBolck:(nonnull void (^)(void))confrimBlock cancelBlock:(nonnull void (^)(void))cancelBlock;
 

@@ -9,7 +9,7 @@
 #ifndef Constant_h
 #define Constant_h
 
-//#define NotFirst @"notFirst"
+#define LastVersion @"LastVersion"
 // Identity creation
 #define If_Created @"ifCreated"
 // Successful backup of memorizing words
@@ -24,6 +24,8 @@
 #define EN @"en"
 // Current currency index 0：CNY（¥）, 1：USD（$）, 2：JPY（¥）, 3：KRW（₩）,
 #define Current_Currency @"CurrentCurrency"
+// imported Wallet
+//#define imported_Wallet @"importedWallet"
 // Network request timeout limit time
 #define Timeout_Interval 30.0
 #define Assets_HomePage_CacheData @"AssetsHomePageCacheData"

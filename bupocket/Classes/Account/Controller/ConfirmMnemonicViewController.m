@@ -71,8 +71,10 @@
     }];
     
     self.mnemonicBg = [[UIView alloc] init];
-    self.mnemonicBg.backgroundColor = VIEWBG_COLOR;
+    self.mnemonicBg.clipsToBounds = YES;
+    self.mnemonicBg.layer.masksToBounds = YES;
     self.mnemonicBg.layer.cornerRadius = BG_CORNER;
+    self.mnemonicBg.backgroundColor = VIEWBG_COLOR;
     [self.scrollView addSubview:self.mnemonicBg];
     [self.mnemonicBg mas_makeConstraints:^(MASConstraintMaker *make) {
         make.top.equalTo(confirmPrompt.mas_bottom).offset(Margin_40);
@@ -101,7 +103,7 @@
     CGFloat tagH = Margin_40;
     CGFloat tagBgH = Margin_20 + (tagH + Margin_10) * (self.randomArray.count / 4) +  MAIN_HEIGHT;
     for (NSInteger i = 0; i < self.randomArray.count; i ++) {
-        UIButton * tagBtn = [UIButton createButtonWithTitle:self.randomArray[i] TextFont:14 TextColor:MAIN_COLOR Target:self Selector:@selector(tagAction:)];
+        UIButton * tagBtn = [UIButton createButtonWithTitle:self.randomArray[i] TextFont:14 TextNormalColor:MAIN_COLOR TextSelectedColor:MAIN_COLOR Target:self Selector:@selector(tagAction:)];
         [tagBtn setTitleColor:[UIColor whiteColor] forState:UIControlStateSelected];
         tagBtn.backgroundColor = VIEWBG_COLOR;
         tagBtn.layer.cornerRadius = TAG_CORNER;
@@ -130,7 +132,7 @@
     if (button.selected) {
         button.backgroundColor = TAGBG_COLOR;
         [self.tagArray addObject:button.titleLabel.text];
-        UIButton * tagButton = [UIButton createButtonWithTitle:button.titleLabel.text TextFont:15 TextColor:COLOR_6 Target:nil Selector:nil];
+        UIButton * tagButton = [UIButton createButtonWithTitle:button.titleLabel.text TextFont:15 TextNormalColor:COLOR_6 TextSelectedColor:COLOR_6 Target:nil Selector:nil];
         [tagButton sizeToFit];
         tagButton.tag = button.tag;
         [self.mnemonicBg addSubview:tagButton];

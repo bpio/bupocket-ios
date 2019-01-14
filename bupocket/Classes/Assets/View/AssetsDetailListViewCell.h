@@ -16,7 +16,7 @@ NS_ASSUME_NONNULL_BEGIN
 + (instancetype)cellWithTableView:(UITableView *)tableView;
 
 @property (nonatomic, strong) UIImageView * listImage;
-@property (nonatomic, strong) UILabel * purseAddress;
+@property (nonatomic, strong) UILabel * walletAddress;
 @property (nonatomic, strong) UILabel * date;
 @property (nonatomic, strong) UILabel * assets;
 @property (nonatomic, strong) UILabel * state;

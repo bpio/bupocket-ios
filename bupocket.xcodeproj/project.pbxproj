@@ -18,7 +18,6 @@
 		83379A092178509300C222A5 /* WKWebViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 83379A082178509300C222A5 /* WKWebViewController.m */; };
 		83379A182178682100C222A5 /* UIView+CustomAlertView.m in Sources */ = {isa = PBXBuildFile; fileRef = 83379A172178682100C222A5 /* UIView+CustomAlertView.m */; };
 		83379A58217880C700C222A5 /* BackUpPurseViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 83379A57217880C700C222A5 /* BackUpPurseViewController.m */; };
-		83379A5B2178825300C222A5 /* PurseCipherAlertView.m in Sources */ = {isa = PBXBuildFile; fileRef = 83379A5A2178825300C222A5 /* PurseCipherAlertView.m */; };
 		83379A5E21796BFC00C222A5 /* Terms of use_EN.html in Resources */ = {isa = PBXBuildFile; fileRef = 83379A5C21796BFC00C222A5 /* Terms of use_EN.html */; };
 		83379A5F21796BFC00C222A5 /* Terms of use_CN.html in Resources */ = {isa = PBXBuildFile; fileRef = 83379A5D21796BFC00C222A5 /* Terms of use_CN.html */; };
 		83379A6221797BDD00C222A5 /* ConfirmMnemonicViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 83379A6121797BDD00C222A5 /* ConfirmMnemonicViewController.m */; };
@@ -26,7 +25,6 @@
 		83379A6E2179CB9E00C222A5 /* FeedbackViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 83379A6D2179CB9E00C222A5 /* FeedbackViewController.m */; };
 		83379A742179D62300C222A5 /* MyIdentityViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 83379A732179D62300C222A5 /* MyIdentityViewController.m */; };
 		83379A80217B524D00C222A5 /* UIApplication+Extension.m in Sources */ = {isa = PBXBuildFile; fileRef = 83379A7F217B524D00C222A5 /* UIApplication+Extension.m */; };
-		83379A83217D805300C222A5 /* PurseAddressAlertView.m in Sources */ = {isa = PBXBuildFile; fileRef = 83379A82217D805300C222A5 /* PurseAddressAlertView.m */; };
 		83379A86217D9C8A00C222A5 /* AssetsDetailViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 83379A85217D9C8A00C222A5 /* AssetsDetailViewController.m */; };
 		83379A89217DA4F900C222A5 /* AssetsDetailListViewCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 83379A88217DA4F900C222A5 /* AssetsDetailListViewCell.m */; };
 		83379A8C217DB25A00C222A5 /* TransferAccountsViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 83379A8B217DB25A00C222A5 /* TransferAccountsViewController.m */; };
@@ -103,6 +101,21 @@
 		958127EF219ABD9D0081A02E /* VersionUpdateAlertView.m in Sources */ = {isa = PBXBuildFile; fileRef = 958127EE219ABD9D0081A02E /* VersionUpdateAlertView.m */; };
 		958127F2219AC82A0081A02E /* VersionModel.m in Sources */ = {isa = PBXBuildFile; fileRef = 958127F1219AC82A0081A02E /* VersionModel.m */; };
 		958AA69821A2A89600BEA50C /* CustomRefreshFooter.m in Sources */ = {isa = PBXBuildFile; fileRef = 958AA69721A2A89600BEA50C /* CustomRefreshFooter.m */; };
+		959726B821E334C20022CB78 /* WalletManagementViewCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 959726B721E334C20022CB78 /* WalletManagementViewCell.m */; };
+		959726BC21E358A10022CB78 /* ExportViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 959726BB21E358A10022CB78 /* ExportViewController.m */; };
+		959726BF21E43EB50022CB78 /* WalletModel.m in Sources */ = {isa = PBXBuildFile; fileRef = 959726BE21E43EB40022CB78 /* WalletModel.m */; };
+		959726C221E44FFB0022CB78 /* ModifyAlertView.m in Sources */ = {isa = PBXBuildFile; fileRef = 959726C121E44FFB0022CB78 /* ModifyAlertView.m */; };
+		959726C521E487F10022CB78 /* ExportKeystoreViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 959726C421E487F10022CB78 /* ExportKeystoreViewController.m */; };
+		959726C821E4893F0022CB78 /* ExportPrivateKeyViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 959726C721E4893F0022CB78 /* ExportPrivateKeyViewController.m */; };
+		959726CB21E5A8640022CB78 /* ImportWalletViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 959726CA21E5A8640022CB78 /* ImportWalletViewController.m */; };
+		959726D721E5E76F0022CB78 /* ImportWalletModeViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 959726D621E5E76F0022CB78 /* ImportWalletModeViewController.m */; };
+		959726DA21E6DCA10022CB78 /* TextFieldViewCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 959726D921E6DCA10022CB78 /* TextFieldViewCell.m */; };
+		959726E221E82EA20022CB78 /* WalletTool.m in Sources */ = {isa = PBXBuildFile; fileRef = 959726E121E82EA20022CB78 /* WalletTool.m */; };
+		959726E521E88C610022CB78 /* UILabel+Extension.m in Sources */ = {isa = PBXBuildFile; fileRef = 959726E421E88C610022CB78 /* UILabel+Extension.m */; };
+		959726E821E893400022CB78 /* SafetyReinforcementAlertView.m in Sources */ = {isa = PBXBuildFile; fileRef = 959726E721E893400022CB78 /* SafetyReinforcementAlertView.m */; };
+		959726EE21E8C84F0022CB78 /* PasswordAlertView.m in Sources */ = {isa = PBXBuildFile; fileRef = 959726ED21E8C84F0022CB78 /* PasswordAlertView.m */; };
+		959726F121E8CAAA0022CB78 /* WalletAddressAlertView.m in Sources */ = {isa = PBXBuildFile; fileRef = 959726F021E8CAAA0022CB78 /* WalletAddressAlertView.m */; };
+		959726F421E8D1970022CB78 /* ExplainInfoViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 959726F321E8D1970022CB78 /* ExplainInfoViewController.m */; };
 		95A8A3B1219D1352008E978E /* LanguageManager.m in Sources */ = {isa = PBXBuildFile; fileRef = 95A8A3AF219D1352008E978E /* LanguageManager.m */; };
 		95A8A3B5219D157C008E978E /* DateTool.m in Sources */ = {isa = PBXBuildFile; fileRef = 95A8A3B4219D157C008E978E /* DateTool.m */; };
 		95A8A3B9219D15D8008E978E /* RegexPatternTool.m in Sources */ = {isa = PBXBuildFile; fileRef = 95A8A3B8219D15D8008E978E /* RegexPatternTool.m */; };
@@ -111,6 +124,7 @@
 		95A8A41C219D5FF7008E978E /* YBPopupMenu.m in Sources */ = {isa = PBXBuildFile; fileRef = 95A8A417219D5FF6008E978E /* YBPopupMenu.m */; };
 		95A8A41D219D5FF7008E978E /* YBRectConst.m in Sources */ = {isa = PBXBuildFile; fileRef = 95A8A41A219D5FF7008E978E /* YBRectConst.m */; };
 		95A8A41E219D5FF7008E978E /* YBPopupMenuPath.m in Sources */ = {isa = PBXBuildFile; fileRef = 95A8A41B219D5FF7008E978E /* YBPopupMenuPath.m */; };
+		95DC83C821E2FD3B00F745E6 /* WalletManagementViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 95DC83C721E2FD3B00F745E6 /* WalletManagementViewController.m */; };
 		95FAA18B21D769D30095E22D /* sdk_ios.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 95FAA18A21D769D30095E22D /* sdk_ios.framework */; };
 		C78AA58ABD5C4F75C67B6250 /* Pods_bupocketTests.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 248F98B6791F2F7C55E77E0E /* Pods_bupocketTests.framework */; };
 		E0A64C5CAFFFD9486B7713D7 /* Pods_bupocket.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = EB267DD938A42BAD30A164A2 /* Pods_bupocket.framework */; };
@@ -173,8 +187,6 @@
 		83379A172178682100C222A5 /* UIView+CustomAlertView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "UIView+CustomAlertView.m"; sourceTree = "<group>"; };
 		83379A56217880C700C222A5 /* BackUpPurseViewController.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = BackUpPurseViewController.h; sourceTree = "<group>"; };
 		83379A57217880C700C222A5 /* BackUpPurseViewController.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = BackUpPurseViewController.m; sourceTree = "<group>"; };
-		83379A592178825300C222A5 /* PurseCipherAlertView.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = PurseCipherAlertView.h; sourceTree = "<group>"; };
-		83379A5A2178825300C222A5 /* PurseCipherAlertView.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = PurseCipherAlertView.m; sourceTree = "<group>"; };
 		83379A5C21796BFC00C222A5 /* Terms of use_EN.html */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.html; path = "Terms of use_EN.html"; sourceTree = "<group>"; };
 		83379A5D21796BFC00C222A5 /* Terms of use_CN.html */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.html; path = "Terms of use_CN.html"; sourceTree = "<group>"; };
 		83379A6021797BDD00C222A5 /* ConfirmMnemonicViewController.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = ConfirmMnemonicViewController.h; sourceTree = "<group>"; };
@@ -187,8 +199,6 @@
 		83379A732179D62300C222A5 /* MyIdentityViewController.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = MyIdentityViewController.m; sourceTree = "<group>"; };
 		83379A7E217B524D00C222A5 /* UIApplication+Extension.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "UIApplication+Extension.h"; sourceTree = "<group>"; };
 		83379A7F217B524D00C222A5 /* UIApplication+Extension.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "UIApplication+Extension.m"; sourceTree = "<group>"; };
-		83379A81217D805300C222A5 /* PurseAddressAlertView.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = PurseAddressAlertView.h; sourceTree = "<group>"; };
-		83379A82217D805300C222A5 /* PurseAddressAlertView.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = PurseAddressAlertView.m; sourceTree = "<group>"; };
 		83379A84217D9C8A00C222A5 /* AssetsDetailViewController.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = AssetsDetailViewController.h; sourceTree = "<group>"; };
 		83379A85217D9C8A00C222A5 /* AssetsDetailViewController.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = AssetsDetailViewController.m; sourceTree = "<group>"; };
 		83379A87217DA4F900C222A5 /* AssetsDetailListViewCell.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = AssetsDetailListViewCell.h; sourceTree = "<group>"; };
@@ -349,6 +359,36 @@
 		958127F1219AC82A0081A02E /* VersionModel.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = VersionModel.m; sourceTree = "<group>"; };
 		958AA69621A2A89600BEA50C /* CustomRefreshFooter.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = CustomRefreshFooter.h; sourceTree = "<group>"; };
 		958AA69721A2A89600BEA50C /* CustomRefreshFooter.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = CustomRefreshFooter.m; sourceTree = "<group>"; };
+		959726B621E334C20022CB78 /* WalletManagementViewCell.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = WalletManagementViewCell.h; sourceTree = "<group>"; };
+		959726B721E334C20022CB78 /* WalletManagementViewCell.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = WalletManagementViewCell.m; sourceTree = "<group>"; };
+		959726BA21E358A10022CB78 /* ExportViewController.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = ExportViewController.h; sourceTree = "<group>"; };
+		959726BB21E358A10022CB78 /* ExportViewController.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = ExportViewController.m; sourceTree = "<group>"; };
+		959726BD21E43EB40022CB78 /* WalletModel.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = WalletModel.h; sourceTree = "<group>"; };
+		959726BE21E43EB40022CB78 /* WalletModel.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = WalletModel.m; sourceTree = "<group>"; };
+		959726C021E44FFB0022CB78 /* ModifyAlertView.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = ModifyAlertView.h; sourceTree = "<group>"; };
+		959726C121E44FFB0022CB78 /* ModifyAlertView.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = ModifyAlertView.m; sourceTree = "<group>"; };
+		959726C321E487F10022CB78 /* ExportKeystoreViewController.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = ExportKeystoreViewController.h; sourceTree = "<group>"; };
+		959726C421E487F10022CB78 /* ExportKeystoreViewController.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = ExportKeystoreViewController.m; sourceTree = "<group>"; };
+		959726C621E4893F0022CB78 /* ExportPrivateKeyViewController.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = ExportPrivateKeyViewController.h; sourceTree = "<group>"; };
+		959726C721E4893F0022CB78 /* ExportPrivateKeyViewController.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = ExportPrivateKeyViewController.m; sourceTree = "<group>"; };
+		959726C921E5A8640022CB78 /* ImportWalletViewController.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = ImportWalletViewController.h; sourceTree = "<group>"; };
+		959726CA21E5A8640022CB78 /* ImportWalletViewController.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = ImportWalletViewController.m; sourceTree = "<group>"; };
+		959726D521E5E76F0022CB78 /* ImportWalletModeViewController.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = ImportWalletModeViewController.h; sourceTree = "<group>"; };
+		959726D621E5E76F0022CB78 /* ImportWalletModeViewController.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = ImportWalletModeViewController.m; sourceTree = "<group>"; };
+		959726D821E6DCA00022CB78 /* TextFieldViewCell.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = TextFieldViewCell.h; sourceTree = "<group>"; };
+		959726D921E6DCA10022CB78 /* TextFieldViewCell.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = TextFieldViewCell.m; sourceTree = "<group>"; };
+		959726E021E82EA20022CB78 /* WalletTool.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = WalletTool.h; sourceTree = "<group>"; };
+		959726E121E82EA20022CB78 /* WalletTool.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = WalletTool.m; sourceTree = "<group>"; };
+		959726E321E88C610022CB78 /* UILabel+Extension.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "UILabel+Extension.h"; sourceTree = "<group>"; };
+		959726E421E88C610022CB78 /* UILabel+Extension.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "UILabel+Extension.m"; sourceTree = "<group>"; };
+		959726E621E893400022CB78 /* SafetyReinforcementAlertView.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = SafetyReinforcementAlertView.h; sourceTree = "<group>"; };
+		959726E721E893400022CB78 /* SafetyReinforcementAlertView.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = SafetyReinforcementAlertView.m; sourceTree = "<group>"; };
+		959726EC21E8C84F0022CB78 /* PasswordAlertView.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = PasswordAlertView.h; sourceTree = "<group>"; };
+		959726ED21E8C84F0022CB78 /* PasswordAlertView.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = PasswordAlertView.m; sourceTree = "<group>"; };
+		959726EF21E8CAAA0022CB78 /* WalletAddressAlertView.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = WalletAddressAlertView.h; sourceTree = "<group>"; };
+		959726F021E8CAAA0022CB78 /* WalletAddressAlertView.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = WalletAddressAlertView.m; sourceTree = "<group>"; };
+		959726F221E8D1970022CB78 /* ExplainInfoViewController.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = ExplainInfoViewController.h; sourceTree = "<group>"; };
+		959726F321E8D1970022CB78 /* ExplainInfoViewController.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = ExplainInfoViewController.m; sourceTree = "<group>"; };
 		95A8A3AF219D1352008E978E /* LanguageManager.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = LanguageManager.m; sourceTree = "<group>"; };
 		95A8A3B0219D1352008E978E /* LanguageManager.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = LanguageManager.h; sourceTree = "<group>"; };
 		95A8A3B3219D157B008E978E /* DateTool.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = DateTool.h; sourceTree = "<group>"; };
@@ -365,6 +405,8 @@
 		95A8A419219D5FF7008E978E /* YBPopupMenuPath.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = YBPopupMenuPath.h; sourceTree = "<group>"; };
 		95A8A41A219D5FF7008E978E /* YBRectConst.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = YBRectConst.m; sourceTree = "<group>"; };
 		95A8A41B219D5FF7008E978E /* YBPopupMenuPath.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = YBPopupMenuPath.m; sourceTree = "<group>"; };
+		95DC83C621E2FD3B00F745E6 /* WalletManagementViewController.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = WalletManagementViewController.h; sourceTree = "<group>"; };
+		95DC83C721E2FD3B00F745E6 /* WalletManagementViewController.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = WalletManagementViewController.m; sourceTree = "<group>"; };
 		95FAA18A21D769D30095E22D /* sdk_ios.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; path = sdk_ios.framework; sourceTree = "<group>"; };
 		9D915F385F1A78B38EC83B6E /* Pods_bupocketUITests.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_bupocketUITests.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		A61F11E76D6541BC859B703E /* Pods-bupocket.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-bupocket.debug.xcconfig"; path = "Pods/Target Support Files/Pods-bupocket/Pods-bupocket.debug.xcconfig"; sourceTree = "<group>"; };
@@ -520,10 +562,12 @@
 			children = (
 				9549EC64219C0CF800307255 /* CreateTipsAlertView.h */,
 				9549EC65219C0CF800307255 /* CreateTipsAlertView.m */,
-				83379A592178825300C222A5 /* PurseCipherAlertView.h */,
-				83379A5A2178825300C222A5 /* PurseCipherAlertView.m */,
+				959726EC21E8C84F0022CB78 /* PasswordAlertView.h */,
+				959726ED21E8C84F0022CB78 /* PasswordAlertView.m */,
 				958127ED219ABD9D0081A02E /* VersionUpdateAlertView.h */,
 				958127EE219ABD9D0081A02E /* VersionUpdateAlertView.m */,
+				959726E621E893400022CB78 /* SafetyReinforcementAlertView.h */,
+				959726E721E893400022CB78 /* SafetyReinforcementAlertView.m */,
 			);
 			path = View;
 			sourceTree = "<group>";
@@ -623,6 +667,20 @@
 				838DC7642186A114002FF276 /* DistributionOfAssetsViewController.m */,
 				838DC7662186AFFB002FF276 /* DistributionResultsViewController.h */,
 				838DC7672186AFFB002FF276 /* DistributionResultsViewController.m */,
+				95DC83C621E2FD3B00F745E6 /* WalletManagementViewController.h */,
+				95DC83C721E2FD3B00F745E6 /* WalletManagementViewController.m */,
+				959726BA21E358A10022CB78 /* ExportViewController.h */,
+				959726BB21E358A10022CB78 /* ExportViewController.m */,
+				959726C321E487F10022CB78 /* ExportKeystoreViewController.h */,
+				959726C421E487F10022CB78 /* ExportKeystoreViewController.m */,
+				959726C621E4893F0022CB78 /* ExportPrivateKeyViewController.h */,
+				959726C721E4893F0022CB78 /* ExportPrivateKeyViewController.m */,
+				959726C921E5A8640022CB78 /* ImportWalletViewController.h */,
+				959726CA21E5A8640022CB78 /* ImportWalletViewController.m */,
+				959726D521E5E76F0022CB78 /* ImportWalletModeViewController.h */,
+				959726D621E5E76F0022CB78 /* ImportWalletModeViewController.m */,
+				959726F221E8D1970022CB78 /* ExplainInfoViewController.h */,
+				959726F321E8D1970022CB78 /* ExplainInfoViewController.m */,
 			);
 			path = Controller;
 			sourceTree = "<group>";
@@ -656,6 +714,10 @@
 				956CD42021B016D1004DC1FA /* ListModel.m */,
 				952ADD0B21A65B4B00BEE51B /* SocketIOHandler.h */,
 				952ADD0C21A65B4B00BEE51B /* SocketIOHandler.m */,
+				959726BD21E43EB40022CB78 /* WalletModel.h */,
+				959726BE21E43EB40022CB78 /* WalletModel.m */,
+				959726E021E82EA20022CB78 /* WalletTool.h */,
+				959726E121E82EA20022CB78 /* WalletTool.m */,
 			);
 			path = Model;
 			sourceTree = "<group>";
@@ -667,14 +729,20 @@
 				833799372177427500C222A5 /* AssetsListViewCell.m */,
 				83D5B1E92181741200BF1FF1 /* AddAssetsViewCell.h */,
 				83D5B1EA2181741200BF1FF1 /* AddAssetsViewCell.m */,
-				83379A81217D805300C222A5 /* PurseAddressAlertView.h */,
-				83379A82217D805300C222A5 /* PurseAddressAlertView.m */,
+				959726EF21E8CAAA0022CB78 /* WalletAddressAlertView.h */,
+				959726F021E8CAAA0022CB78 /* WalletAddressAlertView.m */,
 				83379A87217DA4F900C222A5 /* AssetsDetailListViewCell.h */,
 				83379A88217DA4F900C222A5 /* AssetsDetailListViewCell.m */,
 				83379A8D217DC0C700C222A5 /* TransferDetailsAlertView.h */,
 				83379A8E217DC0C700C222A5 /* TransferDetailsAlertView.m */,
 				83379A93217EB08600C222A5 /* DetailListViewCell.h */,
 				83379A94217EB08600C222A5 /* DetailListViewCell.m */,
+				959726B621E334C20022CB78 /* WalletManagementViewCell.h */,
+				959726B721E334C20022CB78 /* WalletManagementViewCell.m */,
+				959726C021E44FFB0022CB78 /* ModifyAlertView.h */,
+				959726C121E44FFB0022CB78 /* ModifyAlertView.m */,
+				959726D821E6DCA00022CB78 /* TextFieldViewCell.h */,
+				959726D921E6DCA10022CB78 /* TextFieldViewCell.m */,
 			);
 			path = View;
 			sourceTree = "<group>";
@@ -692,6 +760,8 @@
 				833799302177305A00C222A5 /* UIView+Extension.m */,
 				83379A162178682100C222A5 /* UIView+CustomAlertView.h */,
 				83379A172178682100C222A5 /* UIView+CustomAlertView.m */,
+				959726E321E88C610022CB78 /* UILabel+Extension.h */,
+				959726E421E88C610022CB78 /* UILabel+Extension.m */,
 				83379ADA2180509600C222A5 /* NSDate+Extension.h */,
 				83379ADB2180509600C222A5 /* NSDate+Extension.m */,
 				83D5B1EC21818F7700BF1FF1 /* NSString+Extension.h */,
@@ -1186,6 +1256,7 @@
 				833799382177427500C222A5 /* AssetsListViewCell.m in Sources */,
 				83379A95217EB08600C222A5 /* DetailListViewCell.m in Sources */,
 				83B594B42175F46E009F91BA /* TermsOfUseViewController.m in Sources */,
+				959726CB21E5A8640022CB78 /* ImportWalletViewController.m in Sources */,
 				83379AAA217F006600C222A5 /* HttpTool.m in Sources */,
 				8372C86F2174D03F00FF9506 /* UIButton+Extension.m in Sources */,
 				83379A8F217DC0C700C222A5 /* TransferDetailsAlertView.m in Sources */,
@@ -1204,13 +1275,18 @@
 				83FB443521904AA400D68569 /* HMScannerMaskView.m in Sources */,
 				83FB443721904AA400D68569 /* HMScanner.m in Sources */,
 				83379A182178682100C222A5 /* UIView+CustomAlertView.m in Sources */,
+				959726BF21E43EB50022CB78 /* WalletModel.m in Sources */,
 				95A8A3B9219D15D8008E978E /* RegexPatternTool.m in Sources */,
 				8395AF34218958840082EA30 /* TransactionResultModel.m in Sources */,
 				958127EF219ABD9D0081A02E /* VersionUpdateAlertView.m in Sources */,
 				8372C8662174CC6F00FF9506 /* BaseViewController.m in Sources */,
 				835A45262174C14D005BFCDD /* main.m in Sources */,
 				83379AD921802FA900C222A5 /* AssetsDetailModel.m in Sources */,
+				959726DA21E6DCA10022CB78 /* TextFieldViewCell.m in Sources */,
+				959726EE21E8C84F0022CB78 /* PasswordAlertView.m in Sources */,
 				83379A89217DA4F900C222A5 /* AssetsDetailListViewCell.m in Sources */,
+				959726D721E5E76F0022CB78 /* ImportWalletModeViewController.m in Sources */,
+				959726E821E893400022CB78 /* SafetyReinforcementAlertView.m in Sources */,
 				83D5B1EE21818F7700BF1FF1 /* NSString+Extension.m in Sources */,
 				83FB4443219131EC00D68569 /* UINavigationController+Extension.m in Sources */,
 				83379A9B217EC01900C222A5 /* OrderDetailsViewController.m in Sources */,
@@ -1226,6 +1302,7 @@
 				83B594B72175FC8B009F91BA /* BackupMnemonicsViewController.m in Sources */,
 				83FB443421904AA400D68569 /* HMScannerBorder.m in Sources */,
 				83B594AD2175E4D9009F91BA /* RestoreIdentityViewController.m in Sources */,
+				959726BC21E358A10022CB78 /* ExportViewController.m in Sources */,
 				83FB443A21904AA400D68569 /* HMScannerController.m in Sources */,
 				83379AE8218066FE00C222A5 /* BlockInfoModel.m in Sources */,
 				958127F2219AC82A0081A02E /* VersionModel.m in Sources */,
@@ -1235,15 +1312,18 @@
 				8372C8632174CBF100FF9506 /* TabBarViewController.m in Sources */,
 				9579EB5321BABE6300051EDB /* MBProgressHUD+JDragon.m in Sources */,
 				83379AC3217F3F3000C222A5 /* BaseModel.m in Sources */,
+				959726E221E82EA20022CB78 /* WalletTool.m in Sources */,
 				83D5BCD12182AB8200BF1FF1 /* AccountTool.m in Sources */,
 				8372C872217588D100FF9506 /* IdentityViewController.m in Sources */,
 				95A8A41C219D5FF7008E978E /* YBPopupMenu.m in Sources */,
 				83B594AA2175954F009F91BA /* CreateIdentityViewController.m in Sources */,
 				83EE39422181633A0017CDE5 /* AddAssetsViewController.m in Sources */,
-				83379A83217D805300C222A5 /* PurseAddressAlertView.m in Sources */,
 				8395AF2B218843650082EA30 /* RegisteredModel.m in Sources */,
 				8395AF25218725FF0082EA30 /* RegisteredResultViewController.m in Sources */,
+				959726C221E44FFB0022CB78 /* ModifyAlertView.m in Sources */,
 				950E4145219E6ADD002C7900 /* AssetCurrencyModel.m in Sources */,
+				959726E521E88C610022CB78 /* UILabel+Extension.m in Sources */,
+				959726F421E8D1970022CB78 /* ExplainInfoViewController.m in Sources */,
 				83379A6E2179CB9E00C222A5 /* FeedbackViewController.m in Sources */,
 				83D5BCC72181BF9500BF1FF1 /* UIColor+Extension.m in Sources */,
 				9510A3CC219A91D4007A49A4 /* ErrorTypeTool.m in Sources */,
@@ -1251,17 +1331,21 @@
 				838DC7652186A114002FF276 /* DistributionOfAssetsViewController.m in Sources */,
 				83379ADC2180509600C222A5 /* NSDate+Extension.m in Sources */,
 				8369BCED218B3DF5002F8903 /* AtpProperty.m in Sources */,
+				959726F121E8CAAA0022CB78 /* WalletAddressAlertView.m in Sources */,
 				83D5B1F1218199E900BF1FF1 /* JsonTool.m in Sources */,
 				83B465A821745C9300187961 /* ViewController.m in Sources */,
 				833799322177305A00C222A5 /* UIView+Extension.m in Sources */,
 				83379A98217EB79B00C222A5 /* RequestTimeoutViewController.m in Sources */,
+				959726B821E334C20022CB78 /* WalletManagementViewCell.m in Sources */,
 				835A45272174C14D005BFCDD /* AppDelegate.m in Sources */,
+				959726C821E4893F0022CB78 /* ExportPrivateKeyViewController.m in Sources */,
 				956CD42121B016D1004DC1FA /* ListModel.m in Sources */,
 				83379AE22180630300C222A5 /* TxDetailModel.m in Sources */,
 				95A8A41D219D5FF7008E978E /* YBRectConst.m in Sources */,
 				833799172176E1E600C222A5 /* ListTableViewCell.m in Sources */,
 				95A8A3BC219D161D008E978E /* CustomRefreshHeader.m in Sources */,
-				83379A5B2178825300C222A5 /* PurseCipherAlertView.m in Sources */,
+				95DC83C821E2FD3B00F745E6 /* WalletManagementViewController.m in Sources */,
+				959726C521E487F10022CB78 /* ExportKeystoreViewController.m in Sources */,
 				83379A092178509300C222A5 /* WKWebViewController.m in Sources */,
 				83379A6221797BDD00C222A5 /* ConfirmMnemonicViewController.m in Sources */,
 				95A8A41E219D5FF7008E978E /* YBPopupMenuPath.m in Sources */,
@@ -1462,6 +1546,7 @@
 				CODE_SIGN_STYLE = Manual;
 				DEFINES_MODULE = YES;
 				DEVELOPMENT_TEAM = 3DPSH636RT;
+				ENABLE_BITCODE = NO;
 				FRAMEWORK_SEARCH_PATHS = (
 					"$(inherited)",
 					"$(PROJECT_DIR)",
@@ -1525,6 +1610,7 @@
 				CODE_SIGN_STYLE = Manual;
 				DEFINES_MODULE = YES;
 				DEVELOPMENT_TEAM = 3DPSH636RT;
+				ENABLE_BITCODE = NO;
 				FRAMEWORK_SEARCH_PATHS = (
 					"$(inherited)",
 					"$(PROJECT_DIR)",

@@ -8,7 +8,6 @@
 
 #import "MyIdentityViewController.h"
 #import "IdentityViewController.h"
-#import "PurseCipherAlertView.h"
 #import "BackupMnemonicsViewController.h"
 #import "ClearCacheTool.h"
 #import "YBPopupMenu.h"
@@ -45,7 +44,7 @@
     UILabel * IDName = [[UILabel alloc] init];
     IDName.font = FONT(15);
     IDName.textColor = COLOR_6;
-    IDName.text = [AccountTool account].identityName;
+    IDName.text = [[AccountTool shareTool] account].identityName;
     [myIdentityBg addSubview:IDName];
     [IDNameTitle setContentCompressionResistancePriority:UILayoutPriorityRequired forAxis:UILayoutConstraintAxisHorizontal];
     [IDNameTitle mas_makeConstraints:^(MASConstraintMaker *make) {
@@ -65,14 +64,14 @@
     self.identityIDTitle.titleLabel.font = IDNameTitle.font;
     [self.identityIDTitle setTitleColor:IDNameTitle.textColor forState:UIControlStateNormal];
     [self.identityIDTitle setTitle:Localized(@"IdentityIDTitle") forState:UIControlStateNormal];
-    [self.identityIDTitle setImage:[UIImage imageNamed:@"identityIDInfo"] forState:UIControlStateNormal];
+    [self.identityIDTitle setImage:[UIImage imageNamed:@"explain"] forState:UIControlStateNormal];
     [self.identityIDTitle addTarget:self action:@selector(identityIDInfo:) forControlEvents:UIControlEventTouchUpInside];
     [myIdentityBg addSubview:self.identityIDTitle];
     
     UILabel * IdentityID = [[UILabel alloc] init];
     IdentityID.font = IDName.font;
     IdentityID.textColor = IDName.textColor;
-    IdentityID.text = [NSString stringEllipsisWithStr:[AccountTool account].identityAccount];
+    IdentityID.text = [NSString stringEllipsisWithStr:[[AccountTool shareTool] account].identityAddress];
     IdentityID.numberOfLines = 0;
     IdentityID.textAlignment = NSTextAlignmentRight;
     [myIdentityBg addSubview:IdentityID];
@@ -91,7 +90,7 @@
     
     CGSize btnSize = CGSizeMake(DEVICE_WIDTH - Margin_30, MAIN_HEIGHT);
     UIButton * exitID = [UIButton createButtonWithTitle:Localized(@"ExitCurrentIdentity") isEnabled:YES Target:self Selector:@selector(exitIDAction)];
-    [exitID setTitleColor:COLOR(@"FF6363") forState:UIControlStateNormal];
+    [exitID setTitleColor:WARNING_COLOR forState:UIControlStateNormal];
     exitID.backgroundColor = [UIColor whiteColor];
     [self.view addSubview:exitID];
     [exitID mas_makeConstraints:^(MASConstraintMaker *make) {
@@ -108,7 +107,7 @@
 }
 - (void)backupIdentityAction
 {
-    PurseCipherAlertView * alertView = [[PurseCipherAlertView alloc] initWithPrompt:Localized(@"IdentityCipherPrompt") confrimBolck:^(NSString * _Nonnull password, NSArray * _Nonnull words) {
+    PasswordAlertView * alertView = [[PasswordAlertView alloc] initWithPrompt:Localized(@"IdentityCipherPrompt") walletKeyStore:@"" isAutomaticClosing:YES confrimBolck:^(NSString * _Nonnull password, NSArray * _Nonnull words) {
         BackupMnemonicsViewController * VC = [[BackupMnemonicsViewController alloc] init];
         VC.mnemonicArray = words;
         [self.navigationController pushViewController:VC animated:YES];
@@ -120,31 +119,26 @@
 }
 - (void)exitIDAction
 {
-    UIAlertController * alertController = [Encapsulation alertControllerWithCancelTitle:Localized(@"Cancel") title:Localized(@"ExitCurrentIdentity") message:Localized(@"ExitCurrentIdentityPrompt")];
-    UIAlertAction * okAction = [UIAlertAction actionWithTitle:Localized(@"Confirm") style:UIAlertActionStyleDefault handler:^(UIAlertAction * _Nonnull action) {
-        PurseCipherAlertView * alertView = [[PurseCipherAlertView alloc] initWithPrompt:Localized(@"IdentityCipherWarning") confrimBolck:^(NSString * _Nonnull password, NSArray * _Nonnull words) {
+    [Encapsulation showAlertControllerWithTitle:Localized(@"ExitCurrentIdentity") message:Localized(@"ExitCurrentIdentityPrompt") cancelHandler:^(UIAlertAction *action) {
+        
+    } confirmHandler:^(UIAlertAction *action) {
+        PasswordAlertView * alertView = [[PasswordAlertView alloc] initWithPrompt:Localized(@"IdentityCipherWarning") walletKeyStore:@"" isAutomaticClosing:YES confrimBolck:^(NSString * _Nonnull password, NSArray * _Nonnull words) {
             [self exitIDDataWithPassword:password];
         } cancelBlock:^{
             
         }];
         [alertView showInWindowWithMode:CustomAnimationModeAlert inView:nil bgAlpha:0.2 needEffectView:NO];
     }];
-    [alertController addAction:okAction];
-    [self presentViewController:alertController animated:YES completion:nil];
 }
 - (void)exitIDDataWithPassword:(NSString *)password
 {
     [MBProgressHUD showActivityMessageInWindow:Localized(@"Loading")];
     NSOperationQueue * queue = [[NSOperationQueue alloc] init];
     [queue addOperationWithBlock:^{
-        NSString * privateKey = [NSString decipherKeyStoreWithPW:password keyStoreValueStr:[AccountTool account].purseKey];
-        if ([Tools isEmpty:privateKey]) {
-            [MBProgressHUD hideHUD];
-            [MBProgressHUD showTipMessageInWindow:Localized(@"PasswordIsIncorrect")];
-            return;
-        }
         [ClearCacheTool cleanCache:^{
             [ClearCacheTool cleanUserDefaults];
+            [[AccountTool shareTool] clearCache];
+            [[WalletTool shareTool] clearCache];
 //            [[LanguageManager shareInstance] setDefaultLocale];
             [[HTTPManager shareManager] initNetWork];
             // Minimum Asset Limitation

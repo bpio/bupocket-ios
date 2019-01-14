@@ -106,7 +106,7 @@
 "SafetyTips" = "Your wallet mnemonics have not been backed up. To prevent loss of tokens due to forgetting passwords, deleting apps, or losing your phone, be sure to back up your mnemonics.";
 "ImmediateBackup" = "Back up now";
 // Wallet address
-"PurseAddressTitle" = "Wallet address";
+"WalletAddressTitle" = "Wallet address";
 "DuplicateWalletAddress" = "Copy the wallet address";
 "WalletAddressQRCode" = "QR code of the wallet address";
 // Add tokens
@@ -135,7 +135,8 @@
 "TransactionCostPlaceholder" = "Please enter the transaction fee";
 "Next" = "Next";
 "CannotTransferToOneself" = "You can\'t transfer BU to yourself";
-"TransactionIdentityCipherPrompt" = "Please fill in the identity password to confirm the transfer";
+//"TransactionIdentityCipherPrompt" = "Please fill in the identity password to confirm the transfer";
+"TransactionWalletPWPrompt" = " Please enter the wallet password to confirm to transfer";
 "ConfirmationOfTransfer" = "Confirm";
 "TransferPrompt" = "Please confirm whether the transfer information is correct.";
 "Submission" = "Submit";
@@ -158,7 +159,8 @@
 "ConfirmRegistrationInformation" = "Please confirm the following token registration information";
 "ConfirmationOfRegistration" = "Confirm registration";
 "RegisteredNumberOverflowMax" = "The tokens you have registered have exceeded the maximum limit";
-"RegistrationIdentityCipherPrompt" = "Please fill in the identity password to confirm the registration";
+//"RegistrationWalletPWPrompt" = "Please fill in the identity password to confirm the registration";
+"RegistrationWalletPWPrompt" = " Please enter the wallet password to confirm to register";
 "RegistrationSuccess" = "Registration succeeded";
 "RegistrationFailure" = "Registration failed";
 "RegistrationTimeout" = "Registration timeout";
@@ -170,7 +172,8 @@
 // Confirm token issuance
 "IssueAssetsConfirmation" = "Confirm token issuance";
 "ConfirmAssetInformation" = "Please confirm the following token issuance information";
-"IssueIdentityCipherPrompt" = "Please fill in the identity password to confirm the issuance";
+//"IssueIdentityCipherPrompt" = "Please fill in the identity password to confirm the issuance";
+"DistributionWalletPWPrompt" = "Please enter the wallet password to confirm to issue";
 "TokenName" = "Token name";
 "TokenCode" = "Token code";
 "TheIssueVolume" = "The amount issued this time";
@@ -192,8 +195,9 @@
 "Hash" = "Hash";
 // scan
 // 待定
-"UnableToAccessAlbum" = "Photos are not accessible";
-//"Can not use camera" = "Camera is not accessible";
+"UnableToAccessAlbum" = "Album is not accessible";
+"UnableToAccessCamera" = "Camera is not accessible ";
+
 "Allow %@ to access your album in \"Settings -> Privacy -> Photos\"" = "Please allow %@ to access your photos by selecting the option in \"Settings -> Privacy -> Photos\" of your iPhone";
 "Please allow %@ to access your camera in \"Settings -> Privacy -> Camera\"" = "Please allow %@ to access your camera by selecting the option in \"Settings -> Privacy -> Camera\" of your iPhone";
 "OK" = "OK";
@@ -219,7 +223,8 @@
 "IDNameFormatIncorrect" = "The identity name is only allowed to enter letters, characters, numbers, underscores, and it cannot exceed 20 characters in length";
 "WalletNameFormatIncorrect" = "The wallet names is only allowed to enter letters, characters, numbers, underscores, and it cannot exceed 20 characters in length.";
 "PasswordIsDifferent" = "Passwords do not match";
-"MnemonicIsIncorrect" = "The mnemonics input are incorrect. Please enter again";
+//"MnemonicIsIncorrect" = "The mnemonics input are incorrect. Please enter again";
+"MnemonicIsIncorrect" = "Mnemonics are illegal. Please revise them";
 // Tokens
 "Replicating" = "Copied";
 // registered
@@ -256,6 +261,66 @@
 "SuggestionsContentOverlength" = "Your question or suggestion cannot exceed 100 words";
 "ContactOverlength" = "Your contact information cannot exceed 20 words";
 "SubmissionOfSuccess" = "Submitted successfully";
+// Wallet Management
+"WalletManagement" = "Wallet Management";
+"CurrentIdentity" = "Wallet in the Current Identity";
+"ImportedWallet" = "Imported Wallets";
+"ImmediateImport" = "Import Now";
+"CurrentUse" = "Currently Used";
+"Manage" = "Manage";
+// Import Wallet
+"ImportWallet" = "Import Wallet";
+"Mnemonics" = "Mnemonics";
+"Keystore" = "Keystore";
+"PrivateKey" = "Private Key";
+"ImportMnemonicsPrompt" = "Please input your mnemonics (12 in total ) separated with spaces";
+"PleaseEnterMnemonics" = "Please input your mnemonics";
+"WalletName" = "Wallet Name";
+"EnterWalletName" = "Input your wallet name to distinguish it from other wallets";
+"SetThePW" = "Set Password";
+"StartImporting" = "Start Importing";
+"UnderstandingMnemonics" = "About Mnemonics";
+"ImportKeystorePrompt" = "Copy the content of the Keystore file of BUMO official wallet and paste it to the input box";
+"PleaseEnterKeystore" = "The content of the Keystore file";
+"KeystorePW" = "Keystore Password";
+"PleaseEnterKeystorePW" = "Please input the password of the original Keystore file";
+"UnderstandingKeystore" = "About Keystore";
+"ImportPrivateKeyPrompt" = "Paste Your Private Key";
+"PleaseEnterPrivateKey" = "Private key";
+"UnderstandingPrivateKey" = "About Private Key";
+"ImportWalletSuccessfully" = "The wallet is imported successfully";
+"FailureToImportWallet" = "Failed to import the wallet. Please try again";
+"WalletDuplicateImport" = "The wallet has already been imported";
+"KeyStoreIsIncorrect" = "The Keystore file is invalid or your password is incorrect. Please change it.";
+//"KeystorePWIsIncorrect" = "The password of your Keystore file is incorrect";
+"PrivateKeyIsIncorrect" = "The private key is invalid. Please change it";
+"MnemonicsExplainTitle" = "About Mnemonics";
+"MnemonicsExplain" = "Mnemonics including 12 English words will be generated after the wallet is created. Mnemonics are 12 words derived from a random string and fetched from the word library of 2048 words by an algorithm. Mnemonics are used to help the users remember the complex private key. Anyone who has your mnemonics can get your digital assets, so you must keep your mnemonics safe.";
+"KeystoreExplainTitle" = "About Keystore";
+"KeystoreExplain" = "The Keystore file is a file in JSON format for the wallet to store the private key. The private key is encrypted with user-defined password for protection.The degree of security depends on the password strength. For example, 123456 is extremely unsafe. The password cannot be retrieved once lost, so you have to keep your Keystore file and your password safe.";
+"PrivateKeyExplainTitle" = "What is a private key string?";
+"PrivateKeyExplain" = "A private key is used to generate signatures for transactions on a blockchain, so that the account identity can be verified. The private key must be kept safe, because once it is stolen, your digital assets are susceptible to loss. ";
+// Management
+"ExportKeystore" = "Export Keystore";
+"ExportPrivateKey" = "Export Private Key";
+"DeleteWallet" = "Delete Wallet";
+"ModifyWalletName" = "Change wallet name";
+"WalletPWPrompt" = "Please enter the wallet password";
+"DeleteWalletSuccessfully" = "The wallet is deleted successfully";
+// Export Keystore
+"CopyKeystorePrompt" = "Please copy the Keystore file to a safe place to save it";
+"CopyKeystore" = "Copy Keystore";
+// Export private key
+"CopyPrivateKeyPrompt" = "For your account assets safety, please make sure no one is peeping your private information!";
+"WalletAddress" = "Wallet Address";
+"WalletPrivateKeys" = "Wallet Private Key";
+"CopyPrivateKeys" = "Copy Private Key";
+// Data security enhanced
+"IdentityPWPrompt" = "Please enter the identity password";
+"SafetyReinforcementTitle" = "Enhanced security of private key storage";
+"SafetyReinforcementPrompt" = "To improve the security of the private key storage, the security of private key storage needs to be enhanced";
+"StartReinforcement" = "Start to enhance";
+"SuccessfulReinforcement" = "Congratulations! You have enhanced the security of private key storage";
 
 // Errors
 "LoadFailure" = "Failed to load";

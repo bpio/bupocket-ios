@@ -13,11 +13,13 @@ NS_ASSUME_NONNULL_BEGIN
 
 @interface AccountTool : NSObject
 
-+ (void)save:(AccountModel *)account;
++ (instancetype)shareTool;
 
-+ (AccountModel *)account;
+- (void)save:(AccountModel *)account;
 
-+ (BOOL)clearCache;
+- (AccountModel *)account;
+
+- (void)clearCache;
 
 @end
 

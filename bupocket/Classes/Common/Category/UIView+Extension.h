@@ -28,6 +28,8 @@ typedef NS_ENUM(NSInteger, UIViewBorderLineType) {
 // 设置边框 颜色 边框宽度  圆角半径
 - (void)setViewSize:(CGSize)size borderWidth:(CGFloat)borderWidth borderColor:(UIColor *)borderColor borderRadius:(CGFloat)borderRadius;
 
+- (void)setViewSize:(CGSize)size borderRadius:(CGFloat)borderRadius corners:(UIRectCorner)corners;
+
 // 通过CAShapeLayer 方式绘制虚线
 /**
  ** lineView:      需要绘制成虚线的view

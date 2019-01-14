@@ -7,7 +7,6 @@
 //
 
 #import "RegisteredAssetsViewController.h"
-#import "PurseCipherAlertView.h"
 #import "RegisteredResultViewController.h"
 #import "RegisteredModel.h"
 @import SocketIO;
@@ -162,7 +161,7 @@ static NSString * const Register_Leave = @"leaveRoomForApp";
                 return;
             }
             [weakSelf.socket emit:Register_Processing with:@[]];
-            PurseCipherAlertView * alertView = [[PurseCipherAlertView alloc] initWithPrompt:Localized(@"RegistrationIdentityCipherPrompt") confrimBolck:^(NSString * _Nonnull password, NSArray * _Nonnull words) {
+            PasswordAlertView * alertView = [[PasswordAlertView alloc] initWithPrompt:Localized(@"RegistrationWalletPWPrompt") walletKeyStore:CurrentWalletKeyStore isAutomaticClosing:YES confrimBolck:^(NSString * _Nonnull password, NSArray * _Nonnull words) {
                 [weakSelf getRegisteredDataWithPassword:password];
             } cancelBlock:^{
             }];
@@ -236,7 +235,7 @@ static NSString * const Register_Leave = @"leaveRoomForApp";
                            
                            @"fee": self.registeredModel.registeredFee,
                            @"hash": self.registeredModel.transactionHash,
-                           @"address": [AccountTool account].purseAccount,
+                           @"address": CurrentWalletAddress,
                            };
     NSDictionary * data = @{
                             @"err_code": @(code),

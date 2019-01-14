@@ -9,7 +9,7 @@
 #import "AssetsViewController.h"
 #import "AssetsListViewCell.h"
 #import "MyIdentityViewController.h"
-#import "PurseAddressAlertView.h"
+#import "WalletAddressAlertView.h"
 #import "AssetsDetailViewController.h"
 #import "AssetsListModel.h"
 #import "AddAssetsViewController.h"
@@ -17,6 +17,7 @@
 #import "RegisteredAssetsViewController.h"
 #import "DistributionOfAssetsViewController.h"
 #import "TransferAccountsViewController.h"
+#import "WalletManagementViewController.h"
 
 #import "RegisteredModel.h"
 #import "DistributionModel.h"
@@ -162,7 +163,11 @@ static UIButton * _noBackup;
         assetsArray = [NSArray array];
     }
     NSString * currentCurrency = [AssetCurrencyModel getAssetCurrencyTypeWithAssetCurrency:[[defaults objectForKey:Current_Currency] integerValue]];
-    [[HTTPManager shareManager] getAssetsDataWithAddress:[[AccountTool account] purseAccount] currencyType:currentCurrency tokenList:assetsArray success:^(id responseObject) {
+    NSString * currentWalletAddress = CurrentWalletAddress;
+    if (!currentWalletAddress) {
+        currentWalletAddress = [[[AccountTool shareTool] account] purseAccount];
+    }
+    [[HTTPManager shareManager] getAssetsDataWithAddress:currentWalletAddress currencyType:currentCurrency tokenList:assetsArray success:^(id responseObject) {
         NSInteger code = [[responseObject objectForKey:@"errCode"] integerValue];
         if (code == Success_Code) {
             [self setDataWithResponseObject:responseObject];
@@ -190,13 +195,17 @@ static UIButton * _noBackup;
 
 - (void)getAssetsStateData
 {
-    [[HTTPManager shareManager] getRegisteredORDistributionDataWithAssetCode:self.registeredModel.code issueAddress:[[AccountTool account] purseAccount] success:^(id responseObject) {
+    NSString * currentWalletAddress = CurrentWalletAddress;
+    if (!currentWalletAddress) {
+        currentWalletAddress = [[[AccountTool shareTool] account] purseAccount];
+    }
+    [[HTTPManager shareManager] getRegisteredORDistributionDataWithAssetCode:self.registeredModel.code issueAddress:currentWalletAddress success:^(id responseObject) {
         NSInteger code = [[responseObject objectForKey:@"errCode"] integerValue];
         self.distributionModel = [DistributionModel mj_objectWithKeyValues:[responseObject objectForKey:@"data"]];
         if ([self.scanDic[@"action"] isEqualToString:@"token.register"]) {
             if (code == Success_Code) {
                 // has been registered
-                [self alertViewWithMessage:Localized(@"RegisteredAsset")];
+                [Encapsulation showAlertControllerWithMessage:Localized(@"RegisteredAsset") handler:nil];
             } else {
                 // unregistered
                 RegisteredAssetsViewController * VC = [[RegisteredAssetsViewController alloc] init];
@@ -216,7 +225,7 @@ static UIButton * _noBackup;
                 }
             } else {
                 // unregistered
-                [self alertViewWithMessage:[NSString stringWithFormat:Localized(@"The code of your issued tokens:%@ has not been registered yet, so it cannot be issued"), self.registeredModel.code]];
+                [Encapsulation showAlertControllerWithMessage:[NSString stringWithFormat:Localized(@"The code of your issued tokens:%@ has not been registered yet, so it cannot be issued"), self.registeredModel.code] handler:nil];
             }
         }
     } failure:^(NSError *error) {
@@ -269,16 +278,24 @@ static UIButton * _noBackup;
         _headerViewBg = [[UIView alloc] initWithFrame:CGRectMake(0, 0, DEVICE_WIDTH, _headerViewH)];
         [headerBg addSubview:_headerViewBg];
         
+        UIButton * wallet = [UIButton createButtonWithNormalImage:@"nav_wallet" SelectedImage:@"nav_wallet" Target:self Selector:@selector(walletAction)];
+        [_headerViewBg addSubview:wallet];
+        [wallet mas_makeConstraints:^(MASConstraintMaker *make) {
+            make.top.equalTo(self.headerViewBg.mas_top).offset(StatusBarHeight);
+            make.right.equalTo(self.headerViewBg.mas_right).offset(-Margin_15);
+            make.height.mas_equalTo(Margin_40);
+        }];
+        
         _networkPrompt = [[UILabel alloc] init];
         _networkPrompt.font = FONT(15);
         _networkPrompt.textColor = MAIN_COLOR;
         _networkPrompt.numberOfLines = 0;
-        _networkPrompt.preferredMaxLayoutWidth = DEVICE_WIDTH - Margin_40;
+        _networkPrompt.preferredMaxLayoutWidth = DEVICE_WIDTH - Margin_50;
         [_headerViewBg addSubview:_networkPrompt];
         [self.networkPrompt mas_makeConstraints:^(MASConstraintMaker *make) {
             make.top.equalTo(self.headerViewBg.mas_top).offset(StatusBarHeight + Margin_10);
-            make.centerX.equalTo(self.headerViewBg);
-            make.width.mas_lessThanOrEqualTo(DEVICE_WIDTH - Margin_40);
+            make.centerX.equalTo(self.headerViewBg).offset(-Margin_10);
+            make.width.mas_lessThanOrEqualTo(DEVICE_WIDTH - Margin_50);
         }];
         
         _totalAssets = [[UILabel alloc] init];
@@ -286,7 +303,7 @@ static UIButton * _noBackup;
         _totalAssets.textColor = [UIColor whiteColor];
         [_headerViewBg addSubview:_totalAssets];
         [self.totalAssets mas_makeConstraints:^(MASConstraintMaker *make) {
-            make.top.equalTo(self.headerViewBg.mas_top).offset(StatusBarHeight + Margin_50);
+            make.top.equalTo(self.headerViewBg.mas_top).offset(StatusBarHeight + MAIN_HEIGHT);
             make.centerX.equalTo(self.headerViewBg);
             make.width.mas_lessThanOrEqualTo(DEVICE_WIDTH - Margin_40);
         }];
@@ -297,7 +314,7 @@ static UIButton * _noBackup;
         totalAssetsTitle.text = Localized(@"TotalAssets");
         [self.headerViewBg addSubview:totalAssetsTitle];
         [totalAssetsTitle mas_makeConstraints:^(MASConstraintMaker *make) {
-            make.top.equalTo(self.totalAssets.mas_bottom).offset(Margin_15);
+            make.top.equalTo(self.totalAssets.mas_bottom).offset(Margin_10);
             make.centerX.equalTo(self.headerViewBg);
         }];
         
@@ -362,12 +379,10 @@ static UIButton * _noBackup;
     _headerImageView.frame = CGRectMake(0, 0, DEVICE_WIDTH, _headerBg.height - Margin_15);
     _headerViewBg.y = _headerBg.height - _headerViewH;
 }
-- (void)alertViewWithMessage:(NSString *)message
+- (void)walletAction
 {
-    UIAlertController * alertController = [UIAlertController alertControllerWithTitle:message message:nil preferredStyle:UIAlertControllerStyleAlert];
-    UIAlertAction * cancelAction = [UIAlertAction actionWithTitle:Localized(@"IGotIt") style:UIAlertActionStyleCancel handler:nil];
-    [alertController addAction:cancelAction];
-    [self presentViewController:alertController animated:YES completion:nil];
+    WalletManagementViewController * VC = [[WalletManagementViewController alloc] init];
+    [self.navigationController pushViewController:VC animated:YES];
 }
 #pragma mark - assets operation
 - (void)operationAction:(UIButton *)button
@@ -424,9 +439,8 @@ static UIButton * _noBackup;
 #pragma mark - QRCode
 - (void)QRCodeAction
 {
-    NSString * address = [AccountTool account].purseAccount;
-    PurseAddressAlertView * alertView = [[PurseAddressAlertView alloc] initWithPurseAddress:address confrimBolck:^{
-        [[UIPasteboard generalPasteboard] setString:address];
+    WalletAddressAlertView * alertView = [[WalletAddressAlertView alloc] initWithWalletAddress:CurrentWalletAddress confrimBolck:^{
+        [[UIPasteboard generalPasteboard] setString:CurrentWalletAddress];
         [MBProgressHUD showTipMessageInWindow:Localized(@"Replicating")];
     } cancelBlock:^{
         
@@ -506,7 +520,7 @@ static UIButton * _noBackup;
             }];
             
             CGFloat btnW = (DEVICE_WIDTH - ScreenScale(65)) / 2;
-            _noBackup = [UIButton createButtonWithTitle:Localized(@"TemporaryBackup") TextFont:16 TextColor:COLOR(@"9298BD") Target:self Selector:@selector(noBackupAction:)];
+            _noBackup = [UIButton createButtonWithTitle:Localized(@"TemporaryBackup") TextFont:16 TextNormalColor:COLOR(@"9298BD") TextSelectedColor:COLOR(@"9298BD") Target:self Selector:@selector(noBackupAction:)];
             _noBackup.backgroundColor = COLOR(@"DADDF3");
             _noBackup.layer.masksToBounds = YES;
             _noBackup.layer.cornerRadius = MAIN_CORNER;
@@ -517,7 +531,7 @@ static UIButton * _noBackup;
                 make.bottom.equalTo(backupBg.mas_bottom).offset(-Margin_15);
                 make.size.mas_equalTo(CGSizeMake(btnW, Margin_40));
             }];
-            UIButton * backup = [UIButton createButtonWithTitle:Localized(@"ImmediateBackup") TextFont:16 TextColor:[UIColor whiteColor] Target:self Selector:@selector(backupAction)];
+            UIButton * backup = [UIButton createButtonWithTitle:Localized(@"ImmediateBackup") TextFont:16 TextNormalColor:[UIColor whiteColor] TextSelectedColor:[UIColor whiteColor] Target:self Selector:@selector(backupAction)];
             backup.backgroundColor = MAIN_COLOR;
             backup.layer.masksToBounds = YES;
             backup.layer.cornerRadius = MAIN_CORNER;

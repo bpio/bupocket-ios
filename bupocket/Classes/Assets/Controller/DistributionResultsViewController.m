@@ -20,7 +20,7 @@
 @implementation DistributionResultsViewController
 
 static NSString * const DetailListCellID = @"DetailListCellID";
-static NSString * const DistributionDetailCellID = @"DistributionDetailCellID";
+static NSString * const DetailListID = @"DetailListID";
 
 - (NSMutableArray *)listArray
 {
@@ -64,7 +64,7 @@ static NSString * const DistributionDetailCellID = @"DistributionDetailCellID";
     }
     [self.listArray addObject:array];
     if (self.distributionResultState != DistributionResultOvertime) {
-        NSArray * transactionArray = @[@{Localized(@"ActualTransactionCost"): [NSString stringAppendingBUWithStr:self.distributionModel.distributionFee]}, @{Localized(@"IssuerAddress"): [AccountTool account].purseAccount}, @{Localized(@"Hash"): self.distributionModel.transactionHash}];
+        NSArray * transactionArray = @[@{Localized(@"ActualTransactionCost"): [NSString stringAppendingBUWithStr:self.distributionModel.distributionFee]}, @{Localized(@"IssuerAddress"): CurrentWalletAddress}, @{Localized(@"Hash"): self.distributionModel.transactionHash}];
         [self.listArray addObject:transactionArray];
     }
 }
@@ -147,12 +147,17 @@ static NSString * const DistributionDetailCellID = @"DistributionDetailCellID";
 {
     NSString * cellID = DetailListCellID;
     if ((self.distributionModel.tokenDescription && indexPath.section == 0 && indexPath.row == [self.listArray[0] count] - 1) || (indexPath.section == 1 && indexPath.row > 0)) {
-        cellID = DistributionDetailCellID;
+        cellID = DetailListID;
     }
     DetailListViewCell * cell = [DetailListViewCell cellWithTableView:tableView identifier:cellID];
     cell.title.text = [[self.listArray[indexPath.section][indexPath.row] allKeys] firstObject];
     cell.infoTitle.text = [[self.listArray[indexPath.section][indexPath.row] allValues] firstObject];
     cell.selectionStyle = UITableViewCellSelectionStyleNone;
+    if ([cell.title.text isEqualToString:Localized(@"IssuerAddress")] || [cell.title.text isEqualToString:Localized(@"Hash")]) {
+        cell.infoTitle.copyable = YES;
+    } else {
+        cell.infoTitle.copyable = NO;
+    }
     return cell;
 }
 - (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath

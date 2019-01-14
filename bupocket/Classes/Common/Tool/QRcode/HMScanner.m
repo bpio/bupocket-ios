@@ -344,7 +344,7 @@
     // 5> 设置扫描类型
     dataOutput.metadataObjectTypes = dataOutput.availableMetadataObjectTypes;
     [dataOutput setMetadataObjectsDelegate:self queue:dispatch_get_main_queue()];
-    
+    [self startScan];
     // 6> 设置预览图层会话
     [self setupLayers];
 }

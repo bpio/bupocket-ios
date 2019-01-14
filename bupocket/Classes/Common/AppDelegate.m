@@ -10,12 +10,14 @@
 #import "IdentityViewController.h"
 #import "BackUpPurseViewController.h"
 #import "VersionUpdateAlertView.h"
+#import "SafetyReinforcementAlertView.h"
 #import "VersionModel.h"
 #import <IQKeyboardManager/IQKeyboardManager.h>
 
 @interface AppDelegate ()
 
 @property (nonatomic, strong) VersionUpdateAlertView * alertView;
+@property (nonatomic, strong) PasswordAlertView * PWAlertView;
 
 @end
 
@@ -30,7 +32,6 @@
     [[LanguageManager shareInstance] setDefaultLocale];
     [self.window makeKeyAndVisible];
     [self initializationSettings];
-    [self setVersionUpdate];
     [self setRootVC];
     // Minimum Asset Limitation
     [[HTTPManager shareManager] getBlockLatestFees];
@@ -65,14 +66,48 @@
         } else {
             self.window.rootViewController = [[NavigationViewController alloc] initWithRootViewController:[[BackUpPurseViewController alloc] init]];
         }
+        [self storageSafetyReinforcement];
     } else {
         self.window.rootViewController = [[NavigationViewController alloc] initWithRootViewController:[[IdentityViewController alloc] init]];
+        NSString * currentVersion = [[[NSBundle mainBundle] infoDictionary] objectForKey:@"CFBundleShortVersionString"];
+        [defaults setObject:currentVersion forKey:LastVersion];
+        [defaults synchronize];
+        [self getVersionData];
     }
 }
-
-- (void)setVersionUpdate
+- (void)storageSafetyReinforcement
 {
-    [self getVersionData];
+    NSUserDefaults * defaults = [NSUserDefaults standardUserDefaults];
+    NSString * lastVersion = [defaults objectForKey:LastVersion];
+    if (!lastVersion || [@"1.4.3" compare:lastVersion] == NSOrderedDescending) {
+        NSString * currentVersion = [[[NSBundle mainBundle] infoDictionary] objectForKey:@"CFBundleShortVersionString"];
+        [defaults setObject:currentVersion forKey:LastVersion];
+        [defaults synchronize];
+        SafetyReinforcementAlertView * alertView = [[SafetyReinforcementAlertView alloc] initWithTitle:Localized(@"SafetyReinforcementTitle") promptText:Localized(@"SafetyReinforcementPrompt") confrim:Localized(@"StartReinforcement") confrimBolck:^{
+            dispatch_after(dispatch_time(DISPATCH_TIME_NOW, (int64_t)(0.5 * NSEC_PER_SEC)), dispatch_get_main_queue(), ^{
+                self.PWAlertView = [[PasswordAlertView alloc] initWithPrompt:Localized(@"IdentityCipherPrompt") walletKeyStore:@"" isAutomaticClosing:NO confrimBolck:^(NSString * _Nonnull password, NSArray * _Nonnull words) {
+                    NSData * random = [Mnemonic randomFromMnemonicCode: words];
+                    [self upDateAccountDataWithRandom:random password:password];
+                } cancelBlock:^{
+                }];
+                [self.PWAlertView showInWindowWithMode:CustomAnimationModeDisabled inView:nil bgAlpha:0.2 needEffectView:NO];
+            });
+        }];
+        [alertView showInWindowWithMode:CustomAnimationModeDisabled inView:nil bgAlpha:0.2 needEffectView:NO];
+    } else {
+        [self getVersionData];
+    }
+}
+- (void)upDateAccountDataWithRandom:(NSData *)random password:(NSString *)password
+{
+    [[HTTPManager shareManager] setAccountDataWithRandom:random password:password identityName:[[AccountTool shareTool] account].identityName success:^(id responseObject) {
+        [self.PWAlertView hideView];
+        [Encapsulation showAlertControllerWithMessage:Localized(@"SuccessfulReinforcement") handler:^(UIAlertAction *action) {
+            [self getVersionData];
+        }];
+    } failure:^(NSError *error) {
+        
+    }];
 }
 - (void)getVersionData
 {
