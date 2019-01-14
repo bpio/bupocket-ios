@@ -22,11 +22,7 @@ typedef void (^OnSureWalletPWClick)(NSString * password, NSArray * words);
 
 @interface PasswordAlertView : UIView
 
-@property (nonatomic, copy) OnCancleButtonClick cancleBlock;
-@property (nonatomic, copy) OnSureWalletPWClick sureBlock;
-@property (nonatomic, assign) BOOL isAutomaticClosing;
-
-- (instancetype)initWithPrompt:(NSString *)prompt isAutomaticClosing:(BOOL)isAutomaticClosing confrimBolck:(void (^)(NSString * password, NSArray * words))confrimBlock cancelBlock:(void (^)(void))cancelBlock;
+- (instancetype)initWithPrompt:(NSString *)prompt walletKeyStore:(NSString *)walletKeyStore isAutomaticClosing:(BOOL)isAutomaticClosing confrimBolck:(void (^)(NSString * password, NSArray * words))confrimBlock cancelBlock:(void (^)(void))cancelBlock;
 
 @end
 

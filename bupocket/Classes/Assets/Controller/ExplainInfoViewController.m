@@ -28,7 +28,7 @@
     
     UILabel * titleLabel = [[UILabel alloc] init];
     titleLabel.textColor = TITLE_COLOR;
-    titleLabel.font = FONT(18);
+    titleLabel.font = FONT(16);
     titleLabel.textAlignment = NSTextAlignmentCenter;
     titleLabel.numberOfLines = 0;
     titleLabel.text = self.titleText;
@@ -40,10 +40,10 @@
     }];
     
     UILabel * infoLabel = [[UILabel alloc] init];
-    infoLabel.textColor = TITLE_COLOR;
-    infoLabel.font = FONT(14);
+//    infoLabel.textColor = TITLE_COLOR;
+//    infoLabel.font = TITLE_FONT;
     infoLabel.numberOfLines = 0;
-    infoLabel.text = self.explainInfoText;
+    infoLabel.attributedText = [Encapsulation attrWithString:self.explainInfoText preFont:TITLE_FONT preColor:TITLE_COLOR index:0 sufFont:TITLE_FONT sufColor:TITLE_COLOR lineSpacing:Margin_5];
     [self.scrollView addSubview:infoLabel];
     [infoLabel mas_makeConstraints:^(MASConstraintMaker *make) {
         make.top.equalTo(titleLabel.mas_bottom).offset(Margin_20);

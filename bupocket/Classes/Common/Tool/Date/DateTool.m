@@ -12,7 +12,6 @@
 @implementation DateTool
 
 static int timeStampLength = 13;
-
 + (NSString *)getDateStringWithTimeStr:(NSString *)str
 {
     if (str.length < timeStampLength) return nil;
@@ -22,6 +21,7 @@ static int timeStampLength = 13;
     [formatter setDateFormat:@"YYYY.MM.dd HH:mm:ss"];
     return [formatter stringFromDate:date];
 }
+/*
 + (NSString *)getDateProcessingWithTimeStr:(NSString *)str
 {
     if (str.length < timeStampLength) return nil;
@@ -51,6 +51,40 @@ static int timeStampLength = 13;
         formatter.dateFormat = @"dd/MM/yyyy";
         return [formatter stringFromDate:date];
     }
+}
+*/
++ (NSString *)getDateProcessingWithTimeStr:(NSString *)str
+{
+    str = [DateTool getDateStringWithTimeStr:str];
+    NSDateFormatter *dateFormatter = [[NSDateFormatter alloc] init];
+    [dateFormatter setDateFormat:@"yyyy-MM-dd HH:mm:ss"];
+    NSDate *timeDate = [dateFormatter dateFromString:str];
+    NSDate *currentDate = [NSDate date];
+    NSTimeInterval timeInterval = [currentDate timeIntervalSinceDate:timeDate];
+    long temp = 0;
+    NSString *result;
+    if (timeInterval/60 < 1)
+    {
+        // In 1 minutes
+        result = Localized(@"Just");
+    }
+    else if((temp = timeInterval/60) <60){
+        // 1~59 minutes ago
+        result = [NSString stringWithFormat:@"%zd %@", temp, Localized(@"MinutesAgo")];
+    }
+    else if((temp = temp/60) <24){
+        // At least 1 hours ago.
+        result = [NSString stringWithFormat:@"%zd %@", temp, Localized(@"HoursAgo")];
+    }
+    else if((temp = temp/24) <7){
+        // A few days ago
+        result = [NSString stringWithFormat:@"%zd %@", temp, Localized(@"DaysAgo")];
+    } else {
+        // At least a week ago
+        dateFormatter.dateFormat = @"dd/MM/yyyy";
+        result = [dateFormatter stringFromDate:timeDate];
+    }
+    return  result;
 }
 
 @end

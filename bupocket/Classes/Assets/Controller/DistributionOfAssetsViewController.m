@@ -165,7 +165,7 @@ static NSString * const Issue_Leave = @"leaveRoomForApp";
                 return;
             }
             [weakSelf.socket emit:Issue_Processing with:@[]];
-            PasswordAlertView * alertView = [[PasswordAlertView alloc] initWithPrompt:Localized(@"DistributionWalletPWPrompt") isAutomaticClosing:YES confrimBolck:^(NSString * _Nonnull password, NSArray * _Nonnull words) {
+            PasswordAlertView * alertView = [[PasswordAlertView alloc] initWithPrompt:Localized(@"DistributionWalletPWPrompt")  walletKeyStore:CurrentWalletKeyStore isAutomaticClosing:YES confrimBolck:^(NSString * _Nonnull password, NSArray * _Nonnull words) {
                 [weakSelf getIssueAssetDataWithPassword:password];
             } cancelBlock:^{
             }];

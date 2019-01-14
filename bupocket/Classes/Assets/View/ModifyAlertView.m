@@ -12,6 +12,7 @@
 
 @property (nonatomic, strong) UILabel * titleLabel;
 @property (nonatomic, strong) UITextField * textField;
+@property (nonatomic, strong) UIButton * confirm;
 
 @end
 
@@ -55,6 +56,7 @@
     self.textField.leftViewMode = UITextFieldViewModeAlways;
     self.textField.rightView = [[UIView alloc] initWithFrame:CGRectMake(0, 0, Margin_10, MAIN_HEIGHT)];
     self.textField.rightViewMode = UITextFieldViewModeAlways;
+    [self.textField addTarget:self action:@selector(textChange:) forControlEvents:UIControlEventEditingChanged];
     [self addSubview:self.textField];
     [self.textField mas_makeConstraints:^(MASConstraintMaker *make) {
         make.top.equalTo(title.mas_bottom).offset(Margin_25);
@@ -80,9 +82,10 @@
         make.left.equalTo(self.textField);
         make.size.mas_equalTo(CGSizeMake(DEVICE_WIDTH / 2 - Margin_40, ScreenScale(55)));
     }];
-    UIButton * Confirm = [UIButton createButtonWithTitle:Localized(@"Confirm") TextFont:18 TextNormalColor:MAIN_COLOR TextSelectedColor:MAIN_COLOR Target:self Selector:@selector(sureBtnClick)];
-    [self addSubview:Confirm];
-    [Confirm mas_makeConstraints:^(MASConstraintMaker *make) {
+    self.confirm = [UIButton createButtonWithTitle:Localized(@"Confirm") TextFont:18 TextNormalColor:MAIN_COLOR TextSelectedColor:MAIN_COLOR Target:self Selector:@selector(sureBtnClick)];
+    self.confirm.enabled = NO;
+    [self addSubview:self.confirm];
+    [self.confirm mas_makeConstraints:^(MASConstraintMaker *make) {
         make.size.top.bottom.equalTo(cancel);
         make.right.equalTo(self.textField);
     }];
@@ -94,9 +97,15 @@
         make.centerY.equalTo(cancel);
         make.size.mas_equalTo(CGSizeMake(LINE_WIDTH, Margin_20));
     }];
-    
 }
-
+- (void)textChange:(UITextField *)textField
+{
+    if (textField.text.length > 0) {
+        self.confirm.enabled = YES;
+    } else {
+        self.confirm.enabled = NO;
+    }
+}
 - (void)cancleBtnClick {
     [self hideView];
     if (_cancleBlock) {

@@ -112,7 +112,7 @@ static int64_t const gasPrice = 1000;
                                  failure:(void (^)(NSError *error))failure
 {
     NSString * url = SERVER_COMBINE_API(_webServerDomain, Assets_Search);
-    NSDictionary * parmenters = @{@"address": [[[AccountTool shareTool] account] walletAddress],
+    NSDictionary * parmenters = @{@"address": CurrentWalletAddress,
                                   @"assetCode" : assetCode,
                                   @"supportFuzzy" : @"true",
                                   @"startPage" : @(pageIndex),
@@ -419,6 +419,7 @@ static int64_t const gasPrice = 1000;
                     [[AccountTool shareTool] save:account];
                     NSUserDefaults * defaults = [NSUserDefaults standardUserDefaults];
                     [defaults setObject:walletAddress forKey:Current_WalletAddress];
+                    [defaults setObject:walletKeyStore forKey:Current_WalletKeyStore];
                     [defaults synchronize];
                     success(words);
                 }
@@ -504,7 +505,8 @@ static int64_t const gasPrice = 1000;
 {
     // Build BUSendOperation
     NSString * sourceAddress = CurrentWalletAddress;
-    NSString * privateKey = [NSString decipherKeyStoreWithPW:password keyStoreValueStr:[[AccountTool shareTool] account].walletKeyStore];
+    NSString * walletKeyStore = CurrentWalletKeyStore;
+    NSString * privateKey = [NSString decipherKeyStoreWithPW:password keyStoreValueStr:walletKeyStore];
     if ([Tools isEmpty:privateKey]) {
         [MBProgressHUD showTipMessageInWindow:Localized(@"PasswordIsIncorrect")];
         return;
@@ -560,7 +562,7 @@ static int64_t const gasPrice = 1000;
     [operation setSourceAddress : sourceAddress];
     [operation setKey : key];
     [operation setValue : value];
-    NSString * privateKey = [NSString decipherKeyStoreWithPW:password keyStoreValueStr:[[AccountTool shareTool] account].walletKeyStore];
+    NSString * privateKey = [NSString decipherKeyStoreWithPW:password keyStoreValueStr:CurrentWalletKeyStore];
     if ([Tools isEmpty:privateKey]) {
         [MBProgressHUD showTipMessageInWindow:Localized(@"PasswordIsIncorrect")];
         return;
@@ -589,7 +591,7 @@ static int64_t const gasPrice = 1000;
     [operation setSourceAddress: sourceAddress];
     [operation setCode: assetCode];
     [operation setAmount: assetAmount];
-    NSString * privateKey = [NSString decipherKeyStoreWithPW:password keyStoreValueStr:[[AccountTool shareTool] account].walletKeyStore];
+    NSString * privateKey = [NSString decipherKeyStoreWithPW:password keyStoreValueStr:CurrentWalletKeyStore];
     if ([Tools isEmpty:privateKey]) {
         [MBProgressHUD showTipMessageInWindow:Localized(@"PasswordIsIncorrect")];
         return;

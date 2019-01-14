@@ -179,9 +179,9 @@ static NSString * const WalletManagementCellID = @"WalletManagementCellID";
 {
     [tableView deselectRowAtIndexPath:indexPath animated:YES];
     WalletManagementViewCell * cell = [tableView cellForRowAtIndexPath:indexPath];
-    NSString * walletAddress = cell.walletModel.walletAddress;
     NSUserDefaults * defaults = [NSUserDefaults standardUserDefaults];
-    [defaults setObject:walletAddress forKey:Current_WalletAddress];
+    [defaults setObject:cell.walletModel.walletAddress forKey:Current_WalletAddress];
+    [defaults setObject:cell.walletModel.walletKeyStore forKey:Current_WalletKeyStore];
     [defaults synchronize];
     [self.tableView reloadData];
 }

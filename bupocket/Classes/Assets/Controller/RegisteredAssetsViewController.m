@@ -161,7 +161,7 @@ static NSString * const Register_Leave = @"leaveRoomForApp";
                 return;
             }
             [weakSelf.socket emit:Register_Processing with:@[]];
-            PasswordAlertView * alertView = [[PasswordAlertView alloc] initWithPrompt:Localized(@"RegistrationWalletPWPrompt") isAutomaticClosing:YES confrimBolck:^(NSString * _Nonnull password, NSArray * _Nonnull words) {
+            PasswordAlertView * alertView = [[PasswordAlertView alloc] initWithPrompt:Localized(@"RegistrationWalletPWPrompt") walletKeyStore:CurrentWalletKeyStore isAutomaticClosing:YES confrimBolck:^(NSString * _Nonnull password, NSArray * _Nonnull words) {
                 [weakSelf getRegisteredDataWithPassword:password];
             } cancelBlock:^{
             }];

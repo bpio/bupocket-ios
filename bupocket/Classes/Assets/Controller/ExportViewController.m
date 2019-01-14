@@ -90,7 +90,13 @@ static NSString * const ExportCellID = @"ExportCellID";
 }
 - (void)deleteAction
 {
-    PasswordAlertView * alertView = [[PasswordAlertView alloc] initWithPrompt:Localized(@"WalletPWPrompt") isAutomaticClosing:YES confrimBolck:^(NSString * _Nonnull password, NSArray * _Nonnull words) {
+    if ([self.walletModel.walletAddress isEqualToString:CurrentWalletAddress]) {
+        NSUserDefaults * defaults = [NSUserDefaults standardUserDefaults];
+        [defaults setObject:[[[AccountTool shareTool] account] walletAddress] forKey:Current_WalletAddress];
+        [defaults setObject:[[[AccountTool shareTool] account] walletKeyStore] forKey:Current_WalletKeyStore];
+        [defaults synchronize];
+    }
+    PasswordAlertView * alertView = [[PasswordAlertView alloc] initWithPrompt:Localized(@"WalletPWPrompt") walletKeyStore:self.walletModel.walletKeyStore isAutomaticClosing:YES confrimBolck:^(NSString * _Nonnull password, NSArray * _Nonnull words) {
         [self.walletArray removeObject:self.walletModel];
         [[WalletTool shareTool] save:self.walletArray];
         [Encapsulation showAlertControllerWithMessage:Localized(@"DeleteWalletSuccessfully") handler:^(UIAlertAction *action) {
@@ -139,7 +145,7 @@ static NSString * const ExportCellID = @"ExportCellID";
     if (indexPath.section == 0) {
         NSIndexPath * walletIndex = [NSIndexPath indexPathForRow:0 inSection:indexPath.section];
         WalletManagementViewCell * cell = [tableView cellForRowAtIndexPath:walletIndex];
-        ModifyAlertView * alertView = [[ModifyAlertView alloc] initWithText:self.walletModel.walletName confrimBolck:^(NSString * _Nonnull text) {
+        ModifyAlertView * alertView = [[ModifyAlertView alloc] initWithText:cell.walletName.text confrimBolck:^(NSString * _Nonnull text) {
             cell.walletName.text = text;
             if ([self.walletModel.walletAddress isEqualToString:[[[AccountTool shareTool] account] walletAddress]]) {
                 AccountModel * account = [[AccountModel alloc] init];
@@ -156,7 +162,7 @@ static NSString * const ExportCellID = @"ExportCellID";
         }];
         [alertView showInWindowWithMode:CustomAnimationModeAlert inView:nil bgAlpha:0.2 needEffectView:NO];        
     } else {
-        PasswordAlertView * alertView = [[PasswordAlertView alloc] initWithPrompt:Localized(@"WalletPWPrompt") isAutomaticClosing:YES confrimBolck:^(NSString * _Nonnull password, NSArray * _Nonnull words) {
+        PasswordAlertView * alertView = [[PasswordAlertView alloc] initWithPrompt:Localized(@"WalletPWPrompt") walletKeyStore:self.walletModel.walletKeyStore isAutomaticClosing:YES confrimBolck:^(NSString * _Nonnull password, NSArray * _Nonnull words) {
             if (indexPath.row == 0) {
                 ExportKeystoreViewController * VC = [[ExportKeystoreViewController alloc] init];
                 VC.walletModel = self.walletModel;

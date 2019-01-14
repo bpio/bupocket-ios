@@ -136,7 +136,7 @@
 "Next" = "Next";
 "CannotTransferToOneself" = "You can\'t transfer BU to yourself";
 //"TransactionIdentityCipherPrompt" = "Please fill in the identity password to confirm the transfer";
-"TransactionWalletPWPrompt" = "请填写钱包密码以确认转出";
+"TransactionWalletPWPrompt" = " Please enter the wallet password to confirm to transfer";
 "ConfirmationOfTransfer" = "Confirm";
 "TransferPrompt" = "Please confirm whether the transfer information is correct.";
 "Submission" = "Submit";
@@ -160,7 +160,7 @@
 "ConfirmationOfRegistration" = "Confirm registration";
 "RegisteredNumberOverflowMax" = "The tokens you have registered have exceeded the maximum limit";
 //"RegistrationWalletPWPrompt" = "Please fill in the identity password to confirm the registration";
-"RegistrationWalletPWPrompt" = "请填写钱包密码以确认登记";
+"RegistrationWalletPWPrompt" = " Please enter the wallet password to confirm to register";
 "RegistrationSuccess" = "Registration succeeded";
 "RegistrationFailure" = "Registration failed";
 "RegistrationTimeout" = "Registration timeout";
@@ -173,7 +173,7 @@
 "IssueAssetsConfirmation" = "Confirm token issuance";
 "ConfirmAssetInformation" = "Please confirm the following token issuance information";
 //"IssueIdentityCipherPrompt" = "Please fill in the identity password to confirm the issuance";
-"DistributionWalletPWPrompt" = "请填写钱包密码以确认发行";
+"DistributionWalletPWPrompt" = "Please enter the wallet password to confirm to issue";
 "TokenName" = "Token name";
 "TokenCode" = "Token code";
 "TheIssueVolume" = "The amount issued this time";
@@ -195,8 +195,9 @@
 "Hash" = "Hash";
 // scan
 // 待定
-"UnableToAccessAlbum" = "Photos are not accessible";
-//"Can not use camera" = "Camera is not accessible";
+"UnableToAccessAlbum" = "Album is not accessible";
+"UnableToAccessCamera" = "Camera is not accessible ";
+
 "Allow %@ to access your album in \"Settings -> Privacy -> Photos\"" = "Please allow %@ to access your photos by selecting the option in \"Settings -> Privacy -> Photos\" of your iPhone";
 "Please allow %@ to access your camera in \"Settings -> Privacy -> Camera\"" = "Please allow %@ to access your camera by selecting the option in \"Settings -> Privacy -> Camera\" of your iPhone";
 "OK" = "OK";
@@ -222,7 +223,8 @@
 "IDNameFormatIncorrect" = "The identity name is only allowed to enter letters, characters, numbers, underscores, and it cannot exceed 20 characters in length";
 "WalletNameFormatIncorrect" = "The wallet names is only allowed to enter letters, characters, numbers, underscores, and it cannot exceed 20 characters in length.";
 "PasswordIsDifferent" = "Passwords do not match";
-"MnemonicIsIncorrect" = "The mnemonics input are incorrect. Please enter again";
+//"MnemonicIsIncorrect" = "The mnemonics input are incorrect. Please enter again";
+"MnemonicIsIncorrect" = "Mnemonics are illegal. Please revise them";
 // Tokens
 "Replicating" = "Copied";
 // registered
@@ -259,65 +261,66 @@
 "SuggestionsContentOverlength" = "Your question or suggestion cannot exceed 100 words";
 "ContactOverlength" = "Your contact information cannot exceed 20 words";
 "SubmissionOfSuccess" = "Submitted successfully";
-// 钱包管理
-"WalletManagement" = "钱包管理";
-"CurrentIdentity" = "当前身份下的钱包";
-"ImportedWallet" = "导入的钱包";
-"ImmediateImport" = "立即导入";
-"CurrentUse" = "当前使用";
-"Manage" = "管理";
-// 导入钱包
-"ImportWallet" = "导入钱包";
-"Mnemonics" = "助记词";
+// Wallet Management
+"WalletManagement" = "Wallet Management";
+"CurrentIdentity" = "Wallet in the Current Identity";
+"ImportedWallet" = "Imported Wallets";
+"ImmediateImport" = "Import Now";
+"CurrentUse" = "Currently Used";
+"Manage" = "Manage";
+// Import Wallet
+"ImportWallet" = "Import Wallet";
+"Mnemonics" = "Mnemonics";
 "Keystore" = "Keystore";
-"PrivateKey" = "私钥";
-"ImportMnemonicsPrompt" = "请输入钱包助记词（12个英文单词），按空格分离";
-"PleaseEnterMnemonics" = "请输入助记词";
-"WalletName" = "钱包名称";
-"EnterWalletName" = "输入钱包名称，以便区分其它钱包";
-"SetThePW" = "设置密码";
-"StartImporting" = "开始导入";
-"UnderstandingMnemonics" = "了解助记词";
-"ImportKeystorePrompt" = "复制粘贴BUMO官方钱包Keystore文件内容至输入框";
-"PleaseEnterKeystore" = "Keystore文件内容";
-"KeystorePW" = "Keystore密码";
-"PleaseEnterKeystorePW" = "请输入原Keystore文件内容的密码";
-"UnderstandingKeystore" = "了解Keystore";
-"ImportPrivateKeyPrompt" = "粘贴私钥（Private Key）字符串";
-"PleaseEnterPrivateKey" = "私钥（Private key）字符串";
-"UnderstandingPrivateKey" = "了解私钥字符串";
-"ImportWalletSuccessfully" = "导入钱包成功";
-"FailureToImportWallet" = "导入钱包失败";
-"WalletDuplicateImport" = "该钱包已导入";
-"KeyStoreIsIncorrect" = "KeyStore输入有误，请重新输入";
-"PrivateKeyIsIncorrect" = "私钥输入有误，请重新输入";
-"MnemonicsExplainTitle" = "什么是助记词？";
-"MnemonicsExplain" = "创建钱包后会出现12个英文单词，这12个单词就是助记词。助记词由一个随机字符串通过算法在2048个单词库中得出的12个单词。助记词算法可以派生出私钥，所以助记词是私钥的另一种表现形式。用助记词是为了帮助用户记忆复杂的私钥。任何人拿到了您的助记词，就可以拿走您的数字资产，因此必须保管好您的助记词。";
-"KeystoreExplainTitle" = "什么是Keystore？";
-"KeystoreExplain" = "Keystore 文件是钱包存储私钥的一种文件格式 (JSON)。它使用用户自定义密码加密，以起到一定程度上的保护作用，而保护的程度取决于用户加密该钱包的密码强度，如果类似于 123456 这样的密码，是极为不安全的。密码忘记是无法找回的，所以一定要保管好Keystore文件及密码。";
-"PrivateKeyExplainTitle" = "什么是私钥字符串？";
-"PrivateKeyExplain" = "私钥是在区块链交易中用于生成交易签名，以证明账户身份。所以私钥必须安全保管，一旦私钥被任何人拿到，就可以拿走您的数字资产。";
-// 管理
-"ExportKeystore" = "导出Keystore";
-"ExportPrivateKey" = "导出私钥";
-"DeleteWallet" = "删除钱包";
-"ModifyWalletName" = "更改钱包名称";
-"WalletPWPrompt" = "请填写钱包密码";
-"DeleteWalletSuccessfully" = "删除钱包成功";
-// 导出Keystore
-"CopyKeystorePrompt" = "请复制keystore文件到安全的地方保存";
-"CopyKeystore" = "复制Keystore";
-// 导出私钥
-"CopyPrivateKeyPrompt" = "为了保证您的账户资产安全，请注意周围是否有他人在浏览您的隐私信息！";
-"WalletAddress" = "钱包地址";
-"WalletPrivateKeys" = "钱包私钥";
-"CopyPrivateKeys" = "复制私钥";
-// 数据加固
-"IdentityPWPrompt" = "请填写身份密码";
-"SafetyReinforcementTitle" = "私钥存储安全加固";
-"SafetyReinforcementPrompt" = "为了提升钱包私钥存储安全等级，需要对私钥存储进行安全加固";
-"StartReinforcement" = "开始加固";
-"SuccessfulReinforcement" = "恭喜您已完成私钥存储安全加固操作";
+"PrivateKey" = "Private Key";
+"ImportMnemonicsPrompt" = "Please input your mnemonics (12 in total ) separated with spaces";
+"PleaseEnterMnemonics" = "Please input your mnemonics";
+"WalletName" = "Wallet Name";
+"EnterWalletName" = "Input your wallet name to distinguish it from other wallets";
+"SetThePW" = "Set Password";
+"StartImporting" = "Start Importing";
+"UnderstandingMnemonics" = "About Mnemonics";
+"ImportKeystorePrompt" = "Copy the content of the Keystore file of BUMO official wallet and paste it to the input box";
+"PleaseEnterKeystore" = "The content of the Keystore file";
+"KeystorePW" = "Keystore Password";
+"PleaseEnterKeystorePW" = "Please input the password of the original Keystore file";
+"UnderstandingKeystore" = "About Keystore";
+"ImportPrivateKeyPrompt" = "Paste Your Private Key";
+"PleaseEnterPrivateKey" = "Private key";
+"UnderstandingPrivateKey" = "About Private Key";
+"ImportWalletSuccessfully" = "The wallet is imported successfully";
+"FailureToImportWallet" = "Failed to import the wallet. Please try again";
+"WalletDuplicateImport" = "The wallet has already been imported";
+"KeyStoreIsIncorrect" = "The Keystore file is invalid or your password is incorrect. Please change it.";
+//"KeystorePWIsIncorrect" = "The password of your Keystore file is incorrect";
+"PrivateKeyIsIncorrect" = "The private key is invalid. Please change it";
+"MnemonicsExplainTitle" = "About Mnemonics";
+"MnemonicsExplain" = "Mnemonics including 12 English words will be generated after the wallet is created. Mnemonics are 12 words derived from a random string and fetched from the word library of 2048 words by an algorithm. Mnemonics are used to help the users remember the complex private key. Anyone who has your mnemonics can get your digital assets, so you must keep your mnemonics safe.";
+"KeystoreExplainTitle" = "About Keystore";
+"KeystoreExplain" = "The Keystore file is a file in JSON format for the wallet to store the private key. The private key is encrypted with user-defined password for protection.The degree of security depends on the password strength. For example, 123456 is extremely unsafe. The password cannot be retrieved once lost, so you have to keep your Keystore file and your password safe.";
+"PrivateKeyExplainTitle" = "What is a private key string?";
+"PrivateKeyExplain" = "A private key is used to generate signatures for transactions on a blockchain, so that the account identity can be verified. The private key must be kept safe, because once it is stolen, your digital assets are susceptible to loss. ";
+// Management
+"ExportKeystore" = "Export Keystore";
+"ExportPrivateKey" = "Export Private Key";
+"DeleteWallet" = "Delete Wallet";
+"ModifyWalletName" = "Change wallet name";
+"WalletPWPrompt" = "Please enter the wallet password";
+"DeleteWalletSuccessfully" = "The wallet is deleted successfully";
+// Export Keystore
+"CopyKeystorePrompt" = "Please copy the Keystore file to a safe place to save it";
+"CopyKeystore" = "Copy Keystore";
+// Export private key
+"CopyPrivateKeyPrompt" = "For your account assets safety, please make sure no one is peeping your private information!";
+"WalletAddress" = "Wallet Address";
+"WalletPrivateKeys" = "Wallet Private Key";
+"CopyPrivateKeys" = "Copy Private Key";
+// Data security enhanced
+"IdentityPWPrompt" = "Please enter the identity password";
+"SafetyReinforcementTitle" = "Enhanced security of private key storage";
+"SafetyReinforcementPrompt" = "To improve the security of the private key storage, the security of private key storage needs to be enhanced";
+"StartReinforcement" = "Start to enhance";
+"SuccessfulReinforcement" = "Congratulations! You have enhanced the security of private key storage";
 
 // Errors
 "LoadFailure" = "Failed to load";

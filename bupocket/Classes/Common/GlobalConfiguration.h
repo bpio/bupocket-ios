@@ -72,6 +72,9 @@
 #define Current_WalletAddress @"CurrentWalletAddress"
 #define CurrentWalletAddress [[NSUserDefaults standardUserDefaults] objectForKey:Current_WalletAddress]
 
+#define Current_WalletKeyStore @"CurrentWalletKeyStore"
+#define CurrentWalletKeyStore [[NSUserDefaults standardUserDefaults] objectForKey:Current_WalletKeyStore]
+
 // language
 #define CurrentAppLanguage [[NSUserDefaults standardUserDefaults] objectForKey: AppLanguage]
 #define Localized(key)  [[NSBundle bundleWithPath:[[NSBundle mainBundle] pathForResource:[NSString stringWithFormat:@"%@", CurrentAppLanguage] ofType:@"lproj"]] localizedStringForKey:(key) value:nil table:@"Localizable"]

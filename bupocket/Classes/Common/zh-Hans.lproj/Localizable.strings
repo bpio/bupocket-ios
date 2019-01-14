@@ -190,7 +190,7 @@
 "Hash" = "哈希";
 // scan
 "UnableToAccessAlbum" = "无法访问相册";
-//"Can not use camera" = "无法使用相机";
+"UnableToAccessCamera" = "无法使用相机";
 "Allow %@ to access your album in \"Settings -> Privacy -> Photos\"" = "请在iPhone的\"设置-隐私-照片\"选项中，允许%@访问你的相册";
 "Please allow %@ to access your camera in \"Settings -> Privacy -> Camera\"" = "请在iPhone的\"设置-隐私-相机\"选项中，允许%@访问你的相机";
 "OK" = "好";
@@ -215,7 +215,8 @@
 "IDNameFormatIncorrect" = "身份名只允许输入字母、汉字、数字、下划线，并且长度不能超过20个字符";
 "WalletNameFormatIncorrect" = "钱包名只允许输入字母、汉字、数字、下划线，并且长度不能超过20个字符";
 "PasswordIsDifferent" = "密码与确认密码不一致";
-"MnemonicIsIncorrect" = "助记词输入有误，请重新输入";
+//"MnemonicIsIncorrect" = "助记词输入有误，请重新输入";
+"MnemonicIsIncorrect" = "助记词不合法，请进行修改";
 // Assets
 "Replicating" = "已复制";
 // registered
@@ -277,11 +278,12 @@
 "ImportPrivateKeyPrompt" = "粘贴私钥（Private Key）字符串";
 "PleaseEnterPrivateKey" = "私钥（Private key）字符串";
 "UnderstandingPrivateKey" = "了解私钥字符串";
-"ImportWalletSuccessfully" = "导入钱包成功";
-"FailureToImportWallet" = "导入钱包失败";
-"WalletDuplicateImport" = "该钱包已导入";
-"KeyStoreIsIncorrect" = "KeyStore输入有误，请重新输入";
-"PrivateKeyIsIncorrect" = "私钥输入有误，请重新输入";
+"ImportWalletSuccessfully" = "钱包导入成功";
+"FailureToImportWallet" = "钱包导入失败，请重新导入";
+"WalletDuplicateImport" = "该钱包已导入，无需重复导入";
+"KeyStoreIsIncorrect" = "Keystore不合法或密码不正确，请进行修改";
+//"KeystorePWIsIncorrect" = "Keystore密码不正确";
+"PrivateKeyIsIncorrect" = "私钥字符串不合法，请进行修改";
 "MnemonicsExplainTitle" = "什么是助记词？";
 "MnemonicsExplain" = "创建钱包后会出现12个英文单词，这12个单词就是助记词。助记词由一个随机字符串通过算法在2048个单词库中得出的12个单词。助记词算法可以派生出私钥，所以助记词是私钥的另一种表现形式。用助记词是为了帮助用户记忆复杂的私钥。任何人拿到了您的助记词，就可以拿走您的数字资产，因此必须保管好您的助记词。";
 "KeystoreExplainTitle" = "什么是Keystore？";

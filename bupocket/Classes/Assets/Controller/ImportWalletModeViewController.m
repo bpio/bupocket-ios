@@ -186,8 +186,9 @@ static NSString * const TextFieldPWCellID = @"TextFieldPWCellID";
             [MBProgressHUD showTipMessageInWindow:Localized(@"MnemonicIsIncorrect")];
             return;
         }
-        [self textRegexJudgeIfConfirmPW:YES];
-        [self importMnemonics];
+        if ([self textRegexJudgeIfConfirmPW:YES]) {
+            [self importMnemonics];
+        }
     } else if ([self.title isEqualToString:Localized(@"Keystore")]) {
         // walletKeyStore -> walletPrivateKey
         NSString * walletPrivateKey = [NSString decipherKeyStoreWithPW:_walletPWText.text keyStoreValueStr:_importText.text];
@@ -195,8 +196,9 @@ static NSString * const TextFieldPWCellID = @"TextFieldPWCellID";
             [MBProgressHUD showTipMessageInWindow:Localized(@"KeyStoreIsIncorrect")];
             return;
         }
-        [self textRegexJudgeIfConfirmPW:NO];
-        [self importWalletDataWithWalletPrivateKey:walletPrivateKey walletKeyStore:_importText.text];
+        if ([self textRegexJudgeIfConfirmPW:NO]) {
+            [self importWalletDataWithWalletPrivateKey:walletPrivateKey walletKeyStore:_importText.text];
+        }
     } else if ([self.title isEqualToString:Localized(@"PrivateKey")]) {
         // walletPrivateKey -> walletKeyStore
         NSString * walletKeyStore = [NSString generateKeyStoreWithPW:_walletPWText.text key:_importText.text];
@@ -204,8 +206,9 @@ static NSString * const TextFieldPWCellID = @"TextFieldPWCellID";
             [MBProgressHUD showTipMessageInWindow:Localized(@"PrivateKeyIsIncorrect")];
             return;
         }
-        [self textRegexJudgeIfConfirmPW:YES];
-        [self importWalletDataWithWalletPrivateKey:_importText.text walletKeyStore:walletKeyStore];
+        if ([self textRegexJudgeIfConfirmPW:YES]) {
+            [self importWalletDataWithWalletPrivateKey:_importText.text walletKeyStore:walletKeyStore];            
+        }
     }
 }
 - (void)importWalletDataWithWalletPrivateKey:(NSString *)walletPrivateKey walletKeyStore:(NSString *)walletKeyStore
@@ -219,21 +222,19 @@ static NSString * const TextFieldPWCellID = @"TextFieldPWCellID";
         }];
     }
 }
-- (void)textRegexJudgeIfConfirmPW:(BOOL)ifConfirmPW
+- (BOOL)textRegexJudgeIfConfirmPW:(BOOL)ifConfirmPW
 {
     if ([RegexPatternTool validateUserName:_walletNameText.text] == NO) {
         [MBProgressHUD showTipMessageInWindow:Localized(@"WalletNameFormatIncorrect")];
-        return;
-    }
-    if ([RegexPatternTool validatePassword:_walletPWText.text] == NO) {
+        return NO;
+    } else if ([RegexPatternTool validatePassword:_walletPWText.text] == NO) {
         [MBProgressHUD showTipMessageInWindow:Localized(@"CryptographicFormat")];
-        return;
-    }
-    if (ifConfirmPW) {
-        if (![_walletPWText.text isEqualToString:_confirmPWText.text]) {
-            [MBProgressHUD showTipMessageInWindow:Localized(@"PasswordIsDifferent")];
-            return;
-        }
+        return NO;
+    } else if (ifConfirmPW && ![_walletPWText.text isEqualToString:_confirmPWText.text]) {
+        [MBProgressHUD showTipMessageInWindow:Localized(@"PasswordIsDifferent")];
+        return NO;
+    } else {
+        return YES;
     }
 }
 - (void)importMnemonics

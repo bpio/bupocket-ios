@@ -74,7 +74,7 @@ static NSInteger const TxInfoNormalCount = 6;
 }
 - (void)loadData
 {
-    [[HTTPManager shareManager] getOrderDetailsDataWithAddress:[[[AccountTool shareTool] account] walletAddress] optNo:self.listModel.optNo success:^(id responseObject) {
+    [[HTTPManager shareManager] getOrderDetailsDataWithAddress:CurrentWalletAddress optNo:self.listModel.optNo success:^(id responseObject) {
         NSInteger code = [[responseObject objectForKey:@"errCode"] integerValue];
         if (code == Success_Code) {
             [self.tableView addSubview:self.headerView];
