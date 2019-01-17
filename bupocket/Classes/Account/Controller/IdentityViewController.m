@@ -74,12 +74,12 @@
 - (void)createAction
 {
     TermsOfUseViewController * VC = [[TermsOfUseViewController alloc] init];
-    [self.navigationController pushViewController:VC animated:YES];
+    [self.navigationController pushViewController:VC animated:NO];
 }
 - (void)restoreAction
 {
     RestoreIdentityViewController * VC = [[RestoreIdentityViewController alloc] init];
-    [self.navigationController pushViewController:VC animated:YES];
+    [self.navigationController pushViewController:VC animated:NO];
 }
 /*
 #pragma mark - Navigation

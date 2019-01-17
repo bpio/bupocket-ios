@@ -71,7 +71,7 @@ static NSString * const WalletCellID = @"WalletCellID";
     [self.walletAddress mas_makeConstraints:^(MASConstraintMaker *make) {
         make.left.equalTo(self.walletName);
         make.bottom.equalTo(self.contentView.mas_bottom).offset(-Margin_20);
-        make.height.mas_equalTo(Margin_15);
+        make.height.mas_equalTo(ScreenScale(18));
     }];
     [self setViewSize:CGSizeMake(DEVICE_WIDTH - Margin_20, ScreenScale(85)) borderWidth:0 borderColor:nil borderRadius:BG_CORNER];
 }

@@ -59,7 +59,7 @@
 "Finished" = "完成";
 // 我的
 "Setting" = "设置";
-"ModifyPassword" = "修改密码";
+"ModifyPassword" = "修改身份密码";
 "Feedback" = "帮助与反馈";
 "MultiLingual" = "多语言";
 "VersionNumber" = "版本号";
@@ -94,7 +94,7 @@
 "NO" = "否";
 "ClosedTestNetwork" = "您已关闭测试网";
 "OpenedTestNetwork" = "您已开启测试网";
-"TestNetworkPrompt" = "当前为测试网环境";
+"TestNetworkPrompt" = "测试网";
 
 // 资产
 "TotalAssets" = "总资产";
@@ -275,7 +275,7 @@
 "KeystorePW" = "Keystore密码";
 "PleaseEnterKeystorePW" = "请输入原Keystore文件内容的密码";
 "UnderstandingKeystore" = "了解Keystore";
-"ImportPrivateKeyPrompt" = "粘贴私钥（Private Key）";
+"ImportPrivateKeyPrompt" = "粘贴私钥（Private Key）至输入框内";
 "PleaseEnterPrivateKey" = "私钥（Private key）";
 "UnderstandingPrivateKey" = "了解私钥";
 "ImportWalletSuccessfully" = "钱包导入成功";

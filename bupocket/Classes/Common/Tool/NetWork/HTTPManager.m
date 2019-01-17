@@ -413,13 +413,15 @@ static int64_t const gasPrice = 1000;
                     account.identityName = identityName;
                     account.randomNumber = randomKey;
                     account.identityAddress = identityAddress;
-                    account.walletAddress = walletAddress;
                     account.identityKeyStore = identityKeyStore;
+                    account.walletName = Current_WalletName;
+                    account.walletAddress = walletAddress;
                     account.walletKeyStore = walletKeyStore;
                     [[AccountTool shareTool] save:account];
                     NSUserDefaults * defaults = [NSUserDefaults standardUserDefaults];
                     [defaults setObject:walletAddress forKey:Current_WalletAddress];
                     [defaults setObject:walletKeyStore forKey:Current_WalletKeyStore];
+                    [defaults setObject:Current_WalletName forKey:Current_WalletName];
                     [defaults synchronize];
                     success(words);
                 }
@@ -515,6 +517,7 @@ static int64_t const gasPrice = 1000;
     int64_t nonce = [[HTTPManager shareManager] getAccountNonce: sourceAddress] + 1;
     if (nonce == 0) return;
     NSString * hash;
+    NSMutableArray * operations = [NSMutableArray array];
     if (tokenType == Token_Type_BU) {
         // BU
         int64_t amount = [[[NSDecimalNumber decimalNumberWithString:assets] decimalNumberByMultiplyingByPowerOf10: Decimals_BU] longLongValue];
@@ -522,18 +525,28 @@ static int64_t const gasPrice = 1000;
         [operation setSourceAddress: sourceAddress];
         [operation setDestAddress: destAddress];
         [operation setAmount: amount];
-        hash = [[HTTPManager shareManager] buildBlobAndSignAndSubmit:privateKey :sourceAddress :nonce :gasPrice :fee :operation :notes];
+        [operations addObject:operation];
+        hash = [[HTTPManager shareManager] buildBlobAndSignAndSubmit:privateKey :sourceAddress :nonce :gasPrice :fee :operations :notes];
     } else {
         // Other currencies
         int64_t amount = [[[NSDecimalNumber decimalNumberWithString:assets] decimalNumberByMultiplyingByPowerOf10: decimals] longLongValue];
 //        int64_t amount = multiplierNumber * powl(10, decimals);
+        if ([[self getAccountInfoWithAddress: destAddress] isEqualToString:TransactionCost_NotActive_MIN]) {
+            AccountActivateOperation *activateOperation = [AccountActivateOperation new];
+            [activateOperation setSourceAddress: sourceAddress];
+            [activateOperation setDestAddress: destAddress];
+            [activateOperation setInitBalance: ActivateInitBalance];
+            [operations addObject: activateOperation];
+            
+        }
         AssetSendOperation *operation = [AssetSendOperation new];
         [operation setSourceAddress: sourceAddress];
         [operation setDestAddress: destAddress];
         [operation setCode: code];
         [operation setIssuer: issuer];
         [operation setAmount: amount];
-        hash = [[HTTPManager shareManager] buildBlobAndSignAndSubmit:privateKey :sourceAddress :nonce :gasPrice :fee :operation :notes];
+        [operations addObject: operation];
+        hash = [[HTTPManager shareManager] buildBlobAndSignAndSubmit:privateKey :sourceAddress :nonce :gasPrice :fee :operations :notes];
     }
     if (![Tools isEmpty: hash]) {
         [[HTTPManager shareManager] getTransactionStatusHash:hash success:success failure:failure];
@@ -571,7 +584,9 @@ static int64_t const gasPrice = 1000;
     int64_t feeLimit = [feeLimitNumber longLongValue];
     int64_t nonce = [[HTTPManager shareManager] getAccountNonce: sourceAddress] + 1;
     if (nonce == 0) return;
-    NSString * hash = [[HTTPManager shareManager] buildBlobAndSignAndSubmit:privateKey :sourceAddress :nonce :gasPrice :feeLimit :operation :nil];
+    NSMutableArray * operations = [NSMutableArray array];
+    [operations addObject:operation];
+    NSString * hash = [[HTTPManager shareManager] buildBlobAndSignAndSubmit:privateKey :sourceAddress :nonce :gasPrice :feeLimit :operations :nil];
     if (![Tools isEmpty: hash]) {
         [[HTTPManager shareManager] getTransactionStatusHash:hash success:success failure:failure];
     }
@@ -600,7 +615,9 @@ static int64_t const gasPrice = 1000;
     int64_t feeLimit = [feeLimitNumber longLongValue];
     int64_t nonce = [[HTTPManager shareManager] getAccountNonce: sourceAddress] + 1;
     if (nonce == 0) return;
-    NSString * hash = [[HTTPManager shareManager] buildBlobAndSignAndSubmit:privateKey :sourceAddress :nonce :gasPrice :feeLimit :operation :nil];
+    NSMutableArray * operations = [NSMutableArray array];
+    [operations addObject:operation];
+    NSString * hash = [[HTTPManager shareManager] buildBlobAndSignAndSubmit:privateKey :sourceAddress :nonce :gasPrice :feeLimit :operations :nil];
     if (![Tools isEmpty: hash]) {
         [[HTTPManager shareManager] getTransactionStatusHash:hash success:success failure:failure];
     }
@@ -620,13 +637,14 @@ static int64_t const gasPrice = 1000;
     return nonce;
 }
 // transaction information
-- (NSString *) buildBlobAndSignAndSubmit : (NSString *) privateKey : (NSString *) sourceAddress : (int64_t) nonce : (int64_t) gasPrice : (int64_t) feeLimit : (BaseOperation *)operation : (NSString *) notes {
+- (NSString *) buildBlobAndSignAndSubmit : (NSString *) privateKey : (NSString *) sourceAddress : (int64_t) nonce : (int64_t) gasPrice : (int64_t) feeLimit : (NSMutableArray<BaseOperation *> *) operations : (NSString *) notes {
     TransactionBuildBlobRequest *buildBlobRequest = [TransactionBuildBlobRequest new];
     [buildBlobRequest setSourceAddress : sourceAddress];
     [buildBlobRequest setNonce : nonce];
     [buildBlobRequest setGasPrice : gasPrice];
     [buildBlobRequest setFeeLimit : feeLimit];
-    [buildBlobRequest addOperation : operation];
+    //[buildBlobRequest addOperation : operation];
+    [buildBlobRequest setOperations: operations];
     [buildBlobRequest setMetadata: notes];
     
     // Serialization transaction

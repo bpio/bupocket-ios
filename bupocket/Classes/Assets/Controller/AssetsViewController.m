@@ -22,11 +22,11 @@
 #import "RegisteredModel.h"
 #import "DistributionModel.h"
 
-//#import "UINavigationController+Extension.h"
+#import "UINavigationController+Extension.h"
 
 @interface AssetsViewController ()<UITableViewDelegate, UITableViewDataSource>
 
-//@property (nonatomic, strong) UIButton * scanButton;
+@property (nonatomic, strong) UIButton * wallet;
 @property (nonatomic, strong) UITableView * tableView;
 @property (nonatomic, strong) UIView * headerBg;
 @property (nonatomic, strong) UIView * headerViewBg;
@@ -34,7 +34,7 @@
 @property (nonatomic, strong) UIImage * headerImage;
 //@property (nonatomic, strong) UIButton * noBackup;
 // Switch the test network
-@property (nonatomic, strong) UILabel * networkPrompt;
+@property (nonatomic, strong) UIButton * networkPrompt;
 
 @property (nonatomic, assign) CGFloat headerViewH;
 @property (nonatomic, strong) NSMutableArray * listArray;
@@ -63,9 +63,9 @@ static UIButton * _noBackup;
 
 - (void)viewDidLoad {
     [super viewDidLoad];
-//    [self setupNav];
-//    self.edgesForExtendedLayout = UIRectEdgeAll;
+    self.edgesForExtendedLayout = UIRectEdgeAll;
     self.statusBarStyle = UIStatusBarStyleLightContent;
+    [self setupNav];
     [self setupView];
     if ([[NSUserDefaults standardUserDefaults] boolForKey:If_Switch_TestNetwork]) {
         self.assetsCacheDataKey = Assets_HomePage_CacheData_Test;
@@ -78,21 +78,23 @@ static UIButton * _noBackup;
     if (dic) {
         [self setDataWithResponseObject:dic];
     }
-
     // Do any additional setup after loading the view.
 }
-/*
 - (void)setupNav
 {
-    self.scanButton = [UIButton createButtonWithNormalImage:@"nav_scan" SelectedImage:@"transferAccounts_scan" Target:self Selector:@selector(scanAction)];
-    self.scanButton.frame = CGRectMake(0, 0, ScreenScale(44), Margin_30);
-        self.scanButton.contentHorizontalAlignment = UIControlContentHorizontalAlignmentRight;
-    self.navigationItem.rightBarButtonItem = [[UIBarButtonItem alloc]initWithCustomView:self.scanButton];
+    self.networkPrompt = [UIButton createNavButtonWithTitle:Localized(@"TestNetworkPrompt") Target:nil Selector:nil];
+    self.wallet = [UIButton createButtonWithNormalImage:@"nav_wallet_n" SelectedImage:@"nav_wallet_s" Target:self Selector:@selector(walletAction)];
+    self.wallet.frame = CGRectMake(0, 0, ScreenScale(44), Margin_30);
+    self.wallet.contentHorizontalAlignment = UIControlContentHorizontalAlignmentRight;
+    self.navigationItem.rightBarButtonItem = [[UIBarButtonItem alloc]initWithCustomView:self.wallet];
+    self.navAlpha = 0;
+    self.navBackgroundColor = [UIColor whiteColor];
+    self.navTitleColor = self.navTintColor = [UIColor whiteColor];
 }
- */
 - (void)viewWillAppear:(BOOL)animated {
     [super viewWillAppear:animated];
     [self.tableView.mj_header beginRefreshing];
+    self.navigationItem.title = CurrentWalletName ? CurrentWalletName : Current_WalletName;
 }
 - (void)viewDidDisappear:(BOOL)animated {
     [super viewDidDisappear:animated];
@@ -102,12 +104,12 @@ static UIButton * _noBackup;
 - (void)setNetworkEnvironment
 {
     if ([[NSUserDefaults standardUserDefaults] boolForKey:If_Switch_TestNetwork]) {
-        self.networkPrompt.text = Localized(@"TestNetworkPrompt");
+        self.navigationItem.leftBarButtonItem = [[UIBarButtonItem alloc] initWithCustomView:self.networkPrompt];
         self.headerImageView.image = [UIImage imageNamed:@"assets_header_test"];
 //        self.headerImageView.backgroundColor = COLOR(@"4B4A66");
 //        self.headerImageView.image = nil;
     } else {
-        self.networkPrompt.text = nil;
+        self.navigationItem.leftBarButtonItem = nil;
         self.headerImageView.image = self.headerImage;
 //        self.headerImageView.backgroundColor = COLOR(@"645FC3");
     }
@@ -129,7 +131,7 @@ static UIButton * _noBackup;
 {
     self.tableView.mj_header = [CustomRefreshHeader headerWithRefreshingTarget:self refreshingAction:@selector(loadData)];
     self.tableView.mj_header.automaticallyChangeAlpha = YES;
-    self.tableView.mj_header.ignoredScrollViewContentInsetTop = _headerViewH;
+    self.tableView.mj_header.ignoredScrollViewContentInsetTop = _headerViewH - NavBarH;
 //    [self.tableView.mj_header beginRefreshing];
 }
 - (void)setDataWithResponseObject:(id)responseObject
@@ -211,7 +213,7 @@ static UIButton * _noBackup;
                 RegisteredAssetsViewController * VC = [[RegisteredAssetsViewController alloc] init];
                 VC.uuid = self.scanDic[@"uuID"];
                 VC.registeredModel = self.registeredModel;
-                [self.navigationController pushViewController:VC animated:YES];
+                [self.navigationController pushViewController:VC animated:NO];
             }
         } else if ([self.scanDic[@"action"] isEqualToString:@"token.issue"]) {
             if (code == Success_Code) {
@@ -240,7 +242,7 @@ static UIButton * _noBackup;
     VC.uuid = self.scanDic[@"uuID"];
     VC.distributionModel = self.distributionModel;
     VC.registeredModel = self.registeredModel;
-    [self.navigationController pushViewController:VC animated:YES];
+    [self.navigationController pushViewController:VC animated:NO];
 }
 - (void)setupView
 {
@@ -278,26 +280,24 @@ static UIButton * _noBackup;
         _headerViewBg = [[UIView alloc] initWithFrame:CGRectMake(0, 0, DEVICE_WIDTH, _headerViewH)];
         [headerBg addSubview:_headerViewBg];
         
-        UIButton * wallet = [UIButton createButtonWithNormalImage:@"nav_wallet" SelectedImage:@"nav_wallet" Target:self Selector:@selector(walletAction)];
-        [_headerViewBg addSubview:wallet];
-        [wallet mas_makeConstraints:^(MASConstraintMaker *make) {
-            make.top.equalTo(self.headerViewBg.mas_top).offset(StatusBarHeight);
-            make.right.equalTo(self.headerViewBg.mas_right).offset(-Margin_15);
-            make.height.mas_equalTo(Margin_40);
-        }];
-        
-        _networkPrompt = [[UILabel alloc] init];
-        _networkPrompt.font = FONT(15);
-        _networkPrompt.textColor = MAIN_COLOR;
-        _networkPrompt.numberOfLines = 0;
-        _networkPrompt.preferredMaxLayoutWidth = DEVICE_WIDTH - Margin_50;
-        [_headerViewBg addSubview:_networkPrompt];
-        [self.networkPrompt mas_makeConstraints:^(MASConstraintMaker *make) {
-            make.top.equalTo(self.headerViewBg.mas_top).offset(StatusBarHeight + Margin_10);
-            make.centerX.equalTo(self.headerViewBg).offset(-Margin_10);
-            make.width.mas_lessThanOrEqualTo(DEVICE_WIDTH - Margin_50);
-        }];
-        
+//        UIButton * wallet = [UIButton createButtonWithNormalImage:@"nav_wallet" SelectedImage:@"nav_wallet" Target:self Selector:@selector(walletAction)];
+//        [_headerViewBg addSubview:wallet];
+//        [wallet mas_makeConstraints:^(MASConstraintMaker *make) {
+//            make.top.equalTo(self.headerViewBg.mas_top).offset(StatusBarHeight);
+//            make.right.equalTo(self.headerViewBg.mas_right).offset(-Margin_15);
+//            make.height.mas_equalTo(Margin_40);
+//        }];
+//        UILabel * walletName = [[UILabel alloc] init];
+//        walletName.font = FONT(21);
+//        walletName.textColor = [UIColor whiteColor];
+//        walletName.text = @"钱包名称钱包名称钱包名称钱包名称钱包名称钱包名称钱包名称钱包名称钱包名称钱包名称";
+//        [_headerViewBg addSubview:walletName];
+//        [walletName mas_makeConstraints:^(MASConstraintMaker *make) {
+//            make.top.equalTo(self.headerViewBg.mas_top).offset(StatusBarHeight + Margin_10);
+//            make.centerX.equalTo(self.headerViewBg);
+//            make.width.mas_lessThanOrEqualTo(DEVICE_WIDTH - ScreenScale(100));
+//        }];
+    
         _totalAssets = [[UILabel alloc] init];
         _totalAssets.font = FONT(36);
         _totalAssets.textColor = [UIColor whiteColor];
@@ -357,6 +357,14 @@ static UIButton * _noBackup;
 - (void)scrollViewDidScroll:(UIScrollView *)scrollView
 {
     CGFloat offsetY = scrollView.contentOffset.y;
+    self.navAlpha = (offsetY + _headerViewH) / ScreenScale(80);
+    if ((offsetY + _headerViewH) > ScreenScale(80)) {
+        self.navTitleColor = self.navTintColor = TITLE_COLOR;
+        self.wallet.selected = YES;
+    } else {
+        self.navTitleColor = self.navTintColor = [UIColor whiteColor];
+        self.wallet.selected = NO;
+    }
     if (offsetY <= -_headerViewH) {
         _headerBg.y = offsetY;
         _headerBg.height = - offsetY;
@@ -382,7 +390,7 @@ static UIButton * _noBackup;
 - (void)walletAction
 {
     WalletManagementViewController * VC = [[WalletManagementViewController alloc] init];
-    [self.navigationController pushViewController:VC animated:YES];
+    [self.navigationController pushViewController:VC animated:NO];
 }
 #pragma mark - assets operation
 - (void)operationAction:(UIButton *)button
@@ -419,7 +427,7 @@ static UIButton * _noBackup;
                         }
                     }
                     VC.address = stringValue;
-                    [weakself.navigationController pushViewController:VC animated:YES];
+                    [weakself.navigationController pushViewController:VC animated:NO];
                 } else {
                     weakself.scanDic = [JsonTool dictionaryOrArrayWithJSONSString:[NSString dencode:stringValue]];
                     if (weakself.scanDic) {
@@ -452,7 +460,7 @@ static UIButton * _noBackup;
 - (void)addAssetsAcrion
 {
     AddAssetsViewController * VC = [[AddAssetsViewController alloc] init];
-    [self.navigationController pushViewController:VC animated:YES];
+    [self.navigationController pushViewController:VC animated:NO];
 }
 
 
@@ -557,7 +565,7 @@ static UIButton * _noBackup;
 #pragma mark - backup
 - (void)backupAction
 {
-    [self.navigationController pushViewController:[[MyIdentityViewController alloc] init] animated:YES];
+    [self.navigationController pushViewController:[[MyIdentityViewController alloc] init] animated:NO];
 }
 - (void)noBackupAction:(UIButton *)button
 {
@@ -597,7 +605,7 @@ static UIButton * _noBackup;
     [tableView deselectRowAtIndexPath:indexPath animated:YES];
     AssetsDetailViewController * VC = [[AssetsDetailViewController alloc] init];
     VC.listModel = self.listArray[indexPath.section];
-    [self.navigationController pushViewController:VC animated:YES];
+    [self.navigationController pushViewController:VC animated:NO];
 }
 
 /*

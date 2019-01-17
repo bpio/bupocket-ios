@@ -94,13 +94,14 @@ static NSString * const ExportCellID = @"ExportCellID";
         NSUserDefaults * defaults = [NSUserDefaults standardUserDefaults];
         [defaults setObject:[[[AccountTool shareTool] account] walletAddress] forKey:Current_WalletAddress];
         [defaults setObject:[[[AccountTool shareTool] account] walletKeyStore] forKey:Current_WalletKeyStore];
+        [defaults setObject:[[[AccountTool shareTool] account] walletName] forKey:Current_WalletName];
         [defaults synchronize];
     }
     PasswordAlertView * alertView = [[PasswordAlertView alloc] initWithPrompt:Localized(@"WalletPWPrompt") walletKeyStore:self.walletModel.walletKeyStore isAutomaticClosing:YES confrimBolck:^(NSString * _Nonnull password, NSArray * _Nonnull words) {
         [self.walletArray removeObject:self.walletModel];
         [[WalletTool shareTool] save:self.walletArray];
         [Encapsulation showAlertControllerWithMessage:Localized(@"DeleteWalletSuccessfully") handler:^(UIAlertAction *action) {
-            [self.navigationController popViewControllerAnimated:YES];
+            [self.navigationController popViewControllerAnimated:NO];
         }];
     } cancelBlock:^{
     }];
@@ -146,16 +147,20 @@ static NSString * const ExportCellID = @"ExportCellID";
         NSIndexPath * walletIndex = [NSIndexPath indexPathForRow:0 inSection:indexPath.section];
         WalletManagementViewCell * cell = [tableView cellForRowAtIndexPath:walletIndex];
         ModifyAlertView * alertView = [[ModifyAlertView alloc] initWithText:cell.walletName.text confrimBolck:^(NSString * _Nonnull text) {
-            cell.walletName.text = text;
-            if ([self.walletModel.walletAddress isEqualToString:[[[AccountTool shareTool] account] walletAddress]]) {
-                AccountModel * account = [[AccountModel alloc] init];
-                account = [[AccountTool shareTool] account];
-                account.walletName = text;
-                [[AccountTool shareTool] save:account];
+            if ([RegexPatternTool validateUserName:text]) {
+                cell.walletName.text = text;
+                if ([self.walletModel.walletAddress isEqualToString:[[[AccountTool shareTool] account] walletAddress]]) {
+                    AccountModel * account = [[AccountModel alloc] init];
+                    account = [[AccountTool shareTool] account];
+                    account.walletName = text;
+                    [[AccountTool shareTool] save:account];
+                } else {
+                    self.walletModel.walletName = text;
+                    [self.walletArray replaceObjectAtIndex:self.index withObject:self.walletModel];
+                    [[WalletTool shareTool] save:self.walletArray];
+                }
             } else {
-                self.walletModel.walletName = text;
-                [self.walletArray replaceObjectAtIndex:self.index withObject:self.walletModel];
-                [[WalletTool shareTool] save:self.walletArray];
+                [MBProgressHUD showTipMessageInWindow:Localized(@"WalletNameFormatIncorrect")];
             }
         } cancelBlock:^{
             
@@ -166,12 +171,12 @@ static NSString * const ExportCellID = @"ExportCellID";
             if (indexPath.row == 0) {
                 ExportKeystoreViewController * VC = [[ExportKeystoreViewController alloc] init];
                 VC.walletModel = self.walletModel;
-                [self.navigationController pushViewController:VC animated:YES];
+                [self.navigationController pushViewController:VC animated:NO];
             } else if (indexPath.row == 1) {
                 ExportPrivateKeyViewController * VC = [[ExportPrivateKeyViewController alloc] init];
                 VC.walletModel = self.walletModel;
                 VC.password = password;
-                [self.navigationController pushViewController:VC animated:YES];
+                [self.navigationController pushViewController:VC animated:NO];
             }
         } cancelBlock:^{
         }];

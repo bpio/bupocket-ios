@@ -103,10 +103,10 @@ static NSString * const SettingCellID = @"SettingCellID";
     [tableView deselectRowAtIndexPath:indexPath animated:YES];
     if (indexPath.row == 0) {
         MonetaryUnitViewController * VC = [[MonetaryUnitViewController alloc] init];
-        [self.navigationController pushViewController:VC animated:YES];
+        [self.navigationController pushViewController:VC animated:NO];
     } else if (indexPath.row == 1) {
         MultilingualViewController * VC = [[MultilingualViewController alloc] init];
-        [self.navigationController pushViewController:VC animated:YES];
+        [self.navigationController pushViewController:VC animated:NO];
     }
 }
 - (UISwitch *)switchControl

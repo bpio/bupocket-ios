@@ -166,10 +166,10 @@
 //            [MBProgressHUD showTipMessageInWindow:[ErrorTypeTool getDescription:resultModel.errorCode]];
         }
         VC.transferInfoArray = self.transferInfoArray;
-        [self.navigationController pushViewController:VC animated:YES];
+        [self.navigationController pushViewController:VC animated:NO];
     } failure:^(TransactionResultModel *resultModel) {
         RequestTimeoutViewController * VC = [[RequestTimeoutViewController alloc] init];
-        [self.navigationController pushViewController:VC animated:YES];
+        [self.navigationController pushViewController:VC animated:NO];
     }];
 }
 

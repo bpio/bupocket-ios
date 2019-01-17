@@ -46,7 +46,7 @@
 }
 - (void)gotItAction
 {
-    [self.navigationController popToRootViewControllerAnimated:YES];
+    [self.navigationController popToRootViewControllerAnimated:NO];
 }
 /*
 #pragma mark - Navigation

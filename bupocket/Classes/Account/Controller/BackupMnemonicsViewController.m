@@ -95,7 +95,7 @@
 {
     ConfirmMnemonicViewController * VC = [[ConfirmMnemonicViewController alloc] init];
     VC.mnemonicArray = self.mnemonicArray;
-    [self.navigationController pushViewController:VC animated:YES];
+    [self.navigationController pushViewController:VC animated:NO];
 }
 
 /*

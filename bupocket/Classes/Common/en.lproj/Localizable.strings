@@ -61,7 +61,7 @@
 "Finished" = "Completed";
 // Profile
 "Setting" = "Setting";
-"ModifyPassword" = "Change password";
+"ModifyPassword" = "Change the Identity Password";
 "Feedback" = "Feedback";
 "MultiLingual" = "Languages";
 "VersionNumber" = "Version";
@@ -96,7 +96,7 @@
 "NO" = "No";
 "ClosedTestNetwork" = "You have stopped the test network";
 "OpenedTestNetwork" = "You have started the test network";
-"TestNetworkPrompt" = "The current environment is the test network environment";
+"TestNetworkPrompt" = "Test Network";
 
 // Tokens
 "TotalAssets" = "Total tokens";
@@ -134,7 +134,7 @@
 "estimatedMaximum" = "Maximum transaction fee";
 "TransactionCostPlaceholder" = "Please enter the transaction fee";
 "Next" = "Next";
-"CannotTransferToOneself" = "You can\'t transfer BU to yourself";
+"CannotTransferToOneself" = "You can\'t transfer tokens to yourself";
 //"TransactionIdentityCipherPrompt" = "Please fill in the identity password to confirm the transfer";
 "TransactionWalletPWPrompt" = " Please enter the wallet password to confirm to transfer";
 "ConfirmationOfTransfer" = "Confirm";
@@ -285,7 +285,7 @@
 "KeystorePW" = "Keystore Password";
 "PleaseEnterKeystorePW" = "Please input the password of the original Keystore file";
 "UnderstandingKeystore" = "About Keystore";
-"ImportPrivateKeyPrompt" = "Paste Your Private Key";
+"ImportPrivateKeyPrompt" = "Paste the private key to the input box";
 "PleaseEnterPrivateKey" = "Private key";
 "UnderstandingPrivateKey" = "About Private Key";
 "ImportWalletSuccessfully" = "The wallet is imported successfully";

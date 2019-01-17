@@ -64,7 +64,7 @@
 - (void)continueAction:(UIButton *)button
 {
     CreateIdentityViewController * VC = [[CreateIdentityViewController alloc] init];
-    [self.navigationController pushViewController:VC animated:YES];
+    [self.navigationController pushViewController:VC animated:NO];
 }
 /*
 #pragma mark - Navigation

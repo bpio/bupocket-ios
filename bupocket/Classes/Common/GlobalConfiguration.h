@@ -54,7 +54,7 @@
 #define COLOR(HexString)  [UIColor colorWithHexString:HexString]
 #define RandomColor [UIColor colorWithRed:arc4random_uniform(255) / 255.0 green:arc4random_uniform(255) / 255.0 blue:arc4random_uniform(255) / 255.0 alpha:1.0]
 //#define NAVITEM_COLOR COLOR(@"5745C3")
-#define NAVITEM_COLOR COLOR(@"7C96F8")
+//#define NAVITEM_COLOR COLOR(@"7C96F8")
 #define LINE_COLOR COLOR(@"E3E3E3")
 #define TITLE_COLOR COLOR(@"333333")
 //#define MAIN_COLOR COLOR(@"36B3FF")
@@ -71,6 +71,9 @@
 // Current Wallet Address
 #define Current_WalletAddress @"CurrentWalletAddress"
 #define CurrentWalletAddress [[NSUserDefaults standardUserDefaults] objectForKey:Current_WalletAddress]
+
+#define Current_WalletName @"Wallet-1"
+#define CurrentWalletName [[NSUserDefaults standardUserDefaults] objectForKey:Current_WalletName]
 
 #define Current_WalletKeyStore @"CurrentWalletKeyStore"
 #define CurrentWalletKeyStore [[NSUserDefaults standardUserDefaults] objectForKey:Current_WalletKeyStore]

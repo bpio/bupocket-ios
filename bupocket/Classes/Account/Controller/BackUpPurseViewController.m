@@ -89,12 +89,12 @@
     if (self.mnemonicArray.count > 0) {
         BackupMnemonicsViewController * VC = [[BackupMnemonicsViewController alloc] init];
         VC.mnemonicArray = self.mnemonicArray;
-        [self.navigationController pushViewController:VC animated:YES];
+        [self.navigationController pushViewController:VC animated:NO];
     } else {
         PasswordAlertView * alertView = [[PasswordAlertView alloc] initWithPrompt:Localized(@"IdentityCipherPrompt") walletKeyStore:@"" isAutomaticClosing:YES confrimBolck:^(NSString * _Nonnull password, NSArray * _Nonnull words) {
             BackupMnemonicsViewController * VC = [[BackupMnemonicsViewController alloc] init];
             VC.mnemonicArray = words;
-            [self.navigationController pushViewController:VC animated:YES];
+            [self.navigationController pushViewController:VC animated:NO];
         } cancelBlock:^{
         }];
         [alertView showInWindowWithMode:CustomAnimationModeAlert inView:nil bgAlpha:0.2 needEffectView:NO];

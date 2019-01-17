@@ -132,7 +132,7 @@
         [self hideView];
     }
     if ([RegexPatternTool validatePassword:self.PWTextField.text] == NO) {
-        [MBProgressHUD showTipMessageInWindow:Localized(@"CryptographicFormat")];
+        [MBProgressHUD showTipMessageInWindow:Localized(@"PasswordIsIncorrect")];
     } else {
         [MBProgressHUD showActivityMessageInWindow:Localized(@"Loading")];
         __block NSString * password = self.PWTextField.text;

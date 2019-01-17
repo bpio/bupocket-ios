@@ -66,7 +66,7 @@
     if (random) {
         [[HTTPManager shareManager] setAccountDataWithRandom:random password:self.PWNew.text identityName:[[AccountTool shareTool] account].identityName success:^(id responseObject) {
             [Encapsulation showAlertControllerWithMessage:Localized(@"PasswordModifiedSuccessfully") handler:^(UIAlertAction *action) {
-                [self.navigationController popViewControllerAnimated:YES];
+                [self.navigationController popViewControllerAnimated:NO];
             }];
         } failure:^(NSError *error) {
             

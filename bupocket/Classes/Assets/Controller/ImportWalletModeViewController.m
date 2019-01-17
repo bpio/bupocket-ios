@@ -58,17 +58,13 @@ static NSString * const TextFieldPWCellID = @"TextFieldPWCellID";
     }];
     
     UIView * headerView = [[UIView alloc] init];
-    self.tableView.tableHeaderView = headerView;
+    
     UILabel * importPrompt = [[UILabel alloc] init];
     importPrompt.textColor = COLOR_9;
     importPrompt.font = TITLE_FONT;
     importPrompt.numberOfLines = 0;
     [headerView addSubview:importPrompt];
-    [importPrompt mas_makeConstraints:^(MASConstraintMaker *make) {
-        make.top.equalTo(headerView.mas_top).offset(Margin_15);
-        make.left.equalTo(headerView.mas_left).offset(Margin_15);
-        make.right.equalTo(headerView.mas_right).offset(-Margin_15);
-    }];
+    
     
     self.importText = [[PlaceholderTextView alloc] init];
     self.importText.delegate = self;
@@ -76,11 +72,7 @@ static NSString * const TextFieldPWCellID = @"TextFieldPWCellID";
     self.importText.layer.masksToBounds = YES;
     self.importText.layer.cornerRadius = BG_CORNER;
     [headerView addSubview:self.importText];
-    [self.importText mas_makeConstraints:^(MASConstraintMaker *make) {
-        make.top.equalTo(importPrompt.mas_bottom).offset(Margin_15);
-        make.left.right.equalTo(importPrompt);
-        make.height.mas_equalTo(ScreenScale(120));
-    }];
+    
     
     
     UIView * footerView = [[UIView alloc] initWithFrame:CGRectMake(0, 0, DEVICE_WIDTH, ScreenScale(150) + SafeAreaBottomH)];
@@ -88,12 +80,7 @@ static NSString * const TextFieldPWCellID = @"TextFieldPWCellID";
     
     self.import = [UIButton createButtonWithTitle:Localized(@"StartImporting") isEnabled:NO Target:self Selector:@selector(importAction)];
     [footerView addSubview:self.import];
-    [self.import mas_makeConstraints:^(MASConstraintMaker *make) {
-        make.top.equalTo(footerView.mas_top).offset(Margin_25);
-        make.left.equalTo(footerView.mas_left).offset(Margin_15);
-        make.right.equalTo(footerView.mas_right).offset(-Margin_15);
-        make.height.mas_equalTo(MAIN_HEIGHT);
-    }];
+    
     
     CustomButton * explain = [[CustomButton alloc] init];
     explain.layoutMode = HorizontalInverted;
@@ -102,11 +89,7 @@ static NSString * const TextFieldPWCellID = @"TextFieldPWCellID";
     [explain setImage:[UIImage imageNamed:@"explain"] forState:UIControlStateNormal];
     [explain addTarget:self action:@selector(explainInfo:) forControlEvents:UIControlEventTouchUpInside];
     [footerView addSubview:explain];
-    [explain mas_makeConstraints:^(MASConstraintMaker *make) {
-        make.top.equalTo(self.import.mas_bottom).offset(Margin_15);
-        make.right.equalTo(self.import);
-        make.height.mas_equalTo(Margin_30);
-    }];
+    
     
     self.listArray = [NSMutableArray arrayWithObjects:@[Localized(@"WalletName"), Localized(@"EnterWalletName")], @[Localized(@"SetThePW"), Localized(@"PWPlaceholder")], @[Localized(@"ConfirmedPassword"), Localized(@"PWPlaceholder")], nil];
     if ([self.title isEqualToString:Localized(@"Mnemonics")]) {
@@ -125,6 +108,30 @@ static NSString * const TextFieldPWCellID = @"TextFieldPWCellID";
     }
     CGFloat headerViewH = Margin_30 + [Encapsulation rectWithText:importPrompt.text font:importPrompt.font textWidth:DEVICE_WIDTH - Margin_30].size.height + ScreenScale(120);
     headerView.frame = CGRectMake(0, 0, DEVICE_WIDTH, headerViewH);
+    self.tableView.tableHeaderView = headerView;
+    [importPrompt mas_makeConstraints:^(MASConstraintMaker *make) {
+        make.top.equalTo(headerView.mas_top).offset(Margin_15);
+        make.left.equalTo(headerView.mas_left).offset(Margin_15);
+        make.right.equalTo(headerView.mas_right).offset(-Margin_15);
+    }];
+    [self.importText mas_makeConstraints:^(MASConstraintMaker *make) {
+        make.top.equalTo(importPrompt.mas_bottom).offset(Margin_15);
+        make.left.right.equalTo(importPrompt);
+        make.height.mas_equalTo(ScreenScale(120));
+        make.bottom.equalTo(headerView);
+    }];
+    
+    [self.import mas_makeConstraints:^(MASConstraintMaker *make) {
+        make.top.equalTo(footerView.mas_top).offset(Margin_25);
+        make.left.equalTo(footerView.mas_left).offset(Margin_15);
+        make.right.equalTo(footerView.mas_right).offset(-Margin_15);
+        make.height.mas_equalTo(MAIN_HEIGHT);
+    }];
+    [explain mas_makeConstraints:^(MASConstraintMaker *make) {
+        make.top.equalTo(self.import.mas_bottom).offset(Margin_15);
+        make.right.equalTo(self.import);
+        make.height.mas_equalTo(Margin_30);
+    }];
 }
 - (CGFloat)tableView:(UITableView *)tableView heightForRowAtIndexPath:(NSIndexPath *)indexPath
 {
@@ -218,7 +225,7 @@ static NSString * const TextFieldPWCellID = @"TextFieldPWCellID";
     BOOL ifImportSuccess = [[HTTPManager shareManager] importWalletDataWalletName:_walletNameText.text walletAddress:walletAddress walletKeyStore:walletKeyStore];
     if (ifImportSuccess) {
         [Encapsulation showAlertControllerWithMessage:Localized(@"ImportWalletSuccessfully") handler:^(UIAlertAction *action) {
-            [self.navigationController popViewControllerAnimated:YES];
+            [self.navigationController popViewControllerAnimated:NO];
         }];
     }
 }
@@ -228,7 +235,7 @@ static NSString * const TextFieldPWCellID = @"TextFieldPWCellID";
         [MBProgressHUD showTipMessageInWindow:Localized(@"WalletNameFormatIncorrect")];
         return NO;
     } else if ([RegexPatternTool validatePassword:_walletPWText.text] == NO) {
-        [MBProgressHUD showTipMessageInWindow:Localized(@"CryptographicFormat")];
+        [MBProgressHUD showTipMessageInWindow:Localized(@"PasswordIsIncorrect")];
         return NO;
     } else if (ifConfirmPW && ![_walletPWText.text isEqualToString:_confirmPWText.text]) {
         [MBProgressHUD showTipMessageInWindow:Localized(@"PasswordIsDifferent")];
@@ -243,7 +250,7 @@ static NSString * const TextFieldPWCellID = @"TextFieldPWCellID";
     [[HTTPManager shareManager] setWalletDataWithMnemonics:words password:_walletPWText.text walletName:_walletNameText.text success:^(id responseObject) {
         if (responseObject) {
             [Encapsulation showAlertControllerWithMessage:Localized(@"ImportWalletSuccessfully") handler:^(UIAlertAction *action) {
-                [self.navigationController popViewControllerAnimated:YES];
+                [self.navigationController popViewControllerAnimated:NO];
             }];
         }
     } failure:^(NSError *error) {
@@ -267,7 +274,7 @@ static NSString * const TextFieldPWCellID = @"TextFieldPWCellID";
         VC.titleText = Localized(@"PrivateKeyExplainTitle");
         VC.explainInfoText = Localized(@"PrivateKeyExplain");
     }
-    [self.navigationController pushViewController:VC animated:YES];
+    [self.navigationController pushViewController:VC animated:NO];
 }
 - (void)textViewDidChange:(UITextView *)textView
 {

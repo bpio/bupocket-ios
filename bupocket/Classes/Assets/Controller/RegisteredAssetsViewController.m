@@ -215,7 +215,7 @@ static NSString * const Register_Leave = @"leaveRoomForApp";
                 }];
             }
             VC.registeredModel = self.registeredModel;
-            [self.navigationController pushViewController:VC animated:YES];
+            [self.navigationController pushViewController:VC animated:NO];
         } else {
             [MBProgressHUD showTipMessageInWindow:[ErrorTypeTool getDescriptionWithErrorCode:code]];
         }
@@ -254,7 +254,7 @@ static NSString * const Register_Leave = @"leaveRoomForApp";
     [self.socket on:Register_Leave callback:^(NSArray* data, SocketAckEmitter* ack) {
         [self.socket disconnect];
     }];
-    [self.navigationController popViewControllerAnimated:YES];
+    [self.navigationController popViewControllerAnimated:NO];
 }
 - (UIView *)setAssetInfoWithTitle:(NSString *)title info:(NSString *)info
 {

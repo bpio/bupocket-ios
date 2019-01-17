@@ -100,7 +100,7 @@
 }
 - (void)textChange:(UITextField *)textField
 {
-    if (textField.text.length > 0) {
+    if (textField.text) {
         self.confirm.enabled = YES;
     } else {
         self.confirm.enabled = NO;

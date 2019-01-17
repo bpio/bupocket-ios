@@ -193,7 +193,7 @@
         [scanBtn addTarget:self action:@selector(scanAction:) forControlEvents:UIControlEventTouchUpInside];
         [self.headerViewBg addSubview: scanBtn];
         [scanBtn setViewSize:CGSizeMake(btnW, MAIN_HEIGHT) borderWidth:0 borderColor:nil borderRadius:ScreenScale(3)];
-        scanBtn.backgroundColor = NAVITEM_COLOR;
+        scanBtn.backgroundColor = COLOR(@"72AFFF");
         [scanBtn mas_makeConstraints:^(MASConstraintMaker *make) {
             make.top.equalTo(self.amount.mas_bottom).offset(Margin_20);
             make.left.equalTo(self.headerViewBg.mas_left).offset(Margin_10);
@@ -242,7 +242,7 @@
                     TransferAccountsViewController * VC = [[TransferAccountsViewController alloc] init];
                     VC.listModel = weakself.listModel;
                     VC.address = stringValue;
-                    [weakself.navigationController pushViewController:VC animated:YES];
+                    [weakself.navigationController pushViewController:VC animated:NO];
                 } else {
                     [MBProgressHUD showTipMessageInWindow:Localized(@"ScanFailure")];
                 }
@@ -259,7 +259,7 @@
 {
     TransferAccountsViewController * VC = [[TransferAccountsViewController alloc] init];
     VC.listModel = self.listModel;
-    [self.navigationController pushViewController:VC animated:YES];
+    [self.navigationController pushViewController:VC animated:NO];
 }
 
 - (CGFloat)tableView:(UITableView *)tableView heightForRowAtIndexPath:(NSIndexPath *)indexPath
@@ -323,7 +323,7 @@
     OrderDetailsViewController * VC = [[OrderDetailsViewController alloc] init];
     VC.assetCode = self.listModel.assetCode;
     VC.listModel = self.listArray[indexPath.section];
-    [self.navigationController pushViewController:VC animated:YES];
+    [self.navigationController pushViewController:VC animated:NO];
 }
 
 
