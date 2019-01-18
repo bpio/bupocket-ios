@@ -82,6 +82,7 @@
 "ConfirmedPassword" = "Confirm password";
 "PleaseEnterOldPW" = "Please enter the old password";
 "PleaseEnterNewPW" = "Please enter the new password";
+"ModifyPasswordFailure" = "Old password error";
 // Feedback
 "QuestionsOrSuggestions" = "Your questions or suggestions";
 "YourContact" = "Your contacts";

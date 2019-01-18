@@ -2,7 +2,7 @@
 //  ImportWalletModeViewController.m
 //  bupocket
 //
-//  Created by huoss on 2019/1/9.
+//  Created by bupocket on 2019/1/9.
 //  Copyright © 2019年 bupocket. All rights reserved.
 //
 
@@ -235,7 +235,7 @@ static NSString * const TextFieldPWCellID = @"TextFieldPWCellID";
         [MBProgressHUD showTipMessageInWindow:Localized(@"WalletNameFormatIncorrect")];
         return NO;
     } else if ([RegexPatternTool validatePassword:_walletPWText.text] == NO) {
-        [MBProgressHUD showTipMessageInWindow:Localized(@"PasswordIsIncorrect")];
+        [MBProgressHUD showTipMessageInWindow:Localized(@"CryptographicFormat")];
         return NO;
     } else if (ifConfirmPW && ![_walletPWText.text isEqualToString:_confirmPWText.text]) {
         [MBProgressHUD showTipMessageInWindow:Localized(@"PasswordIsDifferent")];

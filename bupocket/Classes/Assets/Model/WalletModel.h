@@ -2,7 +2,7 @@
 //  WalletModel.h
 //  bupocket
 //
-//  Created by huoss on 2019/1/8.
+//  Created by bupocket on 2019/1/8.
 //  Copyright © 2019年 bupocket. All rights reserved.
 //
 

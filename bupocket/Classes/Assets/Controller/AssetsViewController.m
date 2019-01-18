@@ -82,9 +82,8 @@ static UIButton * _noBackup;
 }
 - (void)setupNav
 {
-    self.networkPrompt = [UIButton createNavButtonWithTitle:Localized(@"TestNetworkPrompt") Target:nil Selector:nil];
     self.wallet = [UIButton createButtonWithNormalImage:@"nav_wallet_n" SelectedImage:@"nav_wallet_s" Target:self Selector:@selector(walletAction)];
-    self.wallet.frame = CGRectMake(0, 0, ScreenScale(44), Margin_30);
+    self.wallet.frame = CGRectMake(0, 0, ScreenScale(44), ScreenScale(44));
     self.wallet.contentHorizontalAlignment = UIControlContentHorizontalAlignmentRight;
     self.navigationItem.rightBarButtonItem = [[UIBarButtonItem alloc]initWithCustomView:self.wallet];
     self.navAlpha = 0;
@@ -104,6 +103,8 @@ static UIButton * _noBackup;
 - (void)setNetworkEnvironment
 {
     if ([[NSUserDefaults standardUserDefaults] boolForKey:If_Switch_TestNetwork]) {
+        self.networkPrompt = [UIButton createNavButtonWithTitle:Localized(@"TestNetworkPrompt") Target:nil Selector:nil];
+        
         self.navigationItem.leftBarButtonItem = [[UIBarButtonItem alloc] initWithCustomView:self.networkPrompt];
         self.headerImageView.image = [UIImage imageNamed:@"assets_header_test"];
 //        self.headerImageView.backgroundColor = COLOR(@"4B4A66");

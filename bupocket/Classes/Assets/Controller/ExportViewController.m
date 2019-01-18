@@ -2,7 +2,7 @@
 //  ExportViewController.m
 //  bupocket
 //
-//  Created by huoss on 2019/1/7.
+//  Created by bupocket on 2019/1/7.
 //  Copyright © 2019年 bupocket. All rights reserved.
 //
 
@@ -159,6 +159,9 @@ static NSString * const ExportCellID = @"ExportCellID";
                     [self.walletArray replaceObjectAtIndex:self.index withObject:self.walletModel];
                     [[WalletTool shareTool] save:self.walletArray];
                 }
+                NSUserDefaults * defaults = [NSUserDefaults standardUserDefaults];
+                [defaults setObject:text forKey:Current_WalletName];
+                [defaults synchronize];
             } else {
                 [MBProgressHUD showTipMessageInWindow:Localized(@"WalletNameFormatIncorrect")];
             }

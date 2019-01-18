@@ -2,7 +2,7 @@
 //  WalletManagementViewCell.m
 //  bupocket
 //
-//  Created by huoss on 2019/1/7.
+//  Created by bupocket on 2019/1/7.
 //  Copyright © 2019年 bupocket. All rights reserved.
 //
 
@@ -43,6 +43,7 @@ static NSString * const WalletCellID = @"WalletCellID";
         make.top.equalTo(self.contentView.mas_top).offset(Margin_20);
         make.left.equalTo(self.contentView.mas_left).offset(Margin_15);
         make.height.mas_equalTo(ScreenScale(18));
+//        make.right.mas_lessThanOrEqualTo(self.manage.mas_left).offset(-Margin_10);
     }];
     if ([self.reuseIdentifier isEqualToString:WalletManagementCellID]) {
         [self.manage mas_makeConstraints:^(MASConstraintMaker *make) {
@@ -50,13 +51,21 @@ static NSString * const WalletCellID = @"WalletCellID";
             make.centerY.equalTo(self.contentView);
             make.height.mas_equalTo(Margin_25);
         }];
-        [self.currentUse mas_makeConstraints:^(MASConstraintMaker *make) {
-            make.left.equalTo(self.walletName.mas_right).offset(Margin_10);
-            make.centerY.equalTo(self.walletName);
-            make.height.mas_equalTo(Margin_20);
-            make.right.mas_lessThanOrEqualTo(self.manage.mas_left).offset(-Margin_10);
-        }];
-        [self.currentUse setContentCompressionResistancePriority:UILayoutPriorityRequired forAxis:UILayoutConstraintAxisHorizontal];
+        if (self.currentUse.hidden == NO) {
+            [self.currentUse mas_makeConstraints:^(MASConstraintMaker *make) {
+                make.left.equalTo(self.walletName.mas_right).offset(Margin_10);
+                make.centerY.equalTo(self.walletName);
+                make.height.mas_equalTo(Margin_20);
+                make.right.mas_lessThanOrEqualTo(self.manage.mas_left).offset(-Margin_10);
+            }];
+            [self.currentUse setContentCompressionResistancePriority:UILayoutPriorityRequired forAxis:UILayoutConstraintAxisHorizontal];
+        } else {
+            [self.walletName mas_makeConstraints:^(MASConstraintMaker *make) {
+                make.right.mas_lessThanOrEqualTo(self.manage.mas_left).offset(-Margin_10);
+            }];
+        }
+        [self.manage setContentCompressionResistancePriority:UILayoutPriorityRequired forAxis:UILayoutConstraintAxisHorizontal];
+        
     } else if ([self.reuseIdentifier isEqualToString:WalletCellID]) {
         [self.detailImage mas_makeConstraints:^(MASConstraintMaker *make) {
             make.right.equalTo(self.contentView.mas_right).offset(-Margin_20);
@@ -157,7 +166,7 @@ static NSString * const WalletCellID = @"WalletCellID";
 
 - (void)setSelected:(BOOL)selected animated:(BOOL)animated {
     [super setSelected:selected animated:animated];
-
+    
     // Configure the view for the selected state
 }
 

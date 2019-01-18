@@ -83,6 +83,7 @@
 - (void)setAccountDataWithRandom:(NSData *)random
                         password:(NSString *)password
                     identityName:(NSString *)identityName
+                       typeTitle:(NSString *)typeTitle
                          success:(void (^)(id responseObject))success
                          failure:(void (^)(NSError *error))failure;
 // Wallet data

@@ -141,7 +141,7 @@
     NSMutableData *random = [NSMutableData dataWithLength: Random_Length];
     int status = SecRandomCopyBytes(kSecRandomDefault, random.length, random.mutableBytes);
     if (status == 0) {
-        [[HTTPManager shareManager] setAccountDataWithRandom:random password:self.identityPassword.text identityName:self.identityName.text success:^(id responseObject) {
+        [[HTTPManager shareManager] setAccountDataWithRandom:random password:self.identityPassword.text identityName:self.identityName.text typeTitle:self.navigationItem.title success:^(id responseObject) {
             NSUserDefaults * defaults = [NSUserDefaults standardUserDefaults];
             [defaults setBool:YES forKey:If_Created];
             [defaults synchronize];

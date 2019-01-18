@@ -2,7 +2,7 @@
 //  WalletManagementViewController.m
 //  bupocket
 //
-//  Created by huoss on 2019/1/7.
+//  Created by bupocket on 2019/1/7.
 //  Copyright © 2019年 bupocket. All rights reserved.
 //
 
@@ -11,6 +11,7 @@
 #import "ExportViewController.h"
 #import "WalletModel.h"
 #import "ImportWalletViewController.h"
+#import "MyViewController.h"
 
 @interface WalletManagementViewController ()<UITableViewDelegate, UITableViewDataSource>
     
@@ -182,7 +183,16 @@ static NSString * const WalletManagementCellID = @"WalletManagementCellID";
     [defaults setObject:cell.walletModel.walletKeyStore forKey:Current_WalletKeyStore];
     [defaults setObject:cell.walletModel.walletName forKey:Current_WalletName];
     [defaults synchronize];
+    
     [self.tableView reloadData];
+    for (UIViewController *vc in self.navigationController.viewControllers) {
+        if ([vc isKindOfClass:[MyViewController class]]) {
+            [self.navigationController.tabBarController setSelectedIndex:0];
+            [self.navigationController popToRootViewControllerAnimated:NO];
+        } else {
+            [self.navigationController popToRootViewControllerAnimated:NO];
+        }
+    }
 }
 
 /*

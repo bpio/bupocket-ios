@@ -384,6 +384,7 @@ static int64_t const gasPrice = 1000;
 - (void)setAccountDataWithRandom:(NSData *)random
                         password:(NSString *)password
                     identityName:(NSString *)identityName
+                       typeTitle:(NSString *)typeTitle
                          success:(void (^)(id responseObject))success
                          failure:(void (^)(NSError *error))failure
 {
@@ -404,7 +405,15 @@ static int64_t const gasPrice = 1000;
         [[NSOperationQueue mainQueue] addOperationWithBlock:^{
             if (randomKey == nil || identityKeyStore == nil || walletKeyStore == nil) {
                 [MBProgressHUD hideHUD];
-                [MBProgressHUD showTipMessageInWindow:Localized(@"CreateIdentityFailure")];
+                if ([typeTitle isEqualToString:Localized(@"CreateIdentity")]) {
+                    [MBProgressHUD showTipMessageInWindow:Localized(@"CreateIdentityFailure")];
+                } else if ([typeTitle isEqualToString:Localized(@"RestoreIdentity")]) {
+                    [MBProgressHUD showTipMessageInWindow:Localized(@"MnemonicIsIncorrect")];
+                } else if ([typeTitle isEqualToString:Localized(@"ModifyPassword")]) {
+                    [MBProgressHUD showTipMessageInWindow:Localized(@"ModifyPasswordFailure")];
+                } else if ([typeTitle isEqualToString:Localized(@"SafetyReinforcementTitle")]) {
+                    [MBProgressHUD showTipMessageInWindow:Localized(@"PasswordIsIncorrect")];
+                }
             } else {
                 [MBProgressHUD hideHUD];
                 if(success != nil)
@@ -535,7 +544,8 @@ static int64_t const gasPrice = 1000;
             AccountActivateOperation *activateOperation = [AccountActivateOperation new];
             [activateOperation setSourceAddress: sourceAddress];
             [activateOperation setDestAddress: destAddress];
-            [activateOperation setInitBalance: ActivateInitBalance];
+            int64_t initBalance = [[[NSDecimalNumber decimalNumberWithString:ActivateInitBalance] decimalNumberByMultiplyingByPowerOf10: Decimals_BU] longLongValue];
+            [activateOperation setInitBalance: initBalance];
             [operations addObject: activateOperation];
             
         }
@@ -580,8 +590,7 @@ static int64_t const gasPrice = 1000;
         [MBProgressHUD showTipMessageInWindow:Localized(@"PasswordIsIncorrect")];
         return;
     }
-    NSDecimalNumber * feeLimitNumber = [Tools BU2MO: Registered_Cost];
-    int64_t feeLimit = [feeLimitNumber longLongValue];
+    int64_t feeLimit = [[[NSDecimalNumber decimalNumberWithString:Registered_Cost] decimalNumberByMultiplyingByPowerOf10: Decimals_BU] longLongValue];
     int64_t nonce = [[HTTPManager shareManager] getAccountNonce: sourceAddress] + 1;
     if (nonce == 0) return;
     NSMutableArray * operations = [NSMutableArray array];
@@ -611,8 +620,7 @@ static int64_t const gasPrice = 1000;
         [MBProgressHUD showTipMessageInWindow:Localized(@"PasswordIsIncorrect")];
         return;
     }
-    NSDecimalNumber * feeLimitNumber = [Tools BU2MO: Distribution_Cost];
-    int64_t feeLimit = [feeLimitNumber longLongValue];
+    int64_t feeLimit = [[[NSDecimalNumber decimalNumberWithString:Distribution_Cost] decimalNumberByMultiplyingByPowerOf10: Decimals_BU] longLongValue];
     int64_t nonce = [[HTTPManager shareManager] getAccountNonce: sourceAddress] + 1;
     if (nonce == 0) return;
     NSMutableArray * operations = [NSMutableArray array];
