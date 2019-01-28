@@ -64,6 +64,8 @@
 #define SendingQuantity_MAX_Division @"1,000,000"
 // Maximum length of ID and password / Transaction memo length / Length of feedback contact mode
 #define MAX_LENGTH 20
+#define PW_MIN_LENGTH 6
+#define PW_MAX_LENGTH 30
 // Cycle query transaction state maximum number
 #define Maximum_Number 20
 // Feedback content

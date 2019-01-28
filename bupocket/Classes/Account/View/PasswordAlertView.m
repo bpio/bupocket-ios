@@ -113,7 +113,8 @@
 }
 - (void)textChange:(UITextField *)textField
 {
-    if (textField.text.length > 0) {
+    NSString * password = TrimmingCharacters(textField.text);
+    if (password.length > 0) {
         self.sureBtn.enabled = YES;
         self.sureBtn.backgroundColor = MAIN_COLOR;
     } else {
@@ -131,11 +132,12 @@
     if (self.isAutomaticClosing) {
         [self hideView];
     }
-    if ([RegexPatternTool validatePassword:self.PWTextField.text] == NO) {
+    __block NSString * password = TrimmingCharacters(self.PWTextField.text);
+    if (password.length < PW_MIN_LENGTH || password.length > PW_MAX_LENGTH) {
+//    if ([RegexPatternTool validatePassword:password] == NO) {
         [MBProgressHUD showTipMessageInWindow:Localized(@"PasswordIsIncorrect")];
     } else {
         [MBProgressHUD showActivityMessageInWindow:Localized(@"Loading")];
-        __block NSString * password = self.PWTextField.text;
         NSOperationQueue * queue = [[NSOperationQueue alloc] init];
         [queue addOperationWithBlock:^{
             [[NSOperationQueue mainQueue] addOperationWithBlock:^{

@@ -50,7 +50,8 @@
 "IdentityCipherConfirm" = "Confirm password";
 "IdentityCipherPrompt" = "Please fill in the identity password to confirm the backup";
 "IdentityCipherWarning" = "Warning: If you do not back up properly, you will not be able to retrieve your identity after you log out. Please handle this operation carefully.";
-"PWPlaceholder" = "8-20 characters composed of letters and numbers";
+//"PWPlaceholder" = "8~20 characters composed of letters and numbers";
+"PWPlaceholder" = "6~30个字符";
 "NoScreenshot" = "Do not take a screenshot";
 "MnemonicsPrompt" = "Leaking mnemonics will result in the loss of tokens. Please write down mnemonics and store them in a safe place.";
 "MnemonicsSavePrompt" = "Please record each word in order and keep it safe";

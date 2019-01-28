@@ -48,7 +48,8 @@
 "IdentityCipherConfirm" = "密码确认";
 "IdentityCipherPrompt" = "请填写身份密码以确认备份";
 "IdentityCipherWarning" = "警告：若未妥善备份，退出后将无法找回身份，请慎重处理该操作";
-"PWPlaceholder" = "8-20个字符，且内容仅限字母和数字";
+//"PWPlaceholder" = "8~20个字符，且内容仅限字母和数字";
+"PWPlaceholder" = "6~30个字符";
 "NoScreenshot" = "请勿截图";
 "MnemonicsPrompt" = "泄露助记词将导致资产丢失，请抄写下助记词并存放在安全的地方。";
 "MnemonicsSavePrompt" = "请按顺序记录每个词，并妥善保管";

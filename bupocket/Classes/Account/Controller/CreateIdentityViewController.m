@@ -136,12 +136,12 @@
 {
     [super viewWillAppear:animated];
 }
-- (void)getData
+- (void)getDataWithPW:(NSString *)PW identityName:(NSString *)identityName
 {
     NSMutableData *random = [NSMutableData dataWithLength: Random_Length];
     int status = SecRandomCopyBytes(kSecRandomDefault, random.length, random.mutableBytes);
     if (status == 0) {
-        [[HTTPManager shareManager] setAccountDataWithRandom:random password:self.identityPassword.text identityName:self.identityName.text typeTitle:self.navigationItem.title success:^(id responseObject) {
+        [[HTTPManager shareManager] setAccountDataWithRandom:random password:PW identityName:identityName typeTitle:self.navigationItem.title success:^(id responseObject) {
             NSUserDefaults * defaults = [NSUserDefaults standardUserDefaults];
             [defaults setBool:YES forKey:If_Created];
             [defaults synchronize];
@@ -158,19 +158,23 @@
 
 - (void)createAction
 {
-    if ([RegexPatternTool validateUserName:_identityName.text] == NO) {
+    NSString * identityName = TrimmingCharacters(_identityName.text);
+    if ([RegexPatternTool validateUserName:identityName] == NO) {
         [MBProgressHUD showTipMessageInWindow:Localized(@"IDNameFormatIncorrect")];
         return;
     }
-    if ([RegexPatternTool validatePassword:_identityPassword.text] == NO) {
+//    if ([RegexPatternTool validatePassword:_identityPassword.text] == NO) {
+    NSString * PW = TrimmingCharacters(self.identityPassword.text);
+    if (PW.length < PW_MIN_LENGTH || PW.length > PW_MAX_LENGTH) {
         [MBProgressHUD showTipMessageInWindow:Localized(@"CryptographicFormat")];
         return;
     }
-    if (![_confirmPassword.text isEqualToString:_identityPassword.text]) {
+    NSString * confirmPW = TrimmingCharacters(_confirmPassword.text);
+    if (![confirmPW isEqualToString:PW]) {
         [MBProgressHUD showTipMessageInWindow:Localized(@"PasswordIsDifferent")];
         return;
     }
-    [self getData];
+    [self getDataWithPW:PW identityName:identityName];
 }
 - (void)didReceiveMemoryWarning
 {
