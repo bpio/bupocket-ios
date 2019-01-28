@@ -175,20 +175,25 @@
 
 - (void)restoreAction
 {
-    NSArray * words = [_memorizingWords.text componentsSeparatedByString:@" "];
+    NSString * memorizingWords = TrimmingCharacters(_memorizingWords.text);
+    NSString * walletName = TrimmingCharacters(_walletName.text);
+    NSString * walletPW = TrimmingCharacters(_walletPassword.text);
+    NSString * confirmPW = TrimmingCharacters(_confirmPassword.text);
+    NSArray * words = [memorizingWords componentsSeparatedByString:@" "];
     if (words.count != NumberOf_MnemonicWords) {
         [MBProgressHUD showTipMessageInWindow:Localized(@"MnemonicIsIncorrect")];
         return;
     }
-    if ([RegexPatternTool validateUserName:_walletName.text] == NO) {
+    if ([RegexPatternTool validateUserName:walletName] == NO) {
         [MBProgressHUD showTipMessageInWindow:Localized(@"WalletNameFormatIncorrect")];
         return;
     }
-    if ([RegexPatternTool validatePassword:_walletPassword.text] == NO) {
+//    if ([RegexPatternTool validatePassword:walletPW] == NO) {
+    if (walletPW.length < PW_MIN_LENGTH || walletPW.length > PW_MAX_LENGTH) {
         [MBProgressHUD showTipMessageInWindow:Localized(@"CryptographicFormat")];
         return;
     }
-    if (![_walletPassword.text isEqualToString:_confirmPassword.text]) {
+    if (![walletPW isEqualToString:confirmPW]) {
         [MBProgressHUD showTipMessageInWindow:Localized(@"PasswordIsDifferent")];
         return;
     }

@@ -98,6 +98,7 @@
         } cancelBlock:^{
         }];
         [alertView showInWindowWithMode:CustomAnimationModeAlert inView:nil bgAlpha:0.2 needEffectView:NO];
+        [alertView.PWTextField becomeFirstResponder];
     }
 }
 - (void)temporaryBackupAction

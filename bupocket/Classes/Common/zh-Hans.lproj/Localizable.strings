@@ -31,7 +31,7 @@
 "Create" = "创建";
 "CreatePWPrompt" = "温馨提示";
 "CreatePWWarn" = "密码用于加密保护私钥，以及转账、调用合约等，所以强度非常重要。\n小布口袋不存储密码，也无法帮您找回，请务必牢记。";
-"CreatePWInfo" = "长度为8~20字符，建议混合大小写字母加数字。";
+"CryptographicFormat" = "长度为6~30字符，建议混合大小写字母加数字。";
 "Confirm" = "确认";
 "Cancel" = "取消";
 // 恢复身份
@@ -48,7 +48,8 @@
 "IdentityCipherConfirm" = "密码确认";
 "IdentityCipherPrompt" = "请填写身份密码以确认备份";
 "IdentityCipherWarning" = "警告：若未妥善备份，退出后将无法找回身份，请慎重处理该操作";
-"PWPlaceholder" = "8-20个字符，且内容仅限字母和数字";
+//"PWPlaceholder" = "8~20个字符，且内容仅限字母和数字";
+//"PWPlaceholder" = "6~30个字符";
 "NoScreenshot" = "请勿截图";
 "MnemonicsPrompt" = "泄露助记词将导致资产丢失，请抄写下助记词并存放在安全的地方。";
 "MnemonicsSavePrompt" = "请按顺序记录每个词，并妥善保管";
@@ -232,7 +233,7 @@
 "CirculationExceeded" = "您的资产发行量超过了登记总量";
 
 // My
-"CryptographicFormat" = "密码长度为8~20个字符，且内容仅限字母和数字";
+//"CryptographicFormat" = "密码长度为8~20个字符，且内容仅限字母和数字";
 "NewPasswordIsDifferent" = "新密码与确认新密码不一致，请重新输入";
 "OldPasswordIncorrect" = "旧密码不正确，请重新输入";
 "PasswordModifiedSuccessfully" = "密码修改成功";
