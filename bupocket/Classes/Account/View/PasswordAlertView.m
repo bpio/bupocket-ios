@@ -10,7 +10,6 @@
 
 @interface PasswordAlertView()<UITextFieldDelegate>
 
-@property (nonatomic, strong) UITextField * PWTextField;
 @property (nonatomic, assign) PasswordType passwordType;
 @property (nonatomic, assign) CGFloat bgHeight;
 @property (nonatomic, strong) UILabel * promptLabel;
@@ -83,7 +82,7 @@
     PWTextField.delegate = self;
     PWTextField.textColor = TITLE_COLOR;
     PWTextField.font = TITLE_FONT;
-    PWTextField.placeholder = Localized(@"PWPlaceholder");
+//    PWTextField.placeholder = Localized(@"PWPlaceholder");
     PWTextField.layer.cornerRadius = ScreenScale(3);
     PWTextField.layer.borderColor = LINE_COLOR.CGColor;
     PWTextField.layer.borderWidth = LINE_WIDTH;
@@ -111,6 +110,7 @@
         make.height.mas_equalTo(MAIN_HEIGHT);
     }];
 }
+
 - (void)textChange:(UITextField *)textField
 {
     NSString * password = TrimmingCharacters(textField.text);

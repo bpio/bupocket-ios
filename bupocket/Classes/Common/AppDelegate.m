@@ -88,6 +88,7 @@
                 } cancelBlock:^{
                 }];
                 [self.PWAlertView showInWindowWithMode:CustomAnimationModeDisabled inView:nil bgAlpha:0.2 needEffectView:NO];
+                [self.PWAlertView.PWTextField becomeFirstResponder];
             });
         }];
         [alertView showInWindowWithMode:CustomAnimationModeDisabled inView:nil bgAlpha:0.2 needEffectView:NO];

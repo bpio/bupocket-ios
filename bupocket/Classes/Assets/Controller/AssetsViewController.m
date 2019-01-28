@@ -362,10 +362,13 @@ static UIButton * _noBackup;
     if ((offsetY + _headerViewH) > ScreenScale(80)) {
         self.navTitleColor = self.navTintColor = TITLE_COLOR;
         self.wallet.selected = YES;
+        _statusBarStyle = UIStatusBarStyleDefault;
     } else {
         self.navTitleColor = self.navTintColor = [UIColor whiteColor];
         self.wallet.selected = NO;
+        _statusBarStyle = UIStatusBarStyleLightContent;
     }
+    [self.navigationController setNeedsStatusBarAppearanceUpdate];
     if (offsetY <= -_headerViewH) {
         _headerBg.y = offsetY;
         _headerBg.height = - offsetY;
@@ -379,8 +382,8 @@ static UIButton * _noBackup;
         _headerBg.y = -_headerViewH;
         _headerBg.height = _headerViewH;
         _headerImageView.alpha = progress;
-        _statusBarStyle = (progress < 0.5) ? UIStatusBarStyleDefault : UIStatusBarStyleLightContent;
-        [self.navigationController setNeedsStatusBarAppearanceUpdate];
+//        _statusBarStyle = (progress < 0.5) ? UIStatusBarStyleDefault : UIStatusBarStyleLightContent;
+//        [self.navigationController setNeedsStatusBarAppearanceUpdate];
 //        self.navTitleColor = self.navTintColor = (progress < 0.5) ? TITLE_COLOR : [UIColor clearColor];
 //        self.navAlpha = 1 - progress;
 //        self.scanButton.selected = (progress < 0.5) ? YES : NO;

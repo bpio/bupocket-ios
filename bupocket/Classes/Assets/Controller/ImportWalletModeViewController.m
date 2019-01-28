@@ -95,7 +95,7 @@ static NSString * const TextFieldPWCellID = @"TextFieldPWCellID";
     [footerView addSubview:explain];
     
     
-    self.listArray = [NSMutableArray arrayWithObjects:@[Localized(@"WalletName"), Localized(@"EnterWalletName")], @[Localized(@"SetThePW"), Localized(@"PWPlaceholder")], @[Localized(@"ConfirmedPassword"), Localized(@"PWPlaceholder")], nil];
+    self.listArray = [NSMutableArray arrayWithObjects:@[Localized(@"WalletName"), Localized(@"EnterWalletName")], @[Localized(@"SetThePW"), Localized(@"SetPassword")], @[Localized(@"ConfirmedPassword"), Localized(@"ConfirmPassword")], nil];
     if ([self.title isEqualToString:Localized(@"Mnemonics")]) {
         importPrompt.text = Localized(@"ImportMnemonicsPrompt");
         self.importText.placeholder = Localized(@"PleaseEnterMnemonics");
