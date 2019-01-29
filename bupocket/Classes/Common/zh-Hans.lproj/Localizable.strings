@@ -60,11 +60,11 @@
 "Finished" = "完成";
 // 我的
 "Setting" = "设置";
+"AddressBook" = "地址薄";
 "ModifyPassword" = "修改身份密码";
 "Feedback" = "帮助与反馈";
 "MultiLingual" = "多语言";
 "VersionNumber" = "版本号";
-//"Save" = "保存";
 "MonetaryUnit" = "货币单位";
 "SwitchedNetwork" = "切换测试网";
 // 我的身份
@@ -313,7 +313,19 @@
 "SafetyReinforcementPrompt" = "为了提升钱包私钥存储安全等级，需要对私钥存储进行安全加固";
 "StartReinforcement" = "开始加固";
 "SuccessfulReinforcement" = "恭喜您已完成私钥存储安全加固操作";
-
+// 地址薄
+"NoRecord" = "暂无记录";
+"NewContacts" = "新建联系人";
+"EditContact" = "编辑联系人";
+"NickNameFormatIncorrect" = "名称只允许输入字母、汉字、数字、下划线，并且长度不能超过20个字符";
+"NickName" = "名称";
+"NickNamePlaceholder" = "输入账户地址对应的名称，以便识别账户";
+"Describe" = "描述";
+"Optional" = "（选填）";
+"DescribePlaceholder" = "账户地址描述";
+"Address" = "地址";
+"AddressPlaceholder" = "BU账户地址";
+"Save" = "保存";
 // 错误信息
 "LoadFailure" = "加载失败";
 // SDK Errors

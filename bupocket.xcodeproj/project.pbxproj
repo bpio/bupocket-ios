@@ -101,6 +101,10 @@
 		958127EF219ABD9D0081A02E /* VersionUpdateAlertView.m in Sources */ = {isa = PBXBuildFile; fileRef = 958127EE219ABD9D0081A02E /* VersionUpdateAlertView.m */; };
 		958127F2219AC82A0081A02E /* VersionModel.m in Sources */ = {isa = PBXBuildFile; fileRef = 958127F1219AC82A0081A02E /* VersionModel.m */; };
 		958AA69821A2A89600BEA50C /* CustomRefreshFooter.m in Sources */ = {isa = PBXBuildFile; fileRef = 958AA69721A2A89600BEA50C /* CustomRefreshFooter.m */; };
+		959575C121FFF00F0089479C /* AddressBookViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 959575C021FFF00F0089479C /* AddressBookViewController.m */; };
+		959575C421FFF6EB0089479C /* AddressBookListViewCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 959575C321FFF6EB0089479C /* AddressBookListViewCell.m */; };
+		959575C821FFF8010089479C /* AddressBookModel.m in Sources */ = {isa = PBXBuildFile; fileRef = 959575C721FFF8010089479C /* AddressBookModel.m */; };
+		959575CB21FFFD040089479C /* ContactViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 959575CA21FFFD040089479C /* ContactViewController.m */; };
 		959726B821E334C20022CB78 /* WalletManagementViewCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 959726B721E334C20022CB78 /* WalletManagementViewCell.m */; };
 		959726BC21E358A10022CB78 /* ExportViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 959726BB21E358A10022CB78 /* ExportViewController.m */; };
 		959726BF21E43EB50022CB78 /* WalletModel.m in Sources */ = {isa = PBXBuildFile; fileRef = 959726BE21E43EB40022CB78 /* WalletModel.m */; };
@@ -359,6 +363,14 @@
 		958127F1219AC82A0081A02E /* VersionModel.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = VersionModel.m; sourceTree = "<group>"; };
 		958AA69621A2A89600BEA50C /* CustomRefreshFooter.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = CustomRefreshFooter.h; sourceTree = "<group>"; };
 		958AA69721A2A89600BEA50C /* CustomRefreshFooter.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = CustomRefreshFooter.m; sourceTree = "<group>"; };
+		959575BF21FFF00F0089479C /* AddressBookViewController.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = AddressBookViewController.h; sourceTree = "<group>"; };
+		959575C021FFF00F0089479C /* AddressBookViewController.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = AddressBookViewController.m; sourceTree = "<group>"; };
+		959575C221FFF6EB0089479C /* AddressBookListViewCell.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = AddressBookListViewCell.h; sourceTree = "<group>"; };
+		959575C321FFF6EB0089479C /* AddressBookListViewCell.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = AddressBookListViewCell.m; sourceTree = "<group>"; };
+		959575C621FFF8010089479C /* AddressBookModel.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = AddressBookModel.h; sourceTree = "<group>"; };
+		959575C721FFF8010089479C /* AddressBookModel.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = AddressBookModel.m; sourceTree = "<group>"; };
+		959575C921FFFD040089479C /* ContactViewController.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = ContactViewController.h; sourceTree = "<group>"; };
+		959575CA21FFFD040089479C /* ContactViewController.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = ContactViewController.m; sourceTree = "<group>"; };
 		959726B621E334C20022CB78 /* WalletManagementViewCell.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = WalletManagementViewCell.h; sourceTree = "<group>"; };
 		959726B721E334C20022CB78 /* WalletManagementViewCell.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = WalletManagementViewCell.m; sourceTree = "<group>"; };
 		959726BA21E358A10022CB78 /* ExportViewController.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = ExportViewController.h; sourceTree = "<group>"; };
@@ -589,8 +601,8 @@
 			isa = PBXGroup;
 			children = (
 				835A452F2174C212005BFCDD /* Controller */,
-				835A45302174C212005BFCDD /* Model */,
 				835A45312174C212005BFCDD /* View */,
+				959575C521FFF7D90089479C /* Model */,
 			);
 			path = My;
 			sourceTree = "<group>";
@@ -604,6 +616,10 @@
 				954371732199234100915BBE /* SettingViewController.m */,
 				83379A722179D62300C222A5 /* MyIdentityViewController.h */,
 				83379A732179D62300C222A5 /* MyIdentityViewController.m */,
+				959575BF21FFF00F0089479C /* AddressBookViewController.h */,
+				959575C021FFF00F0089479C /* AddressBookViewController.m */,
+				959575C921FFFD040089479C /* ContactViewController.h */,
+				959575CA21FFFD040089479C /* ContactViewController.m */,
 				83379A692179C1D500C222A5 /* ChangePasswordViewController.h */,
 				83379A6A2179C1D500C222A5 /* ChangePasswordViewController.m */,
 				83379A6C2179CB9E00C222A5 /* FeedbackViewController.h */,
@@ -616,18 +632,13 @@
 			path = Controller;
 			sourceTree = "<group>";
 		};
-		835A45302174C212005BFCDD /* Model */ = {
-			isa = PBXGroup;
-			children = (
-			);
-			path = Model;
-			sourceTree = "<group>";
-		};
 		835A45312174C212005BFCDD /* View */ = {
 			isa = PBXGroup;
 			children = (
 				833799152176E1E600C222A5 /* ListTableViewCell.h */,
 				833799162176E1E600C222A5 /* ListTableViewCell.m */,
+				959575C221FFF6EB0089479C /* AddressBookListViewCell.h */,
+				959575C321FFF6EB0089479C /* AddressBookListViewCell.m */,
 			);
 			path = View;
 			sourceTree = "<group>";
@@ -913,6 +924,15 @@
 				9579EB5121BABE6300051EDB /* MBProgressHUD+JDragon.m */,
 			);
 			path = "MBProgressHUD+JDragon";
+			sourceTree = "<group>";
+		};
+		959575C521FFF7D90089479C /* Model */ = {
+			isa = PBXGroup;
+			children = (
+				959575C621FFF8010089479C /* AddressBookModel.h */,
+				959575C721FFF8010089479C /* AddressBookModel.m */,
+			);
+			path = Model;
 			sourceTree = "<group>";
 		};
 		95A8A3A8219D12B1008E978E /* Internationalization */ = {
@@ -1300,6 +1320,7 @@
 				83379AC6217F3F4200C222A5 /* AssetsListModel.m in Sources */,
 				8372C8692174CCA000FF9506 /* AssetsViewController.m in Sources */,
 				83B594B72175FC8B009F91BA /* BackupMnemonicsViewController.m in Sources */,
+				959575C121FFF00F0089479C /* AddressBookViewController.m in Sources */,
 				83FB443421904AA400D68569 /* HMScannerBorder.m in Sources */,
 				83B594AD2175E4D9009F91BA /* RestoreIdentityViewController.m in Sources */,
 				959726BC21E358A10022CB78 /* ExportViewController.m in Sources */,
@@ -1342,10 +1363,13 @@
 				956CD42121B016D1004DC1FA /* ListModel.m in Sources */,
 				83379AE22180630300C222A5 /* TxDetailModel.m in Sources */,
 				95A8A41D219D5FF7008E978E /* YBRectConst.m in Sources */,
+				959575C821FFF8010089479C /* AddressBookModel.m in Sources */,
 				833799172176E1E600C222A5 /* ListTableViewCell.m in Sources */,
+				959575CB21FFFD040089479C /* ContactViewController.m in Sources */,
 				95A8A3BC219D161D008E978E /* CustomRefreshHeader.m in Sources */,
 				95DC83C821E2FD3B00F745E6 /* WalletManagementViewController.m in Sources */,
 				959726C521E487F10022CB78 /* ExportKeystoreViewController.m in Sources */,
+				959575C421FFF6EB0089479C /* AddressBookListViewCell.m in Sources */,
 				83379A092178509300C222A5 /* WKWebViewController.m in Sources */,
 				83379A6221797BDD00C222A5 /* ConfirmMnemonicViewController.m in Sources */,
 				95A8A41E219D5FF7008E978E /* YBPopupMenuPath.m in Sources */,

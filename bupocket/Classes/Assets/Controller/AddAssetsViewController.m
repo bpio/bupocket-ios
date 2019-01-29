@@ -98,7 +98,7 @@ static NSString * const SearchID = @"SearchID";
             [MBProgressHUD showTipMessageInWindow:[ErrorTypeTool getDescriptionWithErrorCode:code]];
         }
         [self.tableView.mj_header endRefreshing];
-        (self.listArray.count > 0) ? (self.tableView.tableFooterView = [UIView new]) : (self.tableView.tableFooterView = self.noData);
+        (self.listArray.count > 0) ? (self.tableView.tableFooterView = [[UIView alloc] initWithFrame:CGRectMake(0, 0, DEVICE_WIDTH, CGFLOAT_MIN)]) : (self.tableView.tableFooterView = self.noData);
         self.tableView.mj_footer.hidden = (self.listArray.count == 0);
         self.noNetWork.hidden = YES;
     } failure:^(NSError *error) {

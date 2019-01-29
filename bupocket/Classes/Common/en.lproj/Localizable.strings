@@ -62,11 +62,11 @@
 "Finished" = "Completed";
 // Profile
 "Setting" = "Setting";
+"AddressBook" = "地址薄";
 "ModifyPassword" = "Change the Identity Password";
 "Feedback" = "Feedback";
 "MultiLingual" = "Languages";
 "VersionNumber" = "Version";
-//"Save" = "Save";
 "MonetaryUnit" = "Currency unit";
 "SwitchedNetwork" = "Switch to the test network";
 // My identity
@@ -196,7 +196,6 @@
 "IssuerAddress" = "Issuer address";
 "Hash" = "Hash";
 // scan
-// 待定
 "UnableToAccessAlbum" = "Album is not accessible";
 "UnableToAccessCamera" = "Camera is not accessible ";
 
@@ -324,6 +323,20 @@
 "StartReinforcement" = "Start to enhance";
 "SuccessfulReinforcement" = "Congratulations! You have enhanced the security of private key storage";
 
+// 地址薄
+"NoRecord" = "暂无记录";
+"NewContacts" = "新建联系人";
+"EditContact" = "编辑联系人";
+"NickNameFormatIncorrect" = "名称只允许输入字母、汉字、数字、下划线，并且长度不能超过20个字符";
+"DescribeFormatIncorrect" = "描述长度最多30个字符，请进行修改";
+"NickName" = "名称";
+"NickNamePlaceholder" = "输入账户地址对应的名称，以便识别账户";
+"Describe" = "描述";
+"Optional" = "（选填）";
+"DescribePlaceholder" = "账户地址描述";
+"Address" = "地址";
+"AddressPlaceholder" = "BU账户地址";
+"Save" = "保存";
 // Errors
 "LoadFailure" = "Failed to load";
 
