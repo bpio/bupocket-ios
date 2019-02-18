@@ -75,6 +75,6 @@
 // Obtain minimum asset limits and fuel unit prices for accounts in designated blocks
 #define Minimum_Asset_Limitation @"MinimumAssetLimitation"
 
-
+#define Address_MinimumFontSize ScreenScale(11)
 
 #endif /* Constant_h */

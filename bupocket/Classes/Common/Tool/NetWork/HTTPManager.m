@@ -256,6 +256,113 @@ static int64_t const gasPrice = 1000;
         }
     }];
 }
+// addressBook
+- (void)getAddressBookListWithIdentityAddress:(NSString *)identityAddress
+                                    pageIndex:(NSInteger)pageIndex
+                                      success:(void (^)(id responseObject))success
+                                      failure:(void (^)(NSError *error))failure
+{
+    NSString * url = SERVER_COMBINE_API(_webServerDomain, AddressBook_List);
+    NSDictionary * parmenters = @{@"identityAddress": identityAddress,
+                                  @"startPage" : @(pageIndex),
+                                  @"pageSize" : @(PageSize_Max)};
+    [[HttpTool shareTool] POST:url parameters:parmenters success:^(id responseObject) {
+        if(success != nil)
+        {
+            success(responseObject);
+        }
+    } failure:^(NSError *error) {
+        if(failure != nil)
+        {
+            failure(error);
+        }
+    }];
+}
+// Add AddressBook
+- (void)getAddAddressBookDataWithIdentityAddress:(NSString *)identityAddress
+                                  linkmanAddress:(NSString *)linkmanAddress
+                                        nickName:(NSString *)nickName
+                                          remark:(NSString *)remark
+                                         success:(void (^)(id responseObject))success
+                                         failure:(void (^)(NSError *error))failure
+{
+    [MBProgressHUD showActivityMessageInWindow:Localized(@"Loading")];
+    NSString * url = SERVER_COMBINE_API(_webServerDomain, Add_AddressBook);
+    NSDictionary * parmenters = @{
+                                  @"identityAddress": identityAddress,
+                                  @"linkmanAddress": linkmanAddress,
+                                  @"nickName": nickName,
+                                  @"remark": remark
+                                  };
+    [[HttpTool shareTool] POST:url parameters:parmenters success:^(id responseObject) {
+        if(success != nil)
+        {
+            success(responseObject);
+        }
+    } failure:^(NSError *error) {
+        if(failure != nil)
+        {
+            failure(error);
+            [MBProgressHUD showTipMessageInWindow:Localized(@"NoNetWork")];
+        }
+    }];
+}
+// update AddressBook
+- (void)getUpdateAddressBookDataWithIdentityAddress:(NSString *)identityAddress
+                                  oldLinkmanAddress:(NSString *)oldLinkmanAddress
+                                  newLinkmanAddress:(NSString *)newLinkmanAddress
+                                           nickName:(NSString *)nickName
+                                             remark:(NSString *)remark
+                                            success:(void (^)(id responseObject))success
+                                            failure:(void (^)(NSError *error))failure
+{
+    [MBProgressHUD showActivityMessageInWindow:Localized(@"Loading")];
+    NSString * url = SERVER_COMBINE_API(_webServerDomain, Update_AddressBook);
+    NSDictionary * parmenters = @{
+                                  @"identityAddress": identityAddress,
+                                  @"oldLinkmanAddress": oldLinkmanAddress,
+                                  @"newLinkmanAddress": newLinkmanAddress,
+                                  @"nickName": nickName,
+                                  @"remark": remark
+                                  };
+    [[HttpTool shareTool] POST:url parameters:parmenters success:^(id responseObject) {
+        if(success != nil)
+        {
+            success(responseObject);
+        }
+    } failure:^(NSError *error) {
+        if(failure != nil)
+        {
+            failure(error);
+            [MBProgressHUD showTipMessageInWindow:Localized(@"NoNetWork")];
+        }
+    }];
+}
+// Delete AddressBook
+- (void)getDeleteAddressBookDataWithIdentityAddress:(NSString *)identityAddress
+                                     linkmanAddress:(NSString *)linkmanAddress
+                                            success:(void (^)(id responseObject))success
+                                            failure:(void (^)(NSError *error))failure
+{
+    [MBProgressHUD showActivityMessageInWindow:Localized(@"Loading")];
+    NSString * url = SERVER_COMBINE_API(_webServerDomain, Delete_AddressBook);
+    NSDictionary * parmenters = @{
+                                  @"identityAddress": identityAddress,
+                                  @"linkmanAddress": linkmanAddress
+                                  };
+    [[HttpTool shareTool] POST:url parameters:parmenters success:^(id responseObject) {
+        if(success != nil)
+        {
+            success(responseObject);
+        }
+    } failure:^(NSError *error) {
+        if(failure != nil)
+        {
+            failure(error);
+            [MBProgressHUD showTipMessageInWindow:Localized(@"NoNetWork")];
+        }
+    }];
+}
 #pragma mark - SDK
 // Check the balance
 - (int64_t)getAccountBalance {

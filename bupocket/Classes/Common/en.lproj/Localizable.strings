@@ -62,11 +62,11 @@
 "Finished" = "Completed";
 // Profile
 "Setting" = "Setting";
+"AddressBook" = "Address list";
 "ModifyPassword" = "Change the Identity Password";
 "Feedback" = "Feedback";
 "MultiLingual" = "Languages";
 "VersionNumber" = "Version";
-//"Save" = "Save";
 "MonetaryUnit" = "Currency unit";
 "SwitchedNetwork" = "Switch to the test network";
 // My identity
@@ -196,7 +196,6 @@
 "IssuerAddress" = "Issuer address";
 "Hash" = "Hash";
 // scan
-// 待定
 "UnableToAccessAlbum" = "Album is not accessible";
 "UnableToAccessCamera" = "Camera is not accessible ";
 
@@ -323,6 +322,28 @@
 "SafetyReinforcementPrompt" = "To improve the security of the private key storage, the security of private key storage needs to be enhanced";
 "StartReinforcement" = "Start to enhance";
 "SuccessfulReinforcement" = "Congratulations! You have enhanced the security of private key storage";
+
+// Address
+"NoRecord" = "No record";
+"NewContacts" = "New contact";
+"EditContact" = "Edit contact";
+"NickNameFormatIncorrect" = "Only letters, characters, numbers and underscores are allowed, and they cannot exceed 20 characters in length.";
+"NickName" = "Name";
+"NickNamePlaceholder" = "Enter a name which corresponds to the account address to identify the account";
+"Describe" = "Description";
+"Optional" = "（Optional）";
+"DescribePlaceholder" = "Description of the account address";
+"Address" = "Address";
+"AddressPlaceholder" = "Account address (BU)";
+"Save" = "Save";
+"SaveSuccessfully" = "Saved successfully";
+"SaveFailed" = "Failed to save; please try again later";
+"ContactExisted" = "The contact is already existed";
+"DescribeFormatIncorrect" = "At most 30 characters are allowed for the description. Please modify";
+"DeleteContact" = "Delete contact";
+"ConfirmDeleteContact" = "Are you sure to delete?";
+"DeleteSuccessful" = "Deleted successfully";
+"DeleteFailed" = "Failed to delete; please try again later";
 
 // Errors
 "LoadFailure" = "Failed to load";

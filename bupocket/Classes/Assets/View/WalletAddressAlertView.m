@@ -160,7 +160,7 @@
 {
     if (!_QRCodeTitle) {
         _QRCodeTitle = [[UILabel alloc] init];
-        _QRCodeTitle.textColor = COLOR(@"B2B2B2");
+        _QRCodeTitle.textColor = PLACEHOLDER_COLOR;
         _QRCodeTitle.font = FONT(15);
         _QRCodeTitle.text = Localized(@"WalletAddressQRCode");
     }
