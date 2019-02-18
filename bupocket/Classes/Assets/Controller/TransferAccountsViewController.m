@@ -220,6 +220,8 @@
         make.height.mas_equalTo(LINE_WIDTH);
     }];
     if (index == 0) {
+        textField.adjustsFontSizeToFitWidth = YES;
+        textField.minimumFontSize = Address_MinimumFontSize;
         self.destinationAddress = textField;
         if (self.address.length > 0) {
             self.destinationAddress.text = self.address;
@@ -228,7 +230,7 @@
         }
         UIButton * addressBook = [UIButton createButtonWithNormalImage:@"my_list_1" SelectedImage:@"my_list_1" Target:self Selector:@selector(addressBookAction)];
         addressBook.contentHorizontalAlignment = UIControlContentHorizontalAlignmentRight;
-        addressBook.bounds = CGRectMake(0, 0, Margin_30, Margin_40);
+        addressBook.bounds = CGRectMake(0, 0, Margin_25, Margin_40);
         textField.rightViewMode = UITextFieldViewModeAlways;
         textField.rightView = addressBook;
     } else if (index == 1) {

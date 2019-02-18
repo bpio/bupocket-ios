@@ -62,7 +62,7 @@
 "Finished" = "Completed";
 // Profile
 "Setting" = "Setting";
-"AddressBook" = "地址薄";
+"AddressBook" = "Address list";
 "ModifyPassword" = "Change the Identity Password";
 "Feedback" = "Feedback";
 "MultiLingual" = "Languages";
@@ -323,20 +323,28 @@
 "StartReinforcement" = "Start to enhance";
 "SuccessfulReinforcement" = "Congratulations! You have enhanced the security of private key storage";
 
-// 地址薄
-"NoRecord" = "暂无记录";
-"NewContacts" = "新建联系人";
-"EditContact" = "编辑联系人";
-"NickNameFormatIncorrect" = "名称只允许输入字母、汉字、数字、下划线，并且长度不能超过20个字符";
-"DescribeFormatIncorrect" = "描述长度最多30个字符，请进行修改";
-"NickName" = "名称";
-"NickNamePlaceholder" = "输入账户地址对应的名称，以便识别账户";
-"Describe" = "描述";
-"Optional" = "（选填）";
-"DescribePlaceholder" = "账户地址描述";
-"Address" = "地址";
-"AddressPlaceholder" = "BU账户地址";
-"Save" = "保存";
+// Address
+"NoRecord" = "No record";
+"NewContacts" = "New contact";
+"EditContact" = "Edit contact";
+"NickNameFormatIncorrect" = "Only letters, characters, numbers and underscores are allowed, and they cannot exceed 20 characters in length.";
+"NickName" = "Name";
+"NickNamePlaceholder" = "Enter a name which corresponds to the account address to identify the account";
+"Describe" = "Description";
+"Optional" = "（Optional）";
+"DescribePlaceholder" = "Description of the account address";
+"Address" = "Address";
+"AddressPlaceholder" = "Account address (BU)";
+"Save" = "Save";
+"SaveSuccessfully" = "Saved successfully";
+"SaveFailed" = "Failed to save; please try again later";
+"ContactExisted" = "The contact is already existed";
+"DescribeFormatIncorrect" = "At most 30 characters are allowed for the description. Please modify";
+"DeleteContact" = "Delete contact";
+"ConfirmDeleteContact" = "Are you sure to delete?";
+"DeleteSuccessful" = "Deleted successfully";
+"DeleteFailed" = "Failed to delete; please try again later";
+
 // Errors
 "LoadFailure" = "Failed to load";
 

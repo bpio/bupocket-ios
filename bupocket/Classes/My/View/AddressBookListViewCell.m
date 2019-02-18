@@ -44,12 +44,13 @@ static NSString * const WalletCellID = @"WalletCellID";
     [self.addressName mas_makeConstraints:^(MASConstraintMaker *make) {
         make.top.equalTo(self.listBg.mas_top).offset(Margin_20);
         make.left.equalTo(self.listBg.mas_left).offset(Margin_15);
-        make.height.mas_equalTo(ScreenScale(16));
+//        make.height.mas_equalTo(ScreenScale(16));
         make.right.equalTo(self.listBg.mas_right).offset(-Margin_15);
 //        make.right.mas_lessThanOrEqualTo(self.detailImage.mas_left).offset(-Margin_15);
     }];
     [self.address mas_makeConstraints:^(MASConstraintMaker *make) {
         make.left.right.equalTo(self.addressName);
+        make.height.mas_equalTo(Margin_15);
         make.top.equalTo(self.addressName.mas_bottom).offset(Margin_15);
     }];
     [self.describe mas_makeConstraints:^(MASConstraintMaker *make) {
@@ -75,6 +76,7 @@ static NSString * const WalletCellID = @"WalletCellID";
         _addressName = [[UILabel alloc] init];
         _addressName.font = FONT(16);
         _addressName.textColor = TITLE_COLOR;
+        _addressName.numberOfLines = 0;
     }
     return _addressName;
 }
@@ -110,7 +112,12 @@ static NSString * const WalletCellID = @"WalletCellID";
     self.addressName.text = addressBookModel.nickName;
     self.address.text = [NSString stringEllipsisWithStr:addressBookModel.linkmanAddress];
     self.describe.text = addressBookModel.remark;
-    _addressBookModel.cellHeight = ScreenScale(85) + (Margin_15 + [Encapsulation rectWithText:self.describe.text font:self.describe.font textWidth:DEVICE_WIDTH - Margin_50].size.height);
+    CGFloat addressNameH = [Encapsulation rectWithText:self.addressName.text font:self.addressName.font textWidth:DEVICE_WIDTH - Margin_50].size.height;
+    CGFloat describeH = 0;
+    if (NULLString(self.describe.text)) {
+        describeH = (Margin_15 + [Encapsulation rectWithText:self.describe.text font:self.describe.font textWidth:DEVICE_WIDTH - Margin_50].size.height);
+    }
+    addressBookModel.cellHeight = ScreenScale(70) + addressNameH + describeH + Margin_10;
 }
 
 - (void)awakeFromNib {

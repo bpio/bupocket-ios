@@ -326,6 +326,14 @@
 "Address" = "地址";
 "AddressPlaceholder" = "BU账户地址";
 "Save" = "保存";
+"SaveSuccessfully" = "保存成功";
+"SaveFailed" = "保存失败，请稍后重试";
+"ContactExisted" = "该联系人已存在";
+"DescribeFormatIncorrect" = "描述长度最多30个字符，请进行修改";
+"DeleteContact" = "删除联系人";
+"ConfirmDeleteContact" = "确定删除联系人？";
+"DeleteSuccessful" = "删除成功";
+"DeleteFailed" = "删除失败，请稍后重试";
 // 错误信息
 "LoadFailure" = "加载失败";
 // SDK Errors

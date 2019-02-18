@@ -43,23 +43,24 @@ static NSString * const TextFieldCellID = @"TextFieldCellID";
 - (void)viewDidLoad {
     [super viewDidLoad];
     [self setupView];
+    
     // Do any additional setup after loading the view.
 }
 - (void)setupView
 {
-    self.tableView = [[UITableView alloc] initWithFrame:self.view.bounds style:UITableViewStylePlain];
+    self.tableView = [[UITableView alloc] initWithFrame:self.view.bounds style:UITableViewStyleGrouped];
     self.tableView.delegate = self;
     self.tableView.dataSource = self;
     self.tableView.separatorStyle = UITableViewCellSeparatorStyleNone;
     self.tableView.backgroundColor = [UIColor whiteColor];
     [self.view addSubview:self.tableView];
-    [self.tableView mas_makeConstraints:^(MASConstraintMaker *make) {
-        make.edges.equalTo(self.view);
-    }];
+//    [self.tableView mas_makeConstraints:^(MASConstraintMaker *make) {
+//        make.edges.equalTo(self.view);
+//    }];
     
-    self.tableView.tableHeaderView = [[UIView alloc] init];
+    self.tableView.tableHeaderView = [[UIView alloc] initWithFrame:CGRectMake(0, 0, DEVICE_WIDTH, CGFLOAT_MIN)];
     
-    UIView * footerView = [[UIView alloc] initWithFrame:CGRectMake(0, 0, DEVICE_WIDTH, ScreenScale(150) + SafeAreaBottomH)];
+    UIView * footerView = [[UIView alloc] initWithFrame:CGRectMake(0, 0, DEVICE_WIDTH, ScreenScale(200))];
     self.tableView.tableFooterView = footerView;
     
     self.save = [UIButton createButtonWithTitle:Localized(@"Save") isEnabled:NO Target:self Selector:@selector(saveAction)];
@@ -73,16 +74,38 @@ static NSString * const TextFieldCellID = @"TextFieldCellID";
         make.right.equalTo(footerView.mas_right).offset(-Margin_15);
         make.height.mas_equalTo(MAIN_HEIGHT);
     }];
-    if (self.addressBookModel) {
-        self.nickNameText.text = self.addressBookModel.nickName;
-        self.describeText.text = self.addressBookModel.remark;
-        self.walletAddressText.text = self.addressBookModel.linkmanAddress;
+    if ([self.navigationItem.title isEqualToString:Localized(@"EditContact")]) {
+        UIButton * deleteBtn = [UIButton createButtonWithTitle:Localized(@"DeleteContact") isEnabled:YES Target:self Selector:@selector(deleteAction)];
+        [deleteBtn setTitleColor:WARNING_COLOR forState:UIControlStateNormal];
+        deleteBtn.backgroundColor = [UIColor whiteColor];
+        [footerView addSubview:deleteBtn];
+        [deleteBtn mas_makeConstraints:^(MASConstraintMaker *make) {
+            make.top.equalTo(self.save.mas_bottom).offset(Margin_20);
+            make.left.right.height.equalTo(self.save);
+        }];
     }
-//    [explain mas_makeConstraints:^(MASConstraintMaker *make) {
-//        make.top.equalTo(self.import.mas_bottom).offset(Margin_15);
-//        make.right.equalTo(self.import);
-//        make.height.mas_equalTo(Margin_30);
-//    }];
+}
+- (void)deleteAction
+{
+    [Encapsulation showAlertControllerWithTitle:nil message:Localized(@"ConfirmDeleteContact") cancelHandler:^(UIAlertAction *action) {
+    } confirmHandler:^(UIAlertAction *action) {
+        [self getDeleteData];
+    }];
+}
+- (void)getDeleteData
+{
+    [[HTTPManager shareManager] getDeleteAddressBookDataWithIdentityAddress:[[AccountTool shareTool] account].identityAddress linkmanAddress:self.walletAddress success:^(id responseObject) {
+        NSInteger code = [[responseObject objectForKey:@"errCode"] integerValue];
+        if (code == Success_Code) {
+            [MBProgressHUD showTipMessageInWindow:Localized(@"DeleteSuccessful")];
+            [self.navigationController popViewControllerAnimated:NO];
+        } else {
+            [MBProgressHUD showTipMessageInWindow:Localized(@"DeleteFailed")];
+            //            [MBProgressHUD showTipMessageInWindow:[ErrorTypeTool getDescriptionWithErrorCode:code]];
+        }
+    } failure:^(NSError *error) {
+        
+    }];
 }
 - (CGFloat)tableView:(UITableView *)tableView heightForRowAtIndexPath:(NSIndexPath *)indexPath
 {
@@ -121,6 +144,14 @@ static NSString * const TextFieldCellID = @"TextFieldCellID";
         scan.frame = CGRectMake(0, 0, Margin_20, TEXTFIELD_HEIGHT);
         cell.textField.rightView = scan;
         self.walletAddressText = cell.textField;
+        cell.textField.adjustsFontSizeToFitWidth = YES;
+        cell.textField.minimumFontSize = Address_MinimumFontSize;
+    }
+    if (self.addressBookModel) {
+        self.nickNameText.text = self.addressBookModel.nickName;
+        self.describeText.text = self.addressBookModel.remark;
+        self.walletAddressText.text = self.addressBookModel.linkmanAddress;
+        [self judgeHasText];
     }
     cell.textChange = ^(UITextField * _Nonnull textField) {
         [self judgeHasText];
@@ -157,10 +188,41 @@ static NSString * const TextFieldCellID = @"TextFieldCellID";
         [MBProgressHUD showTipMessageInWindow:Localized(@"NickNameFormatIncorrect")];
         return;
     }
-    if (self.describe && self.describe.length < PW_MAX_LENGTH) {
+    if (NULLString(self.describe) && self.describe.length > PW_MAX_LENGTH) {
         [MBProgressHUD showTipMessageInWindow:Localized(@"DescribeFormatIncorrect")];
         return;
     }
+    if ([self.navigationItem.title isEqualToString:Localized(@"NewContacts")]) {
+        [[HTTPManager shareManager] getAddAddressBookDataWithIdentityAddress:[[AccountTool shareTool] account].identityAddress linkmanAddress:self.walletAddress nickName:self.nickName remark:self.describe success:^(id responseObject) {
+            NSInteger code = [[responseObject objectForKey:@"errCode"] integerValue];
+            if (code == Success_Code) {
+                [MBProgressHUD showTipMessageInWindow:Localized(@"SaveSuccessfully")];
+                [self.navigationController popViewControllerAnimated:NO];
+            } else if (code == 100055) {
+                [MBProgressHUD showTipMessageInWindow:Localized(@"ContactExisted")];
+            } else {
+                [MBProgressHUD showTipMessageInWindow:Localized(@"SaveFailed")];
+                //            [MBProgressHUD showTipMessageInWindow:[ErrorTypeTool getDescriptionWithErrorCode:code]];
+            }
+        } failure:^(NSError *error) {
+            
+        }];
+    } else if ([self.navigationItem.title isEqualToString:Localized(@"EditContact")]) {
+        [[HTTPManager shareManager] getUpdateAddressBookDataWithIdentityAddress:[[AccountTool shareTool] account].identityAddress oldLinkmanAddress:self.addressBookModel.linkmanAddress newLinkmanAddress:self.walletAddress nickName:self.nickName remark:self.describe success:^(id responseObject) {
+            NSInteger code = [[responseObject objectForKey:@"errCode"] integerValue];
+            if (code == Success_Code) {
+                [MBProgressHUD showTipMessageInWindow:Localized(@"SaveSuccessfully")];
+                [self.navigationController popViewControllerAnimated:NO];
+            } else {
+                [MBProgressHUD showTipMessageInWindow:Localized(@"SaveFailed")];
+                //            [MBProgressHUD showTipMessageInWindow:[ErrorTypeTool getDescriptionWithErrorCode:code]];
+            }
+        } failure:^(NSError *error) {
+            
+        }];
+
+    }
+    
 }
 - (void)textFieldDidEndEditing:(UITextField *)textField
 {

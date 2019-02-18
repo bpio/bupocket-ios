@@ -21,6 +21,7 @@
 #import "ImportWalletViewController.h"
 #import "ExportKeystoreViewController.h"
 #import "ExportPrivateKeyViewController.h"
+#import "ContactViewController.h"
 
 @interface NavigationViewController ()<UINavigationControllerDelegate>
 
@@ -33,7 +34,6 @@
     UINavigationBar * bar = [UINavigationBar appearance];
     bar.shadowImage = [[UIImage alloc] init];
     bar.barTintColor = [UIColor whiteColor];
-    
 //    NSMutableDictionary * attr = [NSMutableDictionary dictionary];
 //    attr[NSFontAttributeName] = FONT(18);
 //    attr[NSForegroundColorAttributeName] = TITLE_COLOR;
@@ -74,7 +74,8 @@
                              [viewController isKindOfClass:[OrderDetailsViewController class]] ||
                              [viewController isKindOfClass:[ImportWalletViewController class]] ||
                              [viewController isKindOfClass:[ExportKeystoreViewController class]] ||
-                             [viewController isKindOfClass:[ExportPrivateKeyViewController class]]
+                             [viewController isKindOfClass:[ExportPrivateKeyViewController class]] ||
+                             [viewController isKindOfClass:[ContactViewController class]]
                              );
     if (@available(iOS 11.0, *)) {
         [self.navigationBar setPrefersLargeTitles:!isSetLargeTitles];

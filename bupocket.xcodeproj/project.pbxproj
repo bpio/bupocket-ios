@@ -490,7 +490,6 @@
 				83379AA5217F006600C222A5 /* HTTPManager.h */,
 				83379AA7217F006600C222A5 /* HTTPManager.m */,
 				9510A3CA219A91D4007A49A4 /* ErrorTypeTool.h */,
-				9510A3CB219A91D4007A49A4 /* ErrorTypeTool.m */,
 				83D5B1EF218199E900BF1FF1 /* JsonTool.h */,
 				83D5B1F0218199E900BF1FF1 /* JsonTool.m */,
 			);
@@ -790,6 +789,7 @@
 			children = (
 				8372C85C2174CBF100FF9506 /* TabBarViewController.h */,
 				8372C8602174CBF100FF9506 /* TabBarViewController.m */,
+				9510A3CB219A91D4007A49A4 /* ErrorTypeTool.m */,
 				8372C85D2174CBF100FF9506 /* NavigationViewController.h */,
 				8372C85F2174CBF100FF9506 /* NavigationViewController.m */,
 				8372C8642174CC6F00FF9506 /* BaseViewController.h */,

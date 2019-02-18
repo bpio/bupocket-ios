@@ -16,9 +16,11 @@
 @interface AddressBookViewController ()<UITableViewDelegate, UITableViewDataSource>
 
 @property (nonatomic, strong) UITableView * tableView;
-@property (nonatomic, strong) NSArray * listArray;
+@property (nonatomic, strong) NSMutableArray * listArray;
 @property (nonatomic, strong) UIView * noData;
 //@property (nonatomic, assign) NSInteger index;
+@property (nonatomic, assign) NSInteger pageindex;
+@property (nonatomic, strong) UIView * noNetWork;
 
 @end
 
@@ -26,17 +28,78 @@ static NSString * const AddressBookCellID = @"AddressBookCellID";
 
 @implementation AddressBookViewController
 
+- (NSMutableArray *)listArray
+{
+    if (!_listArray) {
+        _listArray = [NSMutableArray array];
+    }
+    return _listArray;
+}
+
 - (void)viewDidLoad {
     [super viewDidLoad];
     [self setupNav];
     [self setupView];
-    AddressBookModel * addressBookModel = [[AddressBookModel alloc] init];
-    addressBookModel.nickName = @"火币充值地址火币充值地址火币充值地址火币充值地址火币充值地址火币充值地址";
-    addressBookModel.linkmanAddress = @"buQhSMWwbuQhSMWwbuQhSMWwbuQhSMWwbuQhSMWwbuQhSMWwbuQhSMWw4Bo73c8C";
-    addressBookModel.remark = @"gatez交易所充值账户地址";
-    self.listArray = @[addressBookModel];
-    (self.listArray.count > 0) ? (self.tableView.tableFooterView = [[UIView alloc] initWithFrame:CGRectMake(0, 0, DEVICE_WIDTH, CGFLOAT_MIN)]) : (self.tableView.tableFooterView = self.noData);
+    
+    self.noNetWork = [Encapsulation showNoNetWorkWithSuperView:self.view target:self action:@selector(reloadData)];
     // Do any additional setup after loading the view.
+}
+- (void)viewWillAppear:(BOOL)animated
+{
+    [super viewWillAppear:animated];
+    [self setupRefresh];    
+}
+- (void)reloadData
+{
+    self.noNetWork.hidden = YES;
+    [self.tableView.mj_header beginRefreshing];
+}
+- (void)setupRefresh
+{
+    self.tableView.mj_header = [CustomRefreshHeader headerWithRefreshingTarget:self refreshingAction:@selector(loadNewData)];
+    self.tableView.mj_header.automaticallyChangeAlpha = YES;
+    self.tableView.mj_footer = [CustomRefreshFooter footerWithRefreshingTarget:self refreshingAction:@selector(loadMoreData)];
+    [self.tableView.mj_header beginRefreshing];
+    self.tableView.mj_footer.ignoredScrollViewContentInsetBottom = -(ContentSizeBottom);
+}
+- (void)loadNewData
+{
+    [self getDataWithPageindex: PageIndex_Default];
+}
+- (void)loadMoreData
+{
+    [self getDataWithPageindex:self.pageindex];
+}
+- (void)getDataWithPageindex:(NSInteger)pageindex
+{
+    [[HTTPManager shareManager] getAddressBookListWithIdentityAddress:[[AccountTool shareTool] account].identityAddress pageIndex:pageindex success:^(id responseObject) {
+        NSInteger code = [[responseObject objectForKey:@"errCode"] integerValue];
+        if (code == Success_Code) {
+            NSArray * listArray = [AddressBookModel mj_objectArrayWithKeyValuesArray:responseObject[@"data"] [@"addressBookList"]];
+            if (pageindex == PageIndex_Default) {
+                [self.listArray removeAllObjects];
+                self.pageindex = PageIndex_Default;
+            }
+            self.pageindex = self.pageindex + 1;
+            [self.listArray addObjectsFromArray:listArray];
+            if (listArray.count < PageSize_Max) {
+                [self.tableView.mj_footer endRefreshingWithNoMoreData];
+            } else {
+                [self.tableView.mj_footer endRefreshing];
+            }
+            [self.tableView reloadData];
+        } else {
+            [MBProgressHUD showTipMessageInWindow:[ErrorTypeTool getDescriptionWithErrorCode:code]];
+        }
+        [self.tableView.mj_header endRefreshing];
+        (self.listArray.count > 0) ? (self.tableView.tableFooterView = [[UIView alloc] initWithFrame:CGRectMake(0, 0, DEVICE_WIDTH, CGFLOAT_MIN)]) : (self.tableView.tableFooterView = self.noData);
+        self.tableView.mj_footer.hidden = (self.listArray.count == 0);
+        self.noNetWork.hidden = YES;
+    } failure:^(NSError *error) {
+        [self.tableView.mj_header endRefreshing];
+        [self.tableView.mj_footer endRefreshing];
+        self.noNetWork.hidden = NO;
+    }];
 }
 - (void)setupNav
 {
@@ -74,7 +137,9 @@ static NSString * const AddressBookCellID = @"AddressBookCellID";
 }
 - (CGFloat)tableView:(UITableView *)tableView heightForRowAtIndexPath:(NSIndexPath *)indexPath
 {
-    return ScreenScale(130);
+    AddressBookModel * addressBookModel = self.listArray[indexPath.row];
+    return addressBookModel.cellHeight;
+//    return ScreenScale(130);
 }
 - (CGFloat)tableView:(UITableView *)tableView heightForHeaderInSection:(NSInteger)section
 {
