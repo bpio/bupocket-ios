@@ -60,7 +60,7 @@
 "Finished" = "完成";
 // 我的
 "Setting" = "设置";
-"AddressBook" = "地址薄";
+"AddressBook" = "地址簿";
 "ModifyPassword" = "修改身份密码";
 "Feedback" = "帮助与反馈";
 "MultiLingual" = "多语言";
@@ -313,7 +313,7 @@
 "SafetyReinforcementPrompt" = "为了提升钱包私钥存储安全等级，需要对私钥存储进行安全加固";
 "StartReinforcement" = "开始加固";
 "SuccessfulReinforcement" = "恭喜您已完成私钥存储安全加固操作";
-// 地址薄
+// 地址簿
 "NoRecord" = "暂无记录";
 "NewContacts" = "新建联系人";
 "EditContact" = "编辑联系人";
