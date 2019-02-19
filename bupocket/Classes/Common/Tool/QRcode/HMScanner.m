@@ -311,7 +311,7 @@
     NSError *videoInputError = nil;
     AVCaptureDeviceInput *videoInput = [AVCaptureDeviceInput deviceInputWithDevice:device error:&videoInputError];
     if (videoInputError) {
-        HSSLog(@"videoInputError == %@",videoInputError);
+        DLog(@"videoInputError == %@",videoInputError);
     }
     
     if (videoInput == nil) {

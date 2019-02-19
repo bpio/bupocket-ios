@@ -274,8 +274,6 @@
 		8395AF302189496E0082EA30 /* DistributionModel.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = DistributionModel.m; sourceTree = "<group>"; };
 		8395AF32218958840082EA30 /* TransactionResultModel.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = TransactionResultModel.h; sourceTree = "<group>"; };
 		8395AF33218958840082EA30 /* TransactionResultModel.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = TransactionResultModel.m; sourceTree = "<group>"; };
-		83A66A2D218B323300E071B9 /* Constant.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = Constant.h; sourceTree = "<group>"; };
-		83A66A2E218B332D00E071B9 /* GlobalConfiguration.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = GlobalConfiguration.h; sourceTree = "<group>"; };
 		83B465A021745C9300187961 /* bupocket.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = bupocket.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		83B465A621745C9300187961 /* ViewController.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = ViewController.h; sourceTree = "<group>"; };
 		83B465A721745C9300187961 /* ViewController.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = ViewController.m; sourceTree = "<group>"; };
@@ -371,6 +369,9 @@
 		959575C721FFF8010089479C /* AddressBookModel.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = AddressBookModel.m; sourceTree = "<group>"; };
 		959575C921FFFD040089479C /* ContactViewController.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = ContactViewController.h; sourceTree = "<group>"; };
 		959575CA21FFFD040089479C /* ContactViewController.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = ContactViewController.m; sourceTree = "<group>"; };
+		959575D4221BD6BC0089479C /* CommonMacro.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = CommonMacro.h; sourceTree = "<group>"; };
+		959575D6221BD7290089479C /* AppDefine.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = AppDefine.h; sourceTree = "<group>"; };
+		959575D7221BD7F10089479C /* AppInclude.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = AppInclude.h; sourceTree = "<group>"; };
 		959726B621E334C20022CB78 /* WalletManagementViewCell.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = WalletManagementViewCell.h; sourceTree = "<group>"; };
 		959726B721E334C20022CB78 /* WalletManagementViewCell.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = WalletManagementViewCell.m; sourceTree = "<group>"; };
 		959726BA21E358A10022CB78 /* ExportViewController.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = ExportViewController.h; sourceTree = "<group>"; };
@@ -529,6 +530,7 @@
 		835A45222174C14D005BFCDD /* Common */ = {
 			isa = PBXGroup;
 			children = (
+				959575D3221BD6BC0089479C /* Preprocessors */,
 				83379A0A2178588800C222A5 /* Resource */,
 				833799292177091500C222A5 /* Tool */,
 				83B594AE2175E6FA009F91BA /* View */,
@@ -539,8 +541,6 @@
 				835A45252174C14D005BFCDD /* AppDelegate.m */,
 				835A45242174C14D005BFCDD /* main.m */,
 				835A45382174C47E005BFCDD /* PrefixHeader.pch */,
-				83A66A2D218B323300E071B9 /* Constant.h */,
-				83A66A2E218B332D00E071B9 /* GlobalConfiguration.h */,
 				833799212176FD4400C222A5 /* InfoPlist.strings */,
 				833799272176FE4800C222A5 /* Localizable.strings */,
 			);
@@ -933,6 +933,16 @@
 				959575C721FFF8010089479C /* AddressBookModel.m */,
 			);
 			path = Model;
+			sourceTree = "<group>";
+		};
+		959575D3221BD6BC0089479C /* Preprocessors */ = {
+			isa = PBXGroup;
+			children = (
+				959575D4221BD6BC0089479C /* CommonMacro.h */,
+				959575D6221BD7290089479C /* AppDefine.h */,
+				959575D7221BD7F10089479C /* AppInclude.h */,
+			);
+			path = Preprocessors;
 			sourceTree = "<group>";
 		};
 		95A8A3A8219D12B1008E978E /* Internationalization */ = {

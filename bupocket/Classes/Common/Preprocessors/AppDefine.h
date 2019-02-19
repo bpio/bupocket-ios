@@ -1,13 +1,14 @@
 //
-//  Constant.h
+//  AppDefine.h
 //  bupocket
 //
-//  Created by bubi on 2018/11/1.
-//  Copyright © 2018年 bupocket. All rights reserved.
+//  Created by bubi on 2019/2/19.
+//  Copyright © 2019年 bupocket. All rights reserved.
 //
+//  App 项目用到的参数定义 -> URL 的入参、通知名字、SDK 的 AppKey 等
 
-#ifndef Constant_h
-#define Constant_h
+#ifndef AppDefine_h
+#define AppDefine_h
 
 #define LastVersion @"LastVersion"
 // Identity creation
@@ -77,4 +78,5 @@
 
 #define Address_MinimumFontSize ScreenScale(11)
 
-#endif /* Constant_h */
+
+#endif /* AppDefine_h */

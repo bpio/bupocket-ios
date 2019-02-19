@@ -2,7 +2,7 @@
 //  AddressBookViewController.m
 //  bupocket
 //
-//  Created by huoss on 2019/1/29.
+//  Created by bubi on 2019/1/29.
 //  Copyright © 2019年 bupocket. All rights reserved.
 //
 
@@ -150,8 +150,8 @@ static NSString * const AddressBookCellID = @"AddressBookCellID";
 }
 - (CGFloat)tableView:(UITableView *)tableView heightForFooterInSection:(NSInteger)section
 {
-//    return ContentSizeBottom;
-    return CGFLOAT_MIN;
+    return ContentSizeBottom;
+//    return CGFLOAT_MIN;
 }
 
 - (NSInteger)numberOfSectionsInTableView:(UITableView *)tableView

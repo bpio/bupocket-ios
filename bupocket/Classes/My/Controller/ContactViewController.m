@@ -2,7 +2,7 @@
 //  ContactViewController.m
 //  bupocket
 //
-//  Created by huoss on 2019/1/29.
+//  Created by bubi on 2019/1/29.
 //  Copyright © 2019年 bupocket. All rights reserved.
 //
 
@@ -146,6 +146,8 @@ static NSString * const TextFieldCellID = @"TextFieldCellID";
         self.walletAddressText = cell.textField;
         cell.textField.adjustsFontSizeToFitWidth = YES;
         cell.textField.minimumFontSize = Address_MinimumFontSize;
+        cell.textField.delegate = self;
+//        [cell.textField addTarget:self action:@selector(textChange:) forControlEvents:UIControlEventEditingChanged];
     }
     if (self.addressBookModel) {
         self.nickNameText.text = self.addressBookModel.nickName;

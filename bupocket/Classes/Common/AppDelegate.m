@@ -69,7 +69,7 @@
         [self storageSafetyReinforcement];
     } else {
         self.window.rootViewController = [[NavigationViewController alloc] initWithRootViewController:[[IdentityViewController alloc] init]];
-        NSString * currentVersion = [[[NSBundle mainBundle] infoDictionary] objectForKey:@"CFBundleShortVersionString"];
+        NSString * currentVersion = AppVersion;
         [defaults setObject:currentVersion forKey:LastVersion];
         [defaults synchronize];
         [self getVersionData];
@@ -101,7 +101,7 @@
     [[HTTPManager shareManager] setAccountDataWithRandom:random password:password identityName:[[AccountTool shareTool] account].identityName typeTitle:Localized(@"SafetyReinforcementTitle") success:^(id responseObject) {
         [self.PWAlertView hideView];
         [Encapsulation showAlertControllerWithMessage:Localized(@"SuccessfulReinforcement") handler:^(UIAlertAction *action) {
-            NSString * currentVersion = [[[NSBundle mainBundle] infoDictionary] objectForKey:@"CFBundleShortVersionString"];
+            NSString * currentVersion = AppVersion;
             NSUserDefaults * defaults = [NSUserDefaults standardUserDefaults];
             [defaults setObject:currentVersion forKey:LastVersion];
             [defaults synchronize];
@@ -117,8 +117,8 @@
         NSInteger code = [[responseObject objectForKey:@"errCode"] integerValue];
         VersionModel * versionModel  = [VersionModel mj_objectWithKeyValues:[responseObject objectForKey:@"data"]];
         if (code == Success_Code) {
-            NSDictionary * infoDictionary = [[NSBundle mainBundle] infoDictionary];
-            NSString * currentVersion = [infoDictionary objectForKey:@"CFBundleShortVersionString"];
+//            NSDictionary * infoDictionary = [[NSBundle mainBundle] infoDictionary];
+            NSString * currentVersion = AppVersion;
             BOOL result = [currentVersion compare:versionModel.verNumber] == NSOrderedAscending;
             if (result) {
                 NSString * updateContent = nil;

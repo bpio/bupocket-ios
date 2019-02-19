@@ -1,13 +1,13 @@
 //
-//  GlobalConfiguration.h
+//  CommonMacro.h
 //  bupocket
 //
-//  Created by bubi on 2018/11/1.
-//  Copyright © 2018年 bupocket. All rights reserved.
+//  Created by bubi on 2019/2/19.
+//  Copyright © 2019年 bupocket. All rights reserved.
 //
 
-#ifndef GlobalConfiguration_h
-#define GlobalConfiguration_h
+#ifndef CommonMacro_h
+#define CommonMacro_h
 
 #define DEVICE_WIDTH [[UIScreen mainScreen] bounds].size.width
 #define DEVICE_HEIGHT [[UIScreen mainScreen] bounds].size.height
@@ -87,13 +87,98 @@
 // 判断字符串是否为空
 #define NULLString(string) (([string isKindOfClass:[NSString class]]) && ![string isEqualToString:@""] && (string != nil) && ![string isEqualToString:@""] && ![string isKindOfClass:[NSNull class]] && [[string stringByTrimmingCharactersInSet:[NSCharacterSet whitespaceCharacterSet]] length] != 0)
 
+// 去掉输入框的首尾空格
 #define TrimmingCharacters(string) [string stringByTrimmingCharactersInSet:[NSCharacterSet whitespaceAndNewlineCharacterSet]]
 
-#ifdef DEBUG
-#define HSSLog(...) NSLog(__VA_ARGS__)
-#else
-#define HSSLog(...)
+// 应用程序版本号version
+#define AppVersion ([[[NSBundle mainBundle] infoDictionary] objectForKey:@"CFBundleShortVersionString"])
+// iOS系统版本号
+#define iOS_Version ([[UIDevice currentDevice] systemVersion])
+
+// 区分Debug和Release
+// 替换NSLog使用，debug模式下可以打印很多方法名、行信息(方便查找)，release下不会打印
+#ifdef DEBUG // 处于开发阶段
+    /** 测试时用此：配置开发环境下需要在此处配置的东西，比如测试服务器url */
+    // 区分设备和模拟器,解决Product -> Scheme -> Run -> Arguments -> OS_ACTIVITY_MODE为disable时，真机下 Xcode Debugger 不打印的bug
+    #if TARGET_OS_IPHONE
+        /*iPhone Device*/
+        #define DLog(format, ...) printf("%s:Dev: %s [Line %d]\n%s\n\n", [DATE_STRING UTF8String], __PRETTY_FUNCTION__, __LINE__, [[NSString stringWithFormat:format, ##__VA_ARGS__] UTF8String])
+    #else
+        /*iPhone Simulator*/
+        #define DLog(format, ...) NSLog((@":Sim: %s [Line %d]\n%@\n\n"), __PRETTY_FUNCTION__, __LINE__, [NSString stringWithFormat:format, ##__VA_ARGS__])
+    #endif
+#else //处于发布阶段
+    /** 正式发布时用此：配置发布环境下需要在此处配置的东西，比如正式服务器url */
+    #define DLog(...)
 #endif
 
+//省掉多处编写__weak __typeof(self) weakSelf = self; __strong __typeof(weakSelf) strongSelf = weakSelf;代码的麻烦
+/**
+ 使用说明
+ Synthsize a weak or strong reference.
+ 
+ Example:
+     @weakify(self)
+     [self doSomething^{
+         @strongify(self)
+         if (!self) return;
+         ...
+      }];
+ 
+ */
+#ifndef weakify
+    #if DEBUG
+        #if __has_feature(objc_arc)
+            #define weakify(object) autoreleasepool{} __weak __typeof__(object) weak##_##object = object;
+        #else
+            #define weakify(object) autoreleasepool{} __block __typeof__(object) block##_##object = object;
+        #endif
+    #else
+        #if __has_feature(objc_arc)
+            #define weakify(object) try{} @finally{} {} __weak __typeof__(object) weak##_##object = object;
+        #else
+            #define weakify(object) try{} @finally{} {} __block __typeof__(object) block##_##object = object;
+        #endif
+    #endif
+#endif
 
-#endif /* GlobalConfiguration_h */
+#ifndef strongify
+    #if DEBUG
+        #if __has_feature(objc_arc)
+            #define strongify(object) autoreleasepool{} __typeof__(object) object = weak##_##object;
+        #else
+            #define strongify(object) autoreleasepool{} __typeof__(object) object = block##_##object;
+        #endif
+    #else
+        #if __has_feature(objc_arc)
+            #define strongify(object) try{} @finally{} __typeof__(object) object = weak##_##object;
+        #else
+            #define strongify(object) try{} @finally{} __typeof__(object) object = block##_##object;
+        #endif
+    #endif
+#endif
+
+// 区分ARC和非ARC
+#if __has_feature(objc_arc)
+     // ARC
+#else
+     // 非ARC
+#endif
+
+// 区分设备和模拟器
+#if TARGET_OS_IPHONE
+    //iPhone Device
+#endif
+
+#if TARGET_IPHONE_SIMULATOR
+    //iPhone Simulator
+#endif
+
+//当前日期字符串
+#define DATE_STRING \
+({NSDateFormatter *fmt = [[NSDateFormatter alloc] init];\
+[fmt setDateFormat:@"YYYY-MM-dd hh:mm:ss"];\
+[fmt stringFromDate:[NSDate date]];})
+
+
+#endif /* CommonMacro_h */
