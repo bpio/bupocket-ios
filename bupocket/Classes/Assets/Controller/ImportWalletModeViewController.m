@@ -191,6 +191,7 @@ static NSString * const TextFieldPWCellID = @"TextFieldPWCellID";
 }
 - (void)importAction
 {
+    [self updateText];
     if ([self.title isEqualToString:Localized(@"Mnemonics")]) {
         NSArray * words = [_importContent componentsSeparatedByString:@" "];
         if (words.count != NumberOf_MnemonicWords) {
@@ -301,10 +302,7 @@ static NSString * const TextFieldPWCellID = @"TextFieldPWCellID";
 
 - (void)judgeHasText
 {
-    self.importContent = TrimmingCharacters(self.importText.text);
-    self.walletName = TrimmingCharacters(self.walletNameText.text);
-    self.walletPW = TrimmingCharacters(self.walletPWText.text);
-    self.confirmPW = TrimmingCharacters(self.confirmPWText.text);
+    [self updateText];
     if (self.importContent.length > 0 && self.walletName.length > 0 && self.walletPW.length > 0 && (!self.confirmPWText || self.confirmPW.length > 0)) {
         self.import.enabled = YES;
         self.import.backgroundColor = MAIN_COLOR;
@@ -312,6 +310,13 @@ static NSString * const TextFieldPWCellID = @"TextFieldPWCellID";
         self.import.enabled = NO;
         self.import.backgroundColor = DISABLED_COLOR;
     }
+}
+- (void)updateText
+{
+    self.importContent = TrimmingCharacters(self.importText.text);
+    self.walletName = TrimmingCharacters(self.walletNameText.text);
+    self.walletPW = TrimmingCharacters(self.walletPWText.text);
+    self.confirmPW = TrimmingCharacters(self.confirmPWText.text);
 }
 /*
  - (BOOL)textField:(UITextField *)textField shouldChangeCharactersInRange:(NSRange)range replacementString:(NSString *)string

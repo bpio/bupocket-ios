@@ -60,7 +60,7 @@ static NSString * const AddressBookCellID = @"AddressBookCellID";
     self.tableView.mj_header.automaticallyChangeAlpha = YES;
     self.tableView.mj_footer = [CustomRefreshFooter footerWithRefreshingTarget:self refreshingAction:@selector(loadMoreData)];
     [self.tableView.mj_header beginRefreshing];
-    self.tableView.mj_footer.ignoredScrollViewContentInsetBottom = -(ContentSizeBottom);
+//    self.tableView.mj_footer.ignoredScrollViewContentInsetBottom = -(ContentSizeBottom);
 }
 - (void)loadNewData
 {
@@ -117,7 +117,7 @@ static NSString * const AddressBookCellID = @"AddressBookCellID";
 }
 - (void)setupView
 {
-    self.tableView = [[UITableView alloc] initWithFrame:self.view.frame style:UITableViewStyleGrouped];
+    self.tableView = [[UITableView alloc] initWithFrame:CGRectMake(0, 0, DEVICE_WIDTH, DEVICE_HEIGHT - NavBarH - SafeAreaBottomH) style:UITableViewStyleGrouped];
     self.tableView.delegate = self;
     self.tableView.dataSource = self;
     self.tableView.separatorStyle = UITableViewCellSeparatorStyleNone;
@@ -129,8 +129,9 @@ static NSString * const AddressBookCellID = @"AddressBookCellID";
     if (!_noData) {
         CGFloat noDataH = DEVICE_HEIGHT - NavBarH - SafeAreaBottomH;
         _noData = [[UIView alloc] initWithFrame:CGRectMake(0, 0, DEVICE_WIDTH, noDataH)];
-        UIButton * noDataBtn = [Encapsulation showNoDataWithTitle:Localized(@"NoRecord") imageName:@"noRecord" superView:self.noData frame:CGRectMake(0, (noDataH - ScreenScale(160)) / 2, DEVICE_WIDTH, ScreenScale(160))];
+        UIButton * noDataBtn = [Encapsulation showNoDataWithTitle:Localized(@"NoRecord") imageName:@"noRecord" superView:_noData frame:CGRectMake(0, (noDataH - ScreenScale(160)) / 2, DEVICE_WIDTH, ScreenScale(160))];
         noDataBtn.hidden = NO;
+//        _noData.backgroundColor = [UIColor blueColor];
         [_noData addSubview:noDataBtn];
     }
     return _noData;
@@ -148,10 +149,18 @@ static NSString * const AddressBookCellID = @"AddressBookCellID";
     }
     return CGFLOAT_MIN;
 }
+- (UIView *)tableView:(UITableView *)tableView viewForHeaderInSection:(NSInteger)section
+{
+    return nil;
+}
 - (CGFloat)tableView:(UITableView *)tableView heightForFooterInSection:(NSInteger)section
 {
-    return ContentSizeBottom;
-//    return CGFLOAT_MIN;
+//    return ContentSizeBottom;
+    return CGFLOAT_MIN;
+}
+- (UIView *)tableView:(UITableView *)tableView viewForFooterInSection:(NSInteger)section
+{
+    return nil;
 }
 
 - (NSInteger)numberOfSectionsInTableView:(UITableView *)tableView

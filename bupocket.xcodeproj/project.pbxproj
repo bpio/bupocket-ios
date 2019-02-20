@@ -1579,7 +1579,7 @@
 				CODE_SIGN_IDENTITY = "iPhone Developer";
 				CODE_SIGN_STYLE = Manual;
 				DEFINES_MODULE = YES;
-				DEVELOPMENT_TEAM = 69Z6ZW8X9X;
+				DEVELOPMENT_TEAM = 3DPSH636RT;
 				ENABLE_BITCODE = NO;
 				FRAMEWORK_SEARCH_PATHS = (
 					"$(inherited)",
@@ -1627,9 +1627,9 @@
 					"\"XHToast\"",
 					"-ObjC",
 				);
-				PRODUCT_BUNDLE_IDENTIFIER = io.bupocket;
+				PRODUCT_BUNDLE_IDENTIFIER = com.bupocket;
 				PRODUCT_NAME = "$(TARGET_NAME)";
-				PROVISIONING_PROFILE_SPECIFIER = BUPocket_Development_io;
+				PROVISIONING_PROFILE_SPECIFIER = bupocket_Development;
 				TARGETED_DEVICE_FAMILY = 1;
 			};
 			name = Debug;
@@ -1643,7 +1643,7 @@
 				CODE_SIGN_IDENTITY = "iPhone Developer";
 				CODE_SIGN_STYLE = Manual;
 				DEFINES_MODULE = YES;
-				DEVELOPMENT_TEAM = 69Z6ZW8X9X;
+				DEVELOPMENT_TEAM = 3DPSH636RT;
 				ENABLE_BITCODE = NO;
 				FRAMEWORK_SEARCH_PATHS = (
 					"$(inherited)",
@@ -1691,9 +1691,9 @@
 					"\"XHToast\"",
 					"-ObjC",
 				);
-				PRODUCT_BUNDLE_IDENTIFIER = io.bupocket;
+				PRODUCT_BUNDLE_IDENTIFIER = com.bupocket;
 				PRODUCT_NAME = "$(TARGET_NAME)";
-				PROVISIONING_PROFILE_SPECIFIER = BUPocket_Development_io;
+				PROVISIONING_PROFILE_SPECIFIER = bupocket_Development;
 				TARGETED_DEVICE_FAMILY = 1;
 			};
 			name = Release;

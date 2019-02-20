@@ -483,7 +483,7 @@ static int64_t const gasPrice = 1000;
 //            [MBProgressHUD hideHUD];
 //            [MBProgressHUD showTipMessageInWindow:[ErrorTypeTool getDescription:response.errorCode]];
 //        });
-        return nil;
+        return TransactionCost_MIN;
     }
 }
 

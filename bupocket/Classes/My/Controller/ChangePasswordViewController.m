@@ -54,6 +54,7 @@
 }
 - (void)confirmAction
 {
+    [self updateText];
     if (self.oldPW.length < PW_MIN_LENGTH || self.oldPW.length > PW_MAX_LENGTH) {
 //    if ([RegexPatternTool validatePassword:_PWOld.text] == NO) {
         [Encapsulation showAlertControllerWithMessage:Localized(@"CryptographicFormat") handler:nil];
@@ -130,9 +131,7 @@
 }
 - (void)textChange:(UITextField *)textField
 {
-    self.oldPW = TrimmingCharacters(_PWOld.text);
-    self.PW = TrimmingCharacters(_PWNew.text);
-    self.confirmPW = TrimmingCharacters(_PWConfirm.text);
+    [self updateText];
     if (self.oldPW.length > 0 && self.PW.length > 0 && self.confirmPW.length > 0) {
         _confirm.enabled = YES;
         _confirm.backgroundColor = MAIN_COLOR;
@@ -140,6 +139,12 @@
         _confirm.enabled = NO;
         _confirm.backgroundColor = DISABLED_COLOR;
     }
+}
+- (void)updateText
+{
+    self.oldPW = TrimmingCharacters(_PWOld.text);
+    self.PW = TrimmingCharacters(_PWNew.text);
+    self.confirmPW = TrimmingCharacters(_PWConfirm.text);
 }
 - (BOOL)textFieldShouldReturn:(UITextField *)textField
 {

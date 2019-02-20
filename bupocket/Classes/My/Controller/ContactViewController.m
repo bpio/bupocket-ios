@@ -141,7 +141,7 @@ static NSString * const TextFieldCellID = @"TextFieldCellID";
         self.describeText = cell.textField;
     } else if (indexPath.row == 2) {
         UIButton * scan = [UIButton createButtonWithNormalImage:@"transferAccounts_scan" SelectedImage:@"transferAccounts_scan" Target:self Selector:@selector(scanAction)];
-        scan.frame = CGRectMake(0, 0, Margin_20, TEXTFIELD_HEIGHT);
+        scan.frame = CGRectMake(0, 0, Margin_30, TEXTFIELD_HEIGHT);
         cell.textField.rightView = scan;
         self.walletAddressText = cell.textField;
         cell.textField.adjustsFontSizeToFitWidth = YES;
@@ -166,14 +166,14 @@ static NSString * const TextFieldCellID = @"TextFieldCellID";
     HMScannerController *scanner = [HMScannerController scannerWithCardName:nil avatar:nil completion:^(NSString *stringValue) {
         NSOperationQueue * queue = [[NSOperationQueue alloc] init];
         [queue addOperationWithBlock:^{
-            BOOL isCorrectAddress = [Keypair isAddressValid: stringValue];
+//            BOOL isCorrectAddress = [Keypair isAddressValid: stringValue];
             [[NSOperationQueue mainQueue] addOperationWithBlock:^{
-                if (isCorrectAddress) {
+//                if (isCorrectAddress) {
                     weakself.walletAddressText.text = stringValue;
                     [weakself.walletAddressText sendActionsForControlEvents:UIControlEventEditingChanged];
-                } else {
-                    [MBProgressHUD showTipMessageInWindow:Localized(@"INVALID_ADDRESS_ERROR")];
-                }
+//                } else {
+//                    [MBProgressHUD showTipMessageInWindow:Localized(@"INVALID_ADDRESS_ERROR")];
+//                }
             }];
         }];
     }];
@@ -186,6 +186,7 @@ static NSString * const TextFieldCellID = @"TextFieldCellID";
 }
 - (void)saveAction
 {
+    [self updateText];
     if ([RegexPatternTool validateUserName:self.nickName] == NO) {
         [MBProgressHUD showTipMessageInWindow:Localized(@"NickNameFormatIncorrect")];
         return;
@@ -202,6 +203,8 @@ static NSString * const TextFieldCellID = @"TextFieldCellID";
                 [self.navigationController popViewControllerAnimated:NO];
             } else if (code == 100055) {
                 [MBProgressHUD showTipMessageInWindow:Localized(@"ContactExisted")];
+            } else if (code == 100008) {
+                [MBProgressHUD showTipMessageInWindow:Localized(@"INVALID_ADDRESS_ERROR")];
             } else {
                 [MBProgressHUD showTipMessageInWindow:Localized(@"SaveFailed")];
                 //            [MBProgressHUD showTipMessageInWindow:[ErrorTypeTool getDescriptionWithErrorCode:code]];
@@ -215,6 +218,10 @@ static NSString * const TextFieldCellID = @"TextFieldCellID";
             if (code == Success_Code) {
                 [MBProgressHUD showTipMessageInWindow:Localized(@"SaveSuccessfully")];
                 [self.navigationController popViewControllerAnimated:NO];
+            } else if (code == 100055) {
+                [MBProgressHUD showTipMessageInWindow:Localized(@"ContactExisted")];
+            } else if (code == 100008) {
+                [MBProgressHUD showTipMessageInWindow:Localized(@"INVALID_ADDRESS_ERROR")];
             } else {
                 [MBProgressHUD showTipMessageInWindow:Localized(@"SaveFailed")];
                 //            [MBProgressHUD showTipMessageInWindow:[ErrorTypeTool getDescriptionWithErrorCode:code]];
@@ -228,21 +235,20 @@ static NSString * const TextFieldCellID = @"TextFieldCellID";
 }
 - (void)textFieldDidEndEditing:(UITextField *)textField
 {
-    if (textField == _walletAddressText && _walletAddress.length > 0) {
-        __weak typeof (self) weakself = self;
-        NSOperationQueue * queue = [[NSOperationQueue alloc] init];
-        [queue addOperationWithBlock:^{
-            BOOL isCorrectAddress = [Keypair isAddressValid: weakself.walletAddress];
-            [[NSOperationQueue mainQueue] addOperationWithBlock:^{
-                if (isCorrectAddress) {
-                    
-                } else {
-                    weakself.walletAddressText.text = nil;
-                    [MBProgressHUD showTipMessageInWindow:Localized(@"INVALID_ADDRESS_ERROR")];
-                }
-            }];
-        }];
-    }
+//    if (textField == _walletAddressText && _walletAddress.length > 0) {
+////        __weak typeof (self) weakself = self;
+//        NSOperationQueue * queue = [[NSOperationQueue alloc] init];
+//        [queue addOperationWithBlock:^{
+////            BOOL isCorrectAddress = [Keypair isAddressValid: weakself.walletAddress];
+////            [[NSOperationQueue mainQueue] addOperationWithBlock:^{
+////                if (isCorrectAddress) {
+////
+////                } else {
+////                    [MBProgressHUD showTipMessageInWindow:Localized(@"INVALID_ADDRESS_ERROR")];
+////                }
+////            }];
+//        }];
+//    }
 }
 //- (BOOL)textFieldShouldReturn:(UITextField *)textField
 //{
@@ -260,9 +266,7 @@ static NSString * const TextFieldCellID = @"TextFieldCellID";
 
 - (void)judgeHasText
 {
-    self.nickName = TrimmingCharacters(self.nickNameText.text);
-    self.describe = TrimmingCharacters(self.describeText.text);
-    self.walletAddress = TrimmingCharacters(self.walletAddressText.text);
+    [self updateText];
     if (self.nickName.length > 0 && self.walletAddress.length > 0) {
         self.save.enabled = YES;
         self.save.backgroundColor = MAIN_COLOR;
@@ -270,6 +274,12 @@ static NSString * const TextFieldCellID = @"TextFieldCellID";
         self.save.enabled = NO;
         self.save.backgroundColor = DISABLED_COLOR;
     }
+}
+- (void)updateText
+{
+    self.nickName = TrimmingCharacters(self.nickNameText.text);
+    self.describe = TrimmingCharacters(self.describeText.text);
+    self.walletAddress = TrimmingCharacters(self.walletAddressText.text);
 }
 
 /*

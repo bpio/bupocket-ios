@@ -50,7 +50,7 @@ static NSString * const WalletCellID = @"WalletCellID";
     }];
     [self.address mas_makeConstraints:^(MASConstraintMaker *make) {
         make.left.right.equalTo(self.addressName);
-        make.height.mas_equalTo(Margin_15);
+        make.height.mas_equalTo(ScreenScale(17));
         make.top.equalTo(self.addressName.mas_bottom).offset(Margin_15);
     }];
     [self.describe mas_makeConstraints:^(MASConstraintMaker *make) {
@@ -117,7 +117,7 @@ static NSString * const WalletCellID = @"WalletCellID";
     if (NULLString(self.describe.text)) {
         describeH = (Margin_15 + [Encapsulation rectWithText:self.describe.text font:self.describe.font textWidth:DEVICE_WIDTH - Margin_50].size.height);
     }
-    addressBookModel.cellHeight = ScreenScale(70) + addressNameH + describeH + Margin_10;
+    addressBookModel.cellHeight = ScreenScale(72) + addressNameH + describeH + Margin_10;
 }
 
 - (void)awakeFromNib {
