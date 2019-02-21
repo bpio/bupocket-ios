@@ -17,6 +17,10 @@
 @property (nonatomic, strong) UITextField * confirmPassword;
 @property (nonatomic, strong) UIButton * createIdentity;
 
+@property (nonatomic, strong) NSString * identityNameStr;
+@property (nonatomic, strong) NSString * PW;
+@property (nonatomic, strong) NSString * confirmPW;
+
 @end
 
 @implementation CreateIdentityViewController
@@ -91,13 +95,20 @@
 }
 - (void)textChange:(UITextField *)textField
 {
-    if (_identityName.text.length > 0 && _identityPassword.text.length > 0 && _confirmPassword.text.length > 0) {
+    [self updateText];
+    if (_identityNameStr.length > 0 && _PW.length > 0 && _confirmPW.length > 0) {
         _createIdentity.enabled = YES;
         _createIdentity.backgroundColor = MAIN_COLOR;
     } else {
         _createIdentity.enabled = NO;
         _createIdentity.backgroundColor = DISABLED_COLOR;
     }
+}
+- (void)updateText
+{
+    self.identityNameStr = TrimmingCharacters(_identityName.text);
+    self.PW = TrimmingCharacters(self.identityPassword.text);
+    self.confirmPW = TrimmingCharacters(_confirmPassword.text);
 }
 - (void)secureAction:(UIButton *)button
 {
@@ -158,23 +169,21 @@
 
 - (void)createAction
 {
-    NSString * identityName = TrimmingCharacters(_identityName.text);
-    if ([RegexPatternTool validateUserName:identityName] == NO) {
+    [self updateText];
+    if ([RegexPatternTool validateUserName:self.identityNameStr] == NO) {
         [MBProgressHUD showTipMessageInWindow:Localized(@"IDNameFormatIncorrect")];
         return;
     }
 //    if ([RegexPatternTool validatePassword:_identityPassword.text] == NO) {
-    NSString * PW = TrimmingCharacters(self.identityPassword.text);
-    if (PW.length < PW_MIN_LENGTH || PW.length > PW_MAX_LENGTH) {
+    if (self.PW.length < PW_MIN_LENGTH || self.PW.length > PW_MAX_LENGTH) {
         [MBProgressHUD showTipMessageInWindow:Localized(@"CryptographicFormat")];
         return;
     }
-    NSString * confirmPW = TrimmingCharacters(_confirmPassword.text);
-    if (![confirmPW isEqualToString:PW]) {
+    if (![self.confirmPW isEqualToString:self.PW]) {
         [MBProgressHUD showTipMessageInWindow:Localized(@"PasswordIsDifferent")];
         return;
     }
-    [self getDataWithPW:PW identityName:identityName];
+    [self getDataWithPW:self.PW identityName:self.identityNameStr];
 }
 - (void)didReceiveMemoryWarning
 {

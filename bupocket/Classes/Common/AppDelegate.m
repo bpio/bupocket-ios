@@ -69,9 +69,9 @@
         [self storageSafetyReinforcement];
     } else {
         self.window.rootViewController = [[NavigationViewController alloc] initWithRootViewController:[[IdentityViewController alloc] init]];
-        NSString * currentVersion = AppVersion;
-        [defaults setObject:currentVersion forKey:LastVersion];
-        [defaults synchronize];
+//        NSString * currentVersion = AppVersion;
+//        [defaults setObject:currentVersion forKey:LastVersion];
+//        [defaults synchronize];
         [self getVersionData];
     }
 }
