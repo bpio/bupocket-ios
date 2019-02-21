@@ -118,7 +118,7 @@
         _walletAddressTitle = [[UILabel alloc] init];
         _walletAddressTitle.textColor = COLOR_9;
         _walletAddressTitle.font = FONT(16);
-        _walletAddressTitle.text = Localized(@"walletAddressTitle");
+        _walletAddressTitle.text = Localized(@"WalletAddressTitle");
     }
     return _walletAddressTitle;
 }
