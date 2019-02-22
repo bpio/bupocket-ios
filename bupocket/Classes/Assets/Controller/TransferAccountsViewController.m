@@ -11,6 +11,7 @@
 #import "TransferResultsViewController.h"
 #import "RequestTimeoutViewController.h"
 #import "HMScannerController.h"
+#import "AddressBookViewController.h"
 
 @interface TransferAccountsViewController ()<UITextFieldDelegate>
 
@@ -27,6 +28,10 @@
 @property (nonatomic, assign) BOOL isCorrectText;
 //@property (nonatomic, assign) BOOL isSufficientBalance;
 
+@property (nonatomic, strong) NSString * transferVolumeStr;
+@property (nonatomic, strong) NSString * remarksStr;
+@property (nonatomic, strong) NSString * transactionCostsStr;
+
 @end
 
 @implementation TransferAccountsViewController
@@ -41,9 +46,17 @@
 
 - (void)viewDidLoad {
     [super viewDidLoad];
+    [self setupNav];
     [self setupView];
     self.navigationItem.title = Localized(@"TransferAccounts");
     // Do any additional setup after loading the view.
+}
+- (void)setupNav
+{
+    UIButton * scan = [UIButton createButtonWithNormalImage:@"transferAccounts_scan" SelectedImage:@"transferAccounts_scan" Target:self Selector:@selector(scanAction)];
+    scan.bounds = CGRectMake(0, 0, ScreenScale(44), ScreenScale(44));
+    scan.contentHorizontalAlignment = UIControlContentHorizontalAlignmentRight;
+    self.navigationItem.rightBarButtonItem = [[UIBarButtonItem alloc]initWithCustomView:scan];
 }
 - (void)setupView
 {
@@ -75,65 +88,77 @@
 }
 - (void)DataJudgment
 {
-    NSString * destAddress = self.destinationAddress.text;
-    NSDecimalNumber * sendNumber = [NSDecimalNumber decimalNumberWithString: self.transferVolume.text];
-    NSDecimalNumber * cost = [NSDecimalNumber decimalNumberWithString:self.transactionCosts.text];
-    if ([destAddress isEqualToString:CurrentWalletAddress]) {
-        [MBProgressHUD hideHUD];
-        [MBProgressHUD showTipMessageInWindow:Localized(@"CannotTransferToOneself")];
-        return;
-    }
-    RegexPatternTool * regex = [[RegexPatternTool alloc] init];
-    NSInteger decimals = self.listModel.decimals < 0 ? 0 : self.listModel.decimals;
-    BOOL transferVolumeRegx = [regex validateIsPositiveFloatingPoint:self.transferVolume.text] && [regex validateIsPositiveFloatingPoint:self.transferVolume.text decimals:decimals];
-    NSString * amount  = [[[NSDecimalNumber decimalNumberWithString:self.availableAmount] decimalNumberBySubtracting:sendNumber] stringValue];
-    
-    if (transferVolumeRegx == NO) {
-        [MBProgressHUD hideHUD];
-        [MBProgressHUD showTipMessageInWindow:Localized(@"SendingQuantityIsIncorrect")];
-        return;
-    }
-    if ([amount hasPrefix:@"-"]) {
-        [MBProgressHUD hideHUD];
-        [MBProgressHUD showTipMessageInWindow:Localized(@"NotSufficientFunds")];
-        return;
-    }
-    if (self.listModel.type == Token_Type_BU) {
-        NSDecimalNumber * maxSendingQuantity = [NSDecimalNumber decimalNumberWithString:SendingQuantity_MAX];
-        NSString * maxSending  = [[maxSendingQuantity decimalNumberBySubtracting:sendNumber] stringValue];
-        if ([maxSending hasPrefix:@"-"]) {
-            [MBProgressHUD hideHUD];
-            [MBProgressHUD showTipMessageInWindow:[NSString stringWithFormat:Localized(@"SendingQuantityMax%@"), SendingQuantity_MAX_Division]];
-            return;
-        }
-    }
-    
-    if (self.remarks.text.length > MAX_LENGTH) {
-        [MBProgressHUD hideHUD];
-        [MBProgressHUD showTipMessageInWindow:Localized(@"ExtraLongNotes")];
-        return;
-    }
-    BOOL transactionCostsRegx = [regex validateIsPositiveFloatingPoint:self.transactionCosts.text] && [regex validateIsPositiveFloatingPoint:self.transactionCosts.text decimals:Decimals_BU];
-    NSDecimalNumber * maxTransactionCost = [NSDecimalNumber decimalNumberWithString:TransactionCost_MAX];
-    NSString * maxCost  = [[maxTransactionCost decimalNumberBySubtracting:cost] stringValue];
-    if (transactionCostsRegx == NO || [self.transactionCosts.text isEqualToString:@"0"]) {
-        [MBProgressHUD hideHUD];
-        [MBProgressHUD showTipMessageInWindow:Localized(@"TransactionCostIsIncorrect")];
-        return;
-    }
-    else if ([maxCost hasPrefix:@"-"]) {
-        [MBProgressHUD hideHUD];
-        [MBProgressHUD showTipMessageInWindow:Localized(@"TransactionCostMax")];
-        return;
-    }
-    self.isCorrectText = YES;
-    if (self.isCorrectText == YES) {
-        self.transferInfoArray = [NSMutableArray arrayWithObjects:destAddress, [NSString stringWithFormat:@"%@ %@", [sendNumber stringValue], self.listModel.assetCode], [NSString stringAppendingBUWithStr:[cost stringValue]], nil];
-        if ([self.remarks hasText]) {
-            [self.transferInfoArray addObject:self.remarks.text];
-        }
-        [self showTransferInfo];
-    }
+    [self updateText];
+    __weak typeof (self) weakself = self;
+    NSOperationQueue * queue = [[NSOperationQueue alloc] init];
+    [queue addOperationWithBlock:^{
+        BOOL isCorrectAddress = [Keypair isAddressValid: weakself.address];
+        [[NSOperationQueue mainQueue] addOperationWithBlock:^{
+            if (!isCorrectAddress) {
+                [MBProgressHUD hideHUD];
+                [MBProgressHUD showTipMessageInWindow:Localized(@"BUAddressIsIncorrect")];
+                return;
+            }
+            if ([self.address isEqualToString:CurrentWalletAddress]) {
+                [MBProgressHUD hideHUD];
+                [MBProgressHUD showTipMessageInWindow:Localized(@"CannotTransferToOneself")];
+                return;
+            }
+            RegexPatternTool * regex = [[RegexPatternTool alloc] init];
+            NSInteger decimals = self.listModel.decimals < 0 ? 0 : self.listModel.decimals;
+            BOOL transferVolumeRegx = [regex validateIsPositiveFloatingPoint:self.transferVolumeStr] && [regex validateIsPositiveFloatingPoint:self.transferVolumeStr decimals:decimals];
+            
+            if (transferVolumeRegx == NO) {
+                [MBProgressHUD hideHUD];
+                [MBProgressHUD showTipMessageInWindow:Localized(@"SendingQuantityIsIncorrect")];
+                return;
+            }
+            NSDecimalNumber * sendNumber = [NSDecimalNumber decimalNumberWithString: self.transferVolumeStr];
+            NSString * amount  = [[[NSDecimalNumber decimalNumberWithString:self.availableAmount] decimalNumberBySubtracting:sendNumber] stringValue];
+            if ([amount hasPrefix:@"-"]) {
+                [MBProgressHUD hideHUD];
+                [MBProgressHUD showTipMessageInWindow:Localized(@"NotSufficientFunds")];
+                return;
+            }
+            if (self.listModel.type == Token_Type_BU) {
+                NSDecimalNumber * maxSendingQuantity = [NSDecimalNumber decimalNumberWithString:SendingQuantity_MAX];
+                NSString * maxSending  = [[maxSendingQuantity decimalNumberBySubtracting:sendNumber] stringValue];
+                if ([maxSending hasPrefix:@"-"]) {
+                    [MBProgressHUD hideHUD];
+                    [MBProgressHUD showTipMessageInWindow:[NSString stringWithFormat:Localized(@"SendingQuantityMax%@"), SendingQuantity_MAX_Division]];
+                    return;
+                }
+            }
+            
+            if (self.remarksStr.length > MAX_LENGTH) {
+                [MBProgressHUD hideHUD];
+                [MBProgressHUD showTipMessageInWindow:Localized(@"ExtraLongNotes")];
+                return;
+            }
+            BOOL transactionCostsRegx = [regex validateIsPositiveFloatingPoint:self.transactionCostsStr] && [regex validateIsPositiveFloatingPoint:self.transactionCostsStr decimals:Decimals_BU];
+            NSDecimalNumber * maxTransactionCost = [NSDecimalNumber decimalNumberWithString:TransactionCost_MAX];
+            if (transactionCostsRegx == NO || [self.transactionCostsStr isEqualToString:@"0"]) {
+                [MBProgressHUD hideHUD];
+                [MBProgressHUD showTipMessageInWindow:Localized(@"TransactionCostIsIncorrect")];
+                return;
+            }
+            NSDecimalNumber * cost = [NSDecimalNumber decimalNumberWithString:self.transactionCostsStr];
+            NSString * maxCost  = [[maxTransactionCost decimalNumberBySubtracting:cost] stringValue];
+            if ([maxCost hasPrefix:@"-"]) {
+                [MBProgressHUD hideHUD];
+                [MBProgressHUD showTipMessageInWindow:Localized(@"TransactionCostMax")];
+                return;
+            }
+            self.isCorrectText = YES;
+            if (self.isCorrectText == YES) {
+                self.transferInfoArray = [NSMutableArray arrayWithObjects:self.address, [NSString stringWithFormat:@"%@ %@", [sendNumber stringValue], self.listModel.assetCode], [NSString stringAppendingBUWithStr:[cost stringValue]], nil];
+                if (NULLString(self.remarksStr)) {
+                    [self.transferInfoArray addObject:self.remarksStr];
+                }
+                [self showTransferInfo];
+            }
+        }];
+    }];
 }
 - (void)showTransferInfo
 {
@@ -146,6 +171,7 @@
                 
             }];
             [alertView showInWindowWithMode:CustomAnimationModeAlert inView:nil bgAlpha:0.2 needEffectView:NO];
+            [alertView.PWTextField becomeFirstResponder];
         });
     } cancelBlock:^{
         
@@ -155,7 +181,7 @@
 
 - (void)getDataWithPassword:(NSString *)password
 {
-    [[HTTPManager shareManager] setTransferDataWithTokenType:self.listModel.type password:password destAddress:_destinationAddress.text assets:_transferVolume.text decimals:self.listModel.decimals feeLimit:_transactionCosts.text notes:_remarks.text code:self.listModel.assetCode issuer:self.listModel.issuer success:^(TransactionResultModel *resultModel) {
+    [[HTTPManager shareManager] setTransferDataWithTokenType:self.listModel.type password:password destAddress:self.address assets:_transferVolumeStr decimals:self.listModel.decimals feeLimit:_transactionCostsStr notes:_remarksStr code:self.listModel.assetCode issuer:self.listModel.issuer success:^(TransactionResultModel *resultModel) {
         [self.transferInfoArray addObject:[DateTool getDateStringWithTimeStr:[NSString stringWithFormat:@"%lld", resultModel.transactionTime]]];
         [self.transferInfoArray replaceObjectAtIndex:2 withObject:[NSString stringAppendingBUWithStr:resultModel.actualFee]];
         TransferResultsViewController * VC = [[TransferResultsViewController alloc] init];
@@ -166,10 +192,10 @@
 //            [MBProgressHUD showTipMessageInWindow:[ErrorTypeTool getDescription:resultModel.errorCode]];
         }
         VC.transferInfoArray = self.transferInfoArray;
-        [self.navigationController pushViewController:VC animated:YES];
+        [self.navigationController pushViewController:VC animated:NO];
     } failure:^(TransactionResultModel *resultModel) {
         RequestTimeoutViewController * VC = [[RequestTimeoutViewController alloc] init];
-        [self.navigationController pushViewController:VC animated:YES];
+        [self.navigationController pushViewController:VC animated:NO];
     }];
 }
 
@@ -207,18 +233,19 @@
         make.height.mas_equalTo(LINE_WIDTH);
     }];
     if (index == 0) {
+        textField.adjustsFontSizeToFitWidth = YES;
+        textField.minimumFontSize = Address_MinimumFontSize;
         self.destinationAddress = textField;
         if (self.address.length > 0) {
             self.destinationAddress.text = self.address;
             [self.destinationAddress sendActionsForControlEvents:UIControlEventEditingChanged];
             [self IsActivatedWithAddress:self.address];
         }
-        UIButton * scan = [UIButton createButtonWithNormalImage:@"transferAccounts_scan" SelectedImage:@"transferAccounts_scan" Target:self Selector:@selector(scanAction)];
-        scan.contentHorizontalAlignment = UIControlContentHorizontalAlignmentRight;
-        scan.bounds = CGRectMake(0, 0, Margin_30, Margin_40);
+        UIButton * addressBook = [UIButton createButtonWithNormalImage:@"my_list_1" SelectedImage:@"my_list_1" Target:self Selector:@selector(addressBookAction)];
+        addressBook.contentHorizontalAlignment = UIControlContentHorizontalAlignmentRight;
+        addressBook.bounds = CGRectMake(0, 0, Margin_30, Margin_40);
         textField.rightViewMode = UITextFieldViewModeAlways;
-        textField.rightView = scan;
-        
+        textField.rightView = addressBook;
     } else if (index == 1) {
         self.transferVolume = textField;
         self.availableBalance = [[UILabel alloc] init];
@@ -250,6 +277,16 @@
     self.availableBalance.attributedText = [Encapsulation attrWithString:[NSString stringWithFormat:@"%@\n%@ %@", Localized(@"AvailableBalance"), self.availableAmount, self.listModel.assetCode] preFont:FONT(12) preColor:COLOR_6 index:[Localized(@"AvailableBalance") length] sufFont:FONT(12) sufColor:MAIN_COLOR lineSpacing:ScreenScale(7)];
     self.availableBalance.textAlignment = NSTextAlignmentRight;
 }
+- (void)addressBookAction
+{
+    AddressBookViewController * VC = [[AddressBookViewController alloc] init];
+    VC.walletAddress = ^(NSString * stringValue) {
+        self.destinationAddress.text = stringValue;
+        [self.destinationAddress sendActionsForControlEvents:UIControlEventEditingChanged];
+        [self IsActivatedWithAddress:stringValue];
+    };
+    [self.navigationController pushViewController:VC animated:NO];
+}
 - (BOOL)textFieldShouldReturn:(UITextField *)textField
 {
     if (textField == _destinationAddress) {
@@ -268,13 +305,25 @@
 }
 - (void)textChange:(UITextField *)textField
 {
-    if (_destinationAddress.text.length > 0 && _transferVolume.text.length > 0 && _transactionCosts.text.length > 0) {
+    [self judgeHasText];
+}
+- (void)judgeHasText
+{
+    [self updateText];
+    if (_address.length > 0 && _transferVolumeStr.length > 0 && _transactionCostsStr.length > 0) {
         self.next.enabled = YES;
         self.next.backgroundColor = MAIN_COLOR;
     } else {
         self.next.enabled = NO;
         self.next.backgroundColor = DISABLED_COLOR;
     }
+}
+- (void)updateText
+{
+    self.address = TrimmingCharacters(self.destinationAddress.text);
+    self.transferVolumeStr = TrimmingCharacters(self.transferVolume.text);
+    self.remarksStr = TrimmingCharacters(self.remarks.text);
+    self.transactionCostsStr = TrimmingCharacters(self.transactionCosts.text);
 }
 - (void)IsActivatedWithAddress:(NSString *)address
 {
@@ -291,20 +340,19 @@
 }
 - (void)textFieldDidEndEditing:(UITextField *)textField
 {
-    if (textField == _destinationAddress && _destinationAddress.text.length > 0) {
-        __weak typeof (self) weakself = self;
-        NSOperationQueue * queue = [[NSOperationQueue alloc] init];
-        [queue addOperationWithBlock:^{
-            BOOL isCorrectAddress = [Keypair isAddressValid: weakself.destinationAddress.text];
-            [[NSOperationQueue mainQueue] addOperationWithBlock:^{
-                if (isCorrectAddress) {
+    if (textField == _destinationAddress) {
+//        __weak typeof (self) weakself = self;
+//        NSOperationQueue * queue = [[NSOperationQueue alloc] init];
+//        [queue addOperationWithBlock:^{
+//            BOOL isCorrectAddress = [Keypair isAddressValid: weakself.address];
+//            [[NSOperationQueue mainQueue] addOperationWithBlock:^{
+//                if (isCorrectAddress) {
                     [self IsActivatedWithAddress:textField.text];
-                } else {
-                    weakself.destinationAddress.text = nil;
-                    [MBProgressHUD showTipMessageInWindow:Localized(@"BUAddressIsIncorrect")];
-                }
-            }];
-        }];
+//                } else {
+//                    [MBProgressHUD showTipMessageInWindow:Localized(@"BUAddressIsIncorrect")];
+//                }
+//            }];
+//        }];
     }
 }
 /*
@@ -329,23 +377,24 @@
 {
     __weak typeof (self) weakself = self;
     HMScannerController *scanner = [HMScannerController scannerWithCardName:nil avatar:nil completion:^(NSString *stringValue) {
-        NSOperationQueue * queue = [[NSOperationQueue alloc] init];
-        [queue addOperationWithBlock:^{
-            BOOL isCorrectAddress = [Keypair isAddressValid: stringValue];
+//        NSOperationQueue * queue = [[NSOperationQueue alloc] init];
+//        [queue addOperationWithBlock:^{
+//            BOOL isCorrectAddress = [Keypair isAddressValid: stringValue];
             [[NSOperationQueue mainQueue] addOperationWithBlock:^{
-                if (isCorrectAddress) {
+//                if (isCorrectAddress) {
                     weakself.destinationAddress.text = stringValue;
                     [weakself.destinationAddress sendActionsForControlEvents:UIControlEventEditingChanged];
                     [weakself IsActivatedWithAddress:stringValue];
-                } else {
-                    [MBProgressHUD showTipMessageInWindow:Localized(@"ScanFailure")];
-                }
-            }];
+//                } else {
+//                    [MBProgressHUD showTipMessageInWindow:Localized(@"ScanFailure")];
+//                }
+//            }];
         }];
     }];
     [scanner setTitleColor:[UIColor whiteColor] tintColor:MAIN_COLOR];
     [self showDetailViewController:scanner sender:nil];
 }
+
 /*
 #pragma mark - Navigation
 

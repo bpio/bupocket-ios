@@ -2,7 +2,7 @@
 //  TextFieldViewCell.m
 //  bupocket
 //
-//  Created by huoss on 2019/1/10.
+//  Created by bupocket on 2019/1/10.
 //  Copyright © 2019年 bupocket. All rights reserved.
 //
 
@@ -32,7 +32,6 @@ static NSString * const TextFieldPWCellID = @"TextFieldPWCellID";
             self.textField.secureTextEntry = YES;
             UIButton * ifSecure = [UIButton createButtonWithNormalImage:@"password_ciphertext" SelectedImage:@"password_visual" Target:self Selector:@selector(secureAction:)];
             ifSecure.frame = CGRectMake(0, 0, Margin_20, TEXTFIELD_HEIGHT);
-            self.textField.rightViewMode = UITextFieldViewModeAlways;
             self.textField.rightView = ifSecure;
         }
     }
@@ -75,6 +74,7 @@ static NSString * const TextFieldPWCellID = @"TextFieldPWCellID";
         _textField.textColor = TITLE_COLOR;
         _textField.font = FONT(14);
         _textField.clearButtonMode = UITextFieldViewModeWhileEditing;
+        _textField.rightViewMode = UITextFieldViewModeAlways;
         [_textField addTarget:self action:@selector(textChange:) forControlEvents:UIControlEventEditingChanged];
     }
     return _textField;

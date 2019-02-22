@@ -21,6 +21,7 @@
 #import "ImportWalletViewController.h"
 #import "ExportKeystoreViewController.h"
 #import "ExportPrivateKeyViewController.h"
+#import "ContactViewController.h"
 
 @interface NavigationViewController ()<UINavigationControllerDelegate>
 
@@ -33,7 +34,6 @@
     UINavigationBar * bar = [UINavigationBar appearance];
     bar.shadowImage = [[UIImage alloc] init];
     bar.barTintColor = [UIColor whiteColor];
-    
 //    NSMutableDictionary * attr = [NSMutableDictionary dictionary];
 //    attr[NSFontAttributeName] = FONT(18);
 //    attr[NSForegroundColorAttributeName] = TITLE_COLOR;
@@ -64,7 +64,7 @@
 {
     [viewController viewWillAppear:animated];
     BOOL isSetLargeTitles = (
-//                             [viewController isKindOfClass:[AssetsViewController class]]  ||
+                             [viewController isKindOfClass:[AssetsViewController class]]  ||
 //                             [viewController isKindOfClass:[AddAssetsViewController class]] ||
                              [viewController isKindOfClass:[AssetsDetailViewController class]] ||
                              [viewController isKindOfClass:[TransferResultsViewController class]] ||
@@ -74,14 +74,16 @@
                              [viewController isKindOfClass:[OrderDetailsViewController class]] ||
                              [viewController isKindOfClass:[ImportWalletViewController class]] ||
                              [viewController isKindOfClass:[ExportKeystoreViewController class]] ||
-                             [viewController isKindOfClass:[ExportPrivateKeyViewController class]]
+                             [viewController isKindOfClass:[ExportPrivateKeyViewController class]] ||
+                             [viewController isKindOfClass:[ContactViewController class]]
                              );
     if (@available(iOS 11.0, *)) {
         [self.navigationBar setPrefersLargeTitles:!isSetLargeTitles];
     } else {
         // Fallback on earlier versions
     }
-    BOOL isHideNav = ([viewController isKindOfClass:[AssetsViewController class]] ||
+    BOOL isHideNav = (
+//                      [viewController isKindOfClass:[AssetsViewController class]] ||
                       [viewController isKindOfClass:[IdentityViewController class]] ||
                       [viewController isKindOfClass:[MyViewController class]]);
     [self setNavigationBarHidden:isHideNav animated:animated];

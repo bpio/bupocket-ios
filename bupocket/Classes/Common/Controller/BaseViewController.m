@@ -77,9 +77,9 @@
         [self isKindOfClass:[RequestTimeoutViewController class]] ||
         [self isKindOfClass:[RegisteredResultViewController class]] ||
         [self isKindOfClass:[DistributionResultsViewController class]]) {
-        [self.navigationController popToRootViewControllerAnimated:YES];
+        [self.navigationController popToRootViewControllerAnimated:NO];
     } else {
-        [self.navigationController popViewControllerAnimated:YES];
+        [self.navigationController popViewControllerAnimated:NO];
     }
 }
 /*

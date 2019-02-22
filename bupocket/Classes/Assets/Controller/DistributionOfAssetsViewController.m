@@ -170,6 +170,7 @@ static NSString * const Issue_Leave = @"leaveRoomForApp";
             } cancelBlock:^{
             }];
             [alertView showInWindowWithMode:CustomAnimationModeAlert inView:nil bgAlpha:0.2 needEffectView:NO];
+            [alertView.PWTextField becomeFirstResponder];
         }];
     }];
 }
@@ -221,7 +222,7 @@ static NSString * const Issue_Leave = @"leaveRoomForApp";
             }
             VC.registeredModel = self.registeredModel;
             VC.distributionModel = self.distributionModel;
-            [self.navigationController pushViewController:VC animated:YES];
+            [self.navigationController pushViewController:VC animated:NO];
         } else {
             [MBProgressHUD showTipMessageInWindow:[ErrorTypeTool getDescriptionWithErrorCode:code]];
         }
@@ -263,7 +264,7 @@ static NSString * const Issue_Leave = @"leaveRoomForApp";
     [self.socket on:Issue_Leave callback:^(NSArray* data, SocketAckEmitter* ack) {
         [self.socket disconnect];
     }];
-    [self.navigationController popViewControllerAnimated:YES];
+    [self.navigationController popViewControllerAnimated:NO];
 }
 - (UIView *)setAssetInfoWithTitle:(NSString *)title info:(NSString *)info
 {

@@ -2,7 +2,7 @@
 //  PasswordAlertView.h
 //  bupocket
 //
-//  Created by huoss on 2019/1/11.
+//  Created by bupocket on 2019/1/11.
 //  Copyright © 2019年 bupocket. All rights reserved.
 //
 
@@ -23,6 +23,8 @@ typedef void (^OnSureWalletPWClick)(NSString * password, NSArray * words);
 @interface PasswordAlertView : UIView
 
 - (instancetype)initWithPrompt:(NSString *)prompt walletKeyStore:(NSString *)walletKeyStore isAutomaticClosing:(BOOL)isAutomaticClosing confrimBolck:(void (^)(NSString * password, NSArray * words))confrimBlock cancelBlock:(void (^)(void))cancelBlock;
+
+@property (nonatomic, strong) UITextField * PWTextField;
 
 @end
 

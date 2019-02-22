@@ -2,7 +2,7 @@
 //  ExportViewController.h
 //  bupocket
 //
-//  Created by huoss on 2019/1/7.
+//  Created by bupocket on 2019/1/7.
 //  Copyright © 2019年 bupocket. All rights reserved.
 //
 

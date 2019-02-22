@@ -101,6 +101,10 @@
 		958127EF219ABD9D0081A02E /* VersionUpdateAlertView.m in Sources */ = {isa = PBXBuildFile; fileRef = 958127EE219ABD9D0081A02E /* VersionUpdateAlertView.m */; };
 		958127F2219AC82A0081A02E /* VersionModel.m in Sources */ = {isa = PBXBuildFile; fileRef = 958127F1219AC82A0081A02E /* VersionModel.m */; };
 		958AA69821A2A89600BEA50C /* CustomRefreshFooter.m in Sources */ = {isa = PBXBuildFile; fileRef = 958AA69721A2A89600BEA50C /* CustomRefreshFooter.m */; };
+		959575C121FFF00F0089479C /* AddressBookViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 959575C021FFF00F0089479C /* AddressBookViewController.m */; };
+		959575C421FFF6EB0089479C /* AddressBookListViewCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 959575C321FFF6EB0089479C /* AddressBookListViewCell.m */; };
+		959575C821FFF8010089479C /* AddressBookModel.m in Sources */ = {isa = PBXBuildFile; fileRef = 959575C721FFF8010089479C /* AddressBookModel.m */; };
+		959575CB21FFFD040089479C /* ContactViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 959575CA21FFFD040089479C /* ContactViewController.m */; };
 		959726B821E334C20022CB78 /* WalletManagementViewCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 959726B721E334C20022CB78 /* WalletManagementViewCell.m */; };
 		959726BC21E358A10022CB78 /* ExportViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 959726BB21E358A10022CB78 /* ExportViewController.m */; };
 		959726BF21E43EB50022CB78 /* WalletModel.m in Sources */ = {isa = PBXBuildFile; fileRef = 959726BE21E43EB40022CB78 /* WalletModel.m */; };
@@ -124,8 +128,8 @@
 		95A8A41C219D5FF7008E978E /* YBPopupMenu.m in Sources */ = {isa = PBXBuildFile; fileRef = 95A8A417219D5FF6008E978E /* YBPopupMenu.m */; };
 		95A8A41D219D5FF7008E978E /* YBRectConst.m in Sources */ = {isa = PBXBuildFile; fileRef = 95A8A41A219D5FF7008E978E /* YBRectConst.m */; };
 		95A8A41E219D5FF7008E978E /* YBPopupMenuPath.m in Sources */ = {isa = PBXBuildFile; fileRef = 95A8A41B219D5FF7008E978E /* YBPopupMenuPath.m */; };
+		95AD144021F1BB730097CCDE /* sdk_ios.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 95AD143F21F1BB730097CCDE /* sdk_ios.framework */; };
 		95DC83C821E2FD3B00F745E6 /* WalletManagementViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 95DC83C721E2FD3B00F745E6 /* WalletManagementViewController.m */; };
-		95FAA18B21D769D30095E22D /* sdk_ios.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 95FAA18A21D769D30095E22D /* sdk_ios.framework */; };
 		C78AA58ABD5C4F75C67B6250 /* Pods_bupocketTests.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 248F98B6791F2F7C55E77E0E /* Pods_bupocketTests.framework */; };
 		E0A64C5CAFFFD9486B7713D7 /* Pods_bupocket.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = EB267DD938A42BAD30A164A2 /* Pods_bupocket.framework */; };
 /* End PBXBuildFile section */
@@ -270,8 +274,6 @@
 		8395AF302189496E0082EA30 /* DistributionModel.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = DistributionModel.m; sourceTree = "<group>"; };
 		8395AF32218958840082EA30 /* TransactionResultModel.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = TransactionResultModel.h; sourceTree = "<group>"; };
 		8395AF33218958840082EA30 /* TransactionResultModel.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = TransactionResultModel.m; sourceTree = "<group>"; };
-		83A66A2D218B323300E071B9 /* Constant.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = Constant.h; sourceTree = "<group>"; };
-		83A66A2E218B332D00E071B9 /* GlobalConfiguration.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = GlobalConfiguration.h; sourceTree = "<group>"; };
 		83B465A021745C9300187961 /* bupocket.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = bupocket.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		83B465A621745C9300187961 /* ViewController.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = ViewController.h; sourceTree = "<group>"; };
 		83B465A721745C9300187961 /* ViewController.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = ViewController.m; sourceTree = "<group>"; };
@@ -359,6 +361,17 @@
 		958127F1219AC82A0081A02E /* VersionModel.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = VersionModel.m; sourceTree = "<group>"; };
 		958AA69621A2A89600BEA50C /* CustomRefreshFooter.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = CustomRefreshFooter.h; sourceTree = "<group>"; };
 		958AA69721A2A89600BEA50C /* CustomRefreshFooter.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = CustomRefreshFooter.m; sourceTree = "<group>"; };
+		959575BF21FFF00F0089479C /* AddressBookViewController.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = AddressBookViewController.h; sourceTree = "<group>"; };
+		959575C021FFF00F0089479C /* AddressBookViewController.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = AddressBookViewController.m; sourceTree = "<group>"; };
+		959575C221FFF6EB0089479C /* AddressBookListViewCell.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = AddressBookListViewCell.h; sourceTree = "<group>"; };
+		959575C321FFF6EB0089479C /* AddressBookListViewCell.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = AddressBookListViewCell.m; sourceTree = "<group>"; };
+		959575C621FFF8010089479C /* AddressBookModel.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = AddressBookModel.h; sourceTree = "<group>"; };
+		959575C721FFF8010089479C /* AddressBookModel.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = AddressBookModel.m; sourceTree = "<group>"; };
+		959575C921FFFD040089479C /* ContactViewController.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = ContactViewController.h; sourceTree = "<group>"; };
+		959575CA21FFFD040089479C /* ContactViewController.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = ContactViewController.m; sourceTree = "<group>"; };
+		959575D4221BD6BC0089479C /* CommonMacro.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = CommonMacro.h; sourceTree = "<group>"; };
+		959575D6221BD7290089479C /* AppDefine.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = AppDefine.h; sourceTree = "<group>"; };
+		959575D7221BD7F10089479C /* AppInclude.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = AppInclude.h; sourceTree = "<group>"; };
 		959726B621E334C20022CB78 /* WalletManagementViewCell.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = WalletManagementViewCell.h; sourceTree = "<group>"; };
 		959726B721E334C20022CB78 /* WalletManagementViewCell.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = WalletManagementViewCell.m; sourceTree = "<group>"; };
 		959726BA21E358A10022CB78 /* ExportViewController.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = ExportViewController.h; sourceTree = "<group>"; };
@@ -405,9 +418,9 @@
 		95A8A419219D5FF7008E978E /* YBPopupMenuPath.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = YBPopupMenuPath.h; sourceTree = "<group>"; };
 		95A8A41A219D5FF7008E978E /* YBRectConst.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = YBRectConst.m; sourceTree = "<group>"; };
 		95A8A41B219D5FF7008E978E /* YBPopupMenuPath.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = YBPopupMenuPath.m; sourceTree = "<group>"; };
+		95AD143F21F1BB730097CCDE /* sdk_ios.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; path = sdk_ios.framework; sourceTree = "<group>"; };
 		95DC83C621E2FD3B00F745E6 /* WalletManagementViewController.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = WalletManagementViewController.h; sourceTree = "<group>"; };
 		95DC83C721E2FD3B00F745E6 /* WalletManagementViewController.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = WalletManagementViewController.m; sourceTree = "<group>"; };
-		95FAA18A21D769D30095E22D /* sdk_ios.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; path = sdk_ios.framework; sourceTree = "<group>"; };
 		9D915F385F1A78B38EC83B6E /* Pods_bupocketUITests.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_bupocketUITests.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		A61F11E76D6541BC859B703E /* Pods-bupocket.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-bupocket.debug.xcconfig"; path = "Pods/Target Support Files/Pods-bupocket/Pods-bupocket.debug.xcconfig"; sourceTree = "<group>"; };
 		EB267DD938A42BAD30A164A2 /* Pods_bupocket.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_bupocket.framework; sourceTree = BUILT_PRODUCTS_DIR; };
@@ -419,7 +432,7 @@
 			buildActionMask = 2147483647;
 			files = (
 				9569288321D7541400B7721A /* libc++.tbd in Frameworks */,
-				95FAA18B21D769D30095E22D /* sdk_ios.framework in Frameworks */,
+				95AD144021F1BB730097CCDE /* sdk_ios.framework in Frameworks */,
 				E0A64C5CAFFFD9486B7713D7 /* Pods_bupocket.framework in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -478,7 +491,6 @@
 				83379AA5217F006600C222A5 /* HTTPManager.h */,
 				83379AA7217F006600C222A5 /* HTTPManager.m */,
 				9510A3CA219A91D4007A49A4 /* ErrorTypeTool.h */,
-				9510A3CB219A91D4007A49A4 /* ErrorTypeTool.m */,
 				83D5B1EF218199E900BF1FF1 /* JsonTool.h */,
 				83D5B1F0218199E900BF1FF1 /* JsonTool.m */,
 			);
@@ -518,6 +530,7 @@
 		835A45222174C14D005BFCDD /* Common */ = {
 			isa = PBXGroup;
 			children = (
+				959575D3221BD6BC0089479C /* Preprocessors */,
 				83379A0A2178588800C222A5 /* Resource */,
 				833799292177091500C222A5 /* Tool */,
 				83B594AE2175E6FA009F91BA /* View */,
@@ -528,8 +541,6 @@
 				835A45252174C14D005BFCDD /* AppDelegate.m */,
 				835A45242174C14D005BFCDD /* main.m */,
 				835A45382174C47E005BFCDD /* PrefixHeader.pch */,
-				83A66A2D218B323300E071B9 /* Constant.h */,
-				83A66A2E218B332D00E071B9 /* GlobalConfiguration.h */,
 				833799212176FD4400C222A5 /* InfoPlist.strings */,
 				833799272176FE4800C222A5 /* Localizable.strings */,
 			);
@@ -589,8 +600,8 @@
 			isa = PBXGroup;
 			children = (
 				835A452F2174C212005BFCDD /* Controller */,
-				835A45302174C212005BFCDD /* Model */,
 				835A45312174C212005BFCDD /* View */,
+				959575C521FFF7D90089479C /* Model */,
 			);
 			path = My;
 			sourceTree = "<group>";
@@ -604,6 +615,10 @@
 				954371732199234100915BBE /* SettingViewController.m */,
 				83379A722179D62300C222A5 /* MyIdentityViewController.h */,
 				83379A732179D62300C222A5 /* MyIdentityViewController.m */,
+				959575BF21FFF00F0089479C /* AddressBookViewController.h */,
+				959575C021FFF00F0089479C /* AddressBookViewController.m */,
+				959575C921FFFD040089479C /* ContactViewController.h */,
+				959575CA21FFFD040089479C /* ContactViewController.m */,
 				83379A692179C1D500C222A5 /* ChangePasswordViewController.h */,
 				83379A6A2179C1D500C222A5 /* ChangePasswordViewController.m */,
 				83379A6C2179CB9E00C222A5 /* FeedbackViewController.h */,
@@ -616,18 +631,13 @@
 			path = Controller;
 			sourceTree = "<group>";
 		};
-		835A45302174C212005BFCDD /* Model */ = {
-			isa = PBXGroup;
-			children = (
-			);
-			path = Model;
-			sourceTree = "<group>";
-		};
 		835A45312174C212005BFCDD /* View */ = {
 			isa = PBXGroup;
 			children = (
 				833799152176E1E600C222A5 /* ListTableViewCell.h */,
 				833799162176E1E600C222A5 /* ListTableViewCell.m */,
+				959575C221FFF6EB0089479C /* AddressBookListViewCell.h */,
+				959575C321FFF6EB0089479C /* AddressBookListViewCell.m */,
 			);
 			path = View;
 			sourceTree = "<group>";
@@ -779,6 +789,7 @@
 			children = (
 				8372C85C2174CBF100FF9506 /* TabBarViewController.h */,
 				8372C8602174CBF100FF9506 /* TabBarViewController.m */,
+				9510A3CB219A91D4007A49A4 /* ErrorTypeTool.m */,
 				8372C85D2174CBF100FF9506 /* NavigationViewController.h */,
 				8372C85F2174CBF100FF9506 /* NavigationViewController.m */,
 				8372C8642174CC6F00FF9506 /* BaseViewController.h */,
@@ -900,7 +911,7 @@
 		9579E74D21B5353700051EDB /* Lib */ = {
 			isa = PBXGroup;
 			children = (
-				95FAA18A21D769D30095E22D /* sdk_ios.framework */,
+				95AD143F21F1BB730097CCDE /* sdk_ios.framework */,
 			);
 			path = Lib;
 			sourceTree = "<group>";
@@ -913,6 +924,25 @@
 				9579EB5121BABE6300051EDB /* MBProgressHUD+JDragon.m */,
 			);
 			path = "MBProgressHUD+JDragon";
+			sourceTree = "<group>";
+		};
+		959575C521FFF7D90089479C /* Model */ = {
+			isa = PBXGroup;
+			children = (
+				959575C621FFF8010089479C /* AddressBookModel.h */,
+				959575C721FFF8010089479C /* AddressBookModel.m */,
+			);
+			path = Model;
+			sourceTree = "<group>";
+		};
+		959575D3221BD6BC0089479C /* Preprocessors */ = {
+			isa = PBXGroup;
+			children = (
+				959575D4221BD6BC0089479C /* CommonMacro.h */,
+				959575D6221BD7290089479C /* AppDefine.h */,
+				959575D7221BD7F10089479C /* AppInclude.h */,
+			);
+			path = Preprocessors;
 			sourceTree = "<group>";
 		};
 		95A8A3A8219D12B1008E978E /* Internationalization */ = {
@@ -1300,6 +1330,7 @@
 				83379AC6217F3F4200C222A5 /* AssetsListModel.m in Sources */,
 				8372C8692174CCA000FF9506 /* AssetsViewController.m in Sources */,
 				83B594B72175FC8B009F91BA /* BackupMnemonicsViewController.m in Sources */,
+				959575C121FFF00F0089479C /* AddressBookViewController.m in Sources */,
 				83FB443421904AA400D68569 /* HMScannerBorder.m in Sources */,
 				83B594AD2175E4D9009F91BA /* RestoreIdentityViewController.m in Sources */,
 				959726BC21E358A10022CB78 /* ExportViewController.m in Sources */,
@@ -1342,10 +1373,13 @@
 				956CD42121B016D1004DC1FA /* ListModel.m in Sources */,
 				83379AE22180630300C222A5 /* TxDetailModel.m in Sources */,
 				95A8A41D219D5FF7008E978E /* YBRectConst.m in Sources */,
+				959575C821FFF8010089479C /* AddressBookModel.m in Sources */,
 				833799172176E1E600C222A5 /* ListTableViewCell.m in Sources */,
+				959575CB21FFFD040089479C /* ContactViewController.m in Sources */,
 				95A8A3BC219D161D008E978E /* CustomRefreshHeader.m in Sources */,
 				95DC83C821E2FD3B00F745E6 /* WalletManagementViewController.m in Sources */,
 				959726C521E487F10022CB78 /* ExportKeystoreViewController.m in Sources */,
+				959575C421FFF6EB0089479C /* AddressBookListViewCell.m in Sources */,
 				83379A092178509300C222A5 /* WKWebViewController.m in Sources */,
 				83379A6221797BDD00C222A5 /* ConfirmMnemonicViewController.m in Sources */,
 				95A8A41E219D5FF7008E978E /* YBPopupMenuPath.m in Sources */,
@@ -1545,7 +1579,7 @@
 				CODE_SIGN_IDENTITY = "iPhone Developer";
 				CODE_SIGN_STYLE = Manual;
 				DEFINES_MODULE = YES;
-				DEVELOPMENT_TEAM = 3DPSH636RT;
+				DEVELOPMENT_TEAM = 69Z6ZW8X9X;
 				ENABLE_BITCODE = NO;
 				FRAMEWORK_SEARCH_PATHS = (
 					"$(inherited)",
@@ -1593,9 +1627,9 @@
 					"\"XHToast\"",
 					"-ObjC",
 				);
-				PRODUCT_BUNDLE_IDENTIFIER = com.bupocket;
+				PRODUCT_BUNDLE_IDENTIFIER = io.bupocket;
 				PRODUCT_NAME = "$(TARGET_NAME)";
-				PROVISIONING_PROFILE_SPECIFIER = bupocket_Development;
+				PROVISIONING_PROFILE_SPECIFIER = BUPocket_Development_io;
 				TARGETED_DEVICE_FAMILY = 1;
 			};
 			name = Debug;
@@ -1609,7 +1643,7 @@
 				CODE_SIGN_IDENTITY = "iPhone Developer";
 				CODE_SIGN_STYLE = Manual;
 				DEFINES_MODULE = YES;
-				DEVELOPMENT_TEAM = 3DPSH636RT;
+				DEVELOPMENT_TEAM = 69Z6ZW8X9X;
 				ENABLE_BITCODE = NO;
 				FRAMEWORK_SEARCH_PATHS = (
 					"$(inherited)",
@@ -1657,9 +1691,9 @@
 					"\"XHToast\"",
 					"-ObjC",
 				);
-				PRODUCT_BUNDLE_IDENTIFIER = com.bupocket;
+				PRODUCT_BUNDLE_IDENTIFIER = io.bupocket;
 				PRODUCT_NAME = "$(TARGET_NAME)";
-				PROVISIONING_PROFILE_SPECIFIER = bupocket_Development;
+				PROVISIONING_PROFILE_SPECIFIER = BUPocket_Development_io;
 				TARGETED_DEVICE_FAMILY = 1;
 			};
 			name = Release;

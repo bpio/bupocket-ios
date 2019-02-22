@@ -2,7 +2,7 @@
 //  ExportViewController.m
 //  bupocket
 //
-//  Created by huoss on 2019/1/7.
+//  Created by bupocket on 2019/1/7.
 //  Copyright © 2019年 bupocket. All rights reserved.
 //
 
@@ -12,6 +12,7 @@
 #import "ModifyAlertView.h"
 #import "ExportKeystoreViewController.h"
 #import "ExportPrivateKeyViewController.h"
+#import "BackupMnemonicsViewController.h"
 
 @interface ExportViewController ()<UITableViewDelegate, UITableViewDataSource>
 
@@ -36,7 +37,11 @@ static NSString * const ExportCellID = @"ExportCellID";
 - (void)viewDidLoad {
     [super viewDidLoad];
     self.navigationItem.title = Localized(@"Manage");
-    self.listArray = @[Localized(@"ExportKeystore"), Localized(@"ExportPrivateKey")];
+    if ([self.walletModel.walletAddress isEqualToString:[[[AccountTool shareTool] account] walletAddress]]) {
+        self.listArray = @[Localized(@"ExportKeystore"), Localized(@"ExportPrivateKey"), Localized(@"BackupMnemonics")];
+    } else {
+        self.listArray = @[Localized(@"ExportKeystore"), Localized(@"ExportPrivateKey")];
+    }
     [self setupView];
     // Do any additional setup after loading the view.
 }
@@ -94,17 +99,19 @@ static NSString * const ExportCellID = @"ExportCellID";
         NSUserDefaults * defaults = [NSUserDefaults standardUserDefaults];
         [defaults setObject:[[[AccountTool shareTool] account] walletAddress] forKey:Current_WalletAddress];
         [defaults setObject:[[[AccountTool shareTool] account] walletKeyStore] forKey:Current_WalletKeyStore];
+        [defaults setObject:[[[AccountTool shareTool] account] walletName] forKey:Current_WalletName];
         [defaults synchronize];
     }
     PasswordAlertView * alertView = [[PasswordAlertView alloc] initWithPrompt:Localized(@"WalletPWPrompt") walletKeyStore:self.walletModel.walletKeyStore isAutomaticClosing:YES confrimBolck:^(NSString * _Nonnull password, NSArray * _Nonnull words) {
         [self.walletArray removeObject:self.walletModel];
         [[WalletTool shareTool] save:self.walletArray];
         [Encapsulation showAlertControllerWithMessage:Localized(@"DeleteWalletSuccessfully") handler:^(UIAlertAction *action) {
-            [self.navigationController popViewControllerAnimated:YES];
+            [self.navigationController popViewControllerAnimated:NO];
         }];
     } cancelBlock:^{
     }];
     [alertView showInWindowWithMode:CustomAnimationModeAlert inView:nil bgAlpha:0.2 needEffectView:NO];
+    [alertView.PWTextField becomeFirstResponder];
 }
 - (NSInteger)numberOfSectionsInTableView:(UITableView *)tableView
 {
@@ -115,7 +122,7 @@ static NSString * const ExportCellID = @"ExportCellID";
     if (section == 0) {
         return 1;
     }
-    return 2;
+    return self.listArray.count;
 }
 - (UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath
 {
@@ -133,7 +140,7 @@ static NSString * const ExportCellID = @"ExportCellID";
         CGSize cellSize = CGSizeMake(DEVICE_WIDTH - Margin_20, ScreenScale(60));
         if (indexPath.row == 0) {
             [cell.listBg setViewSize:cellSize borderRadius:BG_CORNER corners:UIRectCornerTopLeft | UIRectCornerTopRight];
-        } else {
+        } else if (indexPath.row == self.listArray.count - 1) {
             [cell.listBg setViewSize:cellSize borderRadius:BG_CORNER corners:UIRectCornerBottomLeft | UIRectCornerBottomRight];
         }
         return cell;
@@ -146,36 +153,52 @@ static NSString * const ExportCellID = @"ExportCellID";
         NSIndexPath * walletIndex = [NSIndexPath indexPathForRow:0 inSection:indexPath.section];
         WalletManagementViewCell * cell = [tableView cellForRowAtIndexPath:walletIndex];
         ModifyAlertView * alertView = [[ModifyAlertView alloc] initWithText:cell.walletName.text confrimBolck:^(NSString * _Nonnull text) {
-            cell.walletName.text = text;
-            if ([self.walletModel.walletAddress isEqualToString:[[[AccountTool shareTool] account] walletAddress]]) {
-                AccountModel * account = [[AccountModel alloc] init];
-                account = [[AccountTool shareTool] account];
-                account.walletName = text;
-                [[AccountTool shareTool] save:account];
+            if ([RegexPatternTool validateUserName:text]) {
+                cell.walletName.text = text;
+                if ([self.walletModel.walletAddress isEqualToString:[[[AccountTool shareTool] account] walletAddress]]) {
+                    AccountModel * account = [[AccountModel alloc] init];
+                    account = [[AccountTool shareTool] account];
+                    account.walletName = text;
+                    [[AccountTool shareTool] save:account];
+                } else {
+                    self.walletModel.walletName = text;
+                    [self.walletArray replaceObjectAtIndex:self.index withObject:self.walletModel];
+                    [[WalletTool shareTool] save:self.walletArray];
+                }
+                NSUserDefaults * defaults = [NSUserDefaults standardUserDefaults];
+                [defaults setObject:text forKey:Current_WalletName];
+                [defaults synchronize];
             } else {
-                self.walletModel.walletName = text;
-                [self.walletArray replaceObjectAtIndex:self.index withObject:self.walletModel];
-                [[WalletTool shareTool] save:self.walletArray];
+                [MBProgressHUD showTipMessageInWindow:Localized(@"WalletNameFormatIncorrect")];
             }
         } cancelBlock:^{
             
         }];
         [alertView showInWindowWithMode:CustomAnimationModeAlert inView:nil bgAlpha:0.2 needEffectView:NO];        
     } else {
-        PasswordAlertView * alertView = [[PasswordAlertView alloc] initWithPrompt:Localized(@"WalletPWPrompt") walletKeyStore:self.walletModel.walletKeyStore isAutomaticClosing:YES confrimBolck:^(NSString * _Nonnull password, NSArray * _Nonnull words) {
+        NSString * walletKeyStore = self.walletModel.walletKeyStore;
+        if (indexPath.row == 2) {
+            walletKeyStore = @"";
+        }
+        PasswordAlertView * alertView = [[PasswordAlertView alloc] initWithPrompt:Localized(@"WalletPWPrompt") walletKeyStore:walletKeyStore isAutomaticClosing:YES confrimBolck:^(NSString * _Nonnull password, NSArray * _Nonnull words) {
             if (indexPath.row == 0) {
                 ExportKeystoreViewController * VC = [[ExportKeystoreViewController alloc] init];
                 VC.walletModel = self.walletModel;
-                [self.navigationController pushViewController:VC animated:YES];
+                [self.navigationController pushViewController:VC animated:NO];
             } else if (indexPath.row == 1) {
                 ExportPrivateKeyViewController * VC = [[ExportPrivateKeyViewController alloc] init];
                 VC.walletModel = self.walletModel;
                 VC.password = password;
-                [self.navigationController pushViewController:VC animated:YES];
+                [self.navigationController pushViewController:VC animated:NO];
+            } else if (indexPath.row == 2) {
+                BackupMnemonicsViewController * VC = [[BackupMnemonicsViewController alloc] init];
+                VC.mnemonicArray = words;
+                [self.navigationController pushViewController:VC animated:NO];
             }
         } cancelBlock:^{
         }];
         [alertView showInWindowWithMode:CustomAnimationModeAlert inView:nil bgAlpha:0.2 needEffectView:NO];
+        [alertView.PWTextField becomeFirstResponder];
     }
 }
 /*

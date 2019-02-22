@@ -104,7 +104,7 @@
             [MBProgressHUD showTipMessageInWindow:[ErrorTypeTool getDescriptionWithErrorCode:code]];
         }
         [self.tableView.mj_header endRefreshing];
-        (self.listArray.count > 0) ? (self.tableView.tableFooterView = [UIView new]) : (self.tableView.tableFooterView = self.noData);
+        (self.listArray.count > 0) ? (self.tableView.tableFooterView = [[UIView alloc] initWithFrame:CGRectMake(0, 0, DEVICE_WIDTH, CGFLOAT_MIN)]) : (self.tableView.tableFooterView = self.noData);
         self.noNetWork.hidden = YES;
         self.tableView.mj_footer.hidden = (self.listArray.count == 0);
     } failure:^(NSError *error) {
@@ -128,7 +128,7 @@
     if (!_noData) {
         CGFloat noDataH = DEVICE_HEIGHT - _headerViewH - NavBarH - SafeAreaBottomH;
         _noData = [[UIView alloc] initWithFrame:CGRectMake(0, 0, DEVICE_WIDTH, noDataH)];
-        UIButton * noDataBtn = [Encapsulation showNoDataWithTitle:Localized(@"NoTransactionRecord") imageName:@"noTransactionRecord" superView:self.noData frame:CGRectMake(0, (noDataH - ScreenScale(160)) / 2, DEVICE_WIDTH, ScreenScale(160))];
+        UIButton * noDataBtn = [Encapsulation showNoDataWithTitle:Localized(@"NoTransactionRecord") imageName:@"noRecord" superView:_noData frame:CGRectMake(0, (noDataH - ScreenScale(160)) / 2, DEVICE_WIDTH, ScreenScale(160))];
         noDataBtn.hidden = NO;
         [_noData addSubview:noDataBtn];
     }
@@ -193,7 +193,7 @@
         [scanBtn addTarget:self action:@selector(scanAction:) forControlEvents:UIControlEventTouchUpInside];
         [self.headerViewBg addSubview: scanBtn];
         [scanBtn setViewSize:CGSizeMake(btnW, MAIN_HEIGHT) borderWidth:0 borderColor:nil borderRadius:ScreenScale(3)];
-        scanBtn.backgroundColor = NAVITEM_COLOR;
+        scanBtn.backgroundColor = COLOR(@"72AFFF");
         [scanBtn mas_makeConstraints:^(MASConstraintMaker *make) {
             make.top.equalTo(self.amount.mas_bottom).offset(Margin_20);
             make.left.equalTo(self.headerViewBg.mas_left).offset(Margin_10);
@@ -242,7 +242,7 @@
                     TransferAccountsViewController * VC = [[TransferAccountsViewController alloc] init];
                     VC.listModel = weakself.listModel;
                     VC.address = stringValue;
-                    [weakself.navigationController pushViewController:VC animated:YES];
+                    [weakself.navigationController pushViewController:VC animated:NO];
                 } else {
                     [MBProgressHUD showTipMessageInWindow:Localized(@"ScanFailure")];
                 }
@@ -259,7 +259,7 @@
 {
     TransferAccountsViewController * VC = [[TransferAccountsViewController alloc] init];
     VC.listModel = self.listModel;
-    [self.navigationController pushViewController:VC animated:YES];
+    [self.navigationController pushViewController:VC animated:NO];
 }
 
 - (CGFloat)tableView:(UITableView *)tableView heightForRowAtIndexPath:(NSIndexPath *)indexPath
@@ -323,7 +323,7 @@
     OrderDetailsViewController * VC = [[OrderDetailsViewController alloc] init];
     VC.assetCode = self.listModel.assetCode;
     VC.listModel = self.listArray[indexPath.section];
-    [self.navigationController pushViewController:VC animated:YES];
+    [self.navigationController pushViewController:VC animated:NO];
 }
 
 

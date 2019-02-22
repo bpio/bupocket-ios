@@ -17,6 +17,10 @@
 @property (nonatomic, strong) UITextField * confirmPassword;
 @property (nonatomic, strong) UIButton * createIdentity;
 
+@property (nonatomic, strong) NSString * identityNameStr;
+@property (nonatomic, strong) NSString * PW;
+@property (nonatomic, strong) NSString * confirmPW;
+
 @end
 
 @implementation CreateIdentityViewController
@@ -91,13 +95,20 @@
 }
 - (void)textChange:(UITextField *)textField
 {
-    if (_identityName.text.length > 0 && _identityPassword.text.length > 0 && _confirmPassword.text.length > 0) {
+    [self updateText];
+    if (_identityNameStr.length > 0 && _PW.length > 0 && _confirmPW.length > 0) {
         _createIdentity.enabled = YES;
         _createIdentity.backgroundColor = MAIN_COLOR;
     } else {
         _createIdentity.enabled = NO;
         _createIdentity.backgroundColor = DISABLED_COLOR;
     }
+}
+- (void)updateText
+{
+    self.identityNameStr = TrimmingCharacters(_identityName.text);
+    self.PW = TrimmingCharacters(self.identityPassword.text);
+    self.confirmPW = TrimmingCharacters(_confirmPassword.text);
 }
 - (void)secureAction:(UIButton *)button
 {
@@ -136,12 +147,12 @@
 {
     [super viewWillAppear:animated];
 }
-- (void)getData
+- (void)getDataWithPW:(NSString *)PW identityName:(NSString *)identityName
 {
     NSMutableData *random = [NSMutableData dataWithLength: Random_Length];
     int status = SecRandomCopyBytes(kSecRandomDefault, random.length, random.mutableBytes);
     if (status == 0) {
-        [[HTTPManager shareManager] setAccountDataWithRandom:random password:self.identityPassword.text identityName:self.identityName.text success:^(id responseObject) {
+        [[HTTPManager shareManager] setAccountDataWithRandom:random password:PW identityName:identityName typeTitle:self.navigationItem.title success:^(id responseObject) {
             NSUserDefaults * defaults = [NSUserDefaults standardUserDefaults];
             [defaults setBool:YES forKey:If_Created];
             [defaults synchronize];
@@ -158,19 +169,21 @@
 
 - (void)createAction
 {
-    if ([RegexPatternTool validateUserName:_identityName.text] == NO) {
+    [self updateText];
+    if ([RegexPatternTool validateUserName:self.identityNameStr] == NO) {
         [MBProgressHUD showTipMessageInWindow:Localized(@"IDNameFormatIncorrect")];
         return;
     }
-    if ([RegexPatternTool validatePassword:_identityPassword.text] == NO) {
+//    if ([RegexPatternTool validatePassword:_identityPassword.text] == NO) {
+    if (self.PW.length < PW_MIN_LENGTH || self.PW.length > PW_MAX_LENGTH) {
         [MBProgressHUD showTipMessageInWindow:Localized(@"CryptographicFormat")];
         return;
     }
-    if (![_confirmPassword.text isEqualToString:_identityPassword.text]) {
+    if (![self.confirmPW isEqualToString:self.PW]) {
         [MBProgressHUD showTipMessageInWindow:Localized(@"PasswordIsDifferent")];
         return;
     }
-    [self getData];
+    [self getDataWithPW:self.PW identityName:self.identityNameStr];
 }
 - (void)didReceiveMemoryWarning
 {

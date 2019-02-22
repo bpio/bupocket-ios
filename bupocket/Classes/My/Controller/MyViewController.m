@@ -10,8 +10,10 @@
 #import "ListTableViewCell.h"
 #import "MyIdentityViewController.h"
 #import "SettingViewController.h"
+#import "AddressBookViewController.h"
 #import "ChangePasswordViewController.h"
 #import "FeedbackViewController.h"
+#import "WalletManagementViewController.h"
 //#import "UINavigationController+Extension.h"
 
 @interface MyViewController ()<UITableViewDelegate, UITableViewDataSource>
@@ -43,7 +45,7 @@ static NSString * const ListCellID = @"ListCellID";
     [super viewDidLoad];
     self.headerImage = [UIImage imageNamed:@"my_header"];
     self.touchCounter = 0;
-    self.listArray = @[Localized(@"Setting"), Localized(@"ModifyPassword"), Localized(@"Feedback"), Localized(@"VersionNumber")];
+    self.listArray = @[Localized(@"Setting"), Localized(@"AddressBook"), Localized(@"WalletManagement"), Localized(@"ModifyIdentityPassword"), Localized(@"Feedback"), Localized(@"VersionNumber")];
     [self setupView];
     // Do any additional setup after loading the view.
 }
@@ -123,7 +125,7 @@ static NSString * const ListCellID = @"ListCellID";
 - (void)userIconAction
 {
     MyIdentityViewController * VC = [[MyIdentityViewController alloc] init];
-    [self.navigationController pushViewController:VC animated:YES];
+    [self.navigationController pushViewController:VC animated:NO];
 }
 - (CGFloat)tableView:(UITableView *)tableView heightForHeaderInSection:(NSInteger)section
 {
@@ -185,41 +187,50 @@ static NSString * const ListCellID = @"ListCellID";
     [tableView deselectRowAtIndexPath:indexPath animated:YES];
     if (indexPath.row == 0) {
         SettingViewController * VC = [[SettingViewController alloc] init];
-        [self.navigationController pushViewController:VC animated:YES];
+        [self.navigationController pushViewController:VC animated:NO];
     } else if (indexPath.row == 1) {
-        ChangePasswordViewController * VC = [[ChangePasswordViewController alloc] init];
-        [self.navigationController pushViewController:VC animated:YES];
+        AddressBookViewController * VC = [[AddressBookViewController alloc] init];
+        [self.navigationController pushViewController:VC animated:NO];
     } else if (indexPath.row == 2) {
+        WalletManagementViewController * VC = [[WalletManagementViewController alloc] init];
+        [self.navigationController pushViewController:VC animated:NO];
+    } else if (indexPath.row == 3) {
+        ChangePasswordViewController * VC = [[ChangePasswordViewController alloc] init];
+        [self.navigationController pushViewController:VC animated:NO];
+    } else if (indexPath.row == 4) {
         FeedbackViewController * VC = [[FeedbackViewController alloc] init];
-        [self.navigationController pushViewController:VC animated:YES];
+        [self.navigationController pushViewController:VC animated:NO];
     } else if (indexPath.row == self.listArray.count - 1) {
-        if ([[NSUserDefaults standardUserDefaults] boolForKey:If_Show_Switch_Network]) return;
-        if (self.acceptEventInterval <= 0) {
-            self.acceptEventInterval = 2;
-        }
-        BOOL needSendAction = (NSDate.date.timeIntervalSince1970 - self.acceptEventTime >= self.acceptEventInterval);
-        if (self.acceptEventInterval > 0) {
-            self.acceptEventTime = NSDate.date.timeIntervalSince1970;
-        }
-        if (!needSendAction) {
-            self.touchCounter += 1;
-        } else {
-            self.touchCounter = 0;
-        }
-        if (self.touchCounter == 4) {
-            self.touchCounter = 0;
-            NSString * message = Localized(@"SwitchToTestNetwork");
-            UIAlertController * alertController = [UIAlertController alertControllerWithTitle:message message:nil preferredStyle:UIAlertControllerStyleAlert];
-            UIAlertAction * cancelAction = [UIAlertAction actionWithTitle:Localized(@"NO") style:UIAlertActionStyleDefault handler:nil];
-            [alertController addAction:cancelAction];
-            UIAlertAction * okAction = [UIAlertAction actionWithTitle:Localized(@"YES") style:UIAlertActionStyleDefault handler:^(UIAlertAction * _Nonnull action) {
-                SettingViewController * VC = [[SettingViewController alloc] init];
-                [[HTTPManager shareManager] SwitchedNetworkWithIsTest:YES];
-                [self.navigationController pushViewController:VC animated:YES];
-            }];
-            [alertController addAction:okAction];
-            [self presentViewController:alertController animated:YES completion:nil];
-        }
+        [self SwitchingNetwork];
+    }
+}
+- (void)SwitchingNetwork {
+    if ([[NSUserDefaults standardUserDefaults] boolForKey:If_Show_Switch_Network]) return;
+    if (self.acceptEventInterval <= 0) {
+        self.acceptEventInterval = 2;
+    }
+    BOOL needSendAction = (NSDate.date.timeIntervalSince1970 - self.acceptEventTime >= self.acceptEventInterval);
+    if (self.acceptEventInterval > 0) {
+        self.acceptEventTime = NSDate.date.timeIntervalSince1970;
+    }
+    if (!needSendAction) {
+        self.touchCounter += 1;
+    } else {
+        self.touchCounter = 0;
+    }
+    if (self.touchCounter == 4) {
+        self.touchCounter = 0;
+        NSString * message = Localized(@"SwitchToTestNetwork");
+        UIAlertController * alertController = [UIAlertController alertControllerWithTitle:message message:nil preferredStyle:UIAlertControllerStyleAlert];
+        UIAlertAction * cancelAction = [UIAlertAction actionWithTitle:Localized(@"NO") style:UIAlertActionStyleDefault handler:nil];
+        [alertController addAction:cancelAction];
+        UIAlertAction * okAction = [UIAlertAction actionWithTitle:Localized(@"YES") style:UIAlertActionStyleDefault handler:^(UIAlertAction * _Nonnull action) {
+            SettingViewController * VC = [[SettingViewController alloc] init];
+            [[HTTPManager shareManager] SwitchedNetworkWithIsTest:YES];
+            [self.navigationController pushViewController:VC animated:NO];
+        }];
+        [alertController addAction:okAction];
+        [self presentViewController:alertController animated:YES completion:nil];
     }
 }
 - (BOOL)gestureRecognizer:(UIGestureRecognizer*)gestureRecognizer shouldReceiveTouch:(UITouch*)touch {

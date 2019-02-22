@@ -110,12 +110,13 @@
     PasswordAlertView * alertView = [[PasswordAlertView alloc] initWithPrompt:Localized(@"IdentityCipherPrompt") walletKeyStore:@"" isAutomaticClosing:YES confrimBolck:^(NSString * _Nonnull password, NSArray * _Nonnull words) {
         BackupMnemonicsViewController * VC = [[BackupMnemonicsViewController alloc] init];
         VC.mnemonicArray = words;
-        [self.navigationController pushViewController:VC animated:YES];
+        [self.navigationController pushViewController:VC animated:NO];
 //        [UIApplication sharedApplication].keyWindow.rootViewController = [[NavigationViewController alloc] initWithRootViewController:VC];
     } cancelBlock:^{
         
     }];
     [alertView showInWindowWithMode:CustomAnimationModeAlert inView:nil bgAlpha:0.2 needEffectView:NO];
+    [alertView.PWTextField becomeFirstResponder];
 }
 - (void)exitIDAction
 {
@@ -128,6 +129,7 @@
             
         }];
         [alertView showInWindowWithMode:CustomAnimationModeAlert inView:nil bgAlpha:0.2 needEffectView:NO];
+        [alertView.PWTextField becomeFirstResponder];
     }];
 }
 - (void)exitIDDataWithPassword:(NSString *)password

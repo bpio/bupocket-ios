@@ -2,7 +2,7 @@
 //  ModifyAlertView.m
 //  bupocket
 //
-//  Created by huoss on 2019/1/8.
+//  Created by bupocket on 2019/1/8.
 //  Copyright © 2019年 bupocket. All rights reserved.
 //
 
@@ -100,7 +100,7 @@
 }
 - (void)textChange:(UITextField *)textField
 {
-    if (textField.text.length > 0) {
+    if (textField.text) {
         self.confirm.enabled = YES;
     } else {
         self.confirm.enabled = NO;

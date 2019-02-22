@@ -2,7 +2,7 @@
 //  ImportWalletModeViewController.m
 //  bupocket
 //
-//  Created by huoss on 2019/1/9.
+//  Created by bupocket on 2019/1/9.
 //  Copyright © 2019年 bupocket. All rights reserved.
 //
 
@@ -18,12 +18,16 @@
 @property (nonatomic, strong) NSMutableArray * listArray;
 
 @property (nonatomic, strong) PlaceholderTextView * importText;
-@property (nonatomic, strong) UITextField * contactField;
 @property (nonatomic, strong) UIButton * import;
 
 @property (nonatomic, strong) UITextField * walletNameText;
 @property (nonatomic, strong) UITextField * walletPWText;
 @property (nonatomic, strong) UITextField * confirmPWText;
+
+@property (nonatomic, strong) NSString * importContent;
+@property (nonatomic, strong) NSString * walletName;
+@property (nonatomic, strong) NSString * walletPW;
+@property (nonatomic, strong) NSString * confirmPW;
 
 @end
 
@@ -58,17 +62,13 @@ static NSString * const TextFieldPWCellID = @"TextFieldPWCellID";
     }];
     
     UIView * headerView = [[UIView alloc] init];
-    self.tableView.tableHeaderView = headerView;
+    
     UILabel * importPrompt = [[UILabel alloc] init];
     importPrompt.textColor = COLOR_9;
     importPrompt.font = TITLE_FONT;
     importPrompt.numberOfLines = 0;
     [headerView addSubview:importPrompt];
-    [importPrompt mas_makeConstraints:^(MASConstraintMaker *make) {
-        make.top.equalTo(headerView.mas_top).offset(Margin_15);
-        make.left.equalTo(headerView.mas_left).offset(Margin_15);
-        make.right.equalTo(headerView.mas_right).offset(-Margin_15);
-    }];
+    
     
     self.importText = [[PlaceholderTextView alloc] init];
     self.importText.delegate = self;
@@ -76,11 +76,7 @@ static NSString * const TextFieldPWCellID = @"TextFieldPWCellID";
     self.importText.layer.masksToBounds = YES;
     self.importText.layer.cornerRadius = BG_CORNER;
     [headerView addSubview:self.importText];
-    [self.importText mas_makeConstraints:^(MASConstraintMaker *make) {
-        make.top.equalTo(importPrompt.mas_bottom).offset(Margin_15);
-        make.left.right.equalTo(importPrompt);
-        make.height.mas_equalTo(ScreenScale(120));
-    }];
+    
     
     
     UIView * footerView = [[UIView alloc] initWithFrame:CGRectMake(0, 0, DEVICE_WIDTH, ScreenScale(150) + SafeAreaBottomH)];
@@ -88,12 +84,7 @@ static NSString * const TextFieldPWCellID = @"TextFieldPWCellID";
     
     self.import = [UIButton createButtonWithTitle:Localized(@"StartImporting") isEnabled:NO Target:self Selector:@selector(importAction)];
     [footerView addSubview:self.import];
-    [self.import mas_makeConstraints:^(MASConstraintMaker *make) {
-        make.top.equalTo(footerView.mas_top).offset(Margin_25);
-        make.left.equalTo(footerView.mas_left).offset(Margin_15);
-        make.right.equalTo(footerView.mas_right).offset(-Margin_15);
-        make.height.mas_equalTo(MAIN_HEIGHT);
-    }];
+    
     
     CustomButton * explain = [[CustomButton alloc] init];
     explain.layoutMode = HorizontalInverted;
@@ -102,13 +93,9 @@ static NSString * const TextFieldPWCellID = @"TextFieldPWCellID";
     [explain setImage:[UIImage imageNamed:@"explain"] forState:UIControlStateNormal];
     [explain addTarget:self action:@selector(explainInfo:) forControlEvents:UIControlEventTouchUpInside];
     [footerView addSubview:explain];
-    [explain mas_makeConstraints:^(MASConstraintMaker *make) {
-        make.top.equalTo(self.import.mas_bottom).offset(Margin_15);
-        make.right.equalTo(self.import);
-        make.height.mas_equalTo(Margin_30);
-    }];
     
-    self.listArray = [NSMutableArray arrayWithObjects:@[Localized(@"WalletName"), Localized(@"EnterWalletName")], @[Localized(@"SetThePW"), Localized(@"PWPlaceholder")], @[Localized(@"ConfirmedPassword"), Localized(@"PWPlaceholder")], nil];
+    
+    self.listArray = [NSMutableArray arrayWithObjects:@[Localized(@"WalletName"), Localized(@"EnterWalletName")], @[Localized(@"SetThePW"), Localized(@"SetPassword")], @[Localized(@"ConfirmedPassword"), Localized(@"ConfirmPassword")], nil];
     if ([self.title isEqualToString:Localized(@"Mnemonics")]) {
         importPrompt.text = Localized(@"ImportMnemonicsPrompt");
         self.importText.placeholder = Localized(@"PleaseEnterMnemonics");
@@ -125,6 +112,30 @@ static NSString * const TextFieldPWCellID = @"TextFieldPWCellID";
     }
     CGFloat headerViewH = Margin_30 + [Encapsulation rectWithText:importPrompt.text font:importPrompt.font textWidth:DEVICE_WIDTH - Margin_30].size.height + ScreenScale(120);
     headerView.frame = CGRectMake(0, 0, DEVICE_WIDTH, headerViewH);
+    self.tableView.tableHeaderView = headerView;
+    [importPrompt mas_makeConstraints:^(MASConstraintMaker *make) {
+        make.top.equalTo(headerView.mas_top).offset(Margin_15);
+        make.left.equalTo(headerView.mas_left).offset(Margin_15);
+        make.right.equalTo(headerView.mas_right).offset(-Margin_15);
+    }];
+    [self.importText mas_makeConstraints:^(MASConstraintMaker *make) {
+        make.top.equalTo(importPrompt.mas_bottom).offset(Margin_15);
+        make.left.right.equalTo(importPrompt);
+        make.height.mas_equalTo(ScreenScale(120));
+        make.bottom.equalTo(headerView);
+    }];
+    
+    [self.import mas_makeConstraints:^(MASConstraintMaker *make) {
+        make.top.equalTo(footerView.mas_top).offset(Margin_25);
+        make.left.equalTo(footerView.mas_left).offset(Margin_15);
+        make.right.equalTo(footerView.mas_right).offset(-Margin_15);
+        make.height.mas_equalTo(MAIN_HEIGHT);
+    }];
+    [explain mas_makeConstraints:^(MASConstraintMaker *make) {
+        make.top.equalTo(self.import.mas_bottom).offset(Margin_15);
+        make.right.equalTo(self.import);
+        make.height.mas_equalTo(Margin_30);
+    }];
 }
 - (CGFloat)tableView:(UITableView *)tableView heightForRowAtIndexPath:(NSIndexPath *)indexPath
 {
@@ -180,8 +191,9 @@ static NSString * const TextFieldPWCellID = @"TextFieldPWCellID";
 }
 - (void)importAction
 {
+    [self updateText];
     if ([self.title isEqualToString:Localized(@"Mnemonics")]) {
-        NSArray * words = [_importText.text componentsSeparatedByString:@" "];
+        NSArray * words = [_importContent componentsSeparatedByString:@" "];
         if (words.count != NumberOf_MnemonicWords) {
             [MBProgressHUD showTipMessageInWindow:Localized(@"MnemonicIsIncorrect")];
             return;
@@ -191,23 +203,23 @@ static NSString * const TextFieldPWCellID = @"TextFieldPWCellID";
         }
     } else if ([self.title isEqualToString:Localized(@"Keystore")]) {
         // walletKeyStore -> walletPrivateKey
-        NSString * walletPrivateKey = [NSString decipherKeyStoreWithPW:_walletPWText.text keyStoreValueStr:_importText.text];
+        NSString * walletPrivateKey = [NSString decipherKeyStoreWithPW:_walletPW keyStoreValueStr:_importContent];
         if (!walletPrivateKey) {
             [MBProgressHUD showTipMessageInWindow:Localized(@"KeyStoreIsIncorrect")];
             return;
         }
         if ([self textRegexJudgeIfConfirmPW:NO]) {
-            [self importWalletDataWithWalletPrivateKey:walletPrivateKey walletKeyStore:_importText.text];
+            [self importWalletDataWithWalletPrivateKey:walletPrivateKey walletKeyStore:_importContent];
         }
     } else if ([self.title isEqualToString:Localized(@"PrivateKey")]) {
         // walletPrivateKey -> walletKeyStore
-        NSString * walletKeyStore = [NSString generateKeyStoreWithPW:_walletPWText.text key:_importText.text];
+        NSString * walletKeyStore = [NSString generateKeyStoreWithPW:_walletPW key:_importContent];
         if (!walletKeyStore) {
             [MBProgressHUD showTipMessageInWindow:Localized(@"PrivateKeyIsIncorrect")];
             return;
         }
         if ([self textRegexJudgeIfConfirmPW:YES]) {
-            [self importWalletDataWithWalletPrivateKey:_importText.text walletKeyStore:walletKeyStore];            
+            [self importWalletDataWithWalletPrivateKey:_importContent walletKeyStore:walletKeyStore];
         }
     }
 }
@@ -215,22 +227,23 @@ static NSString * const TextFieldPWCellID = @"TextFieldPWCellID";
 {
     // walletPrivateKey -> walletAddress
     NSString * walletAddress = [Keypair getEncAddress : [Keypair getEncPublicKey: walletPrivateKey]];
-    BOOL ifImportSuccess = [[HTTPManager shareManager] importWalletDataWalletName:_walletNameText.text walletAddress:walletAddress walletKeyStore:walletKeyStore];
+    BOOL ifImportSuccess = [[HTTPManager shareManager] importWalletDataWalletName:_walletName walletAddress:walletAddress walletKeyStore:walletKeyStore];
     if (ifImportSuccess) {
         [Encapsulation showAlertControllerWithMessage:Localized(@"ImportWalletSuccessfully") handler:^(UIAlertAction *action) {
-            [self.navigationController popViewControllerAnimated:YES];
+            [self.navigationController popViewControllerAnimated:NO];
         }];
     }
 }
 - (BOOL)textRegexJudgeIfConfirmPW:(BOOL)ifConfirmPW
 {
-    if ([RegexPatternTool validateUserName:_walletNameText.text] == NO) {
+    if ([RegexPatternTool validateUserName:_walletName] == NO) {
         [MBProgressHUD showTipMessageInWindow:Localized(@"WalletNameFormatIncorrect")];
         return NO;
-    } else if ([RegexPatternTool validatePassword:_walletPWText.text] == NO) {
+    } else if (_walletPW.length < PW_MIN_LENGTH || _walletPW.length > PW_MAX_LENGTH) {
+//        if ([RegexPatternTool validatePassword:_walletPW] == NO) {
         [MBProgressHUD showTipMessageInWindow:Localized(@"CryptographicFormat")];
         return NO;
-    } else if (ifConfirmPW && ![_walletPWText.text isEqualToString:_confirmPWText.text]) {
+    } else if (ifConfirmPW && ![_walletPW isEqualToString:_confirmPW]) {
         [MBProgressHUD showTipMessageInWindow:Localized(@"PasswordIsDifferent")];
         return NO;
     } else {
@@ -239,11 +252,11 @@ static NSString * const TextFieldPWCellID = @"TextFieldPWCellID";
 }
 - (void)importMnemonics
 {
-    NSArray * words = [_importText.text componentsSeparatedByString:@" "];
-    [[HTTPManager shareManager] setWalletDataWithMnemonics:words password:_walletPWText.text walletName:_walletNameText.text success:^(id responseObject) {
+    NSArray * words = [_importContent componentsSeparatedByString:@" "];
+    [[HTTPManager shareManager] setWalletDataWithMnemonics:words password:_walletPW walletName:_walletName success:^(id responseObject) {
         if (responseObject) {
             [Encapsulation showAlertControllerWithMessage:Localized(@"ImportWalletSuccessfully") handler:^(UIAlertAction *action) {
-                [self.navigationController popViewControllerAnimated:YES];
+                [self.navigationController popViewControllerAnimated:NO];
             }];
         }
     } failure:^(NSError *error) {
@@ -267,7 +280,7 @@ static NSString * const TextFieldPWCellID = @"TextFieldPWCellID";
         VC.titleText = Localized(@"PrivateKeyExplainTitle");
         VC.explainInfoText = Localized(@"PrivateKeyExplain");
     }
-    [self.navigationController pushViewController:VC animated:YES];
+    [self.navigationController pushViewController:VC animated:NO];
 }
 - (void)textViewDidChange:(UITextView *)textView
 {
@@ -289,13 +302,21 @@ static NSString * const TextFieldPWCellID = @"TextFieldPWCellID";
 
 - (void)judgeHasText
 {
-    if ([self.importText hasText] && [self.walletNameText hasText] && [self.walletPWText hasText] && (!self.confirmPWText || [self.confirmPWText hasText])) {
+    [self updateText];
+    if (self.importContent.length > 0 && self.walletName.length > 0 && self.walletPW.length > 0 && (!self.confirmPWText || self.confirmPW.length > 0)) {
         self.import.enabled = YES;
         self.import.backgroundColor = MAIN_COLOR;
     } else {
         self.import.enabled = NO;
         self.import.backgroundColor = DISABLED_COLOR;
     }
+}
+- (void)updateText
+{
+    self.importContent = TrimmingCharacters(self.importText.text);
+    self.walletName = TrimmingCharacters(self.walletNameText.text);
+    self.walletPW = TrimmingCharacters(self.walletPWText.text);
+    self.confirmPW = TrimmingCharacters(self.confirmPWText.text);
 }
 /*
  - (BOOL)textField:(UITextField *)textField shouldChangeCharactersInRange:(NSRange)range replacementString:(NSString *)string

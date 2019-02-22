@@ -1,13 +1,14 @@
 //
-//  Constant.h
+//  AppDefine.h
 //  bupocket
 //
-//  Created by bubi on 2018/11/1.
-//  Copyright © 2018年 bupocket. All rights reserved.
+//  Created by bubi on 2019/2/19.
+//  Copyright © 2019年 bupocket. All rights reserved.
 //
+//  App 项目用到的参数定义 -> URL 的入参、通知名字、SDK 的 AppKey 等
 
-#ifndef Constant_h
-#define Constant_h
+#ifndef AppDefine_h
+#define AppDefine_h
 
 #define LastVersion @"LastVersion"
 // Identity creation
@@ -55,6 +56,7 @@
 #define TransactionCost_MAX @"10"
 #define TransactionCost_MIN @"0.01"
 #define TransactionCost_NotActive_MIN @"0.03"
+#define ActivateInitBalance @"0.02"
 // BU decimals
 #define Decimals_BU 8
 // 转账发送数量
@@ -63,15 +65,18 @@
 #define SendingQuantity_MAX_Division @"1,000,000"
 // Maximum length of ID and password / Transaction memo length / Length of feedback contact mode
 #define MAX_LENGTH 20
+#define PW_MIN_LENGTH 6
+#define PW_MAX_LENGTH 30
 // Cycle query transaction state maximum number
 #define Maximum_Number 20
 // Feedback content
 #define SuggestionsContent_MAX 100
 // ATP Version
 #define ATP_Version @"1.0"
-// Obtain minimum asset limits and fuel unit prices for accounts in designated blocks
+// Obtain minimum asset limits and fuel unit prices for accounts in designated blocks
 #define Minimum_Asset_Limitation @"MinimumAssetLimitation"
 
+#define Address_MinimumFontSize ScreenScale(10)
 
 
-#endif /* Constant_h */
+#endif /* AppDefine_h */

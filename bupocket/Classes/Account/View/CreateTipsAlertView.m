@@ -26,7 +26,7 @@
         [self setupView];
         
         NSString * warnStr = Localized(@"CreatePWWarn");
-        NSString * infoStr = Localized(@"CreatePWInfo");
+        NSString * infoStr = Localized(@"CryptographicFormat");
         NSString * titleStr = [NSString stringWithFormat:@"%@\n%@", warnStr, infoStr];
         _title.attributedText = [Encapsulation attrWithString:titleStr preFont:FONT(15) preColor:WARNING_COLOR index:warnStr.length sufFont:FONT(15) sufColor:TITLE_COLOR lineSpacing:Margin_5];
         CGFloat height = [Encapsulation getSizeSpaceLabelWithStr:titleStr font:FONT(15) width:(DEVICE_WIDTH - ScreenScale(80)) height:CGFLOAT_MAX lineSpacing:Margin_5].height + ScreenScale(210);

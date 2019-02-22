@@ -22,7 +22,7 @@
         self.layoutManager.allowsNonContiguousLayout = NO;
         self.font = TITLE_FONT;
         self.textColor = COLOR_6;
-        self.placeholderColor = COLOR(@"B2B2B2");
+        self.placeholderColor = PLACEHOLDER_COLOR;
         [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(textDidChange) name:UITextViewTextDidChangeNotification object:self];
     }
     return self;

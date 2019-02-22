@@ -98,7 +98,7 @@ static NSString * const SearchID = @"SearchID";
             [MBProgressHUD showTipMessageInWindow:[ErrorTypeTool getDescriptionWithErrorCode:code]];
         }
         [self.tableView.mj_header endRefreshing];
-        (self.listArray.count > 0) ? (self.tableView.tableFooterView = [UIView new]) : (self.tableView.tableFooterView = self.noData);
+        (self.listArray.count > 0) ? (self.tableView.tableFooterView = [[UIView alloc] initWithFrame:CGRectMake(0, 0, DEVICE_WIDTH, CGFLOAT_MIN)]) : (self.tableView.tableFooterView = self.noData);
         self.tableView.mj_footer.hidden = (self.listArray.count == 0);
         self.noNetWork.hidden = YES;
     } failure:^(NSError *error) {
@@ -174,7 +174,7 @@ static NSString * const SearchID = @"SearchID";
         CGFloat contentSizeH = ContentSizeBottom;
         CGFloat noDataH = DEVICE_HEIGHT - MAIN_HEIGHT - 3 * contentSizeH;
         _noData = [[UIView alloc] initWithFrame:CGRectMake(0, 0, DEVICE_WIDTH, noDataH)];
-        UIButton * noDataBtn = [Encapsulation showNoDataWithTitle:Localized(@"NoSearchResults") imageName:@"noSearchResults" superView:self.noData frame:CGRectMake(0, (noDataH - ScreenScale(160)) / 2, DEVICE_WIDTH, ScreenScale(160))];
+        UIButton * noDataBtn = [Encapsulation showNoDataWithTitle:Localized(@"NoSearchResults") imageName:@"noSearchResults" superView:_noData frame:CGRectMake(0, (noDataH - ScreenScale(160)) / 2, DEVICE_WIDTH, ScreenScale(160))];
         noDataBtn.hidden = NO;
         [_noData addSubview:noDataBtn];
     }

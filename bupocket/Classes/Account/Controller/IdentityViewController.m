@@ -23,6 +23,10 @@
 - (void)viewDidLoad
 {
     [super viewDidLoad];
+    NSUserDefaults * defaults = [NSUserDefaults standardUserDefaults];
+    NSString * currentVersion = AppVersion;
+    [defaults setObject:currentVersion forKey:LastVersion];
+    [defaults synchronize];
     [self setupView];
 }
 
@@ -74,12 +78,12 @@
 - (void)createAction
 {
     TermsOfUseViewController * VC = [[TermsOfUseViewController alloc] init];
-    [self.navigationController pushViewController:VC animated:YES];
+    [self.navigationController pushViewController:VC animated:NO];
 }
 - (void)restoreAction
 {
     RestoreIdentityViewController * VC = [[RestoreIdentityViewController alloc] init];
-    [self.navigationController pushViewController:VC animated:YES];
+    [self.navigationController pushViewController:VC animated:NO];
 }
 /*
 #pragma mark - Navigation

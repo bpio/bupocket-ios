@@ -16,6 +16,10 @@
 @property (nonatomic, strong) UITextField * PWConfirm;
 @property (nonatomic, strong) UIButton * confirm;
 
+@property (nonatomic, strong) NSString * oldPW;
+@property (nonatomic, strong) NSString * PW;
+@property (nonatomic, strong) NSString * confirmPW;
+
 @end
 
 @implementation ChangePasswordViewController
@@ -50,23 +54,26 @@
 }
 - (void)confirmAction
 {
-    if ([RegexPatternTool validatePassword:_PWOld.text] == NO) {
+    [self updateText];
+    if (self.oldPW.length < PW_MIN_LENGTH || self.oldPW.length > PW_MAX_LENGTH) {
+//    if ([RegexPatternTool validatePassword:_PWOld.text] == NO) {
         [Encapsulation showAlertControllerWithMessage:Localized(@"CryptographicFormat") handler:nil];
         return;
     }
-    if ([RegexPatternTool validatePassword:_PWNew.text] == NO) {
+    if (self.PW.length < PW_MIN_LENGTH || self.PW.length > PW_MAX_LENGTH) {
+//    if ([RegexPatternTool validatePassword:newPW] == NO) {
         [Encapsulation showAlertControllerWithMessage:Localized(@"CryptographicFormat") handler:nil];
         return;
     }
-    if (![_PWNew.text isEqualToString:_PWConfirm.text]) {
+    if (![self.PW isEqualToString:self.confirmPW]) {
         [Encapsulation showAlertControllerWithMessage:Localized(@"NewPasswordIsDifferent") handler:nil];
         return;
     }
-    NSData * random = [NSString decipherKeyStoreWithPW:_PWOld.text randomKeyStoreValueStr:[[AccountTool shareTool] account].randomNumber];
+    NSData * random = [NSString decipherKeyStoreWithPW:self.oldPW randomKeyStoreValueStr:[[AccountTool shareTool] account].randomNumber];
     if (random) {
-        [[HTTPManager shareManager] setAccountDataWithRandom:random password:self.PWNew.text identityName:[[AccountTool shareTool] account].identityName success:^(id responseObject) {
+        [[HTTPManager shareManager] setAccountDataWithRandom:random password:self.PW identityName:[[AccountTool shareTool] account].identityName typeTitle:self.navigationItem.title success:^(id responseObject) {
             [Encapsulation showAlertControllerWithMessage:Localized(@"PasswordModifiedSuccessfully") handler:^(UIAlertAction *action) {
-                [self.navigationController popViewControllerAnimated:YES];
+                [self.navigationController popViewControllerAnimated:NO];
             }];
         } failure:^(NSError *error) {
             
@@ -124,13 +131,20 @@
 }
 - (void)textChange:(UITextField *)textField
 {
-    if (_PWOld.text.length > 0 && _PWNew.text.length > 0 && _PWConfirm.text.length > 0) {
+    [self updateText];
+    if (self.oldPW.length > 0 && self.PW.length > 0 && self.confirmPW.length > 0) {
         _confirm.enabled = YES;
         _confirm.backgroundColor = MAIN_COLOR;
     } else {
         _confirm.enabled = NO;
         _confirm.backgroundColor = DISABLED_COLOR;
     }
+}
+- (void)updateText
+{
+    self.oldPW = TrimmingCharacters(_PWOld.text);
+    self.PW = TrimmingCharacters(_PWNew.text);
+    self.confirmPW = TrimmingCharacters(_PWConfirm.text);
 }
 - (BOOL)textFieldShouldReturn:(UITextField *)textField
 {
@@ -145,20 +159,20 @@
     }
     return YES;
 }
-- (BOOL)textField:(UITextField *)textField shouldChangeCharactersInRange:(NSRange)range replacementString:(NSString *)string
-{
-    NSString * str = [textField.text stringByReplacingCharactersInRange:range withString:string];
-    if (string.length == 0) {
-        return YES;
-    }
-    if (str.length > MAX_LENGTH) {
-        textField.text = [str substringToIndex:MAX_LENGTH];
-        return NO;
-    } else {
-        return YES;
-    }
-    return YES;
-}
+//- (BOOL)textField:(UITextField *)textField shouldChangeCharactersInRange:(NSRange)range replacementString:(NSString *)string
+//{
+//    NSString * str = [textField.text stringByReplacingCharactersInRange:range withString:string];
+//    if (string.length == 0) {
+//        return YES;
+//    }
+//    if (str.length > MAX_LENGTH) {
+//        textField.text = [str substringToIndex:MAX_LENGTH];
+//        return NO;
+//    } else {
+//        return YES;
+//    }
+//    return YES;
+//}
 /*
 #pragma mark - Navigation
 

@@ -2,7 +2,7 @@
 //  PasswordAlertView.m
 //  bupocket
 //
-//  Created by huoss on 2019/1/11.
+//  Created by bupocket on 2019/1/11.
 //  Copyright © 2019年 bupocket. All rights reserved.
 //
 
@@ -10,7 +10,6 @@
 
 @interface PasswordAlertView()<UITextFieldDelegate>
 
-@property (nonatomic, strong) UITextField * PWTextField;
 @property (nonatomic, assign) PasswordType passwordType;
 @property (nonatomic, assign) CGFloat bgHeight;
 @property (nonatomic, strong) UILabel * promptLabel;
@@ -83,7 +82,7 @@
     PWTextField.delegate = self;
     PWTextField.textColor = TITLE_COLOR;
     PWTextField.font = TITLE_FONT;
-    PWTextField.placeholder = Localized(@"PWPlaceholder");
+//    PWTextField.placeholder = Localized(@"PWPlaceholder");
     PWTextField.layer.cornerRadius = ScreenScale(3);
     PWTextField.layer.borderColor = LINE_COLOR.CGColor;
     PWTextField.layer.borderWidth = LINE_WIDTH;
@@ -111,9 +110,11 @@
         make.height.mas_equalTo(MAIN_HEIGHT);
     }];
 }
+
 - (void)textChange:(UITextField *)textField
 {
-    if (textField.text.length > 0) {
+    NSString * password = TrimmingCharacters(textField.text);
+    if (password.length > 0) {
         self.sureBtn.enabled = YES;
         self.sureBtn.backgroundColor = MAIN_COLOR;
     } else {
@@ -131,11 +132,12 @@
     if (self.isAutomaticClosing) {
         [self hideView];
     }
-    if ([RegexPatternTool validatePassword:self.PWTextField.text] == NO) {
-        [MBProgressHUD showTipMessageInWindow:Localized(@"CryptographicFormat")];
+    __block NSString * password = TrimmingCharacters(self.PWTextField.text);
+    if (password.length < PW_MIN_LENGTH || password.length > PW_MAX_LENGTH) {
+//    if ([RegexPatternTool validatePassword:password] == NO) {
+        [MBProgressHUD showTipMessageInWindow:Localized(@"PasswordIsIncorrect")];
     } else {
         [MBProgressHUD showActivityMessageInWindow:Localized(@"Loading")];
-        __block NSString * password = self.PWTextField.text;
         NSOperationQueue * queue = [[NSOperationQueue alloc] init];
         [queue addOperationWithBlock:^{
             [[NSOperationQueue mainQueue] addOperationWithBlock:^{

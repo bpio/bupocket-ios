@@ -32,7 +32,9 @@ static HttpTool * _shareTool = nil;
             [_shareTool.sessionManager.reachabilityManager startMonitoring];
             _shareTool.manager = [AFHTTPSessionManager manager];
             _shareTool.manager.requestSerializer = [AFHTTPRequestSerializer serializer];
-            _shareTool.manager.responseSerializer.acceptableContentTypes = [NSSet setWithArray:@[@"application/json", @"text/html", @"text/json", @"text/plain", @"text/javascript", @"text/xml", @"image/*"]];
+//            _shareTool.manager.responseSerializer.acceptableContentTypes = [NSSet setWithArray:@[@"application/json", @"text/html", @"text/json", @"text/plain", @"text/javascript", @"text/xml", @"image/*"]];
+            [_shareTool.manager.requestSerializer setValue:@"application/json" forHTTPHeaderField:@"Content-Type"];
+            _shareTool.manager.responseSerializer.acceptableContentTypes = [NSSet setWithObjects:@"application/json", @"text/html", @"text/json", @"text/javascript", @"text/html", @"text/plain", nil];
             [_shareTool.manager.requestSerializer setTimeoutInterval:Timeout_Interval];
 //            [AFJSONResponseSerializer serializer].acceptableContentTypes = [NSSet setWithArray:@[@"application/json", @"text/html", @"text/json", @"text/plain", @"text/javascript", @"text/xml", @"image/*"]];
         }
@@ -76,7 +78,6 @@ static HttpTool * _shareTool = nil;
     [request setValue:@"application/json" forHTTPHeaderField:@"Content-Type"];
     [request setValue:@"application/json" forHTTPHeaderField:@"Accept"];
     [request setHTTPBody:[[JsonTool JSONStringWithDictionaryOrArray:parameters] dataUsingEncoding:NSUTF8StringEncoding]];
-    
     [[self.sessionManager dataTaskWithRequest:request uploadProgress:^(NSProgress * _Nonnull uploadProgress) {
         
     } downloadProgress:^(NSProgress * _Nonnull downloadProgress) {

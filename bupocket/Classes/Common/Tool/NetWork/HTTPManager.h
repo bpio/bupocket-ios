@@ -64,6 +64,31 @@
                            contact:(NSString *)contact
                            success:(void (^)(id responseObject))success
                            failure:(void (^)(NSError *error))failure;
+// addressBook
+- (void)getAddressBookListWithIdentityAddress:(NSString *)identityAddress
+                                    pageIndex:(NSInteger)pageIndex
+                                      success:(void (^)(id responseObject))success
+                                      failure:(void (^)(NSError *error))failure;
+// Add AddressBook
+- (void)getAddAddressBookDataWithIdentityAddress:(NSString *)identityAddress
+                                  linkmanAddress:(NSString *)linkmanAddress
+                                        nickName:(NSString *)nickName
+                                          remark:(NSString *)remark
+                                         success:(void (^)(id responseObject))success
+                                         failure:(void (^)(NSError *error))failure;
+// update AddressBook
+- (void)getUpdateAddressBookDataWithIdentityAddress:(NSString *)identityAddress
+                                  oldLinkmanAddress:(NSString *)oldLinkmanAddress
+                                  newLinkmanAddress:(NSString *)newLinkmanAddress
+                                           nickName:(NSString *)nickName
+                                             remark:(NSString *)remark
+                                            success:(void (^)(id responseObject))success
+                                            failure:(void (^)(NSError *error))failure;
+// Delete AddressBook
+- (void)getDeleteAddressBookDataWithIdentityAddress:(NSString *)identityAddress
+                                     linkmanAddress:(NSString *)linkmanAddress
+                                            success:(void (^)(id responseObject))success
+                                            failure:(void (^)(NSError *error))failure;
 
 #pragma mark - SDK
 // Check the balance
@@ -83,6 +108,7 @@
 - (void)setAccountDataWithRandom:(NSData *)random
                         password:(NSString *)password
                     identityName:(NSString *)identityName
+                       typeTitle:(NSString *)typeTitle
                          success:(void (^)(id responseObject))success
                          failure:(void (^)(NSError *error))failure;
 // Wallet data
