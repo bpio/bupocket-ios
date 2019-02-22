@@ -17,6 +17,11 @@
 @property (nonatomic, strong) UITextField * confirmPassword;
 @property (nonatomic, strong) UIButton * restoreIdentity;
 
+@property (nonatomic, strong) NSString * memorizingWordsStr;
+@property (nonatomic, strong) NSString * walletNameStr;
+@property (nonatomic, strong) NSString * walletPW;
+@property (nonatomic, strong) NSString * confirmPW;
+
 @end
 
 @implementation RestoreIdentityViewController
@@ -117,13 +122,21 @@
 }
 - (void)ifEnable
 {
-    if (_walletName.text.length > 0 && _walletPassword.text.length > 0 && _confirmPassword.text.length > 0 && _memorizingWords.text.length > 0) {
+    [self updateText];
+    if (_walletNameStr.length > 0 && _walletPW.length > 0 && _confirmPW.length > 0 && _memorizingWordsStr.length > 0) {
         _restoreIdentity.enabled = YES;
         _restoreIdentity.backgroundColor = MAIN_COLOR;
     } else {
         _restoreIdentity.enabled = NO;
         _restoreIdentity.backgroundColor = DISABLED_COLOR;
     }
+}
+- (void)updateText
+{
+    self.memorizingWordsStr = TrimmingCharacters(_memorizingWords.text);
+    self.walletNameStr = TrimmingCharacters(_walletName.text);
+    self.walletPW = TrimmingCharacters(_walletPassword.text);
+    self.confirmPW = TrimmingCharacters(_confirmPassword.text);
 }
 - (void)secureAction:(UIButton *)button
 {
@@ -175,20 +188,22 @@
 
 - (void)restoreAction
 {
-    NSArray * words = [_memorizingWords.text componentsSeparatedByString:@" "];
+    [self updateText];
+    NSArray * words = [self.memorizingWordsStr componentsSeparatedByString:@" "];
     if (words.count != NumberOf_MnemonicWords) {
         [MBProgressHUD showTipMessageInWindow:Localized(@"MnemonicIsIncorrect")];
         return;
     }
-    if ([RegexPatternTool validateUserName:_walletName.text] == NO) {
+    if ([RegexPatternTool validateUserName:self.walletNameStr] == NO) {
         [MBProgressHUD showTipMessageInWindow:Localized(@"WalletNameFormatIncorrect")];
         return;
     }
-    if ([RegexPatternTool validatePassword:_walletPassword.text] == NO) {
+//    if ([RegexPatternTool validatePassword:walletPW] == NO) {
+    if (self.walletPW.length < PW_MIN_LENGTH || self.walletPW.length > PW_MAX_LENGTH) {
         [MBProgressHUD showTipMessageInWindow:Localized(@"CryptographicFormat")];
         return;
     }
-    if (![_walletPassword.text isEqualToString:_confirmPassword.text]) {
+    if (![self.walletPW isEqualToString:self.confirmPW]) {
         [MBProgressHUD showTipMessageInWindow:Localized(@"PasswordIsDifferent")];
         return;
     }

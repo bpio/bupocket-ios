@@ -118,7 +118,7 @@
         _walletAddressTitle = [[UILabel alloc] init];
         _walletAddressTitle.textColor = COLOR_9;
         _walletAddressTitle.font = FONT(16);
-        _walletAddressTitle.text = Localized(@"walletAddressTitle");
+        _walletAddressTitle.text = Localized(@"WalletAddressTitle");
     }
     return _walletAddressTitle;
 }
@@ -160,7 +160,7 @@
 {
     if (!_QRCodeTitle) {
         _QRCodeTitle = [[UILabel alloc] init];
-        _QRCodeTitle.textColor = COLOR(@"B2B2B2");
+        _QRCodeTitle.textColor = PLACEHOLDER_COLOR;
         _QRCodeTitle.font = FONT(15);
         _QRCodeTitle.text = Localized(@"WalletAddressQRCode");
     }

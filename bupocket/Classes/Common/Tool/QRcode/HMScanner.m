@@ -311,11 +311,12 @@
     NSError *videoInputError = nil;
     AVCaptureDeviceInput *videoInput = [AVCaptureDeviceInput deviceInputWithDevice:device error:&videoInputError];
     if (videoInputError) {
-        HSSLog(@"videoInputError == %@",videoInputError);
+        DLog(@"videoInputError == %@",videoInputError);
     }
     
     if (videoInput == nil) {
-        HSSLog(@"创建输入设备失败");
+        // 创建输入设备失败
+        [MBProgressHUD showTipMessageInWindow:Localized(@"UnableToAccessCamera")];
         return;
     }
     
@@ -325,15 +326,15 @@
     // 3> 拍摄会话 - 判断能够添加设备
     session = [[AVCaptureSession alloc] init];
     if (![session canAddInput:videoInput]) {
-        HSSLog(@"无法添加输入设备");
+        // 无法添加输入设备
         session = nil;
-        
+        [MBProgressHUD showTipMessageInWindow:Localized(@"UnableToAccessCamera")];
         return;
     }
     if (![session canAddOutput:dataOutput]) {
-        HSSLog(@"无法添加输入设备");
+        // 无法添加输入设备
         session = nil;
-        
+        [MBProgressHUD showTipMessageInWindow:Localized(@"UnableToAccessCamera")];
         return;
     }
     

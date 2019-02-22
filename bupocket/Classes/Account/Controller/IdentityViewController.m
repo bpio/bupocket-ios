@@ -23,6 +23,10 @@
 - (void)viewDidLoad
 {
     [super viewDidLoad];
+    NSUserDefaults * defaults = [NSUserDefaults standardUserDefaults];
+    NSString * currentVersion = AppVersion;
+    [defaults setObject:currentVersion forKey:LastVersion];
+    [defaults synchronize];
     [self setupView];
 }
 

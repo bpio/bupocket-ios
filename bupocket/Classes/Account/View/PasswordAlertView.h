@@ -24,6 +24,8 @@ typedef void (^OnSureWalletPWClick)(NSString * password, NSArray * words);
 
 - (instancetype)initWithPrompt:(NSString *)prompt walletKeyStore:(NSString *)walletKeyStore isAutomaticClosing:(BOOL)isAutomaticClosing confrimBolck:(void (^)(NSString * password, NSArray * words))confrimBlock cancelBlock:(void (^)(void))cancelBlock;
 
+@property (nonatomic, strong) UITextField * PWTextField;
+
 @end
 
 NS_ASSUME_NONNULL_END

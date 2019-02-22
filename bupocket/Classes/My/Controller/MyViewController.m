@@ -10,6 +10,7 @@
 #import "ListTableViewCell.h"
 #import "MyIdentityViewController.h"
 #import "SettingViewController.h"
+#import "AddressBookViewController.h"
 #import "ChangePasswordViewController.h"
 #import "FeedbackViewController.h"
 #import "WalletManagementViewController.h"
@@ -44,7 +45,7 @@ static NSString * const ListCellID = @"ListCellID";
     [super viewDidLoad];
     self.headerImage = [UIImage imageNamed:@"my_header"];
     self.touchCounter = 0;
-    self.listArray = @[Localized(@"Setting"), Localized(@"WalletManagement"), Localized(@"ModifyPassword"), Localized(@"Feedback"), Localized(@"VersionNumber")];
+    self.listArray = @[Localized(@"Setting"), Localized(@"AddressBook"), Localized(@"WalletManagement"), Localized(@"ModifyIdentityPassword"), Localized(@"Feedback"), Localized(@"VersionNumber")];
     [self setupView];
     // Do any additional setup after loading the view.
 }
@@ -188,12 +189,15 @@ static NSString * const ListCellID = @"ListCellID";
         SettingViewController * VC = [[SettingViewController alloc] init];
         [self.navigationController pushViewController:VC animated:NO];
     } else if (indexPath.row == 1) {
-        WalletManagementViewController * VC = [[WalletManagementViewController alloc] init];
+        AddressBookViewController * VC = [[AddressBookViewController alloc] init];
         [self.navigationController pushViewController:VC animated:NO];
     } else if (indexPath.row == 2) {
-        ChangePasswordViewController * VC = [[ChangePasswordViewController alloc] init];
+        WalletManagementViewController * VC = [[WalletManagementViewController alloc] init];
         [self.navigationController pushViewController:VC animated:NO];
     } else if (indexPath.row == 3) {
+        ChangePasswordViewController * VC = [[ChangePasswordViewController alloc] init];
+        [self.navigationController pushViewController:VC animated:NO];
+    } else if (indexPath.row == 4) {
         FeedbackViewController * VC = [[FeedbackViewController alloc] init];
         [self.navigationController pushViewController:VC animated:NO];
     } else if (indexPath.row == self.listArray.count - 1) {

@@ -166,6 +166,7 @@ static NSString * const Register_Leave = @"leaveRoomForApp";
             } cancelBlock:^{
             }];
             [alertView showInWindowWithMode:CustomAnimationModeAlert inView:nil bgAlpha:0.2 needEffectView:NO];
+            [alertView.PWTextField becomeFirstResponder];
         }];
     }];
 }

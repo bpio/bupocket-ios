@@ -31,7 +31,7 @@
 "Create" = "创建";
 "CreatePWPrompt" = "温馨提示";
 "CreatePWWarn" = "密码用于加密保护私钥，以及转账、调用合约等，所以强度非常重要。\n小布口袋不存储密码，也无法帮您找回，请务必牢记。";
-"CreatePWInfo" = "长度为8~20字符，建议混合大小写字母加数字。";
+"CryptographicFormat" = "长度为6~30字符，建议混合大小写字母加数字。";
 "Confirm" = "确认";
 "Cancel" = "取消";
 // 恢复身份
@@ -48,7 +48,8 @@
 "IdentityCipherConfirm" = "密码确认";
 "IdentityCipherPrompt" = "请填写身份密码以确认备份";
 "IdentityCipherWarning" = "警告：若未妥善备份，退出后将无法找回身份，请慎重处理该操作";
-"PWPlaceholder" = "8-20个字符，且内容仅限字母和数字";
+//"PWPlaceholder" = "8~20个字符，且内容仅限字母和数字";
+//"PWPlaceholder" = "6~30个字符";
 "NoScreenshot" = "请勿截图";
 "MnemonicsPrompt" = "泄露助记词将导致资产丢失，请抄写下助记词并存放在安全的地方。";
 "MnemonicsSavePrompt" = "请按顺序记录每个词，并妥善保管";
@@ -59,11 +60,12 @@
 "Finished" = "完成";
 // 我的
 "Setting" = "设置";
+"AddressBook" = "地址簿";
 "ModifyPassword" = "修改身份密码";
+"ModifyIdentityPassword" = "修改身份密码";
 "Feedback" = "帮助与反馈";
 "MultiLingual" = "多语言";
 "VersionNumber" = "版本号";
-//"Save" = "保存";
 "MonetaryUnit" = "货币单位";
 "SwitchedNetwork" = "切换测试网";
 // 我的身份
@@ -232,7 +234,7 @@
 "CirculationExceeded" = "您的资产发行量超过了登记总量";
 
 // My
-"CryptographicFormat" = "密码长度为8~20个字符，且内容仅限字母和数字";
+//"CryptographicFormat" = "密码长度为8~20个字符，且内容仅限字母和数字";
 "NewPasswordIsDifferent" = "新密码与确认新密码不一致，请重新输入";
 "OldPasswordIncorrect" = "旧密码不正确，请重新输入";
 "PasswordModifiedSuccessfully" = "密码修改成功";
@@ -312,7 +314,27 @@
 "SafetyReinforcementPrompt" = "为了提升钱包私钥存储安全等级，需要对私钥存储进行安全加固";
 "StartReinforcement" = "开始加固";
 "SuccessfulReinforcement" = "恭喜您已完成私钥存储安全加固操作";
-
+// 地址簿
+"NoRecord" = "暂无记录";
+"NewContacts" = "新建联系人";
+"EditContact" = "编辑联系人";
+"NickNameFormatIncorrect" = "名称只允许输入字母、汉字、数字、下划线，并且长度不能超过20个字符";
+"NickName" = "名称";
+"NickNamePlaceholder" = "输入账户地址对应的名称";
+"Describe" = "描述";
+"Optional" = "（选填）";
+"DescribePlaceholder" = "账户地址描述";
+"Address" = "地址";
+"AddressPlaceholder" = "BU账户地址";
+"Save" = "保存";
+"SaveSuccessfully" = "保存成功";
+"SaveFailed" = "保存失败，请稍后重试";
+"ContactExisted" = "该联系人已存在";
+"DescribeFormatIncorrect" = "描述长度最多30个字符，请进行修改";
+"DeleteContact" = "删除联系人";
+"ConfirmDeleteContact" = "确定删除联系人？";
+"DeleteSuccessful" = "删除成功";
+"DeleteFailed" = "删除失败，请稍后重试";
 // 错误信息
 "LoadFailure" = "加载失败";
 // SDK Errors

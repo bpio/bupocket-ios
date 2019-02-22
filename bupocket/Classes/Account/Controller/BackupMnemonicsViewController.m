@@ -12,6 +12,8 @@
 
 @interface BackupMnemonicsViewController ()
 
+@property (nonatomic, strong) UIScrollView * scrollView;
+
 @end
 
 @implementation BackupMnemonicsViewController
@@ -24,16 +26,18 @@
 }
 - (void)setupView
 {
+    self.scrollView = [[UIScrollView alloc] initWithFrame:CGRectMake(0, 0, DEVICE_WIDTH, DEVICE_HEIGHT)];
+    [self.view addSubview:self.scrollView];
     UIView * promptBg = [[UIView alloc] init];
     promptBg.backgroundColor = VIEWBG_COLOR;
     promptBg.clipsToBounds = YES;
     promptBg.layer.masksToBounds = YES;
     promptBg.layer.cornerRadius = ScreenScale(1);
-    [self.view addSubview:promptBg];
+    [self.scrollView addSubview:promptBg];
     [promptBg mas_makeConstraints:^(MASConstraintMaker *make) {
-        make.top.equalTo(self.view.mas_top).offset(Margin_20);
-        make.left.equalTo(self.view.mas_left).offset(Margin_20);
-        make.right.equalTo(self.view.mas_right).offset(-Margin_20);
+        make.top.mas_equalTo(Margin_20);
+        make.left.mas_equalTo(Margin_20);
+        make.width.mas_equalTo(DEVICE_WIDTH - Margin_40);
     }];
     
     CustomButton * noScreenshot = [[CustomButton alloc] init];
@@ -64,7 +68,7 @@
     savePrompt.textColor = COLOR_9;
     savePrompt.numberOfLines = 0;
     savePrompt.text = Localized(@"MnemonicsSavePrompt");
-    [self.view addSubview:savePrompt];
+    [self.scrollView addSubview:savePrompt];
     [savePrompt mas_makeConstraints:^(MASConstraintMaker *make) {
         make.top.equalTo(promptBg.mas_bottom).offset(Margin_30);
         make.left.right.equalTo(promptBg);
@@ -75,7 +79,7 @@
         UIButton * tagBtn = [UIButton createButtonWithTitle:self.mnemonicArray[i] TextFont:14 TextNormalColor:COLOR_9 TextSelectedColor:COLOR_9 Target:nil Selector:nil];
         tagBtn.backgroundColor = VIEWBG_COLOR;
         tagBtn.layer.cornerRadius = TAG_CORNER;
-        [self.view addSubview:tagBtn];
+        [self.scrollView addSubview:tagBtn];
         [tagBtn mas_makeConstraints:^(MASConstraintMaker *make) {
             make.left.equalTo(promptBg.mas_left).offset((tagW + Margin_10) * (i % 4));
             make.top.equalTo(savePrompt.mas_bottom).offset(Margin_15 + (tagH + Margin_10) * (i / 4));
@@ -84,12 +88,14 @@
     }
     
     UIButton * copied = [UIButton createButtonWithTitle:Localized(@"Copied") isEnabled:YES Target:self Selector:@selector(copiedAction)];
-    [self.view addSubview:copied];
+    [self.scrollView addSubview:copied];
     [copied mas_makeConstraints:^(MASConstraintMaker *make) {
-        make.bottom.equalTo(self.view.mas_bottom).offset(- (SafeAreaBottomH + Margin_50));
+        make.top.equalTo(savePrompt.mas_bottom).offset(ScreenScale(135) + (tagH + Margin_10) * (self.mnemonicArray.count / 4));
         make.left.right.equalTo(promptBg);
         make.height.mas_equalTo(MAIN_HEIGHT);
     }];
+    [self.view layoutIfNeeded];
+    self.scrollView.contentSize = CGSizeMake(0, CGRectGetMaxY(copied.frame) + ContentSizeBottom + ScreenScale(100));
 }
 - (void)copiedAction
 {

@@ -33,7 +33,7 @@
 "Create" = "Create";
 "CreatePWPrompt" = "Tips";
 "CreatePWWarn" = "The password must be strong as it is used to encrypt and protect the private key, transfer coins, call contracts, etc. Please bear in mind that BU Pocket does not store passwords, and can't help you retrieve passwords.";
-"CreatePWInfo" = "The length is 8~20 characters. It is recommended to mix uppercase and lowercase letters plus numbers.";
+"CryptographicFormat" = "The length is 6~30 characters. It is recommended to mix uppercase and lowercase letters plus numbers.";
 "Confirm" = "Confirm";
 "Cancel" = "Cancel";
 // Restore identity
@@ -50,7 +50,8 @@
 "IdentityCipherConfirm" = "Confirm password";
 "IdentityCipherPrompt" = "Please fill in the identity password to confirm the backup";
 "IdentityCipherWarning" = "Warning: If you do not back up properly, you will not be able to retrieve your identity after you log out. Please handle this operation carefully.";
-"PWPlaceholder" = "8-20 characters composed of letters and numbers";
+//"PWPlaceholder" = "8~20 characters composed of letters and numbers";
+//"PWPlaceholder" = "6~30个字符";
 "NoScreenshot" = "Do not take a screenshot";
 "MnemonicsPrompt" = "Leaking mnemonics will result in the loss of tokens. Please write down mnemonics and store them in a safe place.";
 "MnemonicsSavePrompt" = "Please record each word in order and keep it safe";
@@ -61,11 +62,12 @@
 "Finished" = "Completed";
 // Profile
 "Setting" = "Setting";
-"ModifyPassword" = "Change the Identity Password";
+"AddressBook" = "Address Book";
+"ModifyPassword" = "Modify password";
+"ModifyIdentityPassword" = "Change the Identity Password";
 "Feedback" = "Feedback";
 "MultiLingual" = "Languages";
 "VersionNumber" = "Version";
-//"Save" = "Save";
 "MonetaryUnit" = "Currency unit";
 "SwitchedNetwork" = "Switch to the test network";
 // My identity
@@ -195,7 +197,6 @@
 "IssuerAddress" = "Issuer address";
 "Hash" = "Hash";
 // scan
-// 待定
 "UnableToAccessAlbum" = "Album is not accessible";
 "UnableToAccessCamera" = "Camera is not accessible ";
 
@@ -241,7 +242,7 @@
 "CirculationExceeded" = "Your tokens issued exceed the total amount of tokens registered";
 
 // My
-"CryptographicFormat" = "The password is 8 to 20 characters long composed of letters and numbers.";
+//"CryptographicFormat" = "The password is 8 to 20 characters long composed of letters and numbers.";
 "NewPasswordIsDifferent" = "Passwords do not match. Please enter again";
 "OldPasswordIncorrect" = "The old password is incorrect. Please enter again";
 "PasswordModifiedSuccessfully" = "Your password modified successfully";
@@ -322,6 +323,28 @@
 "SafetyReinforcementPrompt" = "To improve the security of the private key storage, the security of private key storage needs to be enhanced";
 "StartReinforcement" = "Start to enhance";
 "SuccessfulReinforcement" = "Congratulations! You have enhanced the security of private key storage";
+
+// Address
+"NoRecord" = "No record";
+"NewContacts" = "New contact";
+"EditContact" = "Edit contact";
+"NickNameFormatIncorrect" = "Only letters, characters, numbers and underscores are allowed, and they cannot exceed 20 characters in length.";
+"NickName" = "Name";
+"NickNamePlaceholder" = "Enter a name that corresponds to the account address";
+"Describe" = "Description";
+"Optional" = "（Optional）";
+"DescribePlaceholder" = "Description of the account address";
+"Address" = "Address";
+"AddressPlaceholder" = "Account address (BU)";
+"Save" = "Save";
+"SaveSuccessfully" = "Saved successfully";
+"SaveFailed" = "Failed to save; please try again later";
+"ContactExisted" = "The contact is already existed";
+"DescribeFormatIncorrect" = "At most 30 characters are allowed for the description. Please modify";
+"DeleteContact" = "Delete contact";
+"ConfirmDeleteContact" = "Are you sure to delete?";
+"DeleteSuccessful" = "Deleted successfully";
+"DeleteFailed" = "Failed to delete; please try again later";
 
 // Errors
 "LoadFailure" = "Failed to load";
