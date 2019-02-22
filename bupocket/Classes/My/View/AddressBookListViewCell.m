@@ -56,7 +56,7 @@ static NSString * const WalletCellID = @"WalletCellID";
     [self.describe mas_makeConstraints:^(MASConstraintMaker *make) {
         make.left.right.equalTo(self.addressName);
 //        make.right.equalTo(self.listBg.mas_right).offset(-Margin_15);
-        make.top.equalTo(self.address.mas_bottom).offset(Margin_15);
+        make.top.equalTo(self.address.mas_bottom).offset(Margin_5);
     }];
     
 }
@@ -85,7 +85,7 @@ static NSString * const WalletCellID = @"WalletCellID";
     if (!_address) {
         _address = [[UILabel alloc] init];
         _address.font = FONT(15);
-        _address.textColor = COLOR_9;
+        _address.textColor = TITLE_COLOR;
     }
     return _address;
 }
@@ -93,7 +93,7 @@ static NSString * const WalletCellID = @"WalletCellID";
 {
     if (!_describe) {
         _describe = [[UILabel alloc] init];
-        _describe.font = FONT(15);
+        _describe.font = FONT(14);
         _describe.textColor = COLOR_9;
         _describe.numberOfLines = 0;
     }
@@ -115,7 +115,7 @@ static NSString * const WalletCellID = @"WalletCellID";
     CGFloat addressNameH = [Encapsulation rectWithText:self.addressName.text font:self.addressName.font textWidth:DEVICE_WIDTH - Margin_50].size.height;
     CGFloat describeH = 0;
     if (NULLString(self.describe.text)) {
-        describeH = (Margin_15 + [Encapsulation rectWithText:self.describe.text font:self.describe.font textWidth:DEVICE_WIDTH - Margin_50].size.height);
+        describeH = (Margin_5 + [Encapsulation rectWithText:self.describe.text font:self.describe.font textWidth:DEVICE_WIDTH - Margin_50].size.height);
     }
     addressBookModel.cellHeight = ScreenScale(72) + addressNameH + describeH + Margin_10;
 }

@@ -62,6 +62,7 @@
 "Setting" = "设置";
 "AddressBook" = "地址簿";
 "ModifyPassword" = "修改身份密码";
+"ModifyIdentityPassword" = "修改身份密码";
 "Feedback" = "帮助与反馈";
 "MultiLingual" = "多语言";
 "VersionNumber" = "版本号";
@@ -319,7 +320,7 @@
 "EditContact" = "编辑联系人";
 "NickNameFormatIncorrect" = "名称只允许输入字母、汉字、数字、下划线，并且长度不能超过20个字符";
 "NickName" = "名称";
-"NickNamePlaceholder" = "输入账户地址对应的名称，以便识别账户";
+"NickNamePlaceholder" = "输入账户地址对应的名称";
 "Describe" = "描述";
 "Optional" = "（选填）";
 "DescribePlaceholder" = "账户地址描述";

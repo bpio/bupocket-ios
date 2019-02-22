@@ -62,8 +62,9 @@
 "Finished" = "Completed";
 // Profile
 "Setting" = "Setting";
-"AddressBook" = "Address list";
-"ModifyPassword" = "Change the Identity Password";
+"AddressBook" = "Address Book";
+"ModifyPassword" = "Modify password";
+"ModifyIdentityPassword" = "Change the Identity Password";
 "Feedback" = "Feedback";
 "MultiLingual" = "Languages";
 "VersionNumber" = "Version";
@@ -329,7 +330,7 @@
 "EditContact" = "Edit contact";
 "NickNameFormatIncorrect" = "Only letters, characters, numbers and underscores are allowed, and they cannot exceed 20 characters in length.";
 "NickName" = "Name";
-"NickNamePlaceholder" = "Enter a name which corresponds to the account address to identify the account";
+"NickNamePlaceholder" = "Enter a name that corresponds to the account address";
 "Describe" = "Description";
 "Optional" = "（Optional）";
 "DescribePlaceholder" = "Description of the account address";

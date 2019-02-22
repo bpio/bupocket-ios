@@ -45,7 +45,7 @@ static NSString * const ListCellID = @"ListCellID";
     [super viewDidLoad];
     self.headerImage = [UIImage imageNamed:@"my_header"];
     self.touchCounter = 0;
-    self.listArray = @[Localized(@"Setting"), Localized(@"AddressBook"), Localized(@"WalletManagement"), Localized(@"ModifyPassword"), Localized(@"Feedback"), Localized(@"VersionNumber")];
+    self.listArray = @[Localized(@"Setting"), Localized(@"AddressBook"), Localized(@"WalletManagement"), Localized(@"ModifyIdentityPassword"), Localized(@"Feedback"), Localized(@"VersionNumber")];
     [self setupView];
     // Do any additional setup after loading the view.
 }
