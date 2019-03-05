@@ -12,6 +12,7 @@
 #import "ContactViewController.h"
 #import "MyViewController.h"
 #import "TransferAccountsViewController.h"
+#import "AddressBookCache.h"
 
 @interface AddressBookViewController ()<UITableViewDelegate, UITableViewDataSource>
 
@@ -72,6 +73,16 @@ static NSString * const AddressBookCellID = @"AddressBookCellID";
 }
 - (void)getDataWithPageindex:(NSInteger)pageindex
 {
+    NSArray * listArray = [AddressBookCache cachedAddressBookData];
+    if (listArray.count > 0) {
+        self.listArray = [NSMutableArray array];
+        [self.listArray addObjectsFromArray:listArray];
+        [self.tableView reloadData];
+        self.tableView.tableFooterView = [[UIView alloc] initWithFrame:CGRectMake(0, 0, DEVICE_WIDTH, CGFLOAT_MIN)];
+        [self.tableView.mj_header endRefreshing];
+        [self.tableView.mj_footer endRefreshing];
+        self.noNetWork.hidden = YES;
+    }
     [[HTTPManager shareManager] getAddressBookListWithIdentityAddress:[[AccountTool shareTool] account].identityAddress pageIndex:pageindex success:^(id responseObject) {
         NSInteger code = [[responseObject objectForKey:@"errCode"] integerValue];
         if (code == Success_Code) {
@@ -95,6 +106,9 @@ static NSString * const AddressBookCellID = @"AddressBookCellID";
         (self.listArray.count > 0) ? (self.tableView.tableFooterView = [[UIView alloc] initWithFrame:CGRectMake(0, 0, DEVICE_WIDTH, CGFLOAT_MIN)]) : (self.tableView.tableFooterView = self.noData);
         self.tableView.mj_footer.hidden = (self.listArray.count == 0);
         self.noNetWork.hidden = YES;
+        
+        [AddressBookCache deleteAddressBookCached];
+        [AddressBookCache saveAddressBookWithArray:responseObject[@"data"] [@"addressBookList"]];
     } failure:^(NSError *error) {
         [self.tableView.mj_header endRefreshing];
         [self.tableView.mj_footer endRefreshing];

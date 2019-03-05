@@ -78,5 +78,7 @@
 
 #define Address_MinimumFontSize ScreenScale(10)
 
+#define AddressBook_Cache_Name @"addressBook.sqlite"
+
 
 #endif /* AppDefine_h */
