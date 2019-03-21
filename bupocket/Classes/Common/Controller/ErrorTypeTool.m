@@ -14,7 +14,7 @@
 {
     NSString *errorDesc;
     switch(errorCode) {
-        // 底层 ERRCODE_ACCOUNT_LOW_RESERVE
+        // SDK ERRCODE_ACCOUNT_LOW_RESERVE
         case ERRCODE_ACCOUNT_LOW_RESERVE: errorDesc = Localized(@"NotSufficientFunds");
         break;
         case ERRCODE_FEE_NOT_ENOUGH: errorDesc = Localized(@"ERRCODE_FEE_NOT_ENOUGH");

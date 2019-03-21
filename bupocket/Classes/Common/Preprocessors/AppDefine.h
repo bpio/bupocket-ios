@@ -5,7 +5,7 @@
 //  Created by bubi on 2019/2/19.
 //  Copyright © 2019年 bupocket. All rights reserved.
 //
-//  App 项目用到的参数定义 -> URL 的入参、通知名字、SDK 的 AppKey 等
+//  Parameter definitions used in App Projects - > URL entry, notification name, SDK AppKey, etc.
 
 #ifndef AppDefine_h
 #define AppDefine_h
@@ -59,7 +59,7 @@
 #define ActivateInitBalance @"0.02"
 // BU decimals
 #define Decimals_BU 8
-// 转账发送数量
+// Number of transfers sent
 //#define SendingQuantity_MIN @"0.00000001"
 #define SendingQuantity_MAX @"1000000"
 #define SendingQuantity_MAX_Division @"1,000,000"

@@ -10,7 +10,7 @@
 
 @implementation Encapsulation
 
-// 设置label的自适应宽度
+// Setting the adaptive width of label
 + (CGRect)rectWithText:(NSString *)text font:(UIFont *)font textWidth:(CGFloat)textWidth
 {
     NSDictionary *dic = @{NSFontAttributeName:font};
@@ -18,7 +18,7 @@
     CGRect rect = [text boundingRectWithSize:size options:NSStringDrawingUsesLineFragmentOrigin attributes:dic context:nil];
     return rect;
 }
-// 设置label的自适应高度
+// Setting the adaptive height of label
 + (CGRect)rectWithText:(NSString *)text font:(UIFont *)font textHeight:(CGFloat)textHeight
 {
     NSDictionary *dic = @{NSFontAttributeName:font};
@@ -26,7 +26,7 @@
     CGRect rect = [text boundingRectWithSize:size options:NSStringDrawingUsesLineFragmentOrigin attributes:dic context:nil];
     return rect;
 }
-// 设置行间距和字间距
+// Set line spacing and word spacing
 + (NSMutableAttributedString *)attrWithString:(NSString *)str preFont:(UIFont *)preFont preColor:(UIColor *)preColor index:(NSInteger)index sufFont:(UIFont *)sufFont sufColor:(UIColor *)sufColor lineSpacing:(CGFloat)lineSpacing
 {
     NSMutableAttributedString * attr = [[NSMutableAttributedString alloc] initWithString:str];
@@ -48,12 +48,12 @@
     paraStyle.tailIndent = 0;
 //    paraStyleDic[NSFontAttributeName] = TITLE_FONT;
     paraStyleDic[NSParagraphStyleAttributeName] = paraStyle;
-    //设置字间距 NSKernAttributeName:@1.5f
+    //word spacing NSKernAttributeName:@1.5f
 //    paraStyleDic[NSKernAttributeName] = @1.0f;
     [attr addAttributes:paraStyleDic range:NSMakeRange(0, str.length)];
     return attr;
 }
-// 设置标题属性文字
+// Setting Title Property text
 + (NSMutableAttributedString *)attrTitle:(NSString *)title ifRequired:(BOOL)ifRequired
 {
     NSMutableAttributedString * attr = [[NSMutableAttributedString alloc] initWithString:[NSString stringWithFormat:@"%@", title]];
@@ -75,7 +75,7 @@
     }
     return attr;
 }
-//计算UILabel的高度(带有行间距的情况)
+// Calculate the width and height of UILabel (with row spacing)
 + (CGSize)getSizeSpaceLabelWithStr:(NSString *)str font:(UIFont *)font width:(CGFloat)width height:(CGFloat)height lineSpacing:(CGFloat)lineSpacing
 {
     NSMutableParagraphStyle *paraStyle = [[NSMutableParagraphStyle alloc] init];
@@ -139,7 +139,7 @@
     return button;
 }
 
-#pragma mark 连接服务器失败
+#pragma mark - Connection server failed
 + (UIView *)showNoNetWorkWithSuperView:(UIView *)superView target:(id)target action:(SEL)action
 {
     UIView * noNetWork = [[UIView alloc] init];
