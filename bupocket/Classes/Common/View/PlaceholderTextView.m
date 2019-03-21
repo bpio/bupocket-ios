@@ -14,11 +14,11 @@
 {
     self = [super initWithFrame:frame];
     if (self) {
-        // 使用textContainerInset设置top、left、right
+        //  top、left、bottom、right
         self.textContainerInset = UIEdgeInsetsMake(EDGEINSET_WIDTH, EDGEINSET_WIDTH, 0, EDGEINSET_WIDTH);
-        //当光标在最后一行时，始终显示低边距，需使用contentInset设置bottom.
+        // When the cursor is on the last line, it always shows a low margin, so you need to use contentInset to set the bottom.
         self.contentInset = UIEdgeInsetsMake(0, 0, EDGEINSET_WIDTH, 0);
-        //防止在拼音打字时抖动
+        //Prevent jitter in spelling and typing（防止在拼音打字时抖动）
         self.layoutManager.allowsNonContiguousLayout = NO;
         self.font = TITLE_FONT;
         self.textColor = COLOR_6;

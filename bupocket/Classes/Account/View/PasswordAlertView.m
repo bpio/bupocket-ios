@@ -149,7 +149,7 @@
 - (void)checkPassword:(NSString *)password
 {
     if (self.walletKeyStore.length > 0) {
-        // 钱包下密码
+        // Password for Wallet
         NSString * privateKey = [NSString decipherKeyStoreWithPW:password keyStoreValueStr:self.walletKeyStore];
         if ([Tools isEmpty:privateKey]) {
             dispatch_async(dispatch_get_main_queue(), ^{
@@ -165,7 +165,7 @@
             });
         }
     } else {
-        // 身份下密码
+        // Identity password
         NSData * random = [NSString decipherKeyStoreWithPW:password randomKeyStoreValueStr:[[AccountTool shareTool] account].randomNumber];
         if (random) {
             NSArray * words = [Mnemonic generateMnemonicCode: random];

@@ -17,9 +17,10 @@ NS_ASSUME_NONNULL_BEGIN
 
 @property (nonatomic,copy) void (^completion)(NSString *currentLanguage);
 
-- (NSString *)currentLanguage; //当前语言
+- (NSString *)currentLanguage;
 - (NSString *)languageFormat:(NSString*)language;
-- (void)setUserlanguage:(NSString *)language;//设置当前语言
+// Setting up the current language
+- (void)setUserlanguage:(NSString *)language;
 
 - (NSString *)localizedStringForKey:(NSString *)key value:(NSString *)value;
 

@@ -12,18 +12,18 @@ NS_ASSUME_NONNULL_BEGIN
 
 @interface ErrorTypeTool : SDKError
 
-// 错误类型
+// Error type
 typedef NS_ENUM(NSInteger, ErrorType) {
-    ErrorTypeParams = 100001, // 请求参数错误
-    ErrorTypeAssetDetail = 500004, // 资产详情不存在
-    ErrorTypeTxHash = 100013, // 无效的交易hash
-    ErrorTypePurseAddress = 100008, // 非法钱包地址
+    ErrorTypeParams = 100001, // Request parameter error
+    ErrorTypeAssetDetail = 500004, // Details of assets do not exist
+    ErrorTypeTxHash = 100013, // Invalid transaction hash
+    ErrorTypePurseAddress = 100008, // Illegal wallet address
 };
 
-// 底层错误类型
+// SDK Error type
 typedef NS_ENUM(NSInteger, ErrorCode) {
-    ERRCODE_ACCOUNT_LOW_RESERVE = 100, // 余额不足
-    ERRCODE_FEE_NOT_ENOUGH = 111, // 交易费用不足
+    ERRCODE_ACCOUNT_LOW_RESERVE = 100, //  your credit is running low
+    ERRCODE_FEE_NOT_ENOUGH = 111, // Insufficient transaction costs
 };
 
 + (NSString *)getDescriptionWithErrorCode:(NSInteger)errorCode;

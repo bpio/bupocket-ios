@@ -75,13 +75,13 @@ static LanguageManager * _manager = nil;
     }
 }
 
-// 初始化语言
+// Initialization Language
 - (void)initUserLanguage {
     NSString * currentLanguage = [self currentLanguage];
     if (currentLanguage.length == 0) {
-        // 获取系统偏好语言数组
+        // Getting System Preference Language Array
         NSArray * languages = [NSLocale preferredLanguages];
-        // 第一个为当前语言
+        // The first is the current language.
         currentLanguage = [languages firstObject];
         [self saveLanguage: currentLanguage];
     }
@@ -109,7 +109,7 @@ static LanguageManager * _manager = nil;
     return language;
 }
 
-//设置语言
+//Setup language
 - (void)setUserlanguage:(NSString *)language {
     
     if (![[self currentLanguage] isEqualToString:language]) {
@@ -117,38 +117,37 @@ static LanguageManager * _manager = nil;
         
         [self changeBundle:language];
         
-        //改变完成之后发送通知，告诉其他页面修改完成，提示刷新界面
+        // Send a notification when the change is complete, tell other pages that the change is complete, and prompt to refresh the interface.
         [[NSNotificationCenter defaultCenter] postNotificationName:ChangeLanguageNotificationName object:nil];
         
-        //回调
         if (_completion) {
             _completion(language);
         }
     }
 }
 
-//改变bundle
+// Change bundle
 - (void)changeBundle:(NSString *)language {
     //1.第一步改变bundle的值
     NSString *path = [[NSBundle mainBundle] pathForResource:[self languageFormat:language] ofType:@"lproj" ];
     _bundle = [NSBundle bundleWithPath:path];
 }
 
-//保存语言
+// Save Language
 - (void)saveLanguage:(NSString *)language {
     NSUserDefaults *defaults = [NSUserDefaults standardUserDefaults];
     [defaults setValue:language forKey:UserLanguage];
     [defaults synchronize];
 }
 
-//获取语言
+// Acquiring Language
 - (NSString *)currentLanguage {
     NSUserDefaults *defaults = [NSUserDefaults standardUserDefaults];
     NSString *language = [defaults objectForKey:UserLanguage];
     return language;
 }
 
-//获取当前语种下的内容
+// Getting the content in the current language
 - (NSString *)localizedStringForKey:(NSString *)key value:(NSString *)value {
     if (!_bundle) {
         [self initUserLanguage];

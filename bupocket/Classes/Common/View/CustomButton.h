@@ -10,12 +10,12 @@
 
 NS_ASSUME_NONNULL_BEGIN
 
-// 排布类型
+// Arrangement type
 typedef NS_ENUM(NSInteger, LayoutMode) {
-    HorizontalNormal, // 左图片 右文字
-    HorizontalInverted, // 左文字 右图片
-    VerticalNormal, // 上图片 下文字
-    VerticalInverted, // 上文字 下图片
+    HorizontalNormal, // Left picture and right text
+    HorizontalInverted, // Left text right picture
+    VerticalNormal, // Text in the picture above and below
+    VerticalInverted, // Pictures below the text above
 };
 
 @interface CustomButton : UIButton

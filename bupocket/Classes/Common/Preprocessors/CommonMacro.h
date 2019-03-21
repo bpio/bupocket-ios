@@ -84,22 +84,22 @@
 #define Localized(key)  [[NSBundle bundleWithPath:[[NSBundle mainBundle] pathForResource:[NSString stringWithFormat:@"%@", CurrentAppLanguage] ofType:@"lproj"]] localizedStringForKey:(key) value:nil table:@"Localizable"]
 #define Localized_Refresh(key)  [[NSBundle bundleWithPath:[[NSBundle mj_refreshBundle] pathForResource:[NSString stringWithFormat:@"%@", CurrentAppLanguage] ofType:@"lproj"]] localizedStringForKey:(key) value:nil table:@"Localizable"]
 
-// 判断字符串是否为空
+// Determine whether a string is empty
 #define NULLString(string) (([string isKindOfClass:[NSString class]]) && ![string isEqualToString:@""] && (string != nil) && ![string isEqualToString:@""] && ![string isKindOfClass:[NSNull class]] && [[string stringByTrimmingCharactersInSet:[NSCharacterSet whitespaceCharacterSet]] length] != 0)
 
-// 去掉输入框的首尾空格
+// Remove the first and last blanks of the input box
 #define TrimmingCharacters(string) [string stringByTrimmingCharactersInSet:[NSCharacterSet whitespaceAndNewlineCharacterSet]]
 
-// 应用程序版本号version
+// Application Version Number
 #define AppVersion ([[[NSBundle mainBundle] infoDictionary] objectForKey:@"CFBundleShortVersionString"])
-// iOS系统版本号
+// IOS System Version Number
 #define iOS_Version ([[UIDevice currentDevice] systemVersion])
 
-// 区分Debug和Release
-// 替换NSLog使用，debug模式下可以打印很多方法名、行信息(方便查找)，release下不会打印
-#ifdef DEBUG // 处于开发阶段
-    /** 测试时用此：配置开发环境下需要在此处配置的东西，比如测试服务器url */
-    // 区分设备和模拟器,解决Product -> Scheme -> Run -> Arguments -> OS_ACTIVITY_MODE为disable时，真机下 Xcode Debugger 不打印的bug
+// Distinguish Debug from Release
+// Replacing NSLog, debug mode can print a lot of method names and line information (easy to find), release will not print.
+#ifdef DEBUG // In the development stage
+    /** Use this for testing: Configure what needs to be configured here in the development environment, such as the test server URL */
+    // Differentiate devices from simulators and solve the problem that Xcode Debugger does not print when Product-> Scheme-> Run-> Arguments-> OS_ACTIVITY_MODE is disabled
     #if TARGET_OS_IPHONE
         /*iPhone Device*/
         #define DLog(format, ...) printf("%s:Dev: %s [Line %d]\n%s\n\n", [DATE_STRING UTF8String], __PRETTY_FUNCTION__, __LINE__, [[NSString stringWithFormat:format, ##__VA_ARGS__] UTF8String])
@@ -107,14 +107,13 @@
         /*iPhone Simulator*/
         #define DLog(format, ...) NSLog((@":Sim: %s [Line %d]\n%@\n\n"), __PRETTY_FUNCTION__, __LINE__, [NSString stringWithFormat:format, ##__VA_ARGS__])
     #endif
-#else //处于发布阶段
-    /** 正式发布时用此：配置发布环境下需要在此处配置的东西，比如正式服务器url */
+#else //In the release phase
+    /** Use this for official publishing: Configure what needs to be configured here in a publishing environment, such as the official server URL */
     #define DLog(...)
 #endif
 
 //省掉多处编写__weak __typeof(self) weakSelf = self; __strong __typeof(weakSelf) strongSelf = weakSelf;代码的麻烦
 /**
- 使用说明
  Synthsize a weak or strong reference.
  
  Example:
@@ -158,14 +157,14 @@
     #endif
 #endif
 
-// 区分ARC和非ARC
+// Distinguishing between ARC and MRC
 #if __has_feature(objc_arc)
      // ARC
 #else
-     // 非ARC
+     // MRC
 #endif
 
-// 区分设备和模拟器
+// Differentiating equipment from simulators
 #if TARGET_OS_IPHONE
     //iPhone Device
 #endif
@@ -174,7 +173,7 @@
     //iPhone Simulator
 #endif
 
-//当前日期字符串
+//Current date string
 #define DATE_STRING \
 ({NSDateFormatter *fmt = [[NSDateFormatter alloc] init];\
 [fmt setDateFormat:@"YYYY-MM-dd hh:mm:ss"];\

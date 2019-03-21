@@ -101,6 +101,7 @@
 		958127EF219ABD9D0081A02E /* VersionUpdateAlertView.m in Sources */ = {isa = PBXBuildFile; fileRef = 958127EE219ABD9D0081A02E /* VersionUpdateAlertView.m */; };
 		958127F2219AC82A0081A02E /* VersionModel.m in Sources */ = {isa = PBXBuildFile; fileRef = 958127F1219AC82A0081A02E /* VersionModel.m */; };
 		958AA69821A2A89600BEA50C /* CustomRefreshFooter.m in Sources */ = {isa = PBXBuildFile; fileRef = 958AA69721A2A89600BEA50C /* CustomRefreshFooter.m */; };
+		9594E5CE222938AF006EFB6D /* AddressBookCache.m in Sources */ = {isa = PBXBuildFile; fileRef = 9594E5CD222938AF006EFB6D /* AddressBookCache.m */; };
 		959575C121FFF00F0089479C /* AddressBookViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 959575C021FFF00F0089479C /* AddressBookViewController.m */; };
 		959575C421FFF6EB0089479C /* AddressBookListViewCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 959575C321FFF6EB0089479C /* AddressBookListViewCell.m */; };
 		959575C821FFF8010089479C /* AddressBookModel.m in Sources */ = {isa = PBXBuildFile; fileRef = 959575C721FFF8010089479C /* AddressBookModel.m */; };
@@ -361,6 +362,8 @@
 		958127F1219AC82A0081A02E /* VersionModel.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = VersionModel.m; sourceTree = "<group>"; };
 		958AA69621A2A89600BEA50C /* CustomRefreshFooter.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = CustomRefreshFooter.h; sourceTree = "<group>"; };
 		958AA69721A2A89600BEA50C /* CustomRefreshFooter.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = CustomRefreshFooter.m; sourceTree = "<group>"; };
+		9594E5CC222938AF006EFB6D /* AddressBookCache.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = AddressBookCache.h; sourceTree = "<group>"; };
+		9594E5CD222938AF006EFB6D /* AddressBookCache.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = AddressBookCache.m; sourceTree = "<group>"; };
 		959575BF21FFF00F0089479C /* AddressBookViewController.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = AddressBookViewController.h; sourceTree = "<group>"; };
 		959575C021FFF00F0089479C /* AddressBookViewController.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = AddressBookViewController.m; sourceTree = "<group>"; };
 		959575C221FFF6EB0089479C /* AddressBookListViewCell.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = AddressBookListViewCell.h; sourceTree = "<group>"; };
@@ -931,6 +934,8 @@
 			children = (
 				959575C621FFF8010089479C /* AddressBookModel.h */,
 				959575C721FFF8010089479C /* AddressBookModel.m */,
+				9594E5CC222938AF006EFB6D /* AddressBookCache.h */,
+				9594E5CD222938AF006EFB6D /* AddressBookCache.m */,
 			);
 			path = Model;
 			sourceTree = "<group>";
@@ -1328,6 +1333,7 @@
 				83D5BCCE2182A87B00BF1FF1 /* AccountModel.m in Sources */,
 				83FB443921904AA400D68569 /* HMScanerCardViewController.m in Sources */,
 				83379AC6217F3F4200C222A5 /* AssetsListModel.m in Sources */,
+				9594E5CE222938AF006EFB6D /* AddressBookCache.m in Sources */,
 				8372C8692174CCA000FF9506 /* AssetsViewController.m in Sources */,
 				83B594B72175FC8B009F91BA /* BackupMnemonicsViewController.m in Sources */,
 				959575C121FFF00F0089479C /* AddressBookViewController.m in Sources */,
