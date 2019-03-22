@@ -15,6 +15,7 @@
 "NoNetWork" = "Network failure, please try again later";
 "Reload" = "Reload";
 "MyTitle" = "Profile";
+"FindTitle" = "发现";
 "AssetsTitle" = "Tokens";
 // Identity
 "CreateDigitalIdentity" = "Create a digital identity";
@@ -345,6 +346,26 @@
 "ConfirmDeleteContact" = "Are you sure to delete?";
 "DeleteSuccessful" = "Deleted successfully";
 "DeleteFailed" = "Failed to delete; please try again later";
+
+// 发现
+"CardBag" = "卡包";
+"NodePlan" = "节点计划";
+"JointConstructionOfNodes" = "节点共建";
+"Information" = "资讯";
+"SmallClothGoods" = "小布有品";
+"VotesObtained" = "得票数";
+"NumberOfVotes" = "我的投票数";
+"ConsensusNode" = "共识节点";
+"EcologicalNodes" = "生态节点";
+"InterdependentNode" = "和我相关的节点";
+"Search" = "搜索";
+"CancellationOfVotes" = "撤销投票";
+"VotingRecords" = "投票记录";
+"Throw" = "投";
+"Withdraw" = "撤";
+"Number" = "数量";
+"State" = "状态";
+"Time" = "时间";
 
 // Errors
 "LoadFailure" = "Failed to load";

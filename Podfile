@@ -30,6 +30,10 @@ pod 'IQKeyboardManager'
 pod 'FMDB'
 pod 'XHToast'
 pod 'SocketRocket'
+# 轮播图
+pod 'SDCycleScrollView'
+
+pod 'WechatOpenSDK'
 #pod 'LinkedME_LinkPage'
 #pod 'FDFullscreenPopGesture'
 

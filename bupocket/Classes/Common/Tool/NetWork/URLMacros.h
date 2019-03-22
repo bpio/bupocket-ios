@@ -26,6 +26,9 @@
 //#define WEB_SERVER_DOMAIN_TEST @"http://api-bp.bumotest.io/"
 #define BUMO_NODE_URL_TEST @"https://wallet-node.bumotest.io"
 #define PUSH_MESSAGE_SOCKET_URL_TEST @"https://ws-tools.bumotest.io"
+
+#define Information_URL @"https://m-news.bumo.io"
+
 // App type 1-android 2-iOS
 #define Version_Update @"wallet/version?appType=2"
 #define Assets_List @"wallet/token/list"
@@ -40,6 +43,7 @@
 #define Add_AddressBook @"wallet/my/addressBook/add"
 #define Update_AddressBook @"wallet/my/addressBook/update"
 #define Delete_AddressBook @"wallet/my/addressBook/delete"
+
 
 
 #endif /* URLMacros_h */

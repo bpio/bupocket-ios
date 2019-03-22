@@ -482,7 +482,6 @@ static UIButton * _noBackup;
         NSUserDefaults * defaults = [NSUserDefaults standardUserDefaults];
         if (![defaults boolForKey:If_Backup] && _noBackup.selected == NO) {
             return ScreenScale(150) + [Encapsulation rectWithText:Localized(@"SafetyTips") font:TITLE_FONT textWidth:DEVICE_WIDTH - Margin_40].size.height;
-//            return ScreenScale(210);
         } else {
             return Margin_40;
         }
@@ -506,8 +505,6 @@ static UIButton * _noBackup;
                 make.top.equalTo(headerView.mas_top).offset(Margin_10);
                 make.left.equalTo(headerView.mas_left).offset(Margin_10);
                 make.right.equalTo(headerView.mas_right).offset(- Margin_10);
-//                make.height.mas_equalTo(ScreenScale(105) + []);
-//                make.height.mas_equalTo(ScreenScale(160));
             }];
             UILabel * safetyTipsTitle = [[UILabel alloc] init];
             safetyTipsTitle.textColor = COLOR_6;

@@ -10,6 +10,7 @@
 "NoNetWork" = "网络不给力，请稍后再试";
 "Reload" = "重新加载";
 "MyTitle" = "我的";
+"FindTitle" = "发现";
 "AssetsTitle" = "资产";
 "IfUpdate" = "是否更新到版本";
 "AppSize" = "新版本大小：";
@@ -335,6 +336,28 @@
 "ConfirmDeleteContact" = "确定删除联系人？";
 "DeleteSuccessful" = "删除成功";
 "DeleteFailed" = "删除失败，请稍后重试";
+// 发现
+"CardBag" = "卡包";
+"NodePlan" = "节点计划";
+"JointConstructionOfNodes" = "节点共建";
+"Information" = "资讯";
+"SmallClothGoods" = "小布有品";
+"VotesObtained" = "得票数";
+"NumberOfVotes" = "我的投票数";
+"ConsensusNode" = "共识节点";
+"EcologicalNodes" = "生态节点";
+"InterdependentNode" = "和我相关的节点";
+"Search" = "搜索";
+"CancellationOfVotes" = "撤销投票";
+"VotingRecords" = "投票记录";
+"Throw" = "投";
+"Withdraw" = "撤";
+"Number" = "数量";
+"State" = "状态";
+"Time" = "时间";
+
+
+
 // 错误信息
 "LoadFailure" = "加载失败";
 // SDK Errors
