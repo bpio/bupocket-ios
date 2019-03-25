@@ -89,11 +89,11 @@
                     [self upDateAccountDataWithRandom:random password:password];
                 } cancelBlock:^{
                 }];
-                [self.PWAlertView showInWindowWithMode:CustomAnimationModeDisabled inView:nil bgAlpha:0.2 needEffectView:NO];
+                [self.PWAlertView showInWindowWithMode:CustomAnimationModeDisabled inView:nil bgAlpha:AlertBgAlpha needEffectView:NO];
                 [self.PWAlertView.PWTextField becomeFirstResponder];
             });
         }];
-        [alertView showInWindowWithMode:CustomAnimationModeDisabled inView:nil bgAlpha:0.2 needEffectView:NO];
+        [alertView showInWindowWithMode:CustomAnimationModeDisabled inView:nil bgAlpha:AlertBgAlpha needEffectView:NO];
     } else {
         [self getVersionData];
     }
@@ -139,7 +139,7 @@
                 } cancelBlock:^{
                     
                 }];
-                [self.alertView showInWindowWithMode:CustomAnimationModeDisabled inView:nil bgAlpha:0.2 needEffectView:NO];
+                [self.alertView showInWindowWithMode:CustomAnimationModeDisabled inView:nil bgAlpha:AlertBgAlpha needEffectView:NO];
             }
         } else {
 //            [MBProgressHUD showTipMessageInWindow:[ErrorTypeTool getDescriptionWithErrorCode:code]];

@@ -170,13 +170,13 @@
             } cancelBlock:^{
                 
             }];
-            [alertView showInWindowWithMode:CustomAnimationModeAlert inView:nil bgAlpha:0.2 needEffectView:NO];
+            [alertView showInWindowWithMode:CustomAnimationModeAlert inView:nil bgAlpha:AlertBgAlpha needEffectView:NO];
             [alertView.PWTextField becomeFirstResponder];
         });
     } cancelBlock:^{
         
     }];
-    [transferDetailsAlertView showInWindowWithMode:CustomAnimationModeShare inView:nil bgAlpha:0.2 needEffectView:NO];
+    [transferDetailsAlertView showInWindowWithMode:CustomAnimationModeShare inView:nil bgAlpha:AlertBgAlpha needEffectView:NO];
 }
 
 - (void)getDataWithPassword:(NSString *)password

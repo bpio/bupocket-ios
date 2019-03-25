@@ -110,7 +110,7 @@ static NSString * const ExportCellID = @"ExportCellID";
         }];
     } cancelBlock:^{
     }];
-    [alertView showInWindowWithMode:CustomAnimationModeAlert inView:nil bgAlpha:0.2 needEffectView:NO];
+    [alertView showInWindowWithMode:CustomAnimationModeAlert inView:nil bgAlpha:AlertBgAlpha needEffectView:NO];
     [alertView.PWTextField becomeFirstResponder];
 }
 - (NSInteger)numberOfSectionsInTableView:(UITableView *)tableView
@@ -174,7 +174,7 @@ static NSString * const ExportCellID = @"ExportCellID";
         } cancelBlock:^{
             
         }];
-        [alertView showInWindowWithMode:CustomAnimationModeAlert inView:nil bgAlpha:0.2 needEffectView:NO];        
+        [alertView showInWindowWithMode:CustomAnimationModeAlert inView:nil bgAlpha:AlertBgAlpha needEffectView:NO];
     } else {
         NSString * walletKeyStore = self.walletModel.walletKeyStore;
         if (indexPath.row == 2) {
@@ -197,7 +197,7 @@ static NSString * const ExportCellID = @"ExportCellID";
             }
         } cancelBlock:^{
         }];
-        [alertView showInWindowWithMode:CustomAnimationModeAlert inView:nil bgAlpha:0.2 needEffectView:NO];
+        [alertView showInWindowWithMode:CustomAnimationModeAlert inView:nil bgAlpha:AlertBgAlpha needEffectView:NO];
         [alertView.PWTextField becomeFirstResponder];
     }
 }

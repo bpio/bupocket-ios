@@ -125,7 +125,7 @@
     [self.layer addSublayer:shapeLayer];
 }
 // UIView Set borders separately
-- (void)setViewBorder:(UIView *)view color:(UIColor *)color border:(float)border type:(UIViewBorderLineType)borderLineType
++ (void)setViewBorder:(UIView *)view color:(UIColor *)color border:(float)border type:(UIViewBorderLineType)borderLineType
 {
     CALayer *lineLayer = [CALayer layer];
     lineLayer.backgroundColor = color.CGColor;

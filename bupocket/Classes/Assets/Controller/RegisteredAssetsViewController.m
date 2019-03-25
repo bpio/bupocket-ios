@@ -165,7 +165,7 @@ static NSString * const Register_Leave = @"leaveRoomForApp";
                 [weakSelf getRegisteredDataWithPassword:password];
             } cancelBlock:^{
             }];
-            [alertView showInWindowWithMode:CustomAnimationModeAlert inView:nil bgAlpha:0.2 needEffectView:NO];
+            [alertView showInWindowWithMode:CustomAnimationModeAlert inView:nil bgAlpha:AlertBgAlpha needEffectView:NO];
             [alertView.PWTextField becomeFirstResponder];
         }];
     }];

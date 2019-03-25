@@ -71,6 +71,7 @@
 #define Maximum_Number 20
 // Feedback content
 #define SuggestionsContent_MAX 100
+#define AlertBgAlpha 0.2
 // ATP Version
 #define ATP_Version @"1.0"
 // Obtain minimum asset limits and fuel unit prices for accounts in designated blocks

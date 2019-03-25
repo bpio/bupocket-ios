@@ -10,6 +10,7 @@
 #import "NodePlanViewCell.h"
 #import "YBPopupMenu.h"
 #import "VotingRecordsViewController.h"
+#import "CancellationOfVotingAlertView.h"
 
 @interface NodePlanViewController ()<UITableViewDelegate, UITableViewDataSource, UITextFieldDelegate, YBPopupMenuDelegate>
 
@@ -233,8 +234,14 @@ static NSString * const NodePlanCellID = @"NodePlanCellID";
 }
 - (void)ybPopupMenu:(YBPopupMenu *)ybPopupMenu didSelectedAtIndex:(NSInteger)index
 {
-    NSLog(@"第%zd个节点，%@ %zd", self.index, ybPopupMenu.titles[index], index);
-    if (index == 1) {
+    if (index == 0) {
+        CancellationOfVotingAlertView * alertView = [[CancellationOfVotingAlertView alloc] initWithText:@"撤销" confrimBolck:^(NSString * _Nonnull text) {
+            
+        } cancelBlock:^{
+            
+        }];
+         [alertView showInWindowWithMode:CustomAnimationModeShare inView:nil bgAlpha:AlertBgAlpha needEffectView:NO];
+    } else if (index == 1) {
         VotingRecordsViewController * VC = [[VotingRecordsViewController alloc] init];
         VC.str = [NSString stringWithFormat:@"第%zd个节点，%@ %zd", self.index, ybPopupMenu.titles[index], index];
         [self.navigationController pushViewController:VC animated:NO];

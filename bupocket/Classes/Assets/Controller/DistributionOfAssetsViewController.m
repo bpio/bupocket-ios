@@ -169,7 +169,7 @@ static NSString * const Issue_Leave = @"leaveRoomForApp";
                 [weakSelf getIssueAssetDataWithPassword:password];
             } cancelBlock:^{
             }];
-            [alertView showInWindowWithMode:CustomAnimationModeAlert inView:nil bgAlpha:0.2 needEffectView:NO];
+            [alertView showInWindowWithMode:CustomAnimationModeAlert inView:nil bgAlpha:AlertBgAlpha needEffectView:NO];
             [alertView.PWTextField becomeFirstResponder];
         }];
     }];

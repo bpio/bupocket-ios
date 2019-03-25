@@ -18,11 +18,14 @@
 #import "DistributionOfAssetsViewController.h"
 #import "TransferAccountsViewController.h"
 #import "WalletManagementViewController.h"
+#import "LoginConfirmViewController.h"
+#import "VoteAlertView.h"
 
 #import "RegisteredModel.h"
 #import "DistributionModel.h"
 
 #import "UINavigationController+Extension.h"
+
 
 @interface AssetsViewController ()<UITableViewDelegate, UITableViewDataSource>
 
@@ -419,6 +422,19 @@ static UIButton * _noBackup;
 {
     __weak typeof (self) weakself = self;
     HMScannerController *scanner = [HMScannerController scannerWithCardName:nil avatar:nil completion:^(NSString *stringValue) {
+        if ([stringValue hasPrefix:@"http://r.m.baidu.com/3ii99ns"]) {
+            LoginConfirmViewController * VC = [[LoginConfirmViewController alloc] init];
+            [self.navigationController pushViewController:VC animated:NO];
+            return;
+        } else if ([stringValue hasPrefix:@"http://fanyi.baidu.com"]) {
+            VoteAlertView * alertView = [[VoteAlertView alloc] initWithText:@"投票" confrimBolck:^{
+                
+            } cancelBlock:^{
+                
+            }];
+            [alertView showInWindowWithMode:CustomAnimationModeShare inView:nil bgAlpha:AlertBgAlpha needEffectView:NO];
+            return;
+        }
         NSOperationQueue * queue = [[NSOperationQueue alloc] init];
         [queue addOperationWithBlock:^{
             BOOL isCorrectAddress = [Keypair isAddressValid: stringValue];
@@ -457,7 +473,7 @@ static UIButton * _noBackup;
     } cancelBlock:^{
         
     }];
-    [alertView showInWindowWithMode:CustomAnimationModeShare inView:nil bgAlpha:0.2 needEffectView:NO];
+    [alertView showInWindowWithMode:CustomAnimationModeShare inView:nil bgAlpha:AlertBgAlpha needEffectView:NO];
 }
 
 #pragma mark - addAssets
