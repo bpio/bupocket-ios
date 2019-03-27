@@ -12,7 +12,16 @@
 
 @interface HTTPManager : NSObject
 
+//// Dpos Type
+//typedef NS_ENUM(NSInteger, DposType) {
+//    DposTypeDefault,
+//    DposTypeVote,
+//    DposTypeUnVote,
+//    DposTypeExtract,
+//};
+
 @property (nonatomic, strong) NSString * pushMessageSocketUrl;
+@property (assign, nonatomic) BOOL dposType;
 
 + (instancetype)shareManager;
 
@@ -89,6 +98,18 @@
                                      linkmanAddress:(NSString *)linkmanAddress
                                             success:(void (^)(id responseObject))success
                                             failure:(void (^)(NSError *error))failure;
+// Account Center
+// user Scan Qr Login
+- (void)getScanCodeLoginDataWithAddress:(NSString *)address
+                                   uuid:(NSString *)uuid
+                                success:(void (^)(id responseObject))success
+                                failure:(void (^)(NSError *error))failure;
+// Confirm Login
+- (void)getConfirmLoginDataWithAddress:(NSString *)address
+                                  uuid:(NSString *)uuid
+                                 appId:(NSString *)appId
+                               success:(void (^)(id responseObject))success
+                               failure:(void (^)(NSError *error))failure;
 
 #pragma mark - SDK
 // Check the balance

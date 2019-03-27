@@ -348,8 +348,7 @@
 "DeleteFailed" = "Failed to delete; please try again later";
 
 // 登录
-"LoginSystem" = "节点计划运营管理系统";
-"ConfirmLoginPrompt" = "即将登录节点计划运营管理系统，请确认是本人操作。";
+"Immediate login %@, please confirm that it is my operation." = "即将登录%@，请确认是本人操作。";
 "LoginPromptInfo" = "您的账户地址将被公开";
 "ConfirmLogin" = "确认登录";
 "LoginException" = "该钱包账户未在该平台绑定";
@@ -391,7 +390,7 @@
 // 投票
 "ConfirmationTurnOut" = "确认转出";
 "MaximumTransactionCosts" = "最多支付交易费用（BU）";
-
+"Overdue" = "请求已过期";
 
 
 // Errors

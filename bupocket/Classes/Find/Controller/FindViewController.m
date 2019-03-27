@@ -2,7 +2,7 @@
 //  FindViewController.m
 //  bupocket
 //
-//  Created by huoss on 2019/3/21.
+//  Created by bupocket on 2019/3/21.
 //  Copyright © 2019年 bupocket. All rights reserved.
 //
 
@@ -96,6 +96,13 @@ static NSString * const ExportCellID = @"ExportCellID";
     } else {
         if (indexPath.row == 0) {
             [cell.listBg setViewSize:cellSize borderRadius:BG_CORNER corners:UIRectCornerTopLeft | UIRectCornerTopRight];
+            [cell.listBg addSubview:cell.lineView];
+            [cell.lineView mas_makeConstraints:^(MASConstraintMaker *make) {
+                make.left.equalTo(cell.listBg.mas_left).offset(Margin_10);
+                make.right.equalTo(cell.listBg.mas_right).offset(-Margin_10);
+                make.bottom.equalTo(cell.listBg);
+                make.height.mas_equalTo(LINE_WIDTH);
+            }];
         } else if (indexPath.row == [self.listArray[indexPath.section] count] - 1) {
             [cell.listBg setViewSize:cellSize borderRadius:BG_CORNER corners:UIRectCornerBottomLeft | UIRectCornerBottomRight];
         }

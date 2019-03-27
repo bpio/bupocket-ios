@@ -2,7 +2,7 @@
 //  LoginExceptionViewController.m
 //  bupocket
 //
-//  Created by huoss on 2019/3/25.
+//  Created by bupocket on 2019/3/25.
 //  Copyright © 2019年 bupocket. All rights reserved.
 //
 
@@ -79,7 +79,7 @@
     }];
     
     
-    CGSize btnSize = CGSizeMake(DEVICE_WIDTH - ScreenScale(80), MAIN_HEIGHT);
+    CGSize btnSize = CGSizeMake(DEVICE_WIDTH - Margin_40, MAIN_HEIGHT);
     UIButton * confirmBtn = [UIButton createButtonWithTitle:Localized(@"Confirm") isEnabled:YES Target:self Selector:@selector(confirmAction)];
     [self.scrollView addSubview:confirmBtn];
     [confirmBtn mas_makeConstraints:^(MASConstraintMaker *make) {

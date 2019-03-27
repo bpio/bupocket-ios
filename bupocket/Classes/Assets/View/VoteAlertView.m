@@ -2,7 +2,7 @@
 //  VoteAlertView.m
 //  bupocket
 //
-//  Created by huoss on 2019/3/25.
+//  Created by bupocket on 2019/3/25.
 //  Copyright © 2019年 bupocket. All rights reserved.
 //
 
@@ -36,7 +36,6 @@
 
 - (void)setupView {
     self.backgroundColor = [UIColor whiteColor];
-    self.layer.cornerRadius = MAIN_CORNER;
     
     [self addSubview:self.title];
     
@@ -53,8 +52,8 @@
     CGFloat infoLabelTotalH = 0;
     for (UILabel * infoLabel in self.infoBg.subviews) {
         NSString * str = [NSString stringWithFormat:@"%@\n%@", self.infoTitleArray[infoLabel.tag], infoArray[infoLabel.tag]];
-        infoLabel.attributedText = [Encapsulation attrWithString:str preFont:FONT(13) preColor:COLOR_9 index:[self.infoTitleArray[infoLabel.tag] length] sufFont:FONT(14) sufColor:COLOR_6 lineSpacing:7];
-        CGFloat infoLabelH = Margin_20 + [Encapsulation getSizeSpaceLabelWithStr:infoArray[infoLabel.tag] font:FONT(14) width:DEVICE_WIDTH - Margin_40 height:0 lineSpacing:7].height;
+        infoLabel.attributedText = [Encapsulation attrWithString:str preFont:FONT(13) preColor:COLOR_9 index:[self.infoTitleArray[infoLabel.tag] length] sufFont:FONT(14) sufColor:COLOR_6 lineSpacing:5.0];
+        CGFloat infoLabelH = Margin_20 + [Encapsulation getSizeSpaceLabelWithStr:infoArray[infoLabel.tag] font:FONT(14) width:DEVICE_WIDTH - Margin_40 height:0 lineSpacing:5.0].height;
 //        CGFloat infoLabelH = Margin_30 + [Encapsulation rectWithText:infoArray[infoLabel.tag] font:FONT(14) textWidth:DEVICE_WIDTH - Margin_40].size.height;
         infoLabel.frame = CGRectMake(0, infoLabelTotalH, DEVICE_WIDTH - Margin_40, infoLabelH);
 //        [infoLabel mas_makeConstraints:^(MASConstraintMaker *make) {
@@ -62,8 +61,9 @@
 //            make.top.mas_equalTo(infoLabelTotalH);
 //            make.height.mas_equalTo(infoLabelH);
 //        }];
-        infoLabelTotalH = infoLabelTotalH + infoLabelH ;
+        infoLabelTotalH = infoLabelTotalH + infoLabelH;
     }
+    infoLabelTotalH = infoLabelTotalH + Margin_10;
     _infoBg.frame = CGRectMake(Margin_20, ScreenScale(120), DEVICE_WIDTH - Margin_40, infoLabelTotalH);
     [UIView setViewBorder:_infoBg color:LINE_COLOR border:LINE_WIDTH type:UIViewBorderLineTypeBottom];
     CGFloat H = infoLabelTotalH + ScreenScale(210);
@@ -86,12 +86,12 @@
     }];
 
     
-    [self.amount mas_makeConstraints:^(MASConstraintMaker *make) {
-        make.top.equalTo(self.title.mas_bottom);
-        make.left.equalTo(self.title);
-        make.right.equalTo(self.mas_right).offset(-Margin_20);
-        make.height.mas_equalTo(ScreenScale(70));
-    }];
+//    [self.amount mas_makeConstraints:^(MASConstraintMaker *make) {
+//        make.top.equalTo(self.title.mas_bottom);
+//        make.left.equalTo(self.title);
+//        make.right.equalTo(self.mas_right).offset(-Margin_20);
+//        make.height.mas_equalTo(ScreenScale(70));
+//    }];
     
     
 //    [self.infoBg mas_makeConstraints:^(MASConstraintMaker *make) {
@@ -126,9 +126,11 @@
 - (UILabel *)amount
 {
     if (!_amount) {
-        _amount = [[UILabel alloc] init];
+        _amount = [[UILabel alloc] initWithFrame:CGRectMake(Margin_20, Margin_50, DEVICE_WIDTH - Margin_40, ScreenScale(70))];
         NSString * str = [NSString stringWithFormat:@"%@ BU", @"123456"];
         _amount.attributedText = [Encapsulation attrWithString:str preFont:FONT_Bold(32) preColor:TITLE_COLOR index:str.length - 2 sufFont:FONT(16) sufColor:COLOR(@"151515") lineSpacing:0];
+        _amount.textAlignment = NSTextAlignmentCenter;
+        [UIView setViewBorder:_amount color:LINE_COLOR border:LINE_WIDTH type:UIViewBorderLineTypeTop];
     }
     return _amount;
 }

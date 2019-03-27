@@ -20,9 +20,12 @@
 #import "WalletManagementViewController.h"
 #import "LoginConfirmViewController.h"
 #import "VoteAlertView.h"
+#import "RequestTimeoutViewController.h"
 
 #import "RegisteredModel.h"
 #import "DistributionModel.h"
+
+#import "LoginConfirmModel.h"
 
 #import "UINavigationController+Extension.h"
 
@@ -239,7 +242,23 @@ static UIButton * _noBackup;
     }];
 }
 
-
+- (void)getScanCodeLoginDataWithUUid:(NSString *)uuid
+{
+    [[HTTPManager shareManager] getScanCodeLoginDataWithAddress:[[[AccountTool shareTool] account] identityAddress] uuid:uuid success:^(id responseObject) {
+        NSInteger code = [[responseObject objectForKey:@"errCode"] integerValue];
+        if (code == Success_Code) {
+            LoginConfirmViewController * VC = [[LoginConfirmViewController alloc] init];
+            VC.loginConfirmModel = [LoginConfirmModel mj_objectWithKeyValues:[responseObject objectForKey:@"data"]];
+            [self.navigationController pushViewController:VC animated:NO];
+        } else {
+            RequestTimeoutViewController * VC = [[RequestTimeoutViewController alloc] init];
+            VC.promptStr = Localized(@"Overdue");
+            [self.navigationController pushViewController:VC animated:NO];
+        }
+    } failure:^(NSError *error) {
+        
+    }];
+}
 - (void)pushDistributionVC
 {
     DistributionOfAssetsViewController * VC = [[DistributionOfAssetsViewController alloc] init];
@@ -422,17 +441,11 @@ static UIButton * _noBackup;
 {
     __weak typeof (self) weakself = self;
     HMScannerController *scanner = [HMScannerController scannerWithCardName:nil avatar:nil completion:^(NSString *stringValue) {
-        if ([stringValue hasPrefix:@"http://r.m.baidu.com/3ii99ns"]) {
-            LoginConfirmViewController * VC = [[LoginConfirmViewController alloc] init];
-            [self.navigationController pushViewController:VC animated:NO];
+        if ([stringValue hasPrefix:Account_Center_Prefix]) {
+            [self getScanCodeLoginDataWithUUid:[stringValue substringFromIndex:[Account_Center_Prefix length]]];
             return;
-        } else if ([stringValue hasPrefix:@"http://fanyi.baidu.com"]) {
-            VoteAlertView * alertView = [[VoteAlertView alloc] initWithText:@"投票" confrimBolck:^{
-                
-            } cancelBlock:^{
-                
-            }];
-            [alertView showInWindowWithMode:CustomAnimationModeShare inView:nil bgAlpha:AlertBgAlpha needEffectView:NO];
+        } else if ([stringValue hasPrefix:Dpos_Prefix]) {
+            [self getDposWithStr: stringValue];
             return;
         }
         NSOperationQueue * queue = [[NSOperationQueue alloc] init];
@@ -481,6 +494,48 @@ static UIButton * _noBackup;
 {
     AddAssetsViewController * VC = [[AddAssetsViewController alloc] init];
     [self.navigationController pushViewController:VC animated:NO];
+}
+#pragma mark - Dpos
+- (void)getDposWithStr:(NSString *)str
+{
+    __weak typeof(self) weakSelf = self;
+    VoteAlertView * alertView = [[VoteAlertView alloc] initWithText:@"投票" confrimBolck:^{
+        dispatch_after(dispatch_time(DISPATCH_TIME_NOW, (int64_t)(0.5 * NSEC_PER_SEC)), dispatch_get_main_queue(), ^{
+            PasswordAlertView * alertView = [[PasswordAlertView alloc] initWithPrompt:Localized(@"TransactionWalletPWPrompt") walletKeyStore:CurrentWalletKeyStore isAutomaticClosing:YES confrimBolck:^(NSString * _Nonnull password, NSArray * _Nonnull words) {
+                [weakSelf getDataWithPassword:password parmenterStr:str];
+            } cancelBlock:^{
+                
+            }];
+            [alertView showInWindowWithMode:CustomAnimationModeAlert inView:nil bgAlpha:AlertBgAlpha needEffectView:NO];
+            [alertView.PWTextField becomeFirstResponder];
+        });
+    } cancelBlock:^{
+        
+    }];
+    [alertView showInWindowWithMode:CustomAnimationModeShare inView:nil bgAlpha:AlertBgAlpha needEffectView:NO];
+}
+- (void)getDataWithPassword:(NSString *)password parmenterStr:(NSString *)parmenterStr
+{
+    [[HTTPManager shareManager] setTransferDataWithTokenType:Token_Type_BU password:password destAddress:@"" assets:@"" decimals:Decimals_BU feeLimit:@"" notes:@"" code:@"" issuer:@"" success:^(TransactionResultModel *resultModel) {
+        /*
+        [self.transferInfoArray addObject:[DateTool getDateStringWithTimeStr:[NSString stringWithFormat:@"%lld", resultModel.transactionTime]]];
+        [self.transferInfoArray replaceObjectAtIndex:2 withObject:[NSString stringAppendingBUWithStr:resultModel.actualFee]];
+        TransferResultsViewController * VC = [[TransferResultsViewController alloc] init];
+        if (resultModel.errorCode == Success_Code) {
+            VC.state = YES;
+        } else {
+            VC.state = NO;
+            //            [MBProgressHUD showTipMessageInWindow:[ErrorTypeTool getDescription:resultModel.errorCode]];
+        }
+        VC.transferInfoArray = self.transferInfoArray;
+        [self.navigationController pushViewController:VC animated:NO];
+         */
+    } failure:^(TransactionResultModel *resultModel) {
+        /*
+        RequestTimeoutViewController * VC = [[RequestTimeoutViewController alloc] init];
+        [self.navigationController pushViewController:VC animated:NO];
+         */
+    }];
 }
 
 

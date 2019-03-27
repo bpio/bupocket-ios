@@ -363,6 +363,55 @@ static int64_t const gasPrice = 1000;
         }
     }];
 }
+// Account Center
+// user Scan Qr Login
+- (void)getScanCodeLoginDataWithAddress:(NSString *)address
+                                   uuid:(NSString *)uuid
+                                success:(void (^)(id responseObject))success
+                                failure:(void (^)(NSError *error))failure
+{
+    NSString * url = SERVER_COMBINE_API(WEB_SERVER_DOMAIN_TEST_TMP, Account_Center_ScanQRLogin);
+    NSDictionary * parmenters = @{
+                                  @"address": address,
+                                  @"uuid": uuid,
+                                  };
+    [[HttpTool shareTool] POST:url parameters:parmenters success:^(id responseObject) {
+        if(success != nil)
+        {
+            success(responseObject);
+        }
+    } failure:^(NSError *error) {
+        if(failure != nil)
+        {
+            failure(error);
+        }
+    }];
+}
+// Confirm Login
+- (void)getConfirmLoginDataWithAddress:(NSString *)address
+                                  uuid:(NSString *)uuid
+                                 appId:(NSString *)appId
+                               success:(void (^)(id responseObject))success
+                               failure:(void (^)(NSError *error))failure
+{
+    NSString * url = SERVER_COMBINE_API(WEB_SERVER_DOMAIN_TEST_TMP, Account_Center_Confirm_Login);
+    NSDictionary * parmenters = @{
+                                  @"address": address,
+                                  @"uuid": uuid,
+                                  @"appId": appId
+                                  };
+    [[HttpTool shareTool] POST:url parameters:parmenters success:^(id responseObject) {
+        if(success != nil)
+        {
+            success(responseObject);
+        }
+    } failure:^(NSError *error) {
+        if(failure != nil)
+        {
+            failure(error);
+        }
+    }];
+}
 #pragma mark - SDK
 // Check the balance
 - (int64_t)getAccountBalance {
@@ -770,30 +819,40 @@ static int64_t const gasPrice = 1000;
         hash = buildBlobResponse.result.transactionHash;
     } else {
         [MBProgressHUD showTipMessageInWindow:[ErrorTypeTool getDescription:buildBlobResponse.errorCode]];
-        return nil;
     }
-    
+//    if (hash && self.dposType != DposTypeDefault) {
+//    } else {
+//
+//    }
+    BOOL ifSubmitSuccess = [[HTTPManager shareManager] buildSignAndSubmit:transactionServer :buildBlobResponse :privateKey];
+    if (!ifSubmitSuccess) {
+        hash = nil;
+    }
+    return hash;
+}
+- (BOOL)buildSignAndSubmit:(TransactionService *)transactionServer : (TransactionBuildBlobResponse *)buildBlobResponse : (NSString *)privateKey
+{
     // sign
     TransactionSignRequest *signRequest = [TransactionSignRequest new];
     [signRequest setBlob : buildBlobResponse.result.transactionBlob];
     [signRequest addPrivateKey : privateKey];
     TransactionSignResponse * signResponse = [transactionServer sign : signRequest];
     if (signResponse.errorCode == Success_Code) {
+        // Submission of transactions
+        TransactionSubmitRequest *submitRequest = [TransactionSubmitRequest new];
+        [submitRequest setTransactionBlob : buildBlobResponse.result.transactionBlob];
+        [submitRequest setSignatures : [signResponse.result.signatures copy]];
+        TransactionSubmitResponse *submitResponse = [transactionServer submit : submitRequest];
+        if (submitResponse.errorCode == Success_Code) {
+            return YES;
+        } else {
+            [MBProgressHUD showTipMessageInWindow:[ErrorTypeTool getDescription:submitResponse.errorCode]];
+            return NO;
+        }
     } else {
         [MBProgressHUD showTipMessageInWindow:[ErrorTypeTool getDescription:signResponse.errorCode]];
-        return nil;
+        return NO;
     }
-    // Submission of transactions
-    TransactionSubmitRequest *submitRequest = [TransactionSubmitRequest new];
-    [submitRequest setTransactionBlob : buildBlobResponse.result.transactionBlob];
-    [submitRequest setSignatures : [signResponse.result.signatures copy]];
-    TransactionSubmitResponse *submitResponse = [transactionServer submit : submitRequest];
-    if (submitResponse.errorCode == Success_Code) {
-    } else {
-        [MBProgressHUD showTipMessageInWindow:[ErrorTypeTool getDescription:submitResponse.errorCode]];
-        return nil;
-    }
-    return hash;
 }
 
 // Judge whether the transfer / registration / issuance is successful.

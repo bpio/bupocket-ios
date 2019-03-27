@@ -22,6 +22,7 @@
 #define PUSH_MESSAGE_SOCKET_URL @"https://ws-tools.bumo.io"
 
 #define WEB_SERVER_DOMAIN_TEST @"http://52.80.218.114:8081/"
+#define WEB_SERVER_DOMAIN_TEST_TMP @"http://52.80.218.114:9090/"
 //#define WEB_SERVER_DOMAIN_TEST @"http://192.168.6.97:8081/"
 //#define WEB_SERVER_DOMAIN_TEST @"http://api-bp.bumotest.io/"
 #define BUMO_NODE_URL_TEST @"https://wallet-node.bumotest.io"
@@ -44,6 +45,11 @@
 #define Update_AddressBook @"wallet/my/addressBook/update"
 #define Delete_AddressBook @"wallet/my/addressBook/delete"
 
-
+// Account center
+#define Account_Center_Prefix @"bumo://login/"
+#define Account_Center_ScanQRLogin @"qr/v1/userScanQrLogin"
+#define Account_Center_Confirm_Login @"qr/v1/userScanQrConfirmLogin"
+// dpos
+#define Dpos_Prefix @"bumo://dpos/"
 
 #endif /* URLMacros_h */

@@ -2,7 +2,7 @@
 //  CancellationOfVotingAlertView.m
 //  bupocket
 //
-//  Created by huoss on 2019/3/25.
+//  Created by bupocket on 2019/3/25.
 //  Copyright © 2019年 bupocket. All rights reserved.
 //
 
@@ -38,7 +38,6 @@
 
 - (void)setupView {
     self.backgroundColor = [UIColor whiteColor];
-    self.layer.cornerRadius = MAIN_CORNER;
     
     [self addSubview:self.titleLabel];
     

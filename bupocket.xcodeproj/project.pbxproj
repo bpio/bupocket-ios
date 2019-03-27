@@ -130,6 +130,7 @@
 		959E28F32248C5B5006FCA30 /* LoginExceptionViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 959E28F22248C5B5006FCA30 /* LoginExceptionViewController.m */; };
 		959E28F62248CBED006FCA30 /* VoteAlertView.m in Sources */ = {isa = PBXBuildFile; fileRef = 959E28F52248CBED006FCA30 /* VoteAlertView.m */; };
 		959E28F92248CC93006FCA30 /* CancellationOfVotingAlertView.m in Sources */ = {isa = PBXBuildFile; fileRef = 959E28F82248CC93006FCA30 /* CancellationOfVotingAlertView.m */; };
+		959E28FF224A1B6A006FCA30 /* LoginConfirmModel.m in Sources */ = {isa = PBXBuildFile; fileRef = 959E28FE224A1B6A006FCA30 /* LoginConfirmModel.m */; };
 		95A8A3B1219D1352008E978E /* LanguageManager.m in Sources */ = {isa = PBXBuildFile; fileRef = 95A8A3AF219D1352008E978E /* LanguageManager.m */; };
 		95A8A3B5219D157C008E978E /* DateTool.m in Sources */ = {isa = PBXBuildFile; fileRef = 95A8A3B4219D157C008E978E /* DateTool.m */; };
 		95A8A3B9219D15D8008E978E /* RegexPatternTool.m in Sources */ = {isa = PBXBuildFile; fileRef = 95A8A3B8219D15D8008E978E /* RegexPatternTool.m */; };
@@ -432,6 +433,8 @@
 		959E28F52248CBED006FCA30 /* VoteAlertView.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = VoteAlertView.m; sourceTree = "<group>"; };
 		959E28F72248CC93006FCA30 /* CancellationOfVotingAlertView.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = CancellationOfVotingAlertView.h; sourceTree = "<group>"; };
 		959E28F82248CC93006FCA30 /* CancellationOfVotingAlertView.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = CancellationOfVotingAlertView.m; sourceTree = "<group>"; };
+		959E28FD224A1B6A006FCA30 /* LoginConfirmModel.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = LoginConfirmModel.h; sourceTree = "<group>"; };
+		959E28FE224A1B6A006FCA30 /* LoginConfirmModel.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = LoginConfirmModel.m; sourceTree = "<group>"; };
 		95A8A3AF219D1352008E978E /* LanguageManager.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = LanguageManager.m; sourceTree = "<group>"; };
 		95A8A3B0219D1352008E978E /* LanguageManager.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = LanguageManager.h; sourceTree = "<group>"; };
 		95A8A3B3219D157B008E978E /* DateTool.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = DateTool.h; sourceTree = "<group>"; };
@@ -763,6 +766,8 @@
 				959726BE21E43EB40022CB78 /* WalletModel.m */,
 				959726E021E82EA20022CB78 /* WalletTool.h */,
 				959726E121E82EA20022CB78 /* WalletTool.m */,
+				959E28FD224A1B6A006FCA30 /* LoginConfirmModel.h */,
+				959E28FE224A1B6A006FCA30 /* LoginConfirmModel.m */,
 			);
 			path = Model;
 			sourceTree = "<group>";
@@ -1400,6 +1405,7 @@
 				959726DA21E6DCA10022CB78 /* TextFieldViewCell.m in Sources */,
 				959726EE21E8C84F0022CB78 /* PasswordAlertView.m in Sources */,
 				83379A89217DA4F900C222A5 /* AssetsDetailListViewCell.m in Sources */,
+				959E28FF224A1B6A006FCA30 /* LoginConfirmModel.m in Sources */,
 				959726D721E5E76F0022CB78 /* ImportWalletModeViewController.m in Sources */,
 				959726E821E893400022CB78 /* SafetyReinforcementAlertView.m in Sources */,
 				83D5B1EE21818F7700BF1FF1 /* NSString+Extension.m in Sources */,
