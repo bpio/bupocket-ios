@@ -143,7 +143,7 @@ static NSString * const NodePlanCellID = @"NodePlanCellID";
 }
 - (void)infoAction:(UIButton *)button
 {
-    NSString * title = Localized(@"IdentityIDInfo");
+    NSString * title = Localized(@"RelevantNodes");
     CGFloat titleHeight = [Encapsulation rectWithText:title font:TITLE_FONT textWidth:DEVICE_WIDTH - ScreenScale(120)].size.height;
     _popupMenu = [YBPopupMenu showRelyOnView:button.imageView titles:@[title] icons:nil menuWidth:DEVICE_WIDTH - ScreenScale(100) otherSettings:^(YBPopupMenu * popupMenu) {
         popupMenu.priorityDirection = YBPopupMenuPriorityDirectionTop;

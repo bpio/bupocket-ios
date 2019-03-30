@@ -195,7 +195,6 @@
         [self.navigationController pushViewController:VC animated:NO];
     } failure:^(TransactionResultModel *resultModel) {
         RequestTimeoutViewController * VC = [[RequestTimeoutViewController alloc] init];
-        VC.promptStr = Localized(@"RequestTimeout");
         [self.navigationController pushViewController:VC animated:NO];
     }];
 }

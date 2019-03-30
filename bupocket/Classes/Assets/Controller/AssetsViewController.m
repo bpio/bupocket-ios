@@ -19,13 +19,16 @@
 #import "TransferAccountsViewController.h"
 #import "WalletManagementViewController.h"
 #import "LoginConfirmViewController.h"
-#import "VoteAlertView.h"
-#import "RequestTimeoutViewController.h"
+#import "DposAlertView.h"
+#import "ScanCodeFailureViewController.h"
 
 #import "RegisteredModel.h"
 #import "DistributionModel.h"
 
 #import "LoginConfirmModel.h"
+#import "ApplyNodeModel.h"
+#import "TransferResultsViewController.h"
+#import "RequestTimeoutViewController.h"
 
 #import "UINavigationController+Extension.h"
 
@@ -53,6 +56,8 @@
 @property (nonatomic, assign) UIStatusBarStyle statusBarStyle;
 @property (nonatomic, strong) NSString * assetsCacheDataKey;
 
+@property (nonatomic, strong) NSMutableArray * transferInfoArray;
+
 @end
 
 @implementation AssetsViewController
@@ -65,6 +70,13 @@ static UIButton * _noBackup;
         _listArray = [NSMutableArray array];
     }
     return _listArray;
+}
+- (NSMutableArray *)transferInfoArray
+{
+    if (!_transferInfoArray) {
+        _transferInfoArray = [NSMutableArray array];
+    }
+    return _transferInfoArray;
 }
 
 - (void)viewDidLoad {
@@ -105,32 +117,12 @@ static UIButton * _noBackup;
     [super viewDidDisappear:animated];
     [self.tableView.mj_header endRefreshing];
 }
-
-- (void)setNetworkEnvironment
-{
-    if ([[NSUserDefaults standardUserDefaults] boolForKey:If_Switch_TestNetwork]) {
-        self.networkPrompt = [UIButton createNavButtonWithTitle:Localized(@"TestNetworkPrompt") Target:nil Selector:nil];
-        
-        self.navigationItem.leftBarButtonItem = [[UIBarButtonItem alloc] initWithCustomView:self.networkPrompt];
-        self.headerImageView.image = [UIImage imageNamed:@"assets_header_test"];
-//        self.headerImageView.backgroundColor = COLOR(@"4B4A66");
-//        self.headerImageView.image = nil;
-    } else {
-        self.navigationItem.leftBarButtonItem = nil;
-        self.headerImageView.image = self.headerImage;
-//        self.headerImageView.backgroundColor = COLOR(@"645FC3");
-    }
-//    self.navBackgroundColor = self.headerImageView.backgroundColor;
-//    self.navTitleColor = self.navTintColor = [UIColor clearColor];
-//    self.navAlpha = 1.0;
-}
-- (UIStatusBarStyle)preferredStatusBarStyle{
+- (UIStatusBarStyle)preferredStatusBarStyle {
     return _statusBarStyle;
 }
-
+#pragma mark - Asset List Data
 - (void)reloadData
 {
-//    [self setNetworkEnvironment];
     self.noNetWork.hidden = YES;
     [self.tableView.mj_header beginRefreshing];
 }
@@ -139,26 +131,6 @@ static UIButton * _noBackup;
     self.tableView.mj_header = [CustomRefreshHeader headerWithRefreshingTarget:self refreshingAction:@selector(loadData)];
     self.tableView.mj_header.automaticallyChangeAlpha = YES;
     self.tableView.mj_header.ignoredScrollViewContentInsetTop = _headerViewH - NavBarH;
-//    [self.tableView.mj_header beginRefreshing];
-}
-- (void)setDataWithResponseObject:(id)responseObject
-{
-    [self.tableView addSubview:self.headerBg];
-    [self.tableView insertSubview:self.headerBg atIndex:0];
-    self.listArray = [AssetsListModel mj_objectArrayWithKeyValuesArray:responseObject[@"data"] [@"tokenList"]];
-    NSString * amountStr = responseObject[@"data"][@"totalAmount"];
-    if ([amountStr isEqualToString:@"~"]) {
-        self.totalAssets.text = amountStr;
-    } else {
-        NSString * currencyUnit = [AssetCurrencyModel getCurrencyUnitWithAssetCurrency:[[[NSUserDefaults standardUserDefaults] objectForKey:Current_Currency] integerValue]];
-        NSString * amountString = [NSString stringWithFormat:@"≈%@%@", amountStr, currencyUnit];
-        NSMutableAttributedString * attr = [Encapsulation attrWithString:amountString preFont:FONT(36) preColor:[UIColor whiteColor] index:amountString.length - currencyUnit.length sufFont:FONT(18) sufColor:[UIColor whiteColor] lineSpacing:0];
-        // @(FONT(18).lineHeight)/2 + ((FONT(36).descender - FONT(18).descender)))
-        [attr addAttribute:NSBaselineOffsetAttributeName value:@((FONT(18).lineHeight)/2) range:NSMakeRange(amountString.length - currencyUnit.length, currencyUnit.length)];
-        self.totalAssets.attributedText = attr;
-    }
-    [self setNetworkEnvironment];
-    [self.tableView reloadData];
 }
 - (void)loadData
 {
@@ -187,7 +159,6 @@ static UIButton * _noBackup;
             [MBProgressHUD showTipMessageInWindow:[ErrorTypeTool getDescriptionWithErrorCode:code]];
         }
         [self.tableView.mj_header endRefreshing];
-//        self.noNetWork.hidden = YES;
         self.statusBarStyle = UIStatusBarStyleLightContent;
         [self.navigationController setNeedsStatusBarAppearanceUpdate];
     } failure:^(NSError *error) {
@@ -201,7 +172,39 @@ static UIButton * _noBackup;
         }
     }];
 }
-
+- (void)setDataWithResponseObject:(id)responseObject
+{
+    [self.tableView addSubview:self.headerBg];
+    [self.tableView insertSubview:self.headerBg atIndex:0];
+    self.listArray = [AssetsListModel mj_objectArrayWithKeyValuesArray:responseObject[@"data"] [@"tokenList"]];
+    NSString * amountStr = responseObject[@"data"][@"totalAmount"];
+    if ([amountStr isEqualToString:@"~"]) {
+        self.totalAssets.text = amountStr;
+    } else {
+        NSString * currencyUnit = [AssetCurrencyModel getCurrencyUnitWithAssetCurrency:[[[NSUserDefaults standardUserDefaults] objectForKey:Current_Currency] integerValue]];
+        NSString * amountString = [NSString stringWithFormat:@"≈%@%@", amountStr, currencyUnit];
+        NSMutableAttributedString * attr = [Encapsulation attrWithString:amountString preFont:FONT(36) preColor:[UIColor whiteColor] index:amountString.length - currencyUnit.length sufFont:FONT(18) sufColor:[UIColor whiteColor] lineSpacing:0];
+        // @(FONT(18).lineHeight)/2 + ((FONT(36).descender - FONT(18).descender)))
+        [attr addAttribute:NSBaselineOffsetAttributeName value:@((FONT(18).lineHeight)/2) range:NSMakeRange(amountString.length - currencyUnit.length, currencyUnit.length)];
+        self.totalAssets.attributedText = attr;
+    }
+    [self setNetworkEnvironment];
+    [self.tableView reloadData];
+}
+#pragma mark - Switching Network Environment
+- (void)setNetworkEnvironment
+{
+    if ([[NSUserDefaults standardUserDefaults] boolForKey:If_Switch_TestNetwork]) {
+        self.networkPrompt = [UIButton createNavButtonWithTitle:Localized(@"TestNetworkPrompt") Target:nil Selector:nil];
+        
+        self.navigationItem.leftBarButtonItem = [[UIBarButtonItem alloc] initWithCustomView:self.networkPrompt];
+        self.headerImageView.image = [UIImage imageNamed:@"assets_header_test"];
+    } else {
+        self.navigationItem.leftBarButtonItem = nil;
+        self.headerImageView.image = self.headerImage;
+    }
+}
+#pragma mark - Scan code registration / issue
 - (void)getAssetsStateData
 {
     NSString * currentWalletAddress = CurrentWalletAddress;
@@ -242,6 +245,7 @@ static UIButton * _noBackup;
     }];
 }
 
+#pragma mark - Scan code login
 - (void)getScanCodeLoginDataWithUUid:(NSString *)uuid
 {
     [[HTTPManager shareManager] getScanCodeLoginDataWithAddress:[[[AccountTool shareTool] account] identityAddress] uuid:uuid success:^(id responseObject) {
@@ -251,8 +255,9 @@ static UIButton * _noBackup;
             VC.loginConfirmModel = [LoginConfirmModel mj_objectWithKeyValues:[responseObject objectForKey:@"data"]];
             [self.navigationController pushViewController:VC animated:NO];
         } else {
-            RequestTimeoutViewController * VC = [[RequestTimeoutViewController alloc] init];
-            VC.promptStr = Localized(@"Overdue");
+            ScanCodeFailureViewController * VC = [[ScanCodeFailureViewController alloc] init];
+            VC.exceptionPromptStr = Localized(@"Overdue");
+            VC.promptStr = Localized(@"RefreshQRCode");
             [self.navigationController pushViewController:VC animated:NO];
         }
     } failure:^(NSError *error) {
@@ -302,24 +307,6 @@ static UIButton * _noBackup;
         
         _headerViewBg = [[UIView alloc] initWithFrame:CGRectMake(0, 0, DEVICE_WIDTH, _headerViewH)];
         [headerBg addSubview:_headerViewBg];
-        
-//        UIButton * wallet = [UIButton createButtonWithNormalImage:@"nav_wallet" SelectedImage:@"nav_wallet" Target:self Selector:@selector(walletAction)];
-//        [_headerViewBg addSubview:wallet];
-//        [wallet mas_makeConstraints:^(MASConstraintMaker *make) {
-//            make.top.equalTo(self.headerViewBg.mas_top).offset(StatusBarHeight);
-//            make.right.equalTo(self.headerViewBg.mas_right).offset(-Margin_15);
-//            make.height.mas_equalTo(Margin_40);
-//        }];
-//        UILabel * walletName = [[UILabel alloc] init];
-//        walletName.font = FONT(21);
-//        walletName.textColor = [UIColor whiteColor];
-//        walletName.text = @"钱包名称钱包名称钱包名称钱包名称钱包名称钱包名称钱包名称钱包名称钱包名称钱包名称";
-//        [_headerViewBg addSubview:walletName];
-//        [walletName mas_makeConstraints:^(MASConstraintMaker *make) {
-//            make.top.equalTo(self.headerViewBg.mas_top).offset(StatusBarHeight + Margin_10);
-//            make.centerX.equalTo(self.headerViewBg);
-//            make.width.mas_lessThanOrEqualTo(DEVICE_WIDTH - ScreenScale(100));
-//        }];
     
         _totalAssets = [[UILabel alloc] init];
         _totalAssets.font = FONT(36);
@@ -395,20 +382,12 @@ static UIButton * _noBackup;
         _headerBg.y = offsetY;
         _headerBg.height = - offsetY;
         _headerImageView.alpha = 1.0;
-//        self.navTitleColor = self.navTintColor = [UIColor clearColor];
-//        self.navAlpha = 0;
-//        self.scanButton.selected = NO;
     } else {
         CGFloat min = - _headerViewH;
         CGFloat progress = (offsetY / min);
         _headerBg.y = -_headerViewH;
         _headerBg.height = _headerViewH;
         _headerImageView.alpha = progress;
-//        _statusBarStyle = (progress < 0.5) ? UIStatusBarStyleDefault : UIStatusBarStyleLightContent;
-//        [self.navigationController setNeedsStatusBarAppearanceUpdate];
-//        self.navTitleColor = self.navTintColor = (progress < 0.5) ? TITLE_COLOR : [UIColor clearColor];
-//        self.navAlpha = 1 - progress;
-//        self.scanButton.selected = (progress < 0.5) ? YES : NO;
     }
     _headerImageView.frame = CGRectMake(0, 0, DEVICE_WIDTH, _headerBg.height - Margin_15);
     _headerViewBg.y = _headerBg.height - _headerViewH;
@@ -426,7 +405,7 @@ static UIButton * _noBackup;
             [self scanAction];
             break;
         case 1:
-            [self QRCodeAction];
+            [self showWalletAddress];
             break;
         case 2:
             [self addAssetsAcrion];
@@ -445,7 +424,7 @@ static UIButton * _noBackup;
             [self getScanCodeLoginDataWithUUid:[stringValue substringFromIndex:[Account_Center_Prefix length]]];
             return;
         } else if ([stringValue hasPrefix:Dpos_Prefix]) {
-            [self getDposWithStr: stringValue];
+            [self getApplyNodeDataWithStr:[stringValue substringFromIndex:[Dpos_Prefix length]]];
             return;
         }
         NSOperationQueue * queue = [[NSOperationQueue alloc] init];
@@ -477,8 +456,8 @@ static UIButton * _noBackup;
     [scanner setTitleColor:[UIColor whiteColor] tintColor:MAIN_COLOR];
     [self showDetailViewController:scanner sender:nil];
 }
-#pragma mark - QRCode
-- (void)QRCodeAction
+#pragma mark - wallet address
+- (void)showWalletAddress
 {
     WalletAddressAlertView * alertView = [[WalletAddressAlertView alloc] initWithWalletAddress:CurrentWalletAddress confrimBolck:^{
         [[UIPasteboard generalPasteboard] setString:CurrentWalletAddress];
@@ -489,52 +468,71 @@ static UIButton * _noBackup;
     [alertView showInWindowWithMode:CustomAnimationModeShare inView:nil bgAlpha:AlertBgAlpha needEffectView:NO];
 }
 
-#pragma mark - addAssets
+#pragma mark - add Assets
 - (void)addAssetsAcrion
 {
     AddAssetsViewController * VC = [[AddAssetsViewController alloc] init];
     [self.navigationController pushViewController:VC animated:NO];
 }
 #pragma mark - Dpos
-- (void)getDposWithStr:(NSString *)str
+- (void)getApplyNodeDataWithStr:(NSString *)str
+{
+    [[HTTPManager shareManager] getDposApplyNodeDataWithQRcodeSessionId:str success:^(id responseObject) {
+        NSInteger code = [[responseObject objectForKey:@"errorCode"] integerValue];
+        if (code == Success_Code) {
+            ApplyNodeModel * applyNodeModel = [ApplyNodeModel mj_objectWithKeyValues:[responseObject objectForKey:@"data"]];
+            [self getDpos:applyNodeModel];
+        } else {
+            ScanCodeFailureViewController * VC = [[ScanCodeFailureViewController alloc] init];
+            VC.exceptionPromptStr = Localized(@"Overdue");
+            VC.promptStr = Localized(@"RefreshQRCode");
+            [self.navigationController pushViewController:VC animated:NO];
+        }
+    } failure:^(NSError *error) {
+
+    }];
+}
+- (void)getDpos:(ApplyNodeModel *)applyNodeModel
 {
     __weak typeof(self) weakSelf = self;
-    VoteAlertView * alertView = [[VoteAlertView alloc] initWithText:@"投票" confrimBolck:^{
-        dispatch_after(dispatch_time(DISPATCH_TIME_NOW, (int64_t)(0.5 * NSEC_PER_SEC)), dispatch_get_main_queue(), ^{
-            PasswordAlertView * alertView = [[PasswordAlertView alloc] initWithPrompt:Localized(@"TransactionWalletPWPrompt") walletKeyStore:CurrentWalletKeyStore isAutomaticClosing:YES confrimBolck:^(NSString * _Nonnull password, NSArray * _Nonnull words) {
-                [weakSelf getDataWithPassword:password parmenterStr:str];
-            } cancelBlock:^{
-                
-            }];
-            [alertView showInWindowWithMode:CustomAnimationModeAlert inView:nil bgAlpha:AlertBgAlpha needEffectView:NO];
-            [alertView.PWTextField becomeFirstResponder];
-        });
+    DposAlertView * alertView = [[DposAlertView alloc] initWithDpos:applyNodeModel confrimBolck:^{
+        [weakSelf getDataWithApplyNodeModel:applyNodeModel];
     } cancelBlock:^{
         
     }];
     [alertView showInWindowWithMode:CustomAnimationModeShare inView:nil bgAlpha:AlertBgAlpha needEffectView:NO];
 }
-- (void)getDataWithPassword:(NSString *)password parmenterStr:(NSString *)parmenterStr
+// Transaction confirmation and submission
+- (void)getDataWithApplyNodeModel:(ApplyNodeModel *)applyNodeModel
 {
-    [[HTTPManager shareManager] setTransferDataWithTokenType:Token_Type_BU password:password destAddress:@"" assets:@"" decimals:Decimals_BU feeLimit:@"" notes:@"" code:@"" issuer:@"" success:^(TransactionResultModel *resultModel) {
-        /*
-        [self.transferInfoArray addObject:[DateTool getDateStringWithTimeStr:[NSString stringWithFormat:@"%lld", resultModel.transactionTime]]];
-        [self.transferInfoArray replaceObjectAtIndex:2 withObject:[NSString stringAppendingBUWithStr:resultModel.actualFee]];
-        TransferResultsViewController * VC = [[TransferResultsViewController alloc] init];
-        if (resultModel.errorCode == Success_Code) {
-            VC.state = YES;
-        } else {
-            VC.state = NO;
-            //            [MBProgressHUD showTipMessageInWindow:[ErrorTypeTool getDescription:resultModel.errorCode]];
-        }
-        VC.transferInfoArray = self.transferInfoArray;
-        [self.navigationController pushViewController:VC animated:NO];
-         */
-    } failure:^(TransactionResultModel *resultModel) {
-        /*
-        RequestTimeoutViewController * VC = [[RequestTimeoutViewController alloc] init];
-        [self.navigationController pushViewController:VC animated:NO];
-         */
+    [[HTTPManager shareManager] setContractTransactionWithQRcodeSessionId:applyNodeModel.qrcodeSessionId destAddress:applyNodeModel.destAddress assets:applyNodeModel.amount code:applyNodeModel.script notes:applyNodeModel.qrRemark success:^(id responseObject) {
+        PasswordAlertView * alertView = [[PasswordAlertView alloc] initWithPrompt:Localized(@"TransactionWalletPWPrompt") walletKeyStore:CurrentWalletKeyStore isAutomaticClosing:YES confrimBolck:^(NSString * _Nonnull password, NSArray * _Nonnull words) {
+            [[HTTPManager shareManager] submitContractTransactionPassword:password success:^(TransactionResultModel *resultModel) {
+                self.transferInfoArray = [NSMutableArray arrayWithObjects:applyNodeModel.destAddress, [NSString stringAppendingBUWithStr:applyNodeModel.amount], [NSString stringAppendingBUWithStr:resultModel.actualFee], nil];
+                if (NULLString(applyNodeModel.qrRemark)) {
+                    [self.transferInfoArray addObject:applyNodeModel.qrRemark];
+                }
+                [self.transferInfoArray addObject:[DateTool getDateStringWithTimeStr:[NSString stringWithFormat:@"%lld", resultModel.transactionTime]]];
+                TransferResultsViewController * VC = [[TransferResultsViewController alloc] init];
+                if (resultModel.errorCode == Success_Code) {
+                    VC.state = YES;
+                } else {
+                    VC.state = NO;
+                    //            [MBProgressHUD showTipMessageInWindow:[ErrorTypeTool getDescription:resultModel.errorCode]];
+                }
+                VC.transferInfoArray = self.transferInfoArray;
+                [self.navigationController pushViewController:VC animated:NO];
+            } failure:^(TransactionResultModel *resultModel) {
+                RequestTimeoutViewController * VC = [[RequestTimeoutViewController alloc] init];
+                [self.navigationController pushViewController:VC animated:NO];
+            }];
+        } cancelBlock:^{
+            
+        }];
+        [alertView showInWindowWithMode:CustomAnimationModeAlert inView:nil bgAlpha:AlertBgAlpha needEffectView:NO];
+        [alertView.PWTextField becomeFirstResponder];
+    } failure:^(NSError *error) {
+        
     }];
 }
 
@@ -642,12 +640,7 @@ static UIButton * _noBackup;
 - (void)noBackupAction:(UIButton *)button
 {
     button.selected = YES;
-//    [self.tableView beginUpdates];
     [self.tableView reloadData];
-//    [self.tableView endUpdates];
-//    [UIView performWithoutAnimation:^{
-//        [self.tableView reloadSections:[NSIndexSet indexSetWithIndex:0] withRowAnimation:UITableViewRowAnimationNone];
-//    }];
     NSUserDefaults * defaults = [NSUserDefaults standardUserDefaults];
     [defaults setBool:YES forKey:If_Skip];
     [defaults synchronize];

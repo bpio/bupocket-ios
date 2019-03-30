@@ -110,6 +110,23 @@
                                  appId:(NSString *)appId
                                success:(void (^)(id responseObject))success
                                failure:(void (^)(NSError *error))failure;
+// dpos
+- (void)getDposApplyNodeDataWithQRcodeSessionId:(NSString *)QRcodeSessionId
+                                        success:(void (^)(id responseObject))success
+                                        failure:(void (^)(NSError *error))failure;
+// Contract Transaction
+- (void)setContractTransactionWithQRcodeSessionId:(NSString *)qrcodeSessionId
+                                      destAddress:(NSString *)destAddress
+                                           assets:(NSString *)assets
+                                             code:(NSString *)code
+                                            notes:(NSString *)notes
+                                          success:(void (^)(id responseObject))success
+                                          failure:(void (^)(NSError *error))failure;
+
+// submit Contract Transaction / Transaction Status
+- (void)submitContractTransactionPassword:(NSString *)password
+                                  success:(void (^)(TransactionResultModel * resultModel))success
+                                  failure:(void (^)(TransactionResultModel * resultModel))failure;
 
 #pragma mark - SDK
 // Check the balance

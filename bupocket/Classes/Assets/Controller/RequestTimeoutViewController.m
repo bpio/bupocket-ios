@@ -23,7 +23,7 @@
 {
     CustomButton * requestTimeout = [[CustomButton alloc] init];
     requestTimeout.layoutMode = VerticalNormal;
-    [requestTimeout setTitle:self.promptStr forState:UIControlStateNormal];
+    [requestTimeout setTitle:Localized(@"RequestTimeout") forState:UIControlStateNormal];
     // TransferFailure
     [requestTimeout setTitleColor:COLOR_6 forState:UIControlStateNormal];
     requestTimeout.titleLabel.font = FONT(16);

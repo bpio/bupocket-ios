@@ -52,7 +52,7 @@ static NSString * const NodeCellID = @"NodeCellID";
     [super layoutSubviews];
     CGFloat numberW = 0;
     if ([self.reuseIdentifier isEqualToString:NodePlanCellID]) {
-        numberW = (DEVICE_WIDTH - ScreenScale(110)) / 2;
+        numberW = (DEVICE_WIDTH - ScreenScale(100)) / 2;
         [self.listBg mas_makeConstraints:^(MASConstraintMaker *make) {
             make.left.equalTo(self.contentView.mas_left).offset(Margin_10);
             make.right.equalTo(self.contentView.mas_right).offset(-Margin_10);
@@ -60,14 +60,14 @@ static NSString * const NodeCellID = @"NodeCellID";
             make.bottom.equalTo(self.contentView.mas_bottom).offset(-Margin_5);
         }];
     } else if ([self.reuseIdentifier isEqualToString:NodeCellID]) {
-        numberW = (DEVICE_WIDTH - ScreenScale(90)) / 2;
+        numberW = (DEVICE_WIDTH - ScreenScale(80)) / 2;
         [self.listBg mas_makeConstraints:^(MASConstraintMaker *make) {
             make.edges.equalTo(self.contentView);
         }];
     }
     self.contentView.backgroundColor = self.contentView.superview.superview.backgroundColor;
     [self.listImage mas_makeConstraints:^(MASConstraintMaker *make) {
-        make.left.equalTo(self.listBg.mas_left).offset(Margin_15);
+        make.left.equalTo(self.listBg.mas_left).offset(Margin_10);
         make.top.equalTo(self.listBg.mas_top).offset(Margin_15);
         make.width.height.mas_equalTo(Margin_40);
     }];
@@ -78,7 +78,7 @@ static NSString * const NodeCellID = @"NodeCellID";
     
     [self.name mas_makeConstraints:^(MASConstraintMaker *make) {
         make.top.equalTo(self.listBg.mas_top).offset(Margin_20);
-        make.left.equalTo(self.listImage.mas_right).offset(Margin_15);
+        make.left.equalTo(self.listImage.mas_right).offset(Margin_10);
         make.height.mas_equalTo(Margin_15);
 //        make.right.mas_lessThanOrEqualTo(self.nodeType.mas_left).offset(-Margin_15);
     }];
@@ -105,7 +105,7 @@ static NSString * const NodeCellID = @"NodeCellID";
     }];
     [self.numberOfVotes mas_makeConstraints:^(MASConstraintMaker *make) {
 //        make.left.mas_equalTo(ScreenScale(100) + (DEVICE_WIDTH - ScreenScale(120)) / 2);
-        make.left.mas_equalTo(ScreenScale(80) + numberW);
+        make.left.mas_equalTo(ScreenScale(70) + numberW);
         make.top.width.equalTo(self.votesObtained);
 //        make.right.mas_lessThanOrEqualTo(self.listBg.mas_right).offset(-Margin_10);
     }];

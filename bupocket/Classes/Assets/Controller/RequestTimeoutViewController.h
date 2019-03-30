@@ -12,8 +12,6 @@ NS_ASSUME_NONNULL_BEGIN
 
 @interface RequestTimeoutViewController : BaseViewController
 
-@property (nonatomic, copy) NSString * promptStr;
-
 @end
 
 NS_ASSUME_NONNULL_END

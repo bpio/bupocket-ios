@@ -7,7 +7,7 @@
 //
 
 #import "LoginConfirmViewController.h"
-#import "LoginExceptionViewController.h"
+#import "ScanCodeFailureViewController.h"
 #import <SDWebImage/UIButton+WebCache.h>
 
 @interface LoginConfirmViewController ()
@@ -33,7 +33,7 @@
     [self.view addSubview:self.scrollView];
     
     UIImageView * icon = [[UIImageView alloc] init];
-    [icon sd_setImageWithURL:[NSURL URLWithString:self.loginConfirmModel.appPic] placeholderImage:[UIImage imageNamed:@"placeholder"]];
+    [icon sd_setImageWithURL:[NSURL URLWithString:self.loginConfirmModel.appPic] placeholderImage:[UIImage imageNamed:@"placeholderBg"]];
     [self.scrollView addSubview:icon];
     [icon mas_makeConstraints:^(MASConstraintMaker *make) {
         make.top.mas_equalTo(Margin_20);
@@ -97,9 +97,11 @@
     [[HTTPManager shareManager] getConfirmLoginDataWithAddress:[[[AccountTool shareTool] account] identityAddress] uuid:self.loginConfirmModel.uuid appId:self.loginConfirmModel.appId success:^(id responseObject) {
         NSInteger code = [[responseObject objectForKey:@"errCode"] integerValue];
         if (code == Success_Code) {
-
+            [self.navigationController popViewControllerAnimated:NO];
         } else {
-            LoginExceptionViewController * VC = [[LoginExceptionViewController alloc] init];
+            ScanCodeFailureViewController * VC = [[ScanCodeFailureViewController alloc] init];
+            VC.exceptionPromptStr = Localized(@"LoginException");
+            VC.promptStr = Localized(@"LoginExceptionPrompt");
             [self.navigationController pushViewController:VC animated:NO];
         }
     } failure:^(NSError *error) {

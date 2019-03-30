@@ -11,21 +11,14 @@
 
 #define SERVER_COMBINE_API(API_BASE, API_INTERFACE) [NSString stringWithFormat:@"%@%@",API_BASE,API_INTERFACE]
 
-/*
-#define URLPREFIX @"http://52.80.218.114:8081/"
-#define URL_SDK @"http://seed1.bumotest.io:26002"
-#define URLPREFIX_Socket @"http://192.168.6.98:3100"
- */
-
 #define WEB_SERVER_DOMAIN @"https://api-bp.bumo.io/"
 #define BUMO_NODE_URL @"https://wallet-node.bumo.io"
 #define PUSH_MESSAGE_SOCKET_URL @"https://ws-tools.bumo.io"
 
-#define WEB_SERVER_DOMAIN_TEST @"http://52.80.218.114:8081/"
-#define WEB_SERVER_DOMAIN_TEST_TMP @"http://52.80.218.114:9090/"
-//#define WEB_SERVER_DOMAIN_TEST @"http://192.168.6.97:8081/"
+#define WEB_SERVER_DOMAIN_TEST @"http://192.168.6.97:5648/"
 //#define WEB_SERVER_DOMAIN_TEST @"http://api-bp.bumotest.io/"
-#define BUMO_NODE_URL_TEST @"https://wallet-node.bumotest.io"
+//#define BUMO_NODE_URL_TEST @"https://wallet-node.bumotest.io"
+#define BUMO_NODE_URL_TEST @"http://192.168.21.35:36002"
 #define PUSH_MESSAGE_SOCKET_URL_TEST @"https://ws-tools.bumotest.io"
 
 #define Information_URL @"https://m-news.bumo.io"
@@ -47,9 +40,18 @@
 
 // Account center
 #define Account_Center_Prefix @"bumo://login/"
-#define Account_Center_ScanQRLogin @"qr/v1/userScanQrLogin"
-#define Account_Center_Confirm_Login @"qr/v1/userScanQrConfirmLogin"
+//#define Account_Center_ScanQRLogin @"qr/v1/userScanQrLogin"
+#define Account_Center_ScanQRLogin @"login/v1/qr"
+#define Account_Center_Confirm_Login @"login/v1/qr/confirm"
+
 // dpos
 #define Dpos_Prefix @"bumo://dpos/"
+#define Apply_Node @"nodeServer/qr/v1/content"
+#define Apply_Node_Confirm @"nodeServer/tx/v1/confirm"
+#define Node_plan @""
+// 节点撤票
+#define Node_Withdrawal @"nodeServer/node/v1/vote/revoke/user"
+// 领取节点奖励
+#define Receive_Node_Award @"nodeServer/node/v1/get/reward/user"
 
 #endif /* URLMacros_h */

@@ -59,7 +59,7 @@ static NSString * const NodeRecordsCellID = @"NodeRecordsCellID";
 - (void)layoutSubviews
 {
     [super layoutSubviews];
-    CGFloat width = (DEVICE_WIDTH - ScreenScale(70)) / 4;
+    CGFloat width = (DEVICE_WIDTH - ScreenScale(70)) / 6;
     [self.listBg mas_makeConstraints:^(MASConstraintMaker *make) {
         make.left.equalTo(self.contentView.mas_left).offset(Margin_10);
         make.right.equalTo(self.contentView.mas_right).offset(-Margin_10);
@@ -94,17 +94,19 @@ static NSString * const NodeRecordsCellID = @"NodeRecordsCellID";
     [self.number mas_makeConstraints:^(MASConstraintMaker *make) {
         make.top.equalTo(self.recordType.mas_bottom).offset(Margin_15);
         make.left.equalTo(self.recordType);
-        make.width.mas_equalTo(width);
+        make.width.mas_equalTo(width * 2);
         //        make.right.mas_lessThanOrEqualTo(self.nodeType.mas_left).offset(-Margin_15);
     }];
     [self.state mas_makeConstraints:^(MASConstraintMaker *make) {
         make.left.equalTo(self.number.mas_right).offset(Margin_10);
-        make.centerY.width.equalTo(self.number);
+        make.centerY.equalTo(self.number);
+        make.width.mas_equalTo(width);
     }];
     [self.date mas_makeConstraints:^(MASConstraintMaker *make) {
         make.left.equalTo(self.state.mas_right).offset(Margin_10);
         make.right.equalTo(self.listBg.mas_right).offset(-Margin_15);
         make.centerY.equalTo(self.number);
+        make.width.mas_equalTo(width * 3);
     }];
 }
 - (UIView *)listBg

@@ -156,7 +156,7 @@
         _feeTips = [[UILabel alloc] init];
         _feeTips.textColor = PLACEHOLDER_COLOR;
         _feeTips.font = FONT(12);
-        _feeTips.text = [NSString stringWithFormat:Localized(@"The maximum transaction cost is about %@ BU"), @"0.01"];
+        _feeTips.text = [NSString stringWithFormat:Localized(@"The maximum transaction cost is about %@ BU"), TransactionCost_MIN];
         _feeTips.textAlignment = NSTextAlignmentRight;
     }
     return _feeTips;

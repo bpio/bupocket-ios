@@ -343,6 +343,8 @@
 "ConfirmLogin" = "确认登录";
 "LoginException" = "该钱包账户未在该平台绑定";
 "LoginExceptionPrompt" = "请联系该平台管理进行绑定";
+"RefreshQRCode" = "请刷新二维码，再次进行扫码";
+"Parameter" = "参数";
 // 发现
 "CardBag" = "卡包";
 "NodePlan" = "节点计划";
@@ -355,6 +357,7 @@
 "ConsensusNode" = "共识节点";
 "EcologicalNodes" = "生态节点";
 "InterdependentNode" = "和我相关的节点";
+"RelevantNodes" = "勾选后过滤出和我相关的节点信息，如我的投过票的节点和我是节点发起人（节点资金地址是本钱包地址）的节点";
 "Search" = "搜索";
 "CancellationOfVotes" = "撤销投票";
 "VotingRecords" = "投票记录";
@@ -377,11 +380,14 @@
 "ContractCode" = "合约代码";
 "ConfirmTicketWithdrawal" = "确认撤票";
 "After successful withdrawal, the frozen BU is returned to the original purse\n（%@）" = "撤票成功后，将冻结的BU退回至原钱包\n（%@）";
-// 投票
-"ConfirmationTurnOut" = "确认转出";
+// 交易
+"ConfirmTransaction" = "确认交易";
 "MaximumTransactionCosts" = "最多支付交易费用（BU）";
 "Overdue" = "请求已过期";
-
+"Initiator" = "发起方";
+"CounterAccount" = "对方账户";
+"Details" = "详情";
+"TransactionCosts" = "交易费用";
 
 // 错误信息
 "LoadFailure" = "加载失败";
