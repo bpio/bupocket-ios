@@ -22,6 +22,8 @@
 #import "ExportKeystoreViewController.h"
 #import "ExportPrivateKeyViewController.h"
 #import "ContactViewController.h"
+#import "FindViewController.h"
+#import "VotingRecordsViewController.h"
 
 @interface NavigationViewController ()<UINavigationControllerDelegate>
 
@@ -75,7 +77,9 @@
                              [viewController isKindOfClass:[ImportWalletViewController class]] ||
                              [viewController isKindOfClass:[ExportKeystoreViewController class]] ||
                              [viewController isKindOfClass:[ExportPrivateKeyViewController class]] ||
-                             [viewController isKindOfClass:[ContactViewController class]]
+                             [viewController isKindOfClass:[ContactViewController class]] ||
+                             [viewController isKindOfClass:[FindViewController class]] ||
+                             [viewController isKindOfClass:[VotingRecordsViewController class]]
                              );
     if (@available(iOS 11.0, *)) {
         [self.navigationBar setPrefersLargeTitles:!isSetLargeTitles];

@@ -97,7 +97,7 @@
             [self.navigationController pushViewController:VC animated:NO];
         } cancelBlock:^{
         }];
-        [alertView showInWindowWithMode:CustomAnimationModeAlert inView:nil bgAlpha:0.2 needEffectView:NO];
+        [alertView showInWindowWithMode:CustomAnimationModeAlert inView:nil bgAlpha:AlertBgAlpha needEffectView:NO];
         [alertView.PWTextField becomeFirstResponder];
     }
 }

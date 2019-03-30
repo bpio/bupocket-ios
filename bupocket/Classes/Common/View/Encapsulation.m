@@ -13,9 +13,13 @@
 // Setting the adaptive width of label
 + (CGRect)rectWithText:(NSString *)text font:(UIFont *)font textWidth:(CGFloat)textWidth
 {
-    NSDictionary *dic = @{NSFontAttributeName:font};
+    NSMutableParagraphStyle * style = [[NSParagraphStyle defaultParagraphStyle] mutableCopy];
+    style.lineBreakMode = NSLineBreakByWordWrapping;
+    style.alignment = NSTextAlignmentLeft;
+
+    NSDictionary *dic = @{NSFontAttributeName:font, NSParagraphStyleAttributeName:style};
     CGSize size = CGSizeMake(textWidth, CGFLOAT_MAX);
-    CGRect rect = [text boundingRectWithSize:size options:NSStringDrawingUsesLineFragmentOrigin attributes:dic context:nil];
+    CGRect rect = [text boundingRectWithSize:size options:NSStringDrawingUsesLineFragmentOrigin | NSStringDrawingUsesFontLeading attributes:dic context:nil];
     return rect;
 }
 // Setting the adaptive height of label
@@ -83,7 +87,7 @@
     paraStyle.alignment = NSTextAlignmentLeft;
     paraStyle.lineSpacing = lineSpacing;
     paraStyle.hyphenationFactor = 1.0;
-    paraStyle.firstLineHeadIndent =0.0;
+    paraStyle.firstLineHeadIndent = 0.0;
     paraStyle.paragraphSpacingBefore =0.0;
     paraStyle.headIndent = 0;
     paraStyle.tailIndent = 0;

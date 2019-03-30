@@ -94,6 +94,9 @@
 		954371742199234100915BBE /* SettingViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 954371732199234100915BBE /* SettingViewController.m */; };
 		9549EC66219C0CF800307255 /* CreateTipsAlertView.m in Sources */ = {isa = PBXBuildFile; fileRef = 9549EC65219C0CF800307255 /* CreateTipsAlertView.m */; };
 		9549EC70219D075F00307255 /* ClearCacheTool.m in Sources */ = {isa = PBXBuildFile; fileRef = 9549EC6F219D075E00307255 /* ClearCacheTool.m */; };
+		954F231122433C690090E967 /* FindViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 954F231022433C690090E967 /* FindViewController.m */; };
+		954F23142243842E0090E967 /* NodePlanViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 954F23132243842E0090E967 /* NodePlanViewController.m */; };
+		954F2317224386C70090E967 /* NodePlanViewCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 954F2316224386C70090E967 /* NodePlanViewCell.m */; };
 		9569288321D7541400B7721A /* libc++.tbd in Frameworks */ = {isa = PBXBuildFile; fileRef = 9569288221D7541400B7721A /* libc++.tbd */; };
 		956CD42121B016D1004DC1FA /* ListModel.m in Sources */ = {isa = PBXBuildFile; fileRef = 956CD42021B016D1004DC1FA /* ListModel.m */; };
 		9579EB5221BABE6300051EDB /* MBProgressHUD+JDragon.bundle in Resources */ = {isa = PBXBuildFile; fileRef = 9579EB5021BABE6300051EDB /* MBProgressHUD+JDragon.bundle */; };
@@ -121,6 +124,14 @@
 		959726EE21E8C84F0022CB78 /* PasswordAlertView.m in Sources */ = {isa = PBXBuildFile; fileRef = 959726ED21E8C84F0022CB78 /* PasswordAlertView.m */; };
 		959726F121E8CAAA0022CB78 /* WalletAddressAlertView.m in Sources */ = {isa = PBXBuildFile; fileRef = 959726F021E8CAAA0022CB78 /* WalletAddressAlertView.m */; };
 		959726F421E8D1970022CB78 /* ExplainInfoViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 959726F321E8D1970022CB78 /* ExplainInfoViewController.m */; };
+		959E28E42244C87D006FCA30 /* VotingRecordsViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 959E28E32244C87D006FCA30 /* VotingRecordsViewController.m */; };
+		959E28E72244CE0A006FCA30 /* VotingRecordsViewCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 959E28E62244CE0A006FCA30 /* VotingRecordsViewCell.m */; };
+		959E28F02248B998006FCA30 /* LoginConfirmViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 959E28EF2248B998006FCA30 /* LoginConfirmViewController.m */; };
+		959E28F92248CC93006FCA30 /* CancellationOfVotingAlertView.m in Sources */ = {isa = PBXBuildFile; fileRef = 959E28F82248CC93006FCA30 /* CancellationOfVotingAlertView.m */; };
+		959E28FF224A1B6A006FCA30 /* LoginConfirmModel.m in Sources */ = {isa = PBXBuildFile; fileRef = 959E28FE224A1B6A006FCA30 /* LoginConfirmModel.m */; };
+		959E2902224B5EBD006FCA30 /* DposAlertView.m in Sources */ = {isa = PBXBuildFile; fileRef = 959E2901224B5EBD006FCA30 /* DposAlertView.m */; };
+		959E2905224B5FC7006FCA30 /* ApplyNodeModel.m in Sources */ = {isa = PBXBuildFile; fileRef = 959E2904224B5FC7006FCA30 /* ApplyNodeModel.m */; };
+		959E2908224CCA45006FCA30 /* ScanCodeFailureViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 959E2907224CCA45006FCA30 /* ScanCodeFailureViewController.m */; };
 		95A8A3B1219D1352008E978E /* LanguageManager.m in Sources */ = {isa = PBXBuildFile; fileRef = 95A8A3AF219D1352008E978E /* LanguageManager.m */; };
 		95A8A3B5219D157C008E978E /* DateTool.m in Sources */ = {isa = PBXBuildFile; fileRef = 95A8A3B4219D157C008E978E /* DateTool.m */; };
 		95A8A3B9219D15D8008E978E /* RegexPatternTool.m in Sources */ = {isa = PBXBuildFile; fileRef = 95A8A3B8219D15D8008E978E /* RegexPatternTool.m */; };
@@ -344,6 +355,12 @@
 		9549EC65219C0CF800307255 /* CreateTipsAlertView.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = CreateTipsAlertView.m; sourceTree = "<group>"; };
 		9549EC6E219D075E00307255 /* ClearCacheTool.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ClearCacheTool.h; sourceTree = "<group>"; };
 		9549EC6F219D075E00307255 /* ClearCacheTool.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ClearCacheTool.m; sourceTree = "<group>"; };
+		954F230F22433C690090E967 /* FindViewController.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = FindViewController.h; sourceTree = "<group>"; };
+		954F231022433C690090E967 /* FindViewController.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = FindViewController.m; sourceTree = "<group>"; };
+		954F23122243842E0090E967 /* NodePlanViewController.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = NodePlanViewController.h; sourceTree = "<group>"; };
+		954F23132243842E0090E967 /* NodePlanViewController.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = NodePlanViewController.m; sourceTree = "<group>"; };
+		954F2315224386C70090E967 /* NodePlanViewCell.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = NodePlanViewCell.h; sourceTree = "<group>"; };
+		954F2316224386C70090E967 /* NodePlanViewCell.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = NodePlanViewCell.m; sourceTree = "<group>"; };
 		9569288221D7541400B7721A /* libc++.tbd */ = {isa = PBXFileReference; lastKnownFileType = "sourcecode.text-based-dylib-definition"; name = "libc++.tbd"; path = "usr/lib/libc++.tbd"; sourceTree = SDKROOT; };
 		956CD41F21B016D1004DC1FA /* ListModel.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = ListModel.h; sourceTree = "<group>"; };
 		956CD42021B016D1004DC1FA /* ListModel.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = ListModel.m; sourceTree = "<group>"; };
@@ -405,6 +422,22 @@
 		959726F021E8CAAA0022CB78 /* WalletAddressAlertView.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = WalletAddressAlertView.m; sourceTree = "<group>"; };
 		959726F221E8D1970022CB78 /* ExplainInfoViewController.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = ExplainInfoViewController.h; sourceTree = "<group>"; };
 		959726F321E8D1970022CB78 /* ExplainInfoViewController.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = ExplainInfoViewController.m; sourceTree = "<group>"; };
+		959E28E22244C87D006FCA30 /* VotingRecordsViewController.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = VotingRecordsViewController.h; sourceTree = "<group>"; };
+		959E28E32244C87D006FCA30 /* VotingRecordsViewController.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = VotingRecordsViewController.m; sourceTree = "<group>"; };
+		959E28E52244CE0A006FCA30 /* VotingRecordsViewCell.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = VotingRecordsViewCell.h; sourceTree = "<group>"; };
+		959E28E62244CE0A006FCA30 /* VotingRecordsViewCell.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = VotingRecordsViewCell.m; sourceTree = "<group>"; };
+		959E28EE2248B998006FCA30 /* LoginConfirmViewController.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = LoginConfirmViewController.h; sourceTree = "<group>"; };
+		959E28EF2248B998006FCA30 /* LoginConfirmViewController.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = LoginConfirmViewController.m; sourceTree = "<group>"; };
+		959E28F72248CC93006FCA30 /* CancellationOfVotingAlertView.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = CancellationOfVotingAlertView.h; sourceTree = "<group>"; };
+		959E28F82248CC93006FCA30 /* CancellationOfVotingAlertView.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = CancellationOfVotingAlertView.m; sourceTree = "<group>"; };
+		959E28FD224A1B6A006FCA30 /* LoginConfirmModel.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = LoginConfirmModel.h; sourceTree = "<group>"; };
+		959E28FE224A1B6A006FCA30 /* LoginConfirmModel.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = LoginConfirmModel.m; sourceTree = "<group>"; };
+		959E2900224B5EBD006FCA30 /* DposAlertView.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = DposAlertView.h; sourceTree = "<group>"; };
+		959E2901224B5EBD006FCA30 /* DposAlertView.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = DposAlertView.m; sourceTree = "<group>"; };
+		959E2903224B5FC7006FCA30 /* ApplyNodeModel.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = ApplyNodeModel.h; sourceTree = "<group>"; };
+		959E2904224B5FC7006FCA30 /* ApplyNodeModel.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = ApplyNodeModel.m; sourceTree = "<group>"; };
+		959E2906224CCA45006FCA30 /* ScanCodeFailureViewController.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = ScanCodeFailureViewController.h; sourceTree = "<group>"; };
+		959E2907224CCA45006FCA30 /* ScanCodeFailureViewController.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = ScanCodeFailureViewController.m; sourceTree = "<group>"; };
 		95A8A3AF219D1352008E978E /* LanguageManager.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = LanguageManager.m; sourceTree = "<group>"; };
 		95A8A3B0219D1352008E978E /* LanguageManager.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = LanguageManager.h; sourceTree = "<group>"; };
 		95A8A3B3219D157B008E978E /* DateTool.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = DateTool.h; sourceTree = "<group>"; };
@@ -512,6 +545,7 @@
 		835A45202174C14D005BFCDD /* Classes */ = {
 			isa = PBXGroup;
 			children = (
+				954F230B22433C300090E967 /* Find */,
 				835A45212174C14D005BFCDD /* Account */,
 				835A45322174C212005BFCDD /* Assets */,
 				835A452E2174C212005BFCDD /* My */,
@@ -694,6 +728,10 @@
 				959726D621E5E76F0022CB78 /* ImportWalletModeViewController.m */,
 				959726F221E8D1970022CB78 /* ExplainInfoViewController.h */,
 				959726F321E8D1970022CB78 /* ExplainInfoViewController.m */,
+				959E28EE2248B998006FCA30 /* LoginConfirmViewController.h */,
+				959E28EF2248B998006FCA30 /* LoginConfirmViewController.m */,
+				959E2906224CCA45006FCA30 /* ScanCodeFailureViewController.h */,
+				959E2907224CCA45006FCA30 /* ScanCodeFailureViewController.m */,
 			);
 			path = Controller;
 			sourceTree = "<group>";
@@ -731,6 +769,10 @@
 				959726BE21E43EB40022CB78 /* WalletModel.m */,
 				959726E021E82EA20022CB78 /* WalletTool.h */,
 				959726E121E82EA20022CB78 /* WalletTool.m */,
+				959E28FD224A1B6A006FCA30 /* LoginConfirmModel.h */,
+				959E28FE224A1B6A006FCA30 /* LoginConfirmModel.m */,
+				959E2903224B5FC7006FCA30 /* ApplyNodeModel.h */,
+				959E2904224B5FC7006FCA30 /* ApplyNodeModel.m */,
 			);
 			path = Model;
 			sourceTree = "<group>";
@@ -756,6 +798,8 @@
 				959726C121E44FFB0022CB78 /* ModifyAlertView.m */,
 				959726D821E6DCA00022CB78 /* TextFieldViewCell.h */,
 				959726D921E6DCA10022CB78 /* TextFieldViewCell.m */,
+				959E2900224B5EBD006FCA30 /* DposAlertView.h */,
+				959E2901224B5EBD006FCA30 /* DposAlertView.m */,
 			);
 			path = View;
 			sourceTree = "<group>";
@@ -909,6 +953,49 @@
 				9549EC6F219D075E00307255 /* ClearCacheTool.m */,
 			);
 			path = ClearCache;
+			sourceTree = "<group>";
+		};
+		954F230B22433C300090E967 /* Find */ = {
+			isa = PBXGroup;
+			children = (
+				954F230C22433C300090E967 /* Controller */,
+				954F230D22433C300090E967 /* Model */,
+				954F230E22433C300090E967 /* View */,
+			);
+			path = Find;
+			sourceTree = "<group>";
+		};
+		954F230C22433C300090E967 /* Controller */ = {
+			isa = PBXGroup;
+			children = (
+				954F230F22433C690090E967 /* FindViewController.h */,
+				954F231022433C690090E967 /* FindViewController.m */,
+				954F23122243842E0090E967 /* NodePlanViewController.h */,
+				954F23132243842E0090E967 /* NodePlanViewController.m */,
+				959E28E22244C87D006FCA30 /* VotingRecordsViewController.h */,
+				959E28E32244C87D006FCA30 /* VotingRecordsViewController.m */,
+			);
+			path = Controller;
+			sourceTree = "<group>";
+		};
+		954F230D22433C300090E967 /* Model */ = {
+			isa = PBXGroup;
+			children = (
+			);
+			path = Model;
+			sourceTree = "<group>";
+		};
+		954F230E22433C300090E967 /* View */ = {
+			isa = PBXGroup;
+			children = (
+				954F2315224386C70090E967 /* NodePlanViewCell.h */,
+				954F2316224386C70090E967 /* NodePlanViewCell.m */,
+				959E28E52244CE0A006FCA30 /* VotingRecordsViewCell.h */,
+				959E28E62244CE0A006FCA30 /* VotingRecordsViewCell.m */,
+				959E28F72248CC93006FCA30 /* CancellationOfVotingAlertView.h */,
+				959E28F82248CC93006FCA30 /* CancellationOfVotingAlertView.m */,
+			);
+			path = View;
 			sourceTree = "<group>";
 		};
 		9579E74D21B5353700051EDB /* Lib */ = {
@@ -1222,6 +1309,7 @@
 				"${BUILT_PRODUCTS_DIR}/MJExtension/MJExtension.framework",
 				"${BUILT_PRODUCTS_DIR}/MJRefresh/MJRefresh.framework",
 				"${BUILT_PRODUCTS_DIR}/Masonry/Masonry.framework",
+				"${BUILT_PRODUCTS_DIR}/SDCycleScrollView/SDCycleScrollView.framework",
 				"${BUILT_PRODUCTS_DIR}/SDWebImage/SDWebImage.framework",
 				"${BUILT_PRODUCTS_DIR}/Socket.IO-Client-Swift/SocketIO.framework",
 				"${BUILT_PRODUCTS_DIR}/SocketRocket/SocketRocket.framework",
@@ -1239,6 +1327,7 @@
 				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/MJExtension.framework",
 				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/MJRefresh.framework",
 				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/Masonry.framework",
+				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/SDCycleScrollView.framework",
 				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/SDWebImage.framework",
 				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/SocketIO.framework",
 				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/SocketRocket.framework",
@@ -1284,6 +1373,7 @@
 				83379A58217880C700C222A5 /* BackUpPurseViewController.m in Sources */,
 				83379A80217B524D00C222A5 /* UIApplication+Extension.m in Sources */,
 				9549EC66219C0CF800307255 /* CreateTipsAlertView.m in Sources */,
+				959E28F02248B998006FCA30 /* LoginConfirmViewController.m in Sources */,
 				83379AE52180631200C222A5 /* TxInfoModel.m in Sources */,
 				83379A8C217DB25A00C222A5 /* TransferAccountsViewController.m in Sources */,
 				83FB443621904AA400D68569 /* HMScannerViewController.m in Sources */,
@@ -1317,9 +1407,11 @@
 				8372C8662174CC6F00FF9506 /* BaseViewController.m in Sources */,
 				835A45262174C14D005BFCDD /* main.m in Sources */,
 				83379AD921802FA900C222A5 /* AssetsDetailModel.m in Sources */,
+				959E2908224CCA45006FCA30 /* ScanCodeFailureViewController.m in Sources */,
 				959726DA21E6DCA10022CB78 /* TextFieldViewCell.m in Sources */,
 				959726EE21E8C84F0022CB78 /* PasswordAlertView.m in Sources */,
 				83379A89217DA4F900C222A5 /* AssetsDetailListViewCell.m in Sources */,
+				959E28FF224A1B6A006FCA30 /* LoginConfirmModel.m in Sources */,
 				959726D721E5E76F0022CB78 /* ImportWalletModeViewController.m in Sources */,
 				959726E821E893400022CB78 /* SafetyReinforcementAlertView.m in Sources */,
 				83D5B1EE21818F7700BF1FF1 /* NSString+Extension.m in Sources */,
@@ -1329,6 +1421,7 @@
 				8372C8622174CBF100FF9506 /* NavigationViewController.m in Sources */,
 				8372C8592174CB9800FF9506 /* UITextField+Extension.m in Sources */,
 				95A8A3BF219D166D008E978E /* Encapsulation.m in Sources */,
+				959E28E42244C87D006FCA30 /* VotingRecordsViewController.m in Sources */,
 				958AA69821A2A89600BEA50C /* CustomRefreshFooter.m in Sources */,
 				83D5BCCE2182A87B00BF1FF1 /* AccountModel.m in Sources */,
 				83FB443921904AA400D68569 /* HMScanerCardViewController.m in Sources */,
@@ -1341,11 +1434,14 @@
 				83B594AD2175E4D9009F91BA /* RestoreIdentityViewController.m in Sources */,
 				959726BC21E358A10022CB78 /* ExportViewController.m in Sources */,
 				83FB443A21904AA400D68569 /* HMScannerController.m in Sources */,
+				959E2902224B5EBD006FCA30 /* DposAlertView.m in Sources */,
 				83379AE8218066FE00C222A5 /* BlockInfoModel.m in Sources */,
 				958127F2219AC82A0081A02E /* VersionModel.m in Sources */,
+				959E28E72244CE0A006FCA30 /* VotingRecordsViewCell.m in Sources */,
 				838DC7682186AFFB002FF276 /* DistributionResultsViewController.m in Sources */,
 				83379A86217D9C8A00C222A5 /* AssetsDetailViewController.m in Sources */,
 				83379A92217DE12600C222A5 /* TransferResultsViewController.m in Sources */,
+				954F23142243842E0090E967 /* NodePlanViewController.m in Sources */,
 				8372C8632174CBF100FF9506 /* TabBarViewController.m in Sources */,
 				9579EB5321BABE6300051EDB /* MBProgressHUD+JDragon.m in Sources */,
 				83379AC3217F3F3000C222A5 /* BaseModel.m in Sources */,
@@ -1372,6 +1468,7 @@
 				83D5B1F1218199E900BF1FF1 /* JsonTool.m in Sources */,
 				83B465A821745C9300187961 /* ViewController.m in Sources */,
 				833799322177305A00C222A5 /* UIView+Extension.m in Sources */,
+				954F2317224386C70090E967 /* NodePlanViewCell.m in Sources */,
 				83379A98217EB79B00C222A5 /* RequestTimeoutViewController.m in Sources */,
 				959726B821E334C20022CB78 /* WalletManagementViewCell.m in Sources */,
 				835A45272174C14D005BFCDD /* AppDelegate.m in Sources */,
@@ -1381,9 +1478,12 @@
 				95A8A41D219D5FF7008E978E /* YBRectConst.m in Sources */,
 				959575C821FFF8010089479C /* AddressBookModel.m in Sources */,
 				833799172176E1E600C222A5 /* ListTableViewCell.m in Sources */,
+				959E28F92248CC93006FCA30 /* CancellationOfVotingAlertView.m in Sources */,
+				959E2905224B5FC7006FCA30 /* ApplyNodeModel.m in Sources */,
 				959575CB21FFFD040089479C /* ContactViewController.m in Sources */,
 				95A8A3BC219D161D008E978E /* CustomRefreshHeader.m in Sources */,
 				95DC83C821E2FD3B00F745E6 /* WalletManagementViewController.m in Sources */,
+				954F231122433C690090E967 /* FindViewController.m in Sources */,
 				959726C521E487F10022CB78 /* ExportKeystoreViewController.m in Sources */,
 				959575C421FFF6EB0089479C /* AddressBookListViewCell.m in Sources */,
 				83379A092178509300C222A5 /* WKWebViewController.m in Sources */,

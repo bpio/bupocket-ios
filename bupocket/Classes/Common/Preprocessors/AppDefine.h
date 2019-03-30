@@ -71,6 +71,7 @@
 #define Maximum_Number 20
 // Feedback content
 #define SuggestionsContent_MAX 100
+#define AlertBgAlpha 0.2
 // ATP Version
 #define ATP_Version @"1.0"
 // Obtain minimum asset limits and fuel unit prices for accounts in designated blocks
@@ -79,6 +80,9 @@
 #define Address_MinimumFontSize ScreenScale(10)
 
 #define AddressBook_Cache_Name @"addressBook.sqlite"
+
+#define Wechat_APP_ID @"wxaecf7ac4085fd34a"
+#define SmallRoutine_Original_ID @"gh_463781563a74"
 
 
 #endif /* AppDefine_h */

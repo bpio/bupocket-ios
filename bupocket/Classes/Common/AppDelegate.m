@@ -13,8 +13,9 @@
 #import "SafetyReinforcementAlertView.h"
 #import "VersionModel.h"
 #import <IQKeyboardManager/IQKeyboardManager.h>
+#import <WXApi.h>
 
-@interface AppDelegate ()
+@interface AppDelegate ()<WXApiDelegate>
 
 @property (nonatomic, strong) VersionUpdateAlertView * alertView;
 @property (nonatomic, strong) PasswordAlertView * PWAlertView;
@@ -35,6 +36,7 @@
     [self setRootVC];
     // Minimum Asset Limitation
     [[HTTPManager shareManager] getBlockLatestFees];
+    [WXApi registerApp:Wechat_APP_ID];
     return YES;
 }
 - (void)initializationSettings
@@ -87,11 +89,11 @@
                     [self upDateAccountDataWithRandom:random password:password];
                 } cancelBlock:^{
                 }];
-                [self.PWAlertView showInWindowWithMode:CustomAnimationModeDisabled inView:nil bgAlpha:0.2 needEffectView:NO];
+                [self.PWAlertView showInWindowWithMode:CustomAnimationModeDisabled inView:nil bgAlpha:AlertBgAlpha needEffectView:NO];
                 [self.PWAlertView.PWTextField becomeFirstResponder];
             });
         }];
-        [alertView showInWindowWithMode:CustomAnimationModeDisabled inView:nil bgAlpha:0.2 needEffectView:NO];
+        [alertView showInWindowWithMode:CustomAnimationModeDisabled inView:nil bgAlpha:AlertBgAlpha needEffectView:NO];
     } else {
         [self getVersionData];
     }
@@ -137,7 +139,7 @@
                 } cancelBlock:^{
                     
                 }];
-                [self.alertView showInWindowWithMode:CustomAnimationModeDisabled inView:nil bgAlpha:0.2 needEffectView:NO];
+                [self.alertView showInWindowWithMode:CustomAnimationModeDisabled inView:nil bgAlpha:AlertBgAlpha needEffectView:NO];
             }
         } else {
 //            [MBProgressHUD showTipMessageInWindow:[ErrorTypeTool getDescriptionWithErrorCode:code]];
@@ -146,7 +148,16 @@
         
     }];
 }
-
+- (BOOL)application:(UIApplication *)app openURL:(NSURL *)url options:(NSDictionary<UIApplicationOpenURLOptionsKey,id> *)options
+{
+    return [WXApi handleOpenURL:url delegate:self];
+}
+- (void)onResp:(BaseResp *)resp
+{
+    if ([resp isKindOfClass:[WXLaunchMiniProgramResp class]]) {
+        NSLog(@"跳转微信后的回调 %d %@", resp.errCode, resp.errStr);
+    }
+}
 - (void)applicationWillResignActive:(UIApplication *)application {
     // Sent when the application is about to move from active to inactive state. This can occur for certain types of temporary interruptions (such as an incoming phone call or SMS message) or when the user quits the application and it begins the transition to the background state.
     // Use this method to pause ongoing tasks, disable timers, and invalidate graphics rendering callbacks. Games should use this method to pause the game.

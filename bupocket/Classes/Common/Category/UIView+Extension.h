@@ -41,6 +41,6 @@ typedef NS_ENUM(NSInteger, UIViewBorderLineType) {
 - (void)drawDashLine;
 
 // UIView 分开设置边框
-- (void)setViewBorder:(UIView *)view color:(UIColor *)color border:(float)border type:(UIViewBorderLineType)borderLineType;
++ (void)setViewBorder:(UIView *)view color:(UIColor *)color border:(float)border type:(UIViewBorderLineType)borderLineType;
 
 @end

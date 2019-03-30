@@ -32,7 +32,7 @@
     [requestTimeout mas_makeConstraints:^(MASConstraintMaker *make) {
         make.top.equalTo(self.view.mas_top).offset(NavBarH);
         make.centerX.equalTo(self.view);
-        make.height.mas_equalTo(ScreenScale(120));
+        make.size.mas_equalTo(CGSizeMake(DEVICE_WIDTH - Margin_40, ScreenScale(120)));
     }];
     // IGotIt
     UIButton * gotIt = [UIButton createButtonWithTitle:Localized(@"IGotIt") isEnabled:YES Target:self Selector:@selector(gotItAction)];
