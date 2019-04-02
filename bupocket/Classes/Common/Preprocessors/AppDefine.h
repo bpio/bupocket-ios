@@ -55,6 +55,19 @@
 // Transfer payment expenses
 #define TransactionCost_MAX @"10"
 #define TransactionCost_MIN @"0.01"
+#define TransactionCost_Check_MIN @"0.15"
+
+#define TransactionType_ApplyNode @"1"
+#define TransactionType_Check @"8"
+#define TransactionType_NodeAward @"9"
+#define TransactionType_NodeWithdrawal @"10"
+
+#define NodeType_Consensus @"1"
+#define NodeType_Ecological @"2"
+
+#define Role_validator @"validator"
+#define Role_kol @"kol"
+
 #define TransactionCost_NotActive_MIN @"0.03"
 #define ActivateInitBalance @"0.02"
 // BU decimals

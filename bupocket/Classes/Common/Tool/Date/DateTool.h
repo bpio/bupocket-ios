@@ -14,6 +14,7 @@ NS_ASSUME_NONNULL_BEGIN
 
 // Time stamp - > time
 + (NSString *)getDateStringWithTimeStr:(NSString *)str;
++ (NSString *)getDateWithTimeStr:(NSString *)str;
 + (NSString *)getDateProcessingWithTimeStr:(NSString *)str;
 
 @end

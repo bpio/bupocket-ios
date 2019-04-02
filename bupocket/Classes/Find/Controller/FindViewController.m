@@ -15,6 +15,10 @@
 
 @interface FindViewController ()<UITableViewDelegate, UITableViewDataSource, SDCycleScrollViewDelegate>
 
+{
+    dispatch_source_t _gcdTimer;
+}
+
 @property (nonatomic, strong) UITableView * tableView;
 @property (nonatomic, strong) SDCycleScrollView * cycleScrollView;
 @property (nonatomic, strong) NSArray * listArray;
@@ -35,6 +39,7 @@ static NSString * const ExportCellID = @"ExportCellID";
     self.cycleScrollView.imageURLStringsGroup = bannerArray;
     // Do any additional setup after loading the view.
 }
+
 - (void)setupView
 {
     self.tableView = [[UITableView alloc] initWithFrame:self.view.frame style:UITableViewStyleGrouped];

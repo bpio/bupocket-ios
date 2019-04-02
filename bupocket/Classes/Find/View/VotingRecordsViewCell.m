@@ -31,27 +31,6 @@ static NSString * const NodeRecordsCellID = @"NodeRecordsCellID";
         [self.listBg addSubview:self.number];
         [self.listBg addSubview:self.state];
         [self.listBg addSubview:self.date];
-        self.title.text = @"会飞的比特币会飞的比特币会飞的比特币会飞的比特币会飞的比特币";
-        self.nodeType.text = Localized(@"ConsensusNode");
-        //        "ConsensusNode" = "共识节点";
-        //        "EcologicalNodes" = "生态节点";
-        
-        self.number.attributedText = [Encapsulation attrWithString:[NSString stringWithFormat:@"%@\n123456789", Localized(@"Number")] preFont:FONT(12) preColor:COLOR_9 index:Localized(@"Number").length sufFont:FONT(13) sufColor:TITLE_COLOR lineSpacing:Margin_5];
-        self.number.textAlignment = NSTextAlignmentLeft;
-//        "Success" = "成功";
-//        "Failure" = "失败";
-        NSString * stateStr = Localized(@"Success");
-        UIColor * stateColor;
-        if ([stateStr isEqualToString:Localized(@"Success")]) {
-            stateColor = MAIN_COLOR;
-        } else {
-            stateColor = WARNING_COLOR;
-        }
-//        "Failure" = "失败";
-        self.state.attributedText = [Encapsulation attrWithString:[NSString stringWithFormat:@"%@\n%@", Localized(@"State"),stateStr] preFont:FONT(12) preColor:COLOR_9 index:Localized(@"State").length sufFont:FONT(13) sufColor:stateColor lineSpacing:Margin_5];
-        self.state.textAlignment = NSTextAlignmentLeft;
-        self.date.attributedText = [Encapsulation attrWithString:[NSString stringWithFormat:@"%@\n14:10:55 03/11/2019", Localized(@"Time")] preFont:FONT(12) preColor:COLOR_9 index:Localized(@"Time").length sufFont:FONT(13) sufColor:TITLE_COLOR lineSpacing:Margin_5];
-        self.date.textAlignment = NSTextAlignmentRight;
     }
     return self;
 }
@@ -125,7 +104,6 @@ static NSString * const NodeRecordsCellID = @"NodeRecordsCellID";
         _recordType = [UIButton createButtonWithTitle:Localized(@"Throw") TextFont:13 TextNormalColor:[UIColor whiteColor] TextSelectedColor:[UIColor whiteColor] Target:nil Selector:nil];
         _recordType.backgroundColor = MAIN_COLOR;
         [_recordType setTitle:Localized(@"Withdraw") forState:UIControlStateSelected];
-        _recordType.backgroundColor = WARNING_COLOR;
         _recordType.layer.masksToBounds = YES;
         _recordType.layer.cornerRadius = TAG_CORNER;
     }
@@ -178,19 +156,41 @@ static NSString * const NodeRecordsCellID = @"NodeRecordsCellID";
     return _date;
 }
 
-//- (void)setAddressBookModel:(AddressBookModel *)addressBookModel
-//{
-//    _addressBookModel = addressBookModel;
-//    self.addressName.text = addressBookModel.nickName;
-//    self.address.text = [NSString stringEllipsisWithStr:addressBookModel.linkmanAddress];
-//    self.describe.text = addressBookModel.remark;
-//    CGFloat addressNameH = [Encapsulation rectWithText:self.addressName.text font:self.addressName.font textWidth:DEVICE_WIDTH - Margin_50].size.height;
-//    CGFloat describeH = 0;
-//    if (NULLString(self.describe.text)) {
-//        describeH = (Margin_5 + [Encapsulation rectWithText:self.describe.text font:self.describe.font textWidth:DEVICE_WIDTH - Margin_50].size.height);
-//    }
-//    addressBookModel.cellHeight = ScreenScale(72) + addressNameH + describeH + Margin_10;
-//}
+- (void)setVotingRecordsModel:(VotingRecordsModel *)votingRecordsModel
+{
+    _votingRecordsModel = votingRecordsModel;
+    
+    if ([votingRecordsModel.type isEqualToString:@"1"]) {
+        _recordType.backgroundColor = MAIN_COLOR;
+    } else if ([votingRecordsModel.type isEqualToString:@"2"]) {
+        self.recordType.selected = YES;
+        _recordType.backgroundColor = WARNING_COLOR;
+    }
+    self.title.text = votingRecordsModel.nodeName;
+    if ([votingRecordsModel.identityType isEqualToString:NodeType_Consensus]) {
+        self.nodeType.text = Localized(@"ConsensusNode");
+    } else if ([votingRecordsModel.identityType isEqualToString:NodeType_Ecological]) {
+        self.nodeType.text = Localized(@"EcologicalNodes");
+    }
+    self.number.attributedText = [Encapsulation attrWithString:[NSString stringWithFormat:@"%@\n%@", Localized(@"Number"), votingRecordsModel.amount] preFont:FONT(12) preColor:COLOR_9 index:Localized(@"Number").length sufFont:FONT(13) sufColor:TITLE_COLOR lineSpacing:Margin_5];
+    self.number.textAlignment = NSTextAlignmentLeft;
+    NSString * stateStr;
+    UIColor * stateColor;
+    if ([votingRecordsModel.status isEqualToString: @"0"]) {
+        stateStr = Localized(@"InProcessing");
+        stateColor = COLOR(@"FF7C14");
+    } else if ([votingRecordsModel.status isEqualToString:@"1"]) {
+        stateStr = Localized(@"Success");
+        stateColor = MAIN_COLOR;
+    } else if ([votingRecordsModel.status isEqualToString:@"2"]) {
+        stateStr = Localized(@"Failure");
+        stateColor = WARNING_COLOR;
+    }
+    self.state.attributedText = [Encapsulation attrWithString:[NSString stringWithFormat:@"%@\n%@", Localized(@"State"),stateStr] preFont:FONT(12) preColor:COLOR_9 index:Localized(@"State").length sufFont:FONT(13) sufColor:stateColor lineSpacing:Margin_5];
+    self.state.textAlignment = NSTextAlignmentLeft;
+    self.date.attributedText = [Encapsulation attrWithString:[NSString stringWithFormat:@"%@\n%@", Localized(@"Time"), [DateTool getDateWithTimeStr:votingRecordsModel.date]] preFont:FONT(12) preColor:COLOR_9 index:Localized(@"Time").length sufFont:FONT(13) sufColor:TITLE_COLOR lineSpacing:Margin_5];
+    self.date.textAlignment = NSTextAlignmentRight;
+}
 
 - (void)awakeFromNib {
     [super awakeFromNib];

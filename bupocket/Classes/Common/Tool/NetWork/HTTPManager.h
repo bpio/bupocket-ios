@@ -9,6 +9,7 @@
 #import <Foundation/Foundation.h>
 #import "RegisteredModel.h"
 #import "TransactionResultModel.h"
+#import "ConfirmTransactionModel.h"
 
 @interface HTTPManager : NSObject
 
@@ -21,7 +22,6 @@
 //};
 
 @property (nonatomic, strong) NSString * pushMessageSocketUrl;
-@property (assign, nonatomic) BOOL dposType;
 
 + (instancetype)shareManager;
 
@@ -115,18 +115,24 @@
                                         success:(void (^)(id responseObject))success
                                         failure:(void (^)(NSError *error))failure;
 // Contract Transaction
-- (void)setContractTransactionWithQRcodeSessionId:(NSString *)qrcodeSessionId
-                                      destAddress:(NSString *)destAddress
-                                           assets:(NSString *)assets
-                                             code:(NSString *)code
-                                            notes:(NSString *)notes
-                                          success:(void (^)(id responseObject))success
-                                          failure:(void (^)(NSError *error))failure;
+- (void)getContractTransactionWithModel:(ConfirmTransactionModel *)confirmTransactionModel
+                                success:(void (^)(id responseObject))success
+                                failure:(void (^)(NSError *error))failure;
 
 // submit Contract Transaction / Transaction Status
 - (void)submitContractTransactionPassword:(NSString *)password
                                   success:(void (^)(TransactionResultModel * resultModel))success
                                   failure:(void (^)(TransactionResultModel * resultModel))failure;
+// Node List
+- (void)getNodeListDataWithIdentityType:(NSString *)identityType
+                               nodeName:(NSString *)nodeName
+                         capitalAddress:(NSString *)capitalAddress
+                                success:(void (^)(id responseObject))success
+                                failure:(void (^)(NSError *error))failure;
+// Voting Record
+- (void)getVotingRecordDataWithNodeId:(NSString *)nodeId
+                              success:(void (^)(id responseObject))success
+                              failure:(void (^)(NSError *error))failure;
 
 #pragma mark - SDK
 // Check the balance

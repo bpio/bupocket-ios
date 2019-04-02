@@ -36,13 +36,14 @@ static NSString * const NodeCellID = @"NodeCellID";
             _listBg.layer.masksToBounds = YES;
             _listBg.layer.cornerRadius = BG_CORNER;
         }
-        self.name.text = @"股神688";
-        self.nodeType.text = Localized(@"ConsensusNode");
-//        "ConsensusNode" = "共识节点";
-//        "EcologicalNodes" = "生态节点";
-        
-        self.votesObtained.attributedText = [Encapsulation attrWithString:[NSString stringWithFormat:@"%@ %@", Localized(@"VotesObtained"), @"12345678"] preFont:FONT(12) preColor:COLOR(@"B2B2B2") index:Localized(@"VotesObtained").length sufFont:FONT(14) sufColor:COLOR_6 lineSpacing:0];
-        self.numberOfVotes.attributedText = [Encapsulation attrWithString:[NSString stringWithFormat:@"%@ %@", Localized(@"NumberOfVotes"), @"1234567"] preFont:FONT(12) preColor:COLOR(@"B2B2B2") index:Localized(@"NumberOfVotes").length sufFont:FONT(14) sufColor:COLOR_6 lineSpacing:0];
+//        self.name.text = @"股神688";
+//        self.nodeType.text = Localized(@"ConsensusNode");
+////        "ConsensusNode" = "共识节点";
+////        "EcologicalNodes" = "生态节点";
+//
+//        self.votesObtained.attributedText = [Encapsulation attrWithString:[NSString stringWithFormat:@"%@ %@", Localized(@"VotesObtained"), @"12345678"] preFont:FONT(12) preColor:COLOR(@"B2B2B2") index:Localized(@"VotesObtained").length sufFont:FONT(14) sufColor:COLOR_6 lineSpacing:0];
+//        self.numberOfVotes.attributedText = [Encapsulation attrWithString:[NSString stringWithFormat:@"%@ %@", Localized(@"NumberOfVotes"), @"1234567"] preFont:FONT(12) preColor:COLOR(@"B2B2B2") index:Localized(@"NumberOfVotes").length sufFont:FONT(14) sufColor:COLOR_6 lineSpacing:0];
+//        self.moreOperations.backgroundColor = [UIColor redColor];
     }
     return self;
 }
@@ -85,7 +86,7 @@ static NSString * const NodeCellID = @"NodeCellID";
     [self.moreOperations mas_makeConstraints:^(MASConstraintMaker *make) {
         make.right.equalTo(self.listBg.mas_right).offset(-Margin_10);
         make.centerY.equalTo(self.name);
-        make.height.mas_equalTo(Margin_30);
+        make.size.mas_equalTo(CGSizeMake(Margin_30, Margin_30));
     }];
     [self.nodeType mas_makeConstraints:^(MASConstraintMaker *make) {
         make.left.equalTo(self.name.mas_right).offset(Margin_10);
@@ -179,6 +180,7 @@ static NSString * const NodeCellID = @"NodeCellID";
 {
     if (!_moreOperations) {
         _moreOperations = [UIButton createButtonWithNormalImage:@"more_operations" SelectedImage:@"more_operations" Target:self Selector:@selector(operationAction:)];
+        _moreOperations.contentHorizontalAlignment = UIControlContentHorizontalAlignmentRight;
     }
     return _moreOperations;
 }
@@ -188,20 +190,20 @@ static NSString * const NodeCellID = @"NodeCellID";
         self.operationClick(button);
     }
 }
-//- (void)setAddressBookModel:(AddressBookModel *)addressBookModel
-//{
-//    _addressBookModel = addressBookModel;
-//    self.addressName.text = addressBookModel.nickName;
-//    self.address.text = [NSString stringEllipsisWithStr:addressBookModel.linkmanAddress];
-//    self.describe.text = addressBookModel.remark;
-//    CGFloat addressNameH = [Encapsulation rectWithText:self.addressName.text font:self.addressName.font textWidth:DEVICE_WIDTH - Margin_50].size.height;
-//    CGFloat describeH = 0;
-//    if (NULLString(self.describe.text)) {
-//        describeH = (Margin_5 + [Encapsulation rectWithText:self.describe.text font:self.describe.font textWidth:DEVICE_WIDTH - Margin_50].size.height);
-//    }
-//    addressBookModel.cellHeight = ScreenScale(72) + addressNameH + describeH + Margin_10;
-//}
-
+- (void)setNodePlanModel:(NodePlanModel *)nodePlanModel
+{
+    _nodePlanModel = nodePlanModel;
+    [self.listImage sd_setImageWithURL:[NSURL URLWithString:nodePlanModel.nodeLogo] placeholderImage:[UIImage imageNamed:@"placeholder_list"]];
+    self.name.text = nodePlanModel.nodeName;
+    if ([nodePlanModel.identityType isEqualToString:NodeType_Consensus]) {
+        self.nodeType.text = Localized(@"ConsensusNode");
+    } else if ([nodePlanModel.identityType isEqualToString:NodeType_Ecological]) {
+        self.nodeType.text = Localized(@"EcologicalNodes");
+    }
+    
+    self.votesObtained.attributedText = [Encapsulation attrWithString:[NSString stringWithFormat:@"%@ %@", Localized(@"VotesObtained"), nodePlanModel.nodeVote] preFont:FONT(12) preColor:COLOR(@"B2B2B2") index:Localized(@"VotesObtained").length sufFont:FONT(14) sufColor:COLOR_6 lineSpacing:0];
+    self.numberOfVotes.attributedText = [Encapsulation attrWithString:[NSString stringWithFormat:@"%@ %@", Localized(@"NumberOfVotes"), nodePlanModel.myVoteCount] preFont:FONT(12) preColor:COLOR(@"B2B2B2") index:Localized(@"NumberOfVotes").length sufFont:FONT(14) sufColor:COLOR_6 lineSpacing:0];
+}
 
 - (void)awakeFromNib {
     [super awakeFromNib];

@@ -370,12 +370,15 @@
 "Search" = "搜索";
 "CancellationOfVotes" = "撤销投票";
 "VotingRecords" = "投票记录";
+"InvitationToVote" = "邀请投票";
+"ReceiveAwards" = "领取奖励";
 // 投票记录
 "Throw" = "投";
 "Withdraw" = "撤";
 "Number" = "数量";
 "State" = "状态";
 "Time" = "时间";
+"InProcessing" = "处理中";
 // 撤票详情
 "Revoke" = "撤销";
 "Vote" = "投票";

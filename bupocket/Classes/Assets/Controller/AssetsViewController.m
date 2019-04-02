@@ -19,16 +19,15 @@
 #import "TransferAccountsViewController.h"
 #import "WalletManagementViewController.h"
 #import "LoginConfirmViewController.h"
-#import "DposAlertView.h"
+#import "ConfirmTransactionAlertView.h"
 #import "ScanCodeFailureViewController.h"
 
 #import "RegisteredModel.h"
 #import "DistributionModel.h"
 
 #import "LoginConfirmModel.h"
-#import "ApplyNodeModel.h"
-#import "TransferResultsViewController.h"
-#import "RequestTimeoutViewController.h"
+#import "ConfirmTransactionModel.h"
+
 
 #import "UINavigationController+Extension.h"
 
@@ -56,8 +55,6 @@
 @property (nonatomic, assign) UIStatusBarStyle statusBarStyle;
 @property (nonatomic, strong) NSString * assetsCacheDataKey;
 
-@property (nonatomic, strong) NSMutableArray * transferInfoArray;
-
 @end
 
 @implementation AssetsViewController
@@ -70,13 +67,6 @@ static UIButton * _noBackup;
         _listArray = [NSMutableArray array];
     }
     return _listArray;
-}
-- (NSMutableArray *)transferInfoArray
-{
-    if (!_transferInfoArray) {
-        _transferInfoArray = [NSMutableArray array];
-    }
-    return _transferInfoArray;
 }
 
 - (void)viewDidLoad {
@@ -478,10 +468,10 @@ static UIButton * _noBackup;
 - (void)getApplyNodeDataWithStr:(NSString *)str
 {
     [[HTTPManager shareManager] getDposApplyNodeDataWithQRcodeSessionId:str success:^(id responseObject) {
-        NSInteger code = [[responseObject objectForKey:@"errorCode"] integerValue];
+        NSInteger code = [[responseObject objectForKey:@"errCode"] integerValue];
         if (code == Success_Code) {
-            ApplyNodeModel * applyNodeModel = [ApplyNodeModel mj_objectWithKeyValues:[responseObject objectForKey:@"data"]];
-            [self getDpos:applyNodeModel];
+            ConfirmTransactionModel * confirmTransactionModel = [ConfirmTransactionModel mj_objectWithKeyValues:[responseObject objectForKey:@"data"]];
+            [self getDpos:confirmTransactionModel];
         } else {
             ScanCodeFailureViewController * VC = [[ScanCodeFailureViewController alloc] init];
             VC.exceptionPromptStr = Localized(@"Overdue");
@@ -492,49 +482,16 @@ static UIButton * _noBackup;
 
     }];
 }
-- (void)getDpos:(ApplyNodeModel *)applyNodeModel
+- (void)getDpos:(ConfirmTransactionModel *)confirmTransactionModel
 {
-    __weak typeof(self) weakSelf = self;
-    DposAlertView * alertView = [[DposAlertView alloc] initWithDpos:applyNodeModel confrimBolck:^{
-        [weakSelf getDataWithApplyNodeModel:applyNodeModel];
+    ConfirmTransactionAlertView * alertView = [[ConfirmTransactionAlertView alloc] initWithDpos:confirmTransactionModel confrimBolck:^{
+        
     } cancelBlock:^{
         
     }];
     [alertView showInWindowWithMode:CustomAnimationModeShare inView:nil bgAlpha:AlertBgAlpha needEffectView:NO];
 }
-// Transaction confirmation and submission
-- (void)getDataWithApplyNodeModel:(ApplyNodeModel *)applyNodeModel
-{
-    [[HTTPManager shareManager] setContractTransactionWithQRcodeSessionId:applyNodeModel.qrcodeSessionId destAddress:applyNodeModel.destAddress assets:applyNodeModel.amount code:applyNodeModel.script notes:applyNodeModel.qrRemark success:^(id responseObject) {
-        PasswordAlertView * alertView = [[PasswordAlertView alloc] initWithPrompt:Localized(@"TransactionWalletPWPrompt") walletKeyStore:CurrentWalletKeyStore isAutomaticClosing:YES confrimBolck:^(NSString * _Nonnull password, NSArray * _Nonnull words) {
-            [[HTTPManager shareManager] submitContractTransactionPassword:password success:^(TransactionResultModel *resultModel) {
-                self.transferInfoArray = [NSMutableArray arrayWithObjects:applyNodeModel.destAddress, [NSString stringAppendingBUWithStr:applyNodeModel.amount], [NSString stringAppendingBUWithStr:resultModel.actualFee], nil];
-                if (NULLString(applyNodeModel.qrRemark)) {
-                    [self.transferInfoArray addObject:applyNodeModel.qrRemark];
-                }
-                [self.transferInfoArray addObject:[DateTool getDateStringWithTimeStr:[NSString stringWithFormat:@"%lld", resultModel.transactionTime]]];
-                TransferResultsViewController * VC = [[TransferResultsViewController alloc] init];
-                if (resultModel.errorCode == Success_Code) {
-                    VC.state = YES;
-                } else {
-                    VC.state = NO;
-                    //            [MBProgressHUD showTipMessageInWindow:[ErrorTypeTool getDescription:resultModel.errorCode]];
-                }
-                VC.transferInfoArray = self.transferInfoArray;
-                [self.navigationController pushViewController:VC animated:NO];
-            } failure:^(TransactionResultModel *resultModel) {
-                RequestTimeoutViewController * VC = [[RequestTimeoutViewController alloc] init];
-                [self.navigationController pushViewController:VC animated:NO];
-            }];
-        } cancelBlock:^{
-            
-        }];
-        [alertView showInWindowWithMode:CustomAnimationModeAlert inView:nil bgAlpha:AlertBgAlpha needEffectView:NO];
-        [alertView.PWTextField becomeFirstResponder];
-    } failure:^(NSError *error) {
-        
-    }];
-}
+
 
 
 - (CGFloat)tableView:(UITableView *)tableView heightForRowAtIndexPath:(NSIndexPath *)indexPath

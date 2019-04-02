@@ -7,6 +7,7 @@
 //
 
 #import <UIKit/UIKit.h>
+#import "NodePlanModel.h"
 
 NS_ASSUME_NONNULL_BEGIN
 
@@ -14,7 +15,7 @@ NS_ASSUME_NONNULL_BEGIN
 
 + (instancetype)cellWithTableView:(UITableView *)tableView identifier:(NSString *)identifier;
 
-//@property (nonatomic, strong) SearchAssetsModel * searchAssetsModel;
+@property (nonatomic, strong) NodePlanModel * nodePlanModel;
 
 @property (nonatomic, strong) UIView * listBg;
 @property (nonatomic, strong) UIImageView * listImageBg;
