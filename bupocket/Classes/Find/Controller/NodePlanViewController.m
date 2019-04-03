@@ -12,7 +12,6 @@
 #import "VotingRecordsViewController.h"
 #import "ConfirmTransactionAlertView.h"
 #import "NodePlanModel.h"
-//#import "CancellationOfVotingAlertView.h"
 
 @interface NodePlanViewController ()<UITableViewDelegate, UITableViewDataSource, UITextFieldDelegate, YBPopupMenuDelegate>
 
@@ -29,6 +28,7 @@
 
 @property (nonatomic, strong) UIView * headerView;
 @property (nonatomic, strong) UIButton * interdependentNode;
+@property (nonatomic, strong) NSString * searchText;
 
 @end
 
@@ -56,6 +56,7 @@ static NSString * const NodePlanCellID = @"NodePlanCellID";
     self.navigationItem.title = Localized(@"NodePlan");
     [self setupNav];
     [self setupView];
+    
     [self getNodeListDataWithIdentityType:@"" nodeName:@"" capitalAddress:@""];
 //    [self setupRefresh];
     // Do any additional setup after loading the view.
@@ -91,8 +92,7 @@ static NSString * const NodePlanCellID = @"NodePlanCellID";
         if (code == Success_Code) {
             self.listArray = [NodePlanModel mj_objectArrayWithKeyValuesArray:responseObject[@"data"][@"nodeList"]];
             self.nodeListArray = self.listArray;
-//            self.contractAddress = responseObject[@"data"][@"contractAddress"];
-            self.contractAddress = CurrentWalletAddress;
+            self.contractAddress = responseObject[@"data"][@"contractAddress"];
             [self.tableView reloadData];
         } else {
             [MBProgressHUD showTipMessageInWindow:[ErrorTypeTool getDescriptionWithErrorCode:code]];
@@ -114,7 +114,7 @@ static NSString * const NodePlanCellID = @"NodePlanCellID";
         self.listArray = self.nodeListArray;
     } else {
         NSMutableArray * listArray = [NSMutableArray array];
-        for (NodePlanModel * nodePlanModel in self.listArray) {
+        for (NodePlanModel * nodePlanModel in self.nodeListArray) {
             if ([nodePlanModel.myVoteCount integerValue] > 0 || [nodePlanModel.nodeCapitalAddress isEqualToString:CurrentWalletAddress]) {
                 [listArray addObject:nodePlanModel];
             }
@@ -126,9 +126,6 @@ static NSString * const NodePlanCellID = @"NodePlanCellID";
 }
 - (void)setupView
 {
-//    [self.view addSubview:self.headerView];
-//    CGFloat tableViewY = CGRectGetMaxY(self.headerView.frame);
-//    self.tableView = [[UITableView alloc] initWithFrame:CGRectMake(0, tableViewY, DEVICE_WIDTH, DEVICE_HEIGHT - tableViewY) style:UITableViewStyleGrouped];
     self.tableView = [[UITableView alloc] initWithFrame:self.view.frame style:UITableViewStyleGrouped];
     self.tableView.delegate = self;
     self.tableView.dataSource = self;
@@ -137,6 +134,17 @@ static NSString * const NodePlanCellID = @"NodePlanCellID";
     [self.view addSubview:self.tableView];
     self.noNetWork = [Encapsulation showNoNetWorkWithSuperView:self.view target:self action:@selector(reloadData)];
     self.tableView.tableHeaderView = self.headerView;
+}
+- (UIView *)noData
+{
+    if (!_noData) {
+        CGFloat noDataH = DEVICE_HEIGHT - NavBarH - SafeAreaBottomH - Margin_40;
+        _noData = [[UIView alloc] initWithFrame:CGRectMake(0, 0, DEVICE_WIDTH, noDataH)];
+        UIButton * noDataBtn = [Encapsulation showNoDataWithTitle:Localized(@"NoRecord") imageName:@"noRecord" superView:_noData frame:CGRectMake(0, (noDataH - ScreenScale(160)) / 2, DEVICE_WIDTH, ScreenScale(160))];
+        noDataBtn.hidden = NO;
+        [_noData addSubview:noDataBtn];
+    }
+    return _noData;
 }
 - (UIView *)headerView
 {
@@ -193,16 +201,41 @@ static NSString * const NodePlanCellID = @"NodePlanCellID";
     }
     return _headerView;
 }
-- (UIView *)noData
+- (void)searchAction
 {
-    if (!_noData) {
-        CGFloat noDataH = DEVICE_HEIGHT - NavBarH - SafeAreaBottomH - Margin_40;
-        _noData = [[UIView alloc] initWithFrame:CGRectMake(0, 0, DEVICE_WIDTH, noDataH)];
-        UIButton * noDataBtn = [Encapsulation showNoDataWithTitle:Localized(@"NoRecord") imageName:@"noRecord" superView:_noData frame:CGRectMake(0, (noDataH - ScreenScale(160)) / 2, DEVICE_WIDTH, ScreenScale(160))];
-        noDataBtn.hidden = NO;
-        [_noData addSubview:noDataBtn];
+    [self.searchTextField resignFirstResponder];
+    [self searchData];
+}
+- (BOOL)textFieldShouldClear:(UITextField *)textField
+{
+    self.searchText = nil;
+    [self searchAction];
+    return YES;
+}
+- (void)textChange:(UITextField *)textField
+{
+    self.searchText = [self.searchTextField.text stringByTrimmingCharactersInSet:[NSCharacterSet whitespaceAndNewlineCharacterSet]];
+}
+- (BOOL)textFieldShouldReturn:(UITextField *)textField
+{
+    [self searchAction];
+    return YES;
+}
+- (void)searchData
+{
+    if (self.searchText.length == 0) {
+        self.listArray = self.nodeListArray;
+    } else {
+        NSMutableArray * listArray = [NSMutableArray array];
+        for (NodePlanModel * nodePlanModel in self.nodeListArray) {
+            if ([nodePlanModel.nodeName containsString:self.searchText]) {
+                [listArray addObject:nodePlanModel];
+            }
+        }
+        self.listArray = listArray;
     }
-    return _noData;
+    [self ifShowNoData];
+    [self.tableView reloadData];
 }
 - (NSInteger)numberOfSectionsInTableView:(UITableView *)tableView
 {
@@ -239,26 +272,7 @@ static NSString * const NodePlanCellID = @"NodePlanCellID";
         popupMenu.height = titleHeight + Margin_40;
     }];
 }
-- (void)searchAction
-{
-    [self.searchTextField resignFirstResponder];
-//    if (self.searchText.length > 0) {
-//        if (!self.tableView.mj_header) {
-//            [self setupRefresh];
-//        } else {
-//            [self.tableView.mj_header beginRefreshing];
-//        }
-//    }
-}
-- (void)textChange:(UITextField *)textField
-{
-//    self.searchText = [self.searchTextField.text stringByTrimmingCharactersInSet:[NSCharacterSet whitespaceAndNewlineCharacterSet]];
-}
-- (BOOL)textFieldShouldReturn:(UITextField *)textField
-{
-    [self searchAction];
-    return YES;
-}
+
 - (CGFloat)tableView:(UITableView *)tableView heightForFooterInSection:(NSInteger)section
 {
     if (section == self.listArray.count - 1) {
@@ -293,7 +307,7 @@ static NSString * const NodePlanCellID = @"NodePlanCellID";
     self.index = button.tag;
     NSMutableArray * titles = [NSMutableArray arrayWithObjects:Localized(@"CancellationOfVotes"), Localized(@"VotingRecords"), Localized(@"InvitationToVote"), nil];
     NSMutableArray * icons = [NSMutableArray arrayWithObjects:@"cancellationOfVotes", @"votingRecords", @"", nil];
-    if (isOriginator == NO) {
+    if (isOriginator == YES) {
         [titles addObject:Localized(@"ReceiveAwards")];
         [icons addObject:@""];
     }
@@ -343,12 +357,6 @@ static NSString * const NodePlanCellID = @"NodePlanCellID";
             
         }];
         [alertView showInWindowWithMode:CustomAnimationModeShare inView:nil bgAlpha:AlertBgAlpha needEffectView:NO];
-//        CancellationOfVotingAlertView * alertView = [[CancellationOfVotingAlertView alloc] initWithText:@"撤销" confrimBolck:^(NSString * _Nonnull text) {
-//
-//        } cancelBlock:^{
-//
-//        }];
-//         [alertView showInWindowWithMode:CustomAnimationModeShare inView:nil bgAlpha:AlertBgAlpha needEffectView:NO];
     } else if (index == 1) {
         VotingRecordsViewController * VC = [[VotingRecordsViewController alloc] init];
         VC.nodePlanModel = self.listArray[self.index];
