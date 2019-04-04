@@ -31,6 +31,21 @@ static NSString * const NodeRecordsCellID = @"NodeRecordsCellID";
         [self.listBg addSubview:self.number];
         [self.listBg addSubview:self.state];
         [self.listBg addSubview:self.date];
+        
+        _recordType.backgroundColor = MAIN_COLOR;
+        self.title.text = @"会飞的比特币";
+        self.nodeType.text = Localized(@"ConsensusNode");
+        self.number.attributedText = [Encapsulation attrWithString:[NSString stringWithFormat:@"%@\n%@", Localized(@"Number"), @"897000"] preFont:FONT(12) preColor:COLOR_9 index:Localized(@"Number").length sufFont:FONT(13) sufColor:TITLE_COLOR lineSpacing:Margin_5];
+        self.number.textAlignment = NSTextAlignmentLeft;
+        
+        NSString * stateStr;
+        UIColor * stateColor;
+        stateStr = Localized(@"InProcessing");
+        stateColor = COLOR(@"FF7C14");
+        self.state.attributedText = [Encapsulation attrWithString:[NSString stringWithFormat:@"%@\n%@", Localized(@"State"),stateStr] preFont:FONT(12) preColor:COLOR_9 index:Localized(@"State").length sufFont:FONT(13) sufColor:stateColor lineSpacing:Margin_5];
+        self.state.textAlignment = NSTextAlignmentLeft;
+        self.date.attributedText = [Encapsulation attrWithString:[NSString stringWithFormat:@"%@\n%@", Localized(@"Time"), @"14:10:55 03/11/2019 "] preFont:FONT(12) preColor:COLOR_9 index:Localized(@"Time").length sufFont:FONT(13) sufColor:TITLE_COLOR lineSpacing:Margin_5];
+        self.date.textAlignment = NSTextAlignmentRight;
     }
     return self;
 }
@@ -155,7 +170,6 @@ static NSString * const NodeRecordsCellID = @"NodeRecordsCellID";
     }
     return _date;
 }
-
 - (void)setVotingRecordsModel:(VotingRecordsModel *)votingRecordsModel
 {
     _votingRecordsModel = votingRecordsModel;

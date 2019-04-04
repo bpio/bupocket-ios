@@ -20,8 +20,8 @@
 @property (nonatomic, strong) NSMutableArray * nodeListArray;
 @property (nonatomic, strong) UITextField * searchTextField;
 @property (nonatomic, strong) YBPopupMenu * popupMenu;
-@property (nonatomic, strong) YBPopupMenu * operationsMenu;
-@property (nonatomic, assign) NSInteger index;
+//@property (nonatomic, strong) YBPopupMenu * operationsMenu;
+//@property (nonatomic, assign) NSInteger index;
 @property (nonatomic, strong) UIView * noData;
 @property (nonatomic, strong) UIView * noNetWork;
 @property (nonatomic, strong) NSString * contractAddress;
@@ -83,6 +83,7 @@ static NSString * const NodePlanCellID = @"NodePlanCellID";
 //{
 //    [self getNodeListDataWithIdentityType:@"" nodeName:@"" capitalAddress:@""];
 //}
+
 - (void)getNodeListDataWithIdentityType:(NSString *)identityType
                                nodeName:(NSString *)nodeName
                          capitalAddress:(NSString *)capitalAddress
@@ -102,6 +103,11 @@ static NSString * const NodePlanCellID = @"NodePlanCellID";
     } failure:^(NSError *error) {
         self.noNetWork.hidden = NO;
     }];
+}
+- (void)reloadData
+{
+    self.noNetWork.hidden = YES;
+    [self getNodeListDataWithIdentityType:@"" nodeName:@"" capitalAddress:@""];
 }
 - (void)ifShowNoData
 {
@@ -283,7 +289,7 @@ static NSString * const NodePlanCellID = @"NodePlanCellID";
 }
 - (CGFloat)tableView:(UITableView *)tableView heightForRowAtIndexPath:(NSIndexPath *)indexPath
 {
-    return ScreenScale(85);
+    return ScreenScale(160);
 }
 - (UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath
 {
@@ -291,78 +297,54 @@ static NSString * const NodePlanCellID = @"NodePlanCellID";
     __block NodePlanModel * nodePlanModel = self.listArray[indexPath.section];
     cell.nodePlanModel = nodePlanModel;
     cell.selectionStyle = UITableViewCellSelectionStyleNone;
-    cell.operationClick = ^(UIButton * _Nonnull btn) {
-        btn.tag = indexPath.section;
-        if ([nodePlanModel.nodeCapitalAddress isEqualToString:CurrentWalletAddress]) {
-            [self setupOperation: btn isOriginator:YES];
-        } else {
-            [self setupOperation: btn isOriginator:NO];
-        }
+    cell.invitationVoteClick = ^{
+        
+    };
+    cell.votingRecordClick = ^{
+        [self votingRecordWithIndex:indexPath.section];
+    };
+    cell.cancellationVotesClick = ^{
+        [self cancellationVotesWithIndex:indexPath.section];
     };
     return cell;
 }
-- (void)setupOperation:(UIButton *)button isOriginator:(BOOL)isOriginator
+- (void)invitationVoteWithIndex:(NSInteger)index
 {
-    //    CGFloat titleHeight = [Encapsulation rectWithText:title font:TITLE_FONT textWidth:DEVICE_WIDTH - ScreenScale(120)].size.height;
-    self.index = button.tag;
-    NSMutableArray * titles = [NSMutableArray arrayWithObjects:Localized(@"CancellationOfVotes"), Localized(@"VotingRecords"), Localized(@"InvitationToVote"), nil];
-    NSMutableArray * icons = [NSMutableArray arrayWithObjects:@"cancellationOfVotes", @"votingRecords", @"", nil];
-    if (isOriginator == YES) {
-        [titles addObject:Localized(@"ReceiveAwards")];
-        [icons addObject:@""];
-    }
-    NSString * title;
-    for (NSString * str in titles) {
-        if (title.length < str.length) {
-            title = str;
-        }
-    }
-    CGFloat menuW = [Encapsulation rectWithText:title font:TITLE_FONT textHeight:Margin_15].size.width + ScreenScale(65);
-    _operationsMenu = [YBPopupMenu showRelyOnView:button titles:titles icons:icons menuWidth:menuW otherSettings:^(YBPopupMenu * popupMenu) {
-        popupMenu.priorityDirection = YBPopupMenuPriorityDirectionTop;
-        popupMenu.itemHeight = Margin_50;
-        popupMenu.dismissOnTouchOutside = YES;
-        popupMenu.dismissOnSelected = YES;
-        popupMenu.fontSize = TITLE_FONT;
-        popupMenu.textColor = [UIColor whiteColor];
-        popupMenu.backColor = COLOR(@"56526D");
-//        popupMenu.tableView.scrollEnabled = NO;
-//        popupMenu.tableView.allowsSelection = NO;
-        popupMenu.delegate = self;
-        popupMenu.showMaskView = NO;
-    }];
 }
+- (void)votingRecordWithIndex:(NSInteger)index
+{
+    VotingRecordsViewController * VC = [[VotingRecordsViewController alloc] init];
+    VC.nodePlanModel = self.listArray[index];
+    [self.navigationController pushViewController:VC animated:NO];
+}
+- (void)cancellationVotesWithIndex:(NSInteger)index
+{
+    NodePlanModel * nodePlanModel = self.listArray[index];
+    ConfirmTransactionModel * confirmTransactionModel = [[ConfirmTransactionModel alloc] init];
+    confirmTransactionModel.qrRemark = [NSString stringWithFormat:@"撤销对“{%@}”的投票数,节点地址是%@?", nodePlanModel.nodeName, nodePlanModel.nodeCapitalAddress];
+    confirmTransactionModel.destAddress = self.contractAddress;
+    confirmTransactionModel.amount = @"0";
+    NSString * role;
+    if ([nodePlanModel.identityType isEqualToString:NodeType_Consensus]) {
+        role = Role_validator;
+    } else if ([nodePlanModel.identityType isEqualToString:NodeType_Ecological]) {
+        role = Role_kol;
+    }
+    confirmTransactionModel.script = [NSString stringWithFormat:@"{\"method\":\"unVote\",\"params\":{\"role\":\"%@\",\"address\":\"%@\"}}", role, nodePlanModel.nodeCapitalAddress];
+    confirmTransactionModel.nodeId = nodePlanModel.nodeId;
+    confirmTransactionModel.type = TransactionType_NodeWithdrawal;
+    ConfirmTransactionAlertView * alertView = [[ConfirmTransactionAlertView alloc] initWithDpos:confirmTransactionModel confrimBolck:^{
+    } cancelBlock:^{
+        
+    }];
+    [alertView showInWindowWithMode:CustomAnimationModeShare inView:nil bgAlpha:AlertBgAlpha needEffectView:NO];
+}
+
 - (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath
 {
     [tableView deselectRowAtIndexPath:indexPath animated:YES];
 }
-- (void)ybPopupMenu:(YBPopupMenu *)ybPopupMenu didSelectedAtIndex:(NSInteger)index
-{
-    if (index == 0) {
-        NodePlanModel * nodePlanModel = self.listArray[self.index];
-        ConfirmTransactionModel * confirmTransactionModel = [[ConfirmTransactionModel alloc] init];
-        confirmTransactionModel.qrRemark = [NSString stringWithFormat:@"撤销对“{%@}”的投票数,节点地址是%@?", nodePlanModel.nodeName, nodePlanModel.nodeCapitalAddress];
-        confirmTransactionModel.destAddress = self.contractAddress;
-        confirmTransactionModel.amount = @"0";
-        NSString * role;
-        if ([nodePlanModel.identityType isEqualToString:NodeType_Consensus]) {
-            role = Role_validator;
-        } else if ([nodePlanModel.identityType isEqualToString:NodeType_Ecological]) {
-            role = Role_kol;
-        }
-        confirmTransactionModel.script = [NSString stringWithFormat:@"{\"method\":\"unVote\",\"params\":{\"role\":\"%@\",\"address\":\"%@\"}}", role, nodePlanModel.nodeCapitalAddress];
-        confirmTransactionModel.nodeId = nodePlanModel.nodeId;
-        ConfirmTransactionAlertView * alertView = [[ConfirmTransactionAlertView alloc] initWithDpos:confirmTransactionModel confrimBolck:^{
-        } cancelBlock:^{
-            
-        }];
-        [alertView showInWindowWithMode:CustomAnimationModeShare inView:nil bgAlpha:AlertBgAlpha needEffectView:NO];
-    } else if (index == 1) {
-        VotingRecordsViewController * VC = [[VotingRecordsViewController alloc] init];
-        VC.nodePlanModel = self.listArray[self.index];
-        [self.navigationController pushViewController:VC animated:NO];
-    }
-}
+
 
 /*
 #pragma mark - Navigation

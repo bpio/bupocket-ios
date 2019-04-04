@@ -378,10 +378,10 @@
             //            [MBProgressHUD showTipMessageInWindow:[ErrorTypeTool getDescription:resultModel.errorCode]];
         }
         VC.transferInfoArray = weakSelf.transferInfoArray;
-        [[UIApplication sharedApplication].keyWindow.rootViewController.navigationController pushViewController:VC animated:NO];
+        [[UIApplication topViewController:[[UIApplication sharedApplication] keyWindow].rootViewController].navigationController pushViewController:VC animated:NO];
     } failure:^(TransactionResultModel *resultModel) {
         RequestTimeoutViewController * VC = [[RequestTimeoutViewController alloc] init];
-        [[UIApplication sharedApplication].keyWindow.rootViewController.navigationController pushViewController:VC animated:NO];
+        [[UIApplication topViewController:[[UIApplication sharedApplication] keyWindow].rootViewController].navigationController pushViewController:VC animated:NO];
     }];
 }
 /*

@@ -12,12 +12,9 @@
 #import "WKWebViewController.h"
 #import <WXApi.h>
 #import "NodePlanViewController.h"
+#import "CooperateViewController.h"
 
 @interface FindViewController ()<UITableViewDelegate, UITableViewDataSource, SDCycleScrollViewDelegate>
-
-{
-    dispatch_source_t _gcdTimer;
-}
 
 @property (nonatomic, strong) UITableView * tableView;
 @property (nonatomic, strong) SDCycleScrollView * cycleScrollView;
@@ -122,6 +119,9 @@ static NSString * const ExportCellID = @"ExportCellID";
     } else if (indexPath.section == 1) {
         if (indexPath.row == 0) {
             NodePlanViewController * VC = [[NodePlanViewController alloc] init];
+            [self.navigationController pushViewController:VC animated:NO];
+        } else {
+            CooperateViewController * VC = [[CooperateViewController alloc] init];
             [self.navigationController pushViewController:VC animated:NO];
         }
     } else if (indexPath.section == 2) {

@@ -480,7 +480,10 @@ static int64_t const gasPrice = 1000;
     // Build BUSendOperation
     [MBProgressHUD showActivityMessageInWindow:Localized(@"Loading")];
     NSString * sourceAddress = CurrentWalletAddress;
-    NSString * qrcodeSessionId = confirmTransactionModel.qrcodeSessionId;
+    NSString * ID = confirmTransactionModel.qrcodeSessionId;
+    if (confirmTransactionModel.nodeId) {
+        ID = confirmTransactionModel.nodeId;
+    }
     NSString * notes = confirmTransactionModel.qrRemark;
     int64_t fee = [[[NSDecimalNumber decimalNumberWithString:confirmTransactionModel.transactionCost] decimalNumberByMultiplyingByPowerOf10: Decimals_BU] longLongValue];
     int64_t nonce = [[HTTPManager shareManager] getAccountNonce: sourceAddress] + 1;
@@ -494,7 +497,7 @@ static int64_t const gasPrice = 1000;
     [operation setInput:confirmTransactionModel.script];
     [operation setMetadata:notes];
     [operations addObject:operation];
-    _hash = [[HTTPManager shareManager] buildBlobAndSignAndSubmit:nil :sourceAddress :nonce :gasPrice :fee :operations :notes :qrcodeSessionId];
+    _hash = [[HTTPManager shareManager] buildBlobAndSignAndSubmit:nil :sourceAddress :nonce :gasPrice :fee :operations :notes :ID];
     if (_hash) {
         [[HTTPManager shareManager] getConfirmTransactionDataWithModel:confirmTransactionModel hash:_hash initiatorAddress:CurrentWalletAddress success:^(id responseObject) {
             if(success != nil)
@@ -989,7 +992,7 @@ static int64_t const gasPrice = 1000;
     return nonce;
 }
 // transaction information
-- (NSString *) buildBlobAndSignAndSubmit : (NSString *) privateKey : (NSString *) sourceAddress : (int64_t) nonce : (int64_t) gasPrice : (int64_t) feeLimit : (NSMutableArray<BaseOperation *> *) operations : (NSString *) notes : (NSString *)qrcodeSessionId {
+- (NSString *) buildBlobAndSignAndSubmit : (NSString *) privateKey : (NSString *) sourceAddress : (int64_t) nonce : (int64_t) gasPrice : (int64_t) feeLimit : (NSMutableArray<BaseOperation *> *) operations : (NSString *) notes : (NSString *)ID {
     TransactionBuildBlobRequest *buildBlobRequest = [TransactionBuildBlobRequest new];
     [buildBlobRequest setSourceAddress : sourceAddress];
     [buildBlobRequest setNonce : nonce];
@@ -1009,7 +1012,7 @@ static int64_t const gasPrice = 1000;
         [MBProgressHUD showTipMessageInWindow:[ErrorTypeTool getDescription:_buildBlobResponse.errorCode]];
     }
 
-    if (hash && !qrcodeSessionId) {
+    if (hash && !ID) {
         BOOL ifSubmitSuccess = [[HTTPManager shareManager] buildSignAndSubmit :privateKey];
         if (!ifSubmitSuccess) {
             hash = nil;

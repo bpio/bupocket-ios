@@ -66,6 +66,20 @@
     NSString * string = [[NSString alloc] initWithData:data encoding:NSUTF8StringEncoding];
     return string;
 }
-
++ (NSString *)stringAmountSplitWith:(NSString *)str
+{
+    double oldf = [str doubleValue];
+    long long oldll = [str longLongValue];
+    double tmptf = oldf - oldll;
+    NSString * currencyStr = nil;
+    if(tmptf > 0){
+        currencyStr = [NSNumberFormatter localizedStringFromNumber:[NSNumber numberWithDouble:oldf]
+                                                       numberStyle:NSNumberFormatterDecimalStyle];
+    } else {
+        currencyStr = [NSNumberFormatter localizedStringFromNumber:[NSNumber numberWithLongLong:oldll]
+                                                       numberStyle:NSNumberFormatterDecimalStyle];
+    }
+    return currencyStr;
+}
 
 @end

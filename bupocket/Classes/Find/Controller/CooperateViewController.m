@@ -1,18 +1,15 @@
 //
-//  VotingRecordsViewController.m
+//  CooperateViewController.m
 //  bupocket
 //
-//  Created by bupocket on 2019/3/22.
+//  Created by huoss on 2019/4/4.
 //  Copyright © 2019年 bupocket. All rights reserved.
 //
 
-#import "VotingRecordsViewController.h"
-#import "NodePlanViewCell.h"
-#import "VotingRecordsViewCell.h"
-#import "VotingRecordsModel.h"
-#import "VotingRecordsDetailViewController.h"
+#import "CooperateViewController.h"
+#import "CooperateViewCell.h"
 
-@interface VotingRecordsViewController ()<UITableViewDelegate, UITableViewDataSource>
+@interface CooperateViewController ()<UITableViewDelegate, UITableViewDataSource>
 
 @property (nonatomic, strong) UITableView * tableView;
 @property (nonatomic, strong) NSMutableArray * listArray;
@@ -21,11 +18,9 @@
 
 @end
 
-static NSString * const NodeCellID = @"NodeCellID";
-static NSString * const NodeRecordsCellID = @"NodeRecordsCellID";
-static NSString * const VotingRecordsCellID = @"VotingRecordsCellID";
+static NSString * const CooperateCellID = @"CooperateCellID";
 
-@implementation VotingRecordsViewController
+@implementation CooperateViewController
 
 - (NSMutableArray *)listArray
 {
@@ -37,9 +32,10 @@ static NSString * const VotingRecordsCellID = @"VotingRecordsCellID";
 
 - (void)viewDidLoad {
     [super viewDidLoad];
-    self.navigationItem.title = Localized(@"VotingRecords");
+    self.navigationItem.title = Localized(@"JointConstructionOfNodes");
+    self.listArray = [NSMutableArray arrayWithObjects:@"", @"", @"", @"", @"", @"", @"", @"", nil];
     [self setupView];
-    [self setupRefresh];
+//    [self setupRefresh];
     // Do any additional setup after loading the view.
 }
 - (void)setupRefresh
@@ -54,10 +50,7 @@ static NSString * const VotingRecordsCellID = @"VotingRecordsCellID";
 }
 - (void)getData
 {
-    NSString * nodeId = @"";
-    if (self.nodePlanModel) {
-        nodeId = self.nodePlanModel.nodeId;
-    }
+    /*
     [[HTTPManager shareManager] getVotingRecordDataWithNodeId:nodeId success:^(id responseObject) {
         NSInteger code = [[responseObject objectForKey:@"errCode"] integerValue];
         if (code == Success_Code) {
@@ -74,6 +67,7 @@ static NSString * const VotingRecordsCellID = @"VotingRecordsCellID";
         [self.tableView.mj_header endRefreshing];
         self.noNetWork.hidden = NO;
     }];
+     */
 }
 - (void)reloadData
 {
@@ -92,9 +86,6 @@ static NSString * const VotingRecordsCellID = @"VotingRecordsCellID";
 {
     if (!_noData) {
         CGFloat noDataH = DEVICE_HEIGHT - NavBarH - SafeAreaBottomH;
-        if (_nodePlanModel) {
-            noDataH -= ScreenScale(80);
-        }
         _noData = [[UIView alloc] initWithFrame:CGRectMake(0, 0, DEVICE_WIDTH, noDataH)];
         UIButton * noDataBtn = [Encapsulation showNoDataWithTitle:Localized(@"NoRecord") imageName:@"noRecord" superView:_noData frame:CGRectMake(0, (noDataH - ScreenScale(160)) / 2, DEVICE_WIDTH, ScreenScale(160))];
         noDataBtn.hidden = NO;
@@ -104,11 +95,7 @@ static NSString * const VotingRecordsCellID = @"VotingRecordsCellID";
 }
 - (NSInteger)numberOfSectionsInTableView:(UITableView *)tableView
 {
-    if (self.nodePlanModel) {
-        return self.listArray.count + 1;
-    } else {
-        return self.listArray.count;
-    }
+    return self.listArray.count;
 }
 - (NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section
 {
@@ -116,32 +103,16 @@ static NSString * const VotingRecordsCellID = @"VotingRecordsCellID";
 }
 - (CGFloat)tableView:(UITableView *)tableView heightForHeaderInSection:(NSInteger)section
 {
-    if (section == 0 && !self.nodePlanModel) {
+    if (section == 0) {
         return Margin_5;
-    } else if (self.nodePlanModel && section == 1) {
-        return MAIN_HEIGHT;
     } else {
         return CGFLOAT_MIN;
     }
 }
-- (UIView *)tableView:(UITableView *)tableView viewForHeaderInSection:(NSInteger)section
-{
-    if (self.nodePlanModel && section == 1) {
-        UIButton * title = [UIButton createButtonWithTitle:Localized(@"VotingRecords") TextFont:13 TextNormalColor:COLOR_9 TextSelectedColor:COLOR_9 Target:nil Selector:nil];
-        title.contentEdgeInsets = UIEdgeInsetsMake(0, Margin_10, 0, 0);
-        title.contentHorizontalAlignment = UIControlContentHorizontalAlignmentLeft;
-        return title;
-    } else {
-        return nil;
-    }
-}
+
 - (CGFloat)tableView:(UITableView *)tableView heightForFooterInSection:(NSInteger)section
 {
-    NSInteger index = self.listArray.count - 1;
-    if (self.nodePlanModel) {
-        index = self.listArray.count;
-    }
-    if (section == index) {
+    if (section == self.listArray.count - 1) {
         return SafeAreaBottomH + NavBarH;
     } else {
         return CGFLOAT_MIN;
@@ -149,41 +120,14 @@ static NSString * const VotingRecordsCellID = @"VotingRecordsCellID";
 }
 - (CGFloat)tableView:(UITableView *)tableView heightForRowAtIndexPath:(NSIndexPath *)indexPath
 {
-    if (self.nodePlanModel && indexPath.section == 0) {
-        return ScreenScale(80);
-    } else {
-        return ScreenScale(105);
-    }
+    return ScreenScale(155);
 }
 - (UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath
 {
-    if (self.nodePlanModel && indexPath.section == 0) {
-        NodePlanViewCell * cell = [NodePlanViewCell cellWithTableView:tableView identifier:NodeCellID];
-        cell.selectionStyle = UITableViewCellSelectionStyleNone;
-//        cell.moreOperations.hidden = YES;
-        cell.nodePlanModel = self.nodePlanModel;
-        return cell;
-    } else {
-        NSString * cellID = VotingRecordsCellID;
-        NSInteger index = indexPath.section;
-        if (self.nodePlanModel) {
-            cellID = NodeRecordsCellID;
-            index = indexPath.section - 1;
-        }
-        VotingRecordsViewCell * cell = [VotingRecordsViewCell cellWithTableView:tableView identifier:cellID];
-        cell.votingRecordsModel = self.listArray[index];
-        cell.selectionStyle = UITableViewCellSelectionStyleNone;
-        return cell;
-    }
-}
-- (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath
-{
-    [tableView deselectRowAtIndexPath:indexPath animated:NO];
-//    if (self.nodePlanModel && indexPath.section == 0) {
-//    } else {
-        VotingRecordsDetailViewController * VC = [[VotingRecordsDetailViewController alloc] init];
-        [self.navigationController pushViewController:VC animated:NO];
-//    }
+    CooperateViewCell * cell = [CooperateViewCell cellWithTableView:tableView identifier:CooperateCellID];
+//    cell.votingRecordsModel = self.listArray[index];
+    cell.selectionStyle = UITableViewCellSelectionStyleNone;
+    return cell;
 }
 /*
 #pragma mark - Navigation

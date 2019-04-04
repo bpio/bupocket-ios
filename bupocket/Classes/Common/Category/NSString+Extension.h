@@ -27,6 +27,8 @@ NS_ASSUME_NONNULL_BEGIN
 // base64 Decode
 + (NSString *)dencode:(NSString *)base64String;
 
++ (NSString *)stringAmountSplitWith:(NSString *)str;
+
 
 @end
 

@@ -379,6 +379,11 @@
 "State" = "状态";
 "Time" = "时间";
 "InProcessing" = "处理中";
+// 投票记录详情
+"Share" = "分享";
+"Votes" = "票";
+"SupportNumber" = "人支持";
+"NodeIntroduction" = "节点介绍";
 // 撤票详情
 "Revoke" = "撤销";
 "Vote" = "投票";
@@ -401,6 +406,12 @@
 "Details" = "详情";
 "TransactionCosts" = "交易费用";
 "Parameter" = "参数";
+// 节点共建
+"PurchaseAmount" = "起购金额";
+"AwardSharingRatio" = "奖励分享比例";
+"TargetNumber" = "目标数量";
+"ResidualPortion" = "剩余份数";
+"Portion" = "份";
 
 // Errors
 "LoadFailure" = "Failed to load";
