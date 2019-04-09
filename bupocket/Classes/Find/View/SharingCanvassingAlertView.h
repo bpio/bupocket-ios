@@ -8,6 +8,8 @@
 
 #import <UIKit/UIKit.h>
 #import "UIView+CustomAlertView.h"
+#import "NodePlanModel.h"
+
 
 NS_ASSUME_NONNULL_BEGIN
 
@@ -19,7 +21,7 @@ typedef void (^OnConfrimClick)(NSString * text);
 @property (nonatomic, copy) OnCancleClick cancleClick;
 @property (nonatomic, copy) OnConfrimClick confrimClick;
 
-- (instancetype)initWithConfrimBolck:(void (^)(NSString * text))confrimBlock cancelBlock:(void (^)(void))cancelBlock;
+- (instancetype)initWithNodePlanModel:(NodePlanModel *)nodePlanModel confrimBolck:(void (^)(NSString * text))confrimBlock cancelBlock:(void (^)(void))cancelBlock;
 
 
 @end

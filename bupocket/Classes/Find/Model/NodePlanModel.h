@@ -20,6 +20,8 @@ NS_ASSUME_NONNULL_BEGIN
 @property (nonatomic, copy) NSString * identityStatus;
 @property (nonatomic, copy) NSString * nodeVote;
 @property (nonatomic, copy) NSString * myVoteCount;
+@property (nonatomic, copy) NSString * introduce;
+@property (nonatomic, copy) NSString * support;
 
 @end
 

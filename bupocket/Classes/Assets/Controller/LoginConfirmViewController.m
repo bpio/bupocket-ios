@@ -94,7 +94,7 @@
 
 - (void)confirmAction
 {
-    [[HTTPManager shareManager] getConfirmLoginDataWithAddress:[[[AccountTool shareTool] account] identityAddress] uuid:self.loginConfirmModel.uuid appId:self.loginConfirmModel.appId success:^(id responseObject) {
+    [[HTTPManager shareManager] getAccountCenterDataWithAppId:self.loginConfirmModel.appId uuid:self.loginConfirmModel.uuid success:^(id responseObject) {
         NSInteger code = [[responseObject objectForKey:@"errCode"] integerValue];
         if (code == Success_Code) {
             [self.navigationController popViewControllerAnimated:NO];

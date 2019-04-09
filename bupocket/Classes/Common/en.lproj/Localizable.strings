@@ -387,6 +387,10 @@
 // 分享
 "InvitationPrompt" = "快来小布口袋帮忙投票";
 "LongPressPrompt" = "（长按识别二维码）";
+"WeChat" = "微信";
+"QQ" = "QQ";
+"CopyLink" = "复制小布口令";
+
 // 撤票详情
 "Number of votes revoked on '%@'" = "撤销对\"%@\"的投票";
 //"Revoke" = "撤销";

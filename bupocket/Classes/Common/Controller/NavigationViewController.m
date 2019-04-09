@@ -25,6 +25,7 @@
 #import "FindViewController.h"
 #import "VotingRecordsViewController.h"
 #import "CooperateDetailViewController.h"
+#import "NodeSharingViewController.h"
 
 @interface NavigationViewController ()<UINavigationControllerDelegate>
 
@@ -81,7 +82,8 @@
                              [viewController isKindOfClass:[ContactViewController class]] ||
                              [viewController isKindOfClass:[FindViewController class]] ||
                              [viewController isKindOfClass:[VotingRecordsViewController class]] ||
-                             [viewController isKindOfClass:[CooperateDetailViewController class]]
+                             [viewController isKindOfClass:[CooperateDetailViewController class]] ||
+                             [viewController isKindOfClass:[NodeSharingViewController class]]
                              );
     if (@available(iOS 11.0, *)) {
         [self.navigationBar setPrefersLargeTitles:!isSetLargeTitles];

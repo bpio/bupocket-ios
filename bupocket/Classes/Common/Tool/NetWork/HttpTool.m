@@ -13,6 +13,7 @@
 
 @property (nonatomic, strong) AFURLSessionManager * sessionManager;
 @property (nonatomic, strong) AFHTTPSessionManager * manager;
+@property (nonatomic, strong) NSURLSessionConfiguration * sessionConfiguration;
 
 @end
 
@@ -25,10 +26,10 @@ static HttpTool * _shareTool = nil;
     dispatch_once(&onceToken, ^{
         if (!_shareTool) {
             _shareTool = [[HttpTool alloc] init];
-             NSURLSessionConfiguration * sessionConfiguration = [NSURLSessionConfiguration defaultSessionConfiguration];
-             sessionConfiguration.timeoutIntervalForRequest = Timeout_Interval;
-             sessionConfiguration.requestCachePolicy = NSURLRequestReloadIgnoringCacheData;
-            _shareTool.sessionManager = [[AFURLSessionManager alloc] initWithSessionConfiguration:sessionConfiguration];
+            _shareTool.sessionConfiguration = [NSURLSessionConfiguration defaultSessionConfiguration];
+            _shareTool.sessionConfiguration.timeoutIntervalForRequest = Timeout_Interval;
+            _shareTool.sessionConfiguration.requestCachePolicy = NSURLRequestReloadIgnoringCacheData;
+            _shareTool.sessionManager = [[AFURLSessionManager alloc] initWithSessionConfiguration:_shareTool.sessionConfiguration];
             [_shareTool.sessionManager.reachabilityManager startMonitoring];
             _shareTool.manager = [AFHTTPSessionManager manager];
             _shareTool.manager.requestSerializer = [AFHTTPRequestSerializer serializer];

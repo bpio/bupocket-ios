@@ -214,7 +214,7 @@
 }
 - (void)WholeAction
 {
-    NSLog(@"全部");
+    DLog(@"全部");
 }
 - (void)moreAction:(UIButton *)button
 {

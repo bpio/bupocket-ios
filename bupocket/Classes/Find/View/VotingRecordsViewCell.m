@@ -32,20 +32,20 @@ static NSString * const NodeRecordsCellID = @"NodeRecordsCellID";
         [self.listBg addSubview:self.state];
         [self.listBg addSubview:self.date];
         
-        _recordType.backgroundColor = MAIN_COLOR;
-        self.title.text = @"会飞的比特币";
-        self.nodeType.text = Localized(@"ConsensusNode");
-        self.number.attributedText = [Encapsulation attrWithString:[NSString stringWithFormat:@"%@\n%@", Localized(@"Number"), @"897000"] preFont:FONT(12) preColor:COLOR_9 index:Localized(@"Number").length sufFont:FONT(13) sufColor:TITLE_COLOR lineSpacing:Margin_5];
-        self.number.textAlignment = NSTextAlignmentLeft;
-        
-        NSString * stateStr;
-        UIColor * stateColor;
-        stateStr = Localized(@"InProcessing");
-        stateColor = COLOR(@"FF7C14");
-        self.state.attributedText = [Encapsulation attrWithString:[NSString stringWithFormat:@"%@\n%@", Localized(@"State"),stateStr] preFont:FONT(12) preColor:COLOR_9 index:Localized(@"State").length sufFont:FONT(13) sufColor:stateColor lineSpacing:Margin_5];
-        self.state.textAlignment = NSTextAlignmentLeft;
-        self.date.attributedText = [Encapsulation attrWithString:[NSString stringWithFormat:@"%@\n%@", Localized(@"Time"), @"14:10:55 03/11/2019 "] preFont:FONT(12) preColor:COLOR_9 index:Localized(@"Time").length sufFont:FONT(13) sufColor:TITLE_COLOR lineSpacing:Margin_5];
-        self.date.textAlignment = NSTextAlignmentRight;
+//        _recordType.backgroundColor = MAIN_COLOR;
+//        self.title.text = @"会飞的比特币";
+//        self.nodeType.text = Localized(@"ConsensusNode");
+//        self.number.attributedText = [Encapsulation attrWithString:[NSString stringWithFormat:@"%@\n%@", Localized(@"Number"), @"897000"] preFont:FONT(12) preColor:COLOR_9 index:Localized(@"Number").length sufFont:FONT(13) sufColor:TITLE_COLOR lineSpacing:Margin_5];
+//        self.number.textAlignment = NSTextAlignmentLeft;
+//
+//        NSString * stateStr;
+//        UIColor * stateColor;
+//        stateStr = Localized(@"InProcessing");
+//        stateColor = COLOR(@"FF7C14");
+//        self.state.attributedText = [Encapsulation attrWithString:[NSString stringWithFormat:@"%@\n%@", Localized(@"State"),stateStr] preFont:FONT(12) preColor:COLOR_9 index:Localized(@"State").length sufFont:FONT(13) sufColor:stateColor lineSpacing:Margin_5];
+//        self.state.textAlignment = NSTextAlignmentLeft;
+//        self.date.attributedText = [Encapsulation attrWithString:[NSString stringWithFormat:@"%@\n%@", Localized(@"Time"), @"14:10:55 03/11/2019 "] preFont:FONT(12) preColor:COLOR_9 index:Localized(@"Time").length sufFont:FONT(13) sufColor:TITLE_COLOR lineSpacing:Margin_5];
+//        self.date.textAlignment = NSTextAlignmentRight;
     }
     return self;
 }
@@ -53,7 +53,7 @@ static NSString * const NodeRecordsCellID = @"NodeRecordsCellID";
 - (void)layoutSubviews
 {
     [super layoutSubviews];
-    CGFloat width = (DEVICE_WIDTH - ScreenScale(70)) / 6;
+    CGFloat width = (DEVICE_WIDTH - ScreenScale(70)) / 7;
     [self.listBg mas_makeConstraints:^(MASConstraintMaker *make) {
         make.left.equalTo(self.contentView.mas_left).offset(Margin_10);
         make.right.equalTo(self.contentView.mas_right).offset(-Margin_10);
@@ -100,7 +100,7 @@ static NSString * const NodeRecordsCellID = @"NodeRecordsCellID";
         make.left.equalTo(self.state.mas_right).offset(Margin_10);
         make.right.equalTo(self.listBg.mas_right).offset(-Margin_15);
         make.centerY.equalTo(self.number);
-        make.width.mas_equalTo(width * 3);
+        make.width.mas_equalTo(width * 4);
     }];
 }
 - (UIView *)listBg
@@ -180,7 +180,9 @@ static NSString * const NodeRecordsCellID = @"NodeRecordsCellID";
         self.recordType.selected = YES;
         _recordType.backgroundColor = WARNING_COLOR;
     }
-    self.title.text = votingRecordsModel.nodeName;
+    if (![self.reuseIdentifier isEqualToString:NodeRecordsCellID]) {
+        self.title.text = votingRecordsModel.nodeName;
+    }
     if ([votingRecordsModel.identityType isEqualToString:NodeType_Consensus]) {
         self.nodeType.text = Localized(@"ConsensusNode");
     } else if ([votingRecordsModel.identityType isEqualToString:NodeType_Ecological]) {
@@ -202,10 +204,10 @@ static NSString * const NodeRecordsCellID = @"NodeRecordsCellID";
     }
     self.state.attributedText = [Encapsulation attrWithString:[NSString stringWithFormat:@"%@\n%@", Localized(@"State"),stateStr] preFont:FONT(12) preColor:COLOR_9 index:Localized(@"State").length sufFont:FONT(13) sufColor:stateColor lineSpacing:Margin_5];
     self.state.textAlignment = NSTextAlignmentLeft;
-    self.date.attributedText = [Encapsulation attrWithString:[NSString stringWithFormat:@"%@\n%@", Localized(@"Time"), [DateTool getDateWithTimeStr:votingRecordsModel.date]] preFont:FONT(12) preColor:COLOR_9 index:Localized(@"Time").length sufFont:FONT(13) sufColor:TITLE_COLOR lineSpacing:Margin_5];
+    self.date.attributedText = [Encapsulation attrWithString:[NSString stringWithFormat:@"%@\n%@", Localized(@"Time"), votingRecordsModel.date] preFont:FONT(12) preColor:COLOR_9 index:Localized(@"Time").length sufFont:FONT(13) sufColor:TITLE_COLOR lineSpacing:Margin_5];
     self.date.textAlignment = NSTextAlignmentRight;
 }
-
+//[DateTool getDateWithTimeStr:votingRecordsModel.date]
 - (void)awakeFromNib {
     [super awakeFromNib];
     // Initialization code

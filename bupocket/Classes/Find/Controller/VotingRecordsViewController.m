@@ -10,7 +10,6 @@
 #import "NodePlanViewCell.h"
 #import "VotingRecordsViewCell.h"
 #import "VotingRecordsModel.h"
-#import "VotingRecordsDetailViewController.h"
 
 @interface VotingRecordsViewController ()<UITableViewDelegate, UITableViewDataSource>
 
@@ -87,6 +86,7 @@ static NSString * const VotingRecordsCellID = @"VotingRecordsCellID";
     self.tableView.dataSource = self;
     self.tableView.separatorStyle = UITableViewCellSeparatorStyleNone;
     [self.view addSubview:self.tableView];
+    self.tableView.tableHeaderView = [[UIView alloc] initWithFrame:CGRectMake(0, 0, 0, CGFLOAT_MIN)];
 }
 - (UIView *)noData
 {
@@ -141,7 +141,9 @@ static NSString * const VotingRecordsCellID = @"VotingRecordsCellID";
     if (self.nodePlanModel) {
         index = self.listArray.count;
     }
-    if (section == index) {
+    if (index == 0) {
+        return CGFLOAT_MIN;
+    } else if (section == index) {
         return SafeAreaBottomH + NavBarH;
     } else {
         return CGFLOAT_MIN;
@@ -181,8 +183,7 @@ static NSString * const VotingRecordsCellID = @"VotingRecordsCellID";
     [tableView deselectRowAtIndexPath:indexPath animated:NO];
 //    if (self.nodePlanModel && indexPath.section == 0) {
 //    } else {
-        VotingRecordsDetailViewController * VC = [[VotingRecordsDetailViewController alloc] init];
-        [self.navigationController pushViewController:VC animated:NO];
+    
 //    }
 }
 /*

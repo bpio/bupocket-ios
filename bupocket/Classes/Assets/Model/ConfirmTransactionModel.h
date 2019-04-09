@@ -29,6 +29,8 @@ NS_ASSUME_NONNULL_BEGIN
 @property (nonatomic, copy) NSString * script;
 // 二维码内容（交易内容）
 @property (nonatomic, copy) NSString * qrRemark;
+// 账户标签
+@property (nonatomic, copy) NSString * accountTag;
 
 @property (nonatomic, copy) NSString * transactionCost;
 @property (nonatomic, copy) NSString * nodeId;

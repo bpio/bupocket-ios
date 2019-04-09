@@ -85,7 +85,8 @@
             self.transactionCost = TransactionCost_MIN;
         }
         self.confirmTransactionModel.transactionCost = self.transactionCost;
-        infoArray = @[self.confirmTransactionModel.qrRemark, self.confirmTransactionModel.destAddress, self.transactionCost, CurrentWalletAddress, self.confirmTransactionModel.destAddress, [NSString stringAppendingBUWithStr:self.confirmTransactionModel.amount], self.transactionCost, self.confirmTransactionModel.script];
+        NSString * destAddress = [NSString stringWithFormat:@"%@%@", self.confirmTransactionModel.destAddress, self.confirmTransactionModel.accountTag];
+        infoArray = @[self.confirmTransactionModel.qrRemark, destAddress, self.transactionCost, CurrentWalletAddress, destAddress, [NSString stringAppendingBUWithStr:self.confirmTransactionModel.amount], self.transactionCost, self.confirmTransactionModel.script];
     } else {
         infoArray = @[@"转入质押金5000000BU", @"buQXVJXpMZaxUpfuNRzaGUreDK1r6zYTFcTW", TransactionCost_MIN, CurrentWalletAddress, @"buQXVJXpMZaxUpfuNRzaGUreDK1r6zYTFcTW", @"5000000 BU", TransactionCost_MIN, @"{\"method\":\"apply\",\"params\":{\"role\":\"validator\",\"node\":\"buQXVJXpMZaxUpfuNRzaGUreDK1r6zYTFcTW\"}}"];
     }
@@ -354,7 +355,7 @@
                 });
             }
         } else {
-            [MBProgressHUD showTipMessageInWindow:responseObject[@"msg"]];
+            [Encapsulation showAlertControllerWithMessage:responseObject[@"msg"] handler:nil];
         }
     } failure:^(NSError *error) {
         

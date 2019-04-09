@@ -99,17 +99,20 @@
                                             success:(void (^)(id responseObject))success
                                             failure:(void (^)(NSError *error))failure;
 // Account Center
+- (void)getAccountCenterDataWithAppId:(NSString *)appId
+                                 uuid:(NSString *)uuid
+                              success:(void (^)(id responseObject))success
+                              failure:(void (^)(NSError *error))failure;
 // user Scan Qr Login
-- (void)getScanCodeLoginDataWithAddress:(NSString *)address
-                                   uuid:(NSString *)uuid
-                                success:(void (^)(id responseObject))success
-                                failure:(void (^)(NSError *error))failure;
-// Confirm Login
-- (void)getConfirmLoginDataWithAddress:(NSString *)address
-                                  uuid:(NSString *)uuid
-                                 appId:(NSString *)appId
-                               success:(void (^)(id responseObject))success
-                               failure:(void (^)(NSError *error))failure;
+//- (void)getScanCodeLoginDataWithAddress:(NSString *)address
+//                                   uuid:(NSString *)uuid
+//                                success:(void (^)(id responseObject))success
+//                                failure:(void (^)(NSError *error))failure;
+//// Confirm Login
+//- (void)getConfirmLoginDataWithAppId:(NSString *)appId
+//                                uuid:(NSString *)uuid
+//                             success:(void (^)(id responseObject))success
+//                             failure:(void (^)(NSError *error))failure;
 // dpos
 - (void)getDposApplyNodeDataWithQRcodeSessionId:(NSString *)QRcodeSessionId
                                         success:(void (^)(id responseObject))success

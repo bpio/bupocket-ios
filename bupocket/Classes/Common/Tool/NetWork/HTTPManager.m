@@ -397,44 +397,44 @@ static int64_t const gasPrice = 1000;
 }
 #pragma mark - Account Center
 // user Scan Qr Login
-- (void)getScanCodeLoginDataWithAddress:(NSString *)address
-                                   uuid:(NSString *)uuid
-                                success:(void (^)(id responseObject))success
-                                failure:(void (^)(NSError *error))failure
-{
-    [MBProgressHUD showActivityMessageInWindow:Localized(@"Loading")];
-    NSString * url = SERVER_COMBINE_API(_webServerDomain, Account_Center_ScanQRLogin);
-    NSDictionary * parameters = @{
-                                  @"address": address,
-                                  @"uuid": uuid,
-                                  };
-    [[HttpTool shareTool] POST:url parameters:parameters success:^(id responseObject) {
-        if(success != nil)
-        {
-            success(responseObject);
-        }
-    } failure:^(NSError *error) {
-        if(failure != nil)
-        {
-            failure(error);
-            [MBProgressHUD showTipMessageInWindow:Localized(@"NoNetWork")];
-        }
-    }];
-}
+//- (void)getScanCodeLoginDataWithAddress:(NSString *)address
+//                                   uuid:(NSString *)uuid
+//                                success:(void (^)(id responseObject))success
+//                                failure:(void (^)(NSError *error))failure
+//{
+//    [MBProgressHUD showActivityMessageInWindow:Localized(@"Loading")];
+//    NSString * url = SERVER_COMBINE_API(_webServerDomain, Account_Center_ScanQRLogin);
+//    NSDictionary * parameters = @{
+//                                  @"address": address,
+//                                  @"uuid": uuid,
+//                                  };
+//    [[HttpTool shareTool] POST:url parameters:parameters success:^(id responseObject) {
+//        if(success != nil)
+//        {
+//            success(responseObject);
+//        }
+//    } failure:^(NSError *error) {
+//        if(failure != nil)
+//        {
+//            failure(error);
+//            [MBProgressHUD showTipMessageInWindow:Localized(@"NoNetWork")];
+//        }
+//    }];
+//}
 // Confirm Login
-- (void)getConfirmLoginDataWithAddress:(NSString *)address
-                                  uuid:(NSString *)uuid
-                                 appId:(NSString *)appId
-                               success:(void (^)(id responseObject))success
-                               failure:(void (^)(NSError *error))failure
+- (void)getAccountCenterDataWithAppId:(NSString *)appId
+                                 uuid:(NSString *)uuid
+                              success:(void (^)(id responseObject))success
+                              failure:(void (^)(NSError *error))failure
 {
     [MBProgressHUD showActivityMessageInWindow:Localized(@"Loading")];
-    NSString * url = SERVER_COMBINE_API(_webServerDomain, Account_Center_Confirm_Login);
-    NSDictionary * parameters = @{
-                                  @"address": address,
-                                  @"uuid": uuid,
-                                  @"appId": appId
-                                  };
+    NSString * URL = Account_Center_ScanQRLogin;
+    if (appId) {
+        URL = Account_Center_Confirm_Login;
+    }
+    NSString * url = SERVER_COMBINE_API(_webServerDomain, URL);
+    NSString * body = [NSString stringWithFormat:@"address=%@&uuid=%@&appId=%@", CurrentWalletAddress, uuid, appId];
+    NSDictionary * parameters = [[HTTPManager shareManager] parametersWithHTTPBody:body];
     [[HttpTool shareTool] POST:url parameters:parameters success:^(id responseObject) {
         if(success != nil)
         {

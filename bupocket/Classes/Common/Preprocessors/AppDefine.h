@@ -95,6 +95,9 @@
 #define AddressBook_Cache_Name @"addressBook.sqlite"
 
 #define Wechat_APP_ID @"wxaecf7ac4085fd34a"
+
+#define Tencent_AppKey @"1107018540"
+
 #define SmallRoutine_Original_ID @"gh_463781563a74"
 #define Dispatch_After_Time 0.5
 

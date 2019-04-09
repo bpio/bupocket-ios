@@ -136,10 +136,11 @@
 		959E291B22534462006FCA30 /* VotingRecordsModel.m in Sources */ = {isa = PBXBuildFile; fileRef = 959E291A22534462006FCA30 /* VotingRecordsModel.m */; };
 		959E291E2255B331006FCA30 /* CooperateViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 959E291D2255B331006FCA30 /* CooperateViewController.m */; };
 		959E29212255D7DB006FCA30 /* CooperateViewCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 959E29202255D7DB006FCA30 /* CooperateViewCell.m */; };
-		959E29242255F9F5006FCA30 /* VotingRecordsDetailViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 959E29232255F9F5006FCA30 /* VotingRecordsDetailViewController.m */; };
 		959E292722560ED4006FCA30 /* SharingCanvassingAlertView.m in Sources */ = {isa = PBXBuildFile; fileRef = 959E292622560ED4006FCA30 /* SharingCanvassingAlertView.m */; };
 		959E292A225AE267006FCA30 /* CooperateDetailViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 959E2929225AE267006FCA30 /* CooperateDetailViewController.m */; };
 		959E292D225B4186006FCA30 /* SupportAlertView.m in Sources */ = {isa = PBXBuildFile; fileRef = 959E292C225B4186006FCA30 /* SupportAlertView.m */; };
+		959E2930225C8597006FCA30 /* NodeSharingViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 959E292F225C8597006FCA30 /* NodeSharingViewController.m */; };
+		959E2933225C9E04006FCA30 /* TencentOpenAPI.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 959E2932225C9E04006FCA30 /* TencentOpenAPI.framework */; };
 		95A8A3B1219D1352008E978E /* LanguageManager.m in Sources */ = {isa = PBXBuildFile; fileRef = 95A8A3AF219D1352008E978E /* LanguageManager.m */; };
 		95A8A3B5219D157C008E978E /* DateTool.m in Sources */ = {isa = PBXBuildFile; fileRef = 95A8A3B4219D157C008E978E /* DateTool.m */; };
 		95A8A3B9219D15D8008E978E /* RegexPatternTool.m in Sources */ = {isa = PBXBuildFile; fileRef = 95A8A3B8219D15D8008E978E /* RegexPatternTool.m */; };
@@ -454,14 +455,15 @@
 		959E291D2255B331006FCA30 /* CooperateViewController.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = CooperateViewController.m; sourceTree = "<group>"; };
 		959E291F2255D7DB006FCA30 /* CooperateViewCell.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = CooperateViewCell.h; sourceTree = "<group>"; };
 		959E29202255D7DB006FCA30 /* CooperateViewCell.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = CooperateViewCell.m; sourceTree = "<group>"; };
-		959E29222255F9F5006FCA30 /* VotingRecordsDetailViewController.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = VotingRecordsDetailViewController.h; sourceTree = "<group>"; };
-		959E29232255F9F5006FCA30 /* VotingRecordsDetailViewController.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = VotingRecordsDetailViewController.m; sourceTree = "<group>"; };
 		959E292522560ED4006FCA30 /* SharingCanvassingAlertView.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = SharingCanvassingAlertView.h; sourceTree = "<group>"; };
 		959E292622560ED4006FCA30 /* SharingCanvassingAlertView.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = SharingCanvassingAlertView.m; sourceTree = "<group>"; };
 		959E2928225AE267006FCA30 /* CooperateDetailViewController.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = CooperateDetailViewController.h; sourceTree = "<group>"; };
 		959E2929225AE267006FCA30 /* CooperateDetailViewController.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = CooperateDetailViewController.m; sourceTree = "<group>"; };
 		959E292B225B4186006FCA30 /* SupportAlertView.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = SupportAlertView.h; sourceTree = "<group>"; };
 		959E292C225B4186006FCA30 /* SupportAlertView.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = SupportAlertView.m; sourceTree = "<group>"; };
+		959E292E225C8597006FCA30 /* NodeSharingViewController.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = NodeSharingViewController.h; sourceTree = "<group>"; };
+		959E292F225C8597006FCA30 /* NodeSharingViewController.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = NodeSharingViewController.m; sourceTree = "<group>"; };
+		959E2932225C9E04006FCA30 /* TencentOpenAPI.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; path = TencentOpenAPI.framework; sourceTree = "<group>"; };
 		95A8A3AF219D1352008E978E /* LanguageManager.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = LanguageManager.m; sourceTree = "<group>"; };
 		95A8A3B0219D1352008E978E /* LanguageManager.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = LanguageManager.h; sourceTree = "<group>"; };
 		95A8A3B3219D157B008E978E /* DateTool.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = DateTool.h; sourceTree = "<group>"; };
@@ -492,6 +494,7 @@
 			buildActionMask = 2147483647;
 			files = (
 				9569288321D7541400B7721A /* libc++.tbd in Frameworks */,
+				959E2933225C9E04006FCA30 /* TencentOpenAPI.framework in Frameworks */,
 				95AD144021F1BB730097CCDE /* sdk_ios.framework in Frameworks */,
 				E0A64C5CAFFFD9486B7713D7 /* Pods_bupocket.framework in Frameworks */,
 			);
@@ -519,6 +522,7 @@
 		833799292177091500C222A5 /* Tool */ = {
 			isa = PBXGroup;
 			children = (
+				959E2931225C9E04006FCA30 /* QQ */,
 				9579E74D21B5353700051EDB /* Lib */,
 				95A8A415219D5FE2008E978E /* YBPopupMenu */,
 				95A8A3B6219D15AB008E978E /* RegularCheck */,
@@ -998,8 +1002,8 @@
 				954F23132243842E0090E967 /* NodePlanViewController.m */,
 				959E28E22244C87D006FCA30 /* VotingRecordsViewController.h */,
 				959E28E32244C87D006FCA30 /* VotingRecordsViewController.m */,
-				959E29222255F9F5006FCA30 /* VotingRecordsDetailViewController.h */,
-				959E29232255F9F5006FCA30 /* VotingRecordsDetailViewController.m */,
+				959E292E225C8597006FCA30 /* NodeSharingViewController.h */,
+				959E292F225C8597006FCA30 /* NodeSharingViewController.m */,
 				959E291C2255B331006FCA30 /* CooperateViewController.h */,
 				959E291D2255B331006FCA30 /* CooperateViewController.m */,
 				959E2928225AE267006FCA30 /* CooperateDetailViewController.h */,
@@ -1075,6 +1079,14 @@
 				959575D7221BD7F10089479C /* AppInclude.h */,
 			);
 			path = Preprocessors;
+			sourceTree = "<group>";
+		};
+		959E2931225C9E04006FCA30 /* QQ */ = {
+			isa = PBXGroup;
+			children = (
+				959E2932225C9E04006FCA30 /* TencentOpenAPI.framework */,
+			);
+			path = QQ;
 			sourceTree = "<group>";
 		};
 		95A8A3A8219D12B1008E978E /* Internationalization */ = {
@@ -1487,6 +1499,7 @@
 				838DC7682186AFFB002FF276 /* DistributionResultsViewController.m in Sources */,
 				83379A86217D9C8A00C222A5 /* AssetsDetailViewController.m in Sources */,
 				83379A92217DE12600C222A5 /* TransferResultsViewController.m in Sources */,
+				959E2930225C8597006FCA30 /* NodeSharingViewController.m in Sources */,
 				954F23142243842E0090E967 /* NodePlanViewController.m in Sources */,
 				8372C8632174CBF100FF9506 /* TabBarViewController.m in Sources */,
 				9579EB5321BABE6300051EDB /* MBProgressHUD+JDragon.m in Sources */,
@@ -1517,7 +1530,6 @@
 				954F2317224386C70090E967 /* NodePlanViewCell.m in Sources */,
 				83379A98217EB79B00C222A5 /* RequestTimeoutViewController.m in Sources */,
 				959726B821E334C20022CB78 /* WalletManagementViewCell.m in Sources */,
-				959E29242255F9F5006FCA30 /* VotingRecordsDetailViewController.m in Sources */,
 				835A45272174C14D005BFCDD /* AppDelegate.m in Sources */,
 				959E292A225AE267006FCA30 /* CooperateDetailViewController.m in Sources */,
 				959726C821E4893F0022CB78 /* ExportPrivateKeyViewController.m in Sources */,
@@ -1740,6 +1752,7 @@
 					"$(PROJECT_DIR)",
 					"$(PROJECT_DIR)/bupocket/Classes/Common/Tool",
 					"$(PROJECT_DIR)/bupocket/Classes/Common/Tool/Lib",
+					"$(PROJECT_DIR)/bupocket/Classes/Common/Tool/QQ",
 				);
 				GCC_PRECOMPILE_PREFIX_HEADER = YES;
 				GCC_PREFIX_HEADER = "$(SRCROOT)/bupocket/Classes/Common/PrefixHeader.pch";
@@ -1804,6 +1817,7 @@
 					"$(PROJECT_DIR)",
 					"$(PROJECT_DIR)/bupocket/Classes/Common/Tool",
 					"$(PROJECT_DIR)/bupocket/Classes/Common/Tool/Lib",
+					"$(PROJECT_DIR)/bupocket/Classes/Common/Tool/QQ",
 				);
 				GCC_PRECOMPILE_PREFIX_HEADER = YES;
 				GCC_PREFIX_HEADER = "$(SRCROOT)/bupocket/Classes/Common/PrefixHeader.pch";

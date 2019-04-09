@@ -152,6 +152,10 @@
 {
     return [WXApi handleOpenURL:url delegate:self];
 }
+- (void)onReq:(BaseReq *)req
+{
+    
+}
 - (void)onResp:(BaseResp *)resp
 {
     if ([resp isKindOfClass:[WXLaunchMiniProgramResp class]]) {

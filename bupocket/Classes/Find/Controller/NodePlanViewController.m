@@ -12,7 +12,7 @@
 #import "VotingRecordsViewController.h"
 #import "ConfirmTransactionAlertView.h"
 #import "NodePlanModel.h"
-#import "SharingCanvassingAlertView.h"
+#import "NodeSharingViewController.h"
 
 @interface NodePlanViewController ()<UITableViewDelegate, UITableViewDataSource, UITextFieldDelegate, YBPopupMenuDelegate>
 
@@ -26,6 +26,7 @@
 @property (nonatomic, strong) UIView * noData;
 @property (nonatomic, strong) UIView * noNetWork;
 @property (nonatomic, strong) NSString * contractAddress;
+@property (nonatomic, strong) NSString * accountTag;
 
 @property (nonatomic, strong) UIView * headerView;
 @property (nonatomic, strong) UIButton * interdependentNode;
@@ -95,6 +96,7 @@ static NSString * const NodePlanCellID = @"NodePlanCellID";
             self.listArray = [NodePlanModel mj_objectArrayWithKeyValuesArray:responseObject[@"data"][@"nodeList"]];
             self.nodeListArray = self.listArray;
             self.contractAddress = responseObject[@"data"][@"contractAddress"];
+            self.accountTag = responseObject[@"data"][@"accountTag"];
             [self.tableView reloadData];
         } else {
             [MBProgressHUD showTipMessageInWindow:[ErrorTypeTool getDescriptionWithErrorCode:code]];
@@ -107,7 +109,6 @@ static NSString * const NodePlanCellID = @"NodePlanCellID";
 }
 - (void)reloadData
 {
-    self.noNetWork.hidden = YES;
     [self getNodeListDataWithIdentityType:@"" nodeName:@"" capitalAddress:@""];
 }
 - (void)ifShowNoData
@@ -299,7 +300,7 @@ static NSString * const NodePlanCellID = @"NodePlanCellID";
     cell.nodePlanModel = nodePlanModel;
     cell.selectionStyle = UITableViewCellSelectionStyleNone;
     cell.invitationVoteClick = ^{
-        [self shareAction];
+        [self shareAction:nodePlanModel];
     };
     cell.votingRecordClick = ^{
         [self votingRecordWithIndex:indexPath.section];
@@ -309,14 +310,11 @@ static NSString * const NodePlanCellID = @"NodePlanCellID";
     };
     return cell;
 }
-- (void)shareAction
+- (void)shareAction:(NodePlanModel *)nodePlanModel
 {
-    SharingCanvassingAlertView * alertView = [[SharingCanvassingAlertView alloc] initWithConfrimBolck:^(NSString * _Nonnull text) {
-        
-    } cancelBlock:^{
-        
-    }];
-    [alertView showInWindowWithMode:CustomAnimationModeShare inView:nil bgAlpha:AlertBgAlpha needEffectView:NO];
+    NodeSharingViewController * VC = [[NodeSharingViewController alloc] init];
+    VC.nodePlanModel = nodePlanModel;
+    [self.navigationController pushViewController:VC animated:NO];
 }
 - (void)invitationVoteWithIndex:(NSInteger)index
 {
@@ -333,6 +331,7 @@ static NSString * const NodePlanCellID = @"NodePlanCellID";
     ConfirmTransactionModel * confirmTransactionModel = [[ConfirmTransactionModel alloc] init];
     confirmTransactionModel.qrRemark = [NSString stringWithFormat:Localized(@"Number of votes revoked on '%@'"), nodePlanModel.nodeName];
     confirmTransactionModel.destAddress = self.contractAddress;
+    confirmTransactionModel.accountTag = self.accountTag;
     confirmTransactionModel.amount = @"0";
     NSString * role;
     if ([nodePlanModel.identityType isEqualToString:NodeType_Consensus]) {

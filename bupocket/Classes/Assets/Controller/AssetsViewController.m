@@ -238,7 +238,7 @@ static UIButton * _noBackup;
 #pragma mark - Scan code login
 - (void)getScanCodeLoginDataWithUUid:(NSString *)uuid
 {
-    [[HTTPManager shareManager] getScanCodeLoginDataWithAddress:CurrentWalletAddress uuid:uuid success:^(id responseObject) {
+    [[HTTPManager shareManager] getAccountCenterDataWithAppId:nil uuid:uuid success:^(id responseObject) {
         NSInteger code = [[responseObject objectForKey:@"errCode"] integerValue];
         if (code == Success_Code) {
             LoginConfirmViewController * VC = [[LoginConfirmViewController alloc] init];

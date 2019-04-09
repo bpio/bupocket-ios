@@ -12,7 +12,7 @@
 
 static NSString * const NodePlanCellID = @"NodePlanCellID";
 static NSString * const NodeCellID = @"NodeCellID";
-static NSString * const VotingRecordsDetailID = @"VotingRecordsDetailID";
+static NSString * const NodeSharingID = @"NodeSharingID";
 
 + (instancetype)cellWithTableView:(UITableView *)tableView identifier:(NSString *)identifier
 {
@@ -38,23 +38,7 @@ static NSString * const VotingRecordsDetailID = @"VotingRecordsDetailID";
             [self setupMoreOperations];
         }
         
-        if ([self.reuseIdentifier isEqualToString:VotingRecordsDetailID]) {
-            [self.listBg addSubview:self.shareBtn];
-            self.name.text = @"会飞的比特币会飞的比特币会飞的比特币会飞的比特币会飞的比特币";
-            self.nodeType.text = Localized(@"ConsensusNode");
-            NSString * votesObtainedStr = [NSString stringWithFormat:@"%@ %@", @"12345678", Localized(@"Votes")];
-            self.votesObtained.attributedText = [Encapsulation attrWithString:votesObtainedStr preFont:FONT(14) preColor:COLOR_6 index:votesObtainedStr.length - Localized(@"Votes").length sufFont:FONT(12) sufColor:COLOR(@"B2B2B2") lineSpacing:0];
-            self.numberOfVotes.text = [NSString stringWithFormat:@"%@%@", @"1234567", Localized(@"SupportNumber")];
-        } else if (!self.nodePlanModel) {
-            self.name.text = @"股神688";
-            self.nodeType.text = Localized(@"ConsensusNode");
-            //        "ConsensusNode" = "共识节点";
-            //        "EcologicalNodes" = "生态节点";
-            
-            self.votesObtained.attributedText = [Encapsulation attrWithString:[NSString stringWithFormat:@"%@ %@", Localized(@"VotesObtained"), @"12345678"] preFont:FONT(12) preColor:COLOR(@"B2B2B2") index:Localized(@"VotesObtained").length sufFont:FONT(14) sufColor:COLOR_6 lineSpacing:0];
-            self.numberOfVotes.attributedText = [Encapsulation attrWithString:[NSString stringWithFormat:@"%@ %@", Localized(@"NumberOfVotes"), @"1234567"] preFont:FONT(12) preColor:COLOR(@"B2B2B2") index:Localized(@"NumberOfVotes").length sufFont:FONT(14) sufColor:COLOR_6 lineSpacing:0];
-        }
-        
+        [self.listBg addSubview:self.shareBtn];
     }
     return self;
 }
@@ -114,12 +98,12 @@ static NSString * const VotingRecordsDetailID = @"VotingRecordsDetailID";
             make.top.equalTo(self.contentView.mas_top).offset(Margin_5);
             make.bottom.equalTo(self.contentView.mas_bottom).offset(-Margin_5);
         }];
-    } else if ([self.reuseIdentifier isEqualToString:NodeCellID] || [self.reuseIdentifier isEqualToString:VotingRecordsDetailID]) {
+    } else if ([self.reuseIdentifier isEqualToString:NodeCellID] || [self.reuseIdentifier isEqualToString:NodeSharingID]) {
         numberW = (DEVICE_WIDTH - ScreenScale(80)) / 2;
         [self.listBg mas_makeConstraints:^(MASConstraintMaker *make) {
             make.edges.equalTo(self.contentView);
         }];
-        if ([self.reuseIdentifier isEqualToString:VotingRecordsDetailID]) {
+        if ([self.reuseIdentifier isEqualToString:NodeSharingID]) {
             
             [self.shareBtn mas_makeConstraints:^(MASConstraintMaker *make) {
                 make.centerY.equalTo(self.name);
@@ -149,7 +133,7 @@ static NSString * const VotingRecordsDetailID = @"VotingRecordsDetailID";
         make.height.mas_equalTo(ScreenScale(16));
         make.width.mas_equalTo([Encapsulation rectWithText:self.nodeType.text font:self.nodeType.font textHeight:ScreenScale(16)].size.width + Margin_10);
     }];
-    if ([self.reuseIdentifier isEqualToString:VotingRecordsDetailID]) {
+    if ([self.reuseIdentifier isEqualToString:NodeSharingID]) {
         [self.nodeType mas_makeConstraints:^(MASConstraintMaker *make) {
             make.right.mas_lessThanOrEqualTo(self.shareBtn.mas_left).offset(-Margin_10);
         }];
@@ -293,9 +277,14 @@ static NSString * const VotingRecordsDetailID = @"VotingRecordsDetailID";
     } else if ([nodePlanModel.identityType isEqualToString:NodeType_Ecological]) {
         self.nodeType.text = Localized(@"EcologicalNodes");
     }
-    
-    self.votesObtained.attributedText = [Encapsulation attrWithString:[NSString stringWithFormat:@"%@ %@", Localized(@"VotesObtained"), nodePlanModel.nodeVote] preFont:FONT(12) preColor:COLOR(@"B2B2B2") index:Localized(@"VotesObtained").length sufFont:FONT(14) sufColor:COLOR_6 lineSpacing:0];
-    self.numberOfVotes.attributedText = [Encapsulation attrWithString:[NSString stringWithFormat:@"%@ %@", Localized(@"NumberOfVotes"), nodePlanModel.myVoteCount] preFont:FONT(12) preColor:COLOR(@"B2B2B2") index:Localized(@"NumberOfVotes").length sufFont:FONT(14) sufColor:COLOR_6 lineSpacing:0];
+    if ([self.reuseIdentifier isEqualToString:NodeSharingID]) {
+        NSString * votesObtainedStr = [NSString stringWithFormat:@"%@ %@", nodePlanModel.nodeVote, Localized(@"Votes")];
+        self.votesObtained.attributedText = [Encapsulation attrWithString:votesObtainedStr preFont:FONT(14) preColor:COLOR_6 index:votesObtainedStr.length - Localized(@"Votes").length sufFont:FONT(12) sufColor:COLOR(@"B2B2B2") lineSpacing:0];
+        self.numberOfVotes.text = [NSString stringWithFormat:@"%@%@", nodePlanModel.support, Localized(@"SupportNumber")];
+    } else {
+        self.votesObtained.attributedText = [Encapsulation attrWithString:[NSString stringWithFormat:@"%@ %@", Localized(@"VotesObtained"), nodePlanModel.nodeVote] preFont:FONT(12) preColor:COLOR(@"B2B2B2") index:Localized(@"VotesObtained").length sufFont:FONT(14) sufColor:COLOR_6 lineSpacing:0];
+        self.numberOfVotes.attributedText = [Encapsulation attrWithString:[NSString stringWithFormat:@"%@ %@", Localized(@"NumberOfVotes"), nodePlanModel.myVoteCount] preFont:FONT(12) preColor:COLOR(@"B2B2B2") index:Localized(@"NumberOfVotes").length sufFont:FONT(14) sufColor:COLOR_6 lineSpacing:0];
+    }
 }
 
 - (void)awakeFromNib {
