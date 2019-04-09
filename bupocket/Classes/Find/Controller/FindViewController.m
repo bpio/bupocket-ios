@@ -28,12 +28,13 @@ static NSString * const ExportCellID = @"ExportCellID";
 
 - (void)viewDidLoad {
     [super viewDidLoad];
-    self.listArray = @[@[Localized(@"CardBag")], @[Localized(@"NodePlan"), Localized(@"JointConstructionOfNodes")], @[Localized(@"Information")], @[Localized(@"SmallClothGoods")]];
+    self.listArray = @[@[Localized(@"CardBag")], @[Localized(@"NodePlan"), Localized(@"JointlyCooperate")], @[Localized(@"Information")], @[Localized(@"SmallClothGoods")]];
     [self setupView];
     NSMutableArray * bannerArray = [NSMutableArray array];
     [bannerArray addObject:@"http://imgsrc.baidu.com/forum/w%3D580/sign=11580a65f11fbe091c5ec31c5b610c30/b1c962d9f2d3572c7b4ca9cf8913632762d0c30b.jpg"];
     [bannerArray addObject:@"http://img3.duitang.com/uploads/item/201308/18/20130818201156_BjjYV.thumb.700_0.jpeg"];
     self.cycleScrollView.imageURLStringsGroup = bannerArray;
+    
     // Do any additional setup after loading the view.
 }
 

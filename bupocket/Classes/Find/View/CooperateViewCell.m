@@ -61,7 +61,6 @@
         make.top.equalTo(self.listBg);
         make.size.mas_equalTo(CGSizeMake(ScreenScale(100), ScreenScale(66)));
     }];
-    self.shareRatioBg.backgroundColor = COLOR(@"8188B1");
     [self.title mas_makeConstraints:^(MASConstraintMaker *make) {
         make.left.equalTo(self.listBg.mas_left).offset(Margin_15);
         make.top.equalTo(self.listBg.mas_top).offset(Margin_15);
@@ -170,7 +169,7 @@
 - (UIImageView *)shareRatioBg
 {
     if (!_shareRatioBg) {
-        _shareRatioBg = [[UIImageView alloc] initWithImage:[UIImage imageNamed:@""]];
+        _shareRatioBg = [[UIImageView alloc] initWithImage:[UIImage imageNamed:@"award_sharing_ratio_bg"]];
         _shareRatioBg.userInteractionEnabled = YES;
     }
     return _shareRatioBg;

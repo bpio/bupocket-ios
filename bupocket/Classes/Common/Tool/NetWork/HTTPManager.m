@@ -524,8 +524,6 @@ static int64_t const gasPrice = 1000;
     NSString * URL = Apply_Node_Confirm;
     if ([confirmTransactionModel.type isEqualToString:TransactionType_NodeWithdrawal]) {
         URL = Node_Withdrawal_Confirm;
-    } else if ([confirmTransactionModel.type isEqualToString:TransactionType_NodeAward]) {
-        URL = Receive_Node_Award_Confirm;
     }
     NSString * url = SERVER_COMBINE_API(_webServerDomain, URL);
     NSString * body = [NSString stringWithFormat:@"qrcodeSessionId=%@&hash=%@&initiatorAddress=%@&nodeId=%@", confirmTransactionModel.qrcodeSessionId, hash, initiatorAddress, confirmTransactionModel.nodeId];
@@ -1098,6 +1096,7 @@ static int64_t const gasPrice = 1000;
                     resultModel.transactionTime = history.closeTime;
                     resultModel.actualFee = [[[NSDecimalNumber decimalNumberWithString:history.actualFee] decimalNumberByMultiplyingByPowerOf10: -Decimals_BU] stringValue];
                     resultModel.errorCode = history.errorCode;
+                    resultModel.errorDesc = history.errorDesc;
                     success(resultModel);
                 }
             });

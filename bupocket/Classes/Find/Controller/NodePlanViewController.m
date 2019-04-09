@@ -12,6 +12,7 @@
 #import "VotingRecordsViewController.h"
 #import "ConfirmTransactionAlertView.h"
 #import "NodePlanModel.h"
+#import "SharingCanvassingAlertView.h"
 
 @interface NodePlanViewController ()<UITableViewDelegate, UITableViewDataSource, UITextFieldDelegate, YBPopupMenuDelegate>
 
@@ -298,7 +299,7 @@ static NSString * const NodePlanCellID = @"NodePlanCellID";
     cell.nodePlanModel = nodePlanModel;
     cell.selectionStyle = UITableViewCellSelectionStyleNone;
     cell.invitationVoteClick = ^{
-        
+        [self shareAction];
     };
     cell.votingRecordClick = ^{
         [self votingRecordWithIndex:indexPath.section];
@@ -307,6 +308,15 @@ static NSString * const NodePlanCellID = @"NodePlanCellID";
         [self cancellationVotesWithIndex:indexPath.section];
     };
     return cell;
+}
+- (void)shareAction
+{
+    SharingCanvassingAlertView * alertView = [[SharingCanvassingAlertView alloc] initWithConfrimBolck:^(NSString * _Nonnull text) {
+        
+    } cancelBlock:^{
+        
+    }];
+    [alertView showInWindowWithMode:CustomAnimationModeShare inView:nil bgAlpha:AlertBgAlpha needEffectView:NO];
 }
 - (void)invitationVoteWithIndex:(NSInteger)index
 {
@@ -321,7 +331,7 @@ static NSString * const NodePlanCellID = @"NodePlanCellID";
 {
     NodePlanModel * nodePlanModel = self.listArray[index];
     ConfirmTransactionModel * confirmTransactionModel = [[ConfirmTransactionModel alloc] init];
-    confirmTransactionModel.qrRemark = [NSString stringWithFormat:@"撤销对“{%@}”的投票数,节点地址是%@?", nodePlanModel.nodeName, nodePlanModel.nodeCapitalAddress];
+    confirmTransactionModel.qrRemark = [NSString stringWithFormat:Localized(@"Number of votes revoked on '%@'"), nodePlanModel.nodeName];
     confirmTransactionModel.destAddress = self.contractAddress;
     confirmTransactionModel.amount = @"0";
     NSString * role;

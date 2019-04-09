@@ -8,6 +8,7 @@
 
 #import "CooperateViewController.h"
 #import "CooperateViewCell.h"
+#import "CooperateDetailViewController.h"
 
 @interface CooperateViewController ()<UITableViewDelegate, UITableViewDataSource>
 
@@ -32,7 +33,7 @@ static NSString * const CooperateCellID = @"CooperateCellID";
 
 - (void)viewDidLoad {
     [super viewDidLoad];
-    self.navigationItem.title = Localized(@"JointConstructionOfNodes");
+    self.navigationItem.title = Localized(@"JointlyCooperate");
     self.listArray = [NSMutableArray arrayWithObjects:@"", @"", @"", @"", @"", @"", @"", @"", nil];
     [self setupView];
 //    [self setupRefresh];
@@ -128,6 +129,12 @@ static NSString * const CooperateCellID = @"CooperateCellID";
 //    cell.votingRecordsModel = self.listArray[index];
     cell.selectionStyle = UITableViewCellSelectionStyleNone;
     return cell;
+}
+- (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath
+{
+    [tableView deselectRowAtIndexPath:indexPath animated:NO];
+    CooperateDetailViewController * VC = [[CooperateDetailViewController alloc] init];
+    [self.navigationController pushViewController:VC animated:NO];
 }
 /*
 #pragma mark - Navigation

@@ -80,14 +80,14 @@
     
     NSArray * infoArray;
     if (self.confirmTransactionModel) {
-        self.transactionCost = TransactionCost_MIN;
-        if ([self.confirmTransactionModel.type isEqualToString:TransactionType_Check]) {
-            self.transactionCost = TransactionCost_Check_MIN;
+        self.transactionCost = TransactionCost_Check_MIN;
+        if ([self.confirmTransactionModel.type isEqualToString:TransactionType_ApplyNode]) {
+            self.transactionCost = TransactionCost_MIN;
         }
         self.confirmTransactionModel.transactionCost = self.transactionCost;
         infoArray = @[self.confirmTransactionModel.qrRemark, self.confirmTransactionModel.destAddress, self.transactionCost, CurrentWalletAddress, self.confirmTransactionModel.destAddress, [NSString stringAppendingBUWithStr:self.confirmTransactionModel.amount], self.transactionCost, self.confirmTransactionModel.script];
     } else {
-        infoArray = @[@"转入质押金5000000BU转入质押金5000000BU转入质押金5000000BU转入质押金5000000BU转入质押金5000000BU转入质押金5000000BU转入质押金5000000BU转入质押金5000000BU转入质押金5000000BU转入质押金5000000BU转入质押金5000000BU转入质押金5000000BU转入质押金5000000BU转入质押金5000000BU转入质押金5000000BU转入质押金5000000BU", @"buQXVJXpMZaxUpfuNRzaGUreDK1r6zYTFcTW", TransactionCost_MIN, CurrentWalletAddress, @"buQXVJXpMZaxUpfuNRzaGUreDK1r6zYTFcTW", @"5000000 BU", TransactionCost_MIN, @"{\"method\":\"apply\",\"params\":{\"role\":\"validator\",\"node\":\"buQXVJXpMZaxUpfuNRzaGUreDK1r6zYTFcTW\"}}"];
+        infoArray = @[@"转入质押金5000000BU", @"buQXVJXpMZaxUpfuNRzaGUreDK1r6zYTFcTW", TransactionCost_MIN, CurrentWalletAddress, @"buQXVJXpMZaxUpfuNRzaGUreDK1r6zYTFcTW", @"5000000 BU", TransactionCost_MIN, @"{\"method\":\"apply\",\"params\":{\"role\":\"validator\",\"node\":\"buQXVJXpMZaxUpfuNRzaGUreDK1r6zYTFcTW\"}}"];
     }
     CGFloat infoLabelTotalH = 0;
     CGFloat transactionTotalH = 0;
@@ -317,8 +317,8 @@
 }
 - (void)sureBtnClick {
     [self hideView];
-    if (self.sureBlock) {
-        self.sureBlock();
+    if (_sureBlock) {
+        _sureBlock();
     }
     if (!self.confirmTransactionModel) {
         return;
@@ -343,7 +343,16 @@
     [[HTTPManager shareManager] getContractTransactionWithModel:self.confirmTransactionModel  success:^(id responseObject) {
         NSInteger code = [[responseObject objectForKey:@"errCode"] integerValue];
         if (code == Success_Code) {
-            [self showPWAlertView];
+            NSString * dateStr = [[responseObject objectForKey:@"data"] objectForKey:@"expiryTime"];
+            NSDate * date=[NSDate dateWithTimeIntervalSince1970:[dateStr longLongValue] / 1000];
+            NSTimeInterval time = [date timeIntervalSinceNow];
+            if (time < 0) {
+                [MBProgressHUD showTipMessageInWindow:Localized(@"Overtime")];
+            } else {
+                dispatch_after(dispatch_time(DISPATCH_TIME_NOW, (int64_t)(Dispatch_After_Time * NSEC_PER_SEC)), dispatch_get_main_queue(), ^{
+                    [self showPWAlertView];
+                });
+            }
         } else {
             [MBProgressHUD showTipMessageInWindow:responseObject[@"msg"]];
         }
@@ -375,6 +384,8 @@
             VC.state = YES;
         } else {
             VC.state = NO;
+            VC.errorCode = resultModel.errorCode;
+            VC.errorDesc = resultModel.errorDesc;
             //            [MBProgressHUD showTipMessageInWindow:[ErrorTypeTool getDescription:resultModel.errorCode]];
         }
         VC.transferInfoArray = weakSelf.transferInfoArray;

@@ -138,6 +138,8 @@
 		959E29212255D7DB006FCA30 /* CooperateViewCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 959E29202255D7DB006FCA30 /* CooperateViewCell.m */; };
 		959E29242255F9F5006FCA30 /* VotingRecordsDetailViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 959E29232255F9F5006FCA30 /* VotingRecordsDetailViewController.m */; };
 		959E292722560ED4006FCA30 /* SharingCanvassingAlertView.m in Sources */ = {isa = PBXBuildFile; fileRef = 959E292622560ED4006FCA30 /* SharingCanvassingAlertView.m */; };
+		959E292A225AE267006FCA30 /* CooperateDetailViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 959E2929225AE267006FCA30 /* CooperateDetailViewController.m */; };
+		959E292D225B4186006FCA30 /* SupportAlertView.m in Sources */ = {isa = PBXBuildFile; fileRef = 959E292C225B4186006FCA30 /* SupportAlertView.m */; };
 		95A8A3B1219D1352008E978E /* LanguageManager.m in Sources */ = {isa = PBXBuildFile; fileRef = 95A8A3AF219D1352008E978E /* LanguageManager.m */; };
 		95A8A3B5219D157C008E978E /* DateTool.m in Sources */ = {isa = PBXBuildFile; fileRef = 95A8A3B4219D157C008E978E /* DateTool.m */; };
 		95A8A3B9219D15D8008E978E /* RegexPatternTool.m in Sources */ = {isa = PBXBuildFile; fileRef = 95A8A3B8219D15D8008E978E /* RegexPatternTool.m */; };
@@ -456,6 +458,10 @@
 		959E29232255F9F5006FCA30 /* VotingRecordsDetailViewController.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = VotingRecordsDetailViewController.m; sourceTree = "<group>"; };
 		959E292522560ED4006FCA30 /* SharingCanvassingAlertView.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = SharingCanvassingAlertView.h; sourceTree = "<group>"; };
 		959E292622560ED4006FCA30 /* SharingCanvassingAlertView.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = SharingCanvassingAlertView.m; sourceTree = "<group>"; };
+		959E2928225AE267006FCA30 /* CooperateDetailViewController.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = CooperateDetailViewController.h; sourceTree = "<group>"; };
+		959E2929225AE267006FCA30 /* CooperateDetailViewController.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = CooperateDetailViewController.m; sourceTree = "<group>"; };
+		959E292B225B4186006FCA30 /* SupportAlertView.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = SupportAlertView.h; sourceTree = "<group>"; };
+		959E292C225B4186006FCA30 /* SupportAlertView.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = SupportAlertView.m; sourceTree = "<group>"; };
 		95A8A3AF219D1352008E978E /* LanguageManager.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = LanguageManager.m; sourceTree = "<group>"; };
 		95A8A3B0219D1352008E978E /* LanguageManager.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = LanguageManager.h; sourceTree = "<group>"; };
 		95A8A3B3219D157B008E978E /* DateTool.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = DateTool.h; sourceTree = "<group>"; };
@@ -545,6 +551,7 @@
 				83379AA5217F006600C222A5 /* HTTPManager.h */,
 				83379AA7217F006600C222A5 /* HTTPManager.m */,
 				9510A3CA219A91D4007A49A4 /* ErrorTypeTool.h */,
+				9510A3CB219A91D4007A49A4 /* ErrorTypeTool.m */,
 				83D5B1EF218199E900BF1FF1 /* JsonTool.h */,
 				83D5B1F0218199E900BF1FF1 /* JsonTool.m */,
 			);
@@ -854,7 +861,6 @@
 			children = (
 				8372C85C2174CBF100FF9506 /* TabBarViewController.h */,
 				8372C8602174CBF100FF9506 /* TabBarViewController.m */,
-				9510A3CB219A91D4007A49A4 /* ErrorTypeTool.m */,
 				8372C85D2174CBF100FF9506 /* NavigationViewController.h */,
 				8372C85F2174CBF100FF9506 /* NavigationViewController.m */,
 				8372C8642174CC6F00FF9506 /* BaseViewController.h */,
@@ -996,6 +1002,8 @@
 				959E29232255F9F5006FCA30 /* VotingRecordsDetailViewController.m */,
 				959E291C2255B331006FCA30 /* CooperateViewController.h */,
 				959E291D2255B331006FCA30 /* CooperateViewController.m */,
+				959E2928225AE267006FCA30 /* CooperateDetailViewController.h */,
+				959E2929225AE267006FCA30 /* CooperateDetailViewController.m */,
 			);
 			path = Controller;
 			sourceTree = "<group>";
@@ -1018,6 +1026,8 @@
 				954F2316224386C70090E967 /* NodePlanViewCell.m */,
 				959E28E52244CE0A006FCA30 /* VotingRecordsViewCell.h */,
 				959E28E62244CE0A006FCA30 /* VotingRecordsViewCell.m */,
+				959E292B225B4186006FCA30 /* SupportAlertView.h */,
+				959E292C225B4186006FCA30 /* SupportAlertView.m */,
 				959E28F72248CC93006FCA30 /* CancellationOfVotingAlertView.h */,
 				959E28F82248CC93006FCA30 /* CancellationOfVotingAlertView.m */,
 				959E291F2255D7DB006FCA30 /* CooperateViewCell.h */,
@@ -1439,6 +1449,7 @@
 				958127EF219ABD9D0081A02E /* VersionUpdateAlertView.m in Sources */,
 				8372C8662174CC6F00FF9506 /* BaseViewController.m in Sources */,
 				835A45262174C14D005BFCDD /* main.m in Sources */,
+				959E292D225B4186006FCA30 /* SupportAlertView.m in Sources */,
 				83379AD921802FA900C222A5 /* AssetsDetailModel.m in Sources */,
 				959E292722560ED4006FCA30 /* SharingCanvassingAlertView.m in Sources */,
 				959E2908224CCA45006FCA30 /* ScanCodeFailureViewController.m in Sources */,
@@ -1508,6 +1519,7 @@
 				959726B821E334C20022CB78 /* WalletManagementViewCell.m in Sources */,
 				959E29242255F9F5006FCA30 /* VotingRecordsDetailViewController.m in Sources */,
 				835A45272174C14D005BFCDD /* AppDelegate.m in Sources */,
+				959E292A225AE267006FCA30 /* CooperateDetailViewController.m in Sources */,
 				959726C821E4893F0022CB78 /* ExportPrivateKeyViewController.m in Sources */,
 				956CD42121B016D1004DC1FA /* ListModel.m in Sources */,
 				83379AE22180630300C222A5 /* TxDetailModel.m in Sources */,

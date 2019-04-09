@@ -51,8 +51,6 @@
 #define Node_plan @""
 // 节点撤票
 #define Node_Withdrawal_Confirm @"nodeServer/node/v1/vote/revoke/user"
-// 领取节点奖励
-#define Receive_Node_Award_Confirm @"nodeServer/node/v1/get/reward/user"
 // 节点列表
 #define Node_List @"nodeServer/node/v1/list/app"
 // 投票记录

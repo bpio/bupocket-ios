@@ -58,8 +58,8 @@
 #define TransactionCost_Check_MIN @"0.15"
 
 #define TransactionType_ApplyNode @"1"
-#define TransactionType_Check @"8"
-#define TransactionType_NodeAward @"9"
+#define TransactionType_Vote @"3"
+#define TransactionType_Check @"80"
 #define TransactionType_NodeWithdrawal @"10"
 
 #define NodeType_Consensus @"1"
@@ -96,6 +96,7 @@
 
 #define Wechat_APP_ID @"wxaecf7ac4085fd34a"
 #define SmallRoutine_Original_ID @"gh_463781563a74"
+#define Dispatch_After_Time 0.5
 
 
 #endif /* AppDefine_h */

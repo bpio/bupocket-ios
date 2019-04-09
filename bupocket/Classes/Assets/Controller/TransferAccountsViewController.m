@@ -164,7 +164,7 @@
 {
     __weak typeof(self) weakSelf = self;
     TransferDetailsAlertView * transferDetailsAlertView = [[TransferDetailsAlertView alloc] initWithTransferInfoArray:self.transferInfoArray confrimBolck:^{
-        dispatch_after(dispatch_time(DISPATCH_TIME_NOW, (int64_t)(0.5 * NSEC_PER_SEC)), dispatch_get_main_queue(), ^{
+        dispatch_after(dispatch_time(DISPATCH_TIME_NOW, (int64_t)(Dispatch_After_Time * NSEC_PER_SEC)), dispatch_get_main_queue(), ^{
             PasswordAlertView * alertView = [[PasswordAlertView alloc] initWithPrompt:Localized(@"TransactionWalletPWPrompt") walletKeyStore:CurrentWalletKeyStore isAutomaticClosing:YES confrimBolck:^(NSString * _Nonnull password, NSArray * _Nonnull words) {
                 [weakSelf getDataWithPassword:password];
             } cancelBlock:^{
@@ -189,6 +189,8 @@
             VC.state = YES;
         } else {
             VC.state = NO;
+            VC.errorCode = resultModel.errorCode;
+            VC.errorDesc = resultModel.errorDesc;
 //            [MBProgressHUD showTipMessageInWindow:[ErrorTypeTool getDescription:resultModel.errorCode]];
         }
         VC.transferInfoArray = self.transferInfoArray;

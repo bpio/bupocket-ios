@@ -135,7 +135,7 @@ static NSString * const VotingRecordsDetailID = @"VotingRecordsDetailID";
     }];
     [self.listImageBg mas_makeConstraints:^(MASConstraintMaker *make) {
         make.centerX.centerY.equalTo(self.listImage);
-        make.width.height.mas_equalTo(ScreenScale(58));
+        make.width.height.mas_equalTo(ScreenScale(55));
     }];
     
     [self.name mas_makeConstraints:^(MASConstraintMaker *make) {
@@ -182,15 +182,19 @@ static NSString * const VotingRecordsDetailID = @"VotingRecordsDetailID";
 - (UIImageView *)listImageBg
 {
     if (!_listImageBg) {
-        _listImageBg = [[UIImageView alloc] initWithImage:[UIImage imageNamed:@"placeholder_bg_list"]];
+        _listImageBg = [[UIImageView alloc] init];
+        _listImageBg.size = CGSizeMake(ScreenScale(55), ScreenScale(55));
+        _listImageBg.image = [UIImage imageNamed:@"placeholder_bg_list"];
     }
     return _listImageBg;
 }
 - (UIImageView *)listImage
 {
     if (!_listImage) {
-        _listImage = [[UIImageView alloc] initWithImage:[UIImage imageNamed:@"placeholder_list"]];
-        [_listImage setViewSize:CGSizeMake(Margin_50, Margin_50) borderWidth:0 borderColor:nil borderRadius:Margin_25];
+        _listImage = [[UIImageView alloc] init];
+        _listImage.size = CGSizeMake(Margin_40, Margin_40);
+        _listImage.backgroundColor = [UIColor whiteColor];
+        [_listImage setViewSize:_listImage.size borderWidth:0 borderColor:nil borderRadius:Margin_20];
     }
     return _listImage;
 }

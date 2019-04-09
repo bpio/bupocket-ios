@@ -8,6 +8,7 @@
 
 #import "VotingRecordsDetailViewController.h"
 #import "NodePlanViewCell.h"
+#import "SharingCanvassingAlertView.h"
 
 @interface VotingRecordsDetailViewController ()<UITableViewDelegate, UITableViewDataSource>
 
@@ -94,10 +95,19 @@ static NSString * const VotingRecordsDetailID = @"VotingRecordsDetailID";
     NodePlanViewCell * cell = [NodePlanViewCell cellWithTableView:tableView identifier:VotingRecordsDetailID];
     cell.selectionStyle = UITableViewCellSelectionStyleNone;
     cell.shareClick = ^{
-        
+        [self shareAction];
     };
 //    cell.nodePlanModel = self.nodePlanModel;
     return cell;
+}
+- (void)shareAction
+{
+    SharingCanvassingAlertView * alertView = [[SharingCanvassingAlertView alloc] initWithConfrimBolck:^(NSString * _Nonnull text) {
+        
+    } cancelBlock:^{
+        
+    }];
+    [alertView showInWindowWithMode:CustomAnimationModeShare inView:nil bgAlpha:AlertBgAlpha needEffectView:NO];
 }
 /*
 #pragma mark - Navigation

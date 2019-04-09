@@ -29,6 +29,11 @@ static NSString * const AssetsDetailCellID = @"AssetsDetailCellID";
         [self.contentView addSubview:self.date];
         [self.contentView addSubview:self.assets];
         [self.contentView addSubview:self.state];
+        
+        self.listImage.image = [UIImage imageNamed:@"user_placeholder"];
+        self.walletAddress.text = @"buQY***vLivDu";
+        self.date.text = @"2019-04-01 11:50:04";
+        self.assets.text = @"50,000 BU";
     }
     return self;
 }
@@ -93,7 +98,8 @@ static NSString * const AssetsDetailCellID = @"AssetsDetailCellID";
 - (UIImageView *)listImage
 {
     if (!_listImage) {
-        _listImage = [[UIImageView alloc] initWithImage:[UIImage imageNamed:@"receivables"]];
+        _listImage = [[UIImageView alloc] init];
+        [_listImage setViewSize:CGSizeMake(ScreenScale(36), ScreenScale(36)) borderWidth:0 borderColor:nil borderRadius:ScreenScale(18)];
     }
     return _listImage;
 }
