@@ -97,7 +97,10 @@ static NSInteger const TxInfoNormalCount = 6;
 }
 - (void)setListData
 {
-    NSMutableArray * infoTitleArray = [NSMutableArray arrayWithObjects:@"TX Hash", @"Source Address", @"Dest Address", @"Amount", @"TX Fee", @"Nonce", @"Transaction Signature", nil];
+    NSMutableArray * infoTitleArray = [NSMutableArray arrayWithObjects:@"TX Hash", @"Source Address", @"Dest Address", @"Amount", @"TX Fee", @"Nonce", nil];
+    if (self.txInfoModel.signatureStr) {
+        [infoTitleArray addObject:@"Transaction Signature"];
+    }
     // , @"Ledger Seq"
     self.infoArray = [NSMutableArray array];
     NSMutableArray * detailArray = [NSMutableArray array];
@@ -117,8 +120,8 @@ static NSInteger const TxInfoNormalCount = 6;
     [infoArray addObject:[NSString stringAppendingBUWithStr:self.txInfoModel.fee]];
     [infoArray addObject:self.txInfoModel.nonce];
 //    [infoArray addObject:self.txInfoModel.ledgerSeq];
-    [infoArray addObject:@"Transaction Signature"];
     NSArray * signatureArray = [JsonTool dictionaryOrArrayWithJSONSString: self.txInfoModel.signatureStr];
+    [infoArray addObject:@"Transaction Signature"];
     for (NSInteger i = 0; i < signatureArray.count; i ++) {
         [infoTitleArray addObject:@"Public Key"];
         [infoArray addObject:signatureArray[i][@"publicKey"]];

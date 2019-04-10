@@ -91,6 +91,7 @@
 		9510A3CC219A91D4007A49A4 /* ErrorTypeTool.m in Sources */ = {isa = PBXBuildFile; fileRef = 9510A3CB219A91D4007A49A4 /* ErrorTypeTool.m */; };
 		952ADD0D21A65B4B00BEE51B /* SocketIOHandler.m in Sources */ = {isa = PBXBuildFile; fileRef = 952ADD0C21A65B4B00BEE51B /* SocketIOHandler.m */; };
 		952FE9D721C8DF9900634291 /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 952FE9D521C8DF9900634291 /* LaunchScreen.storyboard */; };
+		95383AD7225DD3DE008CE1B2 /* LinkAlertView.m in Sources */ = {isa = PBXBuildFile; fileRef = 95383AD6225DD3DE008CE1B2 /* LinkAlertView.m */; };
 		954371742199234100915BBE /* SettingViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 954371732199234100915BBE /* SettingViewController.m */; };
 		9549EC66219C0CF800307255 /* CreateTipsAlertView.m in Sources */ = {isa = PBXBuildFile; fileRef = 9549EC65219C0CF800307255 /* CreateTipsAlertView.m */; };
 		9549EC70219D075F00307255 /* ClearCacheTool.m in Sources */ = {isa = PBXBuildFile; fileRef = 9549EC6F219D075E00307255 /* ClearCacheTool.m */; };
@@ -358,6 +359,8 @@
 		952ADD0B21A65B4B00BEE51B /* SocketIOHandler.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = SocketIOHandler.h; sourceTree = "<group>"; };
 		952ADD0C21A65B4B00BEE51B /* SocketIOHandler.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = SocketIOHandler.m; sourceTree = "<group>"; };
 		952FE9D621C8DF9900634291 /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/LaunchScreen.storyboard; sourceTree = "<group>"; };
+		95383AD5225DD3DE008CE1B2 /* LinkAlertView.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = LinkAlertView.h; sourceTree = "<group>"; };
+		95383AD6225DD3DE008CE1B2 /* LinkAlertView.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = LinkAlertView.m; sourceTree = "<group>"; };
 		954371722199234100915BBE /* SettingViewController.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = SettingViewController.h; sourceTree = "<group>"; };
 		954371732199234100915BBE /* SettingViewController.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = SettingViewController.m; sourceTree = "<group>"; };
 		9549EC64219C0CF800307255 /* CreateTipsAlertView.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = CreateTipsAlertView.h; sourceTree = "<group>"; };
@@ -1038,6 +1041,8 @@
 				959E29202255D7DB006FCA30 /* CooperateViewCell.m */,
 				959E292522560ED4006FCA30 /* SharingCanvassingAlertView.h */,
 				959E292622560ED4006FCA30 /* SharingCanvassingAlertView.m */,
+				95383AD5225DD3DE008CE1B2 /* LinkAlertView.h */,
+				95383AD6225DD3DE008CE1B2 /* LinkAlertView.m */,
 			);
 			path = View;
 			sourceTree = "<group>";
@@ -1477,6 +1482,7 @@
 				83379A742179D62300C222A5 /* MyIdentityViewController.m in Sources */,
 				8372C8622174CBF100FF9506 /* NavigationViewController.m in Sources */,
 				8372C8592174CB9800FF9506 /* UITextField+Extension.m in Sources */,
+				95383AD7225DD3DE008CE1B2 /* LinkAlertView.m in Sources */,
 				959E2918225311A5006FCA30 /* NodePlanModel.m in Sources */,
 				95A8A3BF219D166D008E978E /* Encapsulation.m in Sources */,
 				959E28E42244C87D006FCA30 /* VotingRecordsViewController.m in Sources */,

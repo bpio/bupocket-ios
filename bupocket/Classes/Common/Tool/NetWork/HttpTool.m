@@ -13,7 +13,6 @@
 
 @property (nonatomic, strong) AFURLSessionManager * sessionManager;
 @property (nonatomic, strong) AFHTTPSessionManager * manager;
-@property (nonatomic, strong) NSURLSessionConfiguration * sessionConfiguration;
 
 @end
 
@@ -26,10 +25,10 @@ static HttpTool * _shareTool = nil;
     dispatch_once(&onceToken, ^{
         if (!_shareTool) {
             _shareTool = [[HttpTool alloc] init];
-            _shareTool.sessionConfiguration = [NSURLSessionConfiguration defaultSessionConfiguration];
-            _shareTool.sessionConfiguration.timeoutIntervalForRequest = Timeout_Interval;
-            _shareTool.sessionConfiguration.requestCachePolicy = NSURLRequestReloadIgnoringCacheData;
-            _shareTool.sessionManager = [[AFURLSessionManager alloc] initWithSessionConfiguration:_shareTool.sessionConfiguration];
+             NSURLSessionConfiguration * sessionConfiguration = [NSURLSessionConfiguration defaultSessionConfiguration];
+             sessionConfiguration.timeoutIntervalForRequest = Timeout_Interval;
+             sessionConfiguration.requestCachePolicy = NSURLRequestReloadIgnoringCacheData;
+            _shareTool.sessionManager = [[AFURLSessionManager alloc] initWithSessionConfiguration:sessionConfiguration];
             [_shareTool.sessionManager.reachabilityManager startMonitoring];
             _shareTool.manager = [AFHTTPSessionManager manager];
             _shareTool.manager.requestSerializer = [AFHTTPRequestSerializer serializer];
@@ -78,7 +77,10 @@ static HttpTool * _shareTool = nil;
     NSMutableURLRequest * request = [[AFJSONRequestSerializer serializer] requestWithMethod:@"POST" URLString:URLString parameters:nil error:nil];
     [request setValue:@"application/json" forHTTPHeaderField:@"Content-Type"];
     [request setValue:@"application/json" forHTTPHeaderField:@"Accept"];
-    [request setHTTPBody:[[JsonTool JSONStringWithDictionaryOrArray:parameters] dataUsingEncoding:NSUTF8StringEncoding]];
+    NSData * requestPostData = [[JsonTool JSONStringWithDictionaryOrArray:parameters] dataUsingEncoding:NSUTF8StringEncoding];
+    [request setValue:[NSString stringWithFormat:@"%lu",(unsigned long)[requestPostData length]] forHTTPHeaderField:@"Content-Length"];
+    [request setHTTPBody:requestPostData];
+    
     [[self.sessionManager dataTaskWithRequest:request uploadProgress:^(NSProgress * _Nonnull uploadProgress) {
         
     } downloadProgress:^(NSProgress * _Nonnull downloadProgress) {

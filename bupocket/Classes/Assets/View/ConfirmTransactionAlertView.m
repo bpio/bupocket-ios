@@ -27,6 +27,7 @@
 
 @property (nonatomic, strong) NSString * transactionCost;
 @property (nonatomic, strong) NSMutableArray * transferInfoArray;
+@property (nonatomic, strong) PasswordAlertView * PWAlertView;
 
 @end
 
@@ -363,13 +364,13 @@
 }
 - (void)showPWAlertView
 {
-    PasswordAlertView * alertView = [[PasswordAlertView alloc] initWithPrompt:Localized(@"TransactionWalletPWPrompt") walletKeyStore:CurrentWalletKeyStore isAutomaticClosing:YES confrimBolck:^(NSString * _Nonnull password, NSArray * _Nonnull words) {
+    self.PWAlertView = [[PasswordAlertView alloc] initWithPrompt:Localized(@"TransactionWalletPWPrompt") walletKeyStore:CurrentWalletKeyStore isAutomaticClosing:YES confrimBolck:^(NSString * _Nonnull password, NSArray * _Nonnull words) {
         [self submitTransactionWithPassword:password];
     } cancelBlock:^{
         
     }];
-    [alertView showInWindowWithMode:CustomAnimationModeAlert inView:nil bgAlpha:AlertBgAlpha needEffectView:NO];
-    [alertView.PWTextField becomeFirstResponder];
+    [self.PWAlertView showInWindowWithMode:CustomAnimationModeAlert inView:nil bgAlpha:AlertBgAlpha needEffectView:NO];
+    [self.PWAlertView.PWTextField becomeFirstResponder];
 }
 - (void)submitTransactionWithPassword:(NSString *)password
 {

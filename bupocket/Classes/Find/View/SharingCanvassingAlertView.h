@@ -20,6 +20,7 @@ typedef void (^OnConfrimClick)(NSString * text);
 
 @property (nonatomic, copy) OnCancleClick cancleClick;
 @property (nonatomic, copy) OnConfrimClick confrimClick;
+@property (nonatomic, strong) NodePlanModel * nodePlanModel;
 
 - (instancetype)initWithNodePlanModel:(NodePlanModel *)nodePlanModel confrimBolck:(void (^)(NSString * text))confrimBlock cancelBlock:(void (^)(void))cancelBlock;
 

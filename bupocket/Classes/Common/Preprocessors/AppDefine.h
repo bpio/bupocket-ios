@@ -28,7 +28,7 @@
 // imported Wallet
 //#define imported_Wallet @"importedWallet"
 // Network request timeout limit time
-#define Timeout_Interval 30.0
+#define Timeout_Interval 60.0
 #define Assets_HomePage_CacheData @"AssetsHomePageCacheData"
 #define Assets_HomePage_CacheData_Test @"AssetsHomePageCacheDataTest"
 // 0: BU 1：ATP 2：CTP
@@ -96,7 +96,7 @@
 
 #define Wechat_APP_ID @"wxaecf7ac4085fd34a"
 
-#define Tencent_AppKey @"1107018540"
+#define Tencent_App_ID @"1101701640"
 
 #define SmallRoutine_Original_ID @"gh_463781563a74"
 #define Dispatch_After_Time 0.5

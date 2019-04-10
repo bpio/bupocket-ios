@@ -14,6 +14,7 @@
 #import "VersionModel.h"
 #import <IQKeyboardManager/IQKeyboardManager.h>
 #import <WXApi.h>
+#import <TencentOpenAPI/TencentOAuth.h>
 
 @interface AppDelegate ()<WXApiDelegate>
 
@@ -37,6 +38,7 @@
     // Minimum Asset Limitation
     [[HTTPManager shareManager] getBlockLatestFees];
     [WXApi registerApp:Wechat_APP_ID];
+    [[TencentOAuth alloc] initWithAppId:Tencent_App_ID andDelegate:nil];
     return YES;
 }
 - (void)initializationSettings
@@ -150,7 +152,13 @@
 }
 - (BOOL)application:(UIApplication *)app openURL:(NSURL *)url options:(NSDictionary<UIApplicationOpenURLOptionsKey,id> *)options
 {
-    return [WXApi handleOpenURL:url delegate:self];
+    NSString * str = [url absoluteString];
+    if ([str hasPrefix:Wechat_APP_ID]) {
+        return [WXApi handleOpenURL:url delegate:self];
+    } else if ([str hasPrefix:Tencent_App_ID]) {
+        return [TencentOAuth HandleOpenURL:url];
+    }
+    return NO;
 }
 - (void)onReq:(BaseReq *)req
 {
@@ -160,6 +168,7 @@
 {
     if ([resp isKindOfClass:[WXLaunchMiniProgramResp class]]) {
         NSLog(@"跳转微信后的回调 %d %@", resp.errCode, resp.errStr);
+        
     }
 }
 - (void)applicationWillResignActive:(UIApplication *)application {

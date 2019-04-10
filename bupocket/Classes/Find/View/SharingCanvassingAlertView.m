@@ -7,8 +7,12 @@
 //
 
 #import "SharingCanvassingAlertView.h"
-#import <WXApi.h>
 #import "HMScannerController.h"
+#import <WXApi.h>
+#import  <TencentOpenAPI/QQApiInterfaceObject.h>
+#import <TencentOpenAPI/TencentOAuth.h>
+#import <TencentOpenAPI/QQApiInterface.h>
+#import "LinkAlertView.h"
 
 @interface SharingCanvassingAlertView ()
 
@@ -22,6 +26,8 @@
 @property (nonatomic, strong) UIView * shareBg;
 @property (nonatomic, strong) UIButton * cancel;
 
+@property (nonatomic, strong) LinkAlertView * linkAlertView;
+
 @end
 
 @implementation SharingCanvassingAlertView
@@ -32,6 +38,7 @@
     if (self) {
         _confrimClick = confrimBlock;
         _cancleClick = cancelBlock;
+        _nodePlanModel = nodePlanModel;
         [self setupView];
         self.frame = CGRectMake(0, 0, DEVICE_WIDTH, ScreenScale(500));
         [_nodeLogo sd_setImageWithURL:[NSURL URLWithString:nodePlanModel.nodeLogo] placeholderImage:[UIImage imageNamed:@"placeholder"]];
@@ -171,13 +178,14 @@
     if (!_shareBg) {
         _shareBg = [[UIView alloc] init];
         _shareBg.backgroundColor = COLOR(@"F8F8F8");
-        NSArray * shareTitles = @[Localized(@"WeChat"), Localized(@"QQ"), Localized(@"CopyLink")];
+        NSArray * shareTitles = @[Localized(@"WeChat"), Localized(@"QQ"), Localized(@"CopyBULink")];
         NSArray * shareImages = @[@"wechat", @"QQ", @"copy_link"];
         CGFloat shareW = (DEVICE_WIDTH - Margin_40) / shareTitles.count;
         for (NSInteger i = 0; i < shareTitles.count; i ++) {
             CustomButton * share = [[CustomButton alloc] init];
             share.layoutMode = VerticalNormal;
             share.titleLabel.font = FONT(13);
+            share.tag = i;
             [share setTitleColor:COLOR_6 forState:UIControlStateNormal];
             [share setTitle:shareTitles[i] forState:UIControlStateNormal];
             [share setImage:[UIImage imageNamed:shareImages[i]] forState:UIControlStateNormal];
@@ -194,9 +202,36 @@
 }
 - (void)shareAction:(UIButton *)button
 {
-    UIImage * shareImage = [self mergedImage];
-    
-    
+    [self hideView];
+    dispatch_after(dispatch_time(DISPATCH_TIME_NOW, (int64_t)(Dispatch_After_Time * NSEC_PER_SEC)), dispatch_get_main_queue(), ^{
+        UIImage * shareImage = [self mergedImage];
+        if (button.tag == 0) {
+            [self wechatShareWithImage:shareImage];
+        } else if (button.tag == 1) {
+            [self tencentShareWithImage:shareImage];
+        } else if (button.tag == 2) {
+            self.linkAlertView = [[LinkAlertView alloc] initWithNodeName:self.nodePlanModel.nodeName link:@"https://baidu.com" confrimBolck:^{
+                
+            } cancelBlock:^{
+                
+            }];
+            [self.linkAlertView showInWindowWithMode:CustomAnimationModeAlert inView:nil bgAlpha:AlertBgAlpha needEffectView:NO];
+        }
+    });
+}
+
+- (void)wechatShareWithImage:(UIImage *)image
+{
+    if (!WXApi.isWXAppInstalled) {
+        UIAlertView *msgbox = [[UIAlertView alloc] initWithTitle:@"您的设备未安装手机微信" message:@"" delegate:nil cancelButtonTitle:@"确定" otherButtonTitles:nil];
+        [msgbox show];
+        return;
+    }
+    if (!WXApi.isWXAppSupportApi) {
+        UIAlertView *msgbox = [[UIAlertView alloc] initWithTitle:@"判断当前微信的版本不支持OpenApi" message:@"" delegate:nil cancelButtonTitle:@"确定" otherButtonTitles:nil];
+        [msgbox show];
+        return;
+    }
     WXMediaMessage *message = [WXMediaMessage message];
     // 设置消息缩略图的方法
     [message setThumbImage:[UIImage imageNamed:@"logo"]];
@@ -204,7 +239,7 @@
     WXImageObject *imageObject = [WXImageObject object];
     
     // 图片真实数据内容
-    NSData *data = UIImagePNGRepresentation(shareImage);
+    NSData *data = UIImagePNGRepresentation(image);
     imageObject.imageData = data;
     // 多媒体数据对象，可以为WXImageObject，WXMusicObject，WXVideoObject，WXWebpageObject等。
     message.mediaObject = imageObject;
@@ -214,12 +249,72 @@
     req.message = message;
     req.scene = WXSceneSession;// 分享到朋友圈
     [WXApi sendReq:req];
-    
-//    BOOL hasInstalledWechat = [[UIApplication sharedApplication] canOpenURL:[NSURL URLWithString:@"weixin://"]];
-//    BOOL hasInstalledQQ = [[UIApplication sharedApplication] canOpenURL:[NSURL URLWithString:@"mqq://"]];
-//    BOOL hasInstalledTelegram = [[UIApplication sharedApplication] canOpenURL:[NSURL URLWithString:@"tg://"]];
 }
 
+- (void)tencentShareWithImage:(UIImage *)image
+{
+    NSData * imageData = UIImagePNGRepresentation(image);
+    QQApiImageObject * imageObject = [QQApiImageObject objectWithData:imageData previewImageData:imageData title:@"" description:@""];
+    SendMessageToQQReq * req = [SendMessageToQQReq reqWithContent:imageObject];
+    QQApiSendResultCode sendResult = [QQApiInterface sendReq:req];
+    /*
+    switch (sendResult)
+    {
+        case EQQAPIAPPNOTREGISTED:
+        {
+            UIAlertView *msgbox = [[UIAlertView alloc] initWithTitle:@"温馨提示" message:@"App未注册" delegate:nil cancelButtonTitle:@"取消" otherButtonTitles:nil];
+            [msgbox show];
+            
+            
+            break;
+        }
+        case EQQAPIMESSAGECONTENTINVALID:
+        case EQQAPIMESSAGECONTENTNULL:
+        case EQQAPIMESSAGETYPEINVALID:
+        {
+            UIAlertView *msgbox = [[UIAlertView alloc] initWithTitle:@"温馨提示" message:@"发送参数错误" delegate:nil cancelButtonTitle:@"取消" otherButtonTitles:nil];
+            [msgbox show];
+            
+            
+            break;
+        }
+        case EQQAPIQQNOTINSTALLED:
+        {
+            UIAlertView *msgbox = [[UIAlertView alloc] initWithTitle:@"温馨提示" message:@"您的设备未安装手机QQ" delegate:nil cancelButtonTitle:@"取消" otherButtonTitles:nil];
+            [msgbox show];
+            
+            
+            break;
+        }
+        case EQQAPIQQNOTSUPPORTAPI:
+        {
+            UIAlertView *msgbox = [[UIAlertView alloc] initWithTitle:@"温馨提示" message:@"您的设备未安装手机QQ" delegate:nil cancelButtonTitle:@"取消" otherButtonTitles:nil];
+            [msgbox show];
+            
+            
+            break;
+        }
+        case EQQAPISENDFAILD:
+        {
+            UIAlertView *msgbox = [[UIAlertView alloc] initWithTitle:@"温馨提示" message:@"发送失败" delegate:nil cancelButtonTitle:@"取消" otherButtonTitles:nil];
+            [msgbox show];
+            
+            
+            break;
+        }
+        case EQQAPIVERSIONNEEDUPDATE:
+        {
+            UIAlertView *msgbox = [[UIAlertView alloc] initWithTitle:@"温馨提示" message:@"当前QQ版本太低，需要更新" delegate:nil cancelButtonTitle:@"取消" otherButtonTitles:nil];
+            [msgbox show];
+            break;
+        }
+        default:
+        {
+            break;
+        }
+    }
+     */
+}
 - (UIButton *)cancel
 {
     if (!_cancel) {

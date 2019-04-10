@@ -53,7 +53,7 @@ static NSString * const NodeRecordsCellID = @"NodeRecordsCellID";
 - (void)layoutSubviews
 {
     [super layoutSubviews];
-    CGFloat width = (DEVICE_WIDTH - ScreenScale(70)) / 7;
+    CGFloat width = (DEVICE_WIDTH - ScreenScale(50)) / 6;
     [self.listBg mas_makeConstraints:^(MASConstraintMaker *make) {
         make.left.equalTo(self.contentView.mas_left).offset(Margin_10);
         make.right.equalTo(self.contentView.mas_right).offset(-Margin_10);
@@ -62,7 +62,7 @@ static NSString * const NodeRecordsCellID = @"NodeRecordsCellID";
     }];
     self.contentView.backgroundColor = self.contentView.superview.superview.backgroundColor;
     [self.recordType mas_makeConstraints:^(MASConstraintMaker *make) {
-        make.left.equalTo(self.listBg.mas_left).offset(Margin_15);
+        make.left.equalTo(self.listBg.mas_left).offset(Margin_10);
         make.top.equalTo(self.listBg.mas_top).offset(Margin_15);
         make.width.height.mas_equalTo(ScreenScale(18));
     }];
@@ -92,15 +92,15 @@ static NSString * const NodeRecordsCellID = @"NodeRecordsCellID";
         //        make.right.mas_lessThanOrEqualTo(self.nodeType.mas_left).offset(-Margin_15);
     }];
     [self.state mas_makeConstraints:^(MASConstraintMaker *make) {
-        make.left.equalTo(self.number.mas_right).offset(Margin_10);
+        make.left.equalTo(self.number.mas_right).offset(Margin_5);
         make.centerY.equalTo(self.number);
         make.width.mas_equalTo(width);
     }];
     [self.date mas_makeConstraints:^(MASConstraintMaker *make) {
-        make.left.equalTo(self.state.mas_right).offset(Margin_10);
-        make.right.equalTo(self.listBg.mas_right).offset(-Margin_15);
+        make.left.equalTo(self.state.mas_right).offset(Margin_5);
+//        make.right.equalTo(self.listBg.mas_right).offset(-Margin_10);
         make.centerY.equalTo(self.number);
-        make.width.mas_equalTo(width * 4);
+        make.width.mas_equalTo(width * 3);
     }];
 }
 - (UIView *)listBg

@@ -59,14 +59,14 @@ static NSString * const NodePlanCellID = @"NodePlanCellID";
     [self setupNav];
     [self setupView];
     
-    [self getNodeListDataWithIdentityType:@"" nodeName:@"" capitalAddress:@""];
+    [self getData];
 //    [self setupRefresh];
     // Do any additional setup after loading the view.
 }
 - (void)setupNav
 {
     UIButton * votingRecords = [UIButton createButtonWithNormalImage:@"nav_records_n" SelectedImage:@"nav_votingRecords_n" Target:self Selector:@selector(votingRecordsAction)];
-    votingRecords.frame = CGRectMake(0, 0, ScreenScale(44), ScreenScale(44));
+    votingRecords.frame = CGRectMake(0, 0, ScreenScale(60), ScreenScale(44));
     votingRecords.contentHorizontalAlignment = UIControlContentHorizontalAlignmentRight;
     self.navigationItem.rightBarButtonItem = [[UIBarButtonItem alloc]initWithCustomView:votingRecords];
 }
@@ -86,11 +86,9 @@ static NSString * const NodePlanCellID = @"NodePlanCellID";
 //    [self getNodeListDataWithIdentityType:@"" nodeName:@"" capitalAddress:@""];
 //}
 
-- (void)getNodeListDataWithIdentityType:(NSString *)identityType
-                               nodeName:(NSString *)nodeName
-                         capitalAddress:(NSString *)capitalAddress
+- (void)getData
 {
-    [[HTTPManager shareManager] getNodeListDataWithIdentityType:identityType nodeName:nodeName capitalAddress:capitalAddress  success:^(id responseObject) {
+    [[HTTPManager shareManager] getNodeListDataWithIdentityType:@"" nodeName:@"" capitalAddress:@""  success:^(id responseObject) {
         NSInteger code = [[responseObject objectForKey:@"errCode"] integerValue];
         if (code == Success_Code) {
             self.listArray = [NodePlanModel mj_objectArrayWithKeyValuesArray:responseObject[@"data"][@"nodeList"]];
@@ -109,7 +107,7 @@ static NSString * const NodePlanCellID = @"NodePlanCellID";
 }
 - (void)reloadData
 {
-    [self getNodeListDataWithIdentityType:@"" nodeName:@"" capitalAddress:@""];
+    [self getData];
 }
 - (void)ifShowNoData
 {

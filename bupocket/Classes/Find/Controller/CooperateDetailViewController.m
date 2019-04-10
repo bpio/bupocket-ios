@@ -35,17 +35,6 @@ static NSString * const CooperateDetailCellID = @"CooperateDetailCellID";
     }
     return _listArray;
 }
-//// 节点共建详情
-//"JointlyCooperateDetail" = "共建信息详情";
-//"InProgress" = "进行中";
-//"InitialPurchaseAmount(BU/Portion)" = "起购金额（BU/份）";
-//"IncentiveSharingRatio" = "奖励分享比例";
-//"TotalSponsorSupport(BU)" = "发起人支持总额(BU)";
-//"The remaining %@ copies" = "剩余%@份";
-//"TotalTargetAmount(BU)" = "目标总额（BU)";
-//"TotalSupport(BU)" = "已支持总额(BU)";
-//"RiskStatement" = "风险说明";
-//"SupportRecords" = "支持记录";
 - (void)viewDidLoad {
     [super viewDidLoad];
     self.navigationItem.title = Localized(@"JointlyCooperateDetail");

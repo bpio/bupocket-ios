@@ -26,6 +26,7 @@
 #import "VotingRecordsViewController.h"
 #import "CooperateDetailViewController.h"
 #import "NodeSharingViewController.h"
+#import "WKWebViewController.h"
 
 @interface NavigationViewController ()<UINavigationControllerDelegate>
 
@@ -83,7 +84,8 @@
                              [viewController isKindOfClass:[FindViewController class]] ||
                              [viewController isKindOfClass:[VotingRecordsViewController class]] ||
                              [viewController isKindOfClass:[CooperateDetailViewController class]] ||
-                             [viewController isKindOfClass:[NodeSharingViewController class]]
+                             [viewController isKindOfClass:[NodeSharingViewController class]] ||
+                             [viewController isKindOfClass:[WKWebViewController class]]
                              );
     if (@available(iOS 11.0, *)) {
         [self.navigationBar setPrefersLargeTitles:!isSetLargeTitles];

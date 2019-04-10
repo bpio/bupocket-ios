@@ -55,6 +55,8 @@
 @property (nonatomic, assign) UIStatusBarStyle statusBarStyle;
 @property (nonatomic, strong) NSString * assetsCacheDataKey;
 
+@property (nonatomic, strong) ConfirmTransactionAlertView * confirmAlertView;
+
 @end
 
 @implementation AssetsViewController
@@ -484,12 +486,12 @@ static UIButton * _noBackup;
 }
 - (void)getDpos:(ConfirmTransactionModel *)confirmTransactionModel
 {
-    ConfirmTransactionAlertView * alertView = [[ConfirmTransactionAlertView alloc] initWithDpos:confirmTransactionModel confrimBolck:^{
+    self.confirmAlertView = [[ConfirmTransactionAlertView alloc] initWithDpos:confirmTransactionModel confrimBolck:^{
         
     } cancelBlock:^{
         
     }];
-    [alertView showInWindowWithMode:CustomAnimationModeShare inView:nil bgAlpha:AlertBgAlpha needEffectView:NO];
+    [self.confirmAlertView showInWindowWithMode:CustomAnimationModeShare inView:nil bgAlpha:AlertBgAlpha needEffectView:NO];
 }
 
 

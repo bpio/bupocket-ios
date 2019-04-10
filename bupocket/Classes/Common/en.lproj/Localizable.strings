@@ -389,7 +389,12 @@
 "LongPressPrompt" = "（长按识别二维码）";
 "WeChat" = "微信";
 "QQ" = "QQ";
-"CopyLink" = "复制小布口令";
+"CopyBULink" = "复制小布口令";
+"LinkTitle" = "小布口令已生成";
+"CopyLink" = "复制口令";
+"BULink" = "小布口令";
+"LinkPerfix" = "我为BUMO超级节点计划参与方";
+"LinkSuffix" = "打call，打开链接进行为他投票";
 
 // 撤票详情
 "Number of votes revoked on '%@'" = "撤销对\"%@\"的投票";
@@ -441,6 +446,9 @@
 "Total" = "共计：";
 "ConfirmSupport" = "确认支持";
 "BU/Portion" = "BU/份";
+// 退出节点共建计划
+"QuitCooperate" = "退出节点共建计划";
+
 // 交易确认
 "Overtime" = "请求已超时，请重新操作";
 
