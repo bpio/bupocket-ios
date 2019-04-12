@@ -14,6 +14,8 @@
 #import "NodePlanViewController.h"
 #import "CooperateViewController.h"
 
+#import "NodeTransferSuccessViewController.h"
+
 @interface FindViewController ()<UITableViewDelegate, UITableViewDataSource, SDCycleScrollViewDelegate>
 
 @property (nonatomic, strong) UITableView * tableView;
@@ -116,7 +118,8 @@ static NSString * const ExportCellID = @"ExportCellID";
 {
     [tableView deselectRowAtIndexPath:indexPath animated:YES];
     if (indexPath.section == 0) {
-        
+        NodeTransferSuccessViewController * VC = [[NodeTransferSuccessViewController alloc] init];
+        [self.navigationController pushViewController:VC animated:NO];
     } else if (indexPath.section == 1) {
         if (indexPath.row == 0) {
             NodePlanViewController * VC = [[NodePlanViewController alloc] init];

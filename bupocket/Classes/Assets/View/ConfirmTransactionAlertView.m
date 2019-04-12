@@ -322,22 +322,24 @@
     if (_sureBlock) {
         _sureBlock();
     }
-    if (!self.confirmTransactionModel) {
-        return;
-    }
-    NSDecimalNumber * amount = [NSDecimalNumber decimalNumberWithString:self.confirmTransactionModel.amount];
-    NSDecimalNumber * minTransactionCost = [NSDecimalNumber decimalNumberWithString:self.transactionCost];
-    NSDecimalNumber * totleAmount = [amount decimalNumberByAdding:minTransactionCost];
-    NSDecimalNumber * amountNumber = [[HTTPManager shareManager] getDataWithBalanceJudgmentWithCost:[totleAmount stringValue] ifShowLoading:YES];
-    NSString * totleAmountStr = [amountNumber stringValue];
-    if (!NULLString(totleAmountStr) || [amountNumber isEqualToNumber:NSDecimalNumber.notANumber]) {
-    } else if ([totleAmountStr hasPrefix:@"-"]) {
-        dispatch_async(dispatch_get_main_queue(), ^{
-            [MBProgressHUD showTipMessageInWindow:Localized(@"NotSufficientFunds")];
-        });
-    } else {
-        [self getContractTransactionData];
-    }
+    dispatch_after(dispatch_time(DISPATCH_TIME_NOW, (int64_t)(Dispatch_After_Time * NSEC_PER_SEC)), dispatch_get_main_queue(), ^{
+        if (!self.confirmTransactionModel) {
+            return;
+        }
+        NSDecimalNumber * amount = [NSDecimalNumber decimalNumberWithString:self.confirmTransactionModel.amount];
+        NSDecimalNumber * minTransactionCost = [NSDecimalNumber decimalNumberWithString:self.transactionCost];
+        NSDecimalNumber * totleAmount = [amount decimalNumberByAdding:minTransactionCost];
+        NSDecimalNumber * amountNumber = [[HTTPManager shareManager] getDataWithBalanceJudgmentWithCost:[totleAmount stringValue] ifShowLoading:YES];
+        NSString * totleAmountStr = [amountNumber stringValue];
+        if (!NULLString(totleAmountStr) || [amountNumber isEqualToNumber:NSDecimalNumber.notANumber]) {
+        } else if ([totleAmountStr hasPrefix:@"-"]) {
+            dispatch_async(dispatch_get_main_queue(), ^{
+                [MBProgressHUD showTipMessageInWindow:Localized(@"NotSufficientFunds")];
+            });
+        } else {
+            [self getContractTransactionData];
+        }
+    });
 }
 // Transaction confirmation and submission
 - (void)getContractTransactionData
@@ -351,9 +353,7 @@
             if (time < 0) {
                 [MBProgressHUD showTipMessageInWindow:Localized(@"Overtime")];
             } else {
-                dispatch_after(dispatch_time(DISPATCH_TIME_NOW, (int64_t)(Dispatch_After_Time * NSEC_PER_SEC)), dispatch_get_main_queue(), ^{
-                    [self showPWAlertView];
-                });
+                [self showPWAlertView];
             }
         } else {
             [Encapsulation showAlertControllerWithMessage:responseObject[@"msg"] handler:nil];

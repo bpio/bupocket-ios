@@ -440,6 +440,13 @@
 "QuitCooperate" = "退出节点共建计划";
 // 交易确认
 "Overtime" = "请求已超时，请重新操作";
+// 交易成功
+"TransferSuccess" = "交易成功";
+"TransferSuccessPrompt" = "链上交易已成功";
+"BusinessData" = "业务数据处理中";
+"BusinessDataPrompt" = "业务数据根据链上交易元数据进行分析处理，预计20秒内处理完成";
+"DataRefreshed" = "数据已刷新";
+"NodeTransferPrompt" = "温馨提示：\n节点的投票、撤票等操作链上交易成功后，相关数据的统计有延迟，预计30秒内完成，此为正常现象。";
 // 错误信息
 "LoadFailure" = "加载失败";
 // SDK Errors

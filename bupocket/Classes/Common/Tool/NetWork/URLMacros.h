@@ -46,8 +46,8 @@
 
 // dpos
 #define Dpos_Prefix @"bumo://dpos/"
-#define Apply_Node @"nodeServer/qr/v1/content"
-#define Apply_Node_Confirm @"nodeServer/tx/v1/confirm"
+#define Node_Content @"nodeServer/qr/v1/content"
+#define Node_Confirm @"nodeServer/tx/v1/confirm"
 #define Node_plan @""
 // 节点撤票
 #define Node_Withdrawal_Confirm @"nodeServer/node/v1/vote/revoke/user"
@@ -55,5 +55,6 @@
 #define Node_List @"nodeServer/node/v1/list/app"
 // 投票记录
 #define Voting_Record @"nodeServer/node/v1/vote/list"
+#define Node_Image_URL @"img-dpos/"
 
 #endif /* URLMacros_h */

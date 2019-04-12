@@ -455,9 +455,10 @@ static int64_t const gasPrice = 1000;
                                         failure:(void (^)(NSError *error))failure
 {
     [MBProgressHUD showActivityMessageInWindow:Localized(@"Loading")];
-    NSString * url = SERVER_COMBINE_API(_webServerDomain, Apply_Node);
+    NSString * url = SERVER_COMBINE_API(_webServerDomain, Node_Content);
     NSDictionary * parameters = @{
-                                  @"qrcodeSessionId": QRcodeSessionId
+                                  @"qrcodeSessionId": QRcodeSessionId,
+                                  @"initiatorAddress": CurrentWalletAddress
                                   };
     [[HttpTool shareTool] POST:url parameters:parameters success:^(id responseObject) {
         if(success != nil)
@@ -521,7 +522,7 @@ static int64_t const gasPrice = 1000;
                                    success:(void (^)(id responseObject))success
                                    failure:(void (^)(NSError *error))failure
 {
-    NSString * URL = Apply_Node_Confirm;
+    NSString * URL = Node_Confirm;
     if ([confirmTransactionModel.type isEqualToString:TransactionType_NodeWithdrawal]) {
         URL = Node_Withdrawal_Confirm;
     }

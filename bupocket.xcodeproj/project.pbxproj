@@ -92,6 +92,7 @@
 		952ADD0D21A65B4B00BEE51B /* SocketIOHandler.m in Sources */ = {isa = PBXBuildFile; fileRef = 952ADD0C21A65B4B00BEE51B /* SocketIOHandler.m */; };
 		952FE9D721C8DF9900634291 /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 952FE9D521C8DF9900634291 /* LaunchScreen.storyboard */; };
 		95383AD7225DD3DE008CE1B2 /* LinkAlertView.m in Sources */ = {isa = PBXBuildFile; fileRef = 95383AD6225DD3DE008CE1B2 /* LinkAlertView.m */; };
+		95383ADD226095F9008CE1B2 /* NodeTransferSuccessViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 95383ADC226095F9008CE1B2 /* NodeTransferSuccessViewController.m */; };
 		954371742199234100915BBE /* SettingViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 954371732199234100915BBE /* SettingViewController.m */; };
 		9549EC66219C0CF800307255 /* CreateTipsAlertView.m in Sources */ = {isa = PBXBuildFile; fileRef = 9549EC65219C0CF800307255 /* CreateTipsAlertView.m */; };
 		9549EC70219D075F00307255 /* ClearCacheTool.m in Sources */ = {isa = PBXBuildFile; fileRef = 9549EC6F219D075E00307255 /* ClearCacheTool.m */; };
@@ -361,6 +362,8 @@
 		952FE9D621C8DF9900634291 /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/LaunchScreen.storyboard; sourceTree = "<group>"; };
 		95383AD5225DD3DE008CE1B2 /* LinkAlertView.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = LinkAlertView.h; sourceTree = "<group>"; };
 		95383AD6225DD3DE008CE1B2 /* LinkAlertView.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = LinkAlertView.m; sourceTree = "<group>"; };
+		95383ADB226095F9008CE1B2 /* NodeTransferSuccessViewController.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = NodeTransferSuccessViewController.h; sourceTree = "<group>"; };
+		95383ADC226095F9008CE1B2 /* NodeTransferSuccessViewController.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = NodeTransferSuccessViewController.m; sourceTree = "<group>"; };
 		954371722199234100915BBE /* SettingViewController.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = SettingViewController.h; sourceTree = "<group>"; };
 		954371732199234100915BBE /* SettingViewController.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = SettingViewController.m; sourceTree = "<group>"; };
 		9549EC64219C0CF800307255 /* CreateTipsAlertView.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = CreateTipsAlertView.h; sourceTree = "<group>"; };
@@ -1011,6 +1014,8 @@
 				959E291D2255B331006FCA30 /* CooperateViewController.m */,
 				959E2928225AE267006FCA30 /* CooperateDetailViewController.h */,
 				959E2929225AE267006FCA30 /* CooperateDetailViewController.m */,
+				95383ADB226095F9008CE1B2 /* NodeTransferSuccessViewController.h */,
+				95383ADC226095F9008CE1B2 /* NodeTransferSuccessViewController.m */,
 			);
 			path = Controller;
 			sourceTree = "<group>";
@@ -1458,6 +1463,7 @@
 				83379AA9217F006600C222A5 /* HTTPManager.m in Sources */,
 				83FB4423219035B700D68569 /* SearchAssetsModel.m in Sources */,
 				83FB443521904AA400D68569 /* HMScannerMaskView.m in Sources */,
+				95383ADD226095F9008CE1B2 /* NodeTransferSuccessViewController.m in Sources */,
 				83FB443721904AA400D68569 /* HMScanner.m in Sources */,
 				83379A182178682100C222A5 /* UIView+CustomAlertView.m in Sources */,
 				959726BF21E43EB50022CB78 /* WalletModel.m in Sources */,

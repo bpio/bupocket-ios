@@ -270,7 +270,14 @@ static NSString * const NodeSharingID = @"NodeSharingID";
 - (void)setNodePlanModel:(NodePlanModel *)nodePlanModel
 {
     _nodePlanModel = nodePlanModel;
-    [self.listImage sd_setImageWithURL:[NSURL URLWithString:nodePlanModel.nodeLogo] placeholderImage:[UIImage imageNamed:@"placeholder_list"]];
+    NSString * url;
+    if ([[NSUserDefaults standardUserDefaults] boolForKey:If_Switch_TestNetwork] == YES) {
+        url = WEB_SERVER_DOMAIN_TEST;
+    } else {
+        url = WEB_SERVER_DOMAIN;
+    }
+    NSString * imageUrl = [NSString stringWithFormat:@"%@%@%@", url, Node_Image_URL, nodePlanModel.nodeLogo];
+    [self.listImage sd_setImageWithURL:[NSURL URLWithString:imageUrl] placeholderImage:[UIImage imageNamed:@"placeholder_list"]];
     self.name.text = nodePlanModel.nodeName;
     if ([nodePlanModel.identityType isEqualToString:NodeType_Consensus]) {
         self.nodeType.text = Localized(@"ConsensusNode");
