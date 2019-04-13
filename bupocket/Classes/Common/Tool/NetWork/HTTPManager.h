@@ -137,6 +137,15 @@
                               success:(void (^)(id responseObject))success
                               failure:(void (^)(NSError *error))failure;
 
+// Node Cooperate List
+- (void)getNodeCooperateListDataSuccess:(void (^)(id responseObject))success
+                                failure:(void (^)(NSError *error))failure;
+
+// Node Cooperate Detail
+- (void)getNodeCooperateDetailDataWithNodeId:(NSString *)nodeId
+                                     success:(void (^)(id responseObject))success
+                                     failure:(void (^)(NSError *error))failure;
+
 #pragma mark - SDK
 // Check the balance
 - (int64_t)getAccountBalance;

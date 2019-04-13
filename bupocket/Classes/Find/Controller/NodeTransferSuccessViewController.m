@@ -7,6 +7,7 @@
 //
 
 #import "NodeTransferSuccessViewController.h"
+#import "NodeTransferSuccessViewCell.h"
 #import <WXApi.h>
 
 @interface NodeTransferSuccessViewController ()<UITableViewDelegate, UITableViewDataSource>
@@ -44,11 +45,12 @@ static NSString * const NodeTransferSuccessID = @"NodeTransferSuccessID";
     UIButton * prompt = [UIButton buttonWithType:UIButtonTypeCustom];
     prompt.backgroundColor = COLOR(@"F8F8F8");
     [prompt setAttributedTitle:[Encapsulation attrWithString:Localized(@"NodeTransferPrompt") preFont:FONT(13) preColor:COLOR_9 index:0 sufFont:FONT(13) sufColor:COLOR_9 lineSpacing:5.0] forState:UIControlStateNormal];
-    CGFloat promptH = [Encapsulation getSizeSpaceLabelWithStr:Localized(@"NodeTransferPrompt") font:FONT(13) width:DEVICE_WIDTH - Margin_40 height:CGFLOAT_MAX lineSpacing:5.0].height;
+    prompt.titleLabel.numberOfLines = 0;
+    CGFloat promptH = [Encapsulation getSizeSpaceLabelWithStr:Localized(@"NodeTransferPrompt") font:FONT(13) width:DEVICE_WIDTH - Margin_40 height:CGFLOAT_MAX lineSpacing:5.0].height + Margin_30;
     [footerView addSubview:prompt];
     prompt.contentEdgeInsets = UIEdgeInsetsMake(Margin_15, Margin_10, Margin_10, Margin_15);
     [prompt mas_makeConstraints:^(MASConstraintMaker *make) {
-        make.top.equalTo(footerView.mas_top).offset(Margin_15);
+        make.top.equalTo(footerView.mas_top);
         make.left.equalTo(footerView.mas_left).offset(Margin_10);
         make.right.equalTo(footerView.mas_right).offset(-Margin_10);
         make.height.mas_equalTo(promptH);
@@ -63,6 +65,7 @@ static NSString * const NodeTransferSuccessID = @"NodeTransferSuccessID";
         make.left.right.equalTo(prompt);
     }];
     
+    footerView.frame = CGRectMake(0, 0, DEVICE_WIDTH, promptH + SafeAreaBottomH + NavBarH + adImage.imageView.height + Margin_30);
 }
 
 - (void)adAction
@@ -93,19 +96,16 @@ static NSString * const NodeTransferSuccessID = @"NodeTransferSuccessID";
 }
 - (CGFloat)tableView:(UITableView *)tableView heightForRowAtIndexPath:(NSIndexPath *)indexPath
 {
-    return ScreenScale(120);
+    return ScreenScale(60) + [Encapsulation rectWithText:self.listArray[1][indexPath.row] font:FONT(13) textWidth:DEVICE_WIDTH - ScreenScale(95)].size.height;
 }
 - (UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath
 {
-    UITableViewCell *cell = [tableView dequeueReusableCellWithIdentifier:NodeTransferSuccessID];
-    if (cell == nil) {
-        cell = [[UITableViewCell alloc] initWithStyle:UITableViewCellStyleSubtitle reuseIdentifier:NodeTransferSuccessID];
-    }
-    //    cell.votingRecordsModel = self.listArray[index];
+    NodeTransferSuccessViewCell *cell = [NodeTransferSuccessViewCell cellWithTableView:tableView identifier:NodeTransferSuccessID];
     cell.selectionStyle = UITableViewCellSelectionStyleNone;
-    cell.textLabel.text = self.listArray[0][indexPath.row];
-    cell.detailTextLabel.text = self.listArray[1][indexPath.row];
-    cell.detailTextLabel.numberOfLines = 0;
+    cell.type = indexPath.row;
+    cell.icon.image = [UIImage imageNamed:[NSString stringWithFormat:@"node_transfer_success_%zd", indexPath.row]];
+    cell.title.text = self.listArray[0][indexPath.row];
+    cell.detail.text = self.listArray[1][indexPath.row];
     return cell;
 }
 - (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath

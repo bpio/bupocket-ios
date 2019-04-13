@@ -9,6 +9,7 @@
 #import "CooperateViewController.h"
 #import "CooperateViewCell.h"
 #import "CooperateDetailViewController.h"
+#import "CooperateModel.h"
 
 @interface CooperateViewController ()<UITableViewDelegate, UITableViewDataSource>
 
@@ -34,9 +35,8 @@ static NSString * const CooperateCellID = @"CooperateCellID";
 - (void)viewDidLoad {
     [super viewDidLoad];
     self.navigationItem.title = Localized(@"JointlyCooperate");
-    self.listArray = [NSMutableArray arrayWithObjects:@"", @"", @"", @"", @"", @"", @"", @"", nil];
     [self setupView];
-//    [self setupRefresh];
+    [self setupRefresh];
     // Do any additional setup after loading the view.
 }
 - (void)setupRefresh
@@ -51,24 +51,22 @@ static NSString * const CooperateCellID = @"CooperateCellID";
 }
 - (void)getData
 {
-    /*
-    [[HTTPManager shareManager] getVotingRecordDataWithNodeId:nodeId success:^(id responseObject) {
+    [[HTTPManager shareManager] getNodeCooperateListDataSuccess:^(id responseObject) {
         NSInteger code = [[responseObject objectForKey:@"errCode"] integerValue];
         if (code == Success_Code) {
-            self.listArray = [VotingRecordsModel mj_objectArrayWithKeyValuesArray:responseObject[@"data"][@"list"]];
+            self.listArray = [CooperateModel mj_objectArrayWithKeyValuesArray:responseObject[@"data"][@"nodeList"]];
             [self.tableView reloadData];
         } else {
             [MBProgressHUD showTipMessageInWindow:[ErrorTypeTool getDescriptionWithErrorCode:code]];
         }
         [self.tableView.mj_header endRefreshing];
         (self.listArray.count > 0) ? (self.tableView.tableFooterView = [[UIView alloc] initWithFrame:CGRectMake(0, 0, DEVICE_WIDTH, CGFLOAT_MIN)]) : (self.tableView.tableFooterView = self.noData);
-        self.noNetWork.hidden = YES;
         self.tableView.mj_footer.hidden = (self.listArray.count == 0);
+        self.noNetWork.hidden = YES;
     } failure:^(NSError *error) {
         [self.tableView.mj_header endRefreshing];
         self.noNetWork.hidden = NO;
     }];
-     */
 }
 - (void)reloadData
 {
@@ -126,7 +124,7 @@ static NSString * const CooperateCellID = @"CooperateCellID";
 - (UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath
 {
     CooperateViewCell * cell = [CooperateViewCell cellWithTableView:tableView identifier:CooperateCellID];
-//    cell.votingRecordsModel = self.listArray[index];
+    cell.cooperateModel = self.listArray[indexPath.section];
     cell.selectionStyle = UITableViewCellSelectionStyleNone;
     return cell;
 }
@@ -134,6 +132,8 @@ static NSString * const CooperateCellID = @"CooperateCellID";
 {
     [tableView deselectRowAtIndexPath:indexPath animated:NO];
     CooperateDetailViewController * VC = [[CooperateDetailViewController alloc] init];
+    CooperateModel * cooperateModel = self.listArray[indexPath.section];
+    VC.nodeId = cooperateModel.nodeId;
     [self.navigationController pushViewController:VC animated:NO];
 }
 /*

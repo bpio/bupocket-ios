@@ -429,6 +429,7 @@
 "JointlyCooperateDetail" = "共建信息详情";
 "InProgress" = "进行中";
 "Completed" = "已完成";
+"Quit" = "已退出";
 "InitialPurchaseAmount(BU/Portion)" = "起购金额（BU/份）";
 "IncentiveSharingRatio" = "奖励分享比例";
 "TotalSponsorSupport(BU)" = "发起人支持总额(BU)";
@@ -439,6 +440,7 @@
 "SupportRecords" = "支持记录";
 "SignOut" = "退出";
 "Support" = "支持";
+"RiskStatementPrompt" = "1、节点共建不是商品交易。支持者根据自己的判断选择、支持众筹项目，与发起人共同实现梦想并获得发起人承诺的回报，众筹存在一定风险。\n2、众筹平台只提供平台网络空间、技术服务和支持等中介服务。作为中间平台，并不是发起人或支持者中的任何一方，众筹仅存在于发起人和支持者之间，使用平台产生的法律后果由发起人与支持者自行承担。\n3、如果发生发起人无法发放回报、延迟发放回报、不提供回报后续服务等情形，您需要直接和发起人协商解决，平台对此不承担任何责任。";
 // 支持
 "SupportProjects" = "支持项目";
 "PurchaseAmount" = "起购金额";

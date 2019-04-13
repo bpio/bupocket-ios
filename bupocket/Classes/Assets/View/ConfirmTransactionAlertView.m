@@ -7,6 +7,7 @@
 //
 
 #import "ConfirmTransactionAlertView.h"
+#import "NodeTransferSuccessViewController.h"
 #import "TransferResultsViewController.h"
 #import "RequestTimeoutViewController.h"
 
@@ -356,7 +357,7 @@
                 [self showPWAlertView];
             }
         } else {
-            [Encapsulation showAlertControllerWithMessage:responseObject[@"msg"] handler:nil];
+            [Encapsulation showAlertControllerWithMessage:[NSString stringWithFormat:@"code=%@\nmsg:%@", responseObject[@"errCode"], responseObject[@"msg"]] handler:nil];
         }
     } failure:^(NSError *error) {
         
@@ -381,17 +382,18 @@
             [weakSelf.transferInfoArray addObject:weakSelf.confirmTransactionModel.qrRemark];
         }
         [self.transferInfoArray addObject:[DateTool getDateStringWithTimeStr:[NSString stringWithFormat:@"%lld", resultModel.transactionTime]]];
-        TransferResultsViewController * VC = [[TransferResultsViewController alloc] init];
         if (resultModel.errorCode == Success_Code) {
-            VC.state = YES;
+            NodeTransferSuccessViewController * VC = [[NodeTransferSuccessViewController alloc] init];
+            [[UIApplication topViewController:[[UIApplication sharedApplication] keyWindow].rootViewController].navigationController pushViewController:VC animated:NO];
         } else {
+            TransferResultsViewController * VC = [[TransferResultsViewController alloc] init];
             VC.state = NO;
             VC.errorCode = resultModel.errorCode;
             VC.errorDesc = resultModel.errorDesc;
             //            [MBProgressHUD showTipMessageInWindow:[ErrorTypeTool getDescription:resultModel.errorCode]];
+            VC.transferInfoArray = weakSelf.transferInfoArray;
+            [[UIApplication topViewController:[[UIApplication sharedApplication] keyWindow].rootViewController].navigationController pushViewController:VC animated:NO];
         }
-        VC.transferInfoArray = weakSelf.transferInfoArray;
-        [[UIApplication topViewController:[[UIApplication sharedApplication] keyWindow].rootViewController].navigationController pushViewController:VC animated:NO];
     } failure:^(TransactionResultModel *resultModel) {
         RequestTimeoutViewController * VC = [[RequestTimeoutViewController alloc] init];
         [[UIApplication topViewController:[[UIApplication sharedApplication] keyWindow].rootViewController].navigationController pushViewController:VC animated:NO];

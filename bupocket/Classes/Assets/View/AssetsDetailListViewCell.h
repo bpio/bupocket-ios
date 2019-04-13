@@ -8,6 +8,7 @@
 
 #import <UIKit/UIKit.h>
 #import "AssetsDetailModel.h"
+#import "CooperateSupportModel.h"
 
 NS_ASSUME_NONNULL_BEGIN
 
@@ -23,6 +24,8 @@ NS_ASSUME_NONNULL_BEGIN
 
 @property (nonatomic, strong) AssetsDetailModel * listModel;
 @property (nonatomic, copy) NSString * assetCode;
+
+@property (nonatomic, strong) CooperateSupportModel * cooperateSupportModel;
 
 @end
 

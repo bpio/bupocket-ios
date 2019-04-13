@@ -602,6 +602,45 @@ static int64_t const gasPrice = 1000;
         }
     }];
 }
+// Node Cooperate List
+- (void)getNodeCooperateListDataSuccess:(void (^)(id responseObject))success
+                                failure:(void (^)(NSError *error))failure
+{
+    [MBProgressHUD showActivityMessageInWindow:Localized(@"Loading")];
+    NSString * url = SERVER_COMBINE_API(_webServerDomain, Node_Cooperate_List);
+    [[HttpTool shareTool] POST:url parameters:nil success:^(id responseObject) {
+        if(success != nil)
+        {
+            success(responseObject);
+        }
+    } failure:^(NSError *error) {
+        if(failure != nil)
+        {
+            failure(error);
+        }
+    }];
+}
+// Node Cooperate Detail
+- (void)getNodeCooperateDetailDataWithNodeId:(NSString *)nodeId
+                                     success:(void (^)(id responseObject))success
+                                     failure:(void (^)(NSError *error))failure
+{
+    [MBProgressHUD showActivityMessageInWindow:Localized(@"Loading")];
+    NSString * url = SERVER_COMBINE_API(_webServerDomain, Node_Cooperate_Detail);
+    NSString * body = [NSString stringWithFormat:@"nodeId=%@", nodeId];
+    NSDictionary * parameters = [[HTTPManager shareManager] parametersWithHTTPBody:body];
+    [[HttpTool shareTool] POST:url parameters:parameters success:^(id responseObject) {
+        if(success != nil)
+        {
+            success(responseObject);
+        }
+    } failure:^(NSError *error) {
+        if(failure != nil)
+        {
+            failure(error);
+        }
+    }];
+}
 #pragma mark - SDK
 // Check the balance
 - (int64_t)getAccountBalance {

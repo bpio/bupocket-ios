@@ -53,6 +53,9 @@
 #define Node_Withdrawal_Confirm @"nodeServer/node/v1/vote/revoke/user"
 // 节点列表
 #define Node_List @"nodeServer/node/v1/list/app"
+// 共建节点列表
+#define Node_Cooperate_List @"nodeServer/node/v1/cooperate/list"
+#define Node_Cooperate_Detail @"nodeServer/node/v1/cooperate/detail"
 // 投票记录
 #define Voting_Record @"nodeServer/node/v1/vote/list"
 #define Node_Image_URL @"img-dpos/"

@@ -7,12 +7,15 @@
 //
 
 #import <UIKit/UIKit.h>
+#import "CooperateModel.h"
 
 NS_ASSUME_NONNULL_BEGIN
 
 @interface CooperateViewCell : UITableViewCell
 
 + (instancetype)cellWithTableView:(UITableView *)tableView identifier:(NSString *)identifier;
+
+@property (nonatomic, strong) CooperateModel * cooperateModel;
 
 @property (nonatomic, strong) UIView * listBg;
 @property (nonatomic, strong) UILabel * title;

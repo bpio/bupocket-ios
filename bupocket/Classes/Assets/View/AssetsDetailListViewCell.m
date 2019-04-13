@@ -29,11 +29,6 @@ static NSString * const AssetsDetailCellID = @"AssetsDetailCellID";
         [self.contentView addSubview:self.date];
         [self.contentView addSubview:self.assets];
         [self.contentView addSubview:self.state];
-        
-        self.listImage.image = [UIImage imageNamed:@"user_placeholder"];
-        self.walletAddress.text = @"buQY***vLivDu";
-        self.date.text = @"2019-04-01 11:50:04";
-        self.assets.text = @"50,000 BU";
     }
     return self;
 }
@@ -94,6 +89,15 @@ static NSString * const AssetsDetailCellID = @"AssetsDetailCellID";
         self.state.text = Localized(@"Failure");
         self.state.textColor = WARNING_COLOR;
     }
+}
+- (void)setCooperateSupportModel:(CooperateSupportModel *)cooperateSupportModel
+{
+    _cooperateSupportModel = cooperateSupportModel;
+//    self.listImage.image = [UIImage imageNamed:@"payment"];
+    self.listImage.image = [UIImage imageNamed:@"user_placeholder"];
+    self.walletAddress.text = [NSString stringEllipsisWithStr:cooperateSupportModel.initiatorAddress];
+    self.date.text = cooperateSupportModel.createTime;
+    self.assets.text = cooperateSupportModel.amount;
 }
 - (UIImageView *)listImage
 {
