@@ -479,7 +479,7 @@ static int64_t const gasPrice = 1000;
                                 failure:(void (^)(NSError *error))failure
 {
     // Build BUSendOperation
-    [MBProgressHUD showActivityMessageInWindow:Localized(@"Loading")];
+    [MBProgressHUD showActivityMessageInWindow:Localized(@"DataChecking")];
     NSString * sourceAddress = CurrentWalletAddress;
     NSString * ID = confirmTransactionModel.qrcodeSessionId;
     if (confirmTransactionModel.nodeId) {
@@ -491,13 +491,25 @@ static int64_t const gasPrice = 1000;
     if (nonce == 0) return;
     NSMutableArray * operations = [NSMutableArray array];
     int64_t amount = [[[NSDecimalNumber decimalNumberWithString:confirmTransactionModel.amount] decimalNumberByMultiplyingByPowerOf10: Decimals_BU] longLongValue];
-    ContractInvokeByBUOperation *operation = [ContractInvokeByBUOperation new];
-    [operation setSourceAddress: sourceAddress];
-    [operation setContractAddress: confirmTransactionModel.destAddress];
-    [operation setAmount: amount];
-    [operation setInput:confirmTransactionModel.script];
-    [operation setMetadata:notes];
-    [operations addObject:operation];
+    if ([confirmTransactionModel.type isEqualToString:TransactionType_Cooperate]) {
+        ContractCreateOperation * contractCreateOperation = [ContractCreateOperation new];
+        [contractCreateOperation setSourceAddress: sourceAddress];
+        int64_t activateCost = [[[NSDecimalNumber decimalNumberWithString:Activate_Cooperate_MIN] decimalNumberByMultiplyingByPowerOf10: Decimals_BU] longLongValue];
+        [contractCreateOperation setInitBalance:amount + activateCost];
+        NSDictionary * scriptDic = [JsonTool dictionaryOrArrayWithJSONSString:confirmTransactionModel.script];
+        [contractCreateOperation setInitInput:scriptDic[@"input"]];
+        [contractCreateOperation setPayload:scriptDic[@"payload"]];
+        [contractCreateOperation setMetadata:notes];
+        [operations addObject:contractCreateOperation];
+    } else {
+        ContractInvokeByBUOperation *operation = [ContractInvokeByBUOperation new];
+        [operation setSourceAddress: sourceAddress];
+        [operation setContractAddress: confirmTransactionModel.destAddress];
+        [operation setAmount: amount];
+        [operation setInput:confirmTransactionModel.script];
+        [operation setMetadata:notes];
+        [operations addObject:operation];
+    }
     _hash = [[HTTPManager shareManager] buildBlobAndSignAndSubmit:nil :sourceAddress :nonce :gasPrice :fee :operations :notes :ID];
     if (_hash) {
         [[HTTPManager shareManager] getConfirmTransactionDataWithModel:confirmTransactionModel hash:_hash initiatorAddress:CurrentWalletAddress success:^(id responseObject) {
@@ -1061,6 +1073,7 @@ static int64_t const gasPrice = 1000;
 // Submit transaction
 - (BOOL)buildSignAndSubmit : (NSString *)privateKey
 {
+    [MBProgressHUD showActivityMessageInWindow:Localized(@"Signature")];
     // sign
     TransactionSignRequest *signRequest = [TransactionSignRequest new];
     [signRequest setBlob : _buildBlobResponse.result.transactionBlob];
@@ -1073,12 +1086,15 @@ static int64_t const gasPrice = 1000;
         [submitRequest setSignatures : [signResponse.result.signatures copy]];
         TransactionSubmitResponse *submitResponse = [_transactionService submit : submitRequest];
         if (submitResponse.errorCode == Success_Code) {
+            [MBProgressHUD hideHUD];
             return YES;
         } else {
+            [MBProgressHUD hideHUD];
             [MBProgressHUD showTipMessageInWindow:[ErrorTypeTool getDescription:submitResponse.errorCode]];
             return NO;
         }
     } else {
+        [MBProgressHUD hideHUD];
         [MBProgressHUD showTipMessageInWindow:[ErrorTypeTool getDescription:signResponse.errorCode]];
         return NO;
     }
@@ -1091,7 +1107,7 @@ static int64_t const gasPrice = 1000;
                          success:(void (^)(TransactionResultModel * resultModel))success
                          failure:(void (^)(TransactionResultModel * resultModel))failure
 {
-    [MBProgressHUD showActivityMessageInWindow:Localized(@"Loading")];
+    [MBProgressHUD showActivityMessageInWindow:Localized(@"InProcessing")];
     __block TransactionGetInfoResponse *response = [TransactionGetInfoResponse new];
     __block TransactionResultModel * resultModel = [[TransactionResultModel alloc] init];
     resultModel.transactionHash = hash;

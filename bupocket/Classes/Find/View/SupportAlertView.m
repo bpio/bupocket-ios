@@ -33,8 +33,8 @@
 {
     self = [super init];
     if (self) {
-        _sureBlock = confrimBlock;
-        _cancleBlock = cancelBlock;
+        _confirmClick = confrimBlock;
+        _cancleClick = cancelBlock;
         self.purchaseAmountStr = purchaseAmount;
         self.totalTarget = totalTarget;
         [self setupView];
@@ -201,8 +201,10 @@
     if ([self.number.text integerValue] > 1) {
         self.number.text = [NSString stringWithFormat:@"%zd", [self.number.text integerValue] - 1];
         [self setTotalText];
-    } else {
-        button.enabled = NO;
+        self.plus.enabled = YES;
+        if ([self.number.text integerValue] == 1) {
+            button.enabled = NO;
+        }
     }
 }
 - (UILabel *)number
@@ -228,13 +230,16 @@
     if ([self.number.text integerValue] < [self.totalTarget doubleValue] / [self.purchaseAmountStr integerValue]) {
         self.number.text = [NSString stringWithFormat:@"%zd", [self.number.text integerValue] + 1];
         [self setTotalText];
-    } else {
-        button.enabled = NO;
+        self.reduce.enabled = YES;
+        if ([self.number.text integerValue] == [self.totalTarget doubleValue] / [self.purchaseAmountStr integerValue]) {
+            button.enabled = NO;
+        }
     }
 }
 - (void)setTotalText
 {
-    NSString * totleAmount = [NSString stringWithFormat:@"%@%f BU", Localized(@"Total"), [self.number.text integerValue] * [self.purchaseAmountStr floatValue]];
+//    int64_t fee = [[[NSDecimalNumber decimalNumberWithString:feeLimit] decimalNumberByMultiplyingByPowerOf10: Decimals_BU] longLongValue];
+    NSString * totleAmount = [NSString stringWithFormat:@"%@%lld BU", Localized(@"Total"), [self.number.text longLongValue] * [self.purchaseAmountStr longLongValue]];
     NSMutableAttributedString * attr = [Encapsulation attrWithString:totleAmount preFont:FONT(13) preColor:TITLE_COLOR index:[Localized(@"Total") length] sufFont:FONT_Bold(18) sufColor:WARNING_COLOR lineSpacing:0];
     NSRange range = NSMakeRange(attr.length - 2, 2);
     [attr addAttribute:NSForegroundColorAttributeName value:WARNING_COLOR range:range];
@@ -264,15 +269,15 @@
 
 - (void)cancleBtnClick {
     [self hideView];
-    if (_cancleBlock) {
-        _cancleBlock();
+    if (_cancleClick) {
+        _cancleClick();
     }
 }
 - (void)sureBtnClick {
     [self hideView];
-    if (_sureBlock) {
+    if (_confirmClick) {
         NSString * totalAmount = [NSString stringWithFormat:@"%f", [self.number.text integerValue] * [self.purchaseAmountStr floatValue]];
-        _sureBlock(totalAmount);
+        _confirmClick(totalAmount);
     }
 }
 /*

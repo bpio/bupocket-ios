@@ -12,12 +12,12 @@
 NS_ASSUME_NONNULL_BEGIN
 
 typedef void (^OnCancleClick)(void);
-typedef void (^OnSureClick)(NSString * text);
+typedef void (^OnConfirmClick)(NSString * text);
 
 @interface SupportAlertView : UIView
 
-@property (nonatomic, copy) OnCancleClick cancleBlock;
-@property (nonatomic, copy) OnSureClick sureBlock;
+@property (nonatomic, copy) OnCancleClick cancleClick;
+@property (nonatomic, copy) OnConfirmClick confirmClick;
 
 - (instancetype)initWithTotalTarget:(NSString *)totalTarget purchaseAmount:(NSString *)purchaseAmount confrimBolck:(void (^)(NSString * text))confrimBlock cancelBlock:(void (^)(void))cancelBlock;
 

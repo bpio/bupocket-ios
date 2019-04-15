@@ -219,6 +219,8 @@
 
 // alert Massage
 "Loading" = "Loading...";
+"DataChecking" = "数据校验中";
+"Signature" = "签名中";
 // SDK
 "CreateIdentityFailure" = "Failed to create an identity";
 "IssueNumberIsIncorrect" = "Invalid circulation";

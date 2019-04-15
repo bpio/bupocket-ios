@@ -212,6 +212,8 @@
 
 // alert Massage
 "Loading" = "加载中...";
+"DataChecking" = "数据校验中";
+"Signature" = "签名中";
 // SDK
 "CreateIdentityFailure" = "身份创建失败";
 "IssueNumberIsIncorrect" = "无效的发行量";

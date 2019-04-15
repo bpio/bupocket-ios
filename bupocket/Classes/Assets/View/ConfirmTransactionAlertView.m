@@ -83,8 +83,8 @@
     NSArray * infoArray;
     if (self.confirmTransactionModel) {
         self.transactionCost = TransactionCost_Check_MIN;
-        if ([self.confirmTransactionModel.type isEqualToString:TransactionType_ApplyNode]) {
-            self.transactionCost = TransactionCost_MIN;
+        if ([self.confirmTransactionModel.type isEqualToString:TransactionType_Cooperate]) {
+            self.transactionCost = TransactionCost_Cooperate_MIN;
         }
         self.confirmTransactionModel.transactionCost = self.transactionCost;
         NSString * destAddress = [NSString stringWithFormat:@"%@%@", self.confirmTransactionModel.destAddress, self.confirmTransactionModel.accountTag];
@@ -330,13 +330,11 @@
         NSDecimalNumber * amount = [NSDecimalNumber decimalNumberWithString:self.confirmTransactionModel.amount];
         NSDecimalNumber * minTransactionCost = [NSDecimalNumber decimalNumberWithString:self.transactionCost];
         NSDecimalNumber * totleAmount = [amount decimalNumberByAdding:minTransactionCost];
-        NSDecimalNumber * amountNumber = [[HTTPManager shareManager] getDataWithBalanceJudgmentWithCost:[totleAmount stringValue] ifShowLoading:YES];
+        NSDecimalNumber * amountNumber = [[HTTPManager shareManager] getDataWithBalanceJudgmentWithCost:[totleAmount stringValue] ifShowLoading:NO];
         NSString * totleAmountStr = [amountNumber stringValue];
         if (!NULLString(totleAmountStr) || [amountNumber isEqualToNumber:NSDecimalNumber.notANumber]) {
         } else if ([totleAmountStr hasPrefix:@"-"]) {
-            dispatch_async(dispatch_get_main_queue(), ^{
-                [MBProgressHUD showTipMessageInWindow:Localized(@"NotSufficientFunds")];
-            });
+            [MBProgressHUD showTipMessageInWindow:Localized(@"NotSufficientFunds")];
         } else {
             [self getContractTransactionData];
         }
@@ -349,7 +347,7 @@
         NSInteger code = [[responseObject objectForKey:@"errCode"] integerValue];
         if (code == Success_Code) {
             NSString * dateStr = [[responseObject objectForKey:@"data"] objectForKey:@"expiryTime"];
-            NSDate * date=[NSDate dateWithTimeIntervalSince1970:[dateStr longLongValue] / 1000];
+            NSDate * date = [NSDate dateWithTimeIntervalSince1970:[dateStr longLongValue] / 1000];
             NSTimeInterval time = [date timeIntervalSinceNow];
             if (time < 0) {
                 [MBProgressHUD showTipMessageInWindow:Localized(@"Overtime")];

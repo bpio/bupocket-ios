@@ -11,6 +11,7 @@
 #import "SupportAlertView.h"
 #import "CooperateDetailModel.h"
 #import "CooperateSupportModel.h"
+#import "ConfirmTransactionAlertView.h"
 
 @interface CooperateDetailViewController ()<UITableViewDelegate, UITableViewDataSource>
 
@@ -91,11 +92,37 @@ static NSString * const CooperateDetailCellID = @"CooperateDetailCellID";
 }
 - (void)signOutAction
 {
+    [self showConfirmAlertView];
 }
 - (void)supportAction
 {
     SupportAlertView * alertView = [[SupportAlertView alloc] initWithTotalTarget:@"5000000" purchaseAmount:@"1000000" confrimBolck:^(NSString * _Nonnull text) {
+        dispatch_after(dispatch_time(DISPATCH_TIME_NOW, (int64_t)(Dispatch_After_Time * NSEC_PER_SEC)), dispatch_get_main_queue(), ^{
+            [self showConfirmAlertView];
+        });
+    } cancelBlock:^{
         
+    }];
+    [alertView showInWindowWithMode:CustomAnimationModeShare inView:nil bgAlpha:AlertBgAlpha needEffectView:NO];
+}
+- (void)showConfirmAlertView
+{
+//    NodePlanModel * nodePlanModel = self.listArray[index];
+//    ConfirmTransactionModel * confirmTransactionModel = [[ConfirmTransactionModel alloc] init];
+//    confirmTransactionModel.qrRemark = [NSString stringWithFormat:Localized(@"Number of votes revoked on '%@'"), nodePlanModel.nodeName];
+//    confirmTransactionModel.destAddress = self.contractAddress;
+//    confirmTransactionModel.accountTag = self.accountTag;
+//    confirmTransactionModel.amount = @"0";
+//    NSString * role;
+//    if ([nodePlanModel.identityType isEqualToString:NodeType_Consensus]) {
+//        role = Role_validator;
+//    } else if ([nodePlanModel.identityType isEqualToString:NodeType_Ecological]) {
+//        role = Role_kol;
+//    }
+//    confirmTransactionModel.script = [NSString stringWithFormat:@"{\"method\":\"unVote\",\"params\":{\"role\":\"%@\",\"address\":\"%@\"}}", role, nodePlanModel.nodeCapitalAddress];
+//    confirmTransactionModel.nodeId = nodePlanModel.nodeId;
+//    confirmTransactionModel.type = TransactionType_NodeWithdrawal;
+    ConfirmTransactionAlertView * alertView = [[ConfirmTransactionAlertView alloc] initWithDpos:nil confrimBolck:^{
     } cancelBlock:^{
         
     }];
@@ -154,7 +181,11 @@ static NSString * const CooperateDetailCellID = @"CooperateDetailCellID";
 - (CGFloat)tableView:(UITableView *)tableView heightForFooterInSection:(NSInteger)section
 {
     if (section == self.sectionNumber - 1) {
-        return ScreenScale(75) + SafeAreaBottomH + NavBarH;
+        CGFloat footerH = SafeAreaBottomH + NavBarH;
+        if (![self.cooperateDetailModel.status isEqualToString:@"3"] && ![self.cooperateDetailModel.status isEqualToString:@"4"]) {
+            footerH += ScreenScale(75);
+        }
+        return  footerH;
     } else {
         return CGFLOAT_MIN;
     }
