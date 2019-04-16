@@ -157,6 +157,8 @@
 // Balance of assets
 - (int64_t)getAssetInfoWithAddress:(NSString *)address code:(NSString *)code issuer:(NSString *)issuer;
 
+- (int64_t) getAccountNonce: (NSString *)address;
+
 // Query account / Is it activated?
 - (NSString *)getAccountInfoWithAddress:(NSString *)address;
 
@@ -186,6 +188,7 @@
                                notes:(NSString *)notes
                                 code:(NSString *)code
                               issuer:(NSString *)issuer
+                               nonce:(int64_t)nonce
                              success:(void (^)(TransactionResultModel * resultModel))success
                              failure:(void (^)(TransactionResultModel * resultModel))failure;
 
@@ -193,6 +196,7 @@
 // register
 - (void)getRegisteredDataWithPassword:(NSString *)password
                       registeredModel:(RegisteredModel *)registeredModel
+                                nonce:(int64_t)nonce
                               success:(void (^)(TransactionResultModel * resultModel))success
                               failure:(void (^)(TransactionResultModel * resultModel))failure;
 // Issue
@@ -200,6 +204,7 @@
                             assetCode:(NSString *)assetCode
                           assetAmount:(int64_t)assetAmount
                              decimals:(NSInteger)decimals
+                                nonce:(int64_t)nonce
                               success:(void (^)(TransactionResultModel * resultModel))success
                               failure:(void (^)(TransactionResultModel * resultModel))failure;
 

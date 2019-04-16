@@ -31,6 +31,10 @@
 
 #import "UINavigationController+Extension.h"
 
+#import "NodeTransferSuccessViewController.h"
+#import "TransferResultsViewController.h"
+#import "RequestTimeoutViewController.h"
+
 
 @interface AssetsViewController ()<UITableViewDelegate, UITableViewDataSource>
 
@@ -55,7 +59,9 @@
 @property (nonatomic, assign) UIStatusBarStyle statusBarStyle;
 @property (nonatomic, strong) NSString * assetsCacheDataKey;
 
-@property (nonatomic, strong) ConfirmTransactionAlertView * confirmAlertView;
+//@property (nonatomic, strong) ConfirmTransactionAlertView * confirmAlertView;
+
+@property (nonatomic, strong) NSMutableArray * transferInfoArray;
 
 @end
 
@@ -70,7 +76,13 @@ static UIButton * _noBackup;
     }
     return _listArray;
 }
-
+- (NSMutableArray *)transferInfoArray
+{
+    if (!_transferInfoArray) {
+        _transferInfoArray = [NSMutableArray array];
+    }
+    return _transferInfoArray;
+}
 - (void)viewDidLoad {
     [super viewDidLoad];
     self.edgesForExtendedLayout = UIRectEdgeAll;
@@ -474,6 +486,8 @@ static UIButton * _noBackup;
         if (code == Success_Code) {
             ConfirmTransactionModel * confirmTransactionModel = [ConfirmTransactionModel mj_objectWithKeyValues:[responseObject objectForKey:@"data"]];
             [self getDpos:confirmTransactionModel];
+        } else if (code == ErrorNoVoteJurisdiction || code == ErrorCommitteeAuthority) {
+            [Encapsulation showAlertControllerWithMessage:[ErrorTypeTool getDescriptionWithNodeErrorCode:code] handler:nil];
         } else {
             ScanCodeFailureViewController * VC = [[ScanCodeFailureViewController alloc] init];
             VC.exceptionPromptStr = Localized(@"Overdue");
@@ -486,15 +500,86 @@ static UIButton * _noBackup;
 }
 - (void)getDpos:(ConfirmTransactionModel *)confirmTransactionModel
 {
-    self.confirmAlertView = [[ConfirmTransactionAlertView alloc] initWithDpos:confirmTransactionModel confrimBolck:^{
-        
+    ConfirmTransactionAlertView * confirmAlertView = [[ConfirmTransactionAlertView alloc] initWithDpos:confirmTransactionModel confrimBolck:^(NSString * _Nonnull transactionCost) {
+        dispatch_after(dispatch_time(DISPATCH_TIME_NOW, (int64_t)(Dispatch_After_Time * NSEC_PER_SEC)), dispatch_get_main_queue(), ^{
+            NSDecimalNumber * amount = [NSDecimalNumber decimalNumberWithString:confirmTransactionModel.amount];
+            NSDecimalNumber * minTransactionCost = [NSDecimalNumber decimalNumberWithString:transactionCost];
+            NSDecimalNumber * totleAmount = [amount decimalNumberByAdding:minTransactionCost];
+            NSDecimalNumber * amountNumber = [[HTTPManager shareManager] getDataWithBalanceJudgmentWithCost:[totleAmount stringValue] ifShowLoading:NO];
+            NSString * totleAmountStr = [amountNumber stringValue];
+            if (!NULLString(totleAmountStr) || [amountNumber isEqualToNumber:NSDecimalNumber.notANumber]) {
+            } else if ([totleAmountStr hasPrefix:@"-"]) {
+                [MBProgressHUD showTipMessageInWindow:Localized(@"NotSufficientFunds")];
+            } else {
+                [self getContractTransactionData:confirmTransactionModel];
+            }
+        });
     } cancelBlock:^{
         
     }];
-    [self.confirmAlertView showInWindowWithMode:CustomAnimationModeShare inView:nil bgAlpha:AlertBgAlpha needEffectView:NO];
+    [confirmAlertView showInWindowWithMode:CustomAnimationModeShare inView:nil bgAlpha:AlertBgAlpha needEffectView:NO];
 }
 
-
+// Transaction confirmation and submission
+- (void)getContractTransactionData:(ConfirmTransactionModel *)confirmTransactionModel
+{
+    [[HTTPManager shareManager] getContractTransactionWithModel:confirmTransactionModel  success:^(id responseObject) {
+        NSInteger code = [[responseObject objectForKey:@"errCode"] integerValue];
+        if (code == Success_Code) {
+            NSString * dateStr = [[responseObject objectForKey:@"data"] objectForKey:@"expiryTime"];
+            NSDate * date = [NSDate dateWithTimeIntervalSince1970:[dateStr longLongValue] / 1000];
+            NSTimeInterval time = [date timeIntervalSinceNow];
+            if (time < 0) {
+                [Encapsulation showAlertControllerWithMessage:Localized(@"Overtime") handler:nil];
+//                [MBProgressHUD showTipMessageInWindow:Localized(@"Overtime")];
+            } else {
+                [self showPWAlertView:confirmTransactionModel];
+            }
+        } else {
+            [Encapsulation showAlertControllerWithMessage:[ErrorTypeTool getDescriptionWithNodeErrorCode:code] handler:nil];
+//            [MBProgressHUD showTipMessageInWindow:[ErrorTypeTool getDescriptionWithNodeErrorCode:code]];
+//            [Encapsulation showAlertControllerWithMessage:[NSString stringWithFormat:@"code=%@\nmsg:%@", responseObject[@"errCode"], responseObject[@"msg"]] handler:nil];
+        }
+    } failure:^(NSError *error) {
+        
+    }];
+}
+- (void)showPWAlertView:(ConfirmTransactionModel *)confirmTransactionModel
+{
+    PasswordAlertView * PWAlertView = [[PasswordAlertView alloc] initWithPrompt:Localized(@"TransactionWalletPWPrompt") walletKeyStore:CurrentWalletKeyStore isAutomaticClosing:YES confrimBolck:^(NSString * _Nonnull password, NSArray * _Nonnull words) {
+        [self submitTransactionWithPassword:password confirmTransactionModel:confirmTransactionModel];
+    } cancelBlock:^{
+        
+    }];
+    [PWAlertView showInWindowWithMode:CustomAnimationModeAlert inView:nil bgAlpha:AlertBgAlpha needEffectView:NO];
+    [PWAlertView.PWTextField becomeFirstResponder];
+}
+- (void)submitTransactionWithPassword:(NSString *)password confirmTransactionModel:(ConfirmTransactionModel *)confirmTransactionModel
+{
+    __weak typeof(self) weakSelf = self;
+    [[HTTPManager shareManager] submitContractTransactionPassword:password success:^(TransactionResultModel *resultModel) {
+        weakSelf.transferInfoArray = [NSMutableArray arrayWithObjects:confirmTransactionModel.destAddress, [NSString stringAppendingBUWithStr:confirmTransactionModel.amount], [NSString stringAppendingBUWithStr:resultModel.actualFee], nil];
+        if (NULLString(confirmTransactionModel.qrRemark)) {
+            [weakSelf.transferInfoArray addObject:confirmTransactionModel.qrRemark];
+        }
+        [self.transferInfoArray addObject:[DateTool getDateStringWithTimeStr:[NSString stringWithFormat:@"%lld", resultModel.transactionTime]]];
+        if (resultModel.errorCode == Success_Code) {
+            NodeTransferSuccessViewController * VC = [[NodeTransferSuccessViewController alloc] init];
+            [self.navigationController pushViewController:VC animated:NO];
+        } else {
+            TransferResultsViewController * VC = [[TransferResultsViewController alloc] init];
+            VC.state = NO;
+            VC.errorCode = resultModel.errorCode;
+            VC.errorDesc = resultModel.errorDesc;
+            //            [MBProgressHUD showTipMessageInWindow:[ErrorTypeTool getDescription:resultModel.errorCode]];
+            VC.transferInfoArray = weakSelf.transferInfoArray;
+            [self.navigationController pushViewController:VC animated:NO];
+        }
+    } failure:^(TransactionResultModel *resultModel) {
+        RequestTimeoutViewController * VC = [[RequestTimeoutViewController alloc] init];
+        [self.navigationController pushViewController:VC animated:NO];
+    }];
+}
 
 - (CGFloat)tableView:(UITableView *)tableView heightForRowAtIndexPath:(NSIndexPath *)indexPath
 {

@@ -373,7 +373,8 @@
 "CancellationOfVotes" = "撤销投票";
 "VotingRecords" = "投票记录";
 "InvitationToVote" = "邀请投票";
-"ReceiveAwards" = "领取奖励";
+//"ReceiveAwards" = "领取奖励";
+"IrrevocableVotes" = "暂无可撤销的票数";
 // 投票记录
 "Throw" = "投";
 "Withdraw" = "撤";
@@ -427,6 +428,7 @@
 "TargetNumber" = "目标数量";
 "ResidualPortion" = "剩余份数";
 "Portion" = "份";
+"ShareRatioInfo" = "节点共建申请者承诺在成为生态节点后会拿出多少比例的奖励按照资金支持权重分享给共建支持者";
 // 节点共建详情
 "JointlyCooperateDetail" = "共建信息详情";
 "InProgress" = "进行中";
@@ -446,12 +448,15 @@
 // 支持
 "SupportProjects" = "支持项目";
 "PurchaseAmount" = "起购金额";
-"SupportNumber" = "支持份数";
+"SupportCopies" = "支持份数";
 "Total" = "共计：";
 "ConfirmSupport" = "确认支持";
 "BU/Portion" = "BU/份";
+// 退出、支持 交易详情
+"Exit '%@' Project" = "退出\"%@\"项目";
+"Supporting '%@' Projects" = "支持\"%@\"项目";
 // 退出节点共建计划
-"QuitCooperate" = "退出节点共建计划";
+//"QuitCooperate" = "退出节点共建计划";
 // 交易确认
 "Overtime" = "请求已超时，请重新操作";
 // 交易成功
@@ -463,7 +468,12 @@
 "NodeTransferPrompt" = "温馨提示：\n节点的投票、撤票等操作链上交易成功后，相关数据的统计有延迟，预计30秒内完成，此为正常现象。";
 // Errors
 "LoadFailure" = "Failed to load";
-
+// Node Errors
+"PhysicalAddressApplied" = "该待绑定的物理地址已被占用，请更换后再申请";
+"AccountApplied" = "该钱包账户已申请过，请更换后再进行申请";
+"NotSubmitted" = "检测到有尚未提交的操作，请稍后再重试";
+"CommitteeAuthority" = "没有权限，请使用委员会钱包进行扫码";
+"NoVoteJurisdiction" = "投票通道还未开启，请在开启后进行投票";
 // SDK Errors
 "SYSTEM_ERROR" = "System error";
 "INVALID_ADDRESS_ERROR" = "Invalid address";

@@ -908,6 +908,7 @@ static int64_t const gasPrice = 1000;
                                notes:(NSString *)notes
                                 code:(NSString *)code
                               issuer:(NSString *)issuer
+                               nonce:(int64_t)nonce
                              success:(void (^)(TransactionResultModel * resultModel))success
                              failure:(void (^)(TransactionResultModel * resultModel))failure
 {
@@ -920,8 +921,6 @@ static int64_t const gasPrice = 1000;
         return;
     }
     int64_t fee = [[[NSDecimalNumber decimalNumberWithString:feeLimit] decimalNumberByMultiplyingByPowerOf10: Decimals_BU] longLongValue];
-    int64_t nonce = [[HTTPManager shareManager] getAccountNonce: sourceAddress] + 1;
-    if (nonce == 0) return;
     NSString * hash;
     NSMutableArray * operations = [NSMutableArray array];
     if (tokenType == Token_Type_BU) {
@@ -963,6 +962,7 @@ static int64_t const gasPrice = 1000;
 // register
 - (void)getRegisteredDataWithPassword:(NSString *)password
                       registeredModel:(RegisteredModel *)registeredModel
+                                nonce:(int64_t)nonce
                               success:(void (^)(TransactionResultModel * resultModel))success
                               failure:(void (^)(TransactionResultModel * resultModel))failure
 {
@@ -988,8 +988,6 @@ static int64_t const gasPrice = 1000;
         return;
     }
     int64_t feeLimit = [[[NSDecimalNumber decimalNumberWithString:Registered_Cost] decimalNumberByMultiplyingByPowerOf10: Decimals_BU] longLongValue];
-    int64_t nonce = [[HTTPManager shareManager] getAccountNonce: sourceAddress] + 1;
-    if (nonce == 0) return;
     NSMutableArray * operations = [NSMutableArray array];
     [operations addObject:operation];
     NSString * hash = [[HTTPManager shareManager] buildBlobAndSignAndSubmit:privateKey :sourceAddress :nonce :gasPrice :feeLimit :operations :nil :nil];
@@ -1002,6 +1000,7 @@ static int64_t const gasPrice = 1000;
                             assetCode:(NSString *)assetCode
                            assetAmount:(int64_t)assetAmount
                              decimals:(NSInteger)decimals
+                                nonce:(int64_t)nonce
                               success:(void (^)(TransactionResultModel * resultModel))success
                               failure:(void (^)(TransactionResultModel * resultModel))failure
 {
@@ -1018,8 +1017,6 @@ static int64_t const gasPrice = 1000;
         return;
     }
     int64_t feeLimit = [[[NSDecimalNumber decimalNumberWithString:Distribution_Cost] decimalNumberByMultiplyingByPowerOf10: Decimals_BU] longLongValue];
-    int64_t nonce = [[HTTPManager shareManager] getAccountNonce: sourceAddress] + 1;
-    if (nonce == 0) return;
     NSMutableArray * operations = [NSMutableArray array];
     [operations addObject:operation];
     NSString * hash = [[HTTPManager shareManager] buildBlobAndSignAndSubmit:privateKey :sourceAddress :nonce :gasPrice :feeLimit :operations :nil : nil];
@@ -1119,51 +1116,49 @@ static int64_t const gasPrice = 1000;
     uint64_t interval = (uint64_t)(1 * NSEC_PER_SEC);
     //  DISPATCH_TIME_NOW 立即执行
     dispatch_source_set_timer(gcdTimer, DISPATCH_TIME_NOW, interval, 0);
-    
     // 设置回调
     dispatch_source_set_event_handler(gcdTimer, ^{
+        DLog(@"循环次数：%zd", state);
         if (state == Maximum_Number) {
-            dispatch_async(dispatch_get_main_queue(), ^{
+            DLog(@"请求超时");
+            dispatch_cancel(gcdTimer);
+            gcdTimer = nil;
+            [MBProgressHUD hideHUD];
+            if(failure != nil)
+            {
+                resultModel.errorCode = response.errorCode;
+                failure(resultModel);
+            }
+        } else {
+            TransactionGetInfoRequest *request = [TransactionGetInfoRequest new];
+            [request setHash: hash];
+            TransactionService *service = [[[SDK sharedInstance] setUrl: _bumoNodeUrl] getTransactionService];
+            response = [service getInfo: request];
+            if (response.errorCode == Success_Code) {
+                DLog(@"请求成功");
                 dispatch_cancel(gcdTimer);
                 gcdTimer = nil;
+            } else {
+                DLog(@"请求失败");
+                state ++;
+            }
+            if(response.result.transactions != nil && success != nil)
+            {
+                DLog(@"请求成功或失败");
                 [MBProgressHUD hideHUD];
-                if(failure != nil)
-                {
-                    resultModel.errorCode = response.errorCode;
-                    failure(resultModel);
-                }
-            });
-        } else {
-            dispatch_async(dispatch_get_main_queue(), ^{
-                TransactionGetInfoRequest *request = [TransactionGetInfoRequest new];
-                [request setHash: hash];
-                TransactionService *service = [[[SDK sharedInstance] setUrl: _bumoNodeUrl] getTransactionService];
-                response = [service getInfo: request];
-                if (response.errorCode == Success_Code) {
-                    dispatch_cancel(gcdTimer);
-                    gcdTimer = nil;
-                } else {
-                    state ++;
-                }
-                if(response.result.transactions != nil && success != nil)
-                {
-                    [MBProgressHUD hideHUD];
-                    TransactionHistory * history = response.result.transactions[0];
-                    resultModel.transactionTime = history.closeTime;
-                    resultModel.actualFee = [[[NSDecimalNumber decimalNumberWithString:history.actualFee] decimalNumberByMultiplyingByPowerOf10: -Decimals_BU] stringValue];
-                    resultModel.errorCode = history.errorCode;
-                    resultModel.errorDesc = history.errorDesc;
-                    success(resultModel);
-                }
-            });
+                TransactionHistory * history = response.result.transactions[0];
+                resultModel.transactionTime = history.closeTime;
+                resultModel.actualFee = [[[NSDecimalNumber decimalNumberWithString:history.actualFee] decimalNumberByMultiplyingByPowerOf10: -Decimals_BU] stringValue];
+                resultModel.errorCode = history.errorCode;
+                resultModel.errorDesc = history.errorDesc;
+                success(resultModel);
+            }
         }
         TransactionGetInfoRequest *request = [TransactionGetInfoRequest new];
         [request setHash: hash];
         TransactionService *service = [[[SDK sharedInstance] setUrl: _bumoNodeUrl] getTransactionService];
         response = [service getInfo: request];
-        
     });
-    
     dispatch_resume(gcdTimer);
 }
 

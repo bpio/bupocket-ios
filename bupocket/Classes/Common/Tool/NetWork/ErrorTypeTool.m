@@ -44,9 +44,26 @@
     NSString * errorDesc;
     switch(errorCode) {
         case ErrorTypeAssetDetail: errorDesc = Localized(@"InabilityToIssue"); break;
+        case ErrorTypeContactExisted: errorDesc = Localized(@"ContactExisted"); break;
+        case ErrorTypePurseAddress: errorDesc = Localized(@"INVALID_ADDRESS_ERROR"); break;
         default: errorDesc = Localized(@"LoadFailure"); break;
     }
     return errorDesc;
 }
+
++ (NSString *)getDescriptionWithNodeErrorCode:(NSInteger)errorCode
+{
+    NSString * errorDesc;
+    switch(errorCode) {
+        case ErrorPhysicalAddressApplied: errorDesc = Localized(@"PhysicalAddressApplied"); break;
+        case ErrorAccountApplied: errorDesc = Localized(@"AccountApplied"); break;
+        case ErrorNotSubmitted: errorDesc = Localized(@"NotSubmitted"); break;
+        case ErrorCommitteeAuthority: errorDesc = Localized(@"CommitteeAuthority"); break;
+        case ErrorNoVoteJurisdiction: errorDesc = Localized(@"NoVoteJurisdiction"); break;
+        default: errorDesc = Localized(@"LoadFailure"); break;
+    }
+    return errorDesc;
+}
+
 
 @end

@@ -41,7 +41,21 @@
         _nodePlanModel = nodePlanModel;
         [self setupView];
         self.frame = CGRectMake(0, 0, DEVICE_WIDTH, ScreenScale(500));
-        [_nodeLogo sd_setImageWithURL:[NSURL URLWithString:nodePlanModel.nodeLogo] placeholderImage:[UIImage imageNamed:@"placeholder"]];
+        
+        NSString * url;
+        if ([[NSUserDefaults standardUserDefaults] boolForKey:If_Switch_TestNetwork] == YES) {
+            url = WEB_SERVER_DOMAIN_TEST;
+        } else {
+            url = WEB_SERVER_DOMAIN;
+        }
+        NSString * imageUrl = [NSString stringWithFormat:@"%@%@", url, Node_Image_URL];
+        if ([nodePlanModel.identityType isEqualToString:NodeType_Consensus]) {
+            imageUrl = [NSString stringWithFormat:@"%@%@", imageUrl, nodePlanModel.nodeLogo];
+        } else if ([nodePlanModel.identityType isEqualToString:NodeType_Ecological]) {
+            imageUrl = [NSString stringWithFormat:@"%@%@", imageUrl, nodePlanModel.applyAvatar];
+        }
+        
+        [_nodeLogo sd_setImageWithURL:[NSURL URLWithString:imageUrl] placeholderImage:[UIImage imageNamed:@"placeholder"]];
         _nodeName.text = nodePlanModel.nodeName;
     }
     return self;

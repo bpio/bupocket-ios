@@ -10,13 +10,15 @@
 #import "CooperateViewCell.h"
 #import "CooperateDetailViewController.h"
 #import "CooperateModel.h"
+#import "YBPopupMenu.h"
 
-@interface CooperateViewController ()<UITableViewDelegate, UITableViewDataSource>
+@interface CooperateViewController ()<UITableViewDelegate, UITableViewDataSource, YBPopupMenuDelegate>
 
 @property (nonatomic, strong) UITableView * tableView;
 @property (nonatomic, strong) NSMutableArray * listArray;
 @property (nonatomic, strong) UIView * noData;
 @property (nonatomic, strong) UIView * noNetWork;
+@property (nonatomic, strong) YBPopupMenu * popupMenu;
 
 @end
 
@@ -57,7 +59,7 @@ static NSString * const CooperateCellID = @"CooperateCellID";
             self.listArray = [CooperateModel mj_objectArrayWithKeyValuesArray:responseObject[@"data"][@"nodeList"]];
             [self.tableView reloadData];
         } else {
-            [MBProgressHUD showTipMessageInWindow:[ErrorTypeTool getDescriptionWithErrorCode:code]];
+            [MBProgressHUD showTipMessageInWindow:[ErrorTypeTool getDescriptionWithNodeErrorCode:code]];
         }
         [self.tableView.mj_header endRefreshing];
         (self.listArray.count > 0) ? (self.tableView.tableFooterView = [[UIView alloc] initWithFrame:CGRectMake(0, 0, DEVICE_WIDTH, CGFLOAT_MIN)]) : (self.tableView.tableFooterView = self.noData);
@@ -126,6 +128,9 @@ static NSString * const CooperateCellID = @"CooperateCellID";
     CooperateViewCell * cell = [CooperateViewCell cellWithTableView:tableView identifier:CooperateCellID];
     cell.cooperateModel = self.listArray[indexPath.section];
     cell.selectionStyle = UITableViewCellSelectionStyleNone;
+    cell.shareRatioBtnClick = ^(UIButton * _Nonnull btn) {
+        [self infoAction:btn];
+    };
     return cell;
 }
 - (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath
@@ -136,6 +141,26 @@ static NSString * const CooperateCellID = @"CooperateCellID";
     VC.nodeId = cooperateModel.nodeId;
     [self.navigationController pushViewController:VC animated:NO];
 }
+
+- (void)infoAction:(UIButton *)button
+{
+    NSString * title = Localized(@"ShareRatioInfo");
+    CGFloat titleHeight = [Encapsulation rectWithText:title font:TITLE_FONT textWidth:DEVICE_WIDTH - ScreenScale(120)].size.height;
+    _popupMenu = [YBPopupMenu showRelyOnView:button.imageView titles:@[title] icons:nil menuWidth:DEVICE_WIDTH - ScreenScale(100) otherSettings:^(YBPopupMenu * popupMenu) {
+        popupMenu.priorityDirection = YBPopupMenuPriorityDirectionTop;
+        popupMenu.itemHeight = titleHeight + Margin_30;
+        popupMenu.dismissOnTouchOutside = YES;
+        popupMenu.dismissOnSelected = NO;
+        popupMenu.fontSize = TITLE_FONT;
+        popupMenu.textColor = [UIColor whiteColor];
+        popupMenu.backColor = COLOR(@"56526D");
+        popupMenu.tableView.separatorStyle = UITableViewCellSeparatorStyleNone;
+        popupMenu.tableView.scrollEnabled = NO;
+        popupMenu.tableView.allowsSelection = NO;
+        popupMenu.height = titleHeight + Margin_40;
+    }];
+}
+
 /*
 #pragma mark - Navigation
 

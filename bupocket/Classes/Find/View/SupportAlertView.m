@@ -182,7 +182,7 @@
         _supportNumber = [[UILabel alloc] init];
         _supportNumber.textColor = COLOR_9;
         _supportNumber.font = TITLE_FONT;
-        _supportNumber.text = Localized(@"SupportNumber");
+        _supportNumber.text = Localized(@"SupportCopies");
     }
     return _supportNumber;
 }
@@ -191,7 +191,7 @@
 {
     if (!_reduce) {
         _reduce = [UIButton createButtonWithNormalImage:@"reduce" SelectedImage:@"reduce" Target:self Selector:@selector(reduceAction:)];
-        [_reduce setImage:[UIImage imageNamed:@"reduce_d"] forState:UIControlStateDisabled];
+//        [_reduce setImage:[UIImage imageNamed:@"reduce_d"] forState:UIControlStateDisabled];
         _reduce.enabled = NO;
     }
     return _reduce;
@@ -221,7 +221,10 @@
 {
     if (!_plus) {
         _plus = [UIButton createButtonWithNormalImage:@"plus" SelectedImage:@"plus" Target:self Selector:@selector(plusAction:)];
-        [_plus setImage:[UIImage imageNamed:@"plus_d"] forState:UIControlStateDisabled];
+//        [_plus setImage:[UIImage imageNamed:@"plus_d"] forState:UIControlStateDisabled];
+        if ([_purchaseAmountStr longLongValue] == [_totalTarget longLongValue]) {
+            _plus.enabled = NO;
+        }
     }
     return _plus;
 }

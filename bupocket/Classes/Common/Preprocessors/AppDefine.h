@@ -62,6 +62,8 @@
 #define TransactionType_ApplyNode @"1"
 #define TransactionType_Vote @"3"
 #define TransactionType_Cooperate @"4"
+#define TransactionType_Cooperate_Support @"5"
+#define TransactionType_Cooperate_SignOut @"7"
 #define TransactionType_Check @"80"
 #define TransactionType_NodeWithdrawal @"10"
 

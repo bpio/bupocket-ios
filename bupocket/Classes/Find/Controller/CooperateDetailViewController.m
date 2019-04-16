@@ -13,6 +13,10 @@
 #import "CooperateSupportModel.h"
 #import "ConfirmTransactionAlertView.h"
 
+#import "NodeTransferSuccessViewController.h"
+#import "TransferResultsViewController.h"
+#import "RequestTimeoutViewController.h"
+
 @interface CooperateDetailViewController ()<UITableViewDelegate, UITableViewDataSource>
 
 @property (nonatomic, strong) UITableView * tableView;
@@ -26,6 +30,7 @@
 
 @property (nonatomic, strong) CooperateDetailModel * cooperateDetailModel;
 @property (nonatomic, assign) NSInteger sectionNumber;
+@property (nonatomic, strong) NSMutableArray * transferInfoArray;
 
 @end
 
@@ -39,6 +44,13 @@ static NSString * const CooperateDetailCellID = @"CooperateDetailCellID";
         _listArray = [NSMutableArray array];
     }
     return _listArray;
+}
+- (NSMutableArray *)transferInfoArray
+{
+    if (!_transferInfoArray) {
+        _transferInfoArray = [NSMutableArray array];
+    }
+    return _transferInfoArray;
 }
 - (void)viewDidLoad {
     [super viewDidLoad];
@@ -66,7 +78,7 @@ static NSString * const CooperateDetailCellID = @"CooperateDetailCellID";
             self.listArray = [CooperateSupportModel mj_objectArrayWithKeyValuesArray:self.cooperateDetailModel.supportList];
             [self.tableView reloadData];
         } else {
-            [MBProgressHUD showTipMessageInWindow:[ErrorTypeTool getDescriptionWithErrorCode:code]];
+            [MBProgressHUD showTipMessageInWindow:[ErrorTypeTool getDescriptionWithNodeErrorCode:code]];
         }
         [self.tableView.mj_header endRefreshing];
 //        (self.listArray.count > 0) ? (self.tableView.tableFooterView = [[UIView alloc] initWithFrame:CGRectMake(0, 0, DEVICE_WIDTH, CGFLOAT_MIN)]) : (self.tableView.tableFooterView = self.noData);
@@ -92,41 +104,114 @@ static NSString * const CooperateDetailCellID = @"CooperateDetailCellID";
 }
 - (void)signOutAction
 {
-    [self showConfirmAlertView];
+    ConfirmTransactionModel * confirmTransactionModel = [[ConfirmTransactionModel alloc] init];
+    confirmTransactionModel.qrRemark = [NSString stringWithFormat:Localized(@"Exit '%@' Project"), self.cooperateDetailModel.title];
+    confirmTransactionModel.destAddress = self.cooperateDetailModel.contractAddress;
+    confirmTransactionModel.amount = @"0";
+    confirmTransactionModel.script = @"{\"method\":\"subscribe\",\"params\":{\"shares\":5}}";
+    confirmTransactionModel.nodeId = self.cooperateDetailModel.nodeId;
+    confirmTransactionModel.type = TransactionType_Cooperate_SignOut;
+    [self showConfirmAlertView:confirmTransactionModel];
 }
 - (void)supportAction
 {
-    SupportAlertView * alertView = [[SupportAlertView alloc] initWithTotalTarget:@"5000000" purchaseAmount:@"1000000" confrimBolck:^(NSString * _Nonnull text) {
+    NSString * leftAmount = [NSString stringWithFormat:@"%lld", [self.cooperateDetailModel.totalAmount longLongValue] - [self.cooperateDetailModel.supportAmount longLongValue]];
+    SupportAlertView * alertView = [[SupportAlertView alloc] initWithTotalTarget:leftAmount purchaseAmount:self.cooperateDetailModel.perAmount confrimBolck:^(NSString * _Nonnull text) {
         dispatch_after(dispatch_time(DISPATCH_TIME_NOW, (int64_t)(Dispatch_After_Time * NSEC_PER_SEC)), dispatch_get_main_queue(), ^{
-            [self showConfirmAlertView];
+            ConfirmTransactionModel * confirmTransactionModel = [[ConfirmTransactionModel alloc] init];
+            confirmTransactionModel.qrRemark = [NSString stringWithFormat:Localized(@"Supporting '%@' Projects"), self.cooperateDetailModel.title];
+            confirmTransactionModel.destAddress = self.cooperateDetailModel.contractAddress;
+            confirmTransactionModel.amount = text;
+            confirmTransactionModel.script = @"{\"method\":\"revoke\"}";
+            confirmTransactionModel.nodeId = self.cooperateDetailModel.nodeId;
+            confirmTransactionModel.type = TransactionType_Cooperate_Support;
+            [self showConfirmAlertView:confirmTransactionModel];
         });
     } cancelBlock:^{
         
     }];
     [alertView showInWindowWithMode:CustomAnimationModeShare inView:nil bgAlpha:AlertBgAlpha needEffectView:NO];
 }
-- (void)showConfirmAlertView
+- (void)showConfirmAlertView:(ConfirmTransactionModel *)confirmTransactionModel
 {
-//    NodePlanModel * nodePlanModel = self.listArray[index];
-//    ConfirmTransactionModel * confirmTransactionModel = [[ConfirmTransactionModel alloc] init];
-//    confirmTransactionModel.qrRemark = [NSString stringWithFormat:Localized(@"Number of votes revoked on '%@'"), nodePlanModel.nodeName];
-//    confirmTransactionModel.destAddress = self.contractAddress;
-//    confirmTransactionModel.accountTag = self.accountTag;
-//    confirmTransactionModel.amount = @"0";
-//    NSString * role;
-//    if ([nodePlanModel.identityType isEqualToString:NodeType_Consensus]) {
-//        role = Role_validator;
-//    } else if ([nodePlanModel.identityType isEqualToString:NodeType_Ecological]) {
-//        role = Role_kol;
-//    }
-//    confirmTransactionModel.script = [NSString stringWithFormat:@"{\"method\":\"unVote\",\"params\":{\"role\":\"%@\",\"address\":\"%@\"}}", role, nodePlanModel.nodeCapitalAddress];
-//    confirmTransactionModel.nodeId = nodePlanModel.nodeId;
-//    confirmTransactionModel.type = TransactionType_NodeWithdrawal;
-    ConfirmTransactionAlertView * alertView = [[ConfirmTransactionAlertView alloc] initWithDpos:nil confrimBolck:^{
+    confirmTransactionModel.accountTag = @"";
+    ConfirmTransactionAlertView * alertView = [[ConfirmTransactionAlertView alloc] initWithDpos:confirmTransactionModel confrimBolck:^(NSString * _Nonnull transactionCost) {
+        dispatch_after(dispatch_time(DISPATCH_TIME_NOW, (int64_t)(Dispatch_After_Time * NSEC_PER_SEC)), dispatch_get_main_queue(), ^{
+            NSDecimalNumber * amount = [NSDecimalNumber decimalNumberWithString:confirmTransactionModel.amount];
+            NSDecimalNumber * minTransactionCost = [NSDecimalNumber decimalNumberWithString:transactionCost];
+            NSDecimalNumber * totleAmount = [amount decimalNumberByAdding:minTransactionCost];
+            NSDecimalNumber * amountNumber = [[HTTPManager shareManager] getDataWithBalanceJudgmentWithCost:[totleAmount stringValue] ifShowLoading:NO];
+            NSString * totleAmountStr = [amountNumber stringValue];
+            if (!NULLString(totleAmountStr) || [amountNumber isEqualToNumber:NSDecimalNumber.notANumber]) {
+            } else if ([totleAmountStr hasPrefix:@"-"]) {
+                [MBProgressHUD showTipMessageInWindow:Localized(@"NotSufficientFunds")];
+            } else {
+                [self getContractTransactionData:confirmTransactionModel];
+            }
+        });
     } cancelBlock:^{
         
     }];
     [alertView showInWindowWithMode:CustomAnimationModeShare inView:nil bgAlpha:AlertBgAlpha needEffectView:NO];
+}
+
+// Transaction confirmation and submission
+- (void)getContractTransactionData:(ConfirmTransactionModel *)confirmTransactionModel
+{
+    [[HTTPManager shareManager] getContractTransactionWithModel:confirmTransactionModel  success:^(id responseObject) {
+        NSInteger code = [[responseObject objectForKey:@"errCode"] integerValue];
+        if (code == Success_Code) {
+            NSString * dateStr = [[responseObject objectForKey:@"data"] objectForKey:@"expiryTime"];
+            NSDate * date = [NSDate dateWithTimeIntervalSince1970:[dateStr longLongValue] / 1000];
+            NSTimeInterval time = [date timeIntervalSinceNow];
+            if (time < 0) {
+                [Encapsulation showAlertControllerWithMessage:Localized(@"Overtime") handler:nil];
+            } else {
+                [self showPWAlertView:confirmTransactionModel];
+            }
+        } else {
+            [Encapsulation showAlertControllerWithMessage:[ErrorTypeTool getDescriptionWithNodeErrorCode:code] handler:nil];
+//            [Encapsulation showAlertControllerWithMessage:[NSString stringWithFormat:@"code=%@\nmsg:%@", responseObject[@"errCode"], responseObject[@"msg"]] handler:nil];
+        }
+    } failure:^(NSError *error) {
+        
+    }];
+}
+- (void)showPWAlertView:(ConfirmTransactionModel *)confirmTransactionModel
+{
+    PasswordAlertView * PWAlertView = [[PasswordAlertView alloc] initWithPrompt:Localized(@"TransactionWalletPWPrompt") walletKeyStore:CurrentWalletKeyStore isAutomaticClosing:YES confrimBolck:^(NSString * _Nonnull password, NSArray * _Nonnull words) {
+        [self submitTransactionWithPassword:password confirmTransactionModel:confirmTransactionModel];
+    } cancelBlock:^{
+        
+    }];
+    [PWAlertView showInWindowWithMode:CustomAnimationModeAlert inView:nil bgAlpha:AlertBgAlpha needEffectView:NO];
+    [PWAlertView.PWTextField becomeFirstResponder];
+}
+- (void)submitTransactionWithPassword:(NSString *)password confirmTransactionModel:(ConfirmTransactionModel *)confirmTransactionModel
+{
+    __weak typeof(self) weakSelf = self;
+    [[HTTPManager shareManager] submitContractTransactionPassword:password success:^(TransactionResultModel *resultModel) {
+        weakSelf.transferInfoArray = [NSMutableArray arrayWithObjects:confirmTransactionModel.destAddress, [NSString stringAppendingBUWithStr:confirmTransactionModel.amount], [NSString stringAppendingBUWithStr:resultModel.actualFee], nil];
+        if (NULLString(confirmTransactionModel.qrRemark)) {
+            [weakSelf.transferInfoArray addObject:confirmTransactionModel.qrRemark];
+        }
+        [self.transferInfoArray addObject:[DateTool getDateStringWithTimeStr:[NSString stringWithFormat:@"%lld", resultModel.transactionTime]]];
+        if (resultModel.errorCode == Success_Code) {
+            NodeTransferSuccessViewController * VC = [[NodeTransferSuccessViewController alloc] init];
+            [self.navigationController pushViewController:VC animated:NO];
+        } else {
+            TransferResultsViewController * VC = [[TransferResultsViewController alloc] init];
+            VC.state = NO;
+            VC.errorCode = resultModel.errorCode;
+            VC.errorDesc = resultModel.errorDesc;
+            //            [MBProgressHUD showTipMessageInWindow:[ErrorTypeTool getDescription:resultModel.errorCode]];
+            VC.transferInfoArray = weakSelf.transferInfoArray;
+            [self.navigationController pushViewController:VC animated:NO];
+        }
+    } failure:^(TransactionResultModel *resultModel) {
+        RequestTimeoutViewController * VC = [[RequestTimeoutViewController alloc] init];
+        [self.navigationController pushViewController:VC animated:NO];
+    }];
 }
 //- (UIView *)noData
 //{
@@ -182,7 +267,7 @@ static NSString * const CooperateDetailCellID = @"CooperateDetailCellID";
 {
     if (section == self.sectionNumber - 1) {
         CGFloat footerH = SafeAreaBottomH + NavBarH;
-        if (![self.cooperateDetailModel.status isEqualToString:@"3"] && ![self.cooperateDetailModel.status isEqualToString:@"4"]) {
+        if ([self.cooperateDetailModel.status isEqualToString:@"1"] || [self.cooperateDetailModel.status isEqualToString:@"2"]) {
             footerH += ScreenScale(75);
         }
         return  footerH;
@@ -193,7 +278,7 @@ static NSString * const CooperateDetailCellID = @"CooperateDetailCellID";
 - (UIView *)tableView:(UITableView *)tableView viewForFooterInSection:(NSInteger)section
 {
     UIView * footerView = [[UIView alloc] init];
-    if (section == self.sectionNumber - 1 && ![self.cooperateDetailModel.status isEqualToString:@"3"] && ![self.cooperateDetailModel.status isEqualToString:@"4"]) {
+    if (section == self.sectionNumber - 1 && ([self.cooperateDetailModel.status isEqualToString:@"1"] || [self.cooperateDetailModel.status isEqualToString:@"2"])) {
         CGFloat signOutW = (DEVICE_WIDTH - Margin_30) / 5;
         UIButton * signOut = [UIButton createButtonWithTitle:Localized(@"SignOut") TextFont:18 TextNormalColor:[UIColor whiteColor] TextSelectedColor:[UIColor whiteColor] Target:self Selector:@selector(signOutAction)];
         signOut.backgroundColor = WARNING_COLOR;

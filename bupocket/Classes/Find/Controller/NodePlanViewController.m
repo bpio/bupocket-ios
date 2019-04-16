@@ -14,6 +14,10 @@
 #import "NodePlanModel.h"
 #import "NodeSharingViewController.h"
 
+#import "NodeTransferSuccessViewController.h"
+#import "TransferResultsViewController.h"
+#import "RequestTimeoutViewController.h"
+
 @interface NodePlanViewController ()<UITableViewDelegate, UITableViewDataSource, UITextFieldDelegate, YBPopupMenuDelegate>
 
 @property (nonatomic, strong) UITableView * tableView;
@@ -31,6 +35,8 @@
 @property (nonatomic, strong) UIView * headerView;
 @property (nonatomic, strong) UIButton * interdependentNode;
 @property (nonatomic, strong) NSString * searchText;
+
+@property (nonatomic, strong) NSMutableArray * transferInfoArray;
 
 @end
 
@@ -52,7 +58,13 @@ static NSString * const NodePlanCellID = @"NodePlanCellID";
     }
     return _nodeListArray;
 }
-
+- (NSMutableArray *)transferInfoArray
+{
+    if (!_transferInfoArray) {
+        _transferInfoArray = [NSMutableArray array];
+    }
+    return _transferInfoArray;
+}
 - (void)viewDidLoad {
     [super viewDidLoad];
     self.navigationItem.title = Localized(@"NodePlan");
@@ -97,7 +109,7 @@ static NSString * const NodePlanCellID = @"NodePlanCellID";
             self.accountTag = responseObject[@"data"][@"accountTag"];
             [self.tableView reloadData];
         } else {
-            [MBProgressHUD showTipMessageInWindow:[ErrorTypeTool getDescriptionWithErrorCode:code]];
+            [MBProgressHUD showTipMessageInWindow:[ErrorTypeTool getDescriptionWithNodeErrorCode:code]];
         }
         [self ifShowNoData];
         self.noNetWork.hidden = YES;
@@ -326,6 +338,10 @@ static NSString * const NodePlanCellID = @"NodePlanCellID";
 - (void)cancellationVotesWithIndex:(NSInteger)index
 {
     NodePlanModel * nodePlanModel = self.listArray[index];
+    if ([nodePlanModel.myVoteCount isEqualToString:@"0"]) {
+        [MBProgressHUD showTipMessageInWindow:Localized(@"IrrevocableVotes")];
+        return;
+    }
     ConfirmTransactionModel * confirmTransactionModel = [[ConfirmTransactionModel alloc] init];
     confirmTransactionModel.qrRemark = [NSString stringWithFormat:Localized(@"Number of votes revoked on '%@'"), nodePlanModel.nodeName];
     confirmTransactionModel.destAddress = self.contractAddress;
@@ -340,13 +356,83 @@ static NSString * const NodePlanCellID = @"NodePlanCellID";
     confirmTransactionModel.script = [NSString stringWithFormat:@"{\"method\":\"unVote\",\"params\":{\"role\":\"%@\",\"address\":\"%@\"}}", role, nodePlanModel.nodeCapitalAddress];
     confirmTransactionModel.nodeId = nodePlanModel.nodeId;
     confirmTransactionModel.type = TransactionType_NodeWithdrawal;
-    ConfirmTransactionAlertView * alertView = [[ConfirmTransactionAlertView alloc] initWithDpos:confirmTransactionModel confrimBolck:^{
+    ConfirmTransactionAlertView * alertView = [[ConfirmTransactionAlertView alloc] initWithDpos:confirmTransactionModel confrimBolck:^(NSString * _Nonnull transactionCost) {
+        dispatch_after(dispatch_time(DISPATCH_TIME_NOW, (int64_t)(Dispatch_After_Time * NSEC_PER_SEC)), dispatch_get_main_queue(), ^{
+            NSDecimalNumber * amount = [NSDecimalNumber decimalNumberWithString:confirmTransactionModel.amount];
+            NSDecimalNumber * minTransactionCost = [NSDecimalNumber decimalNumberWithString:transactionCost];
+            NSDecimalNumber * totleAmount = [amount decimalNumberByAdding:minTransactionCost];
+            NSDecimalNumber * amountNumber = [[HTTPManager shareManager] getDataWithBalanceJudgmentWithCost:[totleAmount stringValue] ifShowLoading:NO];
+            NSString * totleAmountStr = [amountNumber stringValue];
+            if (!NULLString(totleAmountStr) || [amountNumber isEqualToNumber:NSDecimalNumber.notANumber]) {
+            } else if ([totleAmountStr hasPrefix:@"-"]) {
+                [MBProgressHUD showTipMessageInWindow:Localized(@"NotSufficientFunds")];
+            } else {
+                [self getContractTransactionData:confirmTransactionModel];
+            }
+        });
     } cancelBlock:^{
         
     }];
     [alertView showInWindowWithMode:CustomAnimationModeShare inView:nil bgAlpha:AlertBgAlpha needEffectView:NO];
 }
-
+// Transaction confirmation and submission
+- (void)getContractTransactionData:(ConfirmTransactionModel *)confirmTransactionModel
+{
+    [[HTTPManager shareManager] getContractTransactionWithModel:confirmTransactionModel  success:^(id responseObject) {
+        NSInteger code = [[responseObject objectForKey:@"errCode"] integerValue];
+        if (code == Success_Code) {
+            NSString * dateStr = [[responseObject objectForKey:@"data"] objectForKey:@"expiryTime"];
+            NSDate * date = [NSDate dateWithTimeIntervalSince1970:[dateStr longLongValue] / 1000];
+            NSTimeInterval time = [date timeIntervalSinceNow];
+            if (time < 0) {
+                [Encapsulation showAlertControllerWithMessage:Localized(@"Overtime") handler:nil];
+            } else {
+                [self showPWAlertView:confirmTransactionModel];
+            }
+        } else {
+            [Encapsulation showAlertControllerWithMessage:[ErrorTypeTool getDescriptionWithNodeErrorCode:code] handler:nil];
+//            [Encapsulation showAlertControllerWithMessage:[NSString stringWithFormat:@"code=%@\nmsg:%@", responseObject[@"errCode"], responseObject[@"msg"]] handler:nil];
+        }
+    } failure:^(NSError *error) {
+        
+    }];
+}
+- (void)showPWAlertView:(ConfirmTransactionModel *)confirmTransactionModel
+{
+    PasswordAlertView * PWAlertView = [[PasswordAlertView alloc] initWithPrompt:Localized(@"TransactionWalletPWPrompt") walletKeyStore:CurrentWalletKeyStore isAutomaticClosing:YES confrimBolck:^(NSString * _Nonnull password, NSArray * _Nonnull words) {
+        [self submitTransactionWithPassword:password confirmTransactionModel:confirmTransactionModel];
+    } cancelBlock:^{
+        
+    }];
+    [PWAlertView showInWindowWithMode:CustomAnimationModeAlert inView:nil bgAlpha:AlertBgAlpha needEffectView:NO];
+    [PWAlertView.PWTextField becomeFirstResponder];
+}
+- (void)submitTransactionWithPassword:(NSString *)password confirmTransactionModel:(ConfirmTransactionModel *)confirmTransactionModel
+{
+    __weak typeof(self) weakSelf = self;
+    [[HTTPManager shareManager] submitContractTransactionPassword:password success:^(TransactionResultModel *resultModel) {
+        weakSelf.transferInfoArray = [NSMutableArray arrayWithObjects:confirmTransactionModel.destAddress, [NSString stringAppendingBUWithStr:confirmTransactionModel.amount], [NSString stringAppendingBUWithStr:resultModel.actualFee], nil];
+        if (NULLString(confirmTransactionModel.qrRemark)) {
+            [weakSelf.transferInfoArray addObject:confirmTransactionModel.qrRemark];
+        }
+        [self.transferInfoArray addObject:[DateTool getDateStringWithTimeStr:[NSString stringWithFormat:@"%lld", resultModel.transactionTime]]];
+        if (resultModel.errorCode == Success_Code) {
+            NodeTransferSuccessViewController * VC = [[NodeTransferSuccessViewController alloc] init];
+            [self.navigationController pushViewController:VC animated:NO];
+        } else {
+            TransferResultsViewController * VC = [[TransferResultsViewController alloc] init];
+            VC.state = NO;
+            VC.errorCode = resultModel.errorCode;
+            VC.errorDesc = resultModel.errorDesc;
+            //            [MBProgressHUD showTipMessageInWindow:[ErrorTypeTool getDescription:resultModel.errorCode]];
+            VC.transferInfoArray = weakSelf.transferInfoArray;
+            [self.navigationController pushViewController:VC animated:NO];
+        }
+    } failure:^(TransactionResultModel *resultModel) {
+        RequestTimeoutViewController * VC = [[RequestTimeoutViewController alloc] init];
+        [self.navigationController pushViewController:VC animated:NO];
+    }];
+}
 - (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath
 {
     [tableView deselectRowAtIndexPath:indexPath animated:YES];

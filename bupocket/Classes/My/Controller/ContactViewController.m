@@ -101,7 +101,6 @@ static NSString * const TextFieldCellID = @"TextFieldCellID";
             [self.navigationController popViewControllerAnimated:NO];
         } else {
             [MBProgressHUD showTipMessageInWindow:Localized(@"DeleteFailed")];
-            //            [MBProgressHUD showTipMessageInWindow:[ErrorTypeTool getDescriptionWithErrorCode:code]];
         }
     } failure:^(NSError *error) {
         
@@ -201,13 +200,10 @@ static NSString * const TextFieldCellID = @"TextFieldCellID";
             if (code == Success_Code) {
                 [MBProgressHUD showTipMessageInWindow:Localized(@"SaveSuccessfully")];
                 [self.navigationController popViewControllerAnimated:NO];
-            } else if (code == 100055) {
-                [MBProgressHUD showTipMessageInWindow:Localized(@"ContactExisted")];
-            } else if (code == 100008) {
-                [MBProgressHUD showTipMessageInWindow:Localized(@"INVALID_ADDRESS_ERROR")];
-            } else {
+            } else if (code == 100001) {
                 [MBProgressHUD showTipMessageInWindow:Localized(@"SaveFailed")];
-                //            [MBProgressHUD showTipMessageInWindow:[ErrorTypeTool getDescriptionWithErrorCode:code]];
+            } else {
+                [MBProgressHUD showTipMessageInWindow:[ErrorTypeTool getDescriptionWithErrorCode:code]];
             }
         } failure:^(NSError *error) {
             
@@ -218,13 +214,10 @@ static NSString * const TextFieldCellID = @"TextFieldCellID";
             if (code == Success_Code) {
                 [MBProgressHUD showTipMessageInWindow:Localized(@"SaveSuccessfully")];
                 [self.navigationController popViewControllerAnimated:NO];
-            } else if (code == 100055) {
-                [MBProgressHUD showTipMessageInWindow:Localized(@"ContactExisted")];
-            } else if (code == 100008) {
-                [MBProgressHUD showTipMessageInWindow:Localized(@"INVALID_ADDRESS_ERROR")];
-            } else {
+            } else if (code == 100001) {
                 [MBProgressHUD showTipMessageInWindow:Localized(@"SaveFailed")];
-                //            [MBProgressHUD showTipMessageInWindow:[ErrorTypeTool getDescriptionWithErrorCode:code]];
+            } else {
+                [MBProgressHUD showTipMessageInWindow:[ErrorTypeTool getDescriptionWithErrorCode:code]];
             }
         } failure:^(NSError *error) {
             

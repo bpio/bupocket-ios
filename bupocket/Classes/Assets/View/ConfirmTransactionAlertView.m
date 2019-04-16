@@ -7,9 +7,9 @@
 //
 
 #import "ConfirmTransactionAlertView.h"
-#import "NodeTransferSuccessViewController.h"
-#import "TransferResultsViewController.h"
-#import "RequestTimeoutViewController.h"
+//#import "NodeTransferSuccessViewController.h"
+//#import "TransferResultsViewController.h"
+//#import "RequestTimeoutViewController.h"
 
 @interface ConfirmTransactionAlertView()
 
@@ -27,14 +27,14 @@
 @property (nonatomic, strong) UIButton * confirm;
 
 @property (nonatomic, strong) NSString * transactionCost;
-@property (nonatomic, strong) NSMutableArray * transferInfoArray;
-@property (nonatomic, strong) PasswordAlertView * PWAlertView;
+//@property (nonatomic, strong) NSMutableArray * transferInfoArray;
+//@property (nonatomic, strong) PasswordAlertView * PWAlertView;
 
 @end
 
 @implementation ConfirmTransactionAlertView
 
-- (instancetype)initWithDpos:(ConfirmTransactionModel *)confirmTransactionModel confrimBolck:(void (^)(void))confrimBlock cancelBlock:(void (^)(void))cancelBlock
+- (instancetype)initWithDpos:(ConfirmTransactionModel *)confirmTransactionModel confrimBolck:(void (^)(NSString * transactionCost))confrimBlock cancelBlock:(void (^)(void))cancelBlock
 {
     self = [super init];
     if (self) {
@@ -45,13 +45,7 @@
     }
     return self;
 }
-- (NSMutableArray *)transferInfoArray
-{
-    if (!_transferInfoArray) {
-        _transferInfoArray = [NSMutableArray array];
-    }
-    return _transferInfoArray;
-}
+
 - (void)setupView {
     
     self.backgroundColor = [UIColor whiteColor];
@@ -321,82 +315,10 @@
 - (void)sureBtnClick {
     [self hideView];
     if (_sureBlock) {
-        _sureBlock();
+        _sureBlock(self.transactionCost);
     }
-    dispatch_after(dispatch_time(DISPATCH_TIME_NOW, (int64_t)(Dispatch_After_Time * NSEC_PER_SEC)), dispatch_get_main_queue(), ^{
-        if (!self.confirmTransactionModel) {
-            return;
-        }
-        NSDecimalNumber * amount = [NSDecimalNumber decimalNumberWithString:self.confirmTransactionModel.amount];
-        NSDecimalNumber * minTransactionCost = [NSDecimalNumber decimalNumberWithString:self.transactionCost];
-        NSDecimalNumber * totleAmount = [amount decimalNumberByAdding:minTransactionCost];
-        NSDecimalNumber * amountNumber = [[HTTPManager shareManager] getDataWithBalanceJudgmentWithCost:[totleAmount stringValue] ifShowLoading:NO];
-        NSString * totleAmountStr = [amountNumber stringValue];
-        if (!NULLString(totleAmountStr) || [amountNumber isEqualToNumber:NSDecimalNumber.notANumber]) {
-        } else if ([totleAmountStr hasPrefix:@"-"]) {
-            [MBProgressHUD showTipMessageInWindow:Localized(@"NotSufficientFunds")];
-        } else {
-            [self getContractTransactionData];
-        }
-    });
 }
-// Transaction confirmation and submission
-- (void)getContractTransactionData
-{
-    [[HTTPManager shareManager] getContractTransactionWithModel:self.confirmTransactionModel  success:^(id responseObject) {
-        NSInteger code = [[responseObject objectForKey:@"errCode"] integerValue];
-        if (code == Success_Code) {
-            NSString * dateStr = [[responseObject objectForKey:@"data"] objectForKey:@"expiryTime"];
-            NSDate * date = [NSDate dateWithTimeIntervalSince1970:[dateStr longLongValue] / 1000];
-            NSTimeInterval time = [date timeIntervalSinceNow];
-            if (time < 0) {
-                [MBProgressHUD showTipMessageInWindow:Localized(@"Overtime")];
-            } else {
-                [self showPWAlertView];
-            }
-        } else {
-            [Encapsulation showAlertControllerWithMessage:[NSString stringWithFormat:@"code=%@\nmsg:%@", responseObject[@"errCode"], responseObject[@"msg"]] handler:nil];
-        }
-    } failure:^(NSError *error) {
-        
-    }];
-}
-- (void)showPWAlertView
-{
-    self.PWAlertView = [[PasswordAlertView alloc] initWithPrompt:Localized(@"TransactionWalletPWPrompt") walletKeyStore:CurrentWalletKeyStore isAutomaticClosing:YES confrimBolck:^(NSString * _Nonnull password, NSArray * _Nonnull words) {
-        [self submitTransactionWithPassword:password];
-    } cancelBlock:^{
-        
-    }];
-    [self.PWAlertView showInWindowWithMode:CustomAnimationModeAlert inView:nil bgAlpha:AlertBgAlpha needEffectView:NO];
-    [self.PWAlertView.PWTextField becomeFirstResponder];
-}
-- (void)submitTransactionWithPassword:(NSString *)password
-{
-    __weak typeof(self) weakSelf = self;
-    [[HTTPManager shareManager] submitContractTransactionPassword:password success:^(TransactionResultModel *resultModel) {
-        weakSelf.transferInfoArray = [NSMutableArray arrayWithObjects:weakSelf.confirmTransactionModel.destAddress, [NSString stringAppendingBUWithStr:weakSelf.confirmTransactionModel.amount], [NSString stringAppendingBUWithStr:resultModel.actualFee], nil];
-        if (NULLString(weakSelf.confirmTransactionModel.qrRemark)) {
-            [weakSelf.transferInfoArray addObject:weakSelf.confirmTransactionModel.qrRemark];
-        }
-        [self.transferInfoArray addObject:[DateTool getDateStringWithTimeStr:[NSString stringWithFormat:@"%lld", resultModel.transactionTime]]];
-        if (resultModel.errorCode == Success_Code) {
-            NodeTransferSuccessViewController * VC = [[NodeTransferSuccessViewController alloc] init];
-            [[UIApplication topViewController:[[UIApplication sharedApplication] keyWindow].rootViewController].navigationController pushViewController:VC animated:NO];
-        } else {
-            TransferResultsViewController * VC = [[TransferResultsViewController alloc] init];
-            VC.state = NO;
-            VC.errorCode = resultModel.errorCode;
-            VC.errorDesc = resultModel.errorDesc;
-            //            [MBProgressHUD showTipMessageInWindow:[ErrorTypeTool getDescription:resultModel.errorCode]];
-            VC.transferInfoArray = weakSelf.transferInfoArray;
-            [[UIApplication topViewController:[[UIApplication sharedApplication] keyWindow].rootViewController].navigationController pushViewController:VC animated:NO];
-        }
-    } failure:^(TransactionResultModel *resultModel) {
-        RequestTimeoutViewController * VC = [[RequestTimeoutViewController alloc] init];
-        [[UIApplication topViewController:[[UIApplication sharedApplication] keyWindow].rootViewController].navigationController pushViewController:VC animated:NO];
-    }];
-}
+
 /*
 // Only override drawRect: if you perform custom drawing.
 // An empty implementation adversely affects performance during animation.

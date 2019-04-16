@@ -22,7 +22,7 @@ static NSString * const NodeSharingID = @"NodeSharingID";
 
 - (void)viewDidLoad {
     [super viewDidLoad];
-    self.navigationItem.title = Localized(@"VotingRecords");
+    self.navigationItem.title = Localized(@"InvitationToVote");
     [self setupView];
     // Do any additional setup after loading the view.
 }

@@ -27,7 +27,7 @@
         [self.listBg addSubview:self.purchaseAmount];
         [self.listBg addSubview:self.targetNumber];
         [self.listBg addSubview:self.residualPortion];
-        [self.listBg addSubview:self.proportion];
+        [self.listBg addSubview:self.progressView];
         [self.listBg addSubview:self.shareRatioBg];
         [self.shareRatioBg addSubview:self.shareRatioBtn];
         [self.shareRatioBg addSubview:self.shareRatio];
@@ -46,12 +46,12 @@
     }];
     self.contentView.backgroundColor = self.contentView.superview.superview.backgroundColor;
     [self.shareRatioBg mas_makeConstraints:^(MASConstraintMaker *make) {
-        make.right.equalTo(self.listBg.mas_right).offset(-Margin_15);
+        make.right.equalTo(self.listBg.mas_right).offset(-Margin_10);
         make.top.equalTo(self.listBg);
         make.size.mas_equalTo(CGSizeMake(ScreenScale(100), ScreenScale(66)));
     }];
     [self.title mas_makeConstraints:^(MASConstraintMaker *make) {
-        make.left.equalTo(self.listBg.mas_left).offset(Margin_15);
+        make.left.equalTo(self.listBg.mas_left).offset(Margin_10);
         make.top.equalTo(self.listBg.mas_top).offset(Margin_15);
         make.right.mas_lessThanOrEqualTo(self.shareRatioBg.mas_left).offset(-Margin_10);
     }];
@@ -64,22 +64,22 @@
         make.left.right.equalTo(self.title);
     }];
     
-    [self.proportion mas_makeConstraints:^(MASConstraintMaker *make) {
+    [self.progressView mas_makeConstraints:^(MASConstraintMaker *make) {
         make.top.equalTo(self.purchaseAmount.mas_bottom).offset(Margin_15);
         make.left.equalTo(self.title);
         make.right.equalTo(self.shareRatioBg);
     }];
     
-    CGFloat residualPortionW = (DEVICE_WIDTH - Margin_60) / 3;
+    CGFloat residualPortionW = (DEVICE_WIDTH - Margin_50) / 5;
     [self.targetNumber mas_makeConstraints:^(MASConstraintMaker *make) {
         make.left.equalTo(self.title);
-        make.top.equalTo(self.proportion.mas_bottom);
-        make.size.mas_equalTo(CGSizeMake(residualPortionW * 2, MAIN_HEIGHT));
+        make.top.equalTo(self.progressView.mas_bottom);
+        make.size.mas_equalTo(CGSizeMake(residualPortionW * 3, MAIN_HEIGHT));
     }];
     [self.residualPortion mas_makeConstraints:^(MASConstraintMaker *make) {
         make.right.equalTo(self.shareRatioBg);
         make.centerY.equalTo(self.targetNumber);
-        make.width.mas_equalTo(residualPortionW);
+        make.width.mas_equalTo(residualPortionW * 2);
     }];
     [self.shareRatioBtn mas_makeConstraints:^(MASConstraintMaker *make) {
         make.left.equalTo(self.shareRatioBg.mas_left).offset(Margin_5);
@@ -99,7 +99,7 @@
     NSString * str = [NSString stringWithFormat:@"%@ %@%@", [NSString stringAmountSplitWith:cooperateModel.perAmount], @"BU/", Localized(@"Portion")];
     self.numberOfCopies.attributedText = [Encapsulation attrWithString:str preFont:FONT_Bold(18) preColor:MAIN_COLOR index:str.length - 4 sufFont:FONT(12) sufColor:MAIN_COLOR lineSpacing:0];
     self.purchaseAmount.text = Localized(@"PurchaseAmount");
-    self.proportion.progress = [cooperateModel.cobuildCopies floatValue] / [cooperateModel.totalCopies floatValue];
+    self.progressView.progress = [cooperateModel.cobuildCopies floatValue] / [cooperateModel.totalCopies floatValue];
     NSString * targetNumberStr = [NSString stringWithFormat:@"%@ %@ BU", Localized(@"TargetNumber"), [NSString stringAmountSplitWith:cooperateModel.totalAmount]];
     self.targetNumber.attributedText = [Encapsulation attrWithString:targetNumberStr preFont:FONT(13) preColor:COLOR(@"B2B2B2") index:Localized(@"TargetNumber").length sufFont:FONT(13) sufColor:COLOR_6 lineSpacing:0];
     NSString * residualPortionStr = [NSString stringWithFormat:@"%@ %@ %@", Localized(@"ResidualPortion"), cooperateModel.leftCopies, Localized(@"Portion")];
@@ -160,15 +160,15 @@
     }
     return _residualPortion;
 }
-- (UIProgressView *)proportion
+- (UIProgressView *)progressView
 {
-    if (!_proportion) {
-        _proportion = [[UIProgressView alloc] init];
-        _proportion.progressTintColor = MAIN_COLOR;
-        _proportion.trackTintColor = COLOR(@"E7E8EC");
-        _proportion.progressViewStyle = UIProgressViewStyleBar;
+    if (!_progressView) {
+        _progressView = [[UIProgressView alloc] init];
+        _progressView.progressTintColor = MAIN_COLOR;
+        _progressView.trackTintColor = COLOR(@"E7E8EC");
+        _progressView.progressViewStyle = UIProgressViewStyleBar;
     }
-    return _proportion;
+    return _progressView;
 }
 - (UIImageView *)shareRatioBg
 {
