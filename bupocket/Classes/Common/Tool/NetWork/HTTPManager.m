@@ -593,6 +593,30 @@ static int64_t const gasPrice = 1000;
         }
     }];
 }
+
+// short link
+- (void)getShortLinkDataWithType:(NSString *)type
+                            path:(NSString *)path
+                         success:(void (^)(id responseObject))success
+                         failure:(void (^)(NSError *error))failure
+{
+    [MBProgressHUD showActivityMessageInWindow:Localized(@"Loading")];
+    NSString * url = SERVER_COMBINE_API(_webServerDomain, Node_ShortLink_URL);
+    NSString * body = [NSString stringWithFormat:@"type=%@&path=%@", type, path];
+    NSDictionary * parameters = [[HTTPManager shareManager] parametersWithHTTPBody:body];
+    [[HttpTool shareTool] POST:url parameters:parameters success:^(id responseObject) {
+        if(success != nil)
+        {
+            success(responseObject);
+        }
+    } failure:^(NSError *error) {
+        if(failure != nil)
+        {
+            failure(error);
+        }
+    }];
+}
+
 // Voting Record
 - (void)getVotingRecordDataWithNodeId:(NSString *)nodeId
                               success:(void (^)(id responseObject))success

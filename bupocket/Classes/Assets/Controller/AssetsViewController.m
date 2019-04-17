@@ -422,8 +422,13 @@ static UIButton * _noBackup;
 #pragma mark - scan
 - (void)scanAction
 {
+    __block NSString * result = nil;
     __weak typeof (self) weakself = self;
     HMScannerController *scanner = [HMScannerController scannerWithCardName:nil avatar:nil completion:^(NSString *stringValue) {
+        if (result) {
+            return;
+        }
+        result = stringValue;
         if ([stringValue hasPrefix:Account_Center_Prefix]) {
             [self getScanCodeLoginDataWithUUid:[stringValue substringFromIndex:[Account_Center_Prefix length]]];
             return;

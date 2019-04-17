@@ -232,8 +232,13 @@
 #pragma mark - scanAction
 - (void)scanAction:(UIButton *)button
 {
+    __block NSString * result = nil;
     __weak typeof (self) weakself = self;
     HMScannerController *scanner = [HMScannerController scannerWithCardName:nil avatar:nil completion:^(NSString *stringValue) {
+        if (result) {
+            return;
+        }
+        result = stringValue;
         NSOperationQueue * queue = [[NSOperationQueue alloc] init];
         [queue addOperationWithBlock:^{
             BOOL isCorrectAddress = [Keypair isAddressValid: stringValue];

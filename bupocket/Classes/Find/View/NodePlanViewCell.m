@@ -276,16 +276,14 @@ static NSString * const NodeSharingID = @"NodeSharingID";
     } else {
         url = WEB_SERVER_DOMAIN;
     }
+    NSString * imageUrl = [NSString stringWithFormat:@"%@%@%@", url, Node_Image_URL, nodePlanModel.nodeLogo];
+    [self.listImage sd_setImageWithURL:[NSURL URLWithString:imageUrl] placeholderImage:[UIImage imageNamed:@"placeholder_list"]];
     self.name.text = nodePlanModel.nodeName;
-    NSString * imageUrl = [NSString stringWithFormat:@"%@%@", url, Node_Image_URL];
     if ([nodePlanModel.identityType isEqualToString:NodeType_Consensus]) {
         self.nodeType.text = Localized(@"ConsensusNode");
-        imageUrl = [NSString stringWithFormat:@"%@%@", imageUrl, nodePlanModel.nodeLogo];
     } else if ([nodePlanModel.identityType isEqualToString:NodeType_Ecological]) {
         self.nodeType.text = Localized(@"EcologicalNodes");
-        imageUrl = [NSString stringWithFormat:@"%@%@", imageUrl, nodePlanModel.applyAvatar];
     }
-    [self.listImage sd_setImageWithURL:[NSURL URLWithString:imageUrl] placeholderImage:[UIImage imageNamed:@"placeholder_list"]];
     if ([self.reuseIdentifier isEqualToString:NodeSharingID]) {
         NSString * votesObtainedStr = [NSString stringWithFormat:@"%@ %@", nodePlanModel.nodeVote, Localized(@"Votes")];
         self.votesObtained.attributedText = [Encapsulation attrWithString:votesObtainedStr preFont:FONT(14) preColor:COLOR_6 index:votesObtainedStr.length - Localized(@"Votes").length sufFont:FONT(12) sufColor:COLOR(@"B2B2B2") lineSpacing:0];

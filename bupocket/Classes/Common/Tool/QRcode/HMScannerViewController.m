@@ -54,8 +54,6 @@
     // 实例化扫描器
     __weak typeof(self) weakSelf = self;
     scanner = [HMScanner scanerWithView:self.view scanFrame:scannerBorder.frame completion:^(NSString *stringValue) {
-        [self->scannerBorder stopScannerAnimating];
-        [self->scanner stopScan];
         // 完成回调
         weakSelf.completionCallBack(stringValue);
         

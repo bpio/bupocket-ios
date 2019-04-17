@@ -58,5 +58,9 @@
 // 投票记录
 #define Voting_Record @"nodeServer/node/v1/vote/list"
 #define Node_Image_URL @"img-dpos/"
+// 生成短链接
+#define Node_ShortLink_URL @"nodeServer/shortlink"
+#define Validate_Node_Path @"dpos/detail/validate/"
+#define Kol_Node_Path @"dpos/detail/kol/"
 
 #endif /* URLMacros_h */

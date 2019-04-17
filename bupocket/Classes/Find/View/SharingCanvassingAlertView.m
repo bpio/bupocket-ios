@@ -48,13 +48,7 @@
         } else {
             url = WEB_SERVER_DOMAIN;
         }
-        NSString * imageUrl = [NSString stringWithFormat:@"%@%@", url, Node_Image_URL];
-        if ([nodePlanModel.identityType isEqualToString:NodeType_Consensus]) {
-            imageUrl = [NSString stringWithFormat:@"%@%@", imageUrl, nodePlanModel.nodeLogo];
-        } else if ([nodePlanModel.identityType isEqualToString:NodeType_Ecological]) {
-            imageUrl = [NSString stringWithFormat:@"%@%@", imageUrl, nodePlanModel.applyAvatar];
-        }
-        
+        NSString * imageUrl = [NSString stringWithFormat:@"%@%@%@", url, Node_Image_URL, nodePlanModel.nodeLogo];
         [_nodeLogo sd_setImageWithURL:[NSURL URLWithString:imageUrl] placeholderImage:[UIImage imageNamed:@"placeholder"]];
         _nodeName.text = nodePlanModel.nodeName;
     }
@@ -181,7 +175,7 @@
         _QRCode.layer.masksToBounds = YES;
         _QRCode.layer.cornerRadius = TAG_CORNER;
         _QRCode.image = [UIImage imageNamed:@"placeholderBg"];
-        [HMScannerController cardImageWithCardName:@"https://www.baidu.com" avatar:nil scale:0.2 completion:^(UIImage *image) {
+        [HMScannerController cardImageWithCardName:self.nodePlanModel.shortLink avatar:nil scale:0.2 completion:^(UIImage *image) {
             self->_QRCode.image = image;
         }];
     }

@@ -79,6 +79,14 @@
     }
     return attr;
 }
+//将HTML字符串转化为NSAttributedString富文本字符串
++ (NSAttributedString *)attributedStringWithHTMLString:(NSString *)htmlString
+{
+    NSDictionary *options = @{ NSDocumentTypeDocumentAttribute : NSHTMLTextDocumentType,
+                               NSCharacterEncodingDocumentAttribute :@(NSUTF8StringEncoding) };
+    NSData * data = [htmlString dataUsingEncoding:NSUTF8StringEncoding];
+    return [[NSAttributedString alloc] initWithData:data options:options documentAttributes:nil error:nil];
+}
 // Calculate the width and height of UILabel (with row spacing)
 + (CGSize)getSizeSpaceLabelWithStr:(NSString *)str font:(UIFont *)font width:(CGFloat)width height:(CGFloat)height lineSpacing:(CGFloat)lineSpacing
 {

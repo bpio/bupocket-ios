@@ -161,8 +161,13 @@ static NSString * const TextFieldCellID = @"TextFieldCellID";
 }
 - (void)scanAction
 {
+    __block NSString * result = nil;
     __weak typeof (self) weakself = self;
     HMScannerController *scanner = [HMScannerController scannerWithCardName:nil avatar:nil completion:^(NSString *stringValue) {
+        if (result) {
+            return;
+        }
+        result = stringValue;
         NSOperationQueue * queue = [[NSOperationQueue alloc] init];
         [queue addOperationWithBlock:^{
 //            BOOL isCorrectAddress = [Keypair isAddressValid: stringValue];
@@ -200,7 +205,7 @@ static NSString * const TextFieldCellID = @"TextFieldCellID";
             if (code == Success_Code) {
                 [MBProgressHUD showTipMessageInWindow:Localized(@"SaveSuccessfully")];
                 [self.navigationController popViewControllerAnimated:NO];
-            } else if (code == 100001) {
+            } else if (code == ErrorTypeParams) {
                 [MBProgressHUD showTipMessageInWindow:Localized(@"SaveFailed")];
             } else {
                 [MBProgressHUD showTipMessageInWindow:[ErrorTypeTool getDescriptionWithErrorCode:code]];
@@ -214,7 +219,7 @@ static NSString * const TextFieldCellID = @"TextFieldCellID";
             if (code == Success_Code) {
                 [MBProgressHUD showTipMessageInWindow:Localized(@"SaveSuccessfully")];
                 [self.navigationController popViewControllerAnimated:NO];
-            } else if (code == 100001) {
+            } else if (code == ErrorTypeParams) {
                 [MBProgressHUD showTipMessageInWindow:Localized(@"SaveFailed")];
             } else {
                 [MBProgressHUD showTipMessageInWindow:[ErrorTypeTool getDescriptionWithErrorCode:code]];

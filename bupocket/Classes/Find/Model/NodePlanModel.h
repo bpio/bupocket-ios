@@ -24,6 +24,8 @@ NS_ASSUME_NONNULL_BEGIN
 @property (nonatomic, copy) NSString * introduce;
 @property (nonatomic, copy) NSString * support;
 
+@property (nonatomic, copy) NSString * shortLink;
+
 @end
 
 NS_ASSUME_NONNULL_END

@@ -10,7 +10,7 @@
 #import "NodePlanViewCell.h"
 #import "SharingCanvassingAlertView.h"
 
-@interface NodeSharingViewController ()<UITableViewDelegate, UITableViewDataSource>
+@interface NodeSharingViewController ()<UITableViewDelegate, UITableViewDataSource, UIWebViewDelegate>
 
 @property (nonatomic, strong) UITableView * tableView;
 
@@ -50,8 +50,12 @@ static NSString * const NodeSharingID = @"NodeSharingID";
         make.size.mas_equalTo(CGSizeMake(DEVICE_WIDTH - Margin_30, Margin_40));
     }];
     NSString * infoStr = self.nodePlanModel.introduce;
+    /*
     UIButton * info = [UIButton createButtonWithTitle:nil TextFont:13 TextNormalColor:COLOR_6 TextSelectedColor:COLOR_6 Target:nil Selector:nil];
-    [info setAttributedTitle:[Encapsulation attrWithString:infoStr preFont:FONT(13) preColor:COLOR_6 index:0 sufFont:FONT(13) sufColor:COLOR_6 lineSpacing:5] forState:UIControlStateNormal];
+    NSAttributedString *htmlString = [Encapsulation attributedStringWithHTMLString:infoStr];
+//    [info setAttributedTitle:[Encapsulation attrWithString:infoStr preFont:FONT(13) preColor:COLOR_6 index:0 sufFont:FONT(13) sufColor:COLOR_6 lineSpacing:5] forState:UIControlStateNormal];
+    [info setAttributedTitle:htmlString forState:UIControlStateNormal];
+    info.contentHorizontalAlignment = UIControlContentHorizontalAlignmentLeft;
     info.userInteractionEnabled = NO;
     info.titleLabel.numberOfLines = 0;
     info.layer.masksToBounds = YES;
@@ -59,15 +63,38 @@ static NSString * const NodeSharingID = @"NodeSharingID";
     info.contentEdgeInsets = UIEdgeInsetsMake(Margin_15, Margin_10, Margin_15, Margin_10);
     info.backgroundColor = [UIColor whiteColor];
     [footerView addSubview:info];
-    CGFloat infoH = Margin_30 + [Encapsulation getSizeSpaceLabelWithStr:infoStr font:FONT(13) width:DEVICE_WIDTH - Margin_40 height:CGFLOAT_MAX lineSpacing:5].height;
+    //计算html字符串高度
+//    [htmlString addAttributes:@{NSFontAttributeName:[UIFont systemFontOfSize:14]} range:NSMakeRange(0, htmlString.length)];
+    
+    CGFloat infoH = Margin_30 + [htmlString boundingRectWithSize:(CGSize){DEVICE_WIDTH - Margin_40, CGFLOAT_MAX} options:NSStringDrawingUsesLineFragmentOrigin context:nil].size.height;
+//    CGFloat infoH = Margin_30 + [Encapsulation getSizeSpaceLabelWithStr:infoStr font:FONT(13) width:DEVICE_WIDTH - Margin_40 height:CGFLOAT_MAX lineSpacing:5].height;
     [info mas_makeConstraints:^(MASConstraintMaker *make) {
         make.top.equalTo(title.mas_bottom);
         make.left.equalTo(footerView.mas_left).offset(Margin_10);
         make.right.equalTo(footerView.mas_right).offset(-Margin_10);
         make.height.mas_equalTo(infoH);
     }];
-    footerView.frame = CGRectMake(0, 0, DEVICE_WIDTH, ScreenScale(40) + infoH);
+     */
+    UIWebView * webView = [[UIWebView alloc]initWithFrame:CGRectMake(Margin_10, Margin_40, DEVICE_WIDTH - Margin_20, CGFLOAT_MIN)];
+//    webView.scrollView.contentInset = UIEdgeInsetsMake(Margin_15, Margin_10, Margin_15, Margin_10);
+    webView.delegate = self;
+//    NSURLRequest * request = [NSURLRequest requestWithURL:[NSURL fileURLWithPath:self.URLString] cachePolicy:NSURLRequestReloadIgnoringCacheData timeoutInterval:10];
+//    //加载网页
+//    [self.wkWebView loadRequest:request];
+    
+    [webView loadHTMLString:infoStr baseURL:nil];
+    [webView sizeToFit];
+    webView.layer.masksToBounds = YES;
+    webView.layer.cornerRadius = BG_CORNER;
+    webView.height = webView.scrollView.contentSize.height;
+    [footerView addSubview:webView];
+//    footerView.frame = CGRectMake(0, 0, DEVICE_WIDTH, ScreenScale(40) + webView.height);
     self.tableView.tableFooterView = footerView;
+}
+- (void)webViewDidFinishLoad:(UIWebView *)webView{
+    // webView加载完成，让webView高度自适应内容
+    webView.height = webView.scrollView.contentSize.height;
+    self.tableView.tableFooterView.height = ScreenScale(40) + webView.height;
 }
 - (NSInteger)numberOfSectionsInTableView:(UITableView *)tableView
 {
@@ -102,12 +129,28 @@ static NSString * const NodeSharingID = @"NodeSharingID";
 }
 - (void)shareAction
 {
-    SharingCanvassingAlertView * alertView = [[SharingCanvassingAlertView alloc] initWithNodePlanModel:self.nodePlanModel confrimBolck:^(NSString * _Nonnull text) {
-        
-    } cancelBlock:^{
-        
+    NSString * path = nil;
+    if ([self.nodePlanModel.identityType isEqualToString:NodeType_Consensus]) {
+        path = [NSString stringWithFormat:@"%@%@", Validate_Node_Path, self.nodePlanModel.nodeId];
+    } else if ([self.nodePlanModel.identityType isEqualToString:NodeType_Ecological]) {
+        path = [NSString stringWithFormat:@"%@%@", Kol_Node_Path, self.nodePlanModel.nodeId];
+    }
+    [[HTTPManager shareManager] getShortLinkDataWithType:@"1" path:path success:^(id responseObject) {
+        NSInteger code = [[responseObject objectForKey:@"errCode"] integerValue];
+        if (code == Success_Code) {
+            NSString * shortLink = responseObject[@"data"][@"shortlink"];
+            self.nodePlanModel.shortLink = shortLink;
+            SharingCanvassingAlertView * alertView = [[SharingCanvassingAlertView alloc] initWithNodePlanModel:self.nodePlanModel confrimBolck:^(NSString * _Nonnull text) {
+                
+            } cancelBlock:^{
+                
+            }];
+            [alertView showInWindowWithMode:CustomAnimationModeShare inView:nil bgAlpha:AlertBgAlpha needEffectView:NO];
+        } else {
+            [MBProgressHUD showTipMessageInWindow:[ErrorTypeTool getDescriptionWithNodeErrorCode:code]];
+        }
+    } failure:^(NSError *error) {
     }];
-    [alertView showInWindowWithMode:CustomAnimationModeShare inView:nil bgAlpha:AlertBgAlpha needEffectView:NO];
 }
 
 /*

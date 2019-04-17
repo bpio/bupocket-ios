@@ -132,6 +132,11 @@
                          capitalAddress:(NSString *)capitalAddress
                                 success:(void (^)(id responseObject))success
                                 failure:(void (^)(NSError *error))failure;
+// short link
+- (void)getShortLinkDataWithType:(NSString *)type
+                            path:(NSString *)path
+                         success:(void (^)(id responseObject))success
+                         failure:(void (^)(NSError *error))failure;
 // Voting Record
 - (void)getVotingRecordDataWithNodeId:(NSString *)nodeId
                               success:(void (^)(id responseObject))success

@@ -18,6 +18,8 @@
 + (NSMutableAttributedString *)attrWithString:(NSString *)str preFont:(UIFont *)preFont preColor:(UIColor *)preColor index:(NSInteger)index sufFont:(UIFont *)sufFont sufColor:(UIColor *)sufColor lineSpacing:(CGFloat)lineSpacing;
 // Setting Title Property text
 + (NSMutableAttributedString *)attrTitle:(NSString *)title ifRequired:(BOOL)ifRequired;
+//将HTML字符串转化为NSAttributedString富文本字符串
++ (NSAttributedString *)attributedStringWithHTMLString:(NSString *)htmlString;
 // Calculate the width and height of UILabel (with row spacing)
 + (CGSize)getSizeSpaceLabelWithStr:(NSString *)str font:(UIFont *)font width:(CGFloat)width height:(CGFloat)height lineSpacing:(CGFloat)lineSpacing;
 
