@@ -52,6 +52,8 @@
 #define Node_Withdrawal_Confirm @"nodeServer/node/v1/vote/revoke/user"
 // 节点列表
 #define Node_List @"nodeServer/node/v1/list/app"
+// 邀请投票
+#define Node_Invitation_Vote @"nodeServer/node/v1/detail"
 // 共建节点列表
 #define Node_Cooperate_List @"nodeServer/node/v1/cooperate/list"
 #define Node_Cooperate_Detail @"nodeServer/node/v1/cooperate/detail"
@@ -62,5 +64,12 @@
 #define Node_ShortLink_URL @"nodeServer/shortlink"
 #define Validate_Node_Path @"dpos/detail/validate/"
 #define Kol_Node_Path @"dpos/detail/kol/"
+// 共建节点支持验证
+#define Node_Cooperate_Support @"nodeServer/node/v1/cooperate/support"
+// 共建节点退出验证
+#define Node_Cooperate_Exit @"nodeServer/node/v1/cooperate/exit"
+
+// 交易状态查询链接
+#define Transaction_Query_Link @"http://explorer.bumo.io"
 
 #endif /* URLMacros_h */

@@ -106,5 +106,8 @@
 #define SmallRoutine_Original_ID @"gh_463781563a74"
 #define Dispatch_After_Time 0.5
 
+#define SubIndex_Address 5
+#define SubIndex_hash 8
+
 
 #endif /* AppDefine_h */

@@ -126,17 +126,21 @@
 - (void)submitContractTransactionPassword:(NSString *)password
                                   success:(void (^)(TransactionResultModel * resultModel))success
                                   failure:(void (^)(TransactionResultModel * resultModel))failure;
+// short link
+- (void)getShortLinkDataWithType:(NSString *)type
+                            path:(NSString *)path
+                         success:(void (^)(id responseObject))success
+                         failure:(void (^)(NSError *error))failure;
 // Node List
 - (void)getNodeListDataWithIdentityType:(NSString *)identityType
                                nodeName:(NSString *)nodeName
                          capitalAddress:(NSString *)capitalAddress
                                 success:(void (^)(id responseObject))success
                                 failure:(void (^)(NSError *error))failure;
-// short link
-- (void)getShortLinkDataWithType:(NSString *)type
-                            path:(NSString *)path
-                         success:(void (^)(id responseObject))success
-                         failure:(void (^)(NSError *error))failure;
+// Node Invitation Vote
+- (void)getNodeInvitationVoteDataWithNodeId:(NSString *)nodeId
+                                    success:(void (^)(id responseObject))success
+                                    failure:(void (^)(NSError *error))failure;
 // Voting Record
 - (void)getVotingRecordDataWithNodeId:(NSString *)nodeId
                               success:(void (^)(id responseObject))success

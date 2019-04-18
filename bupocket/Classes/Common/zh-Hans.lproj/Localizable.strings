@@ -145,6 +145,12 @@
 "TransferTime" = "转账时间";
 //"TransferSuccess" = "转账成功";
 //"TransferFailure" = "转账失败";
+"TransactionStatus" = "交易状态";
+"TransactionSuccessful" = "交易广播成功";
+"TransactionQueryPrompt" = "交易广播成功，交易最终状态请复制交易摘要到";
+"Query" = "查询";
+"TransactionSummary" = "交易摘要";
+
 "RequestTimeout" = "请求超时";
 "IGotIt" = "我知道了";
 // 订单详情
@@ -466,6 +472,10 @@
 "NotSubmitted" = "检测到有尚未提交的操作，请稍后再重试";
 "CommitteeAuthority" = "没有权限，请使用委员会钱包进行扫码";
 "NoVoteJurisdiction" = "投票通道还未开启，请在开启后进行投票";
+"ShareNotOpened" = "投票通道还未开启，请在开启后进行分享";
+"UnableToSubscribe" = "抱歉，该共建项目已被认购完";
+"UnableToQuit" = "抱歉，该共建项目已完成，目前您不能退出";
+
 // SDK Errors
 "SYSTEM_ERROR" = "系统错误";
 "INVALID_ADDRESS_ERROR" = "无效地址";

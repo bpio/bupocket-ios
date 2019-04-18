@@ -101,6 +101,7 @@ static NSString * const CooperateDetailCellID = @"CooperateDetailCellID";
     self.tableView.dataSource = self;
     self.tableView.separatorStyle = UITableViewCellSeparatorStyleNone;
     [self.view addSubview:self.tableView];
+    self.noNetWork = [Encapsulation showNoNetWorkWithSuperView:self.view target:self action:@selector(reloadData)];
 }
 - (void)signOutAction
 {
@@ -108,7 +109,7 @@ static NSString * const CooperateDetailCellID = @"CooperateDetailCellID";
     confirmTransactionModel.qrRemark = [NSString stringWithFormat:Localized(@"Exit '%@' Project"), self.cooperateDetailModel.title];
     confirmTransactionModel.destAddress = self.cooperateDetailModel.contractAddress;
     confirmTransactionModel.amount = @"0";
-    confirmTransactionModel.script = @"{\"method\":\"subscribe\",\"params\":{\"shares\":5}}";
+    confirmTransactionModel.script = @"{\"method\":\"revoke\"}";
     confirmTransactionModel.nodeId = self.cooperateDetailModel.nodeId;
     confirmTransactionModel.type = TransactionType_Cooperate_SignOut;
     [self showConfirmAlertView:confirmTransactionModel];
@@ -122,9 +123,10 @@ static NSString * const CooperateDetailCellID = @"CooperateDetailCellID";
             confirmTransactionModel.qrRemark = [NSString stringWithFormat:Localized(@"Supporting '%@' Projects"), self.cooperateDetailModel.title];
             confirmTransactionModel.destAddress = self.cooperateDetailModel.contractAddress;
             confirmTransactionModel.amount = text;
-            confirmTransactionModel.script = @"{\"method\":\"revoke\"}";
+            confirmTransactionModel.script = [NSString stringWithFormat:@"{\"method\":\"subscribe\",\"params\":{\"shares\":%@}}", text];
             confirmTransactionModel.nodeId = self.cooperateDetailModel.nodeId;
             confirmTransactionModel.type = TransactionType_Cooperate_Support;
+            confirmTransactionModel.copies = [NSString stringWithFormat:@"%lld", [text longLongValue] / [self.cooperateDetailModel.perAmount  longLongValue]];
             [self showConfirmAlertView:confirmTransactionModel];
         });
     } cancelBlock:^{
@@ -210,6 +212,7 @@ static NSString * const CooperateDetailCellID = @"CooperateDetailCellID";
         }
     } failure:^(TransactionResultModel *resultModel) {
         RequestTimeoutViewController * VC = [[RequestTimeoutViewController alloc] init];
+        VC.transactionHash = resultModel.transactionHash;
         [self.navigationController pushViewController:VC animated:NO];
     }];
 }
@@ -278,7 +281,7 @@ static NSString * const CooperateDetailCellID = @"CooperateDetailCellID";
 - (UIView *)tableView:(UITableView *)tableView viewForFooterInSection:(NSInteger)section
 {
     UIView * footerView = [[UIView alloc] init];
-    if (section == self.sectionNumber - 1 && ([self.cooperateDetailModel.status isEqualToString:@"1"] || [self.cooperateDetailModel.status isEqualToString:@"2"])) {
+    if (section == self.sectionNumber - 1 && ([self.cooperateDetailModel.status isEqualToString:@"1"] || [self.cooperateDetailModel.status isEqualToString:@"2"]) && ![self.cooperateDetailModel.originatorAddress isEqualToString:CurrentWalletAddress]) {
         CGFloat signOutW = (DEVICE_WIDTH - Margin_30) / 5;
         UIButton * signOut = [UIButton createButtonWithTitle:Localized(@"SignOut") TextFont:18 TextNormalColor:[UIColor whiteColor] TextSelectedColor:[UIColor whiteColor] Target:self Selector:@selector(signOutAction)];
         signOut.backgroundColor = WARNING_COLOR;

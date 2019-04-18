@@ -323,7 +323,7 @@ static NSString * const NodePlanCellID = @"NodePlanCellID";
 - (void)shareAction:(NodePlanModel *)nodePlanModel
 {
     NodeSharingViewController * VC = [[NodeSharingViewController alloc] init];
-    VC.nodePlanModel = nodePlanModel;
+    VC.nodeID = nodePlanModel.nodeId;
     [self.navigationController pushViewController:VC animated:NO];
 }
 - (void)invitationVoteWithIndex:(NSInteger)index
@@ -430,6 +430,7 @@ static NSString * const NodePlanCellID = @"NodePlanCellID";
         }
     } failure:^(TransactionResultModel *resultModel) {
         RequestTimeoutViewController * VC = [[RequestTimeoutViewController alloc] init];
+        VC.transactionHash = resultModel.transactionHash;
         [self.navigationController pushViewController:VC animated:NO];
     }];
 }

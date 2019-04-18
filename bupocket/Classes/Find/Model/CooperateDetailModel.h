@@ -26,6 +26,7 @@ NS_ASSUME_NONNULL_BEGIN
 @property (nonatomic, copy) NSString * supportAmount;
 @property (nonatomic, copy) NSArray * supportList;
 @property (nonatomic, copy) NSString * supportPerson;
+@property (nonatomic, copy) NSString * originatorAddress;
 
 @property (nonatomic, copy) NSString * contractAddress;
 

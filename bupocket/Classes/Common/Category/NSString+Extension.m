@@ -10,10 +10,10 @@
 
 @implementation NSString (Extension)
 
-+ (NSString *)stringEllipsisWithStr:(NSString *)str
++ (NSString *)stringEllipsisWithStr:(NSString *)str subIndex:(NSInteger)subIndex
 {
-    if (str.length > 10) {
-        return  [NSString stringWithFormat:@"%@***%@", [str substringToIndex:5], [str substringFromIndex:str.length - 5]];
+    if (str.length > (subIndex * 2)) {
+        return  [NSString stringWithFormat:@"%@***%@", [str substringToIndex:subIndex], [str substringFromIndex:str.length - subIndex]];
     } else {
         return str;
     }

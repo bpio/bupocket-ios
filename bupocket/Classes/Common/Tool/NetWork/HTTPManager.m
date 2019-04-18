@@ -512,18 +512,43 @@ static int64_t const gasPrice = 1000;
     }
     _hash = [[HTTPManager shareManager] buildBlobAndSignAndSubmit:nil :sourceAddress :nonce :gasPrice :fee :operations :notes :ID];
     if (_hash) {
-        [[HTTPManager shareManager] getConfirmTransactionDataWithModel:confirmTransactionModel hash:_hash initiatorAddress:CurrentWalletAddress success:^(id responseObject) {
-            if(success != nil)
-            {
-                success(responseObject);
-            }
-        } failure:^(NSError *error) {
-            if(failure != nil)
-            {
-                failure(error);
-                [MBProgressHUD showTipMessageInWindow:Localized(@"NoNetWork")];
-            }
-        }];
+        if ([confirmTransactionModel.type isEqualToString:TransactionType_Cooperate_Support] || [confirmTransactionModel.type isEqualToString:TransactionType_Cooperate_SignOut]) {
+            [[HTTPManager shareManager] getNodeCooperateCheckDataWithNodeId:confirmTransactionModel.nodeId hash:_hash copies:confirmTransactionModel.copies success:^(id responseObject) {
+                NSInteger code = [[responseObject objectForKey:@"errCode"] integerValue];
+                if (code == Success_Code) {
+                    [[HTTPManager shareManager] getConfirmTransactionDataWithModel:confirmTransactionModel hash:self->_hash initiatorAddress:CurrentWalletAddress success:^(id responseObject) {
+                        if(success != nil)
+                        {
+                            success(responseObject);
+                        }
+                    } failure:^(NSError *error) {
+                        if(failure != nil)
+                        {
+                            failure(error);
+                            [MBProgressHUD showTipMessageInWindow:Localized(@"NoNetWork")];
+                        }
+                    }];
+                } else {
+                    [Encapsulation showAlertControllerWithMessage:[ErrorTypeTool getDescriptionWithNodeErrorCode:code] handler:nil];
+                }
+            } failure:^(NSError *error) {
+                
+            }];
+        } else {
+            [[HTTPManager shareManager] getConfirmTransactionDataWithModel:confirmTransactionModel hash:_hash initiatorAddress:CurrentWalletAddress success:^(id responseObject) {
+                if(success != nil)
+                {
+                    success(responseObject);
+                }
+            } failure:^(NSError *error) {
+                if(failure != nil)
+                {
+                    failure(error);
+                    [MBProgressHUD showTipMessageInWindow:Localized(@"NoNetWork")];
+                }
+            }];
+        }
+        
     }
 }
 
@@ -570,6 +595,28 @@ static int64_t const gasPrice = 1000;
         [[HTTPManager shareManager] getTransactionStatusHash:_hash success:success failure:failure];
     }
 }
+// short link
+- (void)getShortLinkDataWithType:(NSString *)type
+                            path:(NSString *)path
+                         success:(void (^)(id responseObject))success
+                         failure:(void (^)(NSError *error))failure
+{
+    [MBProgressHUD showActivityMessageInWindow:Localized(@"Loading")];
+    NSString * url = SERVER_COMBINE_API(_webServerDomain, Node_ShortLink_URL);
+    NSString * body = [NSString stringWithFormat:@"type=%@&path=%@", type, path];
+    NSDictionary * parameters = [[HTTPManager shareManager] parametersWithHTTPBody:body];
+    [[HttpTool shareTool] POST:url parameters:parameters success:^(id responseObject) {
+        if(success != nil)
+        {
+            success(responseObject);
+        }
+    } failure:^(NSError *error) {
+        if(failure != nil)
+        {
+            failure(error);
+        }
+    }];
+}
 // Node List
 - (void)getNodeListDataWithIdentityType:(NSString *)identityType
                                nodeName:(NSString *)nodeName
@@ -594,15 +641,14 @@ static int64_t const gasPrice = 1000;
     }];
 }
 
-// short link
-- (void)getShortLinkDataWithType:(NSString *)type
-                            path:(NSString *)path
-                         success:(void (^)(id responseObject))success
-                         failure:(void (^)(NSError *error))failure
+// Node Invitation Vote
+- (void)getNodeInvitationVoteDataWithNodeId:(NSString *)nodeId
+                                    success:(void (^)(id responseObject))success
+                                    failure:(void (^)(NSError *error))failure
 {
     [MBProgressHUD showActivityMessageInWindow:Localized(@"Loading")];
-    NSString * url = SERVER_COMBINE_API(_webServerDomain, Node_ShortLink_URL);
-    NSString * body = [NSString stringWithFormat:@"type=%@&path=%@", type, path];
+    NSString * url = SERVER_COMBINE_API(_webServerDomain, Node_Invitation_Vote);
+    NSString * body = [NSString stringWithFormat:@"address=%@&nodeId=%@", CurrentWalletAddress, nodeId];
     NSDictionary * parameters = [[HTTPManager shareManager] parametersWithHTTPBody:body];
     [[HttpTool shareTool] POST:url parameters:parameters success:^(id responseObject) {
         if(success != nil)
@@ -664,6 +710,33 @@ static int64_t const gasPrice = 1000;
     [MBProgressHUD showActivityMessageInWindow:Localized(@"Loading")];
     NSString * url = SERVER_COMBINE_API(_webServerDomain, Node_Cooperate_Detail);
     NSString * body = [NSString stringWithFormat:@"nodeId=%@", nodeId];
+    NSDictionary * parameters = [[HTTPManager shareManager] parametersWithHTTPBody:body];
+    [[HttpTool shareTool] POST:url parameters:parameters success:^(id responseObject) {
+        if(success != nil)
+        {
+            success(responseObject);
+        }
+    } failure:^(NSError *error) {
+        if(failure != nil)
+        {
+            failure(error);
+        }
+    }];
+}
+// Node Cooperate Check
+- (void)getNodeCooperateCheckDataWithNodeId:(NSString *)nodeId
+                                       hash:(NSString *)hash
+                                     copies:(NSString *)copies
+                                    success:(void (^)(id responseObject))success
+                                    failure:(void (^)(NSError *error))failure
+{
+    [MBProgressHUD showActivityMessageInWindow:Localized(@"DataChecking")];
+    NSString * URL = Node_Cooperate_Exit;
+    if (copies) {
+        URL = Node_Cooperate_Support;
+    }
+    NSString * url = SERVER_COMBINE_API(_webServerDomain, URL);
+    NSString * body = [NSString stringWithFormat:@"nodeId=%@&hash=%@&copies=%@&initiatorAddress=%@", nodeId, hash, copies, CurrentWalletAddress];
     NSDictionary * parameters = [[HTTPManager shareManager] parametersWithHTTPBody:body];
     [[HttpTool shareTool] POST:url parameters:parameters success:^(id responseObject) {
         if(success != nil)
@@ -1080,6 +1153,7 @@ static int64_t const gasPrice = 1000;
     if (_buildBlobResponse.errorCode == Success_Code) {
         hash = _buildBlobResponse.result.transactionHash;
     } else {
+        [MBProgressHUD hideHUD];
         [MBProgressHUD showTipMessageInWindow:[ErrorTypeTool getDescription:_buildBlobResponse.errorCode]];
     }
 
@@ -1172,6 +1246,7 @@ static int64_t const gasPrice = 1000;
                 [MBProgressHUD hideHUD];
                 TransactionHistory * history = response.result.transactions[0];
                 resultModel.transactionTime = history.closeTime;
+                resultModel.transactionHash = history.transactionHash;
                 resultModel.actualFee = [[[NSDecimalNumber decimalNumberWithString:history.actualFee] decimalNumberByMultiplyingByPowerOf10: -Decimals_BU] stringValue];
                 resultModel.errorCode = history.errorCode;
                 resultModel.errorDesc = history.errorDesc;

@@ -279,7 +279,7 @@
 - (void)sureBtnClick {
     [self hideView];
     if (_confirmClick) {
-        NSString * totalAmount = [NSString stringWithFormat:@"%f", [self.number.text integerValue] * [self.purchaseAmountStr floatValue]];
+        NSString * totalAmount = [NSString stringWithFormat:@"%lld", [self.number.text longLongValue] * [self.purchaseAmountStr longLongValue]];
         _confirmClick(totalAmount);
     }
 }

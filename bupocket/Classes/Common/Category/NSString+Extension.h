@@ -12,7 +12,7 @@ NS_ASSUME_NONNULL_BEGIN
 
 @interface NSString (Extension)
 
-+ (NSString *)stringEllipsisWithStr:(NSString *)str;
++ (NSString *)stringEllipsisWithStr:(NSString *)str subIndex:(NSInteger)subIndex;
 
 + (NSString *)stringAppendingBUWithStr:(NSString *)str;
 

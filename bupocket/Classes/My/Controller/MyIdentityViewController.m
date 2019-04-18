@@ -71,7 +71,7 @@
     UILabel * IdentityID = [[UILabel alloc] init];
     IdentityID.font = IDName.font;
     IdentityID.textColor = IDName.textColor;
-    IdentityID.text = [NSString stringEllipsisWithStr:[[AccountTool shareTool] account].identityAddress];
+    IdentityID.text = [NSString stringEllipsisWithStr:[[AccountTool shareTool] account].identityAddress subIndex:SubIndex_Address];
     IdentityID.numberOfLines = 0;
     IdentityID.textAlignment = NSTextAlignmentRight;
     [myIdentityBg addSubview:IdentityID];

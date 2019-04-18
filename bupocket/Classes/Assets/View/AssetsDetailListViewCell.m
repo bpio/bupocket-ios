@@ -77,7 +77,7 @@ static NSString * const AssetsDetailCellID = @"AssetsDetailCellID";
         self.listImage.image = [UIImage imageNamed:@"receivables"];
     }
     if (addressStr.length > 10) {
-        self.walletAddress.text = [NSString stringEllipsisWithStr:addressStr];
+        self.walletAddress.text = [NSString stringEllipsisWithStr:addressStr subIndex:SubIndex_Address];
     }
     self.date.text = [DateTool getDateProcessingWithTimeStr:listModel.txTime];
     self.assets.text = [listModel.amount isEqualToString:@"~"] ? listModel.amount : [NSString stringWithFormat:@"%@%@", outOrIn, listModel.amount];
@@ -95,7 +95,7 @@ static NSString * const AssetsDetailCellID = @"AssetsDetailCellID";
     _cooperateSupportModel = cooperateSupportModel;
 //    self.listImage.image = [UIImage imageNamed:@"payment"];
     self.listImage.image = [UIImage imageNamed:@"user_placeholder"];
-    self.walletAddress.text = [NSString stringEllipsisWithStr:cooperateSupportModel.initiatorAddress];
+    self.walletAddress.text = [NSString stringEllipsisWithStr:cooperateSupportModel.initiatorAddress subIndex:SubIndex_Address];
     self.date.text = cooperateSupportModel.createTime;
     self.assets.text = cooperateSupportModel.amount;
 }

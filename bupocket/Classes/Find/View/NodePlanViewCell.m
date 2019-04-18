@@ -104,7 +104,6 @@ static NSString * const NodeSharingID = @"NodeSharingID";
             make.edges.equalTo(self.contentView);
         }];
         if ([self.reuseIdentifier isEqualToString:NodeSharingID]) {
-            
             [self.shareBtn mas_makeConstraints:^(MASConstraintMaker *make) {
                 make.centerY.equalTo(self.name);
                 make.right.equalTo(self.listBg);

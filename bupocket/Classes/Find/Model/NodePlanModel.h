@@ -23,6 +23,7 @@ NS_ASSUME_NONNULL_BEGIN
 @property (nonatomic, copy) NSString * myVoteCount;
 @property (nonatomic, copy) NSString * introduce;
 @property (nonatomic, copy) NSString * support;
+@property (nonatomic, copy) NSString * shareStartTime;
 
 @property (nonatomic, copy) NSString * shortLink;
 

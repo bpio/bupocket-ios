@@ -9,10 +9,17 @@
 #import "NodeSharingViewController.h"
 #import "NodePlanViewCell.h"
 #import "SharingCanvassingAlertView.h"
+#import <WebKit/WebKit.h>
 
-@interface NodeSharingViewController ()<UITableViewDelegate, UITableViewDataSource, UIWebViewDelegate>
+@interface NodeSharingViewController ()<UITableViewDelegate, UITableViewDataSource, WKNavigationDelegate>
 
+@property (nonatomic, strong) NodePlanModel * nodePlanModel;
 @property (nonatomic, strong) UITableView * tableView;
+@property (nonatomic, strong) UIView * noNetWork;
+//@property (nonatomic, strong) UIWebView * webView;
+@property (nonatomic, strong) WKWebView * wkWebView;
+@property (nonatomic,strong) UIProgressView * progressView;
+@property (nonatomic,strong) UILabel * titleLabel;
 
 @end
 
@@ -24,77 +31,72 @@ static NSString * const NodeSharingID = @"NodeSharingID";
     [super viewDidLoad];
     self.navigationItem.title = Localized(@"InvitationToVote");
     [self setupView];
+    [self.wkWebView addObserver:self forKeyPath:@"estimatedProgress" options:NSKeyValueObservingOptionNew| NSKeyValueObservingOptionOld context:nil];
+    [self setupRefresh];
     // Do any additional setup after loading the view.
+}
+- (void)dealloc {
+    [[NSURLCache sharedURLCache] removeAllCachedResponses];
+    [self.wkWebView removeObserver:self forKeyPath:@"estimatedProgress"];
+}
+- (void)setupRefresh
+{
+    self.tableView.mj_header = [CustomRefreshHeader headerWithRefreshingTarget:self refreshingAction:@selector(loadNewData)];
+    self.tableView.mj_header.automaticallyChangeAlpha = YES;
+    [self.tableView.mj_header beginRefreshing];
+}
+- (void)loadNewData
+{
+    [self getData];
+}
+- (void)getData
+{
+    [[HTTPManager shareManager] getNodeInvitationVoteDataWithNodeId:self.nodeID success:^(id responseObject) {
+        NSInteger code = [[responseObject objectForKey:@"errCode"] integerValue];
+        if (code == Success_Code) {
+            self.nodePlanModel = [NodePlanModel mj_objectWithKeyValues:responseObject[@"data"]];
+            [self.wkWebView loadHTMLString:self.nodePlanModel.introduce baseURL:nil];
+            self.titleLabel.text = Localized(@"NodeIntroduction");
+            [self.tableView reloadData];
+        } else {
+            [MBProgressHUD showTipMessageInWindow:[ErrorTypeTool getDescriptionWithNodeErrorCode:code]];
+        }
+        [self.tableView.mj_header endRefreshing];
+        self.noNetWork.hidden = YES;
+    } failure:^(NSError *error) {
+        [self.tableView.mj_header endRefreshing];
+        self.noNetWork.hidden = NO;
+    }];
+}
+- (void)reloadData
+{
+    self.noNetWork.hidden = YES;
+    [self.tableView.mj_header beginRefreshing];
+}
+- (UITableView *)tableView
+{
+    if (!_tableView) {
+        _tableView = [[UITableView alloc] initWithFrame:self.view.bounds style:UITableViewStyleGrouped];
+        _tableView.delegate = self;
+        _tableView.dataSource = self;
+        _tableView.separatorStyle = UITableViewCellSeparatorStyleNone;
+    }
+    return _tableView;
 }
 - (void)setupView
 {
-    self.tableView = [[UITableView alloc] initWithFrame:self.view.bounds style:UITableViewStyleGrouped];
-    self.tableView.delegate = self;
-    self.tableView.dataSource = self;
-    self.tableView.separatorStyle = UITableViewCellSeparatorStyleNone;
     [self.view addSubview:self.tableView];
-    self.tableView.tableHeaderView = [[UIView alloc] initWithFrame:CGRectMake(0, 0, 0, CGFLOAT_MIN)];
-    [self setupFooterView];
+    self.noNetWork = [Encapsulation showNoNetWorkWithSuperView:self.view target:self action:@selector(reloadData)];
+    [self.view addSubview:self.progressView];
 }
-- (void)setupFooterView
-{
-    UIView * footerView = [[UIView alloc] init];
-    UILabel * title = [[UILabel alloc] init];
-    title.text = Localized(@"NodeIntroduction");
-    title.font = FONT(13);
-    title.textColor = COLOR_9;
-    [footerView addSubview:title];
-    [title mas_makeConstraints:^(MASConstraintMaker *make) {
-        make.left.equalTo(footerView.mas_left).offset(Margin_15);
-        make.top.equalTo(footerView);
-        make.size.mas_equalTo(CGSizeMake(DEVICE_WIDTH - Margin_30, Margin_40));
-    }];
-    NSString * infoStr = self.nodePlanModel.introduce;
-    /*
-    UIButton * info = [UIButton createButtonWithTitle:nil TextFont:13 TextNormalColor:COLOR_6 TextSelectedColor:COLOR_6 Target:nil Selector:nil];
-    NSAttributedString *htmlString = [Encapsulation attributedStringWithHTMLString:infoStr];
-//    [info setAttributedTitle:[Encapsulation attrWithString:infoStr preFont:FONT(13) preColor:COLOR_6 index:0 sufFont:FONT(13) sufColor:COLOR_6 lineSpacing:5] forState:UIControlStateNormal];
-    [info setAttributedTitle:htmlString forState:UIControlStateNormal];
-    info.contentHorizontalAlignment = UIControlContentHorizontalAlignmentLeft;
-    info.userInteractionEnabled = NO;
-    info.titleLabel.numberOfLines = 0;
-    info.layer.masksToBounds = YES;
-    info.layer.cornerRadius = BG_CORNER;
-    info.contentEdgeInsets = UIEdgeInsetsMake(Margin_15, Margin_10, Margin_15, Margin_10);
-    info.backgroundColor = [UIColor whiteColor];
-    [footerView addSubview:info];
-    //计算html字符串高度
-//    [htmlString addAttributes:@{NSFontAttributeName:[UIFont systemFontOfSize:14]} range:NSMakeRange(0, htmlString.length)];
-    
-    CGFloat infoH = Margin_30 + [htmlString boundingRectWithSize:(CGSize){DEVICE_WIDTH - Margin_40, CGFLOAT_MAX} options:NSStringDrawingUsesLineFragmentOrigin context:nil].size.height;
-//    CGFloat infoH = Margin_30 + [Encapsulation getSizeSpaceLabelWithStr:infoStr font:FONT(13) width:DEVICE_WIDTH - Margin_40 height:CGFLOAT_MAX lineSpacing:5].height;
-    [info mas_makeConstraints:^(MASConstraintMaker *make) {
-        make.top.equalTo(title.mas_bottom);
-        make.left.equalTo(footerView.mas_left).offset(Margin_10);
-        make.right.equalTo(footerView.mas_right).offset(-Margin_10);
-        make.height.mas_equalTo(infoH);
-    }];
-     */
-    UIWebView * webView = [[UIWebView alloc]initWithFrame:CGRectMake(Margin_10, Margin_40, DEVICE_WIDTH - Margin_20, CGFLOAT_MIN)];
-//    webView.scrollView.contentInset = UIEdgeInsetsMake(Margin_15, Margin_10, Margin_15, Margin_10);
-    webView.delegate = self;
-//    NSURLRequest * request = [NSURLRequest requestWithURL:[NSURL fileURLWithPath:self.URLString] cachePolicy:NSURLRequestReloadIgnoringCacheData timeoutInterval:10];
-//    //加载网页
-//    [self.wkWebView loadRequest:request];
-    
-    [webView loadHTMLString:infoStr baseURL:nil];
-    [webView sizeToFit];
-    webView.layer.masksToBounds = YES;
-    webView.layer.cornerRadius = BG_CORNER;
-    webView.height = webView.scrollView.contentSize.height;
-    [footerView addSubview:webView];
-//    footerView.frame = CGRectMake(0, 0, DEVICE_WIDTH, ScreenScale(40) + webView.height);
-    self.tableView.tableFooterView = footerView;
-}
-- (void)webViewDidFinishLoad:(UIWebView *)webView{
-    // webView加载完成，让webView高度自适应内容
-    webView.height = webView.scrollView.contentSize.height;
-    self.tableView.tableFooterView.height = ScreenScale(40) + webView.height;
+- (UIProgressView *)progressView{
+    if (!_progressView) {
+        _progressView = [[UIProgressView alloc]initWithProgressViewStyle:UIProgressViewStyleDefault];
+        _progressView.frame = CGRectMake(0, 0, self.view.bounds.size.width, ScreenScale(3));
+        [_progressView setTrackTintColor:COLOR(@"F0F0F0")];
+        _progressView.progressTintColor = MAIN_COLOR;
+    }
+    return _progressView;
 }
 - (NSInteger)numberOfSectionsInTableView:(UITableView *)tableView
 {
@@ -102,7 +104,7 @@ static NSString * const NodeSharingID = @"NodeSharingID";
 }
 - (NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section
 {
-    return 1;
+    return self.nodePlanModel ? 1 : 0;
 }
 - (CGFloat)tableView:(UITableView *)tableView heightForHeaderInSection:(NSInteger)section
 {
@@ -111,8 +113,76 @@ static NSString * const NodeSharingID = @"NodeSharingID";
 
 - (CGFloat)tableView:(UITableView *)tableView heightForFooterInSection:(NSInteger)section
 {
-    return CGFLOAT_MIN;
+    return ScreenScale(50) + self.wkWebView.height + NavBarH + SafeAreaBottomH;;
 }
+- (UIView *)tableView:(UITableView *)tableView viewForFooterInSection:(NSInteger)section
+{
+    UIView * footerView = [[UIView alloc] init];
+    [footerView addSubview:self.titleLabel];
+    [footerView addSubview:self.wkWebView];
+    footerView.frame = CGRectMake(0, 0, DEVICE_WIDTH, ScreenScale(40) + self.wkWebView.height  + NavBarH + SafeAreaBottomH);
+    return footerView;
+}
+- (UILabel *)titleLabel
+{
+    if (!_titleLabel) {
+        _titleLabel = [[UILabel alloc] initWithFrame:CGRectMake(Margin_15, 0, DEVICE_WIDTH - Margin_30, Margin_40)];
+        _titleLabel.font = FONT(13);
+        _titleLabel.textColor = COLOR_9;
+    }
+    return _titleLabel;
+}
+- (WKWebView *)wkWebView {
+    if (!_wkWebView) {
+        NSString *jScript = @"var meta = document.createElement('meta'); meta.setAttribute('name', 'viewport'); meta.setAttribute('content', 'width=device-width'); document.getElementsByTagName('head')[0].appendChild(meta);";
+        WKUserScript *wkUScript = [[WKUserScript alloc] initWithSource:jScript injectionTime:WKUserScriptInjectionTimeAtDocumentEnd forMainFrameOnly:YES];
+        WKUserContentController *wkUController = [[WKUserContentController alloc] init];
+        [wkUController addUserScript:wkUScript];
+        
+        WKWebViewConfiguration *wkWebConfig = [[WKWebViewConfiguration alloc] init];
+        wkWebConfig.userContentController = wkUController;
+        
+        // 创建设置对象
+        WKPreferences *preference = [[WKPreferences alloc]init];
+        // 设置字体大小(最小的字体大小)
+        preference.minimumFontSize = ScreenScale(14);
+        // 设置偏好设置对象
+        wkWebConfig.preferences = preference;
+        _wkWebView = [[WKWebView alloc] initWithFrame:CGRectMake(Margin_10, Margin_40, DEVICE_WIDTH - Margin_20, CGFLOAT_MIN) configuration:wkWebConfig];
+        _wkWebView.navigationDelegate = self;
+        _wkWebView.layer.masksToBounds = YES;
+        _wkWebView.layer.cornerRadius = MAIN_CORNER;
+    }
+    return _wkWebView;
+}
+
+//MARK:-kvo监听
+- (void)observeValueForKeyPath:(NSString *)keyPath ofObject:(id)object change:(NSDictionary *)change context:(void *)context {
+    if ([keyPath isEqual: @"estimatedProgress"] && object == self.wkWebView) {
+        [self.progressView setAlpha:1.0f];
+        [self.progressView setProgress:self.wkWebView.estimatedProgress animated:YES];
+        if(self.wkWebView.estimatedProgress >= 1.0f) {
+            [UIView animateWithDuration:0.5 delay:0.5 options:UIViewAnimationOptionCurveEaseOut animations:^{
+                [self.progressView setAlpha:0.0f];
+            } completion:^(BOOL finished) {
+                [self.progressView setProgress:0.0f animated:NO];
+            }];
+        }
+    } else {
+        [super observeValueForKeyPath:keyPath ofObject:object change:change context:context];
+    }
+}
+- (void)webView:(WKWebView *)webView didFinishNavigation:(WKNavigation *)navigation {
+
+    [webView evaluateJavaScript:@"document.body.offsetHeight" completionHandler:^(id _Nullable result, NSError * _Nullable error) {
+//        CGFloat documentHeight = [result doubleValue];
+        CGRect webFrame = webView.frame;
+        webFrame.size.height = webView.scrollView.contentSize.height;
+        webView.frame = webFrame;
+        [self.tableView reloadData];
+    }];
+}
+
 - (CGFloat)tableView:(UITableView *)tableView heightForRowAtIndexPath:(NSIndexPath *)indexPath
 {
     return ScreenScale(80);
@@ -129,6 +199,13 @@ static NSString * const NodeSharingID = @"NodeSharingID";
 }
 - (void)shareAction
 {
+    NSString * dateStr = self.nodePlanModel.shareStartTime;
+    NSDate * date = [NSDate dateWithTimeIntervalSince1970:[dateStr longLongValue] / 1000];
+    NSTimeInterval time = [date timeIntervalSinceNow];
+    if (time > 0) {
+        [Encapsulation showAlertControllerWithMessage:Localized(@"ShareNotOpened") handler:nil];
+        return;
+    }
     NSString * path = nil;
     if ([self.nodePlanModel.identityType isEqualToString:NodeType_Consensus]) {
         path = [NSString stringWithFormat:@"%@%@", Validate_Node_Path, self.nodePlanModel.nodeId];

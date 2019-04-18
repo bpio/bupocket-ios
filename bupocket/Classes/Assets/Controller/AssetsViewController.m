@@ -582,6 +582,7 @@ static UIButton * _noBackup;
         }
     } failure:^(TransactionResultModel *resultModel) {
         RequestTimeoutViewController * VC = [[RequestTimeoutViewController alloc] init];
+        VC.transactionHash = resultModel.transactionHash;
         [self.navigationController pushViewController:VC animated:NO];
     }];
 }

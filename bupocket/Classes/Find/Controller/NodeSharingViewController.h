@@ -13,7 +13,7 @@ NS_ASSUME_NONNULL_BEGIN
 
 @interface NodeSharingViewController : BaseViewController
 
-@property (nonatomic, strong) NodePlanModel * nodePlanModel;
+@property (nonatomic, strong) NSString * nodeID;
 
 @end
 
