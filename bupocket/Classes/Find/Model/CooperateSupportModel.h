@@ -15,6 +15,8 @@ NS_ASSUME_NONNULL_BEGIN
 @property (nonatomic, copy) NSString * initiatorAddress;
 @property (nonatomic, copy) NSString * amount;
 @property (nonatomic, copy) NSString * createTime;
+// 类型： (1: 共建节点认购，2: 共建节点认购撤销)
+@property (nonatomic, copy) NSString * type;
 
 @end
 

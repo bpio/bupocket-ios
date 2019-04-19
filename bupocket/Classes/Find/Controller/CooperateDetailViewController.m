@@ -59,11 +59,19 @@ static NSString * const CooperateDetailCellID = @"CooperateDetailCellID";
     [self setupRefresh];
     // Do any additional setup after loading the view.
 }
+- (void)viewWillAppear:(BOOL)animated {
+    [super viewWillAppear:animated];
+    [self.tableView.mj_header beginRefreshing];
+}
+- (void)viewDidDisappear:(BOOL)animated {
+    [super viewDidDisappear:animated];
+    [self.tableView.mj_header endRefreshing];
+}
 - (void)setupRefresh
 {
     self.tableView.mj_header = [CustomRefreshHeader headerWithRefreshingTarget:self refreshingAction:@selector(loadNewData)];
     self.tableView.mj_header.automaticallyChangeAlpha = YES;
-    [self.tableView.mj_header beginRefreshing];
+//    [self.tableView.mj_header beginRefreshing];
 }
 - (void)loadNewData
 {
@@ -105,28 +113,34 @@ static NSString * const CooperateDetailCellID = @"CooperateDetailCellID";
 }
 - (void)signOutAction
 {
-    ConfirmTransactionModel * confirmTransactionModel = [[ConfirmTransactionModel alloc] init];
-    confirmTransactionModel.qrRemark = [NSString stringWithFormat:Localized(@"Exit '%@' Project"), self.cooperateDetailModel.title];
-    confirmTransactionModel.destAddress = self.cooperateDetailModel.contractAddress;
-    confirmTransactionModel.amount = @"0";
-    confirmTransactionModel.script = @"{\"method\":\"revoke\"}";
-    confirmTransactionModel.nodeId = self.cooperateDetailModel.nodeId;
-    confirmTransactionModel.type = TransactionType_Cooperate_SignOut;
-    [self showConfirmAlertView:confirmTransactionModel];
+    [Encapsulation showAlertControllerWithTitle:nil message:Localized(@"ConfirmWithdrawalPrompt") cancelHandler:^(UIAlertAction *action) {
+        
+    } confirmHandler:^(UIAlertAction *action) {
+        ConfirmTransactionModel * confirmTransactionModel = [[ConfirmTransactionModel alloc] init];
+        confirmTransactionModel.qrRemark = [NSString stringWithFormat:Localized(@"Exit '%@' Project"), self.cooperateDetailModel.title];
+        confirmTransactionModel.destAddress = self.cooperateDetailModel.contractAddress;
+        confirmTransactionModel.amount = @"0";
+        confirmTransactionModel.script = @"{\"method\":\"revoke\"}";
+        confirmTransactionModel.nodeId = self.cooperateDetailModel.nodeId;
+        confirmTransactionModel.type = TransactionType_Cooperate_SignOut;
+        [self showConfirmAlertView:confirmTransactionModel];        
+    }];
 }
 - (void)supportAction
 {
-    NSString * leftAmount = [NSString stringWithFormat:@"%lld", [self.cooperateDetailModel.totalAmount longLongValue] - [self.cooperateDetailModel.supportAmount longLongValue]];
+    NSString * leftAmount = [NSString stringWithFormat:@"%lld", [self.cooperateDetailModel.leftCopies longLongValue] * [self.cooperateDetailModel.perAmount longLongValue]];
+    DLog(@"剩余支持金额%@", leftAmount);
     SupportAlertView * alertView = [[SupportAlertView alloc] initWithTotalTarget:leftAmount purchaseAmount:self.cooperateDetailModel.perAmount confrimBolck:^(NSString * _Nonnull text) {
         dispatch_after(dispatch_time(DISPATCH_TIME_NOW, (int64_t)(Dispatch_After_Time * NSEC_PER_SEC)), dispatch_get_main_queue(), ^{
             ConfirmTransactionModel * confirmTransactionModel = [[ConfirmTransactionModel alloc] init];
             confirmTransactionModel.qrRemark = [NSString stringWithFormat:Localized(@"Supporting '%@' Projects"), self.cooperateDetailModel.title];
             confirmTransactionModel.destAddress = self.cooperateDetailModel.contractAddress;
             confirmTransactionModel.amount = text;
-            confirmTransactionModel.script = [NSString stringWithFormat:@"{\"method\":\"subscribe\",\"params\":{\"shares\":%@}}", text];
+            NSString * copies = [NSString stringWithFormat:@"%lld", [text longLongValue] / [self.cooperateDetailModel.perAmount  longLongValue]];
+            confirmTransactionModel.script = [NSString stringWithFormat:@"{\"method\":\"subscribe\",\"params\":{\"shares\":%@}}", copies];
             confirmTransactionModel.nodeId = self.cooperateDetailModel.nodeId;
             confirmTransactionModel.type = TransactionType_Cooperate_Support;
-            confirmTransactionModel.copies = [NSString stringWithFormat:@"%lld", [text longLongValue] / [self.cooperateDetailModel.perAmount  longLongValue]];
+            confirmTransactionModel.copies = copies;
             [self showConfirmAlertView:confirmTransactionModel];
         });
     } cancelBlock:^{
@@ -204,8 +218,7 @@ static NSString * const CooperateDetailCellID = @"CooperateDetailCellID";
         } else {
             TransferResultsViewController * VC = [[TransferResultsViewController alloc] init];
             VC.state = NO;
-            VC.errorCode = resultModel.errorCode;
-            VC.errorDesc = resultModel.errorDesc;
+            VC.resultModel = resultModel;
             //            [MBProgressHUD showTipMessageInWindow:[ErrorTypeTool getDescription:resultModel.errorCode]];
             VC.transferInfoArray = weakSelf.transferInfoArray;
             [self.navigationController pushViewController:VC animated:NO];
@@ -229,7 +242,11 @@ static NSString * const CooperateDetailCellID = @"CooperateDetailCellID";
 //}
 - (NSInteger)numberOfSectionsInTableView:(UITableView *)tableView
 {
-    self.sectionNumber = self.listArray.count > 0 ? 3 : 2;
+    if (self.cooperateDetailModel) {
+        self.sectionNumber = self.listArray.count > 0 ? 3 : 2;
+    } else {
+        self.sectionNumber = 0;
+    }
     return self.sectionNumber;
 }
 
@@ -283,8 +300,8 @@ static NSString * const CooperateDetailCellID = @"CooperateDetailCellID";
     UIView * footerView = [[UIView alloc] init];
     if (section == self.sectionNumber - 1 && ([self.cooperateDetailModel.status isEqualToString:@"1"] || [self.cooperateDetailModel.status isEqualToString:@"2"]) && ![self.cooperateDetailModel.originatorAddress isEqualToString:CurrentWalletAddress]) {
         CGFloat signOutW = (DEVICE_WIDTH - Margin_30) / 5;
-        UIButton * signOut = [UIButton createButtonWithTitle:Localized(@"SignOut") TextFont:18 TextNormalColor:[UIColor whiteColor] TextSelectedColor:[UIColor whiteColor] Target:self Selector:@selector(signOutAction)];
-        signOut.backgroundColor = WARNING_COLOR;
+        UIButton * signOut = [UIButton createButtonWithTitle:Localized(@"WithdrawalOfSupport") TextFont:18 TextNormalColor:[UIColor whiteColor] TextSelectedColor:[UIColor whiteColor] Target:self Selector:@selector(signOutAction)];
+        signOut.backgroundColor = COLOR(@"A1A7C7");
         signOut.layer.masksToBounds = YES;
         signOut.layer.cornerRadius = BG_CORNER;
         [footerView addSubview:signOut];
@@ -293,7 +310,7 @@ static NSString * const CooperateDetailCellID = @"CooperateDetailCellID";
             make.left.equalTo(footerView.mas_left).offset(Margin_10);
             make.size.mas_equalTo(CGSizeMake(signOutW * 2, MAIN_HEIGHT));
         }];
-        UIButton * support = [UIButton createButtonWithTitle:Localized(@"Support") TextFont:18 TextNormalColor:[UIColor whiteColor] TextSelectedColor:[UIColor whiteColor] Target:self Selector:@selector(supportAction)];
+        UIButton * support = [UIButton createButtonWithTitle:Localized(@"IWantToSupport") TextFont:18 TextNormalColor:[UIColor whiteColor] TextSelectedColor:[UIColor whiteColor] Target:self Selector:@selector(supportAction)];
         support.backgroundColor = MAIN_COLOR;
         support.layer.masksToBounds = YES;
         support.layer.cornerRadius = BG_CORNER;
@@ -368,7 +385,7 @@ static NSString * const CooperateDetailCellID = @"CooperateDetailCellID";
                 cell.textLabel.font = cell.detailTextLabel.font = FONT(12);
                 cell.textLabel.textColor = cell.detailTextLabel.textColor = COLOR_9;
                 cell.textLabel.text = [NSString stringWithFormat:Localized(@"The remaining %@ copies"), self.cooperateDetailModel.leftCopies];
-                cell.detailTextLabel.text = [NSString stringWithFormat:@"%@%@", self.cooperateDetailModel.cobuildCopies, Localized(@"SupportNumber")];
+                cell.detailTextLabel.text = [NSString stringWithFormat:@"%@%@", self.cooperateDetailModel.supportPerson, Localized(@"SupportNumber")];
                 [cell.contentView addSubview:self.lineView];
                 [self.lineView mas_makeConstraints:^(MASConstraintMaker *make) {
                     make.bottom.equalTo(cell.contentView);
@@ -380,20 +397,24 @@ static NSString * const CooperateDetailCellID = @"CooperateDetailCellID";
                 cell.textLabel.font = cell.detailTextLabel.font = FONT(13);
                 cell.textLabel.textColor = cell.detailTextLabel.textColor = COLOR_6;
                 if (indexPath.row == 3) {
-                    cell.textLabel.text = Localized(@"TotalSponsorSupport(BU)");
+                    cell.textLabel.text = Localized(@"TotalSponsorSupport（BU)");
                     cell.detailTextLabel.text = [NSString stringAmountSplitWith:self.cooperateDetailModel.initiatorAmount];
                     [cell.contentView addSubview:self.progressView];
-                    self.progressView.progress = [self.cooperateDetailModel.cobuildCopies floatValue] / [self.cooperateDetailModel.totalCopies floatValue];
+                    if (NULLString(self.cooperateDetailModel.totalCopies)) {
+                        NSString * supported = [NSString stringWithFormat:@"%lld", [self.cooperateDetailModel.cobuildCopies longLongValue] - [self.cooperateDetailModel.leftCopies longLongValue]];
+                        self.progressView.progress = [[[NSDecimalNumber decimalNumberWithString:supported] decimalNumberByDividingBy:[NSDecimalNumber decimalNumberWithString:self.cooperateDetailModel.cobuildCopies]] doubleValue];
+                    }
                     [self.progressView mas_makeConstraints:^(MASConstraintMaker *make) {
                         make.bottom.equalTo(cell.contentView);
                         make.left.equalTo(cell.contentView.mas_left).offset(Margin_15);
                         make.right.equalTo(cell.contentView.mas_right).offset(-Margin_15);
                     }];
                 } else if (indexPath.row == 5) {
-                    cell.textLabel.text = Localized(@"TotalTargetAmount(BU)");
-                    cell.detailTextLabel.text = [NSString stringAmountSplitWith:self.cooperateDetailModel.totalAmount];
+                    cell.textLabel.text = [NSString stringWithFormat:@"%@（BU）", Localized(@"TargetAmount")];
+                    NSString * targetAmount = [NSString stringWithFormat:@"%lld", [self.cooperateDetailModel.cobuildCopies longLongValue] * [self.cooperateDetailModel.perAmount longLongValue]];
+                    cell.detailTextLabel.text = [NSString stringAmountSplitWith:targetAmount];
                 } else if (indexPath.row == 6) {
-                    cell.textLabel.text = Localized(@"TotalSupport(BU)");
+                    cell.textLabel.text = Localized(@"TotalSupport（BU)");
                     cell.detailTextLabel.text = [NSString stringAmountSplitWith:self.cooperateDetailModel.supportAmount];
                 }
             }

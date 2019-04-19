@@ -192,8 +192,7 @@
             VC.state = YES;
         } else {
             VC.state = NO;
-            VC.errorCode = resultModel.errorCode;
-            VC.errorDesc = resultModel.errorDesc;
+            VC.resultModel = resultModel;
 //            [MBProgressHUD showTipMessageInWindow:[ErrorTypeTool getDescription:resultModel.errorCode]];
         }
         VC.transferInfoArray = self.transferInfoArray;

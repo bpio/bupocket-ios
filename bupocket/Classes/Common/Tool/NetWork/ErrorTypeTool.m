@@ -32,6 +32,8 @@
             // SourceAddress cannot be equal to destAddress
         case SOURCEADDRESS_EQUAL_DESTADDRESS_ERROR: errorDesc = Localized(@"CannotTransferToOneself");
             break;
+        case ERRCODE_CONTRACT_EXECUTE_FAIL: errorDesc = [NSString stringWithFormat:Localized(@"ContractTransferFailure%ld"), ERRCODE_CONTRACT_EXECUTE_FAIL];
+            break;
             case SYSTEM_ERROR: errorDesc = Localized(@"SYSTEM_ERROR");
         default: errorDesc = Localized(@"LoadFailure");
             break;

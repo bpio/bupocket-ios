@@ -97,7 +97,14 @@ static NSString * const AssetsDetailCellID = @"AssetsDetailCellID";
     self.listImage.image = [UIImage imageNamed:@"user_placeholder"];
     self.walletAddress.text = [NSString stringEllipsisWithStr:cooperateSupportModel.initiatorAddress subIndex:SubIndex_Address];
     self.date.text = cooperateSupportModel.createTime;
-    self.assets.text = cooperateSupportModel.amount;
+    self.assets.text = [NSString stringAppendingBUWithStr:[NSString stringAmountSplitWith:cooperateSupportModel.amount]];
+    if ([cooperateSupportModel.type isEqualToString:@"1"]) {
+        self.state.text = Localized(@"Support");
+        self.state.textColor = COLOR_6;
+    } else if ([cooperateSupportModel.type isEqualToString:@"2"]) {
+        self.state.text = Localized(@"Withdraw");
+        self.state.textColor = COLOR_9;
+    }
 }
 - (UIImageView *)listImage
 {

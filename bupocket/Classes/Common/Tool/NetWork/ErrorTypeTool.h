@@ -25,6 +25,7 @@ typedef NS_ENUM(NSInteger, ErrorType) {
 typedef NS_ENUM(NSInteger, ErrorCode) {
     ERRCODE_ACCOUNT_LOW_RESERVE = 100, //  your credit is running low
     ERRCODE_FEE_NOT_ENOUGH = 111, // Insufficient transaction costs
+    ERRCODE_CONTRACT_EXECUTE_FAIL = 151,
 };
 
 // Node Error type

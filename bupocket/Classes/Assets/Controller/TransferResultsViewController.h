@@ -15,8 +15,9 @@ NS_ASSUME_NONNULL_BEGIN
 @property (nonatomic, copy) NSArray * transferInfoArray;
 @property (nonatomic, assign) BOOL state;
 
-@property (nonatomic, assign) int32_t errorCode;
-@property (nonatomic, copy) NSString * errorDesc;
+@property (nonatomic, strong) TransactionResultModel * resultModel;
+//@property (nonatomic, assign) int32_t errorCode;
+//@property (nonatomic, copy) NSString * errorDesc;
 
 @end
 

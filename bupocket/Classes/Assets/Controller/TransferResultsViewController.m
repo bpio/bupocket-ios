@@ -47,8 +47,11 @@ static NSString * const TransferResultsCellID = @"DetailListCellID";
         [transferResults setTitle:Localized(@"Success") forState:UIControlStateNormal];
         [transferResults setImage:[UIImage imageNamed:@"transferSuccess"] forState:UIControlStateNormal];
     } else {
-//        [transferResults setTitle:Localized(@"Failure") forState:UIControlStateNormal];
-        [transferResults setTitle:[NSString stringWithFormat:@"错误码%d 失败信息：%@", self.errorCode, self.errorDesc] forState:UIControlStateNormal];
+        if (self.resultModel.errorCode == ERRCODE_CONTRACT_EXECUTE_FAIL) {
+            [transferResults setTitle:[ErrorTypeTool getDescription:ERRCODE_CONTRACT_EXECUTE_FAIL] forState:UIControlStateNormal];
+        } else {
+            [transferResults setTitle:Localized(@"Failure") forState:UIControlStateNormal];
+        }
         [transferResults setImage:[UIImage imageNamed:@"transferFailure"] forState:UIControlStateNormal];
     }
     CGFloat transferResultsH = [Encapsulation rectWithText:transferResults.titleLabel.text font:transferResults.titleLabel.font textWidth:DEVICE_WIDTH - Margin_30].size.height;

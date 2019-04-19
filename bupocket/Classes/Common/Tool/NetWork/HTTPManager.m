@@ -514,25 +514,16 @@ static int64_t const gasPrice = 1000;
     if (_hash) {
         if ([confirmTransactionModel.type isEqualToString:TransactionType_Cooperate_Support] || [confirmTransactionModel.type isEqualToString:TransactionType_Cooperate_SignOut]) {
             [[HTTPManager shareManager] getNodeCooperateCheckDataWithNodeId:confirmTransactionModel.nodeId hash:_hash copies:confirmTransactionModel.copies success:^(id responseObject) {
-                NSInteger code = [[responseObject objectForKey:@"errCode"] integerValue];
-                if (code == Success_Code) {
-                    [[HTTPManager shareManager] getConfirmTransactionDataWithModel:confirmTransactionModel hash:self->_hash initiatorAddress:CurrentWalletAddress success:^(id responseObject) {
-                        if(success != nil)
-                        {
-                            success(responseObject);
-                        }
-                    } failure:^(NSError *error) {
-                        if(failure != nil)
-                        {
-                            failure(error);
-                            [MBProgressHUD showTipMessageInWindow:Localized(@"NoNetWork")];
-                        }
-                    }];
-                } else {
-                    [Encapsulation showAlertControllerWithMessage:[ErrorTypeTool getDescriptionWithNodeErrorCode:code] handler:nil];
+                if(success != nil)
+                {
+                    success(responseObject);
                 }
             } failure:^(NSError *error) {
-                
+                if(failure != nil)
+                {
+                    failure(error);
+                    [MBProgressHUD showTipMessageInWindow:Localized(@"NoNetWork")];
+                }
             }];
         } else {
             [[HTTPManager shareManager] getConfirmTransactionDataWithModel:confirmTransactionModel hash:_hash initiatorAddress:CurrentWalletAddress success:^(id responseObject) {

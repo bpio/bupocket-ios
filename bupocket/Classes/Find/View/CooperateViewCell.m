@@ -99,9 +99,13 @@
     NSString * str = [NSString stringWithFormat:@"%@ %@%@", [NSString stringAmountSplitWith:cooperateModel.perAmount], @"BU/", Localized(@"Portion")];
     self.numberOfCopies.attributedText = [Encapsulation attrWithString:str preFont:FONT_Bold(18) preColor:MAIN_COLOR index:str.length - 4 sufFont:FONT(12) sufColor:MAIN_COLOR lineSpacing:0];
     self.purchaseAmount.text = Localized(@"PurchaseAmount");
-    self.progressView.progress = [cooperateModel.cobuildCopies floatValue] / [cooperateModel.totalCopies floatValue];
-    NSString * targetNumberStr = [NSString stringWithFormat:@"%@ %@ BU", Localized(@"TargetNumber"), [NSString stringAmountSplitWith:cooperateModel.totalAmount]];
-    self.targetNumber.attributedText = [Encapsulation attrWithString:targetNumberStr preFont:FONT(13) preColor:COLOR(@"B2B2B2") index:Localized(@"TargetNumber").length sufFont:FONT(13) sufColor:COLOR_6 lineSpacing:0];
+    if (NULLString(cooperateModel.totalCopies)) {
+        NSString * supported = [NSString stringWithFormat:@"%lld", [cooperateModel.cobuildCopies longLongValue] - [cooperateModel.leftCopies longLongValue]];
+        self.progressView.progress = [[[NSDecimalNumber decimalNumberWithString:supported] decimalNumberByDividingBy:[NSDecimalNumber decimalNumberWithString:cooperateModel.cobuildCopies]] doubleValue];
+    }
+    NSString * targetAmount = [NSString stringWithFormat:@"%lld", [cooperateModel.cobuildCopies longLongValue] * [cooperateModel.perAmount longLongValue]];
+    NSString * targetNumberStr = [NSString stringWithFormat:@"%@ %@ BU", Localized(@"TargetAmount"), [NSString stringAmountSplitWith:targetAmount]];
+    self.targetNumber.attributedText = [Encapsulation attrWithString:targetNumberStr preFont:FONT(13) preColor:COLOR(@"B2B2B2") index:Localized(@"TargetAmount").length sufFont:FONT(13) sufColor:COLOR_6 lineSpacing:0];
     NSString * residualPortionStr = [NSString stringWithFormat:@"%@ %@ %@", Localized(@"ResidualPortion"), cooperateModel.leftCopies, Localized(@"Portion")];
     self.residualPortion.attributedText = [Encapsulation attrWithString:residualPortionStr preFont:FONT(13) preColor:COLOR(@"B2B2B2") index:Localized(@"ResidualPortion").length sufFont:FONT(13) sufColor:COLOR_6 lineSpacing:0];
     _residualPortion.textAlignment = NSTextAlignmentRight;

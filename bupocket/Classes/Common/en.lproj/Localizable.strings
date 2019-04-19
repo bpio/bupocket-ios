@@ -432,6 +432,7 @@
 "PurchaseAmount" = "起购金额";
 "AwardSharingRatio" = "奖励分享比例";
 "TargetNumber" = "目标数量";
+"TargetAmount" = "目标金额";
 "ResidualPortion" = "剩余份数";
 "Portion" = "份";
 "ShareRatioInfo" = "节点共建申请者承诺在成为生态节点后会拿出多少比例的奖励按照资金支持权重分享给共建支持者";
@@ -442,14 +443,16 @@
 "Quit" = "已退出";
 "InitialPurchaseAmount(BU/Portion)" = "起购金额（BU/份）";
 "IncentiveSharingRatio" = "奖励分享比例";
-"TotalSponsorSupport(BU)" = "发起人支持总额(BU)";
+"TotalSponsorSupport（BU)" = "发起人支持总额（BU)";
 "The remaining %@ copies" = "剩余%@份";
-"TotalTargetAmount(BU)" = "目标总额（BU)";
-"TotalSupport(BU)" = "已支持总额(BU)";
+//"TotalTargetAmount（BU)" = "目标总额（BU)";
+"TotalSupport（BU)" = "已支持总额（BU)";
 "RiskStatement" = "风险说明";
-"SupportRecords" = "支持记录";
-"SignOut" = "退出";
+"SupportRecords" = "节点共建记录";
+"WithdrawalOfSupport" = "撤回支持";
+"IWantToSupport" = "我要支持";
 "Support" = "支持";
+"Withdraw" = "撤回";
 "RiskStatementPrompt" = "1、节点共建不是商品交易。支持者根据自己的判断选择、支持众筹项目，与发起人共同实现梦想并获得发起人承诺的回报，众筹存在一定风险。\n2、众筹平台只提供平台网络空间、技术服务和支持等中介服务。作为中间平台，并不是发起人或支持者中的任何一方，众筹仅存在于发起人和支持者之间，使用平台产生的法律后果由发起人与支持者自行承担。\n3、如果发生发起人无法发放回报、延迟发放回报、不提供回报后续服务等情形，您需要直接和发起人协商解决，平台对此不承担任何责任。";
 // 支持
 "SupportProjects" = "支持项目";
@@ -459,7 +462,8 @@
 "ConfirmSupport" = "确认支持";
 "BU/Portion" = "BU/份";
 // 退出、支持 交易详情
-"Exit '%@' Project" = "退出\"%@\"项目";
+"ConfirmWithdrawalPrompt" = "确认撤回全部支持金额么？";
+"Exit '%@' Project" = "撤回支持\"%@\"";
 "Supporting '%@' Projects" = "支持\"%@\"项目";
 // 退出节点共建计划
 //"QuitCooperate" = "退出节点共建计划";
@@ -472,6 +476,8 @@
 "BusinessDataPrompt" = "业务数据根据链上交易元数据进行分析处理，预计20秒内处理完成";
 "DataRefreshed" = "数据已刷新";
 "NodeTransferPrompt" = "温馨提示：\n节点的投票、撤票等操作链上交易成功后，相关数据的统计有延迟，预计30秒内完成，此为正常现象。";
+// 交易失败
+"ContractTransferFailure%ld" = "合约调用失败\n错误码%ld";
 // Errors
 "LoadFailure" = "Failed to load";
 // Node Errors

@@ -422,8 +422,7 @@ static NSString * const NodePlanCellID = @"NodePlanCellID";
         } else {
             TransferResultsViewController * VC = [[TransferResultsViewController alloc] init];
             VC.state = NO;
-            VC.errorCode = resultModel.errorCode;
-            VC.errorDesc = resultModel.errorDesc;
+            VC.resultModel = resultModel;
             //            [MBProgressHUD showTipMessageInWindow:[ErrorTypeTool getDescription:resultModel.errorCode]];
             VC.transferInfoArray = weakSelf.transferInfoArray;
             [self.navigationController pushViewController:VC animated:NO];
