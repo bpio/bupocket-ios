@@ -21,7 +21,8 @@ NS_ASSUME_NONNULL_BEGIN
 @property (nonatomic, strong) UILabel * title;
 @property (nonatomic, strong) UILabel * numberOfCopies;
 @property (nonatomic, strong) UILabel * purchaseAmount;
-@property (nonatomic, strong) UILabel * targetNumber;
+//@property (nonatomic, strong) UILabel * targetNumber;
+@property (nonatomic, strong) UILabel * supportPortion;
 @property (nonatomic, strong) UILabel * residualPortion;
 @property (nonatomic, strong) UIProgressView * progressView;
 @property (nonatomic, strong) UIImageView * shareRatioBg;

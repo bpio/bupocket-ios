@@ -25,7 +25,7 @@
         [self.listBg addSubview:self.title];
         [self.listBg addSubview:self.numberOfCopies];
         [self.listBg addSubview:self.purchaseAmount];
-        [self.listBg addSubview:self.targetNumber];
+        [self.listBg addSubview:self.supportPortion];
         [self.listBg addSubview:self.residualPortion];
         [self.listBg addSubview:self.progressView];
         [self.listBg addSubview:self.shareRatioBg];
@@ -71,14 +71,14 @@
     }];
     
     CGFloat residualPortionW = (DEVICE_WIDTH - Margin_50) / 5;
-    [self.targetNumber mas_makeConstraints:^(MASConstraintMaker *make) {
+    [self.supportPortion mas_makeConstraints:^(MASConstraintMaker *make) {
         make.left.equalTo(self.title);
         make.top.equalTo(self.progressView.mas_bottom);
         make.size.mas_equalTo(CGSizeMake(residualPortionW * 3, MAIN_HEIGHT));
     }];
     [self.residualPortion mas_makeConstraints:^(MASConstraintMaker *make) {
         make.right.equalTo(self.shareRatioBg);
-        make.centerY.equalTo(self.targetNumber);
+        make.centerY.equalTo(self.supportPortion);
         make.width.mas_equalTo(residualPortionW * 2);
     }];
     [self.shareRatioBtn mas_makeConstraints:^(MASConstraintMaker *make) {
@@ -103,9 +103,10 @@
         NSString * supported = [NSString stringWithFormat:@"%lld", [cooperateModel.cobuildCopies longLongValue] - [cooperateModel.leftCopies longLongValue]];
         self.progressView.progress = [[[NSDecimalNumber decimalNumberWithString:supported] decimalNumberByDividingBy:[NSDecimalNumber decimalNumberWithString:cooperateModel.cobuildCopies]] doubleValue];
     }
-    NSString * targetAmount = [NSString stringWithFormat:@"%lld", [cooperateModel.cobuildCopies longLongValue] * [cooperateModel.perAmount longLongValue]];
-    NSString * targetNumberStr = [NSString stringWithFormat:@"%@ %@ BU", Localized(@"TargetAmount"), [NSString stringAmountSplitWith:targetAmount]];
-    self.targetNumber.attributedText = [Encapsulation attrWithString:targetNumberStr preFont:FONT(13) preColor:COLOR(@"B2B2B2") index:Localized(@"TargetAmount").length sufFont:FONT(13) sufColor:COLOR_6 lineSpacing:0];
+//    NSString * targetAmount = [NSString stringWithFormat:@"%lld", [cooperateModel.cobuildCopies longLongValue] * [cooperateModel.perAmount longLongValue]];
+//    NSString * targetNumberStr = [NSString stringWithFormat:@"%@ %@ BU", Localized(@"SupportPortion"), [NSString stringAmountSplitWith:targetAmount]];
+    NSString * support = [NSString stringWithFormat:@"%@ %lld %@", Localized(@"SupportPortion"), [cooperateModel.cobuildCopies longLongValue] - [cooperateModel.leftCopies longLongValue], Localized(@"Portion")];
+    self.supportPortion.attributedText = [Encapsulation attrWithString:support preFont:FONT(13) preColor:COLOR(@"B2B2B2") index:Localized(@"SupportPortion").length sufFont:FONT(13) sufColor:COLOR_6 lineSpacing:0];
     NSString * residualPortionStr = [NSString stringWithFormat:@"%@ %@ %@", Localized(@"ResidualPortion"), cooperateModel.leftCopies, Localized(@"Portion")];
     self.residualPortion.attributedText = [Encapsulation attrWithString:residualPortionStr preFont:FONT(13) preColor:COLOR(@"B2B2B2") index:Localized(@"ResidualPortion").length sufFont:FONT(13) sufColor:COLOR_6 lineSpacing:0];
     _residualPortion.textAlignment = NSTextAlignmentRight;
@@ -148,13 +149,13 @@
     }
     return _purchaseAmount;
 }
-- (UILabel *)targetNumber
+- (UILabel *)supportPortion
 {
-    if (!_targetNumber) {
-        _targetNumber = [[UILabel alloc] init];
-        _targetNumber.font = FONT(12);
+    if (!_supportPortion) {
+        _supportPortion = [[UILabel alloc] init];
+        _supportPortion.font = FONT(12);
     }
-    return _targetNumber;
+    return _supportPortion;
 }
 - (UILabel *)residualPortion
 {

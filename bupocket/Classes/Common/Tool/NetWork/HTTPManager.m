@@ -448,6 +448,25 @@ static int64_t const gasPrice = 1000;
         }
     }];
 }
+// find ad banner
+- (void)getAdsDataWithURL:(NSString *)URL
+                  success:(void (^)(id responseObject))success
+                  failure:(void (^)(NSError *error))failure
+{
+    [MBProgressHUD showActivityMessageInWindow:Localized(@"Loading")];
+    NSString * url = SERVER_COMBINE_API(_webServerDomain, URL);
+    [[HttpTool shareTool] GET:url parameters:nil success:^(id responseObject) {
+        if(success != nil)
+        {
+            success(responseObject);
+        }
+    } failure:^(NSError *error) {
+        if(failure != nil)
+        {
+            failure(error);
+        }
+    }];
+}
 #pragma mark - Node application
 // QR code information
 - (void)getDposApplyNodeDataWithQRcodeSessionId:(NSString *)QRcodeSessionId

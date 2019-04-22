@@ -98,6 +98,7 @@
 		95383AE62261DEE0008CE1B2 /* CooperateDetailModel.m in Sources */ = {isa = PBXBuildFile; fileRef = 95383AE52261DEE0008CE1B2 /* CooperateDetailModel.m */; };
 		95383AE92261F4C0008CE1B2 /* CooperateSupportModel.m in Sources */ = {isa = PBXBuildFile; fileRef = 95383AE82261F4C0008CE1B2 /* CooperateSupportModel.m */; };
 		954371742199234100915BBE /* SettingViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 954371732199234100915BBE /* SettingViewController.m */; };
+		9548EE21226DE93E0026B931 /* AdsModel.m in Sources */ = {isa = PBXBuildFile; fileRef = 9548EE20226DE93E0026B931 /* AdsModel.m */; };
 		9549EC66219C0CF800307255 /* CreateTipsAlertView.m in Sources */ = {isa = PBXBuildFile; fileRef = 9549EC65219C0CF800307255 /* CreateTipsAlertView.m */; };
 		9549EC70219D075F00307255 /* ClearCacheTool.m in Sources */ = {isa = PBXBuildFile; fileRef = 9549EC6F219D075E00307255 /* ClearCacheTool.m */; };
 		954F231122433C690090E967 /* FindViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 954F231022433C690090E967 /* FindViewController.m */; };
@@ -378,6 +379,8 @@
 		95383AE82261F4C0008CE1B2 /* CooperateSupportModel.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = CooperateSupportModel.m; sourceTree = "<group>"; };
 		954371722199234100915BBE /* SettingViewController.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = SettingViewController.h; sourceTree = "<group>"; };
 		954371732199234100915BBE /* SettingViewController.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = SettingViewController.m; sourceTree = "<group>"; };
+		9548EE1F226DE93E0026B931 /* AdsModel.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = AdsModel.h; sourceTree = "<group>"; };
+		9548EE20226DE93E0026B931 /* AdsModel.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = AdsModel.m; sourceTree = "<group>"; };
 		9549EC64219C0CF800307255 /* CreateTipsAlertView.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = CreateTipsAlertView.h; sourceTree = "<group>"; };
 		9549EC65219C0CF800307255 /* CreateTipsAlertView.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = CreateTipsAlertView.m; sourceTree = "<group>"; };
 		9549EC6E219D075E00307255 /* ClearCacheTool.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ClearCacheTool.h; sourceTree = "<group>"; };
@@ -1045,6 +1048,8 @@
 				95383AE52261DEE0008CE1B2 /* CooperateDetailModel.m */,
 				95383AE72261F4C0008CE1B2 /* CooperateSupportModel.h */,
 				95383AE82261F4C0008CE1B2 /* CooperateSupportModel.m */,
+				9548EE1F226DE93E0026B931 /* AdsModel.h */,
+				9548EE20226DE93E0026B931 /* AdsModel.m */,
 			);
 			path = Model;
 			sourceTree = "<group>";
@@ -1456,6 +1461,7 @@
 				83379A80217B524D00C222A5 /* UIApplication+Extension.m in Sources */,
 				9549EC66219C0CF800307255 /* CreateTipsAlertView.m in Sources */,
 				959E28F02248B998006FCA30 /* LoginConfirmViewController.m in Sources */,
+				9548EE21226DE93E0026B931 /* AdsModel.m in Sources */,
 				83379AE52180631200C222A5 /* TxInfoModel.m in Sources */,
 				83379A8C217DB25A00C222A5 /* TransferAccountsViewController.m in Sources */,
 				83FB443621904AA400D68569 /* HMScannerViewController.m in Sources */,

@@ -16,6 +16,7 @@
 #import "NodeTransferSuccessViewController.h"
 #import "TransferResultsViewController.h"
 #import "RequestTimeoutViewController.h"
+#import "YBPopupMenu.h"
 
 @interface CooperateDetailViewController ()<UITableViewDelegate, UITableViewDataSource>
 
@@ -25,12 +26,19 @@
 @property (nonatomic, strong) UIView * noNetWork;
 @property (nonatomic, strong) UIView * riskStatementBg;
 @property (nonatomic, strong) UIButton * stateBtn;
+@property (nonatomic, strong) CustomButton * shareRatioBtn;
 @property (nonatomic, strong) UIProgressView * progressView;
 @property (nonatomic, strong) UIView * lineView;
+@property (nonatomic, strong) CustomButton * bondButton;
 
 @property (nonatomic, strong) CooperateDetailModel * cooperateDetailModel;
 @property (nonatomic, assign) NSInteger sectionNumber;
 @property (nonatomic, strong) NSMutableArray * transferInfoArray;
+@property (nonatomic, strong) YBPopupMenu * popupMenu;
+@property (nonatomic, strong) UIView * footerView;
+@property (nonatomic, strong) UIButton * redemptionAllSupport;
+@property (nonatomic, strong) UIButton * signOut;
+@property (nonatomic, strong) UIButton * support;
 
 @end
 
@@ -85,6 +93,16 @@ static NSString * const CooperateDetailCellID = @"CooperateDetailCellID";
             self.cooperateDetailModel = [CooperateDetailModel mj_objectWithKeyValues:responseObject[@"data"]];
             self.listArray = [CooperateSupportModel mj_objectArrayWithKeyValuesArray:self.cooperateDetailModel.supportList];
             [self.tableView reloadData];
+            if ([self.cooperateDetailModel.status isEqualToString:@"43"]) {
+                self.footerView.hidden = NO;
+                self.redemptionAllSupport.hidden = NO;
+            } else if (([self.cooperateDetailModel.status isEqualToString:@"1"] || [self.cooperateDetailModel.status isEqualToString:@"2"]) && ![self.cooperateDetailModel.originatorAddress isEqualToString:CurrentWalletAddress]) {
+                self.footerView.hidden = NO;
+                self.signOut.hidden = NO;
+                self.support.hidden = NO;
+            } else {
+                self.footerView.hidden = YES;
+            }
         } else {
             [MBProgressHUD showTipMessageInWindow:[ErrorTypeTool getDescriptionWithNodeErrorCode:code]];
         }
@@ -110,21 +128,78 @@ static NSString * const CooperateDetailCellID = @"CooperateDetailCellID";
     self.tableView.separatorStyle = UITableViewCellSeparatorStyleNone;
     [self.view addSubview:self.tableView];
     self.noNetWork = [Encapsulation showNoNetWorkWithSuperView:self.view target:self action:@selector(reloadData)];
-}
-- (void)signOutAction
-{
-    [Encapsulation showAlertControllerWithTitle:nil message:Localized(@"ConfirmWithdrawalPrompt") cancelHandler:^(UIAlertAction *action) {
-        
-    } confirmHandler:^(UIAlertAction *action) {
-        ConfirmTransactionModel * confirmTransactionModel = [[ConfirmTransactionModel alloc] init];
-        confirmTransactionModel.qrRemark = [NSString stringWithFormat:Localized(@"Exit '%@' Project"), self.cooperateDetailModel.title];
-        confirmTransactionModel.destAddress = self.cooperateDetailModel.contractAddress;
-        confirmTransactionModel.amount = @"0";
-        confirmTransactionModel.script = @"{\"method\":\"revoke\"}";
-        confirmTransactionModel.nodeId = self.cooperateDetailModel.nodeId;
-        confirmTransactionModel.type = TransactionType_Cooperate_SignOut;
-        [self showConfirmAlertView:confirmTransactionModel];        
+    [self.view addSubview:self.footerView];
+    [self.footerView mas_makeConstraints:^(MASConstraintMaker *make) {
+        make.left.right.equalTo(self.view);
+        make.bottom.equalTo(self.view.mas_bottom).offset(-SafeAreaBottomH);
+        make.height.mas_equalTo(ScreenScale(75));
     }];
+    self.footerView.hidden = YES;
+    self.signOut.hidden = YES;
+    self.support.hidden = YES;
+    self.redemptionAllSupport.hidden = YES;
+}
+- (UIView *)footerView
+{
+    if (!_footerView) {
+        _footerView = [[UIView alloc] init];
+        _footerView.backgroundColor = _tableView.backgroundColor;
+        CGFloat signOutW = (DEVICE_WIDTH - Margin_30) / 5;
+        _signOut = [UIButton createButtonWithTitle:Localized(@"WithdrawalOfSupport") TextFont:18 TextNormalColor:[UIColor whiteColor] TextSelectedColor:[UIColor whiteColor] Target:self Selector:@selector(signOutAction:)];
+        _signOut.backgroundColor = COLOR(@"A1A7C7");
+        _signOut.layer.masksToBounds = YES;
+        _signOut.layer.cornerRadius = BG_CORNER;
+        [_footerView addSubview:_signOut];
+        [_signOut mas_makeConstraints:^(MASConstraintMaker *make) {
+            make.top.equalTo(self->_footerView.mas_top).offset(Margin_15);
+            make.left.equalTo(self->_footerView.mas_left).offset(Margin_10);
+            make.size.mas_equalTo(CGSizeMake(signOutW * 2, MAIN_HEIGHT));
+        }];
+        _support = [UIButton createButtonWithTitle:Localized(@"IWantToSupport") TextFont:18 TextNormalColor:[UIColor whiteColor] TextSelectedColor:[UIColor whiteColor] Target:self Selector:@selector(supportAction)];
+        _support.backgroundColor = MAIN_COLOR;
+        _support.layer.masksToBounds = YES;
+        _support.layer.cornerRadius = BG_CORNER;
+        [_footerView addSubview:_support];
+        [_support mas_makeConstraints:^(MASConstraintMaker *make) {
+            make.top.equalTo(self->_signOut);
+            make.right.equalTo(self->_footerView.mas_right).offset(-Margin_10);
+            make.size.mas_equalTo(CGSizeMake(signOutW * 3, MAIN_HEIGHT));
+        }];
+        _redemptionAllSupport = [UIButton createButtonWithTitle:Localized(@"RedemptionAllSupport") TextFont:18 TextNormalColor:[UIColor whiteColor] TextSelectedColor:[UIColor whiteColor] Target:self Selector:@selector(signOutAction:)];
+        _redemptionAllSupport.backgroundColor = COLOR(@"A1A7C7");
+        _redemptionAllSupport.layer.masksToBounds = YES;
+        _redemptionAllSupport.layer.cornerRadius = BG_CORNER;
+        [_footerView addSubview:_redemptionAllSupport];
+        [_redemptionAllSupport mas_makeConstraints:^(MASConstraintMaker *make) {
+            make.top.equalTo(self->_footerView.mas_top).offset(Margin_15);
+            make.left.equalTo(self->_footerView.mas_left).offset(Margin_10);
+            make.size.mas_equalTo(CGSizeMake(DEVICE_WIDTH - Margin_20, MAIN_HEIGHT));
+        }];
+    }
+    return _footerView;
+}
+- (void)signOutAction:(UIButton *)button
+{
+    if (button == _redemptionAllSupport) {
+        [self setSignOutData];
+    } else {
+        [Encapsulation showAlertControllerWithTitle:nil message:Localized(@"ConfirmWithdrawalPrompt") cancelHandler:^(UIAlertAction *action) {
+            
+        } confirmHandler:^(UIAlertAction *action) {
+            [self setSignOutData];
+        }];
+    }
+}
+- (void)setSignOutData
+{
+    ConfirmTransactionModel * confirmTransactionModel = [[ConfirmTransactionModel alloc] init];
+    confirmTransactionModel.qrRemark = [NSString stringWithFormat:Localized(@"Exit '%@' Project"), self.cooperateDetailModel.title];
+    confirmTransactionModel.destAddress = self.cooperateDetailModel.contractAddress;
+    confirmTransactionModel.amount = @"0";
+    confirmTransactionModel.script = @"{\"method\":\"revoke\"}";
+    confirmTransactionModel.nodeId = self.cooperateDetailModel.nodeId;
+    confirmTransactionModel.type = TransactionType_Cooperate_SignOut;
+    [self showConfirmAlertView:confirmTransactionModel];
 }
 - (void)supportAction
 {
@@ -229,17 +304,6 @@ static NSString * const CooperateDetailCellID = @"CooperateDetailCellID";
         [self.navigationController pushViewController:VC animated:NO];
     }];
 }
-//- (UIView *)noData
-//{
-//    if (!_noData) {
-//        CGFloat noDataH = DEVICE_HEIGHT - NavBarH - SafeAreaBottomH;
-//        _noData = [[UIView alloc] initWithFrame:CGRectMake(0, 0, DEVICE_WIDTH, noDataH)];
-//        UIButton * noDataBtn = [Encapsulation showNoDataWithTitle:Localized(@"NoRecord") imageName:@"noRecord" superView:_noData frame:CGRectMake(0, (noDataH - ScreenScale(160)) / 2, DEVICE_WIDTH, ScreenScale(160))];
-//        noDataBtn.hidden = NO;
-//        [_noData addSubview:noDataBtn];
-//    }
-//    return _noData;
-//}
 - (NSInteger)numberOfSectionsInTableView:(UITableView *)tableView
 {
     if (self.cooperateDetailModel) {
@@ -286,8 +350,8 @@ static NSString * const CooperateDetailCellID = @"CooperateDetailCellID";
 - (CGFloat)tableView:(UITableView *)tableView heightForFooterInSection:(NSInteger)section
 {
     if (section == self.sectionNumber - 1) {
-        CGFloat footerH = SafeAreaBottomH + NavBarH;
-        if ([self.cooperateDetailModel.status isEqualToString:@"1"] || [self.cooperateDetailModel.status isEqualToString:@"2"]) {
+        CGFloat footerH = SafeAreaBottomH + NavBarH + Margin_5;
+        if (([self.cooperateDetailModel.status isEqualToString:@"43"] || [self.cooperateDetailModel.status isEqualToString:@"1"] || [self.cooperateDetailModel.status isEqualToString:@"2"]) && ![self.cooperateDetailModel.originatorAddress isEqualToString:CurrentWalletAddress]) {
             footerH += ScreenScale(75);
         }
         return  footerH;
@@ -295,34 +359,7 @@ static NSString * const CooperateDetailCellID = @"CooperateDetailCellID";
         return CGFLOAT_MIN;
     }
 }
-- (UIView *)tableView:(UITableView *)tableView viewForFooterInSection:(NSInteger)section
-{
-    UIView * footerView = [[UIView alloc] init];
-    if (section == self.sectionNumber - 1 && ([self.cooperateDetailModel.status isEqualToString:@"1"] || [self.cooperateDetailModel.status isEqualToString:@"2"]) && ![self.cooperateDetailModel.originatorAddress isEqualToString:CurrentWalletAddress]) {
-        CGFloat signOutW = (DEVICE_WIDTH - Margin_30) / 5;
-        UIButton * signOut = [UIButton createButtonWithTitle:Localized(@"WithdrawalOfSupport") TextFont:18 TextNormalColor:[UIColor whiteColor] TextSelectedColor:[UIColor whiteColor] Target:self Selector:@selector(signOutAction)];
-        signOut.backgroundColor = COLOR(@"A1A7C7");
-        signOut.layer.masksToBounds = YES;
-        signOut.layer.cornerRadius = BG_CORNER;
-        [footerView addSubview:signOut];
-        [signOut mas_makeConstraints:^(MASConstraintMaker *make) {
-            make.top.equalTo(footerView.mas_top).offset(Margin_15);
-            make.left.equalTo(footerView.mas_left).offset(Margin_10);
-            make.size.mas_equalTo(CGSizeMake(signOutW * 2, MAIN_HEIGHT));
-        }];
-        UIButton * support = [UIButton createButtonWithTitle:Localized(@"IWantToSupport") TextFont:18 TextNormalColor:[UIColor whiteColor] TextSelectedColor:[UIColor whiteColor] Target:self Selector:@selector(supportAction)];
-        support.backgroundColor = MAIN_COLOR;
-        support.layer.masksToBounds = YES;
-        support.layer.cornerRadius = BG_CORNER;
-        [footerView addSubview:support];
-        [support mas_makeConstraints:^(MASConstraintMaker *make) {
-            make.top.equalTo(signOut);
-            make.right.equalTo(footerView.mas_right).offset(-Margin_10);
-            make.size.mas_equalTo(CGSizeMake(signOutW * 3, MAIN_HEIGHT));
-        }];
-    }
-    return footerView;
-}
+
 - (CGFloat)tableView:(UITableView *)tableView heightForRowAtIndexPath:(NSIndexPath *)indexPath
 {
     if (indexPath.section == 0) {
@@ -333,9 +370,7 @@ static NSString * const CooperateDetailCellID = @"CooperateDetailCellID";
         } else if (indexPath.row == 2) {
             return Margin_20;
         } else if (indexPath.row == 3) {
-            return MAIN_HEIGHT;
-        } else if (indexPath.row == 4) {
-            return Margin_40;
+            return ScreenScale(70);
         } else {
             return ScreenScale(35);
         }
@@ -374,48 +409,60 @@ static NSString * const CooperateDetailCellID = @"CooperateDetailCellID";
                 cell.textLabel.textColor = MAIN_COLOR;
                 cell.detailTextLabel.font = FONT_Bold(18);
                 cell.detailTextLabel.textColor = WARNING_COLOR;
-                cell.textLabel.text = [NSString stringAmountSplitWith:self.cooperateDetailModel.perAmount];
+                NSString * str = [NSString stringWithFormat:@"%@ %@%@", [NSString stringAmountSplitWith:self.cooperateDetailModel.perAmount], @"BU/", Localized(@"Portion")];
+                cell.textLabel.attributedText = [Encapsulation attrWithString:str preFont:FONT_Bold(18) preColor:MAIN_COLOR index:str.length - 4 sufFont:FONT(12) sufColor:MAIN_COLOR lineSpacing:0];
                 cell.detailTextLabel.text = [NSString stringWithFormat:@"%@%%", self.cooperateDetailModel.rewardRate];
             } else if (indexPath.row == 2) {
                 cell.textLabel.font = cell.detailTextLabel.font = FONT(12);
                 cell.textLabel.textColor = cell.detailTextLabel.textColor = COLOR(@"B2B2B2");
-                cell.textLabel.text = Localized(@"InitialPurchaseAmount(BU/Portion)");
-                cell.detailTextLabel.text = Localized(@"IncentiveSharingRatio");
-            } else if (indexPath.row == 4) {
-                cell.textLabel.font = cell.detailTextLabel.font = FONT(12);
-                cell.textLabel.textColor = cell.detailTextLabel.textColor = COLOR_9;
-                cell.textLabel.text = [NSString stringWithFormat:Localized(@"The remaining %@ copies"), self.cooperateDetailModel.leftCopies];
-                cell.detailTextLabel.text = [NSString stringWithFormat:@"%@%@", self.cooperateDetailModel.supportPerson, Localized(@"SupportNumber")];
-                [cell.contentView addSubview:self.lineView];
-                [self.lineView mas_makeConstraints:^(MASConstraintMaker *make) {
-                    make.bottom.equalTo(cell.contentView);
-                    make.left.equalTo(cell.contentView.mas_left).offset(Margin_15);
+                cell.textLabel.text = Localized(@"PurchaseAmount");
+                [cell.contentView addSubview:self.shareRatioBtn];
+                [self.shareRatioBtn mas_makeConstraints:^(MASConstraintMaker *make) {
+                    make.top.bottom.equalTo(cell.contentView);
                     make.right.equalTo(cell.contentView.mas_right).offset(-Margin_15);
-                    make.height.mas_equalTo(LINE_WIDTH);
                 }];
-            } else {
+            }
+        else {
                 cell.textLabel.font = cell.detailTextLabel.font = FONT(13);
                 cell.textLabel.textColor = cell.detailTextLabel.textColor = COLOR_6;
                 if (indexPath.row == 3) {
-                    cell.textLabel.text = Localized(@"TotalSponsorSupport（BU)");
-                    cell.detailTextLabel.text = [NSString stringAmountSplitWith:self.cooperateDetailModel.initiatorAmount];
+                    cell.textLabel.font = cell.detailTextLabel.font = FONT(12);
+                    cell.textLabel.textColor = cell.detailTextLabel.textColor = COLOR_9;
+                    cell.textLabel.text = [NSString stringWithFormat:@"%@ %lld %@", Localized(@"SupportPortion"), [self.cooperateDetailModel.cobuildCopies longLongValue] - [self.cooperateDetailModel.leftCopies longLongValue], Localized(@"Portion")];
+                    //                [NSString stringWithFormat:@"%@%@", self.cooperateDetailModel.supportPerson, Localized(@"SupportNumber")];
+                    cell.detailTextLabel.text = [NSString stringWithFormat:Localized(@"The remaining %@ copies"), self.cooperateDetailModel.leftCopies];
+                    [cell.contentView addSubview:self.lineView];
+                    [self.lineView mas_makeConstraints:^(MASConstraintMaker *make) {
+                        make.bottom.equalTo(cell.contentView.mas_bottom).offset(-Margin_5);
+                        make.left.equalTo(cell.contentView.mas_left).offset(Margin_15);
+                        make.right.equalTo(cell.contentView.mas_right).offset(-Margin_15);
+                        make.height.mas_equalTo(LINE_WIDTH);
+                    }];
                     [cell.contentView addSubview:self.progressView];
                     if (NULLString(self.cooperateDetailModel.totalCopies)) {
                         NSString * supported = [NSString stringWithFormat:@"%lld", [self.cooperateDetailModel.cobuildCopies longLongValue] - [self.cooperateDetailModel.leftCopies longLongValue]];
                         self.progressView.progress = [[[NSDecimalNumber decimalNumberWithString:supported] decimalNumberByDividingBy:[NSDecimalNumber decimalNumberWithString:self.cooperateDetailModel.cobuildCopies]] doubleValue];
                     }
                     [self.progressView mas_makeConstraints:^(MASConstraintMaker *make) {
-                        make.bottom.equalTo(cell.contentView);
+                        make.top.equalTo(cell.contentView.mas_top).offset(Margin_15);
                         make.left.equalTo(cell.contentView.mas_left).offset(Margin_15);
                         make.right.equalTo(cell.contentView.mas_right).offset(-Margin_15);
                     }];
-                } else if (indexPath.row == 5) {
-                    cell.textLabel.text = [NSString stringWithFormat:@"%@（BU）", Localized(@"TargetAmount")];
+                } else if (indexPath.row == 4) {
+                    cell.textLabel.text = Localized(@"TargetAmount");
                     NSString * targetAmount = [NSString stringWithFormat:@"%lld", [self.cooperateDetailModel.cobuildCopies longLongValue] * [self.cooperateDetailModel.perAmount longLongValue]];
-                    cell.detailTextLabel.text = [NSString stringAmountSplitWith:targetAmount];
+                    cell.detailTextLabel.text = [NSString stringAppendingBUWithStr:[NSString stringAmountSplitWith:targetAmount]];
+                } else if (indexPath.row == 5) {
+                    cell.textLabel.text = Localized(@"TotalSupport");
+                    cell.detailTextLabel.text = [NSString stringAppendingBUWithStr:[NSString stringAmountSplitWith:self.cooperateDetailModel.supportAmount]];
                 } else if (indexPath.row == 6) {
-                    cell.textLabel.text = Localized(@"TotalSupport（BU)");
-                    cell.detailTextLabel.text = [NSString stringAmountSplitWith:self.cooperateDetailModel.supportAmount];
+//                    cell.textLabel.text = Localized(@"Bond");
+                    [cell.contentView addSubview:self.bondButton];
+                    [self.bondButton mas_makeConstraints:^(MASConstraintMaker *make) {
+                        make.top.bottom.equalTo(cell.contentView);
+                        make.left.equalTo(cell.contentView.mas_left).offset(Margin_15);
+                    }];
+                    cell.detailTextLabel.text = [NSString stringAppendingBUWithStr:[NSString stringAmountSplitWith:self.cooperateDetailModel.initiatorAmount]];
                 }
             }
         } else {
@@ -445,6 +492,57 @@ static NSString * const CooperateDetailCellID = @"CooperateDetailCellID";
         [_stateBtn setBackgroundImage:[UIImage imageNamed:@"cooperate_state_s"] forState:UIControlStateDisabled];
     }
     return _stateBtn;
+}
+- (CustomButton *)bondButton
+{
+    if (!_bondButton) {
+        _bondButton = [[CustomButton alloc] init];
+        _bondButton.layoutMode = HorizontalInverted;
+        _bondButton.titleLabel.font = FONT(13);
+        [_bondButton setTitleColor:COLOR_6 forState:UIControlStateNormal];
+        [_bondButton setTitle:Localized(@"Bond") forState:UIControlStateNormal];
+        [_bondButton setImage:[UIImage imageNamed:@"interdependent_node_explain"] forState:UIControlStateNormal];
+        [_bondButton addTarget:self action:@selector(bondAction:) forControlEvents:UIControlEventTouchUpInside];
+    }
+    return _bondButton;
+}
+- (void)bondAction:(UIButton *)button
+{
+    [self infoAction:button title:Localized(@"CooperateBond")];
+}
+- (CustomButton *)shareRatioBtn
+{
+    if (!_shareRatioBtn) {
+        _shareRatioBtn = [[CustomButton alloc] init];
+        _shareRatioBtn.layoutMode = HorizontalInverted;
+        _shareRatioBtn.titleLabel.font = FONT(12);
+        [_shareRatioBtn setTitle:Localized(@"AwardSharingRatio") forState:UIControlStateNormal];
+        [_shareRatioBtn setImage:[UIImage imageNamed:@"interdependent_node_explain"] forState:UIControlStateNormal];
+        [_shareRatioBtn setTitleColor:COLOR(@"B2B2B2") forState:UIControlStateNormal];
+        [_shareRatioBtn addTarget:self action:@selector(shareRatioAction:) forControlEvents:UIControlEventTouchUpInside];
+    }
+    return _shareRatioBtn;
+}
+- (void)shareRatioAction:(UIButton *)btn
+{
+    [self infoAction:btn title:Localized(@"ShareRatioInfo")];
+}
+- (void)infoAction:(UIButton *)button title:(NSString *)title
+{
+    CGFloat titleHeight = [Encapsulation rectWithText:title font:TITLE_FONT textWidth:DEVICE_WIDTH - ScreenScale(120)].size.height;
+    _popupMenu = [YBPopupMenu showRelyOnView:button.imageView titles:@[title] icons:nil menuWidth:DEVICE_WIDTH - ScreenScale(100) otherSettings:^(YBPopupMenu * popupMenu) {
+        popupMenu.priorityDirection = YBPopupMenuPriorityDirectionTop;
+        popupMenu.itemHeight = titleHeight + Margin_30;
+        popupMenu.dismissOnTouchOutside = YES;
+        popupMenu.dismissOnSelected = NO;
+        popupMenu.fontSize = TITLE_FONT;
+        popupMenu.textColor = [UIColor whiteColor];
+        popupMenu.backColor = COLOR(@"56526D");
+        popupMenu.tableView.separatorStyle = UITableViewCellSeparatorStyleNone;
+        popupMenu.tableView.scrollEnabled = NO;
+        popupMenu.tableView.allowsSelection = NO;
+        popupMenu.height = titleHeight + Margin_40;
+    }];
 }
 - (UIProgressView *)progressView
 {

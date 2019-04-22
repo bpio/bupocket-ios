@@ -113,6 +113,10 @@
 //                                uuid:(NSString *)uuid
 //                             success:(void (^)(id responseObject))success
 //                             failure:(void (^)(NSError *error))failure;
+// find ad banner
+- (void)getAdsDataWithURL:(NSString *)URL
+                  success:(void (^)(id responseObject))success
+                  failure:(void (^)(NSError *error))failure;
 // dpos
 - (void)getDposApplyNodeDataWithQRcodeSessionId:(NSString *)QRcodeSessionId
                                         success:(void (^)(id responseObject))success

@@ -60,12 +60,12 @@ static HttpTool * _shareTool = nil;
     [self.manager GET:URLString parameters:parameters progress:^(NSProgress * _Nonnull downloadProgress) {
         
     } success:^(NSURLSessionDataTask * _Nonnull task, id  _Nullable responseObject) {
-//        [MBProgressHUD hideHUD];
+        [MBProgressHUD hideHUD];
         if (success) {
             success(responseObject);
         }
     } failure:^(NSURLSessionDataTask * _Nullable task, NSError * _Nonnull error) {
-//        [MBProgressHUD hideHUD];
+        [MBProgressHUD hideHUD];
         if (failure) {
             failure(error);
             [MBProgressHUD showTipMessageInWindow:Localized(@"NoNetWork")];

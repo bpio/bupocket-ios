@@ -20,6 +20,8 @@
 @property (nonatomic, strong) UITableView * tableView;
 @property (nonatomic, strong) SDCycleScrollView * cycleScrollView;
 @property (nonatomic, strong) NSArray * listArray;
+@property (nonatomic, strong) UIView * noNetWork;
+@property (nonatomic, strong) NSArray * bannerArray;
 
 @end
 
@@ -29,14 +31,43 @@ static NSString * const ExportCellID = @"ExportCellID";
 
 - (void)viewDidLoad {
     [super viewDidLoad];
-    self.listArray = @[@[Localized(@"CardBag")], @[Localized(@"NodePlan"), Localized(@"JointlyCooperate")], @[Localized(@"Information")], @[Localized(@"SmallClothGoods")]];
+    // @[Localized(@"CardBag")],
+    self.listArray = @[@[Localized(@"NodePlan"), Localized(@"JointlyCooperate")], @[Localized(@"Information")], @[Localized(@"SmallClothGoods")]];
     [self setupView];
-    NSMutableArray * bannerArray = [NSMutableArray array];
-    [bannerArray addObject:@"http://imgsrc.baidu.com/forum/w%3D580/sign=11580a65f11fbe091c5ec31c5b610c30/b1c962d9f2d3572c7b4ca9cf8913632762d0c30b.jpg"];
-    [bannerArray addObject:@"http://img3.duitang.com/uploads/item/201308/18/20130818201156_BjjYV.thumb.700_0.jpeg"];
-    self.cycleScrollView.imageURLStringsGroup = bannerArray;
-    
+    [self setupRefresh];
     // Do any additional setup after loading the view.
+}
+- (void)setupRefresh
+{
+    self.tableView.mj_header = [CustomRefreshHeader headerWithRefreshingTarget:self refreshingAction:@selector(loadNewData)];
+    self.tableView.mj_header.automaticallyChangeAlpha = YES;
+    [self.tableView.mj_header beginRefreshing];
+}
+- (void)loadNewData
+{
+    [self getData];
+}
+- (void)getData
+{
+    [[HTTPManager shareManager] getAdsDataWithURL:Node_Ad_Banner success:^(id responseObject) {
+        NSInteger code = [[responseObject objectForKey:@"errCode"] integerValue];
+        if (code == Success_Code) {
+            self.bannerArray = responseObject[@"data"][@"slideshow"];
+            if (self.bannerArray.count > 0) {
+                NSArray * imageArray = [self.bannerArray valueForKeyPath:@"imageUrl"];
+                self.cycleScrollView.imageURLStringsGroup = imageArray;
+            }
+            [self.tableView reloadData];
+        } else {
+            [MBProgressHUD showTipMessageInWindow:[ErrorTypeTool getDescriptionWithNodeErrorCode:code]];
+        }
+        [self.tableView.mj_header endRefreshing];
+        self.noNetWork.hidden = YES;
+        self.tableView.mj_footer.hidden = (self.listArray.count == 0);
+    } failure:^(NSError *error) {
+        [self.tableView.mj_header endRefreshing];
+        self.noNetWork.hidden = NO;
+    }];
 }
 
 - (void)setupView
@@ -58,10 +89,21 @@ static NSString * const ExportCellID = @"ExportCellID";
 //    _cycleScrollView.bannerImageViewContentMode = UIViewContentModeScaleAspectFit;
     [headerView addSubview:_cycleScrollView];
     self.tableView.tableHeaderView = headerView;
+    self.noNetWork = [Encapsulation showNoNetWorkWithSuperView:self.view target:self action:@selector(reloadData)];
+}
+- (void)reloadData
+{
+    [self getData];
 }
 - (void)cycleScrollView:(SDCycleScrollView *)cycleScrollView didSelectItemAtIndex:(NSInteger)index
 {
-    
+    NSString * url = [self.bannerArray valueForKeyPath:@"url"][index];
+    if (NULLString(url)) {
+        WKWebViewController * VC = [[WKWebViewController alloc] init];
+        //    VC.navigationItem.title = self.listArray[indexPath.section][indexPath.row];
+        [VC loadWebURLSring: url];
+        [self.navigationController pushViewController:VC animated:NO];
+    }
 }
 - (NSInteger)numberOfSectionsInTableView:(UITableView *)tableView
 {
@@ -93,7 +135,7 @@ static NSString * const ExportCellID = @"ExportCellID";
     cell.selectionStyle = UITableViewCellSelectionStyleNone;
     cell.detailImage.image = [UIImage imageNamed:@"list_arrow"];
     cell.title.text = self.listArray[indexPath.section][indexPath.row];
-    cell.listImage.image = [UIImage imageNamed:[NSString stringWithFormat:@"find_list_%zd_%zd", indexPath.section, indexPath.row]];
+    cell.listImage.image = [UIImage imageNamed:[NSString stringWithFormat:@"find_list_%zd_%zd", indexPath.section + 1, indexPath.row]];
     CGSize cellSize = CGSizeMake(DEVICE_WIDTH - Margin_20, Margin_50);
     if ([self.listArray[indexPath.section] count] - 1 == 0) {
         [cell.listBg setViewSize:cellSize borderRadius:BG_CORNER corners:UIRectCornerAllCorners];
@@ -116,8 +158,9 @@ static NSString * const ExportCellID = @"ExportCellID";
 - (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath
 {
     [tableView deselectRowAtIndexPath:indexPath animated:YES];
-    if (indexPath.section == 0) {
-    } else if (indexPath.section == 1) {
+//    if (indexPath.section == 0) {
+//    } else
+        if (indexPath.section == 0) {
         if (indexPath.row == 0) {
             NodePlanViewController * VC = [[NodePlanViewController alloc] init];
             [self.navigationController pushViewController:VC animated:NO];
@@ -125,12 +168,12 @@ static NSString * const ExportCellID = @"ExportCellID";
             CooperateViewController * VC = [[CooperateViewController alloc] init];
             [self.navigationController pushViewController:VC animated:NO];
         }
-    } else if (indexPath.section == 2) {
+    } else if (indexPath.section == 1) {
         WKWebViewController * VC = [[WKWebViewController alloc] init];
         VC.navigationItem.title = self.listArray[indexPath.section][indexPath.row];
         [VC loadWebURLSring:Information_URL];
         [self.navigationController pushViewController:VC animated:NO];
-    } else if (indexPath.section == 3) {
+    } else if (indexPath.section == 2) {
         WXLaunchMiniProgramReq * launchMiniProgramReq = [WXLaunchMiniProgramReq object];
         launchMiniProgramReq.userName = SmallRoutine_Original_ID;
 //        launchMiniProgramReq.path = @"";//拉起小程序页面的可带参路径，不填默认拉起小程序首页

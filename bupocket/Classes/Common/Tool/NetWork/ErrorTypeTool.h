@@ -35,6 +35,10 @@ typedef NS_ENUM(NSInteger, NodeErrorCode) {
     ErrorNotSubmitted = 1011,
     ErrorCommitteeAuthority = 1024,
     ErrorNoVoteJurisdiction = 1029,
+    ErrorUnsupportedSubscription = 1031,
+    ErrorInsufficientSurplus = 1032,
+    ErrorCooperateUnsupported = 1033,
+    ErrorCooperateCompleted = 1034,
 };
 
 // Error type

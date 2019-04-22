@@ -8,11 +8,17 @@
 
 #import "RequestTimeoutViewController.h"
 #import <WXApi.h>
+#import <SDWebImage/UIButton+WebCache.h>
+#import "AdsModel.h"
+#import "WKWebViewController.h"
 
 @interface RequestTimeoutViewController ()<UITextViewDelegate>
 
 @property (nonatomic, strong) UIScrollView * scrollView;
 @property (nonatomic, strong) UITextView * queryLink;
+@property (nonatomic, strong) UIView * noNetWork;
+@property (nonatomic, strong) UIButton * adImage;
+@property (nonatomic, strong) AdsModel * adsModel;
 
 @end
 
@@ -99,17 +105,40 @@
         make.size.mas_equalTo(CGSizeMake(DEVICE_WIDTH, Margin_10));
     }];
     
-    UIButton * adImage = [UIButton createButtonWithNormalImage:@"banner_placehoder" SelectedImage:@"banner_placehoder" Target:self Selector:@selector(adAction)];
-    [self.scrollView addSubview:adImage];
-    [adImage mas_makeConstraints:^(MASConstraintMaker *make) {
+    self.adImage = [UIButton createButtonWithNormalImage:@"ad_placehoder" SelectedImage:@"ad_placehoder" Target:self Selector:@selector(adAction)];
+    [self.scrollView addSubview:self.adImage];
+    [self.adImage mas_makeConstraints:^(MASConstraintMaker *make) {
         make.top.equalTo(lineView.mas_bottom).offset(Margin_15);
         make.left.equalTo(transactionSummary);
         make.right.equalTo(hash);
     }];
     
     [self.view layoutIfNeeded];
-    self.scrollView.contentSize = CGSizeMake(0, CGRectGetMaxY(adImage.frame) + ContentSizeBottom + Margin_10);
-    
+    self.scrollView.contentSize = CGSizeMake(0, CGRectGetMaxY(self.adImage.frame) + ContentSizeBottom + Margin_10);
+    self.noNetWork = [Encapsulation showNoNetWorkWithSuperView:self.view target:self action:@selector(reloadData)];
+}
+- (void)reloadData
+{
+    [self getData];
+}
+- (void)getData
+{
+    [[HTTPManager shareManager] getAdsDataWithURL:AD_URL success:^(id responseObject) {
+        NSInteger code = [[responseObject objectForKey:@"errCode"] integerValue];
+        if (code == Success_Code) {
+            self.adsModel = [AdsModel mj_objectWithKeyValues:responseObject[@"data"][@"ad"]];
+            if (self.adsModel.imageUrl) {
+                [self.adImage sd_setImageWithURL:[NSURL URLWithString:self.adsModel.imageUrl] forState:UIControlStateNormal placeholderImage:[UIImage imageNamed:@"ad_placehoder"]];
+            } else {
+                self.adImage.hidden = YES;
+            }
+        } else {
+            [MBProgressHUD showTipMessageInWindow:[ErrorTypeTool getDescriptionWithNodeErrorCode:code]];
+        }
+        self.noNetWork.hidden = YES;
+    } failure:^(NSError *error) {
+        self.noNetWork.hidden = NO;
+    }];
 }
 - (BOOL)textView:(UITextView *)textView shouldInteractWithURL:(nonnull NSURL *)URL inRange:(NSRange)characterRange
 {
@@ -132,11 +161,20 @@
 }
 - (void)adAction
 {
-    WXLaunchMiniProgramReq * launchMiniProgramReq = [WXLaunchMiniProgramReq object];
-    launchMiniProgramReq.userName = SmallRoutine_Original_ID;
-    //        launchMiniProgramReq.path = @"";//拉起小程序页面的可带参路径，不填默认拉起小程序首页
-    launchMiniProgramReq.miniProgramType = 0;
-    [WXApi sendReq:launchMiniProgramReq];
+    if ([self.adsModel.type isEqualToString:@"1"]) {
+        WXLaunchMiniProgramReq * launchMiniProgramReq = [WXLaunchMiniProgramReq object];
+        launchMiniProgramReq.userName = SmallRoutine_Original_ID;
+        //        launchMiniProgramReq.path = @"";//拉起小程序页面的可带参路径，不填默认拉起小程序首页
+        launchMiniProgramReq.miniProgramType = 0;
+        [WXApi sendReq:launchMiniProgramReq];
+    } else if ([self.adsModel.type isEqualToString:@"2"]) {
+        if (NULLString(self.adsModel.url)) {
+            WKWebViewController * VC = [[WKWebViewController alloc] init];
+            //    VC.navigationItem.title = self.listArray[indexPath.section][indexPath.row];
+            [VC loadWebURLSring: self.adsModel.url];
+            [self.navigationController pushViewController:VC animated:NO];
+        }
+    }
 }
 /*
 - (void)setupView

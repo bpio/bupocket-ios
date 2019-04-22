@@ -62,6 +62,10 @@
         case ErrorNotSubmitted: errorDesc = Localized(@"NotSubmitted"); break;
         case ErrorCommitteeAuthority: errorDesc = Localized(@"CommitteeAuthority"); break;
         case ErrorNoVoteJurisdiction: errorDesc = Localized(@"NoVoteJurisdiction"); break;
+        case ErrorUnsupportedSubscription: errorDesc = Localized(@"UnsupportedSubscription"); break;
+        case ErrorInsufficientSurplus: errorDesc = Localized(@"InsufficientSurplus"); break;
+        case ErrorCooperateUnsupported: errorDesc = Localized(@"CooperateUnsupported"); break;
+        case ErrorCooperateCompleted: errorDesc = Localized(@"CooperateCompleted"); break;
         default: errorDesc = Localized(@"LoadFailure"); break;
     }
     return errorDesc;

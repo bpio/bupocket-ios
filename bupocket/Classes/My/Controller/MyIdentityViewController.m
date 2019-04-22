@@ -64,7 +64,7 @@
     self.identityIDTitle.titleLabel.font = IDNameTitle.font;
     [self.identityIDTitle setTitleColor:IDNameTitle.textColor forState:UIControlStateNormal];
     [self.identityIDTitle setTitle:Localized(@"IdentityIDTitle") forState:UIControlStateNormal];
-    [self.identityIDTitle setImage:[UIImage imageNamed:@"explain"] forState:UIControlStateNormal];
+    [self.identityIDTitle setImage:[UIImage imageNamed:@"explain_info"] forState:UIControlStateNormal];
     [self.identityIDTitle addTarget:self action:@selector(identityIDInfo:) forControlEvents:UIControlEventTouchUpInside];
     [myIdentityBg addSubview:self.identityIDTitle];
     

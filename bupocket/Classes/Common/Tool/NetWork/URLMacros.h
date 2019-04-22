@@ -39,13 +39,17 @@
 #define Delete_AddressBook @"wallet/my/addressBook/delete"
 
 // Account center
-#define Account_Center_Prefix @"bumo://login/"
+//#define Account_Center_Prefix @"bumo://login/"
+#define Account_Center_Contains @"/xDnAs_login/"
 //#define Account_Center_ScanQRLogin @"qr/v1/userScanQrLogin"
 #define Account_Center_ScanQRLogin @"login/v1/qr"
 #define Account_Center_Confirm_Login @"login/v1/qr/confirm"
 
 // dpos
-#define Dpos_Prefix @"bumo://dpos/"
+// 轮播图
+#define Node_Ad_Banner @"nodeServer/slideshow/v1"
+//#define Dpos_Prefix @"bumo://dpos/"
+#define Dpos_Contains @"/xDnAs_dpos/"
 #define Node_Content @"nodeServer/qr/v1/content"
 #define Node_Confirm @"nodeServer/tx/v1/confirm"
 // 节点撤票
@@ -71,5 +75,7 @@
 
 // 交易状态查询链接
 #define Transaction_Query_Link @"http://explorer.bumo.io"
+// 交易成功或超时广告图
+#define AD_URL @"nodeServer/ad/v1/6aa3838c760b4e2abf37910f75394834"
 
 #endif /* URLMacros_h */

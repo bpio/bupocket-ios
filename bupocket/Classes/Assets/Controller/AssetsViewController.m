@@ -429,11 +429,11 @@ static UIButton * _noBackup;
             return;
         }
         result = stringValue;
-        if ([stringValue hasPrefix:Account_Center_Prefix]) {
-            [self getScanCodeLoginDataWithUUid:[stringValue substringFromIndex:[Account_Center_Prefix length]]];
+        if ([stringValue hasPrefix:@"http"] && [stringValue containsString:Account_Center_Contains] && ![[[[[stringValue componentsSeparatedByString:Account_Center_Contains] firstObject] componentsSeparatedByString:@"://"] lastObject] containsString:@"/"] && [[[stringValue componentsSeparatedByString:Account_Center_Contains] lastObject] length] == 32) {
+            [self getScanCodeLoginDataWithUUid:[[stringValue componentsSeparatedByString:Account_Center_Contains] lastObject]];
             return;
-        } else if ([stringValue hasPrefix:Dpos_Prefix]) {
-            [self getApplyNodeDataWithStr:[stringValue substringFromIndex:[Dpos_Prefix length]]];
+        } else if ([stringValue hasPrefix:@"http"] && [stringValue containsString:Dpos_Contains] && ![[[[[stringValue componentsSeparatedByString:Dpos_Contains] firstObject] componentsSeparatedByString:@"://"] lastObject] containsString:@"/"] && [[[stringValue componentsSeparatedByString:Dpos_Contains] lastObject] length] == 32) {
+            [self getApplyNodeDataWithStr:[[stringValue componentsSeparatedByString:Dpos_Contains] lastObject]];
             return;
         }
         NSOperationQueue * queue = [[NSOperationQueue alloc] init];

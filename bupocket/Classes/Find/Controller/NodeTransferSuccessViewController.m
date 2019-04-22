@@ -9,11 +9,17 @@
 #import "NodeTransferSuccessViewController.h"
 #import "NodeTransferSuccessViewCell.h"
 #import <WXApi.h>
+#import <SDWebImage/UIButton+WebCache.h>
+#import "AdsModel.h"
+#import "WKWebViewController.h"
 
 @interface NodeTransferSuccessViewController ()<UITableViewDelegate, UITableViewDataSource>
 
 @property (nonatomic, strong) UITableView * tableView;
 @property (nonatomic, strong) NSArray * listArray;
+@property (nonatomic, strong) UIView * noNetWork;
+@property (nonatomic, strong) UIButton * adImage;
+@property (nonatomic, strong) AdsModel * adsModel;
 
 @end
 
@@ -26,6 +32,7 @@ static NSString * const NodeTransferSuccessID = @"NodeTransferSuccessID";
     self.navigationItem.title = Localized(@"TransferSuccess");
     self.listArray = @[@[Localized(@"TransferSuccess"), Localized(@"BusinessData"), Localized(@"DataRefreshed")], @[Localized(@"TransferSuccessPrompt"), Localized(@"BusinessDataPrompt"), @""]];
     [self setupView];
+    [self getData];
     // Do any additional setup after loading the view.
 }
 - (void)setupView
@@ -36,8 +43,31 @@ static NSString * const NodeTransferSuccessID = @"NodeTransferSuccessID";
     self.tableView.separatorStyle = UITableViewCellSeparatorStyleNone;
     [self.view addSubview:self.tableView];
     [self setupFooterView];
+    self.noNetWork = [Encapsulation showNoNetWorkWithSuperView:self.view target:self action:@selector(reloadData)];
 }
-
+- (void)reloadData
+{
+    [self getData];
+}
+- (void)getData
+{
+    [[HTTPManager shareManager] getAdsDataWithURL:AD_URL success:^(id responseObject) {
+        NSInteger code = [[responseObject objectForKey:@"errCode"] integerValue];
+        if (code == Success_Code) {
+            self.adsModel = [AdsModel mj_objectWithKeyValues:responseObject[@"data"][@"ad"]];
+            if (self.adsModel.imageUrl) {
+                [self.adImage sd_setImageWithURL:[NSURL URLWithString:self.adsModel.imageUrl] forState:UIControlStateNormal placeholderImage:[UIImage imageNamed:@"ad_placehoder"]];
+            } else {
+                self.adImage.hidden = YES;
+            }
+        } else {
+            [MBProgressHUD showTipMessageInWindow:[ErrorTypeTool getDescriptionWithNodeErrorCode:code]];
+        }
+        self.noNetWork.hidden = YES;
+    } failure:^(NSError *error) {
+        self.noNetWork.hidden = NO;
+    }];
+}
 - (void)setupFooterView
 {
     UIView * footerView = [[UIView alloc] init];
@@ -58,23 +88,32 @@ static NSString * const NodeTransferSuccessID = @"NodeTransferSuccessID";
     prompt.layer.masksToBounds = YES;
     prompt.layer.cornerRadius = MAIN_CORNER;
     
-    UIButton * adImage = [UIButton createButtonWithNormalImage:@"banner_placehoder" SelectedImage:@"banner_placehoder" Target:self Selector:@selector(adAction)];
-    [footerView addSubview:adImage];
-    [adImage mas_makeConstraints:^(MASConstraintMaker *make) {
+    self.adImage = [UIButton createButtonWithNormalImage:@"ad_placehoder" SelectedImage:@"ad_placehoder" Target:self Selector:@selector(adAction)];
+    [footerView addSubview:self.adImage];
+    [self.adImage mas_makeConstraints:^(MASConstraintMaker *make) {
         make.top.equalTo(prompt.mas_bottom).offset(Margin_20);
         make.left.right.equalTo(prompt);
     }];
     
-    footerView.frame = CGRectMake(0, 0, DEVICE_WIDTH, promptH + SafeAreaBottomH + NavBarH + adImage.imageView.height + Margin_30);
+    footerView.frame = CGRectMake(0, 0, DEVICE_WIDTH, promptH + SafeAreaBottomH + NavBarH + self.adImage.imageView.height + Margin_30);
 }
 
 - (void)adAction
 {
-    WXLaunchMiniProgramReq * launchMiniProgramReq = [WXLaunchMiniProgramReq object];
-    launchMiniProgramReq.userName = SmallRoutine_Original_ID;
-    //        launchMiniProgramReq.path = @"";//拉起小程序页面的可带参路径，不填默认拉起小程序首页
-    launchMiniProgramReq.miniProgramType = 0;
-    [WXApi sendReq:launchMiniProgramReq];
+    if ([self.adsModel.type isEqualToString:@"1"]) {
+        WXLaunchMiniProgramReq * launchMiniProgramReq = [WXLaunchMiniProgramReq object];
+        launchMiniProgramReq.userName = SmallRoutine_Original_ID;
+        //        launchMiniProgramReq.path = @"";//拉起小程序页面的可带参路径，不填默认拉起小程序首页
+        launchMiniProgramReq.miniProgramType = 0;
+        [WXApi sendReq:launchMiniProgramReq];
+    } else if ([self.adsModel.type isEqualToString:@"2"]) {
+        if (NULLString(self.adsModel.url)) {
+            WKWebViewController * VC = [[WKWebViewController alloc] init];
+            //    VC.navigationItem.title = self.listArray[indexPath.section][indexPath.row];
+            [VC loadWebURLSring: self.adsModel.url];
+            [self.navigationController pushViewController:VC animated:NO];
+        }
+    }
 }
 
 - (NSInteger)numberOfSectionsInTableView:(UITableView *)tableView
@@ -112,12 +151,6 @@ static NSString * const NodeTransferSuccessID = @"NodeTransferSuccessID";
 {
     [tableView deselectRowAtIndexPath:indexPath animated:NO];
 }
-//"TransferSuccess" = "交易成功";
-//"TransferSuccessPrompt" = "链上交易已成功";
-//"BusinessData" = "业务数据处理中";
-//"BusinessDataPrompt" = "业务数据根据链上交易元数据进行分析处理，预计20秒内处理完成";
-//"DataRefreshed" = "数据已刷新";
-//"NodeTransferPrompt" = "温馨提示：\n节点的投票、撤票等操作链上交易成功后，相关数据的统计有延迟，预计30秒内完成，此为正常现象。";
 /*
 #pragma mark - Navigation
 
