@@ -409,8 +409,9 @@ static NSString * const CooperateDetailCellID = @"CooperateDetailCellID";
                 cell.textLabel.textColor = MAIN_COLOR;
                 cell.detailTextLabel.font = FONT_Bold(18);
                 cell.detailTextLabel.textColor = WARNING_COLOR;
-                NSString * str = [NSString stringWithFormat:@"%@ %@%@", [NSString stringAmountSplitWith:self.cooperateDetailModel.perAmount], @"BU/", Localized(@"Shares")];
-                cell.textLabel.attributedText = [Encapsulation attrWithString:str preFont:FONT_Bold(18) preColor:MAIN_COLOR index:str.length - 4 sufFont:FONT(12) sufColor:MAIN_COLOR lineSpacing:0];
+                NSString * perAmount = [NSString stringAmountSplitWith:self.cooperateDetailModel.perAmount];
+                NSString * str = [NSString stringWithFormat:@"%@ %@", perAmount, Localized(@"BU/Portion")];
+                cell.textLabel.attributedText = [Encapsulation attrWithString:str preFont:FONT_Bold(18) preColor:MAIN_COLOR index:perAmount.length sufFont:FONT(12) sufColor:MAIN_COLOR lineSpacing:0];
                 cell.detailTextLabel.text = [NSString stringWithFormat:@"%@%%", self.cooperateDetailModel.rewardRate];
             } else if (indexPath.row == 2) {
                 cell.textLabel.font = cell.detailTextLabel.font = FONT(12);
@@ -428,9 +429,17 @@ static NSString * const CooperateDetailCellID = @"CooperateDetailCellID";
                 if (indexPath.row == 3) {
                     cell.textLabel.font = cell.detailTextLabel.font = FONT(12);
                     cell.textLabel.textColor = cell.detailTextLabel.textColor = COLOR_9;
-                    cell.textLabel.text = [NSString stringWithFormat:@"%@ %lld %@", Localized(@"SupportPortion"), [self.cooperateDetailModel.cobuildCopies longLongValue] - [self.cooperateDetailModel.leftCopies longLongValue], Localized(@"Shares")];
-                    //                [NSString stringWithFormat:@"%@%@", self.cooperateDetailModel.supportPerson, Localized(@"SupportNumber")];
-                    cell.detailTextLabel.text = [NSString stringWithFormat:Localized(@"The remaining %@ copies"), self.cooperateDetailModel.leftCopies];
+                    int64_t received = [self.cooperateDetailModel.cobuildCopies longLongValue] - [self.cooperateDetailModel.leftCopies longLongValue];
+                    if (received > 1) {
+                        cell.textLabel.text = [NSString stringWithFormat:Localized(@"%lld shares received"), received];
+                    } else {
+                        cell.textLabel.text = [NSString stringWithFormat:Localized(@"%lld share received"), received];
+                    }
+                    NSString * leftStr = [NSString stringWithFormat:Localized(@"%lld shares left"), [self.cooperateDetailModel.leftCopies longLongValue]];
+                    if ([self.cooperateDetailModel.leftCopies longLongValue] < 2) {
+                        leftStr = [NSString stringWithFormat:Localized(@"%lld share left"), [self.cooperateDetailModel.leftCopies longLongValue]];
+                    }
+                    cell.detailTextLabel.text = leftStr;
                     [cell.contentView addSubview:self.lineView];
                     [self.lineView mas_makeConstraints:^(MASConstraintMaker *make) {
                         make.bottom.equalTo(cell.contentView.mas_bottom).offset(-Margin_5);

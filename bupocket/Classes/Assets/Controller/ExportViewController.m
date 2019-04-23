@@ -160,14 +160,14 @@ static NSString * const ExportCellID = @"ExportCellID";
                     account = [[AccountTool shareTool] account];
                     account.walletName = text;
                     [[AccountTool shareTool] save:account];
+                    NSUserDefaults * defaults = [NSUserDefaults standardUserDefaults];
+                    [defaults setObject:text forKey:Current_WalletName];
+                    [defaults synchronize];
                 } else {
                     self.walletModel.walletName = text;
                     [self.walletArray replaceObjectAtIndex:self.index withObject:self.walletModel];
                     [[WalletTool shareTool] save:self.walletArray];
                 }
-                NSUserDefaults * defaults = [NSUserDefaults standardUserDefaults];
-                [defaults setObject:text forKey:Current_WalletName];
-                [defaults synchronize];
             } else {
                 [MBProgressHUD showTipMessageInWindow:Localized(@"WalletNameFormatIncorrect")];
             }

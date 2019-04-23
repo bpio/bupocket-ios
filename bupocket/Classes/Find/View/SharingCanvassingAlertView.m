@@ -86,6 +86,7 @@
     
     [self.imageBg mas_makeConstraints:^(MASConstraintMaker *make) {
         make.centerX.centerY.mas_equalTo(0);
+        make.size.mas_equalTo(CGSizeMake(self.imageBg.width, self.imageBg.height));
 //        make.top.mas_equalTo(Margin_20);
     }];
     [self.nodeLogo mas_makeConstraints:^(MASConstraintMaker *make) {

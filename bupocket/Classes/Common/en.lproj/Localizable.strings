@@ -15,7 +15,7 @@
 "NoNetWork" = "Network failure, please try again later";
 "Reload" = "Reload";
 "MyTitle" = "Profile";
-"FindTitle" = "发现";
+"FindTitle" = "Explore";
 "AssetsTitle" = "Tokens";
 // Identity
 "CreateDigitalIdentity" = "Create a digital identity";
@@ -365,7 +365,7 @@
 // Explore
 "CardBag" = "Cards";
 "NodePlan" = "Node Campaign";
-"JointlyCooperate" = "Node co-funding";
+"JointlyCooperate" = "Node Co-funding";
 "Information" = "Information";
 "SmallClothGoods" = "BU Pocket Goods";
 // Node Campaign
@@ -376,9 +376,9 @@
 "InterdependentNode" = "Nodes related to me";
 "RelevantNodes" = "Filter the nodes that are related to me, such as the node I voted for or the campaign node itself";
 "Search" = "Search";
-"CancellationOfVotes" = "Cancel votes";
-"VotingRecords" = "Record of the voting";
-"InvitationToVote" = "Invite to vote";
+"CancellationOfVotes" = "Cancel Votes";
+"VotingRecords" = "Record of Votes";
+"InvitationToVote" = "Invite to Vote";
 "IrrevocableVotes" = "No revocable votes";
 // Records of voting
 "Throw" = "Vote";
@@ -389,17 +389,19 @@
 "InProcessing" = "Processing";
 // Details of voting
 "Share" = "Share";
-"Votes" = "Votes";
-"SupportNumber" = "Sponsors";
+"%@ Votes" = "%@ Votes";
+"%@ Vote" = "%@ Vote";
+"%@ Sponsors" = "%@ Sponsors";
+"%@ Sponsor" = "%@ Sponsor";
 "NodeIntroduction" = "Introduction to node";
 // share
 "InvitationPrompt" = "Welcome to vote in BU Pocket";
-"LongPressPrompt" = "（Press and hold to identify the QR code）";
+"LongPressPrompt" = "（Scan the QR code）";
 "WeChat" = "WeChat";
 "QQ" = "QQ";
-"CopyBULink" = "Copy the BU link";
+"CopyBULink" = "Copy link";
 "LinkTitle" = "The BU link is generated";
-"CopyLink" = "Copy the link";
+"CopyLink" = "Copy";
 "BULink" = "BU Link";
 "LinkPerfix" = " I will sponsor the BUMO Super Node Campaign, ";
 "LinkSuffix%@" = ", and click the link %@ to vote for him.";
@@ -425,37 +427,42 @@
 "Initiator" = "Initiator";
 "CounterAccount" = "The receiving account";
 "Details" = "Details";
-"TransactionCosts" = "Transaction fees";
+"TransactionCosts（BU）" = "Transaction fees（BU）";
 "Parameter" = "Parameter";
+"Number（BU）" = "Number（BU）";
 // Node co-funding
-"PurchaseAmount" = "Entry of purchase";
-"AwardSharingRatio" = "Award sharing ratio";
+"PurchaseAmount" = "Minimum purchase";
+"AwardSharingRatio" = "Award ratio";
 "TargetNumber" = "Target number";
 "TargetAmount" = "Target amount";
-"SupportPortion" = "Receive ";
-"ResidualPortion" = "Remaining ";
-"Shares" = "shares";
+"%lld shares received" = "%lld shares received";
+"%lld share received" = "%lld share received";
+"Received" = "received";
+"%lld shares left" = "%lld shares left";
+"%lld share left" = "%lld share left";
+"Left" = "left";
+//"Shares" = "shares";
 "ShareRatioInfo" = "The initiator of the node co-funding project promises to share the reward proportionally with the sponsors after being successfully selected";
 // Details of node co-funding
-"JointlyCooperateDetail" = "Details of co-funding";
+"JointlyCooperateDetail" = "Details of Co-funding";
 "InProgress" = "Processing";
 "Completed" = "Completed";
 "Quit" = "Quit";
 "Bond" = "Deposit";
 "CooperateBond" = "The initiator of the node co-funding project transfers the deposit to an account as the amount to be locked in node co-funding";
-"The remaining %@ copies" = " %@ shares remaining";
+//"The remaining %@ copies" = " %@ shares remaining";
 "TotalSupport" = "Total amount received";
 "RiskStatement" = "Risk Statement";
-"SupportRecords" = "Record of node co-funding";
-"RedemptionAllSupport" = "I want to redeem all BUs ";
+"SupportRecords" = "Record of Node Co-funding";
+"RedemptionAllSupport" = "Withdraw All";
 "WithdrawalOfSupport" = "Withdraw";
-"IWantToSupport" = "I want to sponsor";
+"IWantToSupport" = "Sponsor";
 "Support" = "Sponsor";
 "Withdraw" = "Withdraw";
 "RiskStatementPrompt" = "1. Node co-funding is not a commodity transaction. The sponsors can choose which project to support according to the rules such as award sharing ratio by the initiator and then receive awards; \n2. BUMO only provides cyberspace and technical services and is in no interest connection with the initiators and sponsors, so BUMO will take no responsibility if any legal dispute arising from the node co-funding project, and the initiators and sponsors will take all related responsibilities. \n3. Before the node co-funding project is completed, the sponsors can manually withdraw all BUs; if the project initiator terminates the project before the project is completed, the sponsors can also manually withdraw the BUs sponsored. ";
 // Sponsor
-"SupportProjects" = "Projects to sponsor";
-"SupportCopies" = "Shares to sponsor";
+"SupportProjects" = "Project";
+"SupportCopies" = "Shares";
 "Total" = "Total：";
 "ConfirmSupport" = "Confirm";
 "BU/Portion" = "BU/share";
@@ -487,7 +494,7 @@
 "InsufficientSurplus" = "The remaining number is insufficient. It is recommended that you adjust the number to sponsor.";
 "CooperateUnsupported" = "You have not sponsored this project so you cannot withdraw from it";
 "CooperateCompleted" = "The node co-funding project is finished, and you cannot withdraw from it";
-
+"InitiatorCanNotSupport" = "节点共建项目发起者不能参与支持";
 
 // SDK Errors
 "SYSTEM_ERROR" = "System error";

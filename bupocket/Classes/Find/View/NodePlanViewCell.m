@@ -284,9 +284,16 @@ static NSString * const NodeSharingID = @"NodeSharingID";
         self.nodeType.text = Localized(@"EcologicalNodes");
     }
     if ([self.reuseIdentifier isEqualToString:NodeSharingID]) {
-        NSString * votesObtainedStr = [NSString stringWithFormat:@"%@ %@", nodePlanModel.nodeVote, Localized(@"Votes")];
-        self.votesObtained.attributedText = [Encapsulation attrWithString:votesObtainedStr preFont:FONT(14) preColor:COLOR_6 index:votesObtainedStr.length - Localized(@"Votes").length sufFont:FONT(12) sufColor:COLOR(@"B2B2B2") lineSpacing:0];
-        self.numberOfVotes.text = [NSString stringWithFormat:@"%@%@", nodePlanModel.support, Localized(@"SupportNumber")];
+        NSString * votesObtainedStr = [NSString stringWithFormat:Localized(@"%@ Votes"), nodePlanModel.nodeVote];
+        if ([nodePlanModel.nodeVote longLongValue] < 2) {
+            votesObtainedStr = [NSString stringWithFormat:Localized(@"%@ Vote"), nodePlanModel.nodeVote];
+        }
+        self.votesObtained.attributedText = [Encapsulation attrWithString:votesObtainedStr preFont:FONT(12) preColor:COLOR(@"B2B2B2") index:nodePlanModel.nodeVote.length sufFont:FONT(14) sufColor:COLOR_6 lineSpacing:0];
+        NSString * sponsorStr = [NSString stringWithFormat:Localized(@"%@ Sponsors"), nodePlanModel.support];
+        if ([nodePlanModel.support longLongValue] < 2) {
+            sponsorStr = [NSString stringWithFormat:Localized(@"%@ Sponsor"), nodePlanModel.support];
+        }
+        self.numberOfVotes.text = sponsorStr;
     } else {
         self.votesObtained.attributedText = [Encapsulation attrWithString:[NSString stringWithFormat:@"%@ %@", Localized(@"VotesObtained"), nodePlanModel.nodeVote] preFont:FONT(12) preColor:COLOR(@"B2B2B2") index:Localized(@"VotesObtained").length sufFont:FONT(14) sufColor:COLOR_6 lineSpacing:0];
         self.numberOfVotes.attributedText = [Encapsulation attrWithString:[NSString stringWithFormat:@"%@ %@", Localized(@"NumberOfVotes"), nodePlanModel.myVoteCount] preFont:FONT(12) preColor:COLOR(@"B2B2B2") index:Localized(@"NumberOfVotes").length sufFont:FONT(14) sufColor:COLOR_6 lineSpacing:0];

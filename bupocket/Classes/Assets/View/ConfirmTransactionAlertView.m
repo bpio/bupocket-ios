@@ -72,26 +72,30 @@
     
     [self addSubview:self.confirm];
     
-    _infoTitleArray = @[Localized(@"TransactionDetail"), Localized(@"CounterAccount"), Localized(@"MaximumTransactionCosts"), Localized(@"Initiator"), Localized(@"CounterAccount"), Localized(@"Number"), Localized(@"TransactionCosts"), Localized(@"Parameter")];
-    
+    int transactionInfoCount = 6;
     NSArray * infoArray;
-    if (self.confirmTransactionModel) {
-        self.transactionCost = TransactionCost_Check_MIN;
-        if ([self.confirmTransactionModel.type isEqualToString:TransactionType_Cooperate]) {
-            self.transactionCost = TransactionCost_Cooperate_MIN;
-        }
-        self.confirmTransactionModel.transactionCost = self.transactionCost;
-        NSString * destAddress = [NSString stringWithFormat:@"%@%@", self.confirmTransactionModel.destAddress, self.confirmTransactionModel.accountTag];
-        infoArray = @[self.confirmTransactionModel.qrRemark, destAddress, self.transactionCost, CurrentWalletAddress, destAddress, [NSString stringAppendingBUWithStr:self.confirmTransactionModel.amount], self.transactionCost, self.confirmTransactionModel.script];
-    } else {
-        infoArray = @[@"转入质押金5000000BU", @"buQXVJXpMZaxUpfuNRzaGUreDK1r6zYTFcTW", TransactionCost_MIN, CurrentWalletAddress, @"buQXVJXpMZaxUpfuNRzaGUreDK1r6zYTFcTW", @"5000000 BU", TransactionCost_MIN, @"{\"method\":\"apply\",\"params\":{\"role\":\"validator\",\"node\":\"buQXVJXpMZaxUpfuNRzaGUreDK1r6zYTFcTW\"}}"];
+    self.transactionCost = TransactionCost_Check_MIN;
+    if ([self.confirmTransactionModel.type isEqualToString:TransactionType_Cooperate]) {
+        self.transactionCost = TransactionCost_Cooperate_MIN;
     }
+    self.confirmTransactionModel.transactionCost = self.transactionCost;
+    if (NULLString(self.confirmTransactionModel.destAddress)) {
+        _infoTitleArray = @[Localized(@"TransactionDetail"), Localized(@"CounterAccount"), Localized(@"MaximumTransactionCosts"), Localized(@"Initiator"), Localized(@"CounterAccount"), Localized(@"Number（BU）"), Localized(@"TransactionCosts（BU）"), Localized(@"Parameter")];
+        NSString * destAddress = [NSString stringWithFormat:@"%@%@", self.confirmTransactionModel.destAddress, self.confirmTransactionModel.accountTag];
+        infoArray = @[self.confirmTransactionModel.qrRemark, destAddress, self.transactionCost, CurrentWalletAddress, destAddress, self.confirmTransactionModel.amount, self.transactionCost, self.confirmTransactionModel.script];
+        
+    } else {
+        _infoTitleArray = @[Localized(@"TransactionDetail"), Localized(@"MaximumTransactionCosts"), Localized(@"Initiator"), Localized(@"Number（BU）"), Localized(@"TransactionCosts（BU）"), Localized(@"Parameter")];
+        transactionInfoCount = 4;
+        infoArray = @[self.confirmTransactionModel.qrRemark, self.transactionCost, CurrentWalletAddress, self.confirmTransactionModel.amount, self.transactionCost, self.confirmTransactionModel.script];
+    }
+    
     CGFloat infoLabelTotalH = 0;
     CGFloat transactionTotalH = 0;
     for (NSInteger i = 0; i < _infoTitleArray.count * 2; i++) {
         UILabel * infoLabel = [[UILabel alloc] init];
         infoLabel.tag = i;
-        if (i < 6) {
+        if (i < transactionInfoCount) {
             [self.transactionScrollView addSubview:infoLabel];
         } else {
             [self.infoScrollView addSubview:infoLabel];
@@ -114,7 +118,7 @@
         CGFloat infoLabelH = ceil([Encapsulation rectWithText:infoLabel.text font:infoLabel.font textWidth:infoLabelW].size.height) + 1;
         if (i == 0 && [_confirmTransactionModel.type isEqualToString:TransactionType_ApplyNode]) {
             infoLabelTotalH = self.amount.height;
-        } else if (i == 6) {
+        } else if (i == transactionInfoCount) {
             transactionTotalH = infoLabelTotalH + Margin_50;
             infoLabelTotalH = Margin_15;
         } else if (i % 2) {

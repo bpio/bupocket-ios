@@ -61,10 +61,11 @@ static NSString * const NodeRecordsCellID = @"NodeRecordsCellID";
         make.bottom.equalTo(self.contentView.mas_bottom).offset(-Margin_5);
     }];
     self.contentView.backgroundColor = self.contentView.superview.superview.backgroundColor;
+    CGFloat recordTypeW = [Encapsulation rectWithText:self.nodeType.text font:self.nodeType.font textHeight:ScreenScale(18)].size.width + Margin_15;
     [self.recordType mas_makeConstraints:^(MASConstraintMaker *make) {
         make.left.equalTo(self.listBg.mas_left).offset(Margin_10);
         make.top.equalTo(self.listBg.mas_top).offset(Margin_15);
-        make.width.height.mas_equalTo(ScreenScale(18));
+        make.size.mas_equalTo(CGSizeMake(recordTypeW, ScreenScale(18)));
     }];
     [self.title mas_makeConstraints:^(MASConstraintMaker *make) {
         make.left.equalTo(self.recordType.mas_right).offset(Margin_10);

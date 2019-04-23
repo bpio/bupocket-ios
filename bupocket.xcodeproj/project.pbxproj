@@ -89,21 +89,32 @@
 		950E4145219E6ADD002C7900 /* AssetCurrencyModel.m in Sources */ = {isa = PBXBuildFile; fileRef = 950E4144219E6ADD002C7900 /* AssetCurrencyModel.m */; };
 		950EF2A3219D801300F5121A /* MonetaryUnitViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 950EF2A2219D801300F5121A /* MonetaryUnitViewController.m */; };
 		9510A3CC219A91D4007A49A4 /* ErrorTypeTool.m in Sources */ = {isa = PBXBuildFile; fileRef = 9510A3CB219A91D4007A49A4 /* ErrorTypeTool.m */; };
+		95266CCD226F062E002CD915 /* NodePlanViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 95266CA1226F062E002CD915 /* NodePlanViewController.m */; };
+		95266CCE226F062E002CD915 /* CooperateViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 95266CA4226F062E002CD915 /* CooperateViewController.m */; };
+		95266CCF226F062E002CD915 /* NodeSharingViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 95266CA7226F062E002CD915 /* NodeSharingViewController.m */; };
+		95266CD0226F062E002CD915 /* VotingRecordsViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 95266CAA226F062E002CD915 /* VotingRecordsViewController.m */; };
+		95266CD1226F062E002CD915 /* NodeTransferSuccessViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 95266CAB226F062E002CD915 /* NodeTransferSuccessViewController.m */; };
+		95266CD2226F062E002CD915 /* FindViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 95266CAC226F062E002CD915 /* FindViewController.m */; };
+		95266CD3226F062E002CD915 /* CooperateDetailViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 95266CAD226F062E002CD915 /* CooperateDetailViewController.m */; };
+		95266CD4226F062E002CD915 /* AdsModel.m in Sources */ = {isa = PBXBuildFile; fileRef = 95266CB1226F062E002CD915 /* AdsModel.m */; };
+		95266CD5226F062E002CD915 /* CooperateModel.m in Sources */ = {isa = PBXBuildFile; fileRef = 95266CB2226F062E002CD915 /* CooperateModel.m */; };
+		95266CD6226F062E002CD915 /* VotingRecordsModel.m in Sources */ = {isa = PBXBuildFile; fileRef = 95266CB3226F062E002CD915 /* VotingRecordsModel.m */; };
+		95266CD7226F062E002CD915 /* NodePlanModel.m in Sources */ = {isa = PBXBuildFile; fileRef = 95266CB4226F062E002CD915 /* NodePlanModel.m */; };
+		95266CD8226F062E002CD915 /* CooperateSupportModel.m in Sources */ = {isa = PBXBuildFile; fileRef = 95266CB5226F062E002CD915 /* CooperateSupportModel.m */; };
+		95266CD9226F062E002CD915 /* CooperateDetailModel.m in Sources */ = {isa = PBXBuildFile; fileRef = 95266CB6226F062E002CD915 /* CooperateDetailModel.m */; };
+		95266CDA226F062E002CD915 /* NodeTransferSuccessViewCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 95266CBD226F062E002CD915 /* NodeTransferSuccessViewCell.m */; };
+		95266CDB226F062E002CD915 /* CooperateViewCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 95266CBF226F062E002CD915 /* CooperateViewCell.m */; };
+		95266CDC226F062E002CD915 /* CancellationOfVotingAlertView.m in Sources */ = {isa = PBXBuildFile; fileRef = 95266CC5226F062E002CD915 /* CancellationOfVotingAlertView.m */; };
+		95266CDD226F062E002CD915 /* NodePlanViewCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 95266CC7226F062E002CD915 /* NodePlanViewCell.m */; };
+		95266CDE226F062E002CD915 /* LinkAlertView.m in Sources */ = {isa = PBXBuildFile; fileRef = 95266CC9226F062E002CD915 /* LinkAlertView.m */; };
+		95266CDF226F062E002CD915 /* VotingRecordsViewCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 95266CCA226F062E002CD915 /* VotingRecordsViewCell.m */; };
+		95266CE0226F062E002CD915 /* SupportAlertView.m in Sources */ = {isa = PBXBuildFile; fileRef = 95266CCB226F062E002CD915 /* SupportAlertView.m */; };
+		95266CE1226F062E002CD915 /* SharingCanvassingAlertView.m in Sources */ = {isa = PBXBuildFile; fileRef = 95266CCC226F062E002CD915 /* SharingCanvassingAlertView.m */; };
 		952ADD0D21A65B4B00BEE51B /* SocketIOHandler.m in Sources */ = {isa = PBXBuildFile; fileRef = 952ADD0C21A65B4B00BEE51B /* SocketIOHandler.m */; };
 		952FE9D721C8DF9900634291 /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 952FE9D521C8DF9900634291 /* LaunchScreen.storyboard */; };
-		95383AD7225DD3DE008CE1B2 /* LinkAlertView.m in Sources */ = {isa = PBXBuildFile; fileRef = 95383AD6225DD3DE008CE1B2 /* LinkAlertView.m */; };
-		95383ADD226095F9008CE1B2 /* NodeTransferSuccessViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 95383ADC226095F9008CE1B2 /* NodeTransferSuccessViewController.m */; };
-		95383AE0226181CE008CE1B2 /* NodeTransferSuccessViewCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 95383ADF226181CE008CE1B2 /* NodeTransferSuccessViewCell.m */; };
-		95383AE32261B5A8008CE1B2 /* CooperateModel.m in Sources */ = {isa = PBXBuildFile; fileRef = 95383AE22261B5A8008CE1B2 /* CooperateModel.m */; };
-		95383AE62261DEE0008CE1B2 /* CooperateDetailModel.m in Sources */ = {isa = PBXBuildFile; fileRef = 95383AE52261DEE0008CE1B2 /* CooperateDetailModel.m */; };
-		95383AE92261F4C0008CE1B2 /* CooperateSupportModel.m in Sources */ = {isa = PBXBuildFile; fileRef = 95383AE82261F4C0008CE1B2 /* CooperateSupportModel.m */; };
 		954371742199234100915BBE /* SettingViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 954371732199234100915BBE /* SettingViewController.m */; };
-		9548EE21226DE93E0026B931 /* AdsModel.m in Sources */ = {isa = PBXBuildFile; fileRef = 9548EE20226DE93E0026B931 /* AdsModel.m */; };
 		9549EC66219C0CF800307255 /* CreateTipsAlertView.m in Sources */ = {isa = PBXBuildFile; fileRef = 9549EC65219C0CF800307255 /* CreateTipsAlertView.m */; };
 		9549EC70219D075F00307255 /* ClearCacheTool.m in Sources */ = {isa = PBXBuildFile; fileRef = 9549EC6F219D075E00307255 /* ClearCacheTool.m */; };
-		954F231122433C690090E967 /* FindViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 954F231022433C690090E967 /* FindViewController.m */; };
-		954F23142243842E0090E967 /* NodePlanViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 954F23132243842E0090E967 /* NodePlanViewController.m */; };
-		954F2317224386C70090E967 /* NodePlanViewCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 954F2316224386C70090E967 /* NodePlanViewCell.m */; };
 		9569288321D7541400B7721A /* libc++.tbd in Frameworks */ = {isa = PBXBuildFile; fileRef = 9569288221D7541400B7721A /* libc++.tbd */; };
 		956CD42121B016D1004DC1FA /* ListModel.m in Sources */ = {isa = PBXBuildFile; fileRef = 956CD42021B016D1004DC1FA /* ListModel.m */; };
 		9579EB5221BABE6300051EDB /* MBProgressHUD+JDragon.bundle in Resources */ = {isa = PBXBuildFile; fileRef = 9579EB5021BABE6300051EDB /* MBProgressHUD+JDragon.bundle */; };
@@ -131,22 +142,11 @@
 		959726EE21E8C84F0022CB78 /* PasswordAlertView.m in Sources */ = {isa = PBXBuildFile; fileRef = 959726ED21E8C84F0022CB78 /* PasswordAlertView.m */; };
 		959726F121E8CAAA0022CB78 /* WalletAddressAlertView.m in Sources */ = {isa = PBXBuildFile; fileRef = 959726F021E8CAAA0022CB78 /* WalletAddressAlertView.m */; };
 		959726F421E8D1970022CB78 /* ExplainInfoViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 959726F321E8D1970022CB78 /* ExplainInfoViewController.m */; };
-		959E28E42244C87D006FCA30 /* VotingRecordsViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 959E28E32244C87D006FCA30 /* VotingRecordsViewController.m */; };
-		959E28E72244CE0A006FCA30 /* VotingRecordsViewCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 959E28E62244CE0A006FCA30 /* VotingRecordsViewCell.m */; };
 		959E28F02248B998006FCA30 /* LoginConfirmViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 959E28EF2248B998006FCA30 /* LoginConfirmViewController.m */; };
-		959E28F92248CC93006FCA30 /* CancellationOfVotingAlertView.m in Sources */ = {isa = PBXBuildFile; fileRef = 959E28F82248CC93006FCA30 /* CancellationOfVotingAlertView.m */; };
 		959E28FF224A1B6A006FCA30 /* LoginConfirmModel.m in Sources */ = {isa = PBXBuildFile; fileRef = 959E28FE224A1B6A006FCA30 /* LoginConfirmModel.m */; };
 		959E2908224CCA45006FCA30 /* ScanCodeFailureViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 959E2907224CCA45006FCA30 /* ScanCodeFailureViewController.m */; };
 		959E290B224F1B9C006FCA30 /* ConfirmTransactionAlertView.m in Sources */ = {isa = PBXBuildFile; fileRef = 959E290A224F1B9C006FCA30 /* ConfirmTransactionAlertView.m */; };
 		959E290E224F1F25006FCA30 /* ConfirmTransactionModel.m in Sources */ = {isa = PBXBuildFile; fileRef = 959E290D224F1F25006FCA30 /* ConfirmTransactionModel.m */; };
-		959E2918225311A5006FCA30 /* NodePlanModel.m in Sources */ = {isa = PBXBuildFile; fileRef = 959E2916225311A5006FCA30 /* NodePlanModel.m */; };
-		959E291B22534462006FCA30 /* VotingRecordsModel.m in Sources */ = {isa = PBXBuildFile; fileRef = 959E291A22534462006FCA30 /* VotingRecordsModel.m */; };
-		959E291E2255B331006FCA30 /* CooperateViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 959E291D2255B331006FCA30 /* CooperateViewController.m */; };
-		959E29212255D7DB006FCA30 /* CooperateViewCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 959E29202255D7DB006FCA30 /* CooperateViewCell.m */; };
-		959E292722560ED4006FCA30 /* SharingCanvassingAlertView.m in Sources */ = {isa = PBXBuildFile; fileRef = 959E292622560ED4006FCA30 /* SharingCanvassingAlertView.m */; };
-		959E292A225AE267006FCA30 /* CooperateDetailViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 959E2929225AE267006FCA30 /* CooperateDetailViewController.m */; };
-		959E292D225B4186006FCA30 /* SupportAlertView.m in Sources */ = {isa = PBXBuildFile; fileRef = 959E292C225B4186006FCA30 /* SupportAlertView.m */; };
-		959E2930225C8597006FCA30 /* NodeSharingViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 959E292F225C8597006FCA30 /* NodeSharingViewController.m */; };
 		959E2933225C9E04006FCA30 /* TencentOpenAPI.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 959E2932225C9E04006FCA30 /* TencentOpenAPI.framework */; };
 		95A8A3B1219D1352008E978E /* LanguageManager.m in Sources */ = {isa = PBXBuildFile; fileRef = 95A8A3AF219D1352008E978E /* LanguageManager.m */; };
 		95A8A3B5219D157C008E978E /* DateTool.m in Sources */ = {isa = PBXBuildFile; fileRef = 95A8A3B4219D157C008E978E /* DateTool.m */; };
@@ -362,35 +362,57 @@
 		950EF2A2219D801300F5121A /* MonetaryUnitViewController.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = MonetaryUnitViewController.m; sourceTree = "<group>"; };
 		9510A3CA219A91D4007A49A4 /* ErrorTypeTool.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = ErrorTypeTool.h; sourceTree = "<group>"; };
 		9510A3CB219A91D4007A49A4 /* ErrorTypeTool.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = ErrorTypeTool.m; sourceTree = "<group>"; };
+		95266CA1226F062E002CD915 /* NodePlanViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = NodePlanViewController.m; sourceTree = "<group>"; };
+		95266CA2226F062E002CD915 /* VotingRecordsViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = VotingRecordsViewController.h; sourceTree = "<group>"; };
+		95266CA3226F062E002CD915 /* NodeTransferSuccessViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = NodeTransferSuccessViewController.h; sourceTree = "<group>"; };
+		95266CA4226F062E002CD915 /* CooperateViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = CooperateViewController.m; sourceTree = "<group>"; };
+		95266CA5226F062E002CD915 /* CooperateDetailViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = CooperateDetailViewController.h; sourceTree = "<group>"; };
+		95266CA6226F062E002CD915 /* FindViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = FindViewController.h; sourceTree = "<group>"; };
+		95266CA7226F062E002CD915 /* NodeSharingViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = NodeSharingViewController.m; sourceTree = "<group>"; };
+		95266CA8226F062E002CD915 /* NodePlanViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = NodePlanViewController.h; sourceTree = "<group>"; };
+		95266CA9226F062E002CD915 /* CooperateViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = CooperateViewController.h; sourceTree = "<group>"; };
+		95266CAA226F062E002CD915 /* VotingRecordsViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = VotingRecordsViewController.m; sourceTree = "<group>"; };
+		95266CAB226F062E002CD915 /* NodeTransferSuccessViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = NodeTransferSuccessViewController.m; sourceTree = "<group>"; };
+		95266CAC226F062E002CD915 /* FindViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = FindViewController.m; sourceTree = "<group>"; };
+		95266CAD226F062E002CD915 /* CooperateDetailViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = CooperateDetailViewController.m; sourceTree = "<group>"; };
+		95266CAE226F062E002CD915 /* NodeSharingViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = NodeSharingViewController.h; sourceTree = "<group>"; };
+		95266CB0226F062E002CD915 /* CooperateDetailModel.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = CooperateDetailModel.h; sourceTree = "<group>"; };
+		95266CB1226F062E002CD915 /* AdsModel.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = AdsModel.m; sourceTree = "<group>"; };
+		95266CB2226F062E002CD915 /* CooperateModel.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = CooperateModel.m; sourceTree = "<group>"; };
+		95266CB3226F062E002CD915 /* VotingRecordsModel.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = VotingRecordsModel.m; sourceTree = "<group>"; };
+		95266CB4226F062E002CD915 /* NodePlanModel.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = NodePlanModel.m; sourceTree = "<group>"; };
+		95266CB5226F062E002CD915 /* CooperateSupportModel.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = CooperateSupportModel.m; sourceTree = "<group>"; };
+		95266CB6226F062E002CD915 /* CooperateDetailModel.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = CooperateDetailModel.m; sourceTree = "<group>"; };
+		95266CB7226F062E002CD915 /* NodePlanModel.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = NodePlanModel.h; sourceTree = "<group>"; };
+		95266CB8226F062E002CD915 /* VotingRecordsModel.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = VotingRecordsModel.h; sourceTree = "<group>"; };
+		95266CB9226F062E002CD915 /* CooperateModel.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = CooperateModel.h; sourceTree = "<group>"; };
+		95266CBA226F062E002CD915 /* AdsModel.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = AdsModel.h; sourceTree = "<group>"; };
+		95266CBB226F062E002CD915 /* CooperateSupportModel.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = CooperateSupportModel.h; sourceTree = "<group>"; };
+		95266CBD226F062E002CD915 /* NodeTransferSuccessViewCell.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = NodeTransferSuccessViewCell.m; sourceTree = "<group>"; };
+		95266CBE226F062E002CD915 /* CancellationOfVotingAlertView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = CancellationOfVotingAlertView.h; sourceTree = "<group>"; };
+		95266CBF226F062E002CD915 /* CooperateViewCell.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = CooperateViewCell.m; sourceTree = "<group>"; };
+		95266CC0226F062E002CD915 /* NodePlanViewCell.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = NodePlanViewCell.h; sourceTree = "<group>"; };
+		95266CC1226F062E002CD915 /* VotingRecordsViewCell.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = VotingRecordsViewCell.h; sourceTree = "<group>"; };
+		95266CC2226F062E002CD915 /* LinkAlertView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = LinkAlertView.h; sourceTree = "<group>"; };
+		95266CC3226F062E002CD915 /* SharingCanvassingAlertView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SharingCanvassingAlertView.h; sourceTree = "<group>"; };
+		95266CC4226F062E002CD915 /* SupportAlertView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SupportAlertView.h; sourceTree = "<group>"; };
+		95266CC5226F062E002CD915 /* CancellationOfVotingAlertView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = CancellationOfVotingAlertView.m; sourceTree = "<group>"; };
+		95266CC6226F062E002CD915 /* NodeTransferSuccessViewCell.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = NodeTransferSuccessViewCell.h; sourceTree = "<group>"; };
+		95266CC7226F062E002CD915 /* NodePlanViewCell.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = NodePlanViewCell.m; sourceTree = "<group>"; };
+		95266CC8226F062E002CD915 /* CooperateViewCell.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = CooperateViewCell.h; sourceTree = "<group>"; };
+		95266CC9226F062E002CD915 /* LinkAlertView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = LinkAlertView.m; sourceTree = "<group>"; };
+		95266CCA226F062E002CD915 /* VotingRecordsViewCell.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = VotingRecordsViewCell.m; sourceTree = "<group>"; };
+		95266CCB226F062E002CD915 /* SupportAlertView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SupportAlertView.m; sourceTree = "<group>"; };
+		95266CCC226F062E002CD915 /* SharingCanvassingAlertView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SharingCanvassingAlertView.m; sourceTree = "<group>"; };
 		952ADD0B21A65B4B00BEE51B /* SocketIOHandler.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = SocketIOHandler.h; sourceTree = "<group>"; };
 		952ADD0C21A65B4B00BEE51B /* SocketIOHandler.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = SocketIOHandler.m; sourceTree = "<group>"; };
 		952FE9D621C8DF9900634291 /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/LaunchScreen.storyboard; sourceTree = "<group>"; };
-		95383AD5225DD3DE008CE1B2 /* LinkAlertView.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = LinkAlertView.h; sourceTree = "<group>"; };
-		95383AD6225DD3DE008CE1B2 /* LinkAlertView.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = LinkAlertView.m; sourceTree = "<group>"; };
-		95383ADB226095F9008CE1B2 /* NodeTransferSuccessViewController.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = NodeTransferSuccessViewController.h; sourceTree = "<group>"; };
-		95383ADC226095F9008CE1B2 /* NodeTransferSuccessViewController.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = NodeTransferSuccessViewController.m; sourceTree = "<group>"; };
-		95383ADE226181CD008CE1B2 /* NodeTransferSuccessViewCell.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = NodeTransferSuccessViewCell.h; sourceTree = "<group>"; };
-		95383ADF226181CE008CE1B2 /* NodeTransferSuccessViewCell.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = NodeTransferSuccessViewCell.m; sourceTree = "<group>"; };
-		95383AE12261B5A8008CE1B2 /* CooperateModel.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = CooperateModel.h; sourceTree = "<group>"; };
-		95383AE22261B5A8008CE1B2 /* CooperateModel.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = CooperateModel.m; sourceTree = "<group>"; };
-		95383AE42261DEE0008CE1B2 /* CooperateDetailModel.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = CooperateDetailModel.h; sourceTree = "<group>"; };
-		95383AE52261DEE0008CE1B2 /* CooperateDetailModel.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = CooperateDetailModel.m; sourceTree = "<group>"; };
-		95383AE72261F4C0008CE1B2 /* CooperateSupportModel.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = CooperateSupportModel.h; sourceTree = "<group>"; };
-		95383AE82261F4C0008CE1B2 /* CooperateSupportModel.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = CooperateSupportModel.m; sourceTree = "<group>"; };
 		954371722199234100915BBE /* SettingViewController.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = SettingViewController.h; sourceTree = "<group>"; };
 		954371732199234100915BBE /* SettingViewController.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = SettingViewController.m; sourceTree = "<group>"; };
-		9548EE1F226DE93E0026B931 /* AdsModel.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = AdsModel.h; sourceTree = "<group>"; };
-		9548EE20226DE93E0026B931 /* AdsModel.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = AdsModel.m; sourceTree = "<group>"; };
 		9549EC64219C0CF800307255 /* CreateTipsAlertView.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = CreateTipsAlertView.h; sourceTree = "<group>"; };
 		9549EC65219C0CF800307255 /* CreateTipsAlertView.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = CreateTipsAlertView.m; sourceTree = "<group>"; };
 		9549EC6E219D075E00307255 /* ClearCacheTool.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ClearCacheTool.h; sourceTree = "<group>"; };
 		9549EC6F219D075E00307255 /* ClearCacheTool.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ClearCacheTool.m; sourceTree = "<group>"; };
-		954F230F22433C690090E967 /* FindViewController.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = FindViewController.h; sourceTree = "<group>"; };
-		954F231022433C690090E967 /* FindViewController.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = FindViewController.m; sourceTree = "<group>"; };
-		954F23122243842E0090E967 /* NodePlanViewController.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = NodePlanViewController.h; sourceTree = "<group>"; };
-		954F23132243842E0090E967 /* NodePlanViewController.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = NodePlanViewController.m; sourceTree = "<group>"; };
-		954F2315224386C70090E967 /* NodePlanViewCell.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = NodePlanViewCell.h; sourceTree = "<group>"; };
-		954F2316224386C70090E967 /* NodePlanViewCell.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = NodePlanViewCell.m; sourceTree = "<group>"; };
 		9569288221D7541400B7721A /* libc++.tbd */ = {isa = PBXFileReference; lastKnownFileType = "sourcecode.text-based-dylib-definition"; name = "libc++.tbd"; path = "usr/lib/libc++.tbd"; sourceTree = SDKROOT; };
 		956CD41F21B016D1004DC1FA /* ListModel.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = ListModel.h; sourceTree = "<group>"; };
 		956CD42021B016D1004DC1FA /* ListModel.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = ListModel.m; sourceTree = "<group>"; };
@@ -452,14 +474,8 @@
 		959726F021E8CAAA0022CB78 /* WalletAddressAlertView.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = WalletAddressAlertView.m; sourceTree = "<group>"; };
 		959726F221E8D1970022CB78 /* ExplainInfoViewController.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = ExplainInfoViewController.h; sourceTree = "<group>"; };
 		959726F321E8D1970022CB78 /* ExplainInfoViewController.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = ExplainInfoViewController.m; sourceTree = "<group>"; };
-		959E28E22244C87D006FCA30 /* VotingRecordsViewController.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = VotingRecordsViewController.h; sourceTree = "<group>"; };
-		959E28E32244C87D006FCA30 /* VotingRecordsViewController.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = VotingRecordsViewController.m; sourceTree = "<group>"; };
-		959E28E52244CE0A006FCA30 /* VotingRecordsViewCell.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = VotingRecordsViewCell.h; sourceTree = "<group>"; };
-		959E28E62244CE0A006FCA30 /* VotingRecordsViewCell.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = VotingRecordsViewCell.m; sourceTree = "<group>"; };
 		959E28EE2248B998006FCA30 /* LoginConfirmViewController.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = LoginConfirmViewController.h; sourceTree = "<group>"; };
 		959E28EF2248B998006FCA30 /* LoginConfirmViewController.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = LoginConfirmViewController.m; sourceTree = "<group>"; };
-		959E28F72248CC93006FCA30 /* CancellationOfVotingAlertView.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = CancellationOfVotingAlertView.h; sourceTree = "<group>"; };
-		959E28F82248CC93006FCA30 /* CancellationOfVotingAlertView.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = CancellationOfVotingAlertView.m; sourceTree = "<group>"; };
 		959E28FD224A1B6A006FCA30 /* LoginConfirmModel.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = LoginConfirmModel.h; sourceTree = "<group>"; };
 		959E28FE224A1B6A006FCA30 /* LoginConfirmModel.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = LoginConfirmModel.m; sourceTree = "<group>"; };
 		959E2906224CCA45006FCA30 /* ScanCodeFailureViewController.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = ScanCodeFailureViewController.h; sourceTree = "<group>"; };
@@ -468,22 +484,6 @@
 		959E290A224F1B9C006FCA30 /* ConfirmTransactionAlertView.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = ConfirmTransactionAlertView.m; sourceTree = "<group>"; };
 		959E290C224F1F25006FCA30 /* ConfirmTransactionModel.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = ConfirmTransactionModel.h; sourceTree = "<group>"; };
 		959E290D224F1F25006FCA30 /* ConfirmTransactionModel.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = ConfirmTransactionModel.m; sourceTree = "<group>"; };
-		959E2916225311A5006FCA30 /* NodePlanModel.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = NodePlanModel.m; sourceTree = "<group>"; };
-		959E2917225311A5006FCA30 /* NodePlanModel.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = NodePlanModel.h; sourceTree = "<group>"; };
-		959E291922534462006FCA30 /* VotingRecordsModel.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = VotingRecordsModel.h; sourceTree = "<group>"; };
-		959E291A22534462006FCA30 /* VotingRecordsModel.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = VotingRecordsModel.m; sourceTree = "<group>"; };
-		959E291C2255B331006FCA30 /* CooperateViewController.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = CooperateViewController.h; sourceTree = "<group>"; };
-		959E291D2255B331006FCA30 /* CooperateViewController.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = CooperateViewController.m; sourceTree = "<group>"; };
-		959E291F2255D7DB006FCA30 /* CooperateViewCell.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = CooperateViewCell.h; sourceTree = "<group>"; };
-		959E29202255D7DB006FCA30 /* CooperateViewCell.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = CooperateViewCell.m; sourceTree = "<group>"; };
-		959E292522560ED4006FCA30 /* SharingCanvassingAlertView.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = SharingCanvassingAlertView.h; sourceTree = "<group>"; };
-		959E292622560ED4006FCA30 /* SharingCanvassingAlertView.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = SharingCanvassingAlertView.m; sourceTree = "<group>"; };
-		959E2928225AE267006FCA30 /* CooperateDetailViewController.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = CooperateDetailViewController.h; sourceTree = "<group>"; };
-		959E2929225AE267006FCA30 /* CooperateDetailViewController.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = CooperateDetailViewController.m; sourceTree = "<group>"; };
-		959E292B225B4186006FCA30 /* SupportAlertView.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = SupportAlertView.h; sourceTree = "<group>"; };
-		959E292C225B4186006FCA30 /* SupportAlertView.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = SupportAlertView.m; sourceTree = "<group>"; };
-		959E292E225C8597006FCA30 /* NodeSharingViewController.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = NodeSharingViewController.h; sourceTree = "<group>"; };
-		959E292F225C8597006FCA30 /* NodeSharingViewController.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = NodeSharingViewController.m; sourceTree = "<group>"; };
 		959E2932225C9E04006FCA30 /* TencentOpenAPI.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; path = TencentOpenAPI.framework; sourceTree = "<group>"; };
 		95A8A3AF219D1352008E978E /* LanguageManager.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = LanguageManager.m; sourceTree = "<group>"; };
 		95A8A3B0219D1352008E978E /* LanguageManager.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = LanguageManager.h; sourceTree = "<group>"; };
@@ -595,7 +595,7 @@
 		835A45202174C14D005BFCDD /* Classes */ = {
 			isa = PBXGroup;
 			children = (
-				954F230B22433C300090E967 /* Find */,
+				95266C9F226F062E002CD915 /* Find */,
 				835A45212174C14D005BFCDD /* Account */,
 				835A45322174C212005BFCDD /* Assets */,
 				835A452E2174C212005BFCDD /* My */,
@@ -995,6 +995,79 @@
 			path = QRCode;
 			sourceTree = "<group>";
 		};
+		95266C9F226F062E002CD915 /* Find */ = {
+			isa = PBXGroup;
+			children = (
+				95266CA0226F062E002CD915 /* Controller */,
+				95266CAF226F062E002CD915 /* Model */,
+				95266CBC226F062E002CD915 /* View */,
+			);
+			path = Find;
+			sourceTree = "<group>";
+		};
+		95266CA0226F062E002CD915 /* Controller */ = {
+			isa = PBXGroup;
+			children = (
+				95266CA6226F062E002CD915 /* FindViewController.h */,
+				95266CAC226F062E002CD915 /* FindViewController.m */,
+				95266CA8226F062E002CD915 /* NodePlanViewController.h */,
+				95266CA1226F062E002CD915 /* NodePlanViewController.m */,
+				95266CA2226F062E002CD915 /* VotingRecordsViewController.h */,
+				95266CAA226F062E002CD915 /* VotingRecordsViewController.m */,
+				95266CAE226F062E002CD915 /* NodeSharingViewController.h */,
+				95266CA7226F062E002CD915 /* NodeSharingViewController.m */,
+				95266CA9226F062E002CD915 /* CooperateViewController.h */,
+				95266CA4226F062E002CD915 /* CooperateViewController.m */,
+				95266CA5226F062E002CD915 /* CooperateDetailViewController.h */,
+				95266CAD226F062E002CD915 /* CooperateDetailViewController.m */,
+				95266CA3226F062E002CD915 /* NodeTransferSuccessViewController.h */,
+				95266CAB226F062E002CD915 /* NodeTransferSuccessViewController.m */,
+			);
+			path = Controller;
+			sourceTree = "<group>";
+		};
+		95266CAF226F062E002CD915 /* Model */ = {
+			isa = PBXGroup;
+			children = (
+				95266CBA226F062E002CD915 /* AdsModel.h */,
+				95266CB1226F062E002CD915 /* AdsModel.m */,
+				95266CB7226F062E002CD915 /* NodePlanModel.h */,
+				95266CB4226F062E002CD915 /* NodePlanModel.m */,
+				95266CB8226F062E002CD915 /* VotingRecordsModel.h */,
+				95266CB3226F062E002CD915 /* VotingRecordsModel.m */,
+				95266CB9226F062E002CD915 /* CooperateModel.h */,
+				95266CB2226F062E002CD915 /* CooperateModel.m */,
+				95266CB0226F062E002CD915 /* CooperateDetailModel.h */,
+				95266CB6226F062E002CD915 /* CooperateDetailModel.m */,
+				95266CBB226F062E002CD915 /* CooperateSupportModel.h */,
+				95266CB5226F062E002CD915 /* CooperateSupportModel.m */,
+			);
+			path = Model;
+			sourceTree = "<group>";
+		};
+		95266CBC226F062E002CD915 /* View */ = {
+			isa = PBXGroup;
+			children = (
+				95266CC0226F062E002CD915 /* NodePlanViewCell.h */,
+				95266CC7226F062E002CD915 /* NodePlanViewCell.m */,
+				95266CC1226F062E002CD915 /* VotingRecordsViewCell.h */,
+				95266CCA226F062E002CD915 /* VotingRecordsViewCell.m */,
+				95266CC3226F062E002CD915 /* SharingCanvassingAlertView.h */,
+				95266CCC226F062E002CD915 /* SharingCanvassingAlertView.m */,
+				95266CC2226F062E002CD915 /* LinkAlertView.h */,
+				95266CC9226F062E002CD915 /* LinkAlertView.m */,
+				95266CC8226F062E002CD915 /* CooperateViewCell.h */,
+				95266CBF226F062E002CD915 /* CooperateViewCell.m */,
+				95266CC4226F062E002CD915 /* SupportAlertView.h */,
+				95266CCB226F062E002CD915 /* SupportAlertView.m */,
+				95266CC6226F062E002CD915 /* NodeTransferSuccessViewCell.h */,
+				95266CBD226F062E002CD915 /* NodeTransferSuccessViewCell.m */,
+				95266CBE226F062E002CD915 /* CancellationOfVotingAlertView.h */,
+				95266CC5226F062E002CD915 /* CancellationOfVotingAlertView.m */,
+			);
+			path = View;
+			sourceTree = "<group>";
+		};
 		9549EC6D219D074200307255 /* ClearCache */ = {
 			isa = PBXGroup;
 			children = (
@@ -1002,79 +1075,6 @@
 				9549EC6F219D075E00307255 /* ClearCacheTool.m */,
 			);
 			path = ClearCache;
-			sourceTree = "<group>";
-		};
-		954F230B22433C300090E967 /* Find */ = {
-			isa = PBXGroup;
-			children = (
-				954F230C22433C300090E967 /* Controller */,
-				954F230D22433C300090E967 /* Model */,
-				954F230E22433C300090E967 /* View */,
-			);
-			path = Find;
-			sourceTree = "<group>";
-		};
-		954F230C22433C300090E967 /* Controller */ = {
-			isa = PBXGroup;
-			children = (
-				954F230F22433C690090E967 /* FindViewController.h */,
-				954F231022433C690090E967 /* FindViewController.m */,
-				954F23122243842E0090E967 /* NodePlanViewController.h */,
-				954F23132243842E0090E967 /* NodePlanViewController.m */,
-				959E28E22244C87D006FCA30 /* VotingRecordsViewController.h */,
-				959E28E32244C87D006FCA30 /* VotingRecordsViewController.m */,
-				959E292E225C8597006FCA30 /* NodeSharingViewController.h */,
-				959E292F225C8597006FCA30 /* NodeSharingViewController.m */,
-				959E291C2255B331006FCA30 /* CooperateViewController.h */,
-				959E291D2255B331006FCA30 /* CooperateViewController.m */,
-				959E2928225AE267006FCA30 /* CooperateDetailViewController.h */,
-				959E2929225AE267006FCA30 /* CooperateDetailViewController.m */,
-				95383ADB226095F9008CE1B2 /* NodeTransferSuccessViewController.h */,
-				95383ADC226095F9008CE1B2 /* NodeTransferSuccessViewController.m */,
-			);
-			path = Controller;
-			sourceTree = "<group>";
-		};
-		954F230D22433C300090E967 /* Model */ = {
-			isa = PBXGroup;
-			children = (
-				959E2917225311A5006FCA30 /* NodePlanModel.h */,
-				959E2916225311A5006FCA30 /* NodePlanModel.m */,
-				959E291922534462006FCA30 /* VotingRecordsModel.h */,
-				959E291A22534462006FCA30 /* VotingRecordsModel.m */,
-				95383AE12261B5A8008CE1B2 /* CooperateModel.h */,
-				95383AE22261B5A8008CE1B2 /* CooperateModel.m */,
-				95383AE42261DEE0008CE1B2 /* CooperateDetailModel.h */,
-				95383AE52261DEE0008CE1B2 /* CooperateDetailModel.m */,
-				95383AE72261F4C0008CE1B2 /* CooperateSupportModel.h */,
-				95383AE82261F4C0008CE1B2 /* CooperateSupportModel.m */,
-				9548EE1F226DE93E0026B931 /* AdsModel.h */,
-				9548EE20226DE93E0026B931 /* AdsModel.m */,
-			);
-			path = Model;
-			sourceTree = "<group>";
-		};
-		954F230E22433C300090E967 /* View */ = {
-			isa = PBXGroup;
-			children = (
-				954F2315224386C70090E967 /* NodePlanViewCell.h */,
-				954F2316224386C70090E967 /* NodePlanViewCell.m */,
-				959E28E52244CE0A006FCA30 /* VotingRecordsViewCell.h */,
-				959E28E62244CE0A006FCA30 /* VotingRecordsViewCell.m */,
-				959E292B225B4186006FCA30 /* SupportAlertView.h */,
-				959E292C225B4186006FCA30 /* SupportAlertView.m */,
-				959E28F72248CC93006FCA30 /* CancellationOfVotingAlertView.h */,
-				959E28F82248CC93006FCA30 /* CancellationOfVotingAlertView.m */,
-				959E291F2255D7DB006FCA30 /* CooperateViewCell.h */,
-				959E29202255D7DB006FCA30 /* CooperateViewCell.m */,
-				959E292522560ED4006FCA30 /* SharingCanvassingAlertView.h */,
-				959E292622560ED4006FCA30 /* SharingCanvassingAlertView.m */,
-				95383AD5225DD3DE008CE1B2 /* LinkAlertView.h */,
-				95383AD6225DD3DE008CE1B2 /* LinkAlertView.m */,
-				95383ADE226181CD008CE1B2 /* NodeTransferSuccessViewCell.h */,
-				95383ADF226181CE008CE1B2 /* NodeTransferSuccessViewCell.m */,
-			);
-			path = View;
 			sourceTree = "<group>";
 		};
 		9579E74D21B5353700051EDB /* Lib */ = {
@@ -1456,53 +1456,50 @@
 			buildActionMask = 2147483647;
 			files = (
 				83379A6B2179C1D500C222A5 /* ChangePasswordViewController.m in Sources */,
+				95266CD1226F062E002CD915 /* NodeTransferSuccessViewController.m in Sources */,
 				8372C86C2174CCB000FF9506 /* MyViewController.m in Sources */,
 				83379A58217880C700C222A5 /* BackUpPurseViewController.m in Sources */,
 				83379A80217B524D00C222A5 /* UIApplication+Extension.m in Sources */,
 				9549EC66219C0CF800307255 /* CreateTipsAlertView.m in Sources */,
 				959E28F02248B998006FCA30 /* LoginConfirmViewController.m in Sources */,
-				9548EE21226DE93E0026B931 /* AdsModel.m in Sources */,
 				83379AE52180631200C222A5 /* TxInfoModel.m in Sources */,
 				83379A8C217DB25A00C222A5 /* TransferAccountsViewController.m in Sources */,
 				83FB443621904AA400D68569 /* HMScannerViewController.m in Sources */,
 				8337991A2176E80D00C222A5 /* MultilingualViewController.m in Sources */,
 				833799382177427500C222A5 /* AssetsListViewCell.m in Sources */,
-				959E291B22534462006FCA30 /* VotingRecordsModel.m in Sources */,
 				83379A95217EB08600C222A5 /* DetailListViewCell.m in Sources */,
+				95266CDD226F062E002CD915 /* NodePlanViewCell.m in Sources */,
 				83B594B42175F46E009F91BA /* TermsOfUseViewController.m in Sources */,
+				95266CDC226F062E002CD915 /* CancellationOfVotingAlertView.m in Sources */,
 				959726CB21E5A8640022CB78 /* ImportWalletViewController.m in Sources */,
 				83379AAA217F006600C222A5 /* HttpTool.m in Sources */,
-				959E29212255D7DB006FCA30 /* CooperateViewCell.m in Sources */,
 				8372C86F2174D03F00FF9506 /* UIButton+Extension.m in Sources */,
-				959E291E2255B331006FCA30 /* CooperateViewController.m in Sources */,
+				95266CDE226F062E002CD915 /* LinkAlertView.m in Sources */,
 				83379A8F217DC0C700C222A5 /* TransferDetailsAlertView.m in Sources */,
 				950EF2A3219D801300F5121A /* MonetaryUnitViewController.m in Sources */,
 				83D5B1EB2181741200BF1FF1 /* AddAssetsViewCell.m in Sources */,
 				95A8A3B1219D1352008E978E /* LanguageManager.m in Sources */,
 				8395AF22218725D20082EA30 /* RegisteredAssetsViewController.m in Sources */,
 				8337992F21772E0300C222A5 /* CustomButton.m in Sources */,
+				95266CD9226F062E002CD915 /* CooperateDetailModel.m in Sources */,
 				95A8A3B5219D157C008E978E /* DateTool.m in Sources */,
 				9549EC70219D075F00307255 /* ClearCacheTool.m in Sources */,
 				952ADD0D21A65B4B00BEE51B /* SocketIOHandler.m in Sources */,
+				95266CD7226F062E002CD915 /* NodePlanModel.m in Sources */,
 				83B594B12175E6FA009F91BA /* PlaceholderTextView.m in Sources */,
 				8395AF312189496E0082EA30 /* DistributionModel.m in Sources */,
 				83379AA9217F006600C222A5 /* HTTPManager.m in Sources */,
 				83FB4423219035B700D68569 /* SearchAssetsModel.m in Sources */,
 				83FB443521904AA400D68569 /* HMScannerMaskView.m in Sources */,
-				95383ADD226095F9008CE1B2 /* NodeTransferSuccessViewController.m in Sources */,
 				83FB443721904AA400D68569 /* HMScanner.m in Sources */,
 				83379A182178682100C222A5 /* UIView+CustomAlertView.m in Sources */,
 				959726BF21E43EB50022CB78 /* WalletModel.m in Sources */,
-				95383AE32261B5A8008CE1B2 /* CooperateModel.m in Sources */,
 				95A8A3B9219D15D8008E978E /* RegexPatternTool.m in Sources */,
 				8395AF34218958840082EA30 /* TransactionResultModel.m in Sources */,
 				958127EF219ABD9D0081A02E /* VersionUpdateAlertView.m in Sources */,
 				8372C8662174CC6F00FF9506 /* BaseViewController.m in Sources */,
 				835A45262174C14D005BFCDD /* main.m in Sources */,
-				959E292D225B4186006FCA30 /* SupportAlertView.m in Sources */,
-				95383AE0226181CE008CE1B2 /* NodeTransferSuccessViewCell.m in Sources */,
 				83379AD921802FA900C222A5 /* AssetsDetailModel.m in Sources */,
-				959E292722560ED4006FCA30 /* SharingCanvassingAlertView.m in Sources */,
 				959E2908224CCA45006FCA30 /* ScanCodeFailureViewController.m in Sources */,
 				959726DA21E6DCA10022CB78 /* TextFieldViewCell.m in Sources */,
 				959726EE21E8C84F0022CB78 /* PasswordAlertView.m in Sources */,
@@ -1516,18 +1513,18 @@
 				83379A742179D62300C222A5 /* MyIdentityViewController.m in Sources */,
 				8372C8622174CBF100FF9506 /* NavigationViewController.m in Sources */,
 				8372C8592174CB9800FF9506 /* UITextField+Extension.m in Sources */,
-				95383AD7225DD3DE008CE1B2 /* LinkAlertView.m in Sources */,
-				959E2918225311A5006FCA30 /* NodePlanModel.m in Sources */,
 				95A8A3BF219D166D008E978E /* Encapsulation.m in Sources */,
-				959E28E42244C87D006FCA30 /* VotingRecordsViewController.m in Sources */,
 				958AA69821A2A89600BEA50C /* CustomRefreshFooter.m in Sources */,
 				83D5BCCE2182A87B00BF1FF1 /* AccountModel.m in Sources */,
-				95383AE92261F4C0008CE1B2 /* CooperateSupportModel.m in Sources */,
 				83FB443921904AA400D68569 /* HMScanerCardViewController.m in Sources */,
+				95266CE0226F062E002CD915 /* SupportAlertView.m in Sources */,
 				83379AC6217F3F4200C222A5 /* AssetsListModel.m in Sources */,
 				9594E5CE222938AF006EFB6D /* AddressBookCache.m in Sources */,
+				95266CD8226F062E002CD915 /* CooperateSupportModel.m in Sources */,
 				8372C8692174CCA000FF9506 /* AssetsViewController.m in Sources */,
+				95266CCD226F062E002CD915 /* NodePlanViewController.m in Sources */,
 				83B594B72175FC8B009F91BA /* BackupMnemonicsViewController.m in Sources */,
+				95266CD4226F062E002CD915 /* AdsModel.m in Sources */,
 				959575C121FFF00F0089479C /* AddressBookViewController.m in Sources */,
 				83FB443421904AA400D68569 /* HMScannerBorder.m in Sources */,
 				959E290B224F1B9C006FCA30 /* ConfirmTransactionAlertView.m in Sources */,
@@ -1535,14 +1532,12 @@
 				959726BC21E358A10022CB78 /* ExportViewController.m in Sources */,
 				83FB443A21904AA400D68569 /* HMScannerController.m in Sources */,
 				83379AE8218066FE00C222A5 /* BlockInfoModel.m in Sources */,
+				95266CD2226F062E002CD915 /* FindViewController.m in Sources */,
 				958127F2219AC82A0081A02E /* VersionModel.m in Sources */,
-				95383AE62261DEE0008CE1B2 /* CooperateDetailModel.m in Sources */,
-				959E28E72244CE0A006FCA30 /* VotingRecordsViewCell.m in Sources */,
 				838DC7682186AFFB002FF276 /* DistributionResultsViewController.m in Sources */,
+				95266CCE226F062E002CD915 /* CooperateViewController.m in Sources */,
 				83379A86217D9C8A00C222A5 /* AssetsDetailViewController.m in Sources */,
 				83379A92217DE12600C222A5 /* TransferResultsViewController.m in Sources */,
-				959E2930225C8597006FCA30 /* NodeSharingViewController.m in Sources */,
-				954F23142243842E0090E967 /* NodePlanViewController.m in Sources */,
 				8372C8632174CBF100FF9506 /* TabBarViewController.m in Sources */,
 				9579EB5321BABE6300051EDB /* MBProgressHUD+JDragon.m in Sources */,
 				83379AC3217F3F3000C222A5 /* BaseModel.m in Sources */,
@@ -1550,10 +1545,12 @@
 				83D5BCD12182AB8200BF1FF1 /* AccountTool.m in Sources */,
 				8372C872217588D100FF9506 /* IdentityViewController.m in Sources */,
 				95A8A41C219D5FF7008E978E /* YBPopupMenu.m in Sources */,
+				95266CD6226F062E002CD915 /* VotingRecordsModel.m in Sources */,
 				83B594AA2175954F009F91BA /* CreateIdentityViewController.m in Sources */,
 				83EE39422181633A0017CDE5 /* AddAssetsViewController.m in Sources */,
 				8395AF2B218843650082EA30 /* RegisteredModel.m in Sources */,
 				8395AF25218725FF0082EA30 /* RegisteredResultViewController.m in Sources */,
+				95266CDB226F062E002CD915 /* CooperateViewCell.m in Sources */,
 				959726C221E44FFB0022CB78 /* ModifyAlertView.m in Sources */,
 				950E4145219E6ADD002C7900 /* AssetCurrencyModel.m in Sources */,
 				959726E521E88C610022CB78 /* UILabel+Extension.m in Sources */,
@@ -1561,6 +1558,7 @@
 				83379A6E2179CB9E00C222A5 /* FeedbackViewController.m in Sources */,
 				83D5BCC72181BF9500BF1FF1 /* UIColor+Extension.m in Sources */,
 				9510A3CC219A91D4007A49A4 /* ErrorTypeTool.m in Sources */,
+				95266CD5226F062E002CD915 /* CooperateModel.m in Sources */,
 				954371742199234100915BBE /* SettingViewController.m in Sources */,
 				838DC7652186A114002FF276 /* DistributionOfAssetsViewController.m in Sources */,
 				83379ADC2180509600C222A5 /* NSDate+Extension.m in Sources */,
@@ -1569,27 +1567,29 @@
 				83D5B1F1218199E900BF1FF1 /* JsonTool.m in Sources */,
 				83B465A821745C9300187961 /* ViewController.m in Sources */,
 				833799322177305A00C222A5 /* UIView+Extension.m in Sources */,
-				954F2317224386C70090E967 /* NodePlanViewCell.m in Sources */,
 				83379A98217EB79B00C222A5 /* RequestTimeoutViewController.m in Sources */,
 				959726B821E334C20022CB78 /* WalletManagementViewCell.m in Sources */,
 				835A45272174C14D005BFCDD /* AppDelegate.m in Sources */,
-				959E292A225AE267006FCA30 /* CooperateDetailViewController.m in Sources */,
+				95266CE1226F062E002CD915 /* SharingCanvassingAlertView.m in Sources */,
 				959726C821E4893F0022CB78 /* ExportPrivateKeyViewController.m in Sources */,
 				956CD42121B016D1004DC1FA /* ListModel.m in Sources */,
 				83379AE22180630300C222A5 /* TxDetailModel.m in Sources */,
 				95A8A41D219D5FF7008E978E /* YBRectConst.m in Sources */,
 				959575C821FFF8010089479C /* AddressBookModel.m in Sources */,
 				833799172176E1E600C222A5 /* ListTableViewCell.m in Sources */,
-				959E28F92248CC93006FCA30 /* CancellationOfVotingAlertView.m in Sources */,
 				959575CB21FFFD040089479C /* ContactViewController.m in Sources */,
+				95266CCF226F062E002CD915 /* NodeSharingViewController.m in Sources */,
+				95266CDF226F062E002CD915 /* VotingRecordsViewCell.m in Sources */,
 				95A8A3BC219D161D008E978E /* CustomRefreshHeader.m in Sources */,
+				95266CD0226F062E002CD915 /* VotingRecordsViewController.m in Sources */,
 				95DC83C821E2FD3B00F745E6 /* WalletManagementViewController.m in Sources */,
-				954F231122433C690090E967 /* FindViewController.m in Sources */,
 				959726C521E487F10022CB78 /* ExportKeystoreViewController.m in Sources */,
 				959E290E224F1F25006FCA30 /* ConfirmTransactionModel.m in Sources */,
 				959575C421FFF6EB0089479C /* AddressBookListViewCell.m in Sources */,
 				83379A092178509300C222A5 /* WKWebViewController.m in Sources */,
 				83379A6221797BDD00C222A5 /* ConfirmMnemonicViewController.m in Sources */,
+				95266CD3226F062E002CD915 /* CooperateDetailViewController.m in Sources */,
+				95266CDA226F062E002CD915 /* NodeTransferSuccessViewCell.m in Sources */,
 				95A8A41E219D5FF7008E978E /* YBPopupMenuPath.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;

@@ -31,6 +31,7 @@ typedef NS_ENUM(NSInteger, ErrorCode) {
 // Node Error type
 typedef NS_ENUM(NSInteger, NodeErrorCode) {
     ErrorPhysicalAddressApplied = 1003,
+    ErrorQRCodeExpired = 1006,
     ErrorAccountApplied = 1009,
     ErrorNotSubmitted = 1011,
     ErrorCommitteeAuthority = 1024,
@@ -39,6 +40,7 @@ typedef NS_ENUM(NSInteger, NodeErrorCode) {
     ErrorInsufficientSurplus = 1032,
     ErrorCooperateUnsupported = 1033,
     ErrorCooperateCompleted = 1034,
+    ErrorInitiatorCanNotSupport = 1036,
 };
 
 // Error type

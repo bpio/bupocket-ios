@@ -258,11 +258,13 @@ static UIButton * _noBackup;
             LoginConfirmViewController * VC = [[LoginConfirmViewController alloc] init];
             VC.loginConfirmModel = [LoginConfirmModel mj_objectWithKeyValues:[responseObject objectForKey:@"data"]];
             [self.navigationController pushViewController:VC animated:NO];
-        } else {
+        } else if (code == ErrorQRCodeExpired) {
             ScanCodeFailureViewController * VC = [[ScanCodeFailureViewController alloc] init];
             VC.exceptionPromptStr = Localized(@"Overdue");
             VC.promptStr = Localized(@"RefreshQRCode");
             [self.navigationController pushViewController:VC animated:NO];
+        } else {
+            [Encapsulation showAlertControllerWithMessage:[ErrorTypeTool getDescriptionWithNodeErrorCode:code] handler:nil];
         }
     } failure:^(NSError *error) {
         
@@ -491,13 +493,13 @@ static UIButton * _noBackup;
         if (code == Success_Code) {
             ConfirmTransactionModel * confirmTransactionModel = [ConfirmTransactionModel mj_objectWithKeyValues:[responseObject objectForKey:@"data"]];
             [self getDpos:confirmTransactionModel];
-        } else if (code == ErrorNoVoteJurisdiction || code == ErrorCommitteeAuthority) {
-            [Encapsulation showAlertControllerWithMessage:[ErrorTypeTool getDescriptionWithNodeErrorCode:code] handler:nil];
-        } else {
+        } else if (code == ErrorQRCodeExpired) {
             ScanCodeFailureViewController * VC = [[ScanCodeFailureViewController alloc] init];
             VC.exceptionPromptStr = Localized(@"Overdue");
             VC.promptStr = Localized(@"RefreshQRCode");
             [self.navigationController pushViewController:VC animated:NO];
+        } else {
+            [Encapsulation showAlertControllerWithMessage:[ErrorTypeTool getDescriptionWithNodeErrorCode:code] handler:nil];
         }
     } failure:^(NSError *error) {
 

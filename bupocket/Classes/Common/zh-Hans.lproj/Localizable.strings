@@ -379,8 +379,10 @@
 "InProcessing" = "处理中";
 // 投票记录详情
 "Share" = "分享";
-"Votes" = "票";
-"SupportNumber" = "人支持";
+"%@ Votes" = "%@ 票";
+"%@ Vote" = "%@ 票";
+"%@ Sponsors" = "%@ 人支持";
+"%@ Sponsor" = "%@ 人支持";
 "NodeIntroduction" = "节点介绍";
 // 分享
 "InvitationPrompt" = "快来小布口袋帮忙投票";
@@ -415,15 +417,20 @@
 "Initiator" = "发起方";
 "CounterAccount" = "对方账户";
 "Details" = "详情";
-"TransactionCosts" = "交易费用";
+"TransactionCosts（BU）" = "交易费用（BU）";
+"Number（BU）" = "数量（BU）";
 // 节点共建
 "PurchaseAmount" = "起购金额";
 "AwardSharingRatio" = "奖励分享比例";
 "TargetNumber" = "目标数量";
 "TargetAmount" = "目标共建金额";
-"SupportPortion" = "已获得支持";
-"ResidualPortion" = "剩余";
-"Shares" = "份";
+"%lld shares received" = "已获得支持 %lld 份";
+"%lld share received" = "已获得支持 %lld 份";
+"Received" = "已获得支持";
+"%lld shares left" = "剩余 %lld 份";
+"%lld share left" = "剩余 %lld 份";
+"Left" = "剩余";
+//"Shares" = "份";
 "ShareRatioInfo" = "节点共建项目发起者承诺在竞选成功后，对节点共建支持者的奖励分享比例";
 // 节点共建详情
 "JointlyCooperateDetail" = "共建信息详情";
@@ -432,7 +439,7 @@
 "Quit" = "已退出";
 "Bond" = "保证金";
 "CooperateBond" = "节点共建项目发起者转入保证金作为节点共建的锁仓金额";
-"The remaining %@ copies" = "剩余 %@ 份";
+//"The remaining %@ copies" = "剩余 %@ 份";
 "TotalSupport" = "已获得支持金额";
 "RiskStatement" = "风险说明";
 "SupportRecords" = "节点共建记录";
@@ -479,6 +486,7 @@
 "InsufficientSurplus" = "剩余份数不足，建议您调整支持份数";
 "CooperateUnsupported" = "您还未支持过此项目，暂不能撤回";
 "CooperateCompleted" = "节点共建项目已完成，暂不支持退出";
+"InitiatorCanNotSupport" = "节点共建项目发起者不能参与支持";
 
 // SDK Errors
 "SYSTEM_ERROR" = "系统错误";

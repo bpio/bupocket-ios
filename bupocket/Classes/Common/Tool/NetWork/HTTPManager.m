@@ -531,8 +531,12 @@ static int64_t const gasPrice = 1000;
     }
     _hash = [[HTTPManager shareManager] buildBlobAndSignAndSubmit:nil :sourceAddress :nonce :gasPrice :fee :operations :notes :ID];
     if (_hash) {
-        if ([confirmTransactionModel.type isEqualToString:TransactionType_Cooperate_Support] || [confirmTransactionModel.type isEqualToString:TransactionType_Cooperate_SignOut]) {
-            [[HTTPManager shareManager] getNodeCooperateCheckDataWithNodeId:confirmTransactionModel.nodeId hash:_hash copies:confirmTransactionModel.copies success:^(id responseObject) {
+        if (([confirmTransactionModel.type isEqualToString:TransactionType_Cooperate_Support] && confirmTransactionModel.copies) || [confirmTransactionModel.type isEqualToString:TransactionType_Cooperate_SignOut]) {
+            NSString * URL = Node_Cooperate_Exit;
+            if ([confirmTransactionModel.type isEqualToString:TransactionType_Cooperate_Support]) {
+                URL = Node_Cooperate_Support;
+            }
+            [[HTTPManager shareManager] getNodeCooperateCheckDataWithURL:URL nodeId:confirmTransactionModel.nodeId hash:_hash copies:confirmTransactionModel.copies success:^(id responseObject) {
                 if(success != nil)
                 {
                     success(responseObject);
@@ -734,17 +738,14 @@ static int64_t const gasPrice = 1000;
     }];
 }
 // Node Cooperate Check
-- (void)getNodeCooperateCheckDataWithNodeId:(NSString *)nodeId
-                                       hash:(NSString *)hash
-                                     copies:(NSString *)copies
-                                    success:(void (^)(id responseObject))success
-                                    failure:(void (^)(NSError *error))failure
+- (void)getNodeCooperateCheckDataWithURL:(NSString *)URL
+                                  nodeId:(NSString *)nodeId
+                                    hash:(NSString *)hash
+                                  copies:(NSString *)copies
+                                 success:(void (^)(id responseObject))success
+                                 failure:(void (^)(NSError *error))failure
 {
     [MBProgressHUD showActivityMessageInWindow:Localized(@"DataChecking")];
-    NSString * URL = Node_Cooperate_Exit;
-    if (copies) {
-        URL = Node_Cooperate_Support;
-    }
     NSString * url = SERVER_COMBINE_API(_webServerDomain, URL);
     NSString * body = [NSString stringWithFormat:@"nodeId=%@&hash=%@&copies=%@&initiatorAddress=%@", nodeId, hash, copies, CurrentWalletAddress];
     NSDictionary * parameters = [[HTTPManager shareManager] parametersWithHTTPBody:body];
