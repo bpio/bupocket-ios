@@ -96,7 +96,7 @@
 {
     _cooperateModel = cooperateModel;
     self.title.text = cooperateModel.title;
-    NSString * str = [NSString stringWithFormat:@"%@ %@%@", [NSString stringAmountSplitWith:cooperateModel.perAmount], @"BU/", Localized(@"Portion")];
+    NSString * str = [NSString stringWithFormat:@"%@ %@%@", [NSString stringAmountSplitWith:cooperateModel.perAmount], @"BU/", Localized(@"Shares")];
     self.numberOfCopies.attributedText = [Encapsulation attrWithString:str preFont:FONT_Bold(18) preColor:MAIN_COLOR index:str.length - 4 sufFont:FONT(12) sufColor:MAIN_COLOR lineSpacing:0];
     self.purchaseAmount.text = Localized(@"PurchaseAmount");
     if (NULLString(cooperateModel.totalCopies)) {
@@ -105,9 +105,9 @@
     }
 //    NSString * targetAmount = [NSString stringWithFormat:@"%lld", [cooperateModel.cobuildCopies longLongValue] * [cooperateModel.perAmount longLongValue]];
 //    NSString * targetNumberStr = [NSString stringWithFormat:@"%@ %@ BU", Localized(@"SupportPortion"), [NSString stringAmountSplitWith:targetAmount]];
-    NSString * support = [NSString stringWithFormat:@"%@ %lld %@", Localized(@"SupportPortion"), [cooperateModel.cobuildCopies longLongValue] - [cooperateModel.leftCopies longLongValue], Localized(@"Portion")];
+    NSString * support = [NSString stringWithFormat:@"%@ %lld %@", Localized(@"SupportPortion"), [cooperateModel.cobuildCopies longLongValue] - [cooperateModel.leftCopies longLongValue], Localized(@"Shares")];
     self.supportPortion.attributedText = [Encapsulation attrWithString:support preFont:FONT(13) preColor:COLOR(@"B2B2B2") index:Localized(@"SupportPortion").length sufFont:FONT(13) sufColor:COLOR_6 lineSpacing:0];
-    NSString * residualPortionStr = [NSString stringWithFormat:@"%@ %@ %@", Localized(@"ResidualPortion"), cooperateModel.leftCopies, Localized(@"Portion")];
+    NSString * residualPortionStr = [NSString stringWithFormat:@"%@ %@ %@", Localized(@"ResidualPortion"), cooperateModel.leftCopies, Localized(@"Shares")];
     self.residualPortion.attributedText = [Encapsulation attrWithString:residualPortionStr preFont:FONT(13) preColor:COLOR(@"B2B2B2") index:Localized(@"ResidualPortion").length sufFont:FONT(13) sufColor:COLOR_6 lineSpacing:0];
     _residualPortion.textAlignment = NSTextAlignmentRight;
     self.shareRatio.text = [NSString stringWithFormat:@"%@%%", cooperateModel.rewardRate];

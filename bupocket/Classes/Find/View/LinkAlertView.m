@@ -32,7 +32,7 @@
         NSString * subStr = Localized(@"LinkPerfix");
         NSString * title = Localized(@"BULink");
         
-        NSString * linkStr = [NSString stringWithFormat:@"#%@#%@%@%@%@", title, subStr, nodeName, Localized(@"LinkSuffix"), link];
+        NSString * linkStr = [NSString stringWithFormat:@"#%@#%@%@%@", title, subStr, nodeName, [NSString stringWithFormat:Localized(@"LinkSuffix%@"), link]];
         NSMutableAttributedString * attr = [Encapsulation attrWithString:linkStr preFont:FONT(14) preColor:COLOR_6 index:linkStr.length - link.length sufFont:FONT(14) sufColor:MAIN_COLOR lineSpacing:5.0];
         NSRange titleRange = NSMakeRange(1, title.length);
         NSRange nodeNameRange = NSMakeRange(subStr.length + title.length + 2, nodeName.length);

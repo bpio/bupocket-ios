@@ -409,7 +409,7 @@ static NSString * const CooperateDetailCellID = @"CooperateDetailCellID";
                 cell.textLabel.textColor = MAIN_COLOR;
                 cell.detailTextLabel.font = FONT_Bold(18);
                 cell.detailTextLabel.textColor = WARNING_COLOR;
-                NSString * str = [NSString stringWithFormat:@"%@ %@%@", [NSString stringAmountSplitWith:self.cooperateDetailModel.perAmount], @"BU/", Localized(@"Portion")];
+                NSString * str = [NSString stringWithFormat:@"%@ %@%@", [NSString stringAmountSplitWith:self.cooperateDetailModel.perAmount], @"BU/", Localized(@"Shares")];
                 cell.textLabel.attributedText = [Encapsulation attrWithString:str preFont:FONT_Bold(18) preColor:MAIN_COLOR index:str.length - 4 sufFont:FONT(12) sufColor:MAIN_COLOR lineSpacing:0];
                 cell.detailTextLabel.text = [NSString stringWithFormat:@"%@%%", self.cooperateDetailModel.rewardRate];
             } else if (indexPath.row == 2) {
@@ -428,7 +428,7 @@ static NSString * const CooperateDetailCellID = @"CooperateDetailCellID";
                 if (indexPath.row == 3) {
                     cell.textLabel.font = cell.detailTextLabel.font = FONT(12);
                     cell.textLabel.textColor = cell.detailTextLabel.textColor = COLOR_9;
-                    cell.textLabel.text = [NSString stringWithFormat:@"%@ %lld %@", Localized(@"SupportPortion"), [self.cooperateDetailModel.cobuildCopies longLongValue] - [self.cooperateDetailModel.leftCopies longLongValue], Localized(@"Portion")];
+                    cell.textLabel.text = [NSString stringWithFormat:@"%@ %lld %@", Localized(@"SupportPortion"), [self.cooperateDetailModel.cobuildCopies longLongValue] - [self.cooperateDetailModel.leftCopies longLongValue], Localized(@"Shares")];
                     //                [NSString stringWithFormat:@"%@%@", self.cooperateDetailModel.supportPerson, Localized(@"SupportNumber")];
                     cell.detailTextLabel.text = [NSString stringWithFormat:Localized(@"The remaining %@ copies"), self.cooperateDetailModel.leftCopies];
                     [cell.contentView addSubview:self.lineView];

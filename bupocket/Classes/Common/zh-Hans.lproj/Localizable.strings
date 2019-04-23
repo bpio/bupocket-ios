@@ -392,7 +392,7 @@
 "CopyLink" = "复制口令";
 "BULink" = "小布口令";
 "LinkPerfix" = "我为BUMO超级节点计划参与方";
-"LinkSuffix" = "打call，打开链接进行为他投票";
+"LinkSuffix%@" = "打call，打开链接进行为他投票%@";
 
 // 撤票详情
 "Number of votes revoked on '%@'" = "撤销对\"%@\"的投票";
@@ -423,7 +423,7 @@
 "TargetAmount" = "目标共建金额";
 "SupportPortion" = "已获得支持";
 "ResidualPortion" = "剩余";
-"Portion" = "份";
+"Shares" = "份";
 "ShareRatioInfo" = "节点共建项目发起者承诺在竞选成功后，对节点共建支持者的奖励分享比例";
 // 节点共建详情
 "JointlyCooperateDetail" = "共建信息详情";

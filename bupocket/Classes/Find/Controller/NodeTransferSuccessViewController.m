@@ -9,7 +9,6 @@
 #import "NodeTransferSuccessViewController.h"
 #import "NodeTransferSuccessViewCell.h"
 #import <WXApi.h>
-#import <SDWebImage/UIButton+WebCache.h>
 #import "AdsModel.h"
 #import "WKWebViewController.h"
 
@@ -18,7 +17,7 @@
 @property (nonatomic, strong) UITableView * tableView;
 @property (nonatomic, strong) NSArray * listArray;
 @property (nonatomic, strong) UIView * noNetWork;
-@property (nonatomic, strong) UIButton * adImage;
+@property (nonatomic, strong) UIImageView * adImage;
 @property (nonatomic, strong) AdsModel * adsModel;
 
 @end
@@ -56,7 +55,7 @@ static NSString * const NodeTransferSuccessID = @"NodeTransferSuccessID";
         if (code == Success_Code) {
             self.adsModel = [AdsModel mj_objectWithKeyValues:responseObject[@"data"][@"ad"]];
             if (self.adsModel.imageUrl) {
-                [self.adImage sd_setImageWithURL:[NSURL URLWithString:self.adsModel.imageUrl] forState:UIControlStateNormal placeholderImage:[UIImage imageNamed:@"ad_placehoder"]];
+                [self.adImage sd_setImageWithURL:[NSURL URLWithString:self.adsModel.imageUrl] placeholderImage:[UIImage imageNamed:@"ad_placehoder"]];
             } else {
                 self.adImage.hidden = YES;
             }
@@ -88,14 +87,18 @@ static NSString * const NodeTransferSuccessID = @"NodeTransferSuccessID";
     prompt.layer.masksToBounds = YES;
     prompt.layer.cornerRadius = MAIN_CORNER;
     
-    self.adImage = [UIButton createButtonWithNormalImage:@"ad_placehoder" SelectedImage:@"ad_placehoder" Target:self Selector:@selector(adAction)];
+    self.adImage = [[UIImageView alloc] initWithImage:[UIImage imageNamed:@"ad_placehoder"]];
+    self.adImage.userInteractionEnabled = YES;
+    [self.adImage addGestureRecognizer:[[UITapGestureRecognizer alloc] initWithTarget:self action:@selector(adAction)]];
+    self.adImage.contentMode = UIViewContentModeScaleAspectFit;
     [footerView addSubview:self.adImage];
     [self.adImage mas_makeConstraints:^(MASConstraintMaker *make) {
         make.top.equalTo(prompt.mas_bottom).offset(Margin_20);
         make.left.right.equalTo(prompt);
+        make.height.mas_equalTo(self.adImage.height);
     }];
     
-    footerView.frame = CGRectMake(0, 0, DEVICE_WIDTH, promptH + SafeAreaBottomH + NavBarH + self.adImage.imageView.height + Margin_30);
+    footerView.frame = CGRectMake(0, 0, DEVICE_WIDTH, promptH + SafeAreaBottomH + NavBarH + self.adImage.height + Margin_30);
 }
 
 - (void)adAction

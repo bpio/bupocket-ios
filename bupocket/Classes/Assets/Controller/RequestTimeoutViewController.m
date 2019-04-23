@@ -8,7 +8,6 @@
 
 #import "RequestTimeoutViewController.h"
 #import <WXApi.h>
-#import <SDWebImage/UIButton+WebCache.h>
 #import "AdsModel.h"
 #import "WKWebViewController.h"
 
@@ -17,7 +16,7 @@
 @property (nonatomic, strong) UIScrollView * scrollView;
 @property (nonatomic, strong) UITextView * queryLink;
 @property (nonatomic, strong) UIView * noNetWork;
-@property (nonatomic, strong) UIButton * adImage;
+@property (nonatomic, strong) UIImageView * adImage;
 @property (nonatomic, strong) AdsModel * adsModel;
 
 @end
@@ -28,6 +27,7 @@
     [super viewDidLoad];
     self.navigationItem.title = Localized(@"TransactionStatus");
     [self setupView];
+    [self getData];
     // Do any additional setup after loading the view.
 }
 - (void)setupView
@@ -105,14 +105,16 @@
         make.size.mas_equalTo(CGSizeMake(DEVICE_WIDTH, Margin_10));
     }];
     
-    self.adImage = [UIButton createButtonWithNormalImage:@"ad_placehoder" SelectedImage:@"ad_placehoder" Target:self Selector:@selector(adAction)];
+    self.adImage = [[UIImageView alloc] initWithImage:[UIImage imageNamed:@"ad_placehoder"]];
+    self.adImage.userInteractionEnabled = YES;
+    [self.adImage addGestureRecognizer:[[UITapGestureRecognizer alloc] initWithTarget:self action:@selector(adAction)]];
+    self.adImage.contentMode = UIViewContentModeScaleAspectFit;
     [self.scrollView addSubview:self.adImage];
     [self.adImage mas_makeConstraints:^(MASConstraintMaker *make) {
         make.top.equalTo(lineView.mas_bottom).offset(Margin_15);
-        make.left.equalTo(transactionSummary);
-        make.right.equalTo(hash);
+        make.left.mas_equalTo(Margin_10);
+        make.size.mas_equalTo(CGSizeMake(DEVICE_WIDTH - Margin_20, self.adImage.height));
     }];
-    
     [self.view layoutIfNeeded];
     self.scrollView.contentSize = CGSizeMake(0, CGRectGetMaxY(self.adImage.frame) + ContentSizeBottom + Margin_10);
     self.noNetWork = [Encapsulation showNoNetWorkWithSuperView:self.view target:self action:@selector(reloadData)];
@@ -128,7 +130,7 @@
         if (code == Success_Code) {
             self.adsModel = [AdsModel mj_objectWithKeyValues:responseObject[@"data"][@"ad"]];
             if (self.adsModel.imageUrl) {
-                [self.adImage sd_setImageWithURL:[NSURL URLWithString:self.adsModel.imageUrl] forState:UIControlStateNormal placeholderImage:[UIImage imageNamed:@"ad_placehoder"]];
+                [self.adImage sd_setImageWithURL:[NSURL URLWithString:self.adsModel.imageUrl] placeholderImage:[UIImage imageNamed:@"ad_placehoder"]];
             } else {
                 self.adImage.hidden = YES;
             }

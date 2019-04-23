@@ -59,7 +59,7 @@
 #define TransactionCost_Cooperate_MIN @"10.3"
 #define Activate_Cooperate_MIN @"0.01"
 
-#define TransactionType_ApplyNode @"1"
+#define TransactionType_ApplyNode @ "1"
 #define TransactionType_Vote @"3"
 #define TransactionType_Cooperate @"4"
 #define TransactionType_Cooperate_Support @"5"
