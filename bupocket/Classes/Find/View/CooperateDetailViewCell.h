@@ -22,7 +22,8 @@ NS_ASSUME_NONNULL_BEGIN
 @property (nonatomic, strong) UIProgressView * progressView;
 @property (nonatomic, strong) UIView * lineView;
 @property (nonatomic, strong) CustomButton * bondButton;
-@property (nonatomic, strong) UIView * riskStatementBg;
+//@property (nonatomic, strong) UIView * riskStatementBg;
+@property (nonatomic, strong) UIButton * riskStatementBtn;
 
 @end
 

@@ -532,7 +532,7 @@ static int64_t const gasPrice = 1000;
     _hash = [[HTTPManager shareManager] buildBlobAndSignAndSubmit:nil :sourceAddress :nonce :gasPrice :fee :operations :notes :ID];
     DLog(@"hash:%@", _hash);
     if (_hash) {
-        if (([confirmTransactionModel.type isEqualToString:TransactionType_Cooperate_Support] || [confirmTransactionModel.type isEqualToString:TransactionType_Cooperate_SignOut]) && (confirmTransactionModel.nodeId)) {
+        if (([confirmTransactionModel.type isEqualToString:TransactionType_Cooperate_Support] || [confirmTransactionModel.type isEqualToString:TransactionType_Cooperate_SignOut]) && confirmTransactionModel.isCooperateDetail == YES) {
             NSString * URL = Node_Cooperate_Exit;
             if ([confirmTransactionModel.type isEqualToString:TransactionType_Cooperate_Support]) {
                 URL = Node_Cooperate_Support;

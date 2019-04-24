@@ -497,6 +497,7 @@
 "InsufficientSurplus" = "The remaining number is insufficient. It is recommended that you adjust the number to sponsor.";
 "CooperateUnsupported" = "You have not sponsored this project so you cannot withdraw from it";
 "CooperateCompleted" = "The node co-funding project is finished, and you cannot withdraw from it";
+"InitiatorAddressUnavailable" = "该账户不是发起者，无法发起该操作";
 "InitiatorCanNotSupport" = "The initiator of the node co-funding project cannot be a sponsor.";
 
 // SDK Errors

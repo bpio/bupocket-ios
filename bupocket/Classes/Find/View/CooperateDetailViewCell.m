@@ -30,7 +30,8 @@
         [self.contentView addSubview:self.lineView];
         [self.contentView addSubview:self.progressView];
         [self.contentView addSubview:self.bondButton];
-        [self.contentView addSubview:self.riskStatementBg];
+//        [self.contentView addSubview:self.riskStatementBg];
+        [self.contentView addSubview:self.riskStatementBtn];
     }
     return self;
 }
@@ -116,8 +117,14 @@
         }];
     }
     
-    [self.riskStatementBg mas_makeConstraints:^(MASConstraintMaker *make) {
-        make.edges.equalTo(self.contentView);
+//    [self.riskStatementBg mas_makeConstraints:^(MASConstraintMaker *make) {
+//        make.edges.equalTo(self.contentView);
+//    }];
+    [self.riskStatementBtn mas_makeConstraints:^(MASConstraintMaker *make) {
+        make.top.equalTo(self.contentView);
+        make.left.equalTo(self.contentView.mas_left).offset(Margin_10);
+        make.right.equalTo(self.contentView.mas_right).offset(-Margin_10);
+        make.bottom.equalTo(self.contentView.mas_bottom).offset(-Margin_5);
     }];
 //    if (self.title.text) {
 //        [self.infoTitle mas_makeConstraints:^(MASConstraintMaker *make) {
@@ -216,27 +223,19 @@
     }
     return _bondButton;
 }
-- (UIView *)riskStatementBg
+- (UIButton *)riskStatementBtn
 {
-    if (!_riskStatementBg) {
-        _riskStatementBg = [[UIView alloc] init];
-        UIButton * riskStatementBtn = [UIButton buttonWithType:UIButtonTypeCustom];
-        riskStatementBtn.titleLabel.numberOfLines = 0;
-        riskStatementBtn.backgroundColor = [UIColor whiteColor];
-        riskStatementBtn.layer.masksToBounds = YES;
-        riskStatementBtn.layer.cornerRadius = BG_CORNER;
-        riskStatementBtn.contentEdgeInsets = UIEdgeInsetsMake(Margin_10, Margin_10, Margin_10, Margin_10);
-        [riskStatementBtn setAttributedTitle:[Encapsulation attrWithString:Localized(@"RiskStatementPrompt") preFont:FONT(13) preColor:COLOR_6 index:0 sufFont:FONT(13) sufColor:COLOR_6 lineSpacing:5.0] forState:UIControlStateNormal];
-        [_riskStatementBg addSubview:riskStatementBtn];
-        [riskStatementBtn mas_makeConstraints:^(MASConstraintMaker *make) {
-            make.top.equalTo(self->_riskStatementBg);
-            make.left.equalTo(self->_riskStatementBg.mas_left).offset(Margin_10);
-            make.right.equalTo(self->_riskStatementBg.mas_right).offset(-Margin_10);
-            make.bottom.equalTo(self->_riskStatementBg.mas_bottom).offset(-Margin_5);
-        }];
-        _riskStatementBg.hidden = YES;
+    if (!_riskStatementBtn) {
+        _riskStatementBtn = [UIButton buttonWithType:UIButtonTypeCustom];
+        _riskStatementBtn.titleLabel.numberOfLines = 0;
+        _riskStatementBtn.backgroundColor = [UIColor whiteColor];
+        _riskStatementBtn.layer.masksToBounds = YES;
+        _riskStatementBtn.layer.cornerRadius = BG_CORNER;
+        _riskStatementBtn.contentEdgeInsets = UIEdgeInsetsMake(Margin_5, Margin_10, Margin_5, Margin_10);
+        [_riskStatementBtn setAttributedTitle:[Encapsulation attrWithString:Localized(@"RiskStatementPrompt") preFont:FONT(13) preColor:COLOR_6 index:0 sufFont:FONT(13) sufColor:COLOR_6 lineSpacing:5.0] forState:UIControlStateNormal];
+        _riskStatementBtn.hidden = YES;
     }
-    return _riskStatementBg;
+    return _riskStatementBtn;
 }
 - (void)awakeFromNib {
     [super awakeFromNib];

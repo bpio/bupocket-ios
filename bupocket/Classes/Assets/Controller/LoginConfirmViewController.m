@@ -98,11 +98,10 @@
         NSInteger code = [[responseObject objectForKey:@"errCode"] integerValue];
         if (code == Success_Code) {
             [self.navigationController popViewControllerAnimated:NO];
-        } else if (code == ErrorAccountUnbound) {
-            NSDictionary * dic = responseObject[@"data"];
+        } else {
             ScanCodeFailureViewController * VC = [[ScanCodeFailureViewController alloc] init];
-            VC.exceptionPromptStr = dic[@"errorMsg"];
-            VC.promptStr = dic[@"errorDescription"];
+            VC.exceptionPromptStr = Localized(@"Overdue");
+            VC.promptStr = Localized(@"RefreshQRCode");
             [self.navigationController pushViewController:VC animated:NO];
         }
     } failure:^(NSError *error) {

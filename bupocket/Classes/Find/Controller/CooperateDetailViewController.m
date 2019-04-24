@@ -195,6 +195,7 @@ static NSString * const CooperateDetailCellID = @"CooperateDetailCellID";
     confirmTransactionModel.script = @"{\"method\":\"revoke\"}";
     confirmTransactionModel.nodeId = self.cooperateDetailModel.nodeId;
     confirmTransactionModel.type = TransactionType_Cooperate_SignOut;
+    confirmTransactionModel.isCooperateDetail = YES;
     [self showConfirmAlertView:confirmTransactionModel];
 }
 - (void)supportAction
@@ -212,6 +213,7 @@ static NSString * const CooperateDetailCellID = @"CooperateDetailCellID";
             confirmTransactionModel.nodeId = self.cooperateDetailModel.nodeId;
             confirmTransactionModel.type = TransactionType_Cooperate_Support;
             confirmTransactionModel.copies = copies;
+            confirmTransactionModel.isCooperateDetail = YES;
             [self showConfirmAlertView:confirmTransactionModel];
         });
     } cancelBlock:^{
@@ -449,8 +451,8 @@ static NSString * const CooperateDetailCellID = @"CooperateDetailCellID";
                 }
             }
         } else {
-            cell.riskStatementBg.hidden = NO;
-            cell.riskStatementBg.backgroundColor = self.tableView.backgroundColor;
+            cell.riskStatementBtn.hidden = NO;
+//            cell.riskStatementBg.backgroundColor = self.tableView.backgroundColor;
             cell.contentView.backgroundColor = self.tableView.backgroundColor;
 //            cell.title.text = nil;
 //            cell.infoTitle.text = nil;

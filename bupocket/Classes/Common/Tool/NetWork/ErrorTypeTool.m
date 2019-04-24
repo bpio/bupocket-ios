@@ -66,6 +66,7 @@
         case ErrorInsufficientSurplus: errorDesc = Localized(@"InsufficientSurplus"); break;
         case ErrorCooperateUnsupported: errorDesc = Localized(@"CooperateUnsupported"); break;
         case ErrorCooperateCompleted: errorDesc = Localized(@"CooperateCompleted"); break;
+        case ErrorInitiatorAddressUnavailable: errorDesc = Localized(@"InitiatorAddressUnavailable"); break;
         case ErrorInitiatorCanNotSupport: errorDesc = Localized(@"InitiatorCanNotSupport"); break;
         default: errorDesc = Localized(@"LoadFailure"); break;
     }

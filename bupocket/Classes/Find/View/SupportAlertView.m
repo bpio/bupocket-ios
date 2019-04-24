@@ -172,7 +172,8 @@
 {
     if (!_amount) {
         _amount = [[UILabel alloc] init];
-        _amount.attributedText = [Encapsulation attrWithString:[NSString stringWithFormat:@"%@ %@", self.purchaseAmountStr, Localized(@"BU/Portion")] preFont:FONT(15) preColor:TITLE_COLOR index:self.purchaseAmountStr.length sufFont:FONT(12) sufColor:COLOR(@"151515") lineSpacing:0];
+        NSString * perAmount = [NSString stringAmountSplitWith:self.purchaseAmountStr];
+        _amount.attributedText = [Encapsulation attrWithString:[NSString stringWithFormat:@"%@ %@", perAmount, Localized(@"BU/Portion")] preFont:FONT(15) preColor:TITLE_COLOR index:perAmount.length sufFont:FONT(12) sufColor:COLOR(@"151515") lineSpacing:0];
     }
     return _amount;
 }
@@ -242,7 +243,7 @@
 - (void)setTotalText
 {
 //    int64_t fee = [[[NSDecimalNumber decimalNumberWithString:feeLimit] decimalNumberByMultiplyingByPowerOf10: Decimals_BU] longLongValue];
-    NSString * totleAmount = [NSString stringWithFormat:@"%@%lld BU", Localized(@"Total"), [self.number.text longLongValue] * [self.purchaseAmountStr longLongValue]];
+    NSString * totleAmount = [NSString stringWithFormat:@"%@%@ BU", Localized(@"Total"), [NSString stringAmountSplitWith:[NSString stringWithFormat:@"%lld", [self.number.text longLongValue] * [self.purchaseAmountStr longLongValue]]]];
     NSMutableAttributedString * attr = [Encapsulation attrWithString:totleAmount preFont:FONT(13) preColor:TITLE_COLOR index:[Localized(@"Total") length] sufFont:FONT_Bold(18) sufColor:WARNING_COLOR lineSpacing:0];
     NSRange range = NSMakeRange(attr.length - 2, 2);
     [attr addAttribute:NSForegroundColorAttributeName value:WARNING_COLOR range:range];

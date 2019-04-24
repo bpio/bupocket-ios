@@ -42,6 +42,7 @@ typedef NS_ENUM(NSInteger, NodeErrorCode) {
     ErrorInsufficientSurplus = 1032,
     ErrorCooperateUnsupported = 1033,
     ErrorCooperateCompleted = 1034,
+    ErrorInitiatorAddressUnavailable = 1035,
     ErrorInitiatorCanNotSupport = 1036,
 };
 
