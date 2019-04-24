@@ -129,9 +129,11 @@ static NSString * const CooperateCellID = @"CooperateCellID";
     CooperateViewCell * cell = [CooperateViewCell cellWithTableView:tableView identifier:CooperateCellID];
     cell.cooperateModel = self.listArray[indexPath.section];
     cell.selectionStyle = UITableViewCellSelectionStyleNone;
+    /*
     cell.shareRatioBtnClick = ^(UIButton * _Nonnull btn) {
         [self infoAction:btn];
     };
+     */
     return cell;
 }
 - (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath
@@ -142,7 +144,7 @@ static NSString * const CooperateCellID = @"CooperateCellID";
     VC.nodeId = cooperateModel.nodeId;
     [self.navigationController pushViewController:VC animated:NO];
 }
-
+/*
 - (void)infoAction:(UIButton *)button
 {
     NSString * title = Localized(@"ShareRatioInfo");
@@ -161,7 +163,7 @@ static NSString * const CooperateCellID = @"CooperateCellID";
         popupMenu.height = titleHeight + Margin_40;
     }];
 }
-
+*/
 /*
 #pragma mark - Navigation
 

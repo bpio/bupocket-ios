@@ -98,10 +98,11 @@
         NSInteger code = [[responseObject objectForKey:@"errCode"] integerValue];
         if (code == Success_Code) {
             [self.navigationController popViewControllerAnimated:NO];
-        } else {
+        } else if (code == ErrorAccountUnbound) {
+            NSDictionary * dic = responseObject[@"data"];
             ScanCodeFailureViewController * VC = [[ScanCodeFailureViewController alloc] init];
-            VC.exceptionPromptStr = Localized(@"LoginException");
-            VC.promptStr = Localized(@"LoginExceptionPrompt");
+            VC.exceptionPromptStr = dic[@"errorMsg"];
+            VC.promptStr = dic[@"errorDescription"];
             [self.navigationController pushViewController:VC animated:NO];
         }
     } failure:^(NSError *error) {

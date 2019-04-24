@@ -67,6 +67,10 @@
 #define TransactionType_Check @"80"
 #define TransactionType_NodeWithdrawal @"10"
 
+#define Cooperate_State_InProgress @"1"
+#define Cooperate_State_Success @"2"
+#define Cooperate_State_Failure @"3"
+
 #define NodeType_Consensus @"1"
 #define NodeType_Ecological @"2"
 
@@ -99,11 +103,14 @@
 
 #define AddressBook_Cache_Name @"addressBook.sqlite"
 
+//#define Wechat_APP_ID @"wxaecf7ac4085fd34a"
+//#define SmallRoutine_Original_ID @"gh_463781563a74"
+
 #define Wechat_APP_ID @"wxaecf7ac4085fd34a"
+#define XCX_YouPin_Original_ID @"gh_545e659b7dcd"
 
-#define Tencent_App_ID @"1101701640"
+#define Tencent_App_ID @"101569415"
 
-#define SmallRoutine_Original_ID @"gh_463781563a74"
 #define Dispatch_After_Time 0.5
 
 #define SubIndex_Address 5

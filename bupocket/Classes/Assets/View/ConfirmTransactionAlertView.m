@@ -80,7 +80,7 @@
     }
     self.confirmTransactionModel.transactionCost = self.transactionCost;
     if (NULLString(self.confirmTransactionModel.destAddress)) {
-        _infoTitleArray = @[Localized(@"TransactionDetail"), Localized(@"CounterAccount"), Localized(@"MaximumTransactionCosts"), Localized(@"Initiator"), Localized(@"CounterAccount"), Localized(@"Number（BU）"), Localized(@"TransactionCosts（BU）"), Localized(@"Parameter")];
+        _infoTitleArray = @[Localized(@"TransactionDetail"), Localized(@"reciprocalAccount"), Localized(@"MaximumTransactionCosts"), Localized(@"Initiator"), Localized(@"reciprocalAccount"), Localized(@"Number（BU）"), Localized(@"TransactionCosts（BU）"), Localized(@"Parameter")];
         NSString * destAddress = [NSString stringWithFormat:@"%@%@", self.confirmTransactionModel.destAddress, self.confirmTransactionModel.accountTag];
         infoArray = @[self.confirmTransactionModel.qrRemark, destAddress, self.transactionCost, CurrentWalletAddress, destAddress, self.confirmTransactionModel.amount, self.transactionCost, self.confirmTransactionModel.script];
         

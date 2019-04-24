@@ -359,8 +359,10 @@
 "Information" = "资讯";
 "SmallClothGoods" = "小布有品";
 // 节点竞选
-"VotesObtained" = "得票数";
-"NumberOfVotes" = "我的投票数";
+"Vote" = "票数";
+"Votes" = "票数";
+"My votes" = "我的投票数";
+"My vote" = "我的投票数";
 "ConsensusNode" = "记账节点";
 "EcologicalNodes" = "生态节点";
 "InterdependentNode" = "和我相关的节点";
@@ -372,7 +374,7 @@
 "IrrevocableVotes" = "暂无可撤销的票数";
 // 投票记录
 "Throw" = "投";
-"Withdraw" = "撤";
+"withdraw" = "撤";
 "Number" = "数量";
 "State" = "状态";
 "Time" = "时间";
@@ -415,7 +417,7 @@
 "MaximumTransactionCosts" = "最多支付交易费用（BU）";
 "Overdue" = "请求已过期";
 "Initiator" = "发起方";
-"CounterAccount" = "对方账户";
+//"CounterAccount" = "对方账户";
 "Details" = "详情";
 "TransactionCosts（BU）" = "交易费用（BU）";
 "Number（BU）" = "数量（BU）";
@@ -434,9 +436,9 @@
 "ShareRatioInfo" = "节点共建项目发起者承诺在竞选成功后，对节点共建支持者的奖励分享比例";
 // 节点共建详情
 "JointlyCooperateDetail" = "共建信息详情";
-"InProgress" = "进行中";
-"Completed" = "已完成";
-"Quit" = "已退出";
+"InProgress" = "共建中";
+"Completed" = "共建成功";
+"Quit" = "共建失败";
 "Bond" = "保证金";
 "CooperateBond" = "节点共建项目发起者转入保证金作为节点共建的锁仓金额";
 //"The remaining %@ copies" = "剩余 %@ 份";
@@ -472,7 +474,7 @@
 "DataRefreshed" = "数据已刷新";
 "NodeTransferPrompt" = "温馨提示：\n节点的投票、撤票等操作链上交易成功后，相关数据的统计有延迟，预计30秒内完成，此为正常现象。";
 // 交易失败
-"ContractTransferFailure%ld" = "合约调用失败\n错误码%ld";
+"ContractTransferFailure" = "合约调用失败";
 // 错误信息
 "LoadFailure" = "加载失败";
 // Node Errors

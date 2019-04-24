@@ -43,7 +43,7 @@
     [exceptionPrompt mas_makeConstraints:^(MASConstraintMaker *make) {
         make.top.mas_equalTo(Margin_20);
         make.centerX.mas_equalTo(0);
-        make.height.mas_equalTo(ScreenScale(120) + [Encapsulation rectWithText:Localized(@"LoginException") font:exceptionPrompt.titleLabel.font textWidth:DEVICE_WIDTH - Margin_40].size.height);
+        make.height.mas_equalTo(ScreenScale(120) + [Encapsulation rectWithText:self.exceptionPromptStr font:exceptionPrompt.titleLabel.font textWidth:DEVICE_WIDTH - Margin_40].size.height);
         make.width.mas_lessThanOrEqualTo(DEVICE_WIDTH - Margin_40);
     }];
     

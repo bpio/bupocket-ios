@@ -105,7 +105,7 @@ static NSString * const NodeTransferSuccessID = @"NodeTransferSuccessID";
 {
     if ([self.adsModel.type isEqualToString:@"1"]) {
         WXLaunchMiniProgramReq * launchMiniProgramReq = [WXLaunchMiniProgramReq object];
-        launchMiniProgramReq.userName = SmallRoutine_Original_ID;
+        launchMiniProgramReq.userName = XCX_YouPin_Original_ID;
         //        launchMiniProgramReq.path = @"";//拉起小程序页面的可带参路径，不填默认拉起小程序首页
         launchMiniProgramReq.miniProgramType = 0;
         [WXApi sendReq:launchMiniProgramReq];

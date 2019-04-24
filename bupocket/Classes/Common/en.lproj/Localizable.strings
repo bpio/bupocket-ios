@@ -369,8 +369,11 @@
 "Information" = "Information";
 "SmallClothGoods" = "BU Pocket Goods";
 // Node Campaign
-"VotesObtained" = "Votes received";
-"NumberOfVotes" = "My votes";
+//"VotesObtained" = "Votes received";
+"Vote" = "Vote";
+"Votes" = "Votes";
+"My votes" = "My votes";
+"My vote" = "My vote";
 "ConsensusNode" = "Consensus node";
 "EcologicalNodes" = "Ecological node";
 "InterdependentNode" = "Nodes related to me";
@@ -382,7 +385,7 @@
 "IrrevocableVotes" = "No revocable votes";
 // Records of voting
 "Throw" = "Vote";
-"Withdraw" = "Cancel";
+"withdraw" = "Cancel";
 "Number" = "Number";
 "State" = "Status";
 "Time" = "Time";
@@ -425,7 +428,7 @@
 "MaximumTransactionCosts" = "Maximum transaction costs（BU）";
 "Overdue" = "The request is expired";
 "Initiator" = "Initiator";
-"CounterAccount" = "The receiving account";
+//"CounterAccount" = "The receiving account";
 "Details" = "Details";
 "TransactionCosts（BU）" = "Transaction fees（BU）";
 "Parameter" = "Parameter";
@@ -445,9 +448,9 @@
 "ShareRatioInfo" = "The initiator of the node co-funding project promises to share the reward proportionally with the sponsors after being successfully selected";
 // Details of node co-funding
 "JointlyCooperateDetail" = "Details of Co-funding";
-"InProgress" = "Processing";
-"Completed" = "Completed";
-"Quit" = "Quit";
+"InProgress" = "In progress";
+"Completed" = "Success";
+"Quit" = "Failure";
 "Bond" = "Deposit";
 "CooperateBond" = "The initiator of the node co-funding project transfers the deposit to an account as the amount to be locked in node co-funding";
 //"The remaining %@ copies" = " %@ shares remaining";
@@ -480,7 +483,7 @@
 "DataRefreshed" = "Data is refreshed";
 "NodeTransferPrompt" = "Tips: after transactions such as voting to \n node or withdrawing votes from \n node are successful on the chain, the statistics of related data are delayed, and it is expected to be completed within 30 seconds. ";
 // Transaction failure
-"ContractTransferFailure%ld" = "The contract call failed \n error code %ld";
+"ContractTransferFailure" = "The contract call failed";
 // Errors
 "LoadFailure" = "Failed to load";
 // Node Errors
@@ -494,7 +497,7 @@
 "InsufficientSurplus" = "The remaining number is insufficient. It is recommended that you adjust the number to sponsor.";
 "CooperateUnsupported" = "You have not sponsored this project so you cannot withdraw from it";
 "CooperateCompleted" = "The node co-funding project is finished, and you cannot withdraw from it";
-"InitiatorCanNotSupport" = "节点共建项目发起者不能参与支持";
+"InitiatorCanNotSupport" = "The initiator of the node co-funding project cannot be a sponsor.";
 
 // SDK Errors
 "SYSTEM_ERROR" = "System error";

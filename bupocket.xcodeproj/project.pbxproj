@@ -110,6 +110,7 @@
 		95266CDF226F062E002CD915 /* VotingRecordsViewCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 95266CCA226F062E002CD915 /* VotingRecordsViewCell.m */; };
 		95266CE0226F062E002CD915 /* SupportAlertView.m in Sources */ = {isa = PBXBuildFile; fileRef = 95266CCB226F062E002CD915 /* SupportAlertView.m */; };
 		95266CE1226F062E002CD915 /* SharingCanvassingAlertView.m in Sources */ = {isa = PBXBuildFile; fileRef = 95266CCC226F062E002CD915 /* SharingCanvassingAlertView.m */; };
+		95266CE422703868002CD915 /* CooperateDetailViewCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 95266CE322703868002CD915 /* CooperateDetailViewCell.m */; };
 		952ADD0D21A65B4B00BEE51B /* SocketIOHandler.m in Sources */ = {isa = PBXBuildFile; fileRef = 952ADD0C21A65B4B00BEE51B /* SocketIOHandler.m */; };
 		952FE9D721C8DF9900634291 /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 952FE9D521C8DF9900634291 /* LaunchScreen.storyboard */; };
 		954371742199234100915BBE /* SettingViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 954371732199234100915BBE /* SettingViewController.m */; };
@@ -404,6 +405,8 @@
 		95266CCA226F062E002CD915 /* VotingRecordsViewCell.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = VotingRecordsViewCell.m; sourceTree = "<group>"; };
 		95266CCB226F062E002CD915 /* SupportAlertView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SupportAlertView.m; sourceTree = "<group>"; };
 		95266CCC226F062E002CD915 /* SharingCanvassingAlertView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SharingCanvassingAlertView.m; sourceTree = "<group>"; };
+		95266CE222703868002CD915 /* CooperateDetailViewCell.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = CooperateDetailViewCell.h; sourceTree = "<group>"; };
+		95266CE322703868002CD915 /* CooperateDetailViewCell.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = CooperateDetailViewCell.m; sourceTree = "<group>"; };
 		952ADD0B21A65B4B00BEE51B /* SocketIOHandler.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = SocketIOHandler.h; sourceTree = "<group>"; };
 		952ADD0C21A65B4B00BEE51B /* SocketIOHandler.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = SocketIOHandler.m; sourceTree = "<group>"; };
 		952FE9D621C8DF9900634291 /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/LaunchScreen.storyboard; sourceTree = "<group>"; };
@@ -1064,6 +1067,8 @@
 				95266CBD226F062E002CD915 /* NodeTransferSuccessViewCell.m */,
 				95266CBE226F062E002CD915 /* CancellationOfVotingAlertView.h */,
 				95266CC5226F062E002CD915 /* CancellationOfVotingAlertView.m */,
+				95266CE222703868002CD915 /* CooperateDetailViewCell.h */,
+				95266CE322703868002CD915 /* CooperateDetailViewCell.m */,
 			);
 			path = View;
 			sourceTree = "<group>";
@@ -1493,6 +1498,7 @@
 				83FB443521904AA400D68569 /* HMScannerMaskView.m in Sources */,
 				83FB443721904AA400D68569 /* HMScanner.m in Sources */,
 				83379A182178682100C222A5 /* UIView+CustomAlertView.m in Sources */,
+				95266CE422703868002CD915 /* CooperateDetailViewCell.m in Sources */,
 				959726BF21E43EB50022CB78 /* WalletModel.m in Sources */,
 				95A8A3B9219D15D8008E978E /* RegexPatternTool.m in Sources */,
 				8395AF34218958840082EA30 /* TransactionResultModel.m in Sources */,

@@ -80,7 +80,7 @@ static NSString * const AssetsDetailCellID = @"AssetsDetailCellID";
         self.walletAddress.text = [NSString stringEllipsisWithStr:addressStr subIndex:SubIndex_Address];
     }
     self.date.text = [DateTool getDateProcessingWithTimeStr:listModel.txTime];
-    self.assets.text = [listModel.amount isEqualToString:@"~"] ? listModel.amount : [NSString stringWithFormat:@"%@%@", outOrIn, listModel.amount];
+    self.assets.text = ([listModel.amount isEqualToString:@"~"] || [listModel.amount isEqualToString:@"0"]) ? listModel.amount : [NSString stringWithFormat:@"%@%@", outOrIn, listModel.amount];
 //    self.assets.text = [listModel.amount isEqualToString:@"~"] ? listModel.amount : [NSString stringWithFormat:@"%@%@ %@", outOrIn, listModel.amount, self.assetCode];
     if (listModel.txStatus == 0) {
         self.state.text = Localized(@"Success");

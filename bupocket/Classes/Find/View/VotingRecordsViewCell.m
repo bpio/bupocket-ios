@@ -61,7 +61,7 @@ static NSString * const NodeRecordsCellID = @"NodeRecordsCellID";
         make.bottom.equalTo(self.contentView.mas_bottom).offset(-Margin_5);
     }];
     self.contentView.backgroundColor = self.contentView.superview.superview.backgroundColor;
-    CGFloat recordTypeW = [Encapsulation rectWithText:self.nodeType.text font:self.nodeType.font textHeight:ScreenScale(18)].size.width + Margin_15;
+    CGFloat recordTypeW = [Encapsulation rectWithText:self.recordType.titleLabel.text font:self.recordType.titleLabel.font textHeight:ScreenScale(18)].size.width + Margin_5;
     [self.recordType mas_makeConstraints:^(MASConstraintMaker *make) {
         make.left.equalTo(self.listBg.mas_left).offset(Margin_10);
         make.top.equalTo(self.listBg.mas_top).offset(Margin_15);
@@ -119,7 +119,7 @@ static NSString * const NodeRecordsCellID = @"NodeRecordsCellID";
     if (!_recordType) {
         _recordType = [UIButton createButtonWithTitle:Localized(@"Throw") TextFont:13 TextNormalColor:[UIColor whiteColor] TextSelectedColor:[UIColor whiteColor] Target:nil Selector:nil];
         _recordType.backgroundColor = MAIN_COLOR;
-        [_recordType setTitle:Localized(@"Withdraw") forState:UIControlStateSelected];
+        [_recordType setTitle:Localized(@"withdraw") forState:UIControlStateSelected];
         _recordType.layer.masksToBounds = YES;
         _recordType.layer.cornerRadius = TAG_CORNER;
     }

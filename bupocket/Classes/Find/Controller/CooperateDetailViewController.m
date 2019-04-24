@@ -18,18 +18,14 @@
 #import "RequestTimeoutViewController.h"
 #import "YBPopupMenu.h"
 
+#import "CooperateDetailViewCell.h"
+
 @interface CooperateDetailViewController ()<UITableViewDelegate, UITableViewDataSource>
 
 @property (nonatomic, strong) UITableView * tableView;
 @property (nonatomic, strong) NSMutableArray * listArray;
 //@property (nonatomic, strong) UIView * noData;
 @property (nonatomic, strong) UIView * noNetWork;
-@property (nonatomic, strong) UIView * riskStatementBg;
-@property (nonatomic, strong) UIButton * stateBtn;
-@property (nonatomic, strong) CustomButton * shareRatioBtn;
-@property (nonatomic, strong) UIProgressView * progressView;
-@property (nonatomic, strong) UIView * lineView;
-@property (nonatomic, strong) CustomButton * bondButton;
 
 @property (nonatomic, strong) CooperateDetailModel * cooperateDetailModel;
 @property (nonatomic, assign) NSInteger sectionNumber;
@@ -93,10 +89,10 @@ static NSString * const CooperateDetailCellID = @"CooperateDetailCellID";
             self.cooperateDetailModel = [CooperateDetailModel mj_objectWithKeyValues:responseObject[@"data"]];
             self.listArray = [CooperateSupportModel mj_objectArrayWithKeyValuesArray:self.cooperateDetailModel.supportList];
             [self.tableView reloadData];
-            if ([self.cooperateDetailModel.status isEqualToString:@"43"]) {
+            if ([self.cooperateDetailModel.status isEqualToString:Cooperate_State_Failure]) {
                 self.footerView.hidden = NO;
                 self.redemptionAllSupport.hidden = NO;
-            } else if (([self.cooperateDetailModel.status isEqualToString:@"1"] || [self.cooperateDetailModel.status isEqualToString:@"2"]) && ![self.cooperateDetailModel.originatorAddress isEqualToString:CurrentWalletAddress]) {
+            } else if ([self.cooperateDetailModel.status isEqualToString:Cooperate_State_InProgress] && ![self.cooperateDetailModel.originatorAddress isEqualToString:CurrentWalletAddress]) {
                 self.footerView.hidden = NO;
                 self.signOut.hidden = NO;
                 self.support.hidden = NO;
@@ -351,7 +347,7 @@ static NSString * const CooperateDetailCellID = @"CooperateDetailCellID";
 {
     if (section == self.sectionNumber - 1) {
         CGFloat footerH = SafeAreaBottomH + NavBarH + Margin_5;
-        if (([self.cooperateDetailModel.status isEqualToString:@"43"] || [self.cooperateDetailModel.status isEqualToString:@"1"] || [self.cooperateDetailModel.status isEqualToString:@"2"]) && ![self.cooperateDetailModel.originatorAddress isEqualToString:CurrentWalletAddress]) {
+        if ([self.cooperateDetailModel.status isEqualToString:Cooperate_State_Failure] || ([self.cooperateDetailModel.status isEqualToString:Cooperate_State_InProgress] && ![self.cooperateDetailModel.originatorAddress isEqualToString:CurrentWalletAddress])) {
             footerH += ScreenScale(75);
         }
         return  footerH;
@@ -371,6 +367,8 @@ static NSString * const CooperateDetailCellID = @"CooperateDetailCellID";
             return Margin_20;
         } else if (indexPath.row == 3) {
             return ScreenScale(70);
+        } else if (indexPath.row == 6) {
+            return MAIN_HEIGHT;
         } else {
             return ScreenScale(35);
         }
@@ -384,104 +382,78 @@ static NSString * const CooperateDetailCellID = @"CooperateDetailCellID";
 - (UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath
 {
     if (indexPath.section == 0 || indexPath.section == 1) {
-        static NSString * DetailInfo = @"DetailInfo";
-        UITableViewCell *cell = [tableView dequeueReusableCellWithIdentifier:DetailInfo];
-        if (cell == nil) {
-            cell = [[UITableViewCell alloc] initWithStyle:UITableViewCellStyleValue1 reuseIdentifier:DetailInfo];
-        }
+        CooperateDetailViewCell * cell = [CooperateDetailViewCell cellWithTableView:tableView identifier:CooperateDetailCellID];
         if (indexPath.section == 0) {
             if (indexPath.row == 0) {
-                cell.textLabel.font = FONT_Bold(18);
-                cell.textLabel.textColor = TITLE_COLOR;
-                cell.textLabel.text = self.cooperateDetailModel.title;
-                cell.detailTextLabel.text = nil;
-                [cell.contentView addSubview:self.stateBtn];
-                if ([self.cooperateDetailModel.status isEqualToString:@"3"]) {
-                    self.stateBtn.selected = YES;
-                } else if ([self.cooperateDetailModel.status isEqualToString:@"4"]) {
-                    self.stateBtn.enabled = NO;
+                cell.title.font = FONT_Bold(18);
+                cell.title.textColor = TITLE_COLOR;
+                cell.title.text = self.cooperateDetailModel.title;
+                cell.infoTitle.text = nil;
+                cell.stateBtn.hidden = NO;
+                if ([self.cooperateDetailModel.status isEqualToString:Cooperate_State_InProgress]) {
+                    // 1-共建中
+                    cell.stateBtn.selected = NO;
+                } else if ([self.cooperateDetailModel.status isEqualToString:Cooperate_State_Success]) {
+                    // 2-共建成功
+                    cell.stateBtn.selected = YES;
+                } else if ([self.cooperateDetailModel.status isEqualToString:Cooperate_State_Failure]) {
+                    // 3-共建失败
+                    cell.stateBtn.enabled = NO;
                 }
-                [self.stateBtn mas_makeConstraints:^(MASConstraintMaker *make) {
-                    make.right.centerY.equalTo(cell.contentView);
-                }];
             } else if (indexPath.row == 1) {
-                cell.textLabel.font = FONT_Bold(18);
-                cell.textLabel.textColor = MAIN_COLOR;
-                cell.detailTextLabel.font = FONT_Bold(18);
-                cell.detailTextLabel.textColor = WARNING_COLOR;
+//                cell.infoTitle.font = FONT_Bold(18);
+//                cell.infoTitle.textColor = WARNING_COLOR;
                 NSString * perAmount = [NSString stringAmountSplitWith:self.cooperateDetailModel.perAmount];
                 NSString * str = [NSString stringWithFormat:@"%@ %@", perAmount, Localized(@"BU/Portion")];
-                cell.textLabel.attributedText = [Encapsulation attrWithString:str preFont:FONT_Bold(18) preColor:MAIN_COLOR index:perAmount.length sufFont:FONT(12) sufColor:MAIN_COLOR lineSpacing:0];
-                cell.detailTextLabel.text = [NSString stringWithFormat:@"%@%%", self.cooperateDetailModel.rewardRate];
+                cell.title.attributedText = [Encapsulation attrWithString:str preFont:FONT_Bold(18) preColor:MAIN_COLOR index:perAmount.length sufFont:FONT(12) sufColor:MAIN_COLOR lineSpacing:0];
+//                cell.infoTitle.text = [NSString stringWithFormat:@"%@%%", self.cooperateDetailModel.rewardRate];
             } else if (indexPath.row == 2) {
-                cell.textLabel.font = cell.detailTextLabel.font = FONT(12);
-                cell.textLabel.textColor = cell.detailTextLabel.textColor = COLOR(@"B2B2B2");
-                cell.textLabel.text = Localized(@"PurchaseAmount");
-                [cell.contentView addSubview:self.shareRatioBtn];
-                [self.shareRatioBtn mas_makeConstraints:^(MASConstraintMaker *make) {
-                    make.top.bottom.equalTo(cell.contentView);
-                    make.right.equalTo(cell.contentView.mas_right).offset(-Margin_15);
-                }];
-            }
-        else {
-                cell.textLabel.font = cell.detailTextLabel.font = FONT(13);
-                cell.textLabel.textColor = cell.detailTextLabel.textColor = COLOR_6;
+                cell.title.font = cell.infoTitle.font = FONT(12);
+                cell.title.textColor = cell.infoTitle.textColor = COLOR(@"B2B2B2");
+                cell.title.text = Localized(@"PurchaseAmount");
+//                cell.shareRatioBtn.hidden = NO;
+//                [cell.shareRatioBtn addTarget:self action:@selector(shareRatioAction:) forControlEvents:UIControlEventTouchUpInside];
+            } else {
                 if (indexPath.row == 3) {
-                    cell.textLabel.font = cell.detailTextLabel.font = FONT(12);
-                    cell.textLabel.textColor = cell.detailTextLabel.textColor = COLOR_9;
+                    cell.title.font = cell.infoTitle.font = FONT(12);
+                    cell.title.textColor = cell.infoTitle.textColor = COLOR_9;
                     int64_t received = [self.cooperateDetailModel.cobuildCopies longLongValue] - [self.cooperateDetailModel.leftCopies longLongValue];
                     if (received > 1) {
-                        cell.textLabel.text = [NSString stringWithFormat:Localized(@"%lld shares received"), received];
+                        cell.title.text = [NSString stringWithFormat:Localized(@"%lld shares received"), received];
                     } else {
-                        cell.textLabel.text = [NSString stringWithFormat:Localized(@"%lld share received"), received];
+                        cell.title.text = [NSString stringWithFormat:Localized(@"%lld share received"), received];
                     }
                     NSString * leftStr = [NSString stringWithFormat:Localized(@"%lld shares left"), [self.cooperateDetailModel.leftCopies longLongValue]];
                     if ([self.cooperateDetailModel.leftCopies longLongValue] < 2) {
                         leftStr = [NSString stringWithFormat:Localized(@"%lld share left"), [self.cooperateDetailModel.leftCopies longLongValue]];
                     }
-                    cell.detailTextLabel.text = leftStr;
-                    [cell.contentView addSubview:self.lineView];
-                    [self.lineView mas_makeConstraints:^(MASConstraintMaker *make) {
-                        make.bottom.equalTo(cell.contentView.mas_bottom).offset(-Margin_5);
-                        make.left.equalTo(cell.contentView.mas_left).offset(Margin_15);
-                        make.right.equalTo(cell.contentView.mas_right).offset(-Margin_15);
-                        make.height.mas_equalTo(LINE_WIDTH);
-                    }];
-                    [cell.contentView addSubview:self.progressView];
+                    cell.infoTitle.text = leftStr;
+                    cell.lineView.hidden = NO;
+                    cell.progressView.hidden = NO;
                     if (NULLString(self.cooperateDetailModel.totalCopies)) {
                         NSString * supported = [NSString stringWithFormat:@"%lld", [self.cooperateDetailModel.cobuildCopies longLongValue] - [self.cooperateDetailModel.leftCopies longLongValue]];
-                        self.progressView.progress = [[[NSDecimalNumber decimalNumberWithString:supported] decimalNumberByDividingBy:[NSDecimalNumber decimalNumberWithString:self.cooperateDetailModel.cobuildCopies]] doubleValue];
+                        cell.progressView.progress = [[[NSDecimalNumber decimalNumberWithString:supported] decimalNumberByDividingBy:[NSDecimalNumber decimalNumberWithString:self.cooperateDetailModel.cobuildCopies]] doubleValue];
                     }
-                    [self.progressView mas_makeConstraints:^(MASConstraintMaker *make) {
-                        make.top.equalTo(cell.contentView.mas_top).offset(Margin_15);
-                        make.left.equalTo(cell.contentView.mas_left).offset(Margin_15);
-                        make.right.equalTo(cell.contentView.mas_right).offset(-Margin_15);
-                    }];
                 } else if (indexPath.row == 4) {
-                    cell.textLabel.text = Localized(@"TargetAmount");
+                    cell.title.text = Localized(@"TargetAmount");
                     NSString * targetAmount = [NSString stringWithFormat:@"%lld", [self.cooperateDetailModel.cobuildCopies longLongValue] * [self.cooperateDetailModel.perAmount longLongValue]];
-                    cell.detailTextLabel.text = [NSString stringAppendingBUWithStr:[NSString stringAmountSplitWith:targetAmount]];
+                    cell.infoTitle.text = [NSString stringAppendingBUWithStr:[NSString stringAmountSplitWith:targetAmount]];
                 } else if (indexPath.row == 5) {
-                    cell.textLabel.text = Localized(@"TotalSupport");
-                    cell.detailTextLabel.text = [NSString stringAppendingBUWithStr:[NSString stringAmountSplitWith:self.cooperateDetailModel.supportAmount]];
+                    cell.title.text = Localized(@"TotalSupport");
+                    cell.infoTitle.text = [NSString stringAppendingBUWithStr:[NSString stringAmountSplitWith:self.cooperateDetailModel.supportAmount]];
                 } else if (indexPath.row == 6) {
-//                    cell.textLabel.text = Localized(@"Bond");
-                    [cell.contentView addSubview:self.bondButton];
-                    [self.bondButton mas_makeConstraints:^(MASConstraintMaker *make) {
-                        make.top.bottom.equalTo(cell.contentView);
-                        make.left.equalTo(cell.contentView.mas_left).offset(Margin_15);
-                    }];
-                    cell.detailTextLabel.text = [NSString stringAppendingBUWithStr:[NSString stringAmountSplitWith:self.cooperateDetailModel.initiatorAmount]];
+//                    cell.title.text = Localized(@"Bond");
+                    cell.bondButton.hidden = NO;
+                    [cell.bondButton addTarget:self action:@selector(bondAction:) forControlEvents:UIControlEventTouchUpInside];
+                    cell.infoTitle.text = [NSString stringAppendingBUWithStr:[NSString stringAmountSplitWith:self.cooperateDetailModel.initiatorAmount]];
                 }
             }
         } else {
-            [cell.contentView addSubview:self.riskStatementBg];
-            self.riskStatementBg.backgroundColor = self.tableView.backgroundColor;
-            [self.riskStatementBg mas_makeConstraints:^(MASConstraintMaker *make) {
-                make.edges.equalTo(cell.contentView);
-            }];
-//            cell.textLabel.text = nil;
-//            cell.detailTextLabel.text = nil;
+            cell.riskStatementBg.hidden = NO;
+            cell.riskStatementBg.backgroundColor = self.tableView.backgroundColor;
+            cell.contentView.backgroundColor = self.tableView.backgroundColor;
+//            cell.title.text = nil;
+//            cell.infoTitle.text = nil;
         }
         cell.selectionStyle = UITableViewCellSelectionStyleNone;
         return cell;
@@ -492,50 +464,18 @@ static NSString * const CooperateDetailCellID = @"CooperateDetailCellID";
         return cell;
     }
 }
-- (UIButton *)stateBtn
-{
-    if (!_stateBtn) {
-        _stateBtn = [UIButton createButtonWithTitle:Localized(@"InProgress") TextFont:14 TextNormalColor:[UIColor whiteColor] TextSelectedColor:[UIColor whiteColor] NormalBackgroundImage:@"cooperate_state" SelectedBackgroundImage:@"cooperate_state_s" Target:nil Selector:nil];
-        [_stateBtn setTitle:Localized(@"Completed") forState:UIControlStateSelected];
-        [_stateBtn setTitle:Localized(@"Quit") forState:UIControlStateDisabled];
-        [_stateBtn setBackgroundImage:[UIImage imageNamed:@"cooperate_state_s"] forState:UIControlStateDisabled];
-    }
-    return _stateBtn;
-}
-- (CustomButton *)bondButton
-{
-    if (!_bondButton) {
-        _bondButton = [[CustomButton alloc] init];
-        _bondButton.layoutMode = HorizontalInverted;
-        _bondButton.titleLabel.font = FONT(13);
-        [_bondButton setTitleColor:COLOR_6 forState:UIControlStateNormal];
-        [_bondButton setTitle:Localized(@"Bond") forState:UIControlStateNormal];
-        [_bondButton setImage:[UIImage imageNamed:@"interdependent_node_explain"] forState:UIControlStateNormal];
-        [_bondButton addTarget:self action:@selector(bondAction:) forControlEvents:UIControlEventTouchUpInside];
-    }
-    return _bondButton;
-}
+
+
 - (void)bondAction:(UIButton *)button
 {
     [self infoAction:button title:Localized(@"CooperateBond")];
 }
-- (CustomButton *)shareRatioBtn
-{
-    if (!_shareRatioBtn) {
-        _shareRatioBtn = [[CustomButton alloc] init];
-        _shareRatioBtn.layoutMode = HorizontalInverted;
-        _shareRatioBtn.titleLabel.font = FONT(12);
-        [_shareRatioBtn setTitle:Localized(@"AwardSharingRatio") forState:UIControlStateNormal];
-        [_shareRatioBtn setImage:[UIImage imageNamed:@"interdependent_node_explain"] forState:UIControlStateNormal];
-        [_shareRatioBtn setTitleColor:COLOR(@"B2B2B2") forState:UIControlStateNormal];
-        [_shareRatioBtn addTarget:self action:@selector(shareRatioAction:) forControlEvents:UIControlEventTouchUpInside];
-    }
-    return _shareRatioBtn;
-}
+/*
 - (void)shareRatioAction:(UIButton *)btn
 {
     [self infoAction:btn title:Localized(@"ShareRatioInfo")];
 }
+ */
 - (void)infoAction:(UIButton *)button title:(NSString *)title
 {
     CGFloat titleHeight = [Encapsulation rectWithText:title font:TITLE_FONT textWidth:DEVICE_WIDTH - ScreenScale(120)].size.height;
@@ -553,45 +493,8 @@ static NSString * const CooperateDetailCellID = @"CooperateDetailCellID";
         popupMenu.height = titleHeight + Margin_40;
     }];
 }
-- (UIProgressView *)progressView
-{
-    if (!_progressView) {
-        _progressView = [[UIProgressView alloc] init];
-        _progressView.progressTintColor = MAIN_COLOR;
-        _progressView.trackTintColor = COLOR(@"E7E8EC");
-        _progressView.progressViewStyle = UIProgressViewStyleBar;
-    }
-    return _progressView;
-}
-- (UIView *)lineView
-{
-    if (!_lineView) {
-        _lineView = [[UIView alloc] init];
-        _lineView.backgroundColor = LINE_COLOR;
-    }
-    return _lineView;
-}
-- (UIView *)riskStatementBg
-{
-    if (!_riskStatementBg) {
-        _riskStatementBg = [[UIView alloc] init];
-        UIButton * riskStatementBtn = [UIButton buttonWithType:UIButtonTypeCustom];
-        riskStatementBtn.titleLabel.numberOfLines = 0;
-        riskStatementBtn.backgroundColor = [UIColor whiteColor];
-        riskStatementBtn.layer.masksToBounds = YES;
-        riskStatementBtn.layer.cornerRadius = BG_CORNER;
-        riskStatementBtn.contentEdgeInsets = UIEdgeInsetsMake(Margin_10, Margin_10, Margin_10, Margin_10);
-        [riskStatementBtn setAttributedTitle:[Encapsulation attrWithString:Localized(@"RiskStatementPrompt") preFont:FONT(13) preColor:COLOR_6 index:0 sufFont:FONT(13) sufColor:COLOR_6 lineSpacing:5.0] forState:UIControlStateNormal];
-        [_riskStatementBg addSubview:riskStatementBtn];
-        [riskStatementBtn mas_makeConstraints:^(MASConstraintMaker *make) {
-            make.top.equalTo(self->_riskStatementBg);
-            make.left.equalTo(self->_riskStatementBg.mas_left).offset(Margin_10);
-            make.right.equalTo(self->_riskStatementBg.mas_right).offset(-Margin_10);
-            make.bottom.equalTo(self->_riskStatementBg.mas_bottom).offset(-Margin_5);
-        }];
-    }
-    return _riskStatementBg;
-}
+
+
 - (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath
 {
     [tableView deselectRowAtIndexPath:indexPath animated:NO];

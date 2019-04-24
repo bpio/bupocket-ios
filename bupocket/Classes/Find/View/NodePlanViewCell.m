@@ -47,7 +47,7 @@ static NSString * const NodeSharingID = @"NodeSharingID";
     [self.listBg addSubview:self.moreOperations];
     NSMutableArray * titles = [NSMutableArray arrayWithObjects:Localized(@"InvitationToVote"), Localized(@"VotingRecords"), Localized(@"CancellationOfVotes"), nil];
     NSMutableArray * icons = [NSMutableArray arrayWithObjects:@"invitationToVote", @"votingRecords", @"cancellationOfVotes", nil];
-    CGFloat operationBtnW = (DEVICE_WIDTH - Margin_40) / titles.count;
+    CGFloat operationBtnW = (DEVICE_WIDTH - Margin_20) / titles.count;
     for (NSInteger i = 0; i < titles.count; i++) {
         CGFloat offsetY = i == 2 ? 1.5 : 0;
         CustomButton * operationBtn = [[CustomButton alloc] init];
@@ -59,7 +59,7 @@ static NSString * const NodeSharingID = @"NodeSharingID";
         [self.moreOperations addSubview:operationBtn];
         [operationBtn mas_makeConstraints:^(MASConstraintMaker *make) {
             make.centerY.equalTo(self->_moreOperations).offset(offsetY);
-            make.left.equalTo(self->_moreOperations.mas_left).offset(Margin_10 + operationBtnW * i);
+            make.left.equalTo(self->_moreOperations.mas_left).offset(operationBtnW * i);
             make.size.mas_equalTo(CGSizeMake(operationBtnW, ScreenScale(60)));
         }];
         if (i < 2) {
@@ -224,7 +224,7 @@ static NSString * const NodeSharingID = @"NodeSharingID";
 - (UIView *)moreOperations
 {
     if (!_moreOperations) {
-        _moreOperations = [[UIView alloc] initWithFrame:CGRectMake(Margin_10, ScreenScale(80), DEVICE_WIDTH - Margin_40, ScreenScale(70))];
+        _moreOperations = [[UIView alloc] initWithFrame:CGRectMake(0, ScreenScale(80), DEVICE_WIDTH - Margin_20, ScreenScale(70))];
         [UIView setViewBorder:_moreOperations color:LINE_COLOR border:LINE_WIDTH type:UIViewBorderLineTypeTop];
     }
     return _moreOperations;
@@ -295,8 +295,16 @@ static NSString * const NodeSharingID = @"NodeSharingID";
         }
         self.numberOfVotes.text = sponsorStr;
     } else {
-        self.votesObtained.attributedText = [Encapsulation attrWithString:[NSString stringWithFormat:@"%@ %@", Localized(@"VotesObtained"), nodePlanModel.nodeVote] preFont:FONT(12) preColor:COLOR(@"B2B2B2") index:Localized(@"VotesObtained").length sufFont:FONT(14) sufColor:COLOR_6 lineSpacing:0];
-        self.numberOfVotes.attributedText = [Encapsulation attrWithString:[NSString stringWithFormat:@"%@ %@", Localized(@"NumberOfVotes"), nodePlanModel.myVoteCount] preFont:FONT(12) preColor:COLOR(@"B2B2B2") index:Localized(@"NumberOfVotes").length sufFont:FONT(14) sufColor:COLOR_6 lineSpacing:0];
+        NSString * vote = Localized(@"Votes");
+        if ([nodePlanModel.nodeVote longLongValue] < 2) {
+            vote = Localized(@"Vote");
+        }
+        self.votesObtained.attributedText = [Encapsulation attrWithString:[NSString stringWithFormat:@"%@ %@", vote, nodePlanModel.nodeVote] preFont:FONT(12) preColor:COLOR(@"B2B2B2") index:vote.length sufFont:FONT(14) sufColor:COLOR_6 lineSpacing:0];
+        NSString * myVote = Localized(@"My votes");
+        if ([nodePlanModel.myVoteCount longLongValue] < 2) {
+            myVote = Localized(@"My vote");
+        }
+        self.numberOfVotes.attributedText = [Encapsulation attrWithString:[NSString stringWithFormat:@"%@ %@", myVote, nodePlanModel.myVoteCount] preFont:FONT(12) preColor:COLOR(@"B2B2B2") index:myVote.length sufFont:FONT(14) sufColor:COLOR_6 lineSpacing:0];
     }
 }
 

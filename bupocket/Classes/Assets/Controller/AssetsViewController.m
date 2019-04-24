@@ -258,7 +258,13 @@ static UIButton * _noBackup;
             LoginConfirmViewController * VC = [[LoginConfirmViewController alloc] init];
             VC.loginConfirmModel = [LoginConfirmModel mj_objectWithKeyValues:[responseObject objectForKey:@"data"]];
             [self.navigationController pushViewController:VC animated:NO];
-        } else if (code == ErrorQRCodeExpired) {
+        } else if (code == ErrorAccountUnbound) {
+            NSDictionary * dic = responseObject[@"data"];
+            ScanCodeFailureViewController * VC = [[ScanCodeFailureViewController alloc] init];
+            VC.exceptionPromptStr = dic[@"errorMsg"];
+            VC.promptStr = dic[@"errorDescription"];
+            [self.navigationController pushViewController:VC animated:NO];
+        } else if (code == ErrorQRCodeExpired || code == ErrorAccountQRCodeExpired) {
             ScanCodeFailureViewController * VC = [[ScanCodeFailureViewController alloc] init];
             VC.exceptionPromptStr = Localized(@"Overdue");
             VC.promptStr = Localized(@"RefreshQRCode");

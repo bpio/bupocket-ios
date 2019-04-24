@@ -28,9 +28,9 @@
         [self.listBg addSubview:self.supportPortion];
         [self.listBg addSubview:self.residualPortion];
         [self.listBg addSubview:self.progressView];
-        [self.listBg addSubview:self.shareRatioBg];
-        [self.shareRatioBg addSubview:self.shareRatioBtn];
-        [self.shareRatioBg addSubview:self.shareRatio];
+//        [self.listBg addSubview:self.shareRatioBg];
+//        [self.shareRatioBg addSubview:self.shareRatioBtn];
+//        [self.shareRatioBg addSubview:self.shareRatio];
     }
     return self;
 }
@@ -45,15 +45,18 @@
         make.bottom.equalTo(self.contentView.mas_bottom).offset(-Margin_5);
     }];
     self.contentView.backgroundColor = self.contentView.superview.superview.backgroundColor;
+    /*
     [self.shareRatioBg mas_makeConstraints:^(MASConstraintMaker *make) {
         make.right.equalTo(self.listBg.mas_right).offset(-Margin_10);
         make.top.equalTo(self.listBg);
         make.size.mas_equalTo(CGSizeMake(ScreenScale(100), ScreenScale(66)));
     }];
+     */
     [self.title mas_makeConstraints:^(MASConstraintMaker *make) {
         make.left.equalTo(self.listBg.mas_left).offset(Margin_10);
         make.top.equalTo(self.listBg.mas_top).offset(Margin_15);
-        make.right.mas_lessThanOrEqualTo(self.shareRatioBg.mas_left).offset(-Margin_10);
+        make.right.equalTo(self.listBg.mas_right).offset(-Margin_10);
+//        make.right.mas_lessThanOrEqualTo(self.shareRatioBg.mas_left).offset(-Margin_10);
     }];
     [self.numberOfCopies mas_makeConstraints:^(MASConstraintMaker *make) {
         make.top.equalTo(self.title.mas_bottom).offset(Margin_10);
@@ -66,8 +69,8 @@
     
     [self.progressView mas_makeConstraints:^(MASConstraintMaker *make) {
         make.top.equalTo(self.purchaseAmount.mas_bottom).offset(Margin_15);
-        make.left.equalTo(self.title);
-        make.right.equalTo(self.shareRatioBg);
+        make.left.right.equalTo(self.title);
+//        make.right.equalTo(self.shareRatioBg);
     }];
     
     CGFloat residualPortionW = (DEVICE_WIDTH - Margin_50) / 5;
@@ -77,10 +80,12 @@
         make.size.mas_equalTo(CGSizeMake(residualPortionW * 3, MAIN_HEIGHT));
     }];
     [self.residualPortion mas_makeConstraints:^(MASConstraintMaker *make) {
-        make.right.equalTo(self.shareRatioBg);
+//        make.right.equalTo(self.shareRatioBg);
+        make.right.equalTo(self.title);
         make.centerY.equalTo(self.supportPortion);
         make.width.mas_equalTo(residualPortionW * 2);
     }];
+    /*
     [self.shareRatioBtn mas_makeConstraints:^(MASConstraintMaker *make) {
         make.left.equalTo(self.shareRatioBg.mas_left).offset(Margin_5);
         make.right.equalTo(self.shareRatioBg.mas_right).offset(-Margin_5);
@@ -91,6 +96,7 @@
         make.top.equalTo(self.shareRatioBtn.mas_bottom);
         make.left.right.equalTo(self.shareRatioBg);
     }];
+     */
 }
 - (void)setCooperateModel:(CooperateModel *)cooperateModel
 {
@@ -125,7 +131,7 @@
     [residualAttr addAttribute:NSForegroundColorAttributeName value:COLOR(@"B2B2B2") range:leftRange];
     self.residualPortion.attributedText = residualAttr;
     _residualPortion.textAlignment = NSTextAlignmentRight;
-    self.shareRatio.text = [NSString stringWithFormat:@"%@%%", cooperateModel.rewardRate];
+//    self.shareRatio.text = [NSString stringWithFormat:@"%@%%", cooperateModel.rewardRate];
 }
 - (UIView *)listBg
 {
@@ -190,6 +196,7 @@
     }
     return _progressView;
 }
+/*
 - (UIImageView *)shareRatioBg
 {
     if (!_shareRatioBg) {
@@ -226,6 +233,7 @@
         self.shareRatioBtnClick(button);
     }
 }
+ */
 //- (void)setVotingRecordsModel:(VotingRecordsModel *)votingRecordsModel
 //{
 //    _votingRecordsModel = votingRecordsModel;

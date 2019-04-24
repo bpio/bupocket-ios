@@ -28,8 +28,10 @@ typedef NS_ENUM(NSInteger, ErrorCode) {
     ERRCODE_CONTRACT_EXECUTE_FAIL = 151,
 };
 
-// Node Error type
+//  Account login / Node Error type
 typedef NS_ENUM(NSInteger, NodeErrorCode) {
+    ErrorAccountUnbound = 600001,
+    ErrorAccountQRCodeExpired = 600000,
     ErrorPhysicalAddressApplied = 1003,
     ErrorQRCodeExpired = 1006,
     ErrorAccountApplied = 1009,
