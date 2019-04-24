@@ -161,8 +161,10 @@ static NSString * const Register_Leave = @"leaveRoomForApp";
                 return;
             }
             [weakSelf.socket emit:Register_Processing with:@[]];
+            int64_t nonce = [[HTTPManager shareManager] getAccountNonce: CurrentWalletAddress] + 1;
+            if (nonce == 0) return;
             PasswordAlertView * alertView = [[PasswordAlertView alloc] initWithPrompt:Localized(@"RegistrationWalletPWPrompt") walletKeyStore:CurrentWalletKeyStore isAutomaticClosing:YES confrimBolck:^(NSString * _Nonnull password, NSArray * _Nonnull words) {
-                [weakSelf getRegisteredDataWithPassword:password];
+                [weakSelf getRegisteredDataWithPassword:password nonce:nonce];
             } cancelBlock:^{
             }];
             [alertView showInWindowWithMode:CustomAnimationModeAlert inView:nil bgAlpha:AlertBgAlpha needEffectView:NO];
@@ -170,9 +172,9 @@ static NSString * const Register_Leave = @"leaveRoomForApp";
         }];
     }];
 }
-- (void)getRegisteredDataWithPassword:(NSString *)password
+- (void)getRegisteredDataWithPassword:(NSString *)password nonce:(int64_t)nonce
 {
-    [[HTTPManager shareManager] getRegisteredDataWithPassword:password registeredModel:self.registeredModel success:^(TransactionResultModel *resultModel) {
+    [[HTTPManager shareManager] getRegisteredDataWithPassword:password registeredModel:self.registeredModel nonce:nonce success:^(TransactionResultModel *resultModel) {
         self.registeredModel.transactionHash = resultModel.transactionHash;
         self.registeredModel.registeredFee = resultModel.actualFee;
         [self loadDataWithIsOvertime:NO resultModel:resultModel];

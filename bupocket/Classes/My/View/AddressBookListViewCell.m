@@ -110,7 +110,7 @@ static NSString * const WalletCellID = @"WalletCellID";
 {
     _addressBookModel = addressBookModel;
     self.addressName.text = addressBookModel.nickName;
-    self.address.text = [NSString stringEllipsisWithStr:addressBookModel.linkmanAddress];
+    self.address.text = [NSString stringEllipsisWithStr:addressBookModel.linkmanAddress subIndex:SubIndex_Address];
     self.describe.text = addressBookModel.remark;
     CGFloat addressNameH = [Encapsulation rectWithText:self.addressName.text font:self.addressName.font textWidth:DEVICE_WIDTH - Margin_50].size.height;
     CGFloat describeH = 0;

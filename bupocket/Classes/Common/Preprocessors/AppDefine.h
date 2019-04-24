@@ -28,7 +28,7 @@
 // imported Wallet
 //#define imported_Wallet @"importedWallet"
 // Network request timeout limit time
-#define Timeout_Interval 30.0
+#define Timeout_Interval 60.0
 #define Assets_HomePage_CacheData @"AssetsHomePageCacheData"
 #define Assets_HomePage_CacheData_Test @"AssetsHomePageCacheDataTest"
 // 0: BU 1：ATP 2：CTP
@@ -55,6 +55,28 @@
 // Transfer payment expenses
 #define TransactionCost_MAX @"10"
 #define TransactionCost_MIN @"0.01"
+#define TransactionCost_Check_MIN @"0.15"
+#define TransactionCost_Cooperate_MIN @"10.3"
+#define Activate_Cooperate_MIN @"0.01"
+
+#define TransactionType_ApplyNode @ "1"
+#define TransactionType_Vote @"3"
+#define TransactionType_Cooperate @"4"
+#define TransactionType_Cooperate_Support @"5"
+#define TransactionType_Cooperate_SignOut @"7"
+#define TransactionType_Check @"80"
+#define TransactionType_NodeWithdrawal @"10"
+
+#define Cooperate_State_InProgress @"1"
+#define Cooperate_State_Success @"2"
+#define Cooperate_State_Failure @"3"
+
+#define NodeType_Consensus @"1"
+#define NodeType_Ecological @"2"
+
+#define Role_validator @"validator"
+#define Role_kol @"kol"
+
 #define TransactionCost_NotActive_MIN @"0.03"
 #define ActivateInitBalance @"0.02"
 // BU decimals
@@ -68,7 +90,7 @@
 #define PW_MIN_LENGTH 6
 #define PW_MAX_LENGTH 30
 // Cycle query transaction state maximum number
-#define Maximum_Number 20
+#define Maximum_Number 30
 // Feedback content
 #define SuggestionsContent_MAX 100
 #define AlertBgAlpha 0.2
@@ -81,8 +103,18 @@
 
 #define AddressBook_Cache_Name @"addressBook.sqlite"
 
+//#define Wechat_APP_ID @"wxaecf7ac4085fd34a"
+//#define SmallRoutine_Original_ID @"gh_463781563a74"
+
 #define Wechat_APP_ID @"wxaecf7ac4085fd34a"
-#define SmallRoutine_Original_ID @"gh_463781563a74"
+#define XCX_YouPin_Original_ID @"gh_545e659b7dcd"
+
+#define Tencent_App_ID @"101569415"
+
+#define Dispatch_After_Time 0.5
+
+#define SubIndex_Address 5
+#define SubIndex_hash 8
 
 
 #endif /* AppDefine_h */

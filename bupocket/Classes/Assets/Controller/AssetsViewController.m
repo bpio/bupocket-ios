@@ -19,18 +19,21 @@
 #import "TransferAccountsViewController.h"
 #import "WalletManagementViewController.h"
 #import "LoginConfirmViewController.h"
-#import "DposAlertView.h"
+#import "ConfirmTransactionAlertView.h"
 #import "ScanCodeFailureViewController.h"
 
 #import "RegisteredModel.h"
 #import "DistributionModel.h"
 
 #import "LoginConfirmModel.h"
-#import "ApplyNodeModel.h"
-#import "TransferResultsViewController.h"
-#import "RequestTimeoutViewController.h"
+#import "ConfirmTransactionModel.h"
+
 
 #import "UINavigationController+Extension.h"
+
+#import "NodeTransferSuccessViewController.h"
+#import "TransferResultsViewController.h"
+#import "RequestTimeoutViewController.h"
 
 
 @interface AssetsViewController ()<UITableViewDelegate, UITableViewDataSource>
@@ -56,6 +59,8 @@
 @property (nonatomic, assign) UIStatusBarStyle statusBarStyle;
 @property (nonatomic, strong) NSString * assetsCacheDataKey;
 
+//@property (nonatomic, strong) ConfirmTransactionAlertView * confirmAlertView;
+
 @property (nonatomic, strong) NSMutableArray * transferInfoArray;
 
 @end
@@ -78,7 +83,6 @@ static UIButton * _noBackup;
     }
     return _transferInfoArray;
 }
-
 - (void)viewDidLoad {
     [super viewDidLoad];
     self.edgesForExtendedLayout = UIRectEdgeAll;
@@ -248,17 +252,25 @@ static UIButton * _noBackup;
 #pragma mark - Scan code login
 - (void)getScanCodeLoginDataWithUUid:(NSString *)uuid
 {
-    [[HTTPManager shareManager] getScanCodeLoginDataWithAddress:[[[AccountTool shareTool] account] identityAddress] uuid:uuid success:^(id responseObject) {
+    [[HTTPManager shareManager] getAccountCenterDataWithAppId:nil uuid:uuid success:^(id responseObject) {
         NSInteger code = [[responseObject objectForKey:@"errCode"] integerValue];
         if (code == Success_Code) {
             LoginConfirmViewController * VC = [[LoginConfirmViewController alloc] init];
             VC.loginConfirmModel = [LoginConfirmModel mj_objectWithKeyValues:[responseObject objectForKey:@"data"]];
             [self.navigationController pushViewController:VC animated:NO];
-        } else {
+        } else if (code == ErrorAccountUnbound) {
+            NSDictionary * dic = responseObject[@"data"];
+            ScanCodeFailureViewController * VC = [[ScanCodeFailureViewController alloc] init];
+            VC.exceptionPromptStr = dic[@"errorMsg"];
+            VC.promptStr = dic[@"errorDescription"];
+            [self.navigationController pushViewController:VC animated:NO];
+        } else if (code == ErrorQRCodeExpired || code == ErrorAccountQRCodeExpired) {
             ScanCodeFailureViewController * VC = [[ScanCodeFailureViewController alloc] init];
             VC.exceptionPromptStr = Localized(@"Overdue");
             VC.promptStr = Localized(@"RefreshQRCode");
             [self.navigationController pushViewController:VC animated:NO];
+        } else {
+            [Encapsulation showAlertControllerWithMessage:[ErrorTypeTool getDescriptionWithNodeErrorCode:code] handler:nil];
         }
     } failure:^(NSError *error) {
         
@@ -418,13 +430,18 @@ static UIButton * _noBackup;
 #pragma mark - scan
 - (void)scanAction
 {
+    __block NSString * result = nil;
     __weak typeof (self) weakself = self;
     HMScannerController *scanner = [HMScannerController scannerWithCardName:nil avatar:nil completion:^(NSString *stringValue) {
-        if ([stringValue hasPrefix:Account_Center_Prefix]) {
-            [self getScanCodeLoginDataWithUUid:[stringValue substringFromIndex:[Account_Center_Prefix length]]];
+        if (result) {
             return;
-        } else if ([stringValue hasPrefix:Dpos_Prefix]) {
-            [self getApplyNodeDataWithStr:[stringValue substringFromIndex:[Dpos_Prefix length]]];
+        }
+        result = stringValue;
+        if ([stringValue hasPrefix:@"http"] && [stringValue containsString:Account_Center_Contains] && ![[[[[stringValue componentsSeparatedByString:Account_Center_Contains] firstObject] componentsSeparatedByString:@"://"] lastObject] containsString:@"/"] && [[[stringValue componentsSeparatedByString:Account_Center_Contains] lastObject] length] == 32) {
+            [self getScanCodeLoginDataWithUUid:[[stringValue componentsSeparatedByString:Account_Center_Contains] lastObject]];
+            return;
+        } else if ([stringValue hasPrefix:@"http"] && [stringValue containsString:Dpos_Contains] && ![[[[[stringValue componentsSeparatedByString:Dpos_Contains] firstObject] componentsSeparatedByString:@"://"] lastObject] containsString:@"/"] && [[[stringValue componentsSeparatedByString:Dpos_Contains] lastObject] length] == 32) {
+            [self getApplyNodeDataWithStr:[[stringValue componentsSeparatedByString:Dpos_Contains] lastObject]];
             return;
         }
         NSOperationQueue * queue = [[NSOperationQueue alloc] init];
@@ -478,64 +495,104 @@ static UIButton * _noBackup;
 - (void)getApplyNodeDataWithStr:(NSString *)str
 {
     [[HTTPManager shareManager] getDposApplyNodeDataWithQRcodeSessionId:str success:^(id responseObject) {
-        NSInteger code = [[responseObject objectForKey:@"errorCode"] integerValue];
+        NSInteger code = [[responseObject objectForKey:@"errCode"] integerValue];
         if (code == Success_Code) {
-            ApplyNodeModel * applyNodeModel = [ApplyNodeModel mj_objectWithKeyValues:[responseObject objectForKey:@"data"]];
-            [self getDpos:applyNodeModel];
-        } else {
+            ConfirmTransactionModel * confirmTransactionModel = [ConfirmTransactionModel mj_objectWithKeyValues:[responseObject objectForKey:@"data"]];
+            [self getDpos:confirmTransactionModel];
+        } else if (code == ErrorQRCodeExpired) {
             ScanCodeFailureViewController * VC = [[ScanCodeFailureViewController alloc] init];
             VC.exceptionPromptStr = Localized(@"Overdue");
             VC.promptStr = Localized(@"RefreshQRCode");
             [self.navigationController pushViewController:VC animated:NO];
+        } else {
+            [Encapsulation showAlertControllerWithMessage:[ErrorTypeTool getDescriptionWithNodeErrorCode:code] handler:nil];
         }
     } failure:^(NSError *error) {
 
     }];
 }
-- (void)getDpos:(ApplyNodeModel *)applyNodeModel
+- (void)getDpos:(ConfirmTransactionModel *)confirmTransactionModel
 {
-    __weak typeof(self) weakSelf = self;
-    DposAlertView * alertView = [[DposAlertView alloc] initWithDpos:applyNodeModel confrimBolck:^{
-        [weakSelf getDataWithApplyNodeModel:applyNodeModel];
+    ConfirmTransactionAlertView * confirmAlertView = [[ConfirmTransactionAlertView alloc] initWithDpos:confirmTransactionModel confrimBolck:^(NSString * _Nonnull transactionCost) {
+        dispatch_after(dispatch_time(DISPATCH_TIME_NOW, (int64_t)(Dispatch_After_Time * NSEC_PER_SEC)), dispatch_get_main_queue(), ^{
+            NSDecimalNumber * amount = [NSDecimalNumber decimalNumberWithString:confirmTransactionModel.amount];
+            NSDecimalNumber * minTransactionCost = [NSDecimalNumber decimalNumberWithString:transactionCost];
+            NSDecimalNumber * totleAmount = [amount decimalNumberByAdding:minTransactionCost];
+            NSDecimalNumber * amountNumber = [[HTTPManager shareManager] getDataWithBalanceJudgmentWithCost:[totleAmount stringValue] ifShowLoading:NO];
+            NSString * totleAmountStr = [amountNumber stringValue];
+            if (!NULLString(totleAmountStr) || [amountNumber isEqualToNumber:NSDecimalNumber.notANumber]) {
+            } else if ([totleAmountStr hasPrefix:@"-"]) {
+                [MBProgressHUD showTipMessageInWindow:Localized(@"NotSufficientFunds")];
+            } else {
+                [self getContractTransactionData:confirmTransactionModel];
+            }
+        });
     } cancelBlock:^{
         
     }];
-    [alertView showInWindowWithMode:CustomAnimationModeShare inView:nil bgAlpha:AlertBgAlpha needEffectView:NO];
+    [confirmAlertView showInWindowWithMode:CustomAnimationModeShare inView:nil bgAlpha:AlertBgAlpha needEffectView:NO];
 }
+
 // Transaction confirmation and submission
-- (void)getDataWithApplyNodeModel:(ApplyNodeModel *)applyNodeModel
+- (void)getContractTransactionData:(ConfirmTransactionModel *)confirmTransactionModel
 {
-    [[HTTPManager shareManager] setContractTransactionWithQRcodeSessionId:applyNodeModel.qrcodeSessionId destAddress:applyNodeModel.destAddress assets:applyNodeModel.amount code:applyNodeModel.script notes:applyNodeModel.qrRemark success:^(id responseObject) {
-        PasswordAlertView * alertView = [[PasswordAlertView alloc] initWithPrompt:Localized(@"TransactionWalletPWPrompt") walletKeyStore:CurrentWalletKeyStore isAutomaticClosing:YES confrimBolck:^(NSString * _Nonnull password, NSArray * _Nonnull words) {
-            [[HTTPManager shareManager] submitContractTransactionPassword:password success:^(TransactionResultModel *resultModel) {
-                self.transferInfoArray = [NSMutableArray arrayWithObjects:applyNodeModel.destAddress, [NSString stringAppendingBUWithStr:applyNodeModel.amount], [NSString stringAppendingBUWithStr:resultModel.actualFee], nil];
-                if (NULLString(applyNodeModel.qrRemark)) {
-                    [self.transferInfoArray addObject:applyNodeModel.qrRemark];
-                }
-                [self.transferInfoArray addObject:[DateTool getDateStringWithTimeStr:[NSString stringWithFormat:@"%lld", resultModel.transactionTime]]];
-                TransferResultsViewController * VC = [[TransferResultsViewController alloc] init];
-                if (resultModel.errorCode == Success_Code) {
-                    VC.state = YES;
-                } else {
-                    VC.state = NO;
-                    //            [MBProgressHUD showTipMessageInWindow:[ErrorTypeTool getDescription:resultModel.errorCode]];
-                }
-                VC.transferInfoArray = self.transferInfoArray;
-                [self.navigationController pushViewController:VC animated:NO];
-            } failure:^(TransactionResultModel *resultModel) {
-                RequestTimeoutViewController * VC = [[RequestTimeoutViewController alloc] init];
-                [self.navigationController pushViewController:VC animated:NO];
-            }];
-        } cancelBlock:^{
-            
-        }];
-        [alertView showInWindowWithMode:CustomAnimationModeAlert inView:nil bgAlpha:AlertBgAlpha needEffectView:NO];
-        [alertView.PWTextField becomeFirstResponder];
+    [[HTTPManager shareManager] getContractTransactionWithModel:confirmTransactionModel  success:^(id responseObject) {
+        NSInteger code = [[responseObject objectForKey:@"errCode"] integerValue];
+        if (code == Success_Code) {
+            NSString * dateStr = [[responseObject objectForKey:@"data"] objectForKey:@"expiryTime"];
+            NSDate * date = [NSDate dateWithTimeIntervalSince1970:[dateStr longLongValue] / 1000];
+            NSTimeInterval time = [date timeIntervalSinceNow];
+            if (time < 0) {
+                [Encapsulation showAlertControllerWithMessage:Localized(@"Overtime") handler:nil];
+//                [MBProgressHUD showTipMessageInWindow:Localized(@"Overtime")];
+            } else {
+                [self showPWAlertView:confirmTransactionModel];
+            }
+        } else {
+            [Encapsulation showAlertControllerWithMessage:[ErrorTypeTool getDescriptionWithNodeErrorCode:code] handler:nil];
+//            [MBProgressHUD showTipMessageInWindow:[ErrorTypeTool getDescriptionWithNodeErrorCode:code]];
+//            [Encapsulation showAlertControllerWithMessage:[NSString stringWithFormat:@"code=%@\nmsg:%@", responseObject[@"errCode"], responseObject[@"msg"]] handler:nil];
+        }
     } failure:^(NSError *error) {
         
     }];
 }
-
+- (void)showPWAlertView:(ConfirmTransactionModel *)confirmTransactionModel
+{
+    PasswordAlertView * PWAlertView = [[PasswordAlertView alloc] initWithPrompt:Localized(@"TransactionWalletPWPrompt") walletKeyStore:CurrentWalletKeyStore isAutomaticClosing:YES confrimBolck:^(NSString * _Nonnull password, NSArray * _Nonnull words) {
+        [self submitTransactionWithPassword:password confirmTransactionModel:confirmTransactionModel];
+    } cancelBlock:^{
+        
+    }];
+    [PWAlertView showInWindowWithMode:CustomAnimationModeAlert inView:nil bgAlpha:AlertBgAlpha needEffectView:NO];
+    [PWAlertView.PWTextField becomeFirstResponder];
+}
+- (void)submitTransactionWithPassword:(NSString *)password confirmTransactionModel:(ConfirmTransactionModel *)confirmTransactionModel
+{
+    __weak typeof(self) weakSelf = self;
+    [[HTTPManager shareManager] submitContractTransactionPassword:password success:^(TransactionResultModel *resultModel) {
+        weakSelf.transferInfoArray = [NSMutableArray arrayWithObjects:confirmTransactionModel.destAddress, [NSString stringAppendingBUWithStr:confirmTransactionModel.amount], [NSString stringAppendingBUWithStr:resultModel.actualFee], nil];
+        if (NULLString(confirmTransactionModel.qrRemark)) {
+            [weakSelf.transferInfoArray addObject:confirmTransactionModel.qrRemark];
+        }
+        [self.transferInfoArray addObject:[DateTool getDateStringWithTimeStr:[NSString stringWithFormat:@"%lld", resultModel.transactionTime]]];
+        if (resultModel.errorCode == Success_Code) {
+            NodeTransferSuccessViewController * VC = [[NodeTransferSuccessViewController alloc] init];
+            [self.navigationController pushViewController:VC animated:NO];
+        } else {
+            TransferResultsViewController * VC = [[TransferResultsViewController alloc] init];
+            VC.state = NO;
+            VC.resultModel = resultModel;
+            //            [MBProgressHUD showTipMessageInWindow:[ErrorTypeTool getDescription:resultModel.errorCode]];
+            VC.transferInfoArray = weakSelf.transferInfoArray;
+            [self.navigationController pushViewController:VC animated:NO];
+        }
+    } failure:^(TransactionResultModel *resultModel) {
+        RequestTimeoutViewController * VC = [[RequestTimeoutViewController alloc] init];
+        VC.transactionHash = resultModel.transactionHash;
+        [self.navigationController pushViewController:VC animated:NO];
+    }];
+}
 
 - (CGFloat)tableView:(UITableView *)tableView heightForRowAtIndexPath:(NSIndexPath *)indexPath
 {

@@ -7,6 +7,7 @@
 //
 
 #import <UIKit/UIKit.h>
+#import "VotingRecordsModel.h"
 
 NS_ASSUME_NONNULL_BEGIN
 
@@ -14,7 +15,7 @@ NS_ASSUME_NONNULL_BEGIN
 
 + (instancetype)cellWithTableView:(UITableView *)tableView identifier:(NSString *)identifier;
 
-//@property (nonatomic, strong) SearchAssetsModel * searchAssetsModel;
+@property (nonatomic, strong) VotingRecordsModel * votingRecordsModel;
 
 @property (nonatomic, strong) UIView * listBg;
 @property (nonatomic, strong) UIButton * recordType;

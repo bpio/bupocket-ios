@@ -214,7 +214,7 @@
 }
 - (void)WholeAction
 {
-    NSLog(@"全部");
+    DLog(@"全部");
 }
 - (void)moreAction:(UIButton *)button
 {
@@ -242,8 +242,8 @@
 }
 - (void)sureBtnClick {
     [self hideView];
-    if (self.sureBlock) {
-        self.sureBlock(self.textField.text);
+    if (_sureBlock) {
+        _sureBlock(self.textField.text);
     }
 }
 

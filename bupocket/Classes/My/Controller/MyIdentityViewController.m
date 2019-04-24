@@ -64,14 +64,14 @@
     self.identityIDTitle.titleLabel.font = IDNameTitle.font;
     [self.identityIDTitle setTitleColor:IDNameTitle.textColor forState:UIControlStateNormal];
     [self.identityIDTitle setTitle:Localized(@"IdentityIDTitle") forState:UIControlStateNormal];
-    [self.identityIDTitle setImage:[UIImage imageNamed:@"explain"] forState:UIControlStateNormal];
+    [self.identityIDTitle setImage:[UIImage imageNamed:@"explain_info"] forState:UIControlStateNormal];
     [self.identityIDTitle addTarget:self action:@selector(identityIDInfo:) forControlEvents:UIControlEventTouchUpInside];
     [myIdentityBg addSubview:self.identityIDTitle];
     
     UILabel * IdentityID = [[UILabel alloc] init];
     IdentityID.font = IDName.font;
     IdentityID.textColor = IDName.textColor;
-    IdentityID.text = [NSString stringEllipsisWithStr:[[AccountTool shareTool] account].identityAddress];
+    IdentityID.text = [NSString stringEllipsisWithStr:[[AccountTool shareTool] account].identityAddress subIndex:SubIndex_Address];
     IdentityID.numberOfLines = 0;
     IdentityID.textAlignment = NSTextAlignmentRight;
     [myIdentityBg addSubview:IdentityID];

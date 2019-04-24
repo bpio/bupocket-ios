@@ -325,6 +325,7 @@ static void *WkwebBrowserContext = &WkwebBrowserContext;
 
 // 内容加载失败时候调用
 -(void)webView:(WKWebView *)webView didFailProvisionalNavigation:(WKNavigation *)navigation withError:(NSError *)error{
+    [MBProgressHUD showTipMessageInWindow:Localized(@"LoadFailure")];
 }
 
 //跳转失败的时候调用

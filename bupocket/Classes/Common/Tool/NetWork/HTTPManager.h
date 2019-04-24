@@ -9,6 +9,7 @@
 #import <Foundation/Foundation.h>
 #import "RegisteredModel.h"
 #import "TransactionResultModel.h"
+#import "ConfirmTransactionModel.h"
 
 @interface HTTPManager : NSObject
 
@@ -21,7 +22,6 @@
 //};
 
 @property (nonatomic, strong) NSString * pushMessageSocketUrl;
-@property (assign, nonatomic) BOOL dposType;
 
 + (instancetype)shareManager;
 
@@ -99,34 +99,65 @@
                                             success:(void (^)(id responseObject))success
                                             failure:(void (^)(NSError *error))failure;
 // Account Center
+- (void)getAccountCenterDataWithAppId:(NSString *)appId
+                                 uuid:(NSString *)uuid
+                              success:(void (^)(id responseObject))success
+                              failure:(void (^)(NSError *error))failure;
 // user Scan Qr Login
-- (void)getScanCodeLoginDataWithAddress:(NSString *)address
-                                   uuid:(NSString *)uuid
-                                success:(void (^)(id responseObject))success
-                                failure:(void (^)(NSError *error))failure;
-// Confirm Login
-- (void)getConfirmLoginDataWithAddress:(NSString *)address
-                                  uuid:(NSString *)uuid
-                                 appId:(NSString *)appId
-                               success:(void (^)(id responseObject))success
-                               failure:(void (^)(NSError *error))failure;
+//- (void)getScanCodeLoginDataWithAddress:(NSString *)address
+//                                   uuid:(NSString *)uuid
+//                                success:(void (^)(id responseObject))success
+//                                failure:(void (^)(NSError *error))failure;
+//// Confirm Login
+//- (void)getConfirmLoginDataWithAppId:(NSString *)appId
+//                                uuid:(NSString *)uuid
+//                             success:(void (^)(id responseObject))success
+//                             failure:(void (^)(NSError *error))failure;
+// find ad banner
+- (void)getAdsDataWithURL:(NSString *)URL
+                  success:(void (^)(id responseObject))success
+                  failure:(void (^)(NSError *error))failure;
 // dpos
 - (void)getDposApplyNodeDataWithQRcodeSessionId:(NSString *)QRcodeSessionId
                                         success:(void (^)(id responseObject))success
                                         failure:(void (^)(NSError *error))failure;
 // Contract Transaction
-- (void)setContractTransactionWithQRcodeSessionId:(NSString *)qrcodeSessionId
-                                      destAddress:(NSString *)destAddress
-                                           assets:(NSString *)assets
-                                             code:(NSString *)code
-                                            notes:(NSString *)notes
-                                          success:(void (^)(id responseObject))success
-                                          failure:(void (^)(NSError *error))failure;
+- (void)getContractTransactionWithModel:(ConfirmTransactionModel *)confirmTransactionModel
+                                success:(void (^)(id responseObject))success
+                                failure:(void (^)(NSError *error))failure;
 
 // submit Contract Transaction / Transaction Status
 - (void)submitContractTransactionPassword:(NSString *)password
                                   success:(void (^)(TransactionResultModel * resultModel))success
                                   failure:(void (^)(TransactionResultModel * resultModel))failure;
+// short link
+- (void)getShortLinkDataWithType:(NSString *)type
+                            path:(NSString *)path
+                         success:(void (^)(id responseObject))success
+                         failure:(void (^)(NSError *error))failure;
+// Node List
+- (void)getNodeListDataWithIdentityType:(NSString *)identityType
+                               nodeName:(NSString *)nodeName
+                         capitalAddress:(NSString *)capitalAddress
+                                success:(void (^)(id responseObject))success
+                                failure:(void (^)(NSError *error))failure;
+// Node Invitation Vote
+- (void)getNodeInvitationVoteDataWithNodeId:(NSString *)nodeId
+                                    success:(void (^)(id responseObject))success
+                                    failure:(void (^)(NSError *error))failure;
+// Voting Record
+- (void)getVotingRecordDataWithNodeId:(NSString *)nodeId
+                              success:(void (^)(id responseObject))success
+                              failure:(void (^)(NSError *error))failure;
+
+// Node Cooperate List
+- (void)getNodeCooperateListDataSuccess:(void (^)(id responseObject))success
+                                failure:(void (^)(NSError *error))failure;
+
+// Node Cooperate Detail
+- (void)getNodeCooperateDetailDataWithNodeId:(NSString *)nodeId
+                                     success:(void (^)(id responseObject))success
+                                     failure:(void (^)(NSError *error))failure;
 
 #pragma mark - SDK
 // Check the balance
@@ -138,6 +169,8 @@
 - (NSDecimalNumber *)getDataWithBalanceJudgmentWithCost:(NSString *)cost ifShowLoading:(BOOL)ifShowLoading;
 // Balance of assets
 - (int64_t)getAssetInfoWithAddress:(NSString *)address code:(NSString *)code issuer:(NSString *)issuer;
+
+- (int64_t) getAccountNonce: (NSString *)address;
 
 // Query account / Is it activated?
 - (NSString *)getAccountInfoWithAddress:(NSString *)address;
@@ -168,6 +201,7 @@
                                notes:(NSString *)notes
                                 code:(NSString *)code
                               issuer:(NSString *)issuer
+                               nonce:(int64_t)nonce
                              success:(void (^)(TransactionResultModel * resultModel))success
                              failure:(void (^)(TransactionResultModel * resultModel))failure;
 
@@ -175,6 +209,7 @@
 // register
 - (void)getRegisteredDataWithPassword:(NSString *)password
                       registeredModel:(RegisteredModel *)registeredModel
+                                nonce:(int64_t)nonce
                               success:(void (^)(TransactionResultModel * resultModel))success
                               failure:(void (^)(TransactionResultModel * resultModel))failure;
 // Issue
@@ -182,6 +217,7 @@
                             assetCode:(NSString *)assetCode
                           assetAmount:(int64_t)assetAmount
                              decimals:(NSInteger)decimals
+                                nonce:(int64_t)nonce
                               success:(void (^)(TransactionResultModel * resultModel))success
                               failure:(void (^)(TransactionResultModel * resultModel))failure;
 

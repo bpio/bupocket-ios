@@ -145,6 +145,12 @@
 "TransferTime" = "转账时间";
 //"TransferSuccess" = "转账成功";
 //"TransferFailure" = "转账失败";
+"TransactionStatus" = "交易状态";
+"TransactionSuccessful" = "交易广播成功";
+"TransactionQueryPrompt" = "交易广播成功，交易最终状态请复制交易摘要到";
+"Query" = "查询";
+"TransactionSummary" = "交易摘要";
+
 "RequestTimeout" = "请求超时";
 "IGotIt" = "我知道了";
 // 订单详情
@@ -212,6 +218,8 @@
 
 // alert Massage
 "Loading" = "加载中...";
+"DataChecking" = "数据校验中";
+"Signature" = "签名中";
 // SDK
 "CreateIdentityFailure" = "身份创建失败";
 "IssueNumberIsIncorrect" = "无效的发行量";
@@ -337,7 +345,6 @@
 "DeleteSuccessful" = "删除成功";
 "DeleteFailed" = "删除失败，请稍后重试";
 // 登录
-//"LoginSystem" = "节点计划运营管理系统";
 "Immediate login %@, please confirm that it is my operation." = "即将登录%@，请确认是本人操作。";
 "LoginPromptInfo" = "您的账户地址将被公开";
 "ConfirmLogin" = "确认登录";
@@ -347,50 +354,143 @@
 "Parameter" = "参数";
 // 发现
 "CardBag" = "卡包";
-"NodePlan" = "节点计划";
-"JointConstructionOfNodes" = "节点共建";
+"NodePlan" = "节点竞选";
+"JointlyCooperate" = "节点共建";
 "Information" = "资讯";
 "SmallClothGoods" = "小布有品";
-// 节点计划
-"VotesObtained" = "得票数";
-"NumberOfVotes" = "我的投票数";
-"ConsensusNode" = "共识节点";
+// 节点竞选
+"Vote" = "票数";
+"Votes" = "票数";
+"My votes" = "我的投票数";
+"My vote" = "我的投票数";
+"ConsensusNode" = "记账节点";
 "EcologicalNodes" = "生态节点";
 "InterdependentNode" = "和我相关的节点";
-"RelevantNodes" = "勾选后过滤出和我相关的节点信息，如我的投过票的节点和我是节点发起人（节点资金地址是本钱包地址）的节点";
+"RelevantNodes" = "筛选和我相关的节点，例如：我投票的节点/竞选节点自身";
 "Search" = "搜索";
 "CancellationOfVotes" = "撤销投票";
 "VotingRecords" = "投票记录";
+"InvitationToVote" = "邀请投票";
+"IrrevocableVotes" = "暂无可撤销的票数";
 // 投票记录
 "Throw" = "投";
-"Withdraw" = "撤";
+"withdraw" = "撤";
 "Number" = "数量";
 "State" = "状态";
 "Time" = "时间";
+"InProcessing" = "处理中";
+// 投票记录详情
+"Share" = "分享";
+"%@ Votes" = "%@ 票";
+"%@ Vote" = "%@ 票";
+"%@ Sponsors" = "%@ 人支持";
+"%@ Sponsor" = "%@ 人支持";
+"NodeIntroduction" = "节点介绍";
+// 分享
+"InvitationPrompt" = "快来小布口袋帮忙投票";
+"LongPressPrompt" = "（长按识别二维码）";
+"WeChat" = "微信";
+"QQ" = "QQ";
+"CopyBULink" = "复制小布口令";
+"LinkTitle" = "小布口令已生成";
+"CopyLink" = "复制口令";
+"BULink" = "小布口令";
+"LinkPerfix" = "我为BUMO超级节点计划参与方";
+"LinkSuffix%@" = "打call，打开链接进行为他投票%@";
+
 // 撤票详情
-"Revoke" = "撤销";
-"Vote" = "投票";
-"Whole" = "全部";
-"Maximum revocable %@ votes" = "最多可撤销%@投票数量";
-"The maximum transaction cost is about %@ BU" = "本次最多支付交易费用约 %@ BU";
-"Retract" = "收起";
-"More" = "更多";
-"TransactionInitiator" = "交易发起方";
-"ContractingParty" = "合约方";
-"ContractCode" = "合约代码";
-"ConfirmTicketWithdrawal" = "确认撤票";
-"After successful withdrawal, the frozen BU is returned to the original purse\n（%@）" = "撤票成功后，将冻结的BU退回至原钱包\n（%@）";
+"Number of votes revoked on '%@'" = "撤销对\"%@\"的投票";
+//"Revoke" = "撤销";
+//"Vote" = "投票";
+//"Whole" = "全部";
+//"Maximum revocable %@ votes" = "最多可撤销%@投票数量";
+//"The maximum transaction cost is about %@ BU" = "本次最多支付交易费用约 %@ BU";
+//"Retract" = "收起";
+//"More" = "更多";
+//"TransactionInitiator" = "交易发起方";
+//"ContractingParty" = "合约方";
+//"ContractCode" = "合约代码";
+//"ConfirmTicketWithdrawal" = "确认撤票";
+//"After successful withdrawal, the frozen BU is returned to the original purse\n（%@）" = "撤票成功后，将冻结的BU退回至原钱包\n（%@）";
 // 交易
 "ConfirmTransaction" = "确认交易";
 "MaximumTransactionCosts" = "最多支付交易费用（BU）";
 "Overdue" = "请求已过期";
 "Initiator" = "发起方";
-"CounterAccount" = "对方账户";
+//"CounterAccount" = "对方账户";
 "Details" = "详情";
-"TransactionCosts" = "交易费用";
+"TransactionCosts（BU）" = "交易费用（BU）";
+"Number（BU）" = "数量（BU）";
+// 节点共建
+"PurchaseAmount" = "起购金额";
+"AwardSharingRatio" = "奖励分享比例";
+"TargetNumber" = "目标数量";
+"TargetAmount" = "目标共建金额";
+"%lld shares received" = "已获得支持 %lld 份";
+"%lld share received" = "已获得支持 %lld 份";
+"Received" = "已获得支持";
+"%lld shares left" = "剩余 %lld 份";
+"%lld share left" = "剩余 %lld 份";
+"Left" = "剩余";
+//"Shares" = "份";
+"ShareRatioInfo" = "节点共建项目发起者承诺在竞选成功后，对节点共建支持者的奖励分享比例";
+// 节点共建详情
+"JointlyCooperateDetail" = "共建信息详情";
+"InProgress" = "共建中";
+"Completed" = "共建成功";
+"Quit" = "共建失败";
+"Bond" = "保证金";
+"CooperateBond" = "节点共建项目发起者转入保证金作为节点共建的锁仓金额";
+//"The remaining %@ copies" = "剩余 %@ 份";
+"TotalSupport" = "已获得支持金额";
+"RiskStatement" = "风险说明";
+"SupportRecords" = "节点共建记录";
+"RedemptionAllSupport" = "我要赎回全部支持金额";
+"WithdrawalOfSupport" = "撤回支持";
+"IWantToSupport" = "我要支持";
+"Support" = "支持";
+"Withdraw" = "撤回";
+"RiskStatementPrompt" = "1. 节点共建不是商品交易。支持者根据节点共建发起者的奖励分享比例等其他因素，自主选择支持何种共建项目并获得相应的回报奖励；\n2. BUMO只提供网络空间、技术服务等中间服务，与项目发起者和支持者无任何利益关联。节点共建项目仅存在于发起者和支持者之间，若因节点共建产生的任何法律纠纷将由项目发起者和支持者自行承担，平台对此不承担任何责任；\n3. 节点共建项目未完成前，节点共建支持者可手动撤回全部支持金额；若项目发起者在项目未完成前主动退出，节点共建支持者也可手动撤回全部支持金额。";
+// 支持
+"SupportProjects" = "支持项目";
+"SupportCopies" = "支持份数";
+"Total" = "共计：";
+"ConfirmSupport" = "确认支持";
+"BU/Portion" = "BU/份";
 
+// 退出、支持 交易详情
+"ConfirmWithdrawalPrompt" = "确认撤回全部支持金额么？";
+"Exit '%@' Project" = "撤回支持\"%@\"";
+"Supporting '%@' Projects" = "支持\"%@\"项目";
+
+// 退出节点共建计划
+// 交易确认
+"Overtime" = "请求已超时，请重新操作";
+// 交易成功
+"TransferSuccess" = "交易成功";
+"TransferSuccessPrompt" = "链上交易已成功";
+"BusinessData" = "业务数据处理中";
+"BusinessDataPrompt" = "业务数据根据链上交易元数据进行分析处理，预计20秒内处理完成";
+"DataRefreshed" = "数据已刷新";
+"NodeTransferPrompt" = "温馨提示：\n节点的投票、撤票等操作链上交易成功后，相关数据的统计有延迟，预计30秒内完成，此为正常现象。";
+// 交易失败
+"ContractTransferFailure" = "合约调用失败";
 // 错误信息
 "LoadFailure" = "加载失败";
+// Node Errors
+"PhysicalAddressApplied" = "该待绑定的物理地址已被占用，请更换后再申请";
+"AccountApplied" = "该钱包账户已申请过，请更换后再进行申请";
+"NotSubmitted" = "检测到有尚未提交的操作，请稍后再重试";
+"CommitteeAuthority" = "没有权限，请使用委员会钱包进行扫码";
+"NoVoteJurisdiction" = "投票通道还未开启，请在开启后进行投票";
+"ShareNotOpened" = "投票通道还未开启，请在开启后进行分享";
+"UnsupportedSubscription" = "当前项目已获得目标共建总金额，您可选择其他项目进行支持";
+"InsufficientSurplus" = "剩余份数不足，建议您调整支持份数";
+"CooperateUnsupported" = "您还未支持过此项目，暂不能撤回";
+"CooperateCompleted" = "节点共建项目已完成，暂不支持退出";
+"InitiatorAddressUnavailable" = "该账户不是发起者，无法发起该操作";
+"InitiatorCanNotSupport" = "节点共建项目发起者不能参与支持";
+
 // SDK Errors
 "SYSTEM_ERROR" = "系统错误";
 "INVALID_ADDRESS_ERROR" = "无效地址";

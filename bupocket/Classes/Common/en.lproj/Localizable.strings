@@ -15,7 +15,7 @@
 "NoNetWork" = "Network failure, please try again later";
 "Reload" = "Reload";
 "MyTitle" = "Profile";
-"FindTitle" = "发现";
+"FindTitle" = "Explore";
 "AssetsTitle" = "Tokens";
 // Identity
 "CreateDigitalIdentity" = "Create a digital identity";
@@ -148,6 +148,12 @@
 "TransferTime" = "Time";
 //"TransferSuccess" = "Succeeded";
 //"TransferFailure" = "Failed";
+"TransactionStatus" = "Transaction status";
+"TransactionSuccessful" = "Transaction is broadcast successfully";
+"TransactionQueryPrompt" = "Transaction is broadcast successfully; please copy the transaction summary to ";
+"Query" = " to query the final transaction status";
+"TransactionSummary" = "Transaction summary";
+
 "RequestTimeout" = "Request timeout";
 "IGotIt" = "Got it";
 // Order details
@@ -219,6 +225,8 @@
 
 // alert Massage
 "Loading" = "Loading...";
+"DataChecking" = "Checking data";
+"Signature" = "Signing";
 // SDK
 "CreateIdentityFailure" = "Failed to create an identity";
 "IssueNumberIsIncorrect" = "Invalid circulation";
@@ -347,60 +355,150 @@
 "DeleteSuccessful" = "Deleted successfully";
 "DeleteFailed" = "Failed to delete; please try again later";
 
-// 登录
-"Immediate login %@, please confirm that it is my operation." = "即将登录%@，请确认是本人操作。";
-"LoginPromptInfo" = "您的账户地址将被公开";
-"ConfirmLogin" = "确认登录";
-"LoginException" = "该钱包账户未在该平台绑定";
-"LoginExceptionPrompt" = "请联系该平台管理进行绑定";
-"RefreshQRCode" = "请刷新二维码，再次进行扫码";
-// 发现
-"CardBag" = "卡包";
-"NodePlan" = "节点计划";
-"JointConstructionOfNodes" = "节点共建";
-"Information" = "资讯";
-"SmallClothGoods" = "小布有品";
-// 节点计划
-"VotesObtained" = "得票数";
-"NumberOfVotes" = "我的投票数";
-"ConsensusNode" = "共识节点";
-"EcologicalNodes" = "生态节点";
-"InterdependentNode" = "和我相关的节点";
-"RelevantNodes" = "勾选后过滤出和我相关的节点信息，如我的投过票的节点和我是节点发起人（节点资金地址是本钱包地址）的节点";
-"Search" = "搜索";
-"CancellationOfVotes" = "撤销投票";
-"VotingRecords" = "投票记录";
-// 投票记录
-"Throw" = "投";
-"Withdraw" = "撤";
-"Number" = "数量";
-"State" = "状态";
-"Time" = "时间";
-// 撤票详情
-"Revoke" = "撤销";
-"Vote" = "投票";
-"Whole" = "全部";
-"Maximum revocable %@ votes" = "最多可撤销%@投票数量";
-"The maximum transaction cost is about %@ BU" = "本次最多支付交易费用约 %@ BU";
-"Retract" = "收起";
-"More" = "更多";
-"TransactionInitiator" = "交易发起方";
-"ContractingParty" = "合约方";
-"ContractCode" = "合约代码";
-"ConfirmTicketWithdrawal" = "确认撤票";
-"After successful withdrawal, the frozen BU is returned to the original purse\n（%@）" = "撤票成功后，将冻结的BU退回至原钱包\n（%@）";
-// 交易
-"ConfirmTransaction" = "确认交易";
-"MaximumTransactionCosts" = "最多支付交易费用（BU）";
-"Overdue" = "请求已过期";
-"Initiator" = "发起方";
-"CounterAccount" = "对方账户";
-"Details" = "详情";
-"TransactionCosts" = "交易费用";
-"Parameter" = "参数";
+// Login
+"Immediate login %@, please confirm that it is my operation." = "Log in %@ soon, and please make sure that is your personal operation.";
+"LoginPromptInfo" = "Your account address will be made public";
+"ConfirmLogin" = "Confirm login";
+"LoginException" = "The wallet account is not bound to the platform";
+"LoginExceptionPrompt" = "Please contact the platform manager for binding";
+"RefreshQRCode" = "Please refresh the QR code and scan the code again";
+// Explore
+"CardBag" = "Cards";
+"NodePlan" = "Node Campaign";
+"JointlyCooperate" = "Node Co-funding";
+"Information" = "Information";
+"SmallClothGoods" = "BU Pocket Goods";
+// Node Campaign
+//"VotesObtained" = "Votes received";
+"Vote" = "Vote";
+"Votes" = "Votes";
+"My votes" = "My votes";
+"My vote" = "My vote";
+"ConsensusNode" = "Consensus node";
+"EcologicalNodes" = "Ecological node";
+"InterdependentNode" = "Nodes related to me";
+"RelevantNodes" = "Filter the nodes that are related to me, such as the node I voted for or the campaign node itself";
+"Search" = "Search";
+"CancellationOfVotes" = "Cancel Votes";
+"VotingRecords" = "Record of Votes";
+"InvitationToVote" = "Invite to Vote";
+"IrrevocableVotes" = "No revocable votes";
+// Records of voting
+"Throw" = "Vote";
+"withdraw" = "Cancel";
+"Number" = "Number";
+"State" = "Status";
+"Time" = "Time";
+"InProcessing" = "Processing";
+// Details of voting
+"Share" = "Share";
+"%@ Votes" = "%@ Votes";
+"%@ Vote" = "%@ Vote";
+"%@ Sponsors" = "%@ Sponsors";
+"%@ Sponsor" = "%@ Sponsor";
+"NodeIntroduction" = "Introduction to node";
+// share
+"InvitationPrompt" = "Welcome to vote in BU Pocket";
+"LongPressPrompt" = "（Scan the QR code）";
+"WeChat" = "WeChat";
+"QQ" = "QQ";
+"CopyBULink" = "Copy link";
+"LinkTitle" = "The BU link is generated";
+"CopyLink" = "Copy";
+"BULink" = "BU Link";
+"LinkPerfix" = " I will sponsor the BUMO Super Node Campaign, ";
+"LinkSuffix%@" = ", and click the link %@ to vote for him.";
 
+// Details of cancelling votes
+"Number of votes revoked on '%@'" = "Cancel votes to \"%@\"";
+//"Revoke" = "撤销";
+//"Vote" = "投票";
+//"Whole" = "全部";
+//"Maximum revocable %@ votes" = "最多可撤销%@投票数量";
+//"The maximum transaction cost is about %@ BU" = "本次最多支付交易费用约 %@ BU";
+//"Retract" = "收起";
+//"More" = "更多";
+//"TransactionInitiator" = "交易发起方";
+//"ContractingParty" = "合约方";
+//"ContractCode" = "合约代码";
+//"ConfirmTicketWithdrawal" = "确认撤票";
+//"After successful withdrawal, the frozen BU is returned to the original purse\n（%@）" = "撤票成功后，将冻结的BU退回至原钱包\n（%@）";
+// Transaction
+"ConfirmTransaction" = "Confirm transaction";
+"MaximumTransactionCosts" = "Maximum transaction costs（BU）";
+"Overdue" = "The request is expired";
+"Initiator" = "Initiator";
+//"CounterAccount" = "The receiving account";
+"Details" = "Details";
+"TransactionCosts（BU）" = "Transaction fees（BU）";
+"Parameter" = "Parameter";
+"Number（BU）" = "Number（BU）";
+// Node co-funding
+"PurchaseAmount" = "Minimum purchase";
+"AwardSharingRatio" = "Award ratio";
+"TargetNumber" = "Target number";
+"TargetAmount" = "Target amount";
+"%lld shares received" = "%lld shares received";
+"%lld share received" = "%lld share received";
+"Received" = "received";
+"%lld shares left" = "%lld shares left";
+"%lld share left" = "%lld share left";
+"Left" = "left";
+//"Shares" = "shares";
+"ShareRatioInfo" = "The initiator of the node co-funding project promises to share the reward proportionally with the sponsors after being successfully selected";
+// Details of node co-funding
+"JointlyCooperateDetail" = "Details of Co-funding";
+"InProgress" = "In progress";
+"Completed" = "Success";
+"Quit" = "Failure";
+"Bond" = "Deposit";
+"CooperateBond" = "The initiator of the node co-funding project transfers the deposit to an account as the amount to be locked in node co-funding";
+//"The remaining %@ copies" = " %@ shares remaining";
+"TotalSupport" = "Total amount received";
+"RiskStatement" = "Risk Statement";
+"SupportRecords" = "Record of Node Co-funding";
+"RedemptionAllSupport" = "Withdraw All";
+"WithdrawalOfSupport" = "Withdraw";
+"IWantToSupport" = "Sponsor";
+"Support" = "Sponsor";
+"Withdraw" = "Withdraw";
+"RiskStatementPrompt" = "1. Node co-funding is not a commodity transaction. The sponsors can choose which project to support according to the rules such as award sharing ratio by the initiator and then receive awards; \n2. BUMO only provides cyberspace and technical services and is in no interest connection with the initiators and sponsors, so BUMO will take no responsibility if any legal dispute arising from the node co-funding project, and the initiators and sponsors will take all related responsibilities. \n3. Before the node co-funding project is completed, the sponsors can manually withdraw all BUs; if the project initiator terminates the project before the project is completed, the sponsors can also manually withdraw the BUs sponsored. ";
+// Sponsor
+"SupportProjects" = "Project";
+"SupportCopies" = "Shares";
+"Total" = "Total：";
+"ConfirmSupport" = "Confirm";
+"BU/Portion" = "BU/share";
+// Exit, sponsor, transaction details
+"ConfirmWithdrawalPrompt" = "Are you sure to withdraw the amount voted?";
+"Exit '%@' Project" = "Withdraw sponsor \"%@\"";
+"Supporting '%@' Projects" = "Sponsor \"%@\"project";
+// Confirm transaction
+"Overtime" = "The request has timed out; please do it again";
+// Transaction success
+"TransferSuccess" = "Transaction success";
+"TransferSuccessPrompt" = "The transaction on the chain is successful";
+"BusinessData" = "Processing business data";
+"BusinessDataPrompt" = "Business data is analyzed and processed according to the transaction metadata of the chain, and the processing is expected to be completed within 20 seconds.";
+"DataRefreshed" = "Data is refreshed";
+"NodeTransferPrompt" = "Tips: after transactions such as voting to \n node or withdrawing votes from \n node are successful on the chain, the statistics of related data are delayed, and it is expected to be completed within 30 seconds. ";
+// Transaction failure
+"ContractTransferFailure" = "The contract call failed";
 // Errors
 "LoadFailure" = "Failed to load";
+// Node Errors
+"PhysicalAddressApplied" = "The physical address to be bound is already occupied. Please apply after replacing it";
+"AccountApplied" = "The wallet account has been applied for, please apply after replacing it";
+"NotSubmitted" = "An uncommitted operation is detected; please try again later";
+"CommitteeAuthority" = "No permission, please use the committee wallet to scan the code";
+"NoVoteJurisdiction" = "The voting channel is not yet open. Please vote after opening the channel";
+"ShareNotOpened" = "The voting channel is not yet open. Please share after opening the channel";
+"UnsupportedSubscription" = "The current project has obtained enough BUs, and you can choose other projects to sponsor";
+"InsufficientSurplus" = "The remaining number is insufficient. It is recommended that you adjust the number to sponsor.";
+"CooperateUnsupported" = "You have not sponsored this project so you cannot withdraw from it";
+"CooperateCompleted" = "The node co-funding project is finished, and you cannot withdraw from it";
+"InitiatorAddressUnavailable" = "该账户不是发起者，无法发起该操作";
+"InitiatorCanNotSupport" = "The initiator of the node co-funding project cannot be a sponsor.";
 
 // SDK Errors
 "SYSTEM_ERROR" = "System error";

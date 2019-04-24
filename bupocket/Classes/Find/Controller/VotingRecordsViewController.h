@@ -7,12 +7,13 @@
 //
 
 #import "BaseViewController.h"
+#import "NodePlanModel.h"
 
 NS_ASSUME_NONNULL_BEGIN
 
 @interface VotingRecordsViewController : BaseViewController
 
-@property (nonatomic, strong) NSString * str;
+@property (nonatomic, strong) NodePlanModel * nodePlanModel;
 
 @end
 

@@ -39,19 +39,43 @@
 #define Delete_AddressBook @"wallet/my/addressBook/delete"
 
 // Account center
-#define Account_Center_Prefix @"bumo://login/"
+//#define Account_Center_Prefix @"bumo://login/"
+#define Account_Center_Contains @"/xDnAs_login/"
 //#define Account_Center_ScanQRLogin @"qr/v1/userScanQrLogin"
 #define Account_Center_ScanQRLogin @"login/v1/qr"
 #define Account_Center_Confirm_Login @"login/v1/qr/confirm"
 
 // dpos
-#define Dpos_Prefix @"bumo://dpos/"
-#define Apply_Node @"nodeServer/qr/v1/content"
-#define Apply_Node_Confirm @"nodeServer/tx/v1/confirm"
-#define Node_plan @""
+// 轮播图
+#define Node_Ad_Banner @"nodeServer/slideshow/v1"
+//#define Dpos_Prefix @"bumo://dpos/"
+#define Dpos_Contains @"/xDnAs_dpos/"
+#define Node_Content @"nodeServer/qr/v1/content"
+#define Node_Confirm @"nodeServer/tx/v1/confirm"
 // 节点撤票
-#define Node_Withdrawal @"nodeServer/node/v1/vote/revoke/user"
-// 领取节点奖励
-#define Receive_Node_Award @"nodeServer/node/v1/get/reward/user"
+#define Node_Withdrawal_Confirm @"nodeServer/node/v1/vote/revoke/user"
+// 节点列表
+#define Node_List @"nodeServer/node/v1/list/app"
+// 邀请投票
+#define Node_Invitation_Vote @"nodeServer/node/v1/detail"
+// 共建节点列表
+#define Node_Cooperate_List @"nodeServer/node/v1/cooperate/list"
+#define Node_Cooperate_Detail @"nodeServer/node/v1/cooperate/detail"
+// 投票记录
+#define Voting_Record @"nodeServer/node/v1/vote/list"
+#define Node_Image_URL @"img-dpos/"
+// 生成短链接
+#define Node_ShortLink_URL @"nodeServer/shortlink"
+#define Validate_Node_Path @"dpos/detail/validate/"
+#define Kol_Node_Path @"dpos/detail/kol/"
+// 共建节点支持验证
+#define Node_Cooperate_Support @"nodeServer/node/v1/cooperate/support"
+// 共建节点退出验证
+#define Node_Cooperate_Exit @"nodeServer/node/v1/cooperate/exit"
+
+// 交易状态查询链接
+#define Transaction_Query_Link @"http://explorer.bumo.io"
+// 交易成功或超时广告图
+#define AD_URL @"nodeServer/ad/v1/6aa3838c760b4e2abf37910f75394834"
 
 #endif /* URLMacros_h */

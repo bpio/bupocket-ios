@@ -164,9 +164,12 @@
 {
     __weak typeof(self) weakSelf = self;
     TransferDetailsAlertView * transferDetailsAlertView = [[TransferDetailsAlertView alloc] initWithTransferInfoArray:self.transferInfoArray confrimBolck:^{
-        dispatch_after(dispatch_time(DISPATCH_TIME_NOW, (int64_t)(0.5 * NSEC_PER_SEC)), dispatch_get_main_queue(), ^{
+        dispatch_after(dispatch_time(DISPATCH_TIME_NOW, (int64_t)(Dispatch_After_Time * NSEC_PER_SEC)), dispatch_get_main_queue(), ^{
+            int64_t nonce = [[HTTPManager shareManager] getAccountNonce: CurrentWalletAddress] + 1;
+            DLog(@"nonce=%lld", nonce);
+            if (nonce == 0) return;
             PasswordAlertView * alertView = [[PasswordAlertView alloc] initWithPrompt:Localized(@"TransactionWalletPWPrompt") walletKeyStore:CurrentWalletKeyStore isAutomaticClosing:YES confrimBolck:^(NSString * _Nonnull password, NSArray * _Nonnull words) {
-                [weakSelf getDataWithPassword:password];
+                [weakSelf getDataWithPassword:password nonce:nonce];
             } cancelBlock:^{
                 
             }];
@@ -179,9 +182,9 @@
     [transferDetailsAlertView showInWindowWithMode:CustomAnimationModeShare inView:nil bgAlpha:AlertBgAlpha needEffectView:NO];
 }
 
-- (void)getDataWithPassword:(NSString *)password
+- (void)getDataWithPassword:(NSString *)password nonce:(int64_t)nonce
 {
-    [[HTTPManager shareManager] setTransferDataWithTokenType:self.listModel.type password:password destAddress:self.address assets:_transferVolumeStr decimals:self.listModel.decimals feeLimit:_transactionCostsStr notes:_remarksStr code:self.listModel.assetCode issuer:self.listModel.issuer success:^(TransactionResultModel *resultModel) {
+    [[HTTPManager shareManager] setTransferDataWithTokenType:self.listModel.type password:password destAddress:self.address assets:_transferVolumeStr decimals:self.listModel.decimals feeLimit:_transactionCostsStr notes:_remarksStr code:self.listModel.assetCode issuer:self.listModel.issuer nonce:nonce success:^(TransactionResultModel *resultModel) {
         [self.transferInfoArray addObject:[DateTool getDateStringWithTimeStr:[NSString stringWithFormat:@"%lld", resultModel.transactionTime]]];
         [self.transferInfoArray replaceObjectAtIndex:2 withObject:[NSString stringAppendingBUWithStr:resultModel.actualFee]];
         TransferResultsViewController * VC = [[TransferResultsViewController alloc] init];
@@ -189,12 +192,14 @@
             VC.state = YES;
         } else {
             VC.state = NO;
+            VC.resultModel = resultModel;
 //            [MBProgressHUD showTipMessageInWindow:[ErrorTypeTool getDescription:resultModel.errorCode]];
         }
         VC.transferInfoArray = self.transferInfoArray;
         [self.navigationController pushViewController:VC animated:NO];
     } failure:^(TransactionResultModel *resultModel) {
         RequestTimeoutViewController * VC = [[RequestTimeoutViewController alloc] init];
+        VC.transactionHash = resultModel.transactionHash;
         [self.navigationController pushViewController:VC animated:NO];
     }];
 }
@@ -375,8 +380,13 @@
  */
 - (void)scanAction
 {
+    __block NSString * result = nil;
     __weak typeof (self) weakself = self;
     HMScannerController *scanner = [HMScannerController scannerWithCardName:nil avatar:nil completion:^(NSString *stringValue) {
+        if (result) {
+            return;
+        }
+        result = stringValue;
 //        NSOperationQueue * queue = [[NSOperationQueue alloc] init];
 //        [queue addOperationWithBlock:^{
 //            BOOL isCorrectAddress = [Keypair isAddressValid: stringValue];

@@ -36,20 +36,33 @@ static NSString * const TransferResultsCellID = @"DetailListCellID";
     self.tableView.separatorInset = UIEdgeInsetsZero;
     self.tableView.separatorStyle = UITableViewCellSeparatorStyleNone;
     [self.view addSubview:self.tableView];
+    UIView * headerView = [[UIView alloc] init];
+    headerView.backgroundColor = [UIColor whiteColor];
     CustomButton * transferResults = [[CustomButton alloc] init];
     transferResults.layoutMode = VerticalNormal;
+    transferResults.titleLabel.numberOfLines = 0;
     [transferResults setTitleColor:COLOR_6 forState:UIControlStateNormal];
     transferResults.titleLabel.font = FONT(16);
     if (self.state == YES) {
         [transferResults setTitle:Localized(@"Success") forState:UIControlStateNormal];
         [transferResults setImage:[UIImage imageNamed:@"transferSuccess"] forState:UIControlStateNormal];
     } else {
-        [transferResults setTitle:Localized(@"Failure") forState:UIControlStateNormal];
+        if (self.resultModel.errorCode == ERRCODE_CONTRACT_EXECUTE_FAIL) {
+            [transferResults setTitle:[ErrorTypeTool getDescription:ERRCODE_CONTRACT_EXECUTE_FAIL] forState:UIControlStateNormal];
+        } else {
+            [transferResults setTitle:Localized(@"Failure") forState:UIControlStateNormal];
+        }
         [transferResults setImage:[UIImage imageNamed:@"transferFailure"] forState:UIControlStateNormal];
     }
-    transferResults.bounds = CGRectMake(0, 0, DEVICE_WIDTH, ScreenScale(120));
-    transferResults.backgroundColor = [UIColor whiteColor];
-    self.tableView.tableHeaderView = transferResults;
+    CGFloat transferResultsH = [Encapsulation rectWithText:transferResults.titleLabel.text font:transferResults.titleLabel.font textWidth:DEVICE_WIDTH - Margin_30].size.height;
+    headerView.frame = CGRectMake(0, 0, DEVICE_WIDTH, ScreenScale(105) + transferResultsH);
+    self.tableView.tableHeaderView = headerView;
+    [headerView addSubview:transferResults];
+    [transferResults mas_makeConstraints:^(MASConstraintMaker *make) {
+        make.top.bottom.equalTo(headerView);
+        make.left.equalTo(headerView.mas_left).offset(Margin_15);
+        make.right.equalTo(headerView.mas_right).offset(-Margin_15);
+    }];
 }
 - (CGFloat)tableView:(UITableView *)tableView heightForHeaderInSection:(NSInteger)section
 {

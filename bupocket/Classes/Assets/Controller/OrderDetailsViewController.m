@@ -17,6 +17,8 @@
 @property (nonatomic, strong) UITableView * tableView;
 @property (nonatomic, strong) UIView * headerView;
 @property (nonatomic, strong) UIView * headerViewBg;
+@property (nonatomic, strong) UILabel * state;
+
 @property (nonatomic, assign) CGFloat headerViewH;
 @property (nonatomic, strong) NSDictionary * dataDic;
 @property (nonatomic, strong) NSArray * listArray;
@@ -47,8 +49,8 @@ static NSInteger const TxInfoNormalCount = 6;
     } else {
         outOrIn = @"+";
     }
-    self.amount = [self.listModel.amount isEqualToString:@"~"] ? self.listModel.amount : [NSString stringWithFormat:@"%@ %@", self.listModel.amount, self.assetCode];
-    self.assets = [NSString stringWithFormat:@"%@%@", outOrIn, self.amount];
+    self.amount = ([self.listModel.amount isEqualToString:@"~"] || [self.listModel.amount isEqualToString:@"0"]) ? self.listModel.amount : [NSString stringWithFormat:@"%@%@", outOrIn, self.listModel.amount];
+    self.assets = [NSString stringWithFormat:@"%@ %@", self.amount, self.assetCode];
     _headerViewH = ScreenScale(170) + [Encapsulation rectWithText:self.assets font:FONT_Bold(27) textWidth:DEVICE_WIDTH - Margin_40].size.height;
     [self setupView];
     [self setupRefresh];
@@ -84,6 +86,9 @@ static NSInteger const TxInfoNormalCount = 6;
             self.txInfoModel = [TxInfoModel mj_objectWithKeyValues:responseObject[@"data"][@"txInfoRespBo"]];
             [self setListData];
             [self.tableView reloadData];
+            if ([self.txDetailModel.errorCode longLongValue] == ERRCODE_CONTRACT_EXECUTE_FAIL) {
+                self.state.text = [ErrorTypeTool getDescription:ERRCODE_CONTRACT_EXECUTE_FAIL];
+            }
         } else {
             [MBProgressHUD showTipMessageInWindow:[ErrorTypeTool getDescriptionWithErrorCode:code]];
         }
@@ -97,7 +102,10 @@ static NSInteger const TxInfoNormalCount = 6;
 }
 - (void)setListData
 {
-    NSMutableArray * infoTitleArray = [NSMutableArray arrayWithObjects:@"TX Hash", @"Source Address", @"Dest Address", @"Amount", @"TX Fee", @"Nonce", @"Transaction Signature", nil];
+    NSMutableArray * infoTitleArray = [NSMutableArray arrayWithObjects:@"TX Hash", @"Source Address", @"Dest Address", @"Amount", @"TX Fee", @"Nonce", nil];
+    if (self.txInfoModel.signatureStr) {
+        [infoTitleArray addObject:@"Transaction Signature"];
+    }
     // , @"Ledger Seq"
     self.infoArray = [NSMutableArray array];
     NSMutableArray * detailArray = [NSMutableArray array];
@@ -117,8 +125,8 @@ static NSInteger const TxInfoNormalCount = 6;
     [infoArray addObject:[NSString stringAppendingBUWithStr:self.txInfoModel.fee]];
     [infoArray addObject:self.txInfoModel.nonce];
 //    [infoArray addObject:self.txInfoModel.ledgerSeq];
-    [infoArray addObject:@"Transaction Signature"];
     NSArray * signatureArray = [JsonTool dictionaryOrArrayWithJSONSString: self.txInfoModel.signatureStr];
+    [infoArray addObject:@"Transaction Signature"];
     for (NSInteger i = 0; i < signatureArray.count; i ++) {
         [infoTitleArray addObject:@"Public Key"];
         [infoArray addObject:signatureArray[i][@"publicKey"]];
@@ -177,15 +185,15 @@ static NSInteger const TxInfoNormalCount = 6;
             make.centerX.equalTo(self.headerViewBg);
             make.width.mas_lessThanOrEqualTo(DEVICE_WIDTH - Margin_40);
         }];
-        UILabel * state = [[UILabel alloc] init];
-        state.font = TITLE_FONT;
-        state.textColor = COLOR_6;
-        [self.headerViewBg addSubview:state];
-        [state mas_makeConstraints:^(MASConstraintMaker *make) {
+        _state = [[UILabel alloc] init];
+        _state.font = TITLE_FONT;
+        _state.textColor = COLOR_6;
+        [self.headerViewBg addSubview:_state];
+        [_state mas_makeConstraints:^(MASConstraintMaker *make) {
             make.top.equalTo(orderResults.mas_bottom).offset(Margin_10);
             make.centerX.equalTo(self.headerViewBg);
         }];
-        state.text = (self.listModel.txStatus == 0) ? Localized(@"Success") : Localized(@"Failure");
+        _state.text = (self.listModel.txStatus == 0) ? Localized(@"Success") : Localized(@"Failure");
         _headerView = headerView;
     }
     return _headerView;

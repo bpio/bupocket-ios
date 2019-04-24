@@ -10,10 +10,10 @@
 
 @implementation NSString (Extension)
 
-+ (NSString *)stringEllipsisWithStr:(NSString *)str
++ (NSString *)stringEllipsisWithStr:(NSString *)str subIndex:(NSInteger)subIndex
 {
-    if (str.length > 10) {
-        return  [NSString stringWithFormat:@"%@***%@", [str substringToIndex:5], [str substringFromIndex:str.length - 5]];
+    if (str.length > (subIndex * 2)) {
+        return  [NSString stringWithFormat:@"%@***%@", [str substringToIndex:subIndex], [str substringFromIndex:str.length - subIndex]];
     } else {
         return str;
     }
@@ -66,6 +66,20 @@
     NSString * string = [[NSString alloc] initWithData:data encoding:NSUTF8StringEncoding];
     return string;
 }
-
++ (NSString *)stringAmountSplitWith:(NSString *)str
+{
+    double oldf = [str doubleValue];
+    long long oldll = [str longLongValue];
+    double tmptf = oldf - oldll;
+    NSString * currencyStr = nil;
+    if(tmptf > 0){
+        currencyStr = [NSNumberFormatter localizedStringFromNumber:[NSNumber numberWithDouble:oldf]
+                                                       numberStyle:NSNumberFormatterDecimalStyle];
+    } else {
+        currencyStr = [NSNumberFormatter localizedStringFromNumber:[NSNumber numberWithLongLong:oldll]
+                                                       numberStyle:NSNumberFormatterDecimalStyle];
+    }
+    return currencyStr;
+}
 
 @end

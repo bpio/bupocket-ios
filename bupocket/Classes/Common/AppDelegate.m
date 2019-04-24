@@ -14,6 +14,7 @@
 #import "VersionModel.h"
 #import <IQKeyboardManager/IQKeyboardManager.h>
 #import <WXApi.h>
+#import <TencentOpenAPI/TencentOAuth.h>
 
 @interface AppDelegate ()<WXApiDelegate>
 
@@ -37,6 +38,7 @@
     // Minimum Asset Limitation
     [[HTTPManager shareManager] getBlockLatestFees];
     [WXApi registerApp:Wechat_APP_ID];
+    [[TencentOAuth alloc] initWithAppId:Tencent_App_ID andDelegate:nil];
     return YES;
 }
 - (void)initializationSettings
@@ -83,7 +85,7 @@
     NSString * lastVersion = [defaults objectForKey:LastVersion];
     if (!lastVersion || [@"1.4.3" compare:lastVersion] == NSOrderedDescending) {
         SafetyReinforcementAlertView * alertView = [[SafetyReinforcementAlertView alloc] initWithTitle:Localized(@"SafetyReinforcementTitle") promptText:Localized(@"SafetyReinforcementPrompt") confrim:Localized(@"StartReinforcement") confrimBolck:^{
-            dispatch_after(dispatch_time(DISPATCH_TIME_NOW, (int64_t)(0.5 * NSEC_PER_SEC)), dispatch_get_main_queue(), ^{
+            dispatch_after(dispatch_time(DISPATCH_TIME_NOW, (int64_t)(Dispatch_After_Time * NSEC_PER_SEC)), dispatch_get_main_queue(), ^{
                 self.PWAlertView = [[PasswordAlertView alloc] initWithPrompt:Localized(@"IdentityCipherPrompt") walletKeyStore:@"" isAutomaticClosing:NO confrimBolck:^(NSString * _Nonnull password, NSArray * _Nonnull words) {
                     NSData * random = [Mnemonic randomFromMnemonicCode: words];
                     [self upDateAccountDataWithRandom:random password:password];
@@ -150,12 +152,23 @@
 }
 - (BOOL)application:(UIApplication *)app openURL:(NSURL *)url options:(NSDictionary<UIApplicationOpenURLOptionsKey,id> *)options
 {
-    return [WXApi handleOpenURL:url delegate:self];
+    NSString * str = [url absoluteString];
+    if ([str hasPrefix:Wechat_APP_ID]) {
+        return [WXApi handleOpenURL:url delegate:self];
+    } else if ([str hasPrefix:Tencent_App_ID]) {
+        return [TencentOAuth HandleOpenURL:url];
+    }
+    return NO;
+}
+- (void)onReq:(BaseReq *)req
+{
+    
 }
 - (void)onResp:(BaseResp *)resp
 {
     if ([resp isKindOfClass:[WXLaunchMiniProgramResp class]]) {
         NSLog(@"跳转微信后的回调 %d %@", resp.errCode, resp.errStr);
+        
     }
 }
 - (void)applicationWillResignActive:(UIApplication *)application {
