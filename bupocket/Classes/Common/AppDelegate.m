@@ -133,7 +133,8 @@
                 }
                 if ([language hasPrefix:ZhHans]) {
                     updateContent = versionModel.verContents;
-                } else if ([language hasPrefix:EN]) {
+                } else {
+                    //  if ([language hasPrefix:EN])
                     updateContent = versionModel.englishVerContents;
                 }
                 self.alertView = [[VersionUpdateAlertView alloc] initWithUpdateVersionNumber:versionModel.verNumber versionSize:versionModel.appSize content:updateContent verType:versionModel.verType confrimBolck:^{

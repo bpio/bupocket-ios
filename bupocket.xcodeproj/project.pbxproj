@@ -248,7 +248,6 @@
 		83379A97217EB79B00C222A5 /* RequestTimeoutViewController.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = RequestTimeoutViewController.m; sourceTree = "<group>"; };
 		83379A99217EC01900C222A5 /* OrderDetailsViewController.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = OrderDetailsViewController.h; sourceTree = "<group>"; };
 		83379A9A217EC01900C222A5 /* OrderDetailsViewController.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = OrderDetailsViewController.m; sourceTree = "<group>"; };
-		83379AA4217EF79500C222A5 /* URLMacros.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = URLMacros.h; sourceTree = "<group>"; };
 		83379AA5217F006600C222A5 /* HTTPManager.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = HTTPManager.h; sourceTree = "<group>"; };
 		83379AA6217F006600C222A5 /* HttpTool.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = HttpTool.h; sourceTree = "<group>"; };
 		83379AA7217F006600C222A5 /* HTTPManager.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = HTTPManager.m; sourceTree = "<group>"; };
@@ -445,7 +444,6 @@
 		959575C921FFFD040089479C /* ContactViewController.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = ContactViewController.h; sourceTree = "<group>"; };
 		959575CA21FFFD040089479C /* ContactViewController.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = ContactViewController.m; sourceTree = "<group>"; };
 		959575D4221BD6BC0089479C /* CommonMacro.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = CommonMacro.h; sourceTree = "<group>"; };
-		959575D6221BD7290089479C /* AppDefine.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = AppDefine.h; sourceTree = "<group>"; };
 		959575D7221BD7F10089479C /* AppInclude.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = AppInclude.h; sourceTree = "<group>"; };
 		959726B621E334C20022CB78 /* WalletManagementViewCell.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = WalletManagementViewCell.h; sourceTree = "<group>"; };
 		959726B721E334C20022CB78 /* WalletManagementViewCell.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = WalletManagementViewCell.m; sourceTree = "<group>"; };
@@ -507,6 +505,7 @@
 		95AD143F21F1BB730097CCDE /* sdk_ios.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; path = sdk_ios.framework; sourceTree = "<group>"; };
 		95DC83C621E2FD3B00F745E6 /* WalletManagementViewController.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = WalletManagementViewController.h; sourceTree = "<group>"; };
 		95DC83C721E2FD3B00F745E6 /* WalletManagementViewController.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = WalletManagementViewController.m; sourceTree = "<group>"; };
+		95ECFF972272E2FF007701B4 /* Constants.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = Constants.h; sourceTree = "<group>"; };
 		9D915F385F1A78B38EC83B6E /* Pods_bupocketUITests.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_bupocketUITests.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		A61F11E76D6541BC859B703E /* Pods-bupocket.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-bupocket.debug.xcconfig"; path = "Pods/Target Support Files/Pods-bupocket/Pods-bupocket.debug.xcconfig"; sourceTree = "<group>"; };
 		EB267DD938A42BAD30A164A2 /* Pods_bupocket.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_bupocket.framework; sourceTree = BUILT_PRODUCTS_DIR; };
@@ -573,7 +572,6 @@
 		83379A9C217EF20100C222A5 /* NetWork */ = {
 			isa = PBXGroup;
 			children = (
-				83379AA4217EF79500C222A5 /* URLMacros.h */,
 				83379AA6217F006600C222A5 /* HttpTool.h */,
 				83379AA8217F006600C222A5 /* HttpTool.m */,
 				83379AA5217F006600C222A5 /* HTTPManager.h */,
@@ -1114,9 +1112,9 @@
 		959575D3221BD6BC0089479C /* Preprocessors */ = {
 			isa = PBXGroup;
 			children = (
-				959575D4221BD6BC0089479C /* CommonMacro.h */,
-				959575D6221BD7290089479C /* AppDefine.h */,
 				959575D7221BD7F10089479C /* AppInclude.h */,
+				95ECFF972272E2FF007701B4 /* Constants.h */,
+				959575D4221BD6BC0089479C /* CommonMacro.h */,
 			);
 			path = Preprocessors;
 			sourceTree = "<group>";

@@ -8,11 +8,15 @@
 
 #import <UIKit/UIKit.h>
 
-//typedef NS_ENUM(NSInteger, TransactionType) {
-//    TransactionTypeApplyNode = 1,
-//    TransactionTypeCheck = 8,
-//    TransactionTypeNodeWithdrawal = 10,
-//};
+typedef NS_ENUM(NSInteger, TransactionType) {
+    TransactionTypeApplyNode = 1,
+    TransactionTypeVote = 3,
+    TransactionTypeCooperate = 4,
+    TransactionTypeCooperateSupport = 5,
+    TransactionTypeCooperateSignOut = 7,
+    TransactionTypeCheck = 80,
+    TransactionTypeNodeWithdrawal = 10
+};
 
 NS_ASSUME_NONNULL_BEGIN
 
@@ -29,14 +33,17 @@ NS_ASSUME_NONNULL_BEGIN
 @property (nonatomic, copy) NSString * script;
 // 二维码内容（交易内容）
 @property (nonatomic, copy) NSString * qrRemark;
+@property (nonatomic, copy) NSString * qrRemarkEn;
 // 账户标签
 @property (nonatomic, copy) NSString * accountTag;
+@property (nonatomic, copy) NSString * accountTagEn;
 
 @property (nonatomic, copy) NSString * transactionCost;
 @property (nonatomic, copy) NSString * nodeId;
 
 @property (nonatomic, copy) NSString * copies;
 
+// 区分扫码操作还是共建详情页操作
 @property (nonatomic, assign) BOOL isCooperateDetail;
 
 @end

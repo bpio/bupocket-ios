@@ -75,24 +75,30 @@
     int transactionInfoCount = 6;
     NSArray * infoArray;
     self.transactionCost = TransactionCost_Check_MIN;
-    if ([self.confirmTransactionModel.type isEqualToString:TransactionType_Cooperate]) {
+    if ([self.confirmTransactionModel.type integerValue] == TransactionTypeCooperate) {
         self.transactionCost = TransactionCost_Cooperate_MIN;
     }
     self.confirmTransactionModel.transactionCost = self.transactionCost;
+    NSString * qrRemark = self.confirmTransactionModel.qrRemark;
+    NSString * accountTag = self.confirmTransactionModel.accountTag;
+    if ([CurrentAppLanguage isEqualToString:EN]) {
+        qrRemark = self.confirmTransactionModel.qrRemarkEn;
+        accountTag = self.confirmTransactionModel.accountTagEn;
+    }
     if (NULLString(self.confirmTransactionModel.destAddress)) {
         _infoTitleArray = @[Localized(@"TransactionDetail"), Localized(@"reciprocalAccount"), Localized(@"MaximumTransactionCosts"), Localized(@"Initiator"), Localized(@"reciprocalAccount"), Localized(@"Number（BU）"), Localized(@"TransactionCosts（BU）"), Localized(@"Parameter")];
         NSString * destAddress;
-        if (NULLString(self.confirmTransactionModel.accountTag)) {
-            destAddress = [NSString stringWithFormat:@"%@%@", self.confirmTransactionModel.destAddress, self.confirmTransactionModel.accountTag];
+        if (NULLString(accountTag)) {
+            destAddress = [NSString stringWithFormat:@"%@%@", self.confirmTransactionModel.destAddress, accountTag];
         } else {
             destAddress = self.confirmTransactionModel.destAddress;
         }
-        infoArray = @[self.confirmTransactionModel.qrRemark, destAddress, self.transactionCost, CurrentWalletAddress, destAddress, self.confirmTransactionModel.amount, self.transactionCost, self.confirmTransactionModel.script];
+        infoArray = @[qrRemark, destAddress, self.transactionCost, CurrentWalletAddress, destAddress, self.confirmTransactionModel.amount, self.transactionCost, self.confirmTransactionModel.script];
         
     } else {
         _infoTitleArray = @[Localized(@"TransactionDetail"), Localized(@"MaximumTransactionCosts"), Localized(@"Initiator"), Localized(@"Number（BU）"), Localized(@"TransactionCosts（BU）"), Localized(@"Parameter")];
         transactionInfoCount = 4;
-        infoArray = @[self.confirmTransactionModel.qrRemark, self.transactionCost, CurrentWalletAddress, self.confirmTransactionModel.amount, self.transactionCost, self.confirmTransactionModel.script];
+        infoArray = @[qrRemark, self.transactionCost, CurrentWalletAddress, self.confirmTransactionModel.amount, self.transactionCost, self.confirmTransactionModel.script];
     }
     
     CGFloat infoLabelTotalH = 0;
@@ -121,7 +127,7 @@
         //        infoLabel.lineBreakMode = NSLineBreakByCharWrapping;
         [infoLabel sizeToFit];
         CGFloat infoLabelH = ceil([Encapsulation rectWithText:infoLabel.text font:infoLabel.font textWidth:infoLabelW].size.height) + 1;
-        if (i == 0 && [_confirmTransactionModel.type isEqualToString:TransactionType_ApplyNode]) {
+        if (i == 0 && [_confirmTransactionModel.type integerValue] == TransactionTypeApplyNode) {
             infoLabelTotalH = self.amount.height;
         } else if (i == transactionInfoCount) {
             transactionTotalH = infoLabelTotalH + Margin_50;
@@ -264,7 +270,7 @@
 {
     if (!_amount) {
         _amount = [[UILabel alloc] initWithFrame:CGRectMake(Margin_20, Margin_50, DEVICE_WIDTH - Margin_40, ScreenScale(70))];
-        if ([_confirmTransactionModel.type isEqualToString:TransactionType_ApplyNode]) {
+        if ([_confirmTransactionModel.type integerValue] == TransactionTypeApplyNode) {
             NSString * str = [NSString stringAppendingBUWithStr:_confirmTransactionModel.amount];
             _amount.attributedText = [Encapsulation attrWithString:str preFont:FONT_Bold(32) preColor:TITLE_COLOR index:self.confirmTransactionModel.amount.length sufFont:FONT(16) sufColor:COLOR(@"151515") lineSpacing:0];
             _amount.textAlignment = NSTextAlignmentCenter;

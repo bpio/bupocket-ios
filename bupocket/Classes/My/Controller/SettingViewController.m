@@ -90,7 +90,8 @@ static NSString * const SettingCellID = @"SettingCellID";
         } else if (indexPath.row == 1) {
             if ([CurrentAppLanguage isEqualToString:ZhHans]) {
                 cell.detailTitle.text = Localized(@"SimplifiedChinese");
-            } else if ([CurrentAppLanguage isEqualToString:EN]) {
+            } else {
+                // if ([CurrentAppLanguage isEqualToString:EN])
                 cell.detailTitle.text = Localized(@"English");
             }
         }

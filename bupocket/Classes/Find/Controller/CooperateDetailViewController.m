@@ -189,12 +189,13 @@ static NSString * const CooperateDetailCellID = @"CooperateDetailCellID";
 - (void)setSignOutData
 {
     ConfirmTransactionModel * confirmTransactionModel = [[ConfirmTransactionModel alloc] init];
-    confirmTransactionModel.qrRemark = [NSString stringWithFormat:Localized(@"Exit '%@' Project"), self.cooperateDetailModel.title];
+    confirmTransactionModel.qrRemark = [NSString stringWithFormat:Localized_Language(@"Exit '%@' Project", ZhHans), self.cooperateDetailModel.title];
+    confirmTransactionModel.qrRemarkEn = [NSString stringWithFormat:Localized_Language(@"Exit '%@' Project", EN), self.cooperateDetailModel.title];
     confirmTransactionModel.destAddress = self.cooperateDetailModel.contractAddress;
     confirmTransactionModel.amount = @"0";
     confirmTransactionModel.script = @"{\"method\":\"revoke\"}";
     confirmTransactionModel.nodeId = self.cooperateDetailModel.nodeId;
-    confirmTransactionModel.type = TransactionType_Cooperate_SignOut;
+    confirmTransactionModel.type = [NSString stringWithFormat:@"%zd", TransactionTypeCooperateSignOut];
     confirmTransactionModel.isCooperateDetail = YES;
     [self showConfirmAlertView:confirmTransactionModel];
 }
@@ -205,13 +206,15 @@ static NSString * const CooperateDetailCellID = @"CooperateDetailCellID";
     SupportAlertView * alertView = [[SupportAlertView alloc] initWithTotalTarget:leftAmount purchaseAmount:self.cooperateDetailModel.perAmount confrimBolck:^(NSString * _Nonnull text) {
         dispatch_after(dispatch_time(DISPATCH_TIME_NOW, (int64_t)(Dispatch_After_Time * NSEC_PER_SEC)), dispatch_get_main_queue(), ^{
             ConfirmTransactionModel * confirmTransactionModel = [[ConfirmTransactionModel alloc] init];
-            confirmTransactionModel.qrRemark = [NSString stringWithFormat:Localized(@"Supporting '%@' Projects"), self.cooperateDetailModel.title];
+            confirmTransactionModel.qrRemark = [NSString stringWithFormat:Localized_Language(@"Supporting '%@' Projects", ZhHans), self.cooperateDetailModel.title];
+            confirmTransactionModel.qrRemarkEn = [NSString stringWithFormat:Localized_Language(@"Supporting '%@' Projects", EN), self.cooperateDetailModel.title];
+//            [NSString stringWithFormat:Localized(@"Supporting '%@' Projects"), self.cooperateDetailModel.title];
             confirmTransactionModel.destAddress = self.cooperateDetailModel.contractAddress;
             confirmTransactionModel.amount = text;
             NSString * copies = [NSString stringWithFormat:@"%lld", [text longLongValue] / [self.cooperateDetailModel.perAmount  longLongValue]];
             confirmTransactionModel.script = [NSString stringWithFormat:@"{\"method\":\"subscribe\",\"params\":{\"shares\":%@}}", copies];
             confirmTransactionModel.nodeId = self.cooperateDetailModel.nodeId;
-            confirmTransactionModel.type = TransactionType_Cooperate_Support;
+            confirmTransactionModel.type = [NSString stringWithFormat:@"%zd", TransactionTypeCooperateSupport];
             confirmTransactionModel.copies = copies;
             confirmTransactionModel.isCooperateDetail = YES;
             [self showConfirmAlertView:confirmTransactionModel];
@@ -282,7 +285,11 @@ static NSString * const CooperateDetailCellID = @"CooperateDetailCellID";
     [[HTTPManager shareManager] submitContractTransactionPassword:password success:^(TransactionResultModel *resultModel) {
         weakSelf.transferInfoArray = [NSMutableArray arrayWithObjects:confirmTransactionModel.destAddress, [NSString stringAppendingBUWithStr:confirmTransactionModel.amount], [NSString stringAppendingBUWithStr:resultModel.actualFee], nil];
         if (NULLString(confirmTransactionModel.qrRemark)) {
-            [weakSelf.transferInfoArray addObject:confirmTransactionModel.qrRemark];
+            NSString * qrRemark = confirmTransactionModel.qrRemark;
+            if ([CurrentAppLanguage isEqualToString:EN]) {
+                qrRemark = confirmTransactionModel.qrRemarkEn;
+            }
+            [weakSelf.transferInfoArray addObject:qrRemark];
         }
         [self.transferInfoArray addObject:[DateTool getDateStringWithTimeStr:[NSString stringWithFormat:@"%lld", resultModel.transactionTime]]];
         if (resultModel.errorCode == Success_Code) {
@@ -375,7 +382,7 @@ static NSString * const CooperateDetailCellID = @"CooperateDetailCellID";
             return ScreenScale(35);
         }
     } else if (indexPath.section == 1) {
-        return ceil([Encapsulation getSizeSpaceLabelWithStr:Localized(@"RiskStatementPrompt") font:FONT(13) width:DEVICE_WIDTH - Margin_40 height:CGFLOAT_MAX lineSpacing:5.0].height + Margin_25) + 1;
+        return ceil([Encapsulation getSizeSpaceLabelWithStr:Localized(@"RiskStatementPrompt") font:FONT(13) width:DEVICE_WIDTH - Margin_40 height:CGFLOAT_MAX lineSpacing:5.0].height) + 1 + Margin_25;
 //        [Encapsulation rectWithText:self.riskStatement font:FONT(13) textWidth:DEVICE_WIDTH - Margin_30].size.height + Margin_20;
     } else {
         return ScreenScale(85);
@@ -432,9 +439,12 @@ static NSString * const CooperateDetailCellID = @"CooperateDetailCellID";
                     cell.infoTitle.text = leftStr;
                     cell.lineView.hidden = NO;
                     cell.progressView.hidden = NO;
+                    cell.votingRatio.hidden = NO;
                     if (NULLString(self.cooperateDetailModel.totalCopies)) {
                         NSString * supported = [NSString stringWithFormat:@"%lld", [self.cooperateDetailModel.cobuildCopies longLongValue] - [self.cooperateDetailModel.leftCopies longLongValue]];
-                        cell.progressView.progress = [[[NSDecimalNumber decimalNumberWithString:supported] decimalNumberByDividingBy:[NSDecimalNumber decimalNumberWithString:self.cooperateDetailModel.cobuildCopies]] doubleValue];
+                        double progress = [[[NSDecimalNumber decimalNumberWithString:supported] decimalNumberByDividingBy:[NSDecimalNumber decimalNumberWithString:self.cooperateDetailModel.cobuildCopies]] doubleValue];
+                        cell.progressView.progress = progress;
+                        cell.votingRatio.text = [NSString stringWithFormat:@"%.2f%%", progress * 100];
                     }
                 } else if (indexPath.row == 4) {
                     cell.title.text = Localized(@"TargetAmount");

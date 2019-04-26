@@ -1,14 +1,92 @@
 //
-//  AppDefine.h
+//  Constants.h
 //  bupocket
 //
-//  Created by bubi on 2019/2/19.
+//  Created by huoss on 2019/4/26.
 //  Copyright © 2019年 bupocket. All rights reserved.
 //
-//  Parameter definitions used in App Projects - > URL entry, notification name, SDK AppKey, etc.
 
-#ifndef AppDefine_h
-#define AppDefine_h
+#ifndef Constants_h
+#define Constants_h
+
+// URL
+#define SERVER_COMBINE_API(API_BASE, API_INTERFACE) [NSString stringWithFormat:@"%@%@",API_BASE,API_INTERFACE]
+
+#define WEB_SERVER_DOMAIN @"https://api-bp.bumo.io/"
+#define BUMO_NODE_URL @"https://wallet-node.bumo.io"
+#define BUMO_TOOLS_URL @"https://ws-tools.bumo.io"
+
+//#define WEB_SERVER_DOMAIN_TEST @"http://api-bp.bumotest.io/"
+//#define BUMO_NODE_URL_TEST @"https://wallet-node.bumotest.io"
+#define WEB_SERVER_DOMAIN_TEST @"http://192.168.6.97:5648/"
+#define BUMO_NODE_URL_TEST @"http://192.168.21.35:36002"
+//#define WEB_SERVER_DOMAIN_TEST @"http://test-bupocket-api.bumocdn.com/"
+//#define BUMO_NODE_URL_TEST @"http://192.168.3.65:36002"
+
+#define BUMO_TOOLS_URL_TEST @"https://ws-tools.bumotest.io"
+
+#define Information_URL @"https://m-news.bumo.io"
+
+// App type 1-android 2-iOS
+#define Version_Update @"wallet/version?appType=2"
+#define Assets_List @"wallet/token/list"
+#define Transaction_Record @"wallet/v2/tx/list"
+#define Order_Details @"wallet/v2/tx/detail"
+#define Transaction_Details @"wallet/tx/detail"
+#define Assets_Search @"wallet/query/token"
+#define Registered_And_Distribution @"wallet/token/detail"
+#define Help_And_Feedback @"user/feedback"
+// AddressBook
+#define AddressBook_List @"wallet/my/addressBook/list"
+#define Add_AddressBook @"wallet/my/addressBook/add"
+#define Update_AddressBook @"wallet/my/addressBook/update"
+#define Delete_AddressBook @"wallet/my/addressBook/delete"
+
+// Account center
+//#define Account_Center_ScanQRLogin @"qr/v1/userScanQrLogin"
+#define Account_Center_ScanQRLogin @"login/v1/qr"
+#define Account_Center_Confirm_Login @"login/v1/qr/confirm"
+
+// dpos
+// 轮播图
+#define Node_Ad_Banner @"nodeServer/slideshow/v1"
+
+#define Node_Content @"nodeServer/qr/v1/content"
+#define Node_Confirm @"nodeServer/tx/v1/confirm"
+// 节点撤票
+#define Node_Withdrawal_Confirm @"nodeServer/node/v1/vote/revoke/user"
+// 节点列表
+#define Node_List @"nodeServer/node/v1/list/app"
+// 邀请投票
+#define Node_Invitation_Vote @"nodeServer/node/v1/detail"
+// 共建节点列表
+#define Node_Cooperate_List @"nodeServer/node/v1/cooperate/list"
+#define Node_Cooperate_Detail @"nodeServer/node/v1/cooperate/detail"
+// 投票记录
+#define Voting_Record @"nodeServer/node/v1/vote/list"
+#define Node_Image_URL @"img-dpos/"
+// 生成短链接
+#define Node_ShortLink_URL @"nodeServer/shortlink"
+#define Validate_Node_Path @"dpos/detail/validate/"
+#define Kol_Node_Path @"dpos/detail/kol/"
+// 共建节点支持验证
+#define Node_Cooperate_Support @"nodeServer/node/v1/cooperate/support"
+// 共建节点退出验证
+#define Node_Cooperate_Exit @"nodeServer/node/v1/cooperate/exit"
+
+// 交易状态查询链接
+#define Transaction_Query_Link @"http://explorer.bumo.io"
+// 交易成功或超时广告图
+#define AD_URL @"nodeServer/ad/v1/6aa3838c760b4e2abf37910f75394834"
+// 扫码字符串
+//#define Account_Center_Prefix @"bumo://login/"
+//#define Dpos_Prefix @"bumo://dpos/"
+#define Account_Center_Contains @"/xDnAs_login/"
+#define Dpos_Contains @"/xDnAs_dpos/"
+#define Dpos_Prefix @"###UDCBU###"
+
+
+
 
 #define LastVersion @"LastVersion"
 // Identity creation
@@ -59,14 +137,6 @@
 #define TransactionCost_Cooperate_MIN @"10.3"
 #define Activate_Cooperate_MIN @"0.01"
 
-#define TransactionType_ApplyNode @ "1"
-#define TransactionType_Vote @"3"
-#define TransactionType_Cooperate @"4"
-#define TransactionType_Cooperate_Support @"5"
-#define TransactionType_Cooperate_SignOut @"7"
-#define TransactionType_Check @"80"
-#define TransactionType_NodeWithdrawal @"10"
-
 #define Cooperate_State_InProgress @"1"
 #define Cooperate_State_Success @"2"
 #define Cooperate_State_Failure @"3"
@@ -116,5 +186,4 @@
 #define SubIndex_Address 5
 #define SubIndex_hash 8
 
-
-#endif /* AppDefine_h */
+#endif /* Constants_h */

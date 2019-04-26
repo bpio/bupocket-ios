@@ -29,6 +29,7 @@
 //        [self.contentView addSubview:self.shareRatioBtn];
         [self.contentView addSubview:self.lineView];
         [self.contentView addSubview:self.progressView];
+        [self.contentView addSubview:self.votingRatio];
         [self.contentView addSubview:self.bondButton];
 //        [self.contentView addSubview:self.riskStatementBg];
         [self.contentView addSubview:self.riskStatementBtn];
@@ -98,9 +99,15 @@
         make.right.equalTo(self.infoTitle);
         make.height.mas_equalTo(LINE_WIDTH);
     }];
+    [self.votingRatio mas_makeConstraints:^(MASConstraintMaker *make) {
+        make.right.equalTo(self.infoTitle);
+        make.centerY.equalTo(self.progressView);
+        make.height.mas_equalTo(Margin_15);
+    }];
     [self.progressView mas_makeConstraints:^(MASConstraintMaker *make) {
         make.top.equalTo(self.contentView.mas_top).offset(Margin_15);
-        make.left.right.equalTo(self.lineView);
+        make.left.equalTo(self.lineView);
+        make.right.equalTo(self.contentView.mas_right).offset(-ScreenScale(65));
     }];
     [self.bondButton mas_makeConstraints:^(MASConstraintMaker *make) {
         make.centerY.equalTo(self.contentView.mas_centerY).offset(-Margin_5);
@@ -200,6 +207,16 @@
         _progressView.hidden = YES;
     }
     return _progressView;
+}
+- (UILabel *)votingRatio
+{
+    if (!_votingRatio) {
+        _votingRatio = [[UILabel alloc] init];
+        _votingRatio.textColor = COLOR_9;
+        _votingRatio.font = FONT(12);
+        _votingRatio.hidden = YES;
+    }
+    return _votingRatio;
 }
 - (UIView *)lineView
 {

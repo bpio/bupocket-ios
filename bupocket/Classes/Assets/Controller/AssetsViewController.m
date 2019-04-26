@@ -437,6 +437,16 @@ static UIButton * _noBackup;
             return;
         }
         result = stringValue;
+        if ([stringValue hasPrefix:Dpos_Prefix]) {
+            NSString * scanStr = [stringValue substringFromIndex:[Dpos_Prefix length]];
+            NSDictionary * scanData = [JsonTool dictionaryOrArrayWithJSONSString:scanStr];
+            DLog(@"scanStr = %@, scanDic = %@", scanStr, scanData);
+            if (scanData) {
+                ConfirmTransactionModel * confirmTransactionModel = [ConfirmTransactionModel mj_objectWithKeyValues:scanData];
+                [self getDpos:confirmTransactionModel];
+            }
+            return;
+        }
         if ([stringValue hasPrefix:@"http"] && [stringValue containsString:Account_Center_Contains] && ![[[[[stringValue componentsSeparatedByString:Account_Center_Contains] firstObject] componentsSeparatedByString:@"://"] lastObject] containsString:@"/"] && [[[stringValue componentsSeparatedByString:Account_Center_Contains] lastObject] length] == 32) {
             [self getScanCodeLoginDataWithUUid:[[stringValue componentsSeparatedByString:Account_Center_Contains] lastObject]];
             return;
@@ -497,6 +507,7 @@ static UIButton * _noBackup;
     [[HTTPManager shareManager] getDposApplyNodeDataWithQRcodeSessionId:str success:^(id responseObject) {
         NSInteger code = [[responseObject objectForKey:@"errCode"] integerValue];
         if (code == Success_Code) {
+            DLog(@"json = %@", [JsonTool JSONStringWithDictionaryOrArray:[responseObject objectForKey:@"data"]]);
             ConfirmTransactionModel * confirmTransactionModel = [ConfirmTransactionModel mj_objectWithKeyValues:[responseObject objectForKey:@"data"]];
             [self getDpos:confirmTransactionModel];
         } else if (code == ErrorQRCodeExpired) {
@@ -573,7 +584,11 @@ static UIButton * _noBackup;
     [[HTTPManager shareManager] submitContractTransactionPassword:password success:^(TransactionResultModel *resultModel) {
         weakSelf.transferInfoArray = [NSMutableArray arrayWithObjects:confirmTransactionModel.destAddress, [NSString stringAppendingBUWithStr:confirmTransactionModel.amount], [NSString stringAppendingBUWithStr:resultModel.actualFee], nil];
         if (NULLString(confirmTransactionModel.qrRemark)) {
-            [weakSelf.transferInfoArray addObject:confirmTransactionModel.qrRemark];
+            NSString * qrRemark = confirmTransactionModel.qrRemark;
+            if ([CurrentAppLanguage isEqualToString:EN]) {
+                qrRemark = confirmTransactionModel.qrRemarkEn;
+            }
+            [weakSelf.transferInfoArray addObject:qrRemark];
         }
         [self.transferInfoArray addObject:[DateTool getDateStringWithTimeStr:[NSString stringWithFormat:@"%lld", resultModel.transactionTime]]];
         if (resultModel.errorCode == Success_Code) {

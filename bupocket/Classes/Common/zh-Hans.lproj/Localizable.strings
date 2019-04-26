@@ -445,7 +445,7 @@
 "TotalSupport" = "已获得支持金额";
 "RiskStatement" = "风险说明";
 "SupportRecords" = "节点共建记录";
-"RedemptionAllSupport" = "我要赎回全部支持金额";
+"RedemptionAllSupport" = "我要撤回";
 "WithdrawalOfSupport" = "撤回支持";
 "IWantToSupport" = "我要支持";
 "Support" = "支持";

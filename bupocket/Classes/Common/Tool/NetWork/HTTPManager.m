@@ -52,11 +52,11 @@ static int64_t const gasPrice = 1000;
     if ([[NSUserDefaults standardUserDefaults] boolForKey:If_Switch_TestNetwork] == YES) {
         _webServerDomain = WEB_SERVER_DOMAIN_TEST;
         _bumoNodeUrl = BUMO_NODE_URL_TEST;
-        _shareManager.pushMessageSocketUrl = PUSH_MESSAGE_SOCKET_URL_TEST;
+        _shareManager.pushMessageSocketUrl = BUMO_TOOLS_URL_TEST;
     } else {
         _webServerDomain = WEB_SERVER_DOMAIN;
         _bumoNodeUrl = BUMO_NODE_URL;
-        _shareManager.pushMessageSocketUrl = PUSH_MESSAGE_SOCKET_URL;
+        _shareManager.pushMessageSocketUrl = BUMO_TOOLS_URL;
     }
 }
 - (id)copyWithZone:(NSZone *)zone
@@ -504,13 +504,14 @@ static int64_t const gasPrice = 1000;
     if (confirmTransactionModel.nodeId) {
         ID = confirmTransactionModel.nodeId;
     }
-    NSString * notes = confirmTransactionModel.qrRemark;
+    NSString * notes = confirmTransactionModel.qrRemarkEn;
     int64_t fee = [[[NSDecimalNumber decimalNumberWithString:confirmTransactionModel.transactionCost] decimalNumberByMultiplyingByPowerOf10: Decimals_BU] longLongValue];
     int64_t nonce = [[HTTPManager shareManager] getAccountNonce: sourceAddress] + 1;
     if (nonce == 0) return;
     NSMutableArray * operations = [NSMutableArray array];
     int64_t amount = [[[NSDecimalNumber decimalNumberWithString:confirmTransactionModel.amount] decimalNumberByMultiplyingByPowerOf10: Decimals_BU] longLongValue];
-    if ([confirmTransactionModel.type isEqualToString:TransactionType_Cooperate]) {
+    
+    if ([confirmTransactionModel.type integerValue] == TransactionTypeCooperate) {
         ContractCreateOperation * contractCreateOperation = [ContractCreateOperation new];
         [contractCreateOperation setSourceAddress: sourceAddress];
         int64_t activateCost = [[[NSDecimalNumber decimalNumberWithString:Activate_Cooperate_MIN] decimalNumberByMultiplyingByPowerOf10: Decimals_BU] longLongValue];
@@ -532,9 +533,9 @@ static int64_t const gasPrice = 1000;
     _hash = [[HTTPManager shareManager] buildBlobAndSignAndSubmit:nil :sourceAddress :nonce :gasPrice :fee :operations :notes :ID];
     DLog(@"hash:%@", _hash);
     if (_hash) {
-        if (([confirmTransactionModel.type isEqualToString:TransactionType_Cooperate_Support] || [confirmTransactionModel.type isEqualToString:TransactionType_Cooperate_SignOut]) && confirmTransactionModel.isCooperateDetail == YES) {
+        if (([confirmTransactionModel.type integerValue] == TransactionTypeCooperateSupport || [confirmTransactionModel.type integerValue] == TransactionTypeCooperateSignOut) && confirmTransactionModel.isCooperateDetail == YES) {
             NSString * URL = Node_Cooperate_Exit;
-            if ([confirmTransactionModel.type isEqualToString:TransactionType_Cooperate_Support]) {
+            if ([confirmTransactionModel.type integerValue] == TransactionTypeCooperateSupport) {
                 URL = Node_Cooperate_Support;
             }
             [[HTTPManager shareManager] getNodeCooperateCheckDataWithURL:URL nodeId:confirmTransactionModel.nodeId hash:_hash copies:confirmTransactionModel.copies success:^(id responseObject) {
@@ -575,7 +576,7 @@ static int64_t const gasPrice = 1000;
                                    failure:(void (^)(NSError *error))failure
 {
     NSString * URL = Node_Confirm;
-    if ([confirmTransactionModel.type isEqualToString:TransactionType_NodeWithdrawal]) {
+    if ([confirmTransactionModel.type integerValue] == TransactionTypeNodeWithdrawal) {
         URL = Node_Withdrawal_Confirm;
     }
     NSString * url = SERVER_COMBINE_API(_webServerDomain, URL);

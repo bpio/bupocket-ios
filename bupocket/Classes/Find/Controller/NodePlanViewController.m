@@ -31,6 +31,7 @@
 @property (nonatomic, strong) UIView * noNetWork;
 @property (nonatomic, strong) NSString * contractAddress;
 @property (nonatomic, strong) NSString * accountTag;
+@property (nonatomic, strong) NSString * accountTagEn;
 
 @property (nonatomic, strong) UIView * headerView;
 @property (nonatomic, strong) UIButton * interdependentNode;
@@ -107,6 +108,7 @@ static NSString * const NodePlanCellID = @"NodePlanCellID";
             self.nodeListArray = self.listArray;
             self.contractAddress = responseObject[@"data"][@"contractAddress"];
             self.accountTag = responseObject[@"data"][@"accountTag"];
+            self.accountTagEn = responseObject[@"data"][@"accountTagEn"];
             [self.tableView reloadData];
         } else {
             [MBProgressHUD showTipMessageInWindow:[ErrorTypeTool getDescriptionWithNodeErrorCode:code]];
@@ -339,13 +341,15 @@ static NSString * const NodePlanCellID = @"NodePlanCellID";
 {
     NodePlanModel * nodePlanModel = self.listArray[index];
     if ([nodePlanModel.myVoteCount isEqualToString:@"0"]) {
-        [MBProgressHUD showTipMessageInWindow:Localized(@"IrrevocableVotes")];
+        [Encapsulation showAlertControllerWithMessage:Localized(@"IrrevocableVotes") handler:nil];
         return;
     }
     ConfirmTransactionModel * confirmTransactionModel = [[ConfirmTransactionModel alloc] init];
-    confirmTransactionModel.qrRemark = [NSString stringWithFormat:Localized(@"Number of votes revoked on '%@'"), nodePlanModel.nodeName];
+    confirmTransactionModel.qrRemark = [NSString stringWithFormat:Localized_Language(@"Number of votes revoked on '%@'", ZhHans), nodePlanModel.nodeName];
+    confirmTransactionModel.qrRemarkEn = [NSString stringWithFormat:Localized_Language(@"Number of votes revoked on '%@'", EN), nodePlanModel.nodeName];
     confirmTransactionModel.destAddress = self.contractAddress;
     confirmTransactionModel.accountTag = self.accountTag;
+    confirmTransactionModel.accountTagEn = self.accountTagEn;
     confirmTransactionModel.amount = @"0";
     NSString * role;
     if ([nodePlanModel.identityType isEqualToString:NodeType_Consensus]) {
@@ -355,7 +359,7 @@ static NSString * const NodePlanCellID = @"NodePlanCellID";
     }
     confirmTransactionModel.script = [NSString stringWithFormat:@"{\"method\":\"unVote\",\"params\":{\"role\":\"%@\",\"address\":\"%@\"}}", role, nodePlanModel.nodeCapitalAddress];
     confirmTransactionModel.nodeId = nodePlanModel.nodeId;
-    confirmTransactionModel.type = TransactionType_NodeWithdrawal;
+    confirmTransactionModel.type = [NSString stringWithFormat:@"%zd", TransactionTypeNodeWithdrawal];
     ConfirmTransactionAlertView * alertView = [[ConfirmTransactionAlertView alloc] initWithDpos:confirmTransactionModel confrimBolck:^(NSString * _Nonnull transactionCost) {
         dispatch_after(dispatch_time(DISPATCH_TIME_NOW, (int64_t)(Dispatch_After_Time * NSEC_PER_SEC)), dispatch_get_main_queue(), ^{
             NSDecimalNumber * amount = [NSDecimalNumber decimalNumberWithString:confirmTransactionModel.amount];
@@ -413,7 +417,11 @@ static NSString * const NodePlanCellID = @"NodePlanCellID";
     [[HTTPManager shareManager] submitContractTransactionPassword:password success:^(TransactionResultModel *resultModel) {
         weakSelf.transferInfoArray = [NSMutableArray arrayWithObjects:confirmTransactionModel.destAddress, [NSString stringAppendingBUWithStr:confirmTransactionModel.amount], [NSString stringAppendingBUWithStr:resultModel.actualFee], nil];
         if (NULLString(confirmTransactionModel.qrRemark)) {
-            [weakSelf.transferInfoArray addObject:confirmTransactionModel.qrRemark];
+            NSString * qrRemark = confirmTransactionModel.qrRemark;
+            if ([CurrentAppLanguage isEqualToString:EN]) {
+                qrRemark = confirmTransactionModel.qrRemarkEn;
+            }
+            [weakSelf.transferInfoArray addObject:qrRemark];
         }
         [self.transferInfoArray addObject:[DateTool getDateStringWithTimeStr:[NSString stringWithFormat:@"%lld", resultModel.transactionTime]]];
         if (resultModel.errorCode == Success_Code) {

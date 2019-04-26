@@ -65,13 +65,12 @@ static LanguageManager * _manager = nil;
         [defaults setObject:ZhHans forKey:AppLanguage];
         [defaults synchronize];
         [kLanguageManager setUserlanguage:ZhHans];
-    } else if ([language hasPrefix:EN]) {
+    } else {
+        //  if ([language hasPrefix:EN])
         // The App language is set in English.
         [defaults setObject:EN forKey:AppLanguage];
         [defaults synchronize];
         [kLanguageManager setUserlanguage:EN];
-    } else {
-        // Other languages
     }
 }
 

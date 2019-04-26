@@ -25,6 +25,7 @@ NS_ASSUME_NONNULL_BEGIN
 @property (nonatomic, strong) UILabel * supportPortion;
 @property (nonatomic, strong) UILabel * residualPortion;
 @property (nonatomic, strong) UIProgressView * progressView;
+@property (nonatomic, strong) UILabel * votingRatio;
 //@property (nonatomic, strong) UIImageView * shareRatioBg;
 //@property (nonatomic, strong) CustomButton * shareRatioBtn;
 //@property (nonatomic, strong) UILabel * shareRatio;

@@ -28,6 +28,7 @@
         [self.listBg addSubview:self.supportPortion];
         [self.listBg addSubview:self.residualPortion];
         [self.listBg addSubview:self.progressView];
+        [self.listBg addSubview:self.votingRatio];
 //        [self.listBg addSubview:self.shareRatioBg];
 //        [self.shareRatioBg addSubview:self.shareRatioBtn];
 //        [self.shareRatioBg addSubview:self.shareRatio];
@@ -67,9 +68,15 @@
         make.left.right.equalTo(self.title);
     }];
     
+    [self.votingRatio mas_makeConstraints:^(MASConstraintMaker *make) {
+        make.right.equalTo(self.title);
+        make.centerY.equalTo(self.progressView);
+        make.height.mas_equalTo(Margin_15);
+    }];
     [self.progressView mas_makeConstraints:^(MASConstraintMaker *make) {
         make.top.equalTo(self.purchaseAmount.mas_bottom).offset(Margin_15);
         make.left.right.equalTo(self.title);
+        make.right.equalTo(self.listBg.mas_right).offset(-ScreenScale(65));
 //        make.right.equalTo(self.shareRatioBg);
     }];
     
@@ -108,7 +115,9 @@
     self.purchaseAmount.text = Localized(@"PurchaseAmount");
     if (NULLString(cooperateModel.totalCopies)) {
         NSString * supported = [NSString stringWithFormat:@"%lld", [cooperateModel.cobuildCopies longLongValue] - [cooperateModel.leftCopies longLongValue]];
-        self.progressView.progress = [[[NSDecimalNumber decimalNumberWithString:supported] decimalNumberByDividingBy:[NSDecimalNumber decimalNumberWithString:cooperateModel.cobuildCopies]] doubleValue];
+        double progress = [[[NSDecimalNumber decimalNumberWithString:supported] decimalNumberByDividingBy:[NSDecimalNumber decimalNumberWithString:cooperateModel.cobuildCopies]] doubleValue];
+        self.progressView.progress = progress;
+        self.votingRatio.text = [NSString stringWithFormat:@"%.2f%%", progress * 100];
     }
 //    NSString * targetAmount = [NSString stringWithFormat:@"%lld", [cooperateModel.cobuildCopies longLongValue] * [cooperateModel.perAmount longLongValue]];
 //    NSString * targetNumberStr = [NSString stringWithFormat:@"%@ %@ BU", Localized(@"SupportPortion"), [NSString stringAmountSplitWith:targetAmount]];
@@ -195,6 +204,15 @@
         _progressView.progressViewStyle = UIProgressViewStyleBar;
     }
     return _progressView;
+}
+- (UILabel *)votingRatio
+{
+    if (!_votingRatio) {
+        _votingRatio = [[UILabel alloc] init];
+        _votingRatio.textColor = COLOR_9;
+        _votingRatio.font = FONT(12);
+    }
+    return _votingRatio;
 }
 /*
 - (UIImageView *)shareRatioBg
