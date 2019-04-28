@@ -148,6 +148,11 @@ static NSString * const NodeTransferSuccessID = @"NodeTransferSuccessID";
     cell.icon.image = [UIImage imageNamed:[NSString stringWithFormat:@"node_transfer_success_%zd", indexPath.row]];
     cell.title.text = self.listArray[0][indexPath.row];
     cell.detail.text = self.listArray[1][indexPath.row];
+    if (indexPath.row == [[self.listArray firstObject] count] - 1) {
+        cell.lineView.backgroundColor = LINE_COLOR;
+    } else {
+        cell.lineView.backgroundColor = MAIN_COLOR;
+    }
     return cell;
 }
 - (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath

@@ -384,19 +384,24 @@ static NSString * const NodePlanCellID = @"NodePlanCellID";
 {
     [[HTTPManager shareManager] getContractTransactionWithModel:confirmTransactionModel  success:^(id responseObject) {
         NSInteger code = [[responseObject objectForKey:@"errCode"] integerValue];
-        if (code == Success_Code) {
-            NSString * dateStr = [[responseObject objectForKey:@"data"] objectForKey:@"expiryTime"];
-            NSDate * date = [NSDate dateWithTimeIntervalSince1970:[dateStr longLongValue] / 1000];
-            NSTimeInterval time = [date timeIntervalSinceNow];
-            if (time < 0) {
-                [Encapsulation showAlertControllerWithMessage:Localized(@"Overtime") handler:nil];
+        if (code == Success_Code || code == ErrorNotSubmitted) {
+            NSString * dateStr = [NSString stringWithFormat:@"%@", [[responseObject objectForKey:@"data"] objectForKey:@"expiryTime"]];
+            if (code == Success_Code) {
+                NSDate * date = [NSDate dateWithTimeIntervalSince1970:[dateStr longLongValue] / 1000];
+                NSTimeInterval time = [date timeIntervalSinceNow];
+                if (time < 0) {
+                    [Encapsulation showAlertControllerWithMessage:Localized(@"Overtime") handler:nil];
+                    //                [MBProgressHUD showTipMessageInWindow:Localized(@"Overtime")];
+                } else {
+                    [self showPWAlertView:confirmTransactionModel];
+                }
             } else {
-                [self showPWAlertView:confirmTransactionModel];
+                [Encapsulation showAlertControllerWithMessage:[NSString stringWithFormat:Localized(@"NotSubmitted%@"), [DateTool getTimeIntervalWithStr:dateStr]] handler:nil];
             }
         } else {
             [Encapsulation showAlertControllerWithMessage:[ErrorTypeTool getDescriptionWithNodeErrorCode:code] handler:nil];
-//            [Encapsulation showAlertControllerWithMessage:[NSString stringWithFormat:@"code=%@\nmsg:%@", responseObject[@"errCode"], responseObject[@"msg"]] handler:nil];
         }
+        
     } failure:^(NSError *error) {
         
     }];

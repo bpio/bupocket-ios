@@ -212,9 +212,21 @@
 // date
 "HoursAgo" = "小时前";
 "MinutesAgo" = "分钟前";
+"HourAgo" = "小时前";
+"MinuteAgo" = "分钟前";
 "Just" = "刚刚";
 //"Yesterday" = "昨天";
 "DaysAgo" = "天前";
+"DayAgo" = "天前";
+
+"Seconds" = "秒";
+"Second" = "秒";
+"Minutes" = "分钟";
+"Minute" = "分钟";
+"Hours" = "小时";
+"Hour" = "小时";
+"Days" = "天";
+"Day" = "天";
 
 // alert Massage
 "Loading" = "加载中...";
@@ -480,7 +492,8 @@
 // Node Errors
 "PhysicalAddressApplied" = "该待绑定的物理地址已被占用，请更换后再申请";
 "AccountApplied" = "该钱包账户已申请过，请更换后再进行申请";
-"NotSubmitted" = "检测到有尚未提交的操作，请稍后再重试";
+//"NotSubmitted" = "检测到有尚未提交的操作，请稍后再重试";
+"NotSubmitted%@" = "您有尚未完成的操作，%@ 后可再次进行交易";
 "CommitteeAuthority" = "没有权限，请使用委员会钱包进行扫码";
 "NoVoteJurisdiction" = "投票通道还未开启，请在开启后进行投票";
 "ShareNotOpened" = "投票通道还未开启，请在开启后进行分享";
@@ -490,6 +503,7 @@
 "CooperateCompleted" = "节点共建项目已完成，暂不支持退出";
 "InitiatorAddressUnavailable" = "该账户不是发起者，无法发起该操作";
 "InitiatorCanNotSupport" = "节点共建项目发起者不能参与支持";
+"NonRepeatableWithdrawal" = "您已成功撤回，不能重复操作";
 
 // SDK Errors
 "SYSTEM_ERROR" = "系统错误";

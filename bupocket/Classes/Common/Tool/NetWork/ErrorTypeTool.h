@@ -44,6 +44,7 @@ typedef NS_ENUM(NSInteger, NodeErrorCode) {
     ErrorCooperateCompleted = 1034,
     ErrorInitiatorAddressUnavailable = 1035,
     ErrorInitiatorCanNotSupport = 1036,
+    ErrorNonRepeatableWithdrawal = 1038,
 };
 
 // Error type

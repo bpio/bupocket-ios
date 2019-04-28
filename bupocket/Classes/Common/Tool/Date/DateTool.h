@@ -17,6 +17,9 @@ NS_ASSUME_NONNULL_BEGIN
 + (NSString *)getDateWithTimeStr:(NSString *)str;
 + (NSString *)getDateProcessingWithTimeStr:(NSString *)str;
 
+// 计算时间间隔
++ (NSString *)getTimeIntervalWithStr:(NSString *)str;
+
 @end
 
 NS_ASSUME_NONNULL_END

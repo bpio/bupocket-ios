@@ -41,7 +41,7 @@ static NSString * const NodeTransferSuccessID = @"NodeTransferSuccessID";
     
     [self.lineView mas_makeConstraints:^(MASConstraintMaker *make) {
         make.centerX.equalTo(self.icon.mas_centerX);
-        make.width.mas_equalTo(LINE_WIDTH);
+        make.width.mas_equalTo(ScreenScale(1.5));
     }];
     
     [self.title mas_makeConstraints:^(MASConstraintMaker *make) {
@@ -78,7 +78,7 @@ static NSString * const NodeTransferSuccessID = @"NodeTransferSuccessID";
 {
     if (!_lineView) {
         _lineView = [[UIView alloc] init];
-        _lineView.backgroundColor = LINE_COLOR;
+//        _lineView.backgroundColor = LINE_COLOR;
     }
     return _lineView;
 }

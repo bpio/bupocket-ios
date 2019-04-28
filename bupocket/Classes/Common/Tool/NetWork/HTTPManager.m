@@ -530,7 +530,7 @@ static int64_t const gasPrice = 1000;
         [operation setMetadata:notes];
         [operations addObject:operation];
     }
-    _hash = [[HTTPManager shareManager] buildBlobAndSignAndSubmit:nil :sourceAddress :nonce :gasPrice :fee :operations :notes :ID];
+    _hash = [[HTTPManager shareManager] buildBlobAndSignAndSubmit:nil :sourceAddress :nonce :gasPrice :fee :operations :notes];
     DLog(@"hash:%@", _hash);
     if (_hash) {
         if (([confirmTransactionModel.type integerValue] == TransactionTypeCooperateSupport || [confirmTransactionModel.type integerValue] == TransactionTypeCooperateSignOut) && confirmTransactionModel.isCooperateDetail == YES) {
@@ -1041,7 +1041,7 @@ static int64_t const gasPrice = 1000;
         [operation setDestAddress: destAddress];
         [operation setAmount: amount];
         [operations addObject:operation];
-        hash = [[HTTPManager shareManager] buildBlobAndSignAndSubmit:privateKey :sourceAddress :nonce :gasPrice :fee :operations :notes :nil];
+        hash = [[HTTPManager shareManager] buildBlobAndSignAndSubmit:privateKey :sourceAddress :nonce :gasPrice :fee :operations :notes];
     } else {
         // Other currencies
         int64_t amount = [[[NSDecimalNumber decimalNumberWithString:assets] decimalNumberByMultiplyingByPowerOf10: decimals] longLongValue];
@@ -1062,7 +1062,7 @@ static int64_t const gasPrice = 1000;
         [operation setIssuer: issuer];
         [operation setAmount: amount];
         [operations addObject: operation];
-        hash = [[HTTPManager shareManager] buildBlobAndSignAndSubmit:privateKey :sourceAddress :nonce :gasPrice :fee :operations :notes :nil];
+        hash = [[HTTPManager shareManager] buildBlobAndSignAndSubmit:privateKey :sourceAddress :nonce :gasPrice :fee :operations :notes];
     }
     if (![Tools isEmpty: hash]) {
         [[HTTPManager shareManager] getTransactionStatusHash:hash success:success failure:failure];
@@ -1100,7 +1100,7 @@ static int64_t const gasPrice = 1000;
     int64_t feeLimit = [[[NSDecimalNumber decimalNumberWithString:Registered_Cost] decimalNumberByMultiplyingByPowerOf10: Decimals_BU] longLongValue];
     NSMutableArray * operations = [NSMutableArray array];
     [operations addObject:operation];
-    NSString * hash = [[HTTPManager shareManager] buildBlobAndSignAndSubmit:privateKey :sourceAddress :nonce :gasPrice :feeLimit :operations :nil :nil];
+    NSString * hash = [[HTTPManager shareManager] buildBlobAndSignAndSubmit:privateKey :sourceAddress :nonce :gasPrice :feeLimit :operations :nil];
     if (![Tools isEmpty: hash]) {
         [[HTTPManager shareManager] getTransactionStatusHash:hash success:success failure:failure];
     }
@@ -1129,7 +1129,7 @@ static int64_t const gasPrice = 1000;
     int64_t feeLimit = [[[NSDecimalNumber decimalNumberWithString:Distribution_Cost] decimalNumberByMultiplyingByPowerOf10: Decimals_BU] longLongValue];
     NSMutableArray * operations = [NSMutableArray array];
     [operations addObject:operation];
-    NSString * hash = [[HTTPManager shareManager] buildBlobAndSignAndSubmit:privateKey :sourceAddress :nonce :gasPrice :feeLimit :operations :nil : nil];
+    NSString * hash = [[HTTPManager shareManager] buildBlobAndSignAndSubmit:privateKey :sourceAddress :nonce :gasPrice :feeLimit :operations :nil];
     if (![Tools isEmpty: hash]) {
         [[HTTPManager shareManager] getTransactionStatusHash:hash success:success failure:failure];
     }
@@ -1149,7 +1149,7 @@ static int64_t const gasPrice = 1000;
     return nonce;
 }
 // transaction information
-- (NSString *) buildBlobAndSignAndSubmit : (NSString *) privateKey : (NSString *) sourceAddress : (int64_t) nonce : (int64_t) gasPrice : (int64_t) feeLimit : (NSMutableArray<BaseOperation *> *) operations : (NSString *) notes : (NSString *)ID {
+- (NSString *) buildBlobAndSignAndSubmit : (NSString *) privateKey : (NSString *) sourceAddress : (int64_t) nonce : (int64_t) gasPrice : (int64_t) feeLimit : (NSMutableArray<BaseOperation *> *) operations : (NSString *) notes {
     TransactionBuildBlobRequest *buildBlobRequest = [TransactionBuildBlobRequest new];
     [buildBlobRequest setSourceAddress : sourceAddress];
     [buildBlobRequest setNonce : nonce];
@@ -1169,8 +1169,8 @@ static int64_t const gasPrice = 1000;
         [MBProgressHUD hideHUD];
         [MBProgressHUD showTipMessageInWindow:[ErrorTypeTool getDescription:_buildBlobResponse.errorCode]];
     }
-
-    if (hash && !ID) {
+    // 转账、登记、发行 立即提交
+    if (hash && privateKey) {
         BOOL ifSubmitSuccess = [[HTTPManager shareManager] buildSignAndSubmit :privateKey];
         if (!ifSubmitSuccess) {
             hash = nil;

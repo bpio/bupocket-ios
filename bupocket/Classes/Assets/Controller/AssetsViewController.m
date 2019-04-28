@@ -433,7 +433,7 @@ static UIButton * _noBackup;
     __block NSString * result = nil;
     __weak typeof (self) weakself = self;
     HMScannerController *scanner = [HMScannerController scannerWithCardName:nil avatar:nil completion:^(NSString *stringValue) {
-        if (result) {
+        if (result || !stringValue) {
             return;
         }
         result = stringValue;
@@ -444,6 +444,8 @@ static UIButton * _noBackup;
             if (scanData) {
                 ConfirmTransactionModel * confirmTransactionModel = [ConfirmTransactionModel mj_objectWithKeyValues:scanData];
                 [self getDpos:confirmTransactionModel];
+            } else {
+                [MBProgressHUD showTipMessageInWindow:Localized(@"ScanFailure")];
             }
             return;
         }
@@ -549,20 +551,22 @@ static UIButton * _noBackup;
 {
     [[HTTPManager shareManager] getContractTransactionWithModel:confirmTransactionModel  success:^(id responseObject) {
         NSInteger code = [[responseObject objectForKey:@"errCode"] integerValue];
-        if (code == Success_Code) {
-            NSString * dateStr = [[responseObject objectForKey:@"data"] objectForKey:@"expiryTime"];
-            NSDate * date = [NSDate dateWithTimeIntervalSince1970:[dateStr longLongValue] / 1000];
-            NSTimeInterval time = [date timeIntervalSinceNow];
-            if (time < 0) {
-                [Encapsulation showAlertControllerWithMessage:Localized(@"Overtime") handler:nil];
-//                [MBProgressHUD showTipMessageInWindow:Localized(@"Overtime")];
+        if (code == Success_Code || code == ErrorNotSubmitted) {
+            NSString * dateStr = [NSString stringWithFormat:@"%@", [[responseObject objectForKey:@"data"] objectForKey:@"expiryTime"]];
+            if (code == Success_Code) {
+                NSDate * date = [NSDate dateWithTimeIntervalSince1970:[dateStr longLongValue] / 1000];
+                NSTimeInterval time = [date timeIntervalSinceNow];
+                if (time < 0) {
+                    [Encapsulation showAlertControllerWithMessage:Localized(@"Overtime") handler:nil];
+                    //                [MBProgressHUD showTipMessageInWindow:Localized(@"Overtime")];
+                } else {
+                    [self showPWAlertView:confirmTransactionModel];
+                }
             } else {
-                [self showPWAlertView:confirmTransactionModel];
+                [Encapsulation showAlertControllerWithMessage:[NSString stringWithFormat:Localized(@"NotSubmitted%@"), [DateTool getTimeIntervalWithStr:dateStr]] handler:nil];
             }
         } else {
             [Encapsulation showAlertControllerWithMessage:[ErrorTypeTool getDescriptionWithNodeErrorCode:code] handler:nil];
-//            [MBProgressHUD showTipMessageInWindow:[ErrorTypeTool getDescriptionWithNodeErrorCode:code]];
-//            [Encapsulation showAlertControllerWithMessage:[NSString stringWithFormat:@"code=%@\nmsg:%@", responseObject[@"errCode"], responseObject[@"msg"]] handler:nil];
         }
     } failure:^(NSError *error) {
         

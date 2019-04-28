@@ -16,10 +16,11 @@
 #import <WXApi.h>
 #import <TencentOpenAPI/TencentOAuth.h>
 
-@interface AppDelegate ()<WXApiDelegate>
+@interface AppDelegate ()<WXApiDelegate, TencentSessionDelegate>
 
 @property (nonatomic, strong) VersionUpdateAlertView * alertView;
 @property (nonatomic, strong) PasswordAlertView * PWAlertView;
+@property (nonatomic, strong) TencentOAuth * tencentOAuth;
 
 @end
 
@@ -38,7 +39,7 @@
     // Minimum Asset Limitation
     [[HTTPManager shareManager] getBlockLatestFees];
     [WXApi registerApp:Wechat_APP_ID];
-    [[TencentOAuth alloc] initWithAppId:Tencent_App_ID andDelegate:nil];
+    _tencentOAuth = [[TencentOAuth alloc] initWithAppId:Tencent_App_ID andDelegate:self];
     return YES;
 }
 - (void)initializationSettings
@@ -156,7 +157,16 @@
     NSString * str = [url absoluteString];
     if ([str hasPrefix:Wechat_APP_ID]) {
         return [WXApi handleOpenURL:url delegate:self];
-    } else if ([str hasPrefix:Tencent_App_ID]) {
+    } else if ([str containsString:Tencent_App_ID]) {
+        return [TencentOAuth HandleOpenURL:url];
+    }
+    return NO;
+}
+- (BOOL)application:(UIApplication *)application handleOpenURL:(NSURL *)url{
+    NSString * str = [url absoluteString];
+    if ([str hasPrefix:Wechat_APP_ID]) {
+        return [WXApi handleOpenURL:url delegate:self];
+    } else if ([str containsString:Tencent_App_ID]) {
         return [TencentOAuth HandleOpenURL:url];
     }
     return NO;
@@ -198,5 +208,34 @@
     // Called when the application is about to terminate. Save data if appropriate. See also applicationDidEnterBackground:.
 }
 
+//登录功能没添加，但调用TencentOAuth相关方法进行分享必须添加<TencentSessionDelegate>，则以下方法必须实现，尽管并不需要实际使用它们
+//登录成功
+- (void)tencentDidLogin {
+    //    _labelTitle.text = @"登录完成";
+    if (_tencentOAuth.accessToken && 0 != [_tencentOAuth.accessToken length])
+    {
+        // 记录登录用户的OpenID、Token以及过期时间
+        //        _labelAccessToken.text = _tencentOAuth.accessToken;
+    }
+    else
+    {
+        //        _labelAccessToken.text = @"登录不成功 没有获取accesstoken";
+    }
+}
+//非网络错误导致登录失败
+- (void)tencentDidNotLogin:(BOOL)cancelled {
+    if (cancelled)
+    {
+        //        _labelTitle.text = @"用户取消登录";
+    }
+    else
+    {
+        //        _labelTitle.text = @"登录失败";
+    }
+}
+//网络错误导致登录失败
+- (void)tencentDidNotNetWork {
+    //    _labelTitle.text=@"无网络连接，请设置网络";
+}
 
 @end

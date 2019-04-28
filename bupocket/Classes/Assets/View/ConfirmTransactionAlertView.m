@@ -81,7 +81,7 @@
     self.confirmTransactionModel.transactionCost = self.transactionCost;
     NSString * qrRemark = self.confirmTransactionModel.qrRemark;
     NSString * accountTag = self.confirmTransactionModel.accountTag;
-    if ([CurrentAppLanguage isEqualToString:EN]) {
+    if ([CurrentAppLanguage isEqualToString:EN] && self.confirmTransactionModel.qrRemarkEn) {
         qrRemark = self.confirmTransactionModel.qrRemarkEn;
         accountTag = self.confirmTransactionModel.accountTagEn;
     }
