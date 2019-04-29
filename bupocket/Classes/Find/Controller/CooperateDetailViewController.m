@@ -29,7 +29,6 @@
 
 @property (nonatomic, strong) CooperateDetailModel * cooperateDetailModel;
 @property (nonatomic, assign) NSInteger sectionNumber;
-@property (nonatomic, strong) NSMutableArray * transferInfoArray;
 @property (nonatomic, strong) YBPopupMenu * popupMenu;
 @property (nonatomic, strong) UIView * footerView;
 @property (nonatomic, strong) UIButton * redemptionAllSupport;
@@ -48,13 +47,6 @@ static NSString * const CooperateDetailCellID = @"CooperateDetailCellID";
         _listArray = [NSMutableArray array];
     }
     return _listArray;
-}
-- (NSMutableArray *)transferInfoArray
-{
-    if (!_transferInfoArray) {
-        _transferInfoArray = [NSMutableArray array];
-    }
-    return _transferInfoArray;
 }
 - (void)viewDidLoad {
     [super viewDidLoad];
@@ -284,17 +276,15 @@ static NSString * const CooperateDetailCellID = @"CooperateDetailCellID";
 }
 - (void)submitTransactionWithPassword:(NSString *)password confirmTransactionModel:(ConfirmTransactionModel *)confirmTransactionModel
 {
-    __weak typeof(self) weakSelf = self;
     [[HTTPManager shareManager] submitContractTransactionPassword:password success:^(TransactionResultModel *resultModel) {
-        weakSelf.transferInfoArray = [NSMutableArray arrayWithObjects:confirmTransactionModel.destAddress, [NSString stringAppendingBUWithStr:confirmTransactionModel.amount], [NSString stringAppendingBUWithStr:resultModel.actualFee], nil];
+        NSMutableArray * transferInfoArray = [NSMutableArray arrayWithObjects:confirmTransactionModel.destAddress, [NSString stringAppendingBUWithStr:confirmTransactionModel.amount], nil];
         if (NULLString(confirmTransactionModel.qrRemark)) {
             NSString * qrRemark = confirmTransactionModel.qrRemark;
             if ([CurrentAppLanguage isEqualToString:EN]) {
                 qrRemark = confirmTransactionModel.qrRemarkEn;
             }
-            [weakSelf.transferInfoArray addObject:qrRemark];
+            resultModel.remark = qrRemark;
         }
-        [self.transferInfoArray addObject:[DateTool getDateStringWithTimeStr:[NSString stringWithFormat:@"%lld", resultModel.transactionTime]]];
         if (resultModel.errorCode == Success_Code) {
             NodeTransferSuccessViewController * VC = [[NodeTransferSuccessViewController alloc] init];
             [self.navigationController pushViewController:VC animated:NO];
@@ -303,7 +293,7 @@ static NSString * const CooperateDetailCellID = @"CooperateDetailCellID";
             VC.state = NO;
             VC.resultModel = resultModel;
             //            [MBProgressHUD showTipMessageInWindow:[ErrorTypeTool getDescription:resultModel.errorCode]];
-            VC.transferInfoArray = weakSelf.transferInfoArray;
+            VC.transferInfoArray = transferInfoArray;
             [self.navigationController pushViewController:VC animated:NO];
         }
     } failure:^(TransactionResultModel *resultModel) {

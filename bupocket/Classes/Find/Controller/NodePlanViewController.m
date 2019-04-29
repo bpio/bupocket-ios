@@ -37,8 +37,6 @@
 @property (nonatomic, strong) UIButton * interdependentNode;
 @property (nonatomic, strong) NSString * searchText;
 
-@property (nonatomic, strong) NSMutableArray * transferInfoArray;
-
 @end
 
 static NSString * const NodePlanCellID = @"NodePlanCellID";
@@ -59,21 +57,14 @@ static NSString * const NodePlanCellID = @"NodePlanCellID";
     }
     return _nodeListArray;
 }
-- (NSMutableArray *)transferInfoArray
-{
-    if (!_transferInfoArray) {
-        _transferInfoArray = [NSMutableArray array];
-    }
-    return _transferInfoArray;
-}
 - (void)viewDidLoad {
     [super viewDidLoad];
     self.navigationItem.title = Localized(@"NodePlan");
     [self setupNav];
     [self setupView];
     
-    [self getData];
-//    [self setupRefresh];
+//    [self getData];
+    [self setupRefresh];
     // Do any additional setup after loading the view.
 }
 - (void)setupNav
@@ -88,16 +79,16 @@ static NSString * const NodePlanCellID = @"NodePlanCellID";
     VotingRecordsViewController * VC = [[VotingRecordsViewController alloc] init];
     [self.navigationController pushViewController:VC animated:NO];
 }
-//- (void)setupRefresh
-//{
-//    self.tableView.mj_header = [CustomRefreshHeader headerWithRefreshingTarget:self refreshingAction:@selector(loadNewData)];
-//    self.tableView.mj_header.automaticallyChangeAlpha = YES;
-//    [self.tableView.mj_header beginRefreshing];
-//}
-//- (void)loadNewData
-//{
-//    [self getNodeListDataWithIdentityType:@"" nodeName:@"" capitalAddress:@""];
-//}
+- (void)setupRefresh
+{
+    self.tableView.mj_header = [CustomRefreshHeader headerWithRefreshingTarget:self refreshingAction:@selector(loadNewData)];
+    self.tableView.mj_header.automaticallyChangeAlpha = YES;
+    [self.tableView.mj_header beginRefreshing];
+}
+- (void)loadNewData
+{
+    [self getData];
+}
 
 - (void)getData
 {
@@ -115,8 +106,10 @@ static NSString * const NodePlanCellID = @"NodePlanCellID";
         }
         [self ifShowNoData];
         self.noNetWork.hidden = YES;
+        [self.tableView.mj_header endRefreshing];
     } failure:^(NSError *error) {
         self.noNetWork.hidden = NO;
+        [self.tableView.mj_header endRefreshing];
     }];
 }
 - (void)reloadData
@@ -418,17 +411,15 @@ static NSString * const NodePlanCellID = @"NodePlanCellID";
 }
 - (void)submitTransactionWithPassword:(NSString *)password confirmTransactionModel:(ConfirmTransactionModel *)confirmTransactionModel
 {
-    __weak typeof(self) weakSelf = self;
     [[HTTPManager shareManager] submitContractTransactionPassword:password success:^(TransactionResultModel *resultModel) {
-        weakSelf.transferInfoArray = [NSMutableArray arrayWithObjects:confirmTransactionModel.destAddress, [NSString stringAppendingBUWithStr:confirmTransactionModel.amount], [NSString stringAppendingBUWithStr:resultModel.actualFee], nil];
+        NSMutableArray * transferInfoArray = [NSMutableArray arrayWithObjects:confirmTransactionModel.destAddress, [NSString stringAppendingBUWithStr:confirmTransactionModel.amount], nil];
         if (NULLString(confirmTransactionModel.qrRemark)) {
             NSString * qrRemark = confirmTransactionModel.qrRemark;
             if ([CurrentAppLanguage isEqualToString:EN]) {
                 qrRemark = confirmTransactionModel.qrRemarkEn;
             }
-            [weakSelf.transferInfoArray addObject:qrRemark];
+            resultModel.remark = qrRemark;
         }
-        [self.transferInfoArray addObject:[DateTool getDateStringWithTimeStr:[NSString stringWithFormat:@"%lld", resultModel.transactionTime]]];
         if (resultModel.errorCode == Success_Code) {
             NodeTransferSuccessViewController * VC = [[NodeTransferSuccessViewController alloc] init];
             [self.navigationController pushViewController:VC animated:NO];
@@ -436,8 +427,7 @@ static NSString * const NodePlanCellID = @"NodePlanCellID";
             TransferResultsViewController * VC = [[TransferResultsViewController alloc] init];
             VC.state = NO;
             VC.resultModel = resultModel;
-            //            [MBProgressHUD showTipMessageInWindow:[ErrorTypeTool getDescription:resultModel.errorCode]];
-            VC.transferInfoArray = weakSelf.transferInfoArray;
+            VC.transferInfoArray = transferInfoArray;
             [self.navigationController pushViewController:VC animated:NO];
         }
     } failure:^(TransactionResultModel *resultModel) {

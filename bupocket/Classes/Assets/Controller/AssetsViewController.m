@@ -61,8 +61,6 @@
 
 //@property (nonatomic, strong) ConfirmTransactionAlertView * confirmAlertView;
 
-@property (nonatomic, strong) NSMutableArray * transferInfoArray;
-
 @end
 
 @implementation AssetsViewController
@@ -75,13 +73,6 @@ static UIButton * _noBackup;
         _listArray = [NSMutableArray array];
     }
     return _listArray;
-}
-- (NSMutableArray *)transferInfoArray
-{
-    if (!_transferInfoArray) {
-        _transferInfoArray = [NSMutableArray array];
-    }
-    return _transferInfoArray;
 }
 - (void)viewDidLoad {
     [super viewDidLoad];
@@ -433,7 +424,7 @@ static UIButton * _noBackup;
     __block NSString * result = nil;
     __weak typeof (self) weakself = self;
     HMScannerController *scanner = [HMScannerController scannerWithCardName:nil avatar:nil completion:^(NSString *stringValue) {
-        if (result || !stringValue) {
+        if (result) {
             return;
         }
         result = stringValue;
@@ -443,6 +434,7 @@ static UIButton * _noBackup;
             DLog(@"scanStr = %@, scanDic = %@", scanStr, scanData);
             if (scanData) {
                 ConfirmTransactionModel * confirmTransactionModel = [ConfirmTransactionModel mj_objectWithKeyValues:scanData];
+                confirmTransactionModel.isNodeURL = YES;
                 [self getDpos:confirmTransactionModel];
             } else {
                 [MBProgressHUD showTipMessageInWindow:Localized(@"ScanFailure")];
@@ -536,6 +528,9 @@ static UIButton * _noBackup;
             if (!NULLString(totleAmountStr) || [amountNumber isEqualToNumber:NSDecimalNumber.notANumber]) {
             } else if ([totleAmountStr hasPrefix:@"-"]) {
                 [MBProgressHUD showTipMessageInWindow:Localized(@"NotSufficientFunds")];
+            } else if (confirmTransactionModel.isNodeURL) {
+                [[HTTPManager shareManager] getTransactionWithModel:confirmTransactionModel];
+                [self showPWAlertView:confirmTransactionModel];
             } else {
                 [self getContractTransactionData:confirmTransactionModel];
             }
@@ -584,17 +579,15 @@ static UIButton * _noBackup;
 }
 - (void)submitTransactionWithPassword:(NSString *)password confirmTransactionModel:(ConfirmTransactionModel *)confirmTransactionModel
 {
-    __weak typeof(self) weakSelf = self;
     [[HTTPManager shareManager] submitContractTransactionPassword:password success:^(TransactionResultModel *resultModel) {
-        weakSelf.transferInfoArray = [NSMutableArray arrayWithObjects:confirmTransactionModel.destAddress, [NSString stringAppendingBUWithStr:confirmTransactionModel.amount], [NSString stringAppendingBUWithStr:resultModel.actualFee], nil];
+        NSMutableArray * transferInfoArray = [NSMutableArray arrayWithObjects:confirmTransactionModel.destAddress, [NSString stringAppendingBUWithStr:confirmTransactionModel.amount], nil];
         if (NULLString(confirmTransactionModel.qrRemark)) {
             NSString * qrRemark = confirmTransactionModel.qrRemark;
             if ([CurrentAppLanguage isEqualToString:EN]) {
                 qrRemark = confirmTransactionModel.qrRemarkEn;
             }
-            [weakSelf.transferInfoArray addObject:qrRemark];
+            resultModel.remark = qrRemark;
         }
-        [self.transferInfoArray addObject:[DateTool getDateStringWithTimeStr:[NSString stringWithFormat:@"%lld", resultModel.transactionTime]]];
         if (resultModel.errorCode == Success_Code) {
             NodeTransferSuccessViewController * VC = [[NodeTransferSuccessViewController alloc] init];
             [self.navigationController pushViewController:VC animated:NO];
@@ -602,8 +595,7 @@ static UIButton * _noBackup;
             TransferResultsViewController * VC = [[TransferResultsViewController alloc] init];
             VC.state = NO;
             VC.resultModel = resultModel;
-            //            [MBProgressHUD showTipMessageInWindow:[ErrorTypeTool getDescription:resultModel.errorCode]];
-            VC.transferInfoArray = weakSelf.transferInfoArray;
+            VC.transferInfoArray = transferInfoArray;
             [self.navigationController pushViewController:VC animated:NO];
         }
     } failure:^(TransactionResultModel *resultModel) {

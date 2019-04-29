@@ -64,7 +64,7 @@
 //    self.scrollView.contentInset = UIEdgeInsetsMake(0, 0, SafeAreaBottomH + NavBarH + Margin_10, 0);
     self.scrollView.keyboardDismissMode = UIScrollViewKeyboardDismissModeOnDrag;
     [self.view addSubview:self.scrollView];
-    NSString * numberOfTransfers = [NSString stringWithFormat:@"%@（%@）*", Localized(@"AmountOfTransfer"), self.listModel.assetCode];
+    NSString * numberOfTransfers = [NSString stringWithFormat:Localized(@"AmountOfTransfer（%@）*"), self.listModel.assetCode];
     NSArray * array = @[@[Localized(@"ReciprocalAccount"), numberOfTransfers, Localized(@"Remarks"), Localized(@"EstimatedMaximum")], @[Localized(@"PhoneOrAddress"), Localized(@"AmountOfTransferPlaceholder"), Localized(@"RemarksPlaceholder"), Localized(@"TransactionCostPlaceholder")]];
     for (NSInteger i = 0; i < 4; i++) {
         [self setViewWithTitle:[array firstObject][i] placeholder:[array lastObject][i] index:i];
@@ -185,17 +185,18 @@
 - (void)getDataWithPassword:(NSString *)password nonce:(int64_t)nonce
 {
     [[HTTPManager shareManager] setTransferDataWithTokenType:self.listModel.type password:password destAddress:self.address assets:_transferVolumeStr decimals:self.listModel.decimals feeLimit:_transactionCostsStr notes:_remarksStr code:self.listModel.assetCode issuer:self.listModel.issuer nonce:nonce success:^(TransactionResultModel *resultModel) {
-        [self.transferInfoArray addObject:[DateTool getDateStringWithTimeStr:[NSString stringWithFormat:@"%lld", resultModel.transactionTime]]];
-        [self.transferInfoArray replaceObjectAtIndex:2 withObject:[NSString stringAppendingBUWithStr:resultModel.actualFee]];
+//        [self.transferInfoArray addObject:[DateTool getDateStringWithTimeStr:[NSString stringWithFormat:@"%lld", resultModel.transactionTime]]];
+//        [self.transferInfoArray replaceObjectAtIndex:2 withObject:[NSString stringAppendingBUWithStr:resultModel.actualFee]];
+        resultModel.remark = self.remarksStr;
         TransferResultsViewController * VC = [[TransferResultsViewController alloc] init];
         if (resultModel.errorCode == Success_Code) {
             VC.state = YES;
         } else {
             VC.state = NO;
-            VC.resultModel = resultModel;
 //            [MBProgressHUD showTipMessageInWindow:[ErrorTypeTool getDescription:resultModel.errorCode]];
         }
-        VC.transferInfoArray = self.transferInfoArray;
+        VC.resultModel = resultModel;
+        VC.transferInfoArray = [NSMutableArray arrayWithObjects:self.address, [NSString stringWithFormat:@"%@ %@", self.transferVolumeStr, self.listModel.assetCode], nil];
         [self.navigationController pushViewController:VC animated:NO];
     } failure:^(TransactionResultModel *resultModel) {
         RequestTimeoutViewController * VC = [[RequestTimeoutViewController alloc] init];

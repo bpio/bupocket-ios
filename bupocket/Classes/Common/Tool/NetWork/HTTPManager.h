@@ -122,6 +122,7 @@
                                         success:(void (^)(id responseObject))success
                                         failure:(void (^)(NSError *error))failure;
 // Contract Transaction
+- (void)getTransactionWithModel:(ConfirmTransactionModel *)confirmTransactionModel;
 - (void)getContractTransactionWithModel:(ConfirmTransactionModel *)confirmTransactionModel
                                 success:(void (^)(id responseObject))success
                                 failure:(void (^)(NSError *error))failure;

@@ -81,12 +81,16 @@
     self.confirmTransactionModel.transactionCost = self.transactionCost;
     NSString * qrRemark = self.confirmTransactionModel.qrRemark;
     NSString * accountTag = self.confirmTransactionModel.accountTag;
-    if ([CurrentAppLanguage isEqualToString:EN] && self.confirmTransactionModel.qrRemarkEn) {
-        qrRemark = self.confirmTransactionModel.qrRemarkEn;
-        accountTag = self.confirmTransactionModel.accountTagEn;
+    if ([CurrentAppLanguage isEqualToString:EN]) {
+        if (self.confirmTransactionModel.qrRemarkEn) {
+            qrRemark = self.confirmTransactionModel.qrRemarkEn;
+        }
+        if (self.confirmTransactionModel.accountTagEn) {
+            accountTag = self.confirmTransactionModel.accountTagEn;
+        }
     }
     if (NULLString(self.confirmTransactionModel.destAddress)) {
-        _infoTitleArray = @[Localized(@"TransactionDetail"), Localized(@"reciprocalAccount"), Localized(@"MaximumTransactionCosts"), Localized(@"Initiator"), Localized(@"reciprocalAccount"), Localized(@"Number（BU）"), Localized(@"TransactionCosts（BU）"), Localized(@"Parameter")];
+        _infoTitleArray = @[Localized(@"TransactionDetail"), Localized(@"ReceivingAccount"), Localized(@"MaximumTransactionCosts"), Localized(@"SendingAccount"), Localized(@"ReceivingAccount"), Localized(@"Number（BU）"), Localized(@"TransactionCosts（BU）"), Localized(@"Parameter")];
         NSString * destAddress;
         if (NULLString(accountTag)) {
             destAddress = [NSString stringWithFormat:@"%@%@", self.confirmTransactionModel.destAddress, accountTag];
@@ -96,7 +100,7 @@
         infoArray = @[qrRemark, destAddress, self.transactionCost, CurrentWalletAddress, destAddress, self.confirmTransactionModel.amount, self.transactionCost, self.confirmTransactionModel.script];
         
     } else {
-        _infoTitleArray = @[Localized(@"TransactionDetail"), Localized(@"MaximumTransactionCosts"), Localized(@"Initiator"), Localized(@"Number（BU）"), Localized(@"TransactionCosts（BU）"), Localized(@"Parameter")];
+        _infoTitleArray = @[Localized(@"TransactionDetail"), Localized(@"MaximumTransactionCosts"), Localized(@"SendingAccount"), Localized(@"Number（BU）"), Localized(@"TransactionCosts（BU）"), Localized(@"Parameter")];
         transactionInfoCount = 4;
         infoArray = @[qrRemark, self.transactionCost, CurrentWalletAddress, self.confirmTransactionModel.amount, self.transactionCost, self.confirmTransactionModel.script];
     }

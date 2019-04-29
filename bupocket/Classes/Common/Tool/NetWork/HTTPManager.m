@@ -493,12 +493,8 @@ static int64_t const gasPrice = 1000;
     }];
 }
 // Contract Transaction
-- (void)getContractTransactionWithModel:(ConfirmTransactionModel *)confirmTransactionModel
-                                success:(void (^)(id responseObject))success
-                                failure:(void (^)(NSError *error))failure
+- (void)getTransactionWithModel:(ConfirmTransactionModel *)confirmTransactionModel
 {
-    // Build BUSendOperation
-    [MBProgressHUD showActivityMessageInWindow:Localized(@"DataChecking")];
     NSString * sourceAddress = CurrentWalletAddress;
     NSString * ID = confirmTransactionModel.qrcodeSessionId;
     if (confirmTransactionModel.nodeId) {
@@ -532,6 +528,14 @@ static int64_t const gasPrice = 1000;
     }
     _hash = [[HTTPManager shareManager] buildBlobAndSignAndSubmit:nil :sourceAddress :nonce :gasPrice :fee :operations :notes];
     DLog(@"hash:%@", _hash);
+}
+- (void)getContractTransactionWithModel:(ConfirmTransactionModel *)confirmTransactionModel
+                                success:(void (^)(id responseObject))success
+                                failure:(void (^)(NSError *error))failure
+{
+    // Build BUSendOperation
+    [MBProgressHUD showActivityMessageInWindow:Localized(@"DataChecking")];
+    [self getTransactionWithModel:confirmTransactionModel];
     if (_hash) {
         if (([confirmTransactionModel.type integerValue] == TransactionTypeCooperateSupport || [confirmTransactionModel.type integerValue] == TransactionTypeCooperateSignOut) && confirmTransactionModel.isCooperateDetail == YES) {
             NSString * URL = Node_Cooperate_Exit;

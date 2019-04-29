@@ -124,12 +124,15 @@
 "NoTransactionRecord" = "暂无交易记录";
 // 转账
 "ReciprocalAccount" = "对方账户（BU地址）*";
-"reciprocalAccount" = "对方账户";
+//"reciprocalAccount" = "对方账户";
+"SendingAccount" = "发送账户";
+"ReceivingAccount" = "接收账户";
 "PhoneOrAddress" = "请输入接收方地址";
-"AmountOfTransfer" = "转账数量";
+"AmountOfTransfer（%@）*" = "转账数量（%@）*";
 "AvailableBalance" = "可用余额";
 //"MostOnce" = "单笔不可超过10000 BU";
 "AmountOfTransferPlaceholder" = "请输入转账数量";
+"Value" = "数量";
 "Remarks" = "备注 ";
 "RemarksPlaceholder" = "备注限20字符内";
 "EstimatedMaximum" = "最多支付交易费用（BU）*";
@@ -142,7 +145,8 @@
 "TransferPrompt" = "请确认转账信息是否有误";
 "Submission" = "提交";
 "TransactionCost" = "交易费";
-"TransferTime" = "转账时间";
+"TransferTime" = "交易时间";
+"TxHash" = "交易Hash";
 //"TransferSuccess" = "转账成功";
 //"TransferFailure" = "转账失败";
 "TransactionStatus" = "交易状态";
@@ -371,8 +375,8 @@
 "Information" = "资讯";
 "SmallClothGoods" = "小布有品";
 // 节点竞选
-"Vote" = "票数";
-"Votes" = "票数";
+"Vote" = "得票数";
+"Votes" = "得票数";
 "My votes" = "我的投票数";
 "My vote" = "我的投票数";
 "ConsensusNode" = "记账节点";
@@ -387,7 +391,7 @@
 // 投票记录
 "Throw" = "投";
 "withdraw" = "撤";
-"Number" = "数量";
+//"Number" = "数量";
 "State" = "状态";
 "Time" = "时间";
 "InProcessing" = "处理中";
@@ -428,7 +432,7 @@
 "ConfirmTransaction" = "确认交易";
 "MaximumTransactionCosts" = "最多支付交易费用（BU）";
 "Overdue" = "请求已过期";
-"Initiator" = "发起方";
+//"Initiator" = "发起方";
 //"CounterAccount" = "对方账户";
 "Details" = "详情";
 "TransactionCosts（BU）" = "交易费用（BU）";

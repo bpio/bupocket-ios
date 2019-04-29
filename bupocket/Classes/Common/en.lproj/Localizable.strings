@@ -126,13 +126,16 @@
 "NoTransactionRecord" = "No transaction records";
 // Transfer coins
 "ReciprocalAccount" = "Recipient account（BU address）*";
-"reciprocalAccount" = "Recipient account";
+//"reciprocalAccount" = "Recipient account";
+"SendingAccount" = "From";
+"ReceivingAccount" = "To";
 "PhoneOrAddress" = "Please enter the recipient address";
-"AmountOfTransfer" = "Amount to transfer";
+"AmountOfTransfer（%@）*" = "Amount to transfer（%@）*";
 "AvailableBalance" = "Available balance";
 //"MostOnce" = "Each transaction cannot exceed 10000 BU";
 "AmountOfTransferPlaceholder" = "Please enter the amount to be transferred";
-"Remarks" = "Remark ";
+"Value" = "Value";
+"Remarks" = "Memo ";
 "RemarksPlaceholder" = "Remarks cannot exceed 20 characters";
 "EstimatedMaximum" = "Maximum transaction fee（BU）*";
 "estimatedMaximum" = "Maximum transaction fee";
@@ -144,8 +147,10 @@
 "ConfirmationOfTransfer" = "Confirm";
 "TransferPrompt" = "Please confirm whether the transfer information is correct.";
 "Submission" = "Submit";
-"TransactionCost" = "Transaction fee";
-"TransferTime" = "Time";
+//"TransactionCost" = "Transaction fee";
+"TransactionCost" = "Tx Fee";
+"TransferTime" = "Timestamp";
+"TxHash" = "Tx Hash";
 //"TransferSuccess" = "Succeeded";
 //"TransferFailure" = "Failed";
 "TransactionStatus" = "Transaction status";
@@ -386,7 +391,7 @@
 "Votes" = "Votes";
 "My votes" = "My votes";
 "My vote" = "My vote";
-"ConsensusNode" = "Consensus node";
+"ConsensusNode" = "Validator Node";
 "EcologicalNodes" = "Ecological node";
 "InterdependentNode" = "Nodes related to me";
 "RelevantNodes" = "Filter the nodes that are related to me, such as the node I voted for or the campaign node itself";
@@ -398,7 +403,7 @@
 // Records of voting
 "Throw" = "Vote";
 "withdraw" = "Cancel";
-"Number" = "Number";
+//"Number" = "Number";
 "State" = "Status";
 "Time" = "Time";
 "InProcessing" = "Processing";
@@ -439,7 +444,7 @@
 "ConfirmTransaction" = "Confirm transaction";
 "MaximumTransactionCosts" = "Maximum transaction costs（BU）";
 "Overdue" = "The request is expired";
-"Initiator" = "Initiator";
+//"Initiator" = "Initiator";
 //"CounterAccount" = "The receiving account";
 "Details" = "Details";
 "TransactionCosts（BU）" = "Transaction fees（BU）";

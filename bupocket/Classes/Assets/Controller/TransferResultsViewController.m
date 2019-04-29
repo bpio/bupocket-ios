@@ -20,12 +20,21 @@
 
 static NSString * const TransferResultsCellID = @"DetailListCellID";
 
+- (NSMutableArray *)transferInfoArray
+{
+    if (!_transferInfoArray) {
+        _transferInfoArray = [NSMutableArray array];
+    }
+    return _transferInfoArray;
+}
+
 
 - (void)viewDidLoad {
     [super viewDidLoad];
     [self setupView];
-    
-    self.listArray = @[@[Localized(@"reciprocalAccount"), Localized(@"AmountOfTransfer"), Localized(@"TransactionCost"), Localized(@"Remarks"), Localized(@"TransferTime")], self.transferInfoArray];
+    [self.transferInfoArray insertObject:CurrentWalletAddress atIndex:0];
+    [self.transferInfoArray addObjectsFromArray:@[[NSString stringAppendingBUWithStr:self.resultModel.actualFee], self.resultModel.transactionHash, [DateTool getDateStringWithTimeStr:[NSString stringWithFormat:@"%lld", self.resultModel.transactionTime]]]];
+    self.listArray = @[@[Localized(@"SendingAccount"), Localized(@"ReceivingAccount"), Localized(@"Value"), Localized(@"TransactionCost"), Localized(@"TxHash"), Localized(@"TransferTime"), Localized(@"Remarks")], self.transferInfoArray];
     // Do any additional setup after loading the view.
 }
 - (void)setupView
@@ -74,10 +83,8 @@ static NSString * const TransferResultsCellID = @"DetailListCellID";
 }
 - (CGFloat)tableView:(UITableView *)tableView heightForRowAtIndexPath:(NSIndexPath *)indexPath
 {
-    if (indexPath.row == [self.listArray[0] count] - 2) {
-       return ([self.listArray[0] count] != [self.listArray[1] count]) ? MAIN_HEIGHT : ([Encapsulation rectWithText:self.listArray[1][indexPath.row] font:FONT(15) textWidth:Info_Width_Max].size.height + Margin_30);
-    } else if (indexPath.row == [self.listArray[0] count] - 1) {
-        return [Encapsulation rectWithText:[self.listArray[1] lastObject] font:FONT(15) textWidth:Info_Width_Max].size.height + Margin_30;
+    if (indexPath.row == [self.listArray[0] count] - 1) {
+        return (NULLString(self.resultModel.remark)) ? ([Encapsulation rectWithText:self.resultModel.remark font:FONT(15) textWidth:Info_Width_Max].size.height + Margin_30) : MAIN_HEIGHT;
     } else {
         return [Encapsulation rectWithText:self.listArray[1][indexPath.row] font:FONT(15) textWidth:Info_Width_Max].size.height + Margin_30;
     }
@@ -94,15 +101,13 @@ static NSString * const TransferResultsCellID = @"DetailListCellID";
 {
     DetailListViewCell * cell = [DetailListViewCell cellWithTableView:tableView identifier:TransferResultsCellID];
     cell.title.text = self.listArray[0][indexPath.row];
-    if (indexPath.row == [self.listArray[0] count] - 2) {
-        cell.infoTitle.text = ([self.listArray[0] count] != [self.listArray[1] count]) ? @"" : self.listArray[1][indexPath.row];
-    } else if (indexPath.row == [self.listArray[0] count] - 1) {
-        cell.infoTitle.text = [self.listArray[1] lastObject];
+    if (indexPath.row == [self.listArray[0] count] - 1) {
+        cell.infoTitle.text = !NULLString(self.resultModel.remark) ? @"" : self.resultModel.remark;
     } else {
         cell.infoTitle.text = self.listArray[1][indexPath.row];
     }
     cell.selectionStyle = UITableViewCellSelectionStyleNone;
-    if ([cell.title.text isEqualToString:Localized(@"reciprocalAccount")]) {
+    if (indexPath.row == 0 || indexPath.row == 1 || indexPath.row == 4) {
         cell.infoTitle.copyable = YES;
     } else {
         cell.infoTitle.copyable = NO;

@@ -132,11 +132,11 @@
         _textField.textColor = TITLE_COLOR;
         _textField.font = FONT(12);
         _textField.placeholder = [NSString stringWithFormat:Localized(@"Maximum revocable %@ votes"), @"100"];
-        CGFloat leftViewW = [Encapsulation rectWithText:Localized(@"Number") font:FONT_Bold(16) textHeight:Margin_50].size.width + Margin_10;
+        CGFloat leftViewW = [Encapsulation rectWithText:Localized(@"Value") font:FONT_Bold(16) textHeight:Margin_50].size.width + Margin_10;
         UILabel * leftLabel = [[UILabel alloc] initWithFrame:CGRectMake(0, 0, leftViewW, Margin_50)];
         leftLabel.font = FONT_Bold(16);
         leftLabel.textColor = COLOR_6;
-        leftLabel.text = Localized(@"Number");
+        leftLabel.text = Localized(@"Value");
         _textField.leftView = leftLabel;
         _textField.leftViewMode = UITextFieldViewModeAlways;
         UIButton * rightBtn = [UIButton createButtonWithTitle:Localized(@"Whole") TextFont:14 TextNormalColor:MAIN_COLOR TextSelectedColor:MAIN_COLOR Target:self Selector:@selector(WholeAction)];

@@ -36,7 +36,7 @@
     if (self) {
         _sureBlock = confrimBlock;
         _cancleBlock = cancelBlock;
-        _transferInfoArray = @[@[Localized(@"reciprocalAccount"), Localized(@"AmountOfTransfer"), Localized(@"estimatedMaximum"), Localized(@"Remarks")], transferInfoArray];
+        _transferInfoArray = @[@[Localized(@"ReceivingAccount"), Localized(@"Value"), Localized(@"estimatedMaximum"), Localized(@"Remarks")], transferInfoArray];
         [self setupView];
     }
     return self;
@@ -70,7 +70,7 @@
     infoLabel.numberOfLines = 0;
     infoLabel.textAlignment = NSTextAlignmentRight;
     [self addSubview:infoLabel];
-    if ([titleLabel.text isEqualToString:Localized(@"reciprocalAccount")]) {
+    if ([titleLabel.text isEqualToString:Localized(@"ReceivingAccount")]) {
         infoLabel.copyable = YES;
     }
 //    infoLabel.preferredMaxLayoutWidth = ScreenScale(150);

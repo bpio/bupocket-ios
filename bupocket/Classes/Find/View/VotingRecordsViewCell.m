@@ -89,13 +89,13 @@ static NSString * const NodeRecordsCellID = @"NodeRecordsCellID";
     [self.number mas_makeConstraints:^(MASConstraintMaker *make) {
         make.top.equalTo(self.recordType.mas_bottom).offset(Margin_15);
         make.left.equalTo(self.recordType);
-        make.width.mas_equalTo(width * 2);
+        make.width.mas_equalTo(width * 1.8);
         //        make.right.mas_lessThanOrEqualTo(self.nodeType.mas_left).offset(-Margin_15);
     }];
     [self.state mas_makeConstraints:^(MASConstraintMaker *make) {
         make.left.equalTo(self.number.mas_right).offset(Margin_5);
         make.centerY.equalTo(self.number);
-        make.width.mas_equalTo(width);
+        make.width.mas_equalTo(width * 1.2);
     }];
     [self.date mas_makeConstraints:^(MASConstraintMaker *make) {
         make.left.equalTo(self.state.mas_right).offset(Margin_5);
@@ -189,7 +189,7 @@ static NSString * const NodeRecordsCellID = @"NodeRecordsCellID";
     } else if ([votingRecordsModel.identityType isEqualToString:NodeType_Ecological]) {
         self.nodeType.text = Localized(@"EcologicalNodes");
     }
-    self.number.attributedText = [Encapsulation attrWithString:[NSString stringWithFormat:@"%@\n%@", Localized(@"Number"), votingRecordsModel.amount] preFont:FONT(12) preColor:COLOR_9 index:Localized(@"Number").length sufFont:FONT(13) sufColor:TITLE_COLOR lineSpacing:Margin_5];
+    self.number.attributedText = [Encapsulation attrWithString:[NSString stringWithFormat:@"%@\n%@", Localized(@"Value"), votingRecordsModel.amount] preFont:FONT(12) preColor:COLOR_9 index:Localized(@"Value").length sufFont:FONT(13) sufColor:TITLE_COLOR lineSpacing:Margin_5];
     self.number.textAlignment = NSTextAlignmentLeft;
     NSString * stateStr;
     UIColor * stateColor;
