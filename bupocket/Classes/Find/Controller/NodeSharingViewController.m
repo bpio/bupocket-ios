@@ -207,9 +207,9 @@ static NSString * const NodeSharingID = @"NodeSharingID";
         return;
     }
     NSString * path = nil;
-    if ([self.nodePlanModel.identityType isEqualToString:NodeType_Consensus]) {
+    if ([self.nodePlanModel.identityType integerValue] == NodeIDTypeConsensus) {
         path = [NSString stringWithFormat:@"%@%@", Validate_Node_Path, self.nodePlanModel.nodeId];
-    } else if ([self.nodePlanModel.identityType isEqualToString:NodeType_Ecological]) {
+    } else if ([self.nodePlanModel.identityType integerValue] == NodeIDTypeEcological) {
         path = [NSString stringWithFormat:@"%@%@", Kol_Node_Path, self.nodePlanModel.nodeId];
     }
     [[HTTPManager shareManager] getShortLinkDataWithType:@"1" path:path success:^(id responseObject) {

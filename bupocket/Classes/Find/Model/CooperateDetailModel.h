@@ -8,6 +8,13 @@
 
 #import "BaseModel.h"
 
+// 状态：1-共建中 ，2-共建成功， 3-共建失败
+typedef NS_ENUM(NSInteger, CooperateStatus) {
+    CooperateStatusInProcessing = 1,
+    CooperateStatusSuccess = 2,
+    CooperateStatusFailure = 3
+};
+
 NS_ASSUME_NONNULL_BEGIN
 
 @interface CooperateDetailModel : BaseModel

@@ -17,7 +17,7 @@ static int timeStampLength = 13;
     NSTimeInterval interval;
     if (str.length == timeStampLength - 3) {
         interval = [str doubleValue];
-    } else if (str.length > timeStampLength) {
+    } else if (str.length >= timeStampLength) {
         interval = [[str substringToIndex:timeStampLength] doubleValue] / 1000.0;
     } else {
         return nil;
@@ -32,7 +32,7 @@ static int timeStampLength = 13;
     NSTimeInterval interval;
     if (str.length == timeStampLength - 3) {
         interval = [str doubleValue];
-    } else if (str.length > timeStampLength) {
+    } else if (str.length >= timeStampLength) {
         interval = [[str substringToIndex:timeStampLength] doubleValue] / 1000.0;
     } else {
         return nil;

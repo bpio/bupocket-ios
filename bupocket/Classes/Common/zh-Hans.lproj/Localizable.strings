@@ -508,6 +508,8 @@
 "InitiatorAddressUnavailable" = "该账户不是发起者，无法发起该操作";
 "InitiatorCanNotSupport" = "节点共建项目发起者不能参与支持";
 "NonRepeatableWithdrawal" = "您已成功撤回，不能重复操作";
+"NodeStatusExiting" = "当前节点处于\"退出中\"状态，暂不支持邀请投票";
+"NodeStatusExited" = "当前节点处于\"已退出\"状态，暂不支持邀请投票";
 
 // SDK Errors
 "SYSTEM_ERROR" = "系统错误";

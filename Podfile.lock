@@ -31,6 +31,9 @@ PODS:
     - Starscream (~> 3.0.6)
   - SocketRocket (0.5.1)
   - Starscream (3.0.6)
+  - UMCAnalytics (6.0.1):
+    - UMCCommon
+  - UMCCommon (2.0.0)
   - WechatOpenSDK (1.8.4)
   - XHToast (1.4.0)
 
@@ -46,6 +49,8 @@ DEPENDENCIES:
   - SDWebImage
   - Socket.IO-Client-Swift
   - SocketRocket
+  - UMCAnalytics
+  - UMCCommon
   - WechatOpenSDK
   - XHToast
 
@@ -63,6 +68,8 @@ SPEC REPOS:
     - Socket.IO-Client-Swift
     - SocketRocket
     - Starscream
+    - UMCAnalytics
+    - UMCCommon
     - WechatOpenSDK
     - XHToast
 
@@ -79,9 +86,11 @@ SPEC CHECKSUMS:
   Socket.IO-Client-Swift: 21e6a8a23a7d367d5ddfab6cbbd3c679cf3c25d6
   SocketRocket: d57c7159b83c3c6655745cd15302aa24b6bae531
   Starscream: ef3ece99d765eeccb67de105bfa143f929026cf5
+  UMCAnalytics: c267acd9bb4a87e5f01735c158b63a617908f92e
+  UMCCommon: 79b5a614c958db367113eed5740109d9a98e1223
   WechatOpenSDK: 9b721089507c895d05f997408c30bb6e6f5f9b60
   XHToast: 3b354766d56d9df8fef8e64387bbd25c90d71a86
 
-PODFILE CHECKSUM: 44134e4c7a926b550ed20a2248f748acda321318
+PODFILE CHECKSUM: 986e952c966bcdde5c3e59993f19fddaed1e80ef
 
 COCOAPODS: 1.5.3

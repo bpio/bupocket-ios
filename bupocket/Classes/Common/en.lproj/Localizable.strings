@@ -518,6 +518,8 @@
 "InitiatorAddressUnavailable" = "Only the initiator can initiate this operation";
 "InitiatorCanNotSupport" = "The initiator of the node co-funding project cannot be a sponsor";
 "NonRepeatableWithdrawal" = "You have withdrawn successfully. Frequent operations are not allowed";
+"NodeStatusExiting" = "The current node is exiting, and is not accessible for vote invitation";
+"NodeStatusExited" = "The current node has exited, and is not accessible for vote invitation";
 
 // SDK Errors
 "SYSTEM_ERROR" = "System error";

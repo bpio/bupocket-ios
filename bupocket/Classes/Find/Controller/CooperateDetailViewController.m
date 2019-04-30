@@ -81,10 +81,10 @@ static NSString * const CooperateDetailCellID = @"CooperateDetailCellID";
             self.cooperateDetailModel = [CooperateDetailModel mj_objectWithKeyValues:responseObject[@"data"]];
             self.listArray = [CooperateSupportModel mj_objectArrayWithKeyValuesArray:self.cooperateDetailModel.supportList];
             [self.tableView reloadData];
-            if ([self.cooperateDetailModel.status isEqualToString:Cooperate_State_Failure]) {
+            if ([self.cooperateDetailModel.status integerValue] == CooperateStatusFailure) {
                 self.footerView.hidden = NO;
                 self.redemptionAllSupport.hidden = NO;
-            } else if ([self.cooperateDetailModel.status isEqualToString:Cooperate_State_InProgress] && ![self.cooperateDetailModel.originatorAddress isEqualToString:CurrentWalletAddress]) {
+            } else if ([self.cooperateDetailModel.status integerValue] == CooperateStatusInProcessing && ![self.cooperateDetailModel.originatorAddress isEqualToString:CurrentWalletAddress]) {
                 self.footerView.hidden = NO;
                 self.signOut.hidden = NO;
                 self.support.hidden = NO;
@@ -349,7 +349,7 @@ static NSString * const CooperateDetailCellID = @"CooperateDetailCellID";
 {
     if (section == self.sectionNumber - 1) {
         CGFloat footerH = SafeAreaBottomH + NavBarH + Margin_5;
-        if ([self.cooperateDetailModel.status isEqualToString:Cooperate_State_Failure] || ([self.cooperateDetailModel.status isEqualToString:Cooperate_State_InProgress] && ![self.cooperateDetailModel.originatorAddress isEqualToString:CurrentWalletAddress])) {
+        if ([self.cooperateDetailModel.status integerValue] == CooperateStatusFailure || ([self.cooperateDetailModel.status integerValue] == CooperateStatusInProcessing && ![self.cooperateDetailModel.originatorAddress isEqualToString:CurrentWalletAddress])) {
             footerH += ScreenScale(75);
         }
         return  footerH;
@@ -392,13 +392,13 @@ static NSString * const CooperateDetailCellID = @"CooperateDetailCellID";
                 cell.title.text = self.cooperateDetailModel.title;
                 cell.infoTitle.text = nil;
                 cell.stateBtn.hidden = NO;
-                if ([self.cooperateDetailModel.status isEqualToString:Cooperate_State_InProgress]) {
+                if ([self.cooperateDetailModel.status integerValue] == CooperateStatusInProcessing) {
                     // 1-共建中
                     cell.stateBtn.selected = NO;
-                } else if ([self.cooperateDetailModel.status isEqualToString:Cooperate_State_Success]) {
+                } else if ([self.cooperateDetailModel.status integerValue] == CooperateStatusSuccess) {
                     // 2-共建成功
                     cell.stateBtn.selected = YES;
-                } else if ([self.cooperateDetailModel.status isEqualToString:Cooperate_State_Failure]) {
+                } else if ([self.cooperateDetailModel.status integerValue] == CooperateStatusFailure) {
                     // 3-共建失败
                     cell.stateBtn.enabled = NO;
                 }

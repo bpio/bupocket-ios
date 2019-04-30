@@ -34,6 +34,10 @@ pod 'SocketRocket'
 pod 'SDCycleScrollView'
 
 pod 'WechatOpenSDK'
+#无IDFA版SDK
+#pod 'UMengAnalytics-NO-IDFA'
+pod 'UMCAnalytics'
+pod 'UMCCommon'
 #pod 'LinkedME_LinkPage'
 #pod 'FDFullscreenPopGesture'
 

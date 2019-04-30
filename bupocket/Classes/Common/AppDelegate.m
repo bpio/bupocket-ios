@@ -15,6 +15,7 @@
 #import <IQKeyboardManager/IQKeyboardManager.h>
 #import <WXApi.h>
 #import <TencentOpenAPI/TencentOAuth.h>
+#import <UMCommon/UMCommon.h>
 
 @interface AppDelegate ()<WXApiDelegate, TencentSessionDelegate>
 
@@ -40,6 +41,18 @@
     [[HTTPManager shareManager] getBlockLatestFees];
     [WXApi registerApp:Wechat_APP_ID];
     _tencentOAuth = [[TencentOAuth alloc] initWithAppId:Tencent_App_ID andDelegate:self];
+    
+    /** 初始化友盟所有组件产品
+     @param appKey 开发者在友盟官网申请的AppKey.
+     @param channel 渠道标识，可设置nil表示"App Store".
+     */
+    [UMConfigure initWithAppkey:UM_App_Key channel:@""];
+    /** 开启CrashReport收集, 默认YES(开启状态).
+     @param value 设置为NO,可关闭友盟CrashReport收集功能.
+     @return void.
+     */
+    //    [MobClick setCrashReportEnabled:NO];   // 关闭Crash收集
+
     return YES;
 }
 - (void)initializationSettings

@@ -18,10 +18,10 @@
 
 //#define WEB_SERVER_DOMAIN_TEST @"http://api-bp.bumotest.io/"
 //#define BUMO_NODE_URL_TEST @"https://wallet-node.bumotest.io"
-//#define WEB_SERVER_DOMAIN_TEST @"http://192.168.6.97:5648/"
-//#define BUMO_NODE_URL_TEST @"http://192.168.21.35:36002"
-#define WEB_SERVER_DOMAIN_TEST @"http://test-bupocket-api.bumocdn.com/"
-#define BUMO_NODE_URL_TEST @"http://192.168.3.65:36002"
+#define WEB_SERVER_DOMAIN_TEST @"http://192.168.6.97:5648/"
+#define BUMO_NODE_URL_TEST @"http://192.168.21.35:36002"
+//#define WEB_SERVER_DOMAIN_TEST @"http://test-bupocket-api.bumocdn.com/"
+//#define BUMO_NODE_URL_TEST @"http://192.168.3.65:36002"
 
 #define BUMO_TOOLS_URL_TEST @"https://ws-tools.bumotest.io"
 
@@ -137,12 +137,8 @@
 #define TransactionCost_Cooperate_MIN @"10.3"
 #define Activate_Cooperate_MIN @"0.01"
 
-#define Cooperate_State_InProgress @"1"
-#define Cooperate_State_Success @"2"
-#define Cooperate_State_Failure @"3"
-
-#define NodeType_Consensus @"1"
-#define NodeType_Ecological @"2"
+//#define NodeType_Consensus @"1"
+//#define NodeType_Ecological @"2"
 
 #define Role_validator @"validator"
 #define Role_kol @"kol"
@@ -180,6 +176,7 @@
 #define XCX_YouPin_Original_ID @"gh_545e659b7dcd"
 
 #define Tencent_App_ID @"101569415"
+#define UM_App_Key @"5cc7a6020cafb223d0000ae9"
 
 #define Dispatch_After_Time 0.5
 

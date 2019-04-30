@@ -45,6 +45,7 @@ NS_ASSUME_NONNULL_BEGIN
 
 // 区分扫码操作还是共建详情页操作
 @property (nonatomic, assign) BOOL isCooperateDetail;
+// 是否直接调用底层合约交易
 @property (nonatomic, assign) BOOL isNodeURL;
 
 @end

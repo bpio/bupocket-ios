@@ -278,9 +278,9 @@ static NSString * const NodeSharingID = @"NodeSharingID";
     NSString * imageUrl = [NSString stringWithFormat:@"%@%@%@", url, Node_Image_URL, nodePlanModel.nodeLogo];
     [self.listImage sd_setImageWithURL:[NSURL URLWithString:imageUrl] placeholderImage:[UIImage imageNamed:@"placeholder_list"]];
     self.name.text = nodePlanModel.nodeName;
-    if ([nodePlanModel.identityType isEqualToString:NodeType_Consensus]) {
+    if ([nodePlanModel.identityType integerValue] == NodeIDTypeConsensus) {
         self.nodeType.text = Localized(@"ConsensusNode");
-    } else if ([nodePlanModel.identityType isEqualToString:NodeType_Ecological]) {
+    } else if ([nodePlanModel.identityType integerValue] == NodeIDTypeEcological) {
         self.nodeType.text = Localized(@"EcologicalNodes");
     }
     if ([self.reuseIdentifier isEqualToString:NodeSharingID]) {

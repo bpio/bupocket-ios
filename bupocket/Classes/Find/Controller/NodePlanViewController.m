@@ -17,6 +17,7 @@
 #import "NodeTransferSuccessViewController.h"
 #import "TransferResultsViewController.h"
 #import "RequestTimeoutViewController.h"
+#import <IQKeyboardManager/IQKeyboardManager.h>
 
 @interface NodePlanViewController ()<UITableViewDelegate, UITableViewDataSource, UITextFieldDelegate, YBPopupMenuDelegate>
 
@@ -100,6 +101,7 @@ static NSString * const NodePlanCellID = @"NodePlanCellID";
             self.contractAddress = responseObject[@"data"][@"contractAddress"];
             self.accountTag = responseObject[@"data"][@"accountTag"];
             self.accountTagEn = responseObject[@"data"][@"accountTagEn"];
+            [self setNodeData];
             [self.tableView reloadData];
         } else {
             [MBProgressHUD showTipMessageInWindow:[ErrorTypeTool getDescriptionWithNodeErrorCode:code]];
@@ -118,14 +120,15 @@ static NSString * const NodePlanCellID = @"NodePlanCellID";
 }
 - (void)ifShowNoData
 {
-    (self.listArray.count > 0) ? (self.tableView.tableFooterView = [[UIView alloc] initWithFrame:CGRectMake(0, 0, DEVICE_WIDTH, CGFLOAT_MIN)]) : (self.tableView.tableFooterView = self.noData);
+    (self.listArray.count > 0) ? (self.tableView.tableFooterView = [[UIView alloc] initWithFrame:CGRectMake(0, 0, DEVICE_WIDTH, SafeAreaBottomH + NavBarH)]) : (self.tableView.tableFooterView = self.noData);
     self.tableView.mj_footer.hidden = (self.listArray.count == 0);
 }
-- (void)setInterdependentNode
+#pragma mark 数据筛选
+- (void)setNodeData
 {
-    if (self.interdependentNode.selected == NO) {
+    if (self.interdependentNode.selected == NO && self.searchText.length == 0) {
         self.listArray = self.nodeListArray;
-    } else {
+    } else if (self.interdependentNode.selected == YES  && self.searchText.length == 0) {
         NSMutableArray * listArray = [NSMutableArray array];
         for (NodePlanModel * nodePlanModel in self.nodeListArray) {
             if ([nodePlanModel.myVoteCount integerValue] > 0 || [nodePlanModel.nodeCapitalAddress isEqualToString:CurrentWalletAddress]) {
@@ -133,20 +136,35 @@ static NSString * const NodePlanCellID = @"NodePlanCellID";
             }
         }
         self.listArray = listArray;
+    } else if (self.interdependentNode.selected == NO && self.searchText.length > 0) {
+        NSMutableArray * listArray = [NSMutableArray array];
+        for (NodePlanModel * nodePlanModel in self.nodeListArray) {
+            if ([nodePlanModel.nodeName containsString:self.searchText]) {
+                [listArray addObject:nodePlanModel];
+            }
+        }
+        self.listArray = listArray;
+    } else if (self.interdependentNode.selected == YES && self.searchText.length > 0)  {
+        NSMutableArray * listArray = [NSMutableArray array];
+        for (NodePlanModel * nodePlanModel in self.nodeListArray) {
+            if (([nodePlanModel.myVoteCount integerValue] > 0 || [nodePlanModel.nodeCapitalAddress isEqualToString:CurrentWalletAddress]) && [nodePlanModel.nodeName containsString:self.searchText]) {
+                [listArray addObject:nodePlanModel];
+            }
+        }
+        self.listArray = listArray;
     }
-    [self ifShowNoData];
-    [self.tableView reloadData];
 }
 - (void)setupView
 {
-    self.tableView = [[UITableView alloc] initWithFrame:self.view.frame style:UITableViewStyleGrouped];
+    self.tableView = [[UITableView alloc] initWithFrame:self.view.frame style:UITableViewStylePlain];
     self.tableView.delegate = self;
     self.tableView.dataSource = self;
     self.tableView.separatorStyle = UITableViewCellSeparatorStyleNone;
     self.tableView.keyboardDismissMode = UIScrollViewKeyboardDismissModeOnDrag;
+    self.tableView.backgroundColor = VIEWBG_COLOR;
     [self.view addSubview:self.tableView];
     self.noNetWork = [Encapsulation showNoNetWorkWithSuperView:self.view target:self action:@selector(reloadData)];
-    self.tableView.tableHeaderView = self.headerView;
+//    self.tableView.tableHeaderView = self.headerView;
 }
 - (UIView *)noData
 {
@@ -158,6 +176,45 @@ static NSString * const NodePlanCellID = @"NodePlanCellID";
         [_noData addSubview:noDataBtn];
     }
     return _noData;
+}
+- (void)searchAction
+{
+    [self.searchTextField resignFirstResponder];
+    [self setNodeData];
+    [self.tableView reloadData];
+    [self ifShowNoData];
+}
+- (BOOL)textFieldShouldClear:(UITextField *)textField
+{
+    self.searchText = nil;
+    [self searchAction];
+    return YES;
+}
+- (void)textChange:(UITextField *)textField
+{
+    self.searchText = [self.searchTextField.text stringByTrimmingCharactersInSet:[NSCharacterSet whitespaceAndNewlineCharacterSet]];
+}
+- (BOOL)textFieldShouldReturn:(UITextField *)textField
+{
+    [self searchAction];
+    return YES;
+}
+
+- (NSInteger)numberOfSectionsInTableView:(UITableView *)tableView
+{
+    return 1;
+}
+- (NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section
+{
+    return self.listArray.count;
+}
+- (CGFloat)tableView:(UITableView *)tableView heightForHeaderInSection:(NSInteger)section
+{
+    return Margin_40;
+}
+- (UIView *)tableView:(UITableView *)tableView viewForHeaderInSection:(NSInteger)section
+{
+    return self.headerView;
 }
 - (UIView *)headerView
 {
@@ -202,70 +259,21 @@ static NSString * const NodePlanCellID = @"NodePlanCellID";
             make.centerY.equalTo(self->_interdependentNode);
             make.size.mas_equalTo(CGSizeMake(ScreenScale(73), Margin_20));
         }];
-        
+        [_searchTextField addDoneOnKeyboardWithTarget:self action:@selector(searchAction)];
         UIButton * searchBtn = [UIButton createButtonWithNormalImage:@"node_search" SelectedImage:@"node_search" Target:self Selector:@selector(searchAction)];
         _searchTextField.leftViewMode = UITextFieldViewModeAlways;
         _searchTextField.leftView = searchBtn;
         searchBtn.size = CGSizeMake(Margin_20, Margin_20);
-        //        [searchBtn mas_makeConstraints:^(MASConstraintMaker *make) {
-        //            make.left.top.bottom.equalTo(self->_searchTextField);
-        //            make.width.mas_equalTo(Margin_20);
-        //        }];
+        _headerView.backgroundColor = _tableView.backgroundColor;
     }
     return _headerView;
-}
-- (void)searchAction
-{
-    [self.searchTextField resignFirstResponder];
-    [self searchData];
-}
-- (BOOL)textFieldShouldClear:(UITextField *)textField
-{
-    self.searchText = nil;
-    [self searchAction];
-    return YES;
-}
-- (void)textChange:(UITextField *)textField
-{
-    self.searchText = [self.searchTextField.text stringByTrimmingCharactersInSet:[NSCharacterSet whitespaceAndNewlineCharacterSet]];
-}
-- (BOOL)textFieldShouldReturn:(UITextField *)textField
-{
-    [self searchAction];
-    return YES;
-}
-- (void)searchData
-{
-    if (self.searchText.length == 0) {
-        self.listArray = self.nodeListArray;
-    } else {
-        NSMutableArray * listArray = [NSMutableArray array];
-        for (NodePlanModel * nodePlanModel in self.nodeListArray) {
-            if ([nodePlanModel.nodeName containsString:self.searchText]) {
-                [listArray addObject:nodePlanModel];
-            }
-        }
-        self.listArray = listArray;
-    }
-    [self ifShowNoData];
-    [self.tableView reloadData];
-}
-- (NSInteger)numberOfSectionsInTableView:(UITableView *)tableView
-{
-    return self.listArray.count;
-}
-- (NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section
-{
-    return 1;
-}
-- (CGFloat)tableView:(UITableView *)tableView heightForHeaderInSection:(NSInteger)section
-{
-    return CGFLOAT_MIN;
 }
 - (void)interdependentNodeAction:(UIButton *)button
 {
     button.selected = !button.selected;
-    [self setInterdependentNode];
+    [self setNodeData];
+    [self.tableView reloadData];
+    [self ifShowNoData];
 }
 - (void)infoAction:(UIButton *)button
 {
@@ -288,12 +296,22 @@ static NSString * const NodePlanCellID = @"NodePlanCellID";
 
 - (CGFloat)tableView:(UITableView *)tableView heightForFooterInSection:(NSInteger)section
 {
-    if (section == self.listArray.count - 1) {
-        return SafeAreaBottomH + NavBarH;
-    } else {
+//    if (self.listArray.count > 0) {
+//        return SafeAreaBottomH + NavBarH;
+//    } else {
         return CGFLOAT_MIN;
-    }
+//    }
 }
+//- (UIView *)tableView:(UITableView *)tableView viewForFooterInSection:(NSInteger)section
+//{
+//    if (self.listArray.count > 0) {
+//        UIView * footerView = [[UIView alloc] init];
+//        footerView.backgroundColor = self.tableView.backgroundColor;
+//        return footerView;
+//    } else {
+//        return nil;
+//    }
+//}
 - (CGFloat)tableView:(UITableView *)tableView heightForRowAtIndexPath:(NSIndexPath *)indexPath
 {
     return ScreenScale(160);
@@ -301,25 +319,35 @@ static NSString * const NodePlanCellID = @"NodePlanCellID";
 - (UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath
 {
     NodePlanViewCell * cell = [NodePlanViewCell cellWithTableView:tableView identifier:NodePlanCellID];
-    __block NodePlanModel * nodePlanModel = self.listArray[indexPath.section];
+    __block NodePlanModel * nodePlanModel = self.listArray[indexPath.row];
     cell.nodePlanModel = nodePlanModel;
     cell.selectionStyle = UITableViewCellSelectionStyleNone;
     cell.invitationVoteClick = ^{
         [self shareAction:nodePlanModel];
     };
     cell.votingRecordClick = ^{
-        [self votingRecordWithIndex:indexPath.section];
+        [self votingRecordWithIndex:indexPath.row];
     };
     cell.cancellationVotesClick = ^{
-        [self cancellationVotesWithIndex:indexPath.section];
+        [self cancellationVotesWithIndex:indexPath.row];
     };
     return cell;
 }
 - (void)shareAction:(NodePlanModel *)nodePlanModel
 {
-    NodeSharingViewController * VC = [[NodeSharingViewController alloc] init];
-    VC.nodeID = nodePlanModel.nodeId;
-    [self.navigationController pushViewController:VC animated:NO];
+    if ([nodePlanModel.status integerValue] == NodeStatusSuccess) {
+        NodeSharingViewController * VC = [[NodeSharingViewController alloc] init];
+        VC.nodeID = nodePlanModel.nodeId;
+        [self.navigationController pushViewController:VC animated:NO];
+    } else {
+        NSString * status;
+        if ([nodePlanModel.status integerValue] == NodeStatusExit) {
+            status = Localized(@"NodeStatusExiting");
+        } else if ([nodePlanModel.status integerValue] == NodeStatusQuit) {
+            status = Localized(@"NodeStatusExited");
+        }
+        [Encapsulation showAlertControllerWithMessage:status handler:nil];
+    }
 }
 - (void)invitationVoteWithIndex:(NSInteger)index
 {
@@ -345,9 +373,9 @@ static NSString * const NodePlanCellID = @"NodePlanCellID";
     confirmTransactionModel.accountTagEn = self.accountTagEn;
     confirmTransactionModel.amount = @"0";
     NSString * role;
-    if ([nodePlanModel.identityType isEqualToString:NodeType_Consensus]) {
+    if ([nodePlanModel.identityType integerValue] == NodeIDTypeConsensus) {
         role = Role_validator;
-    } else if ([nodePlanModel.identityType isEqualToString:NodeType_Ecological]) {
+    } else if ([nodePlanModel.identityType integerValue] == NodeIDTypeEcological) {
         role = Role_kol;
     }
     confirmTransactionModel.script = [NSString stringWithFormat:@"{\"method\":\"unVote\",\"params\":{\"role\":\"%@\",\"address\":\"%@\"}}", role, nodePlanModel.nodeCapitalAddress];

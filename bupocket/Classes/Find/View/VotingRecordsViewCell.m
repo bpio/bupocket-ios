@@ -175,31 +175,31 @@ static NSString * const NodeRecordsCellID = @"NodeRecordsCellID";
 {
     _votingRecordsModel = votingRecordsModel;
     
-    if ([votingRecordsModel.type isEqualToString:@"1"]) {
+    if ([votingRecordsModel.type integerValue] == VoteTypeThrow) {
         _recordType.backgroundColor = MAIN_COLOR;
-    } else if ([votingRecordsModel.type isEqualToString:@"2"]) {
+    } else if ([votingRecordsModel.type integerValue] == VoteTypeWithdraw) {
         self.recordType.selected = YES;
         _recordType.backgroundColor = WARNING_COLOR;
     }
     if (![self.reuseIdentifier isEqualToString:NodeRecordsCellID]) {
         self.title.text = votingRecordsModel.nodeName;
     }
-    if ([votingRecordsModel.identityType isEqualToString:NodeType_Consensus]) {
+    if ([votingRecordsModel.identityType integerValue] == NodeIdentityConsensus) {
         self.nodeType.text = Localized(@"ConsensusNode");
-    } else if ([votingRecordsModel.identityType isEqualToString:NodeType_Ecological]) {
+    } else if ([votingRecordsModel.identityType integerValue] == NodeIdentityEcological) {
         self.nodeType.text = Localized(@"EcologicalNodes");
     }
     self.number.attributedText = [Encapsulation attrWithString:[NSString stringWithFormat:@"%@\n%@", Localized(@"Value"), votingRecordsModel.amount] preFont:FONT(12) preColor:COLOR_9 index:Localized(@"Value").length sufFont:FONT(13) sufColor:TITLE_COLOR lineSpacing:Margin_5];
     self.number.textAlignment = NSTextAlignmentLeft;
     NSString * stateStr;
     UIColor * stateColor;
-    if ([votingRecordsModel.status isEqualToString: @"0"]) {
+    if ([votingRecordsModel.status integerValue] == VoteStatusInProcessing) {
         stateStr = Localized(@"InProcessing");
         stateColor = COLOR(@"FF7C14");
-    } else if ([votingRecordsModel.status isEqualToString:@"1"]) {
+    } else if ([votingRecordsModel.status integerValue] == VoteStatusSuccess) {
         stateStr = Localized(@"Success");
         stateColor = MAIN_COLOR;
-    } else if ([votingRecordsModel.status isEqualToString:@"2"]) {
+    } else if ([votingRecordsModel.status integerValue] == VoteStatusFailure) {
         stateStr = Localized(@"Failure");
         stateColor = WARNING_COLOR;
     }
