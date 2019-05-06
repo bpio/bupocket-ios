@@ -208,7 +208,6 @@ static NSString * const NodeRecordsCellID = @"NodeRecordsCellID";
     self.date.attributedText = [Encapsulation attrWithString:[NSString stringWithFormat:@"%@\n%@", Localized(@"Time"), votingRecordsModel.date] preFont:FONT(12) preColor:COLOR_9 index:Localized(@"Time").length sufFont:FONT(13) sufColor:TITLE_COLOR lineSpacing:Margin_5];
     self.date.textAlignment = NSTextAlignmentRight;
 }
-//[DateTool getDateWithTimeStr:votingRecordsModel.date]
 - (void)awakeFromNib {
     [super awakeFromNib];
     // Initialization code

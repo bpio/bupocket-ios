@@ -135,6 +135,17 @@
     [alertController addAction:cancelAction];
     [[[UIApplication sharedApplication] keyWindow].rootViewController presentViewController:alertController animated:YES completion:nil];
 }
++ (void)showAlertViewWithMessage:(NSString *)message
+{
+    UIAlertView *msgbox = [[UIAlertView alloc] initWithTitle:message message:@"" delegate:nil cancelButtonTitle:Localized(@"IGotIt") otherButtonTitles:nil];
+    [[UIView appearance] setTintColor:MAIN_COLOR];
+    [msgbox show];
+//    UIAlertController * alertController = [UIAlertController alertControllerWithTitle:nil message:message preferredStyle:UIAlertControllerStyleAlert];
+//    UIAlertAction * cancelAction = [UIAlertAction actionWithTitle:Localized(@"IGotIt") style:UIAlertActionStyleCancel handler:handle];
+//    [cancelAction setValue:MAIN_COLOR forKey:@"titleTextColor"];
+//    [alertController addAction:cancelAction];
+//    [[[UIApplication sharedApplication] keyWindow].rootViewController presentViewController:alertController animated:YES completion:nil];
+}
 
 + (UIButton *)showNoDataWithTitle:(NSString *)title imageName:(NSString *)imageName superView:(UIView *)superView frame:(CGRect)frame
 {

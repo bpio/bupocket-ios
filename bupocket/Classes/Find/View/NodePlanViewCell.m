@@ -118,7 +118,7 @@ static NSString * const NodeSharingID = @"NodeSharingID";
     }];
     [self.listImageBg mas_makeConstraints:^(MASConstraintMaker *make) {
         make.centerX.centerY.equalTo(self.listImage);
-        make.width.height.mas_equalTo(ScreenScale(55));
+        make.width.height.mas_equalTo(ScreenScale(53));
     }];
     
     [self.name mas_makeConstraints:^(MASConstraintMaker *make) {
@@ -166,7 +166,7 @@ static NSString * const NodeSharingID = @"NodeSharingID";
 {
     if (!_listImageBg) {
         _listImageBg = [[UIImageView alloc] init];
-        _listImageBg.size = CGSizeMake(ScreenScale(55), ScreenScale(55));
+        _listImageBg.size = CGSizeMake(ScreenScale(53), ScreenScale(53));
         _listImageBg.image = [UIImage imageNamed:@"placeholder_bg_list"];
     }
     return _listImageBg;
@@ -177,6 +177,7 @@ static NSString * const NodeSharingID = @"NodeSharingID";
         _listImage = [[UIImageView alloc] init];
         _listImage.size = CGSizeMake(Margin_40, Margin_40);
         _listImage.backgroundColor = [UIColor whiteColor];
+        _listImage.contentMode = UIViewContentModeScaleAspectFill;
         [_listImage setViewSize:_listImage.size borderWidth:0 borderColor:nil borderRadius:Margin_20];
     }
     return _listImage;

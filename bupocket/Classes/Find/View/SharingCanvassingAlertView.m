@@ -145,6 +145,7 @@
         _nodeLogo = [[UIImageView alloc] initWithImage:[UIImage imageNamed:@"placeholder"]];
         _nodeLogo.layer.masksToBounds = YES;
         _nodeLogo.layer.cornerRadius = Margin_30;
+        _nodeLogo.contentMode = UIViewContentModeScaleAspectFill;
     }
     return _nodeLogo;
 }
@@ -232,13 +233,12 @@
 - (void)wechatShareWithImage:(UIImage *)image
 {
     if (!WXApi.isWXAppInstalled) {
-        UIAlertView *msgbox = [[UIAlertView alloc] initWithTitle:@"您的设备未安装手机微信" message:@"" delegate:nil cancelButtonTitle:@"确定" otherButtonTitles:nil];
-        [msgbox show];
+        [Encapsulation showAlertControllerWithMessage:Localized(@"WXAppUninstalled") handler:nil];
         return;
     }
     if (!WXApi.isWXAppSupportApi) {
-        UIAlertView *msgbox = [[UIAlertView alloc] initWithTitle:@"判断当前微信的版本不支持OpenApi" message:@"" delegate:nil cancelButtonTitle:@"确定" otherButtonTitles:nil];
-        [msgbox show];
+        // 判断当前微信的版本不支持OpenApi
+        [Encapsulation showAlertControllerWithMessage:Localized(@"Unsupported") handler:nil];
         return;
     }
     WXMediaMessage *message = [WXMediaMessage message];
@@ -266,55 +266,45 @@
     QQApiImageObject * imageObject = [QQApiImageObject objectWithData:imageData previewImageData:imageData title:@"" description:@""];
     SendMessageToQQReq * req = [SendMessageToQQReq reqWithContent:imageObject];
     QQApiSendResultCode sendResult = [QQApiInterface sendReq:req];
-    /*
+    
     switch (sendResult)
     {
         case EQQAPIAPPNOTREGISTED:
         {
             UIAlertView *msgbox = [[UIAlertView alloc] initWithTitle:@"温馨提示" message:@"App未注册" delegate:nil cancelButtonTitle:@"取消" otherButtonTitles:nil];
             [msgbox show];
-            
-            
             break;
         }
         case EQQAPIMESSAGECONTENTINVALID:
         case EQQAPIMESSAGECONTENTNULL:
         case EQQAPIMESSAGETYPEINVALID:
         {
-            UIAlertView *msgbox = [[UIAlertView alloc] initWithTitle:@"温馨提示" message:@"发送参数错误" delegate:nil cancelButtonTitle:@"取消" otherButtonTitles:nil];
-            [msgbox show];
-            
-            
+            // 发送参数错误（出错了，请稍后重试）
+            [Encapsulation showAlertControllerWithMessage:Localized(@"SharingFailure") handler:nil];
             break;
         }
         case EQQAPIQQNOTINSTALLED:
         {
-            UIAlertView *msgbox = [[UIAlertView alloc] initWithTitle:@"温馨提示" message:@"您的设备未安装手机QQ" delegate:nil cancelButtonTitle:@"取消" otherButtonTitles:nil];
-            [msgbox show];
-            
-            
+            // 请下载QQ后使用
+            [Encapsulation showAlertControllerWithMessage:Localized(@"QQAppUninstalled") handler:nil];
             break;
         }
         case EQQAPIQQNOTSUPPORTAPI:
         {
-            UIAlertView *msgbox = [[UIAlertView alloc] initWithTitle:@"温馨提示" message:@"您的设备未安装手机QQ" delegate:nil cancelButtonTitle:@"取消" otherButtonTitles:nil];
-            [msgbox show];
-            
-            
+            // QQ api不支持
+            [Encapsulation showAlertControllerWithMessage:Localized(@"Unsupported") handler:nil];
             break;
         }
         case EQQAPISENDFAILD:
         {
-            UIAlertView *msgbox = [[UIAlertView alloc] initWithTitle:@"温馨提示" message:@"发送失败" delegate:nil cancelButtonTitle:@"取消" otherButtonTitles:nil];
-            [msgbox show];
-            
-            
+            // 发送失败（出错了，请稍后重试）
+            [Encapsulation showAlertControllerWithMessage:Localized(@"SharingFailure") handler:nil];
             break;
         }
         case EQQAPIVERSIONNEEDUPDATE:
         {
-            UIAlertView *msgbox = [[UIAlertView alloc] initWithTitle:@"温馨提示" message:@"当前QQ版本太低，需要更新" delegate:nil cancelButtonTitle:@"取消" otherButtonTitles:nil];
-            [msgbox show];
+            // 当前QQ版本太低，需要更新
+            [Encapsulation showAlertControllerWithMessage:Localized(@"Unsupported") handler:nil];
             break;
         }
         default:
@@ -322,7 +312,7 @@
             break;
         }
     }
-     */
+    
 }
 - (UIButton *)cancel
 {

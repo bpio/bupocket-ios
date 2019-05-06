@@ -252,41 +252,6 @@
     }
 }
  */
-//- (void)setVotingRecordsModel:(VotingRecordsModel *)votingRecordsModel
-//{
-//    _votingRecordsModel = votingRecordsModel;
-//
-//    if ([votingRecordsModel.type isEqualToString:@"1"]) {
-//        _recordType.backgroundColor = MAIN_COLOR;
-//    } else if ([votingRecordsModel.type isEqualToString:@"2"]) {
-//        self.recordType.selected = YES;
-//        _recordType.backgroundColor = WARNING_COLOR;
-//    }
-//    self.title.text = votingRecordsModel.nodeName;
-//    if ([votingRecordsModel.identityType isEqualToString:NodeType_Consensus]) {
-//        self.nodeType.text = Localized(@"ConsensusNode");
-//    } else if ([votingRecordsModel.identityType isEqualToString:NodeType_Ecological]) {
-//        self.nodeType.text = Localized(@"EcologicalNodes");
-//    }
-//    self.number.attributedText = [Encapsulation attrWithString:[NSString stringWithFormat:@"%@\n%@", Localized(@"Number"), votingRecordsModel.amount] preFont:FONT(12) preColor:COLOR_9 index:Localized(@"Number").length sufFont:FONT(13) sufColor:TITLE_COLOR lineSpacing:Margin_5];
-//    self.number.textAlignment = NSTextAlignmentLeft;
-//    NSString * stateStr;
-//    UIColor * stateColor;
-//    if ([votingRecordsModel.status isEqualToString: @"0"]) {
-//        stateStr = Localized(@"InProcessing");
-//        stateColor = COLOR(@"FF7C14");
-//    } else if ([votingRecordsModel.status isEqualToString:@"1"]) {
-//        stateStr = Localized(@"Success");
-//        stateColor = MAIN_COLOR;
-//    } else if ([votingRecordsModel.status isEqualToString:@"2"]) {
-//        stateStr = Localized(@"Failure");
-//        stateColor = WARNING_COLOR;
-//    }
-//    self.state.attributedText = [Encapsulation attrWithString:[NSString stringWithFormat:@"%@\n%@", Localized(@"State"),stateStr] preFont:FONT(12) preColor:COLOR_9 index:Localized(@"State").length sufFont:FONT(13) sufColor:stateColor lineSpacing:Margin_5];
-//    self.state.textAlignment = NSTextAlignmentLeft;
-//    self.date.attributedText = [Encapsulation attrWithString:[NSString stringWithFormat:@"%@\n%@", Localized(@"Time"), [DateTool getDateWithTimeStr:votingRecordsModel.date]] preFont:FONT(12) preColor:COLOR_9 index:Localized(@"Time").length sufFont:FONT(13) sufColor:TITLE_COLOR lineSpacing:Margin_5];
-//    self.date.textAlignment = NSTextAlignmentRight;
-//}
 
 - (void)awakeFromNib {
     [super awakeFromNib];

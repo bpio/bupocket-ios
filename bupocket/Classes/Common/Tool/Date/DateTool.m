@@ -24,22 +24,8 @@ static int timeStampLength = 13;
     }
     NSDate * date = [NSDate dateWithTimeIntervalSince1970:interval];
     NSDateFormatter *formatter = [[NSDateFormatter alloc] init];
-    [formatter setDateFormat:@"YYYY.MM.dd HH:mm:ss"];
-    return [formatter stringFromDate:date];
-}
-+ (NSString *)getDateWithTimeStr:(NSString *)str
-{
-    NSTimeInterval interval;
-    if (str.length == timeStampLength - 3) {
-        interval = [str doubleValue];
-    } else if (str.length >= timeStampLength) {
-        interval = [[str substringToIndex:timeStampLength] doubleValue] / 1000.0;
-    } else {
-        return nil;
-    }
-    NSDate * date = [NSDate dateWithTimeIntervalSince1970:interval];
-    NSDateFormatter *formatter = [[NSDateFormatter alloc] init];
-    [formatter setDateFormat:@"HH:mm:ss dd/MM/YYYY"];
+//    [formatter setDateFormat:@"YYYY.MM.dd HH:mm:ss"];
+    [formatter setDateFormat:@"yyyy-MM-dd HH:mm:ss"];
     return [formatter stringFromDate:date];
 }
 /*
@@ -85,9 +71,10 @@ static int timeStampLength = 13;
     NSTimeInterval timeInterval = [timeDate timeIntervalSinceDate:currentDate];
     long temp = 0;
     NSString *result;
-    if ((temp = timeInterval/60) < 1)
+    if (timeInterval < 60 && timeInterval > 0)
     {
         // In 1 minutes
+        temp = timeInterval;
         NSString * second = Localized(@"Seconds");
         if (temp < 2) {
             second = Localized(@"Second");
@@ -122,7 +109,7 @@ static int timeStampLength = 13;
         result = [NSString stringWithFormat:@"%zd %@", temp, day];
     } else {
         // At least a week ago
-        dateFormatter.dateFormat = @"dd/MM/yyyy";
+//        dateFormatter.dateFormat = @"dd/MM/yyyy";
         result = [dateFormatter stringFromDate:timeDate];
     }
     return  result;
@@ -137,10 +124,16 @@ static int timeStampLength = 13;
     NSTimeInterval timeInterval = [currentDate timeIntervalSinceDate:timeDate];
     long temp = 0;
     NSString *result;
-    if (timeInterval/60 < 1)
+    if (timeInterval < 60 && timeInterval > 0)
     {
         // In 1 minutes
-        result = Localized(@"Just");
+        temp = timeInterval;
+        NSString * second = Localized(@"SecondsAgo");
+        if (temp < 2) {
+            second = Localized(@"SecondAgo");
+        }
+//        result = Localized(@"Just");
+        result = [NSString stringWithFormat:@"%zd %@", temp, second];
     }
     else if((temp = timeInterval/60) <60){
         // 1~59 minutes ago
@@ -167,7 +160,7 @@ static int timeStampLength = 13;
         result = [NSString stringWithFormat:@"%zd %@", temp, day];
     } else {
         // At least a week ago
-        dateFormatter.dateFormat = @"dd/MM/yyyy";
+//        dateFormatter.dateFormat = @"dd/MM/yyyy";
         result = [dateFormatter stringFromDate:timeDate];
     }
     return  result;

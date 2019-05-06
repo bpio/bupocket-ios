@@ -215,9 +215,11 @@
 "ScanPrompt" = "将二维码放入框中，即可自动扫描";
 // date
 "HoursAgo" = "小时前";
-"MinutesAgo" = "分钟前";
 "HourAgo" = "小时前";
+"MinutesAgo" = "分钟前";
 "MinuteAgo" = "分钟前";
+"SecondsAgo" = "秒前";
+"SecondAgo" = "秒前";
 "Just" = "刚刚";
 //"Yesterday" = "昨天";
 "DaysAgo" = "天前";
@@ -510,6 +512,11 @@
 "NonRepeatableWithdrawal" = "您已成功撤回，不能重复操作";
 "NodeStatusExiting" = "当前节点处于\"退出中\"状态，暂不支持邀请投票";
 "NodeStatusExited" = "当前节点处于\"已退出\"状态，暂不支持邀请投票";
+// share
+"WXAppUninstalled" = "请下载微信后使用";
+"Unsupported" = "当前版本太低，请更新后使用";
+"QQAppUninstalled" = "请下载QQ后使用";
+"SharingFailure" = "出错了，请稍后重试";
 
 // SDK Errors
 "SYSTEM_ERROR" = "系统错误";

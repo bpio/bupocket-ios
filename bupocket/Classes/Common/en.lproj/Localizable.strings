@@ -223,9 +223,11 @@
 "ScanPrompt" = "Automatically scan the QR code in the box";
 // date
 "HoursAgo" = "hours ago";
-"MinutesAgo" = "minutes ago";
 "HourAgo" = "hour ago";
+"MinutesAgo" = "minutes ago";
 "MinuteAgo" = "minute ago";
+"SecondsAgo" = "seconds ago";
+"SecondAgo" = "second ago";
 "Just" = "Just now";
 //"Yesterday" = "Yesterday";
 "DaysAgo" = "days ago";
@@ -520,6 +522,11 @@
 "NonRepeatableWithdrawal" = "You have withdrawn successfully. Frequent operations are not allowed";
 "NodeStatusExiting" = "The current node is exiting, and is not accessible for vote invitation";
 "NodeStatusExited" = "The current node has exited, and is not accessible for vote invitation";
+// share
+"WXAppUninstalled" = "Please use it after downloading WeChat";
+"Unsupported" = "Please use it after upgrading to the latest version";
+"QQAppUninstalled" = "Please use it after downloading QQ";
+"SharingFailure" = "Error! Please try again later";
 
 // SDK Errors
 "SYSTEM_ERROR" = "System error";
