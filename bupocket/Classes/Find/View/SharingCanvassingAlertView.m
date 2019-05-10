@@ -2,16 +2,14 @@
 //  SharingCanvassingAlertView.m
 //  bupocket
 //
-//  Created by huoss on 2019/4/4.
+//  Created by bupocket on 2019/4/4.
 //  Copyright © 2019年 bupocket. All rights reserved.
 //
 
 #import "SharingCanvassingAlertView.h"
 #import "HMScannerController.h"
-#import <WXApi.h>
-#import  <TencentOpenAPI/QQApiInterfaceObject.h>
-#import <TencentOpenAPI/TencentOAuth.h>
-#import <TencentOpenAPI/QQApiInterface.h>
+#import "WechatTool.h"
+#import "QQTool.h"
 #import "LinkAlertView.h"
 
 @interface SharingCanvassingAlertView ()
@@ -216,9 +214,9 @@
     dispatch_after(dispatch_time(DISPATCH_TIME_NOW, (int64_t)(Dispatch_After_Time * NSEC_PER_SEC)), dispatch_get_main_queue(), ^{
         UIImage * shareImage = [self mergedImage];
         if (button.tag == 0) {
-            [self wechatShareWithImage:shareImage];
+            [WechatTool wechatShareWithImage:shareImage];
         } else if (button.tag == 1) {
-            [self tencentShareWithImage:shareImage];
+            [QQTool QQShareWithImage:shareImage];
         } else if (button.tag == 2) {
             self.linkAlertView = [[LinkAlertView alloc] initWithNodeName:self.nodePlanModel.nodeName link:@"https://baidu.com" confrimBolck:^{
                 
@@ -230,90 +228,7 @@
     });
 }
 
-- (void)wechatShareWithImage:(UIImage *)image
-{
-    if (!WXApi.isWXAppInstalled) {
-        [Encapsulation showAlertControllerWithMessage:Localized(@"WXAppUninstalled") handler:nil];
-        return;
-    }
-    if (!WXApi.isWXAppSupportApi) {
-        // 判断当前微信的版本不支持OpenApi
-        [Encapsulation showAlertControllerWithMessage:Localized(@"Unsupported") handler:nil];
-        return;
-    }
-    WXMediaMessage *message = [WXMediaMessage message];
-    // 设置消息缩略图的方法
-    [message setThumbImage:[UIImage imageNamed:@"logo"]];
-    // 多媒体消息中包含的图片数据对象
-    WXImageObject *imageObject = [WXImageObject object];
-    
-    // 图片真实数据内容
-    NSData *data = UIImagePNGRepresentation(image);
-    imageObject.imageData = data;
-    // 多媒体数据对象，可以为WXImageObject，WXMusicObject，WXVideoObject，WXWebpageObject等。
-    message.mediaObject = imageObject;
-    
-    SendMessageToWXReq *req = [[SendMessageToWXReq alloc] init];
-    req.bText = NO;
-    req.message = message;
-    req.scene = WXSceneSession;// 分享到朋友圈
-    [WXApi sendReq:req];
-}
 
-- (void)tencentShareWithImage:(UIImage *)image
-{
-    NSData * imageData = UIImagePNGRepresentation(image);
-    QQApiImageObject * imageObject = [QQApiImageObject objectWithData:imageData previewImageData:imageData title:@"" description:@""];
-    SendMessageToQQReq * req = [SendMessageToQQReq reqWithContent:imageObject];
-    QQApiSendResultCode sendResult = [QQApiInterface sendReq:req];
-    
-    switch (sendResult)
-    {
-        case EQQAPIAPPNOTREGISTED:
-        {
-            UIAlertView *msgbox = [[UIAlertView alloc] initWithTitle:@"温馨提示" message:@"App未注册" delegate:nil cancelButtonTitle:@"取消" otherButtonTitles:nil];
-            [msgbox show];
-            break;
-        }
-        case EQQAPIMESSAGECONTENTINVALID:
-        case EQQAPIMESSAGECONTENTNULL:
-        case EQQAPIMESSAGETYPEINVALID:
-        {
-            // 发送参数错误（出错了，请稍后重试）
-            [Encapsulation showAlertControllerWithMessage:Localized(@"SharingFailure") handler:nil];
-            break;
-        }
-        case EQQAPIQQNOTINSTALLED:
-        {
-            // 请下载QQ后使用
-            [Encapsulation showAlertControllerWithMessage:Localized(@"QQAppUninstalled") handler:nil];
-            break;
-        }
-        case EQQAPIQQNOTSUPPORTAPI:
-        {
-            // QQ api不支持
-            [Encapsulation showAlertControllerWithMessage:Localized(@"Unsupported") handler:nil];
-            break;
-        }
-        case EQQAPISENDFAILD:
-        {
-            // 发送失败（出错了，请稍后重试）
-            [Encapsulation showAlertControllerWithMessage:Localized(@"SharingFailure") handler:nil];
-            break;
-        }
-        case EQQAPIVERSIONNEEDUPDATE:
-        {
-            // 当前QQ版本太低，需要更新
-            [Encapsulation showAlertControllerWithMessage:Localized(@"Unsupported") handler:nil];
-            break;
-        }
-        default:
-        {
-            break;
-        }
-    }
-    
-}
 - (UIButton *)cancel
 {
     if (!_cancel) {
@@ -343,7 +258,7 @@
     UIGraphicsEndImageContext();
     return resultImage;
 //    NSData * imageData = UIImagePNGRepresentation(resultImage);
-//    [imageData writeToFile:@"/Users/huoss/Desktop/margeImage.png" atomically:YES];
+//    [imageData writeToFile:@"/Users/bupocket/Desktop/margeImage.png" atomically:YES];
 //    UIImageWriteToSavedPhotosAlbum(resultImage, self, @selector(image:didFinishSavingWithError:contextInfo:),nil);
     
 }

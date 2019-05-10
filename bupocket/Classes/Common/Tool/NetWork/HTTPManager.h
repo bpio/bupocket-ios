@@ -11,6 +11,8 @@
 #import "TransactionResultModel.h"
 #import "ConfirmTransactionModel.h"
 
+#import "DposModel.h"
+
 @interface HTTPManager : NSObject
 
 //// Dpos Type
@@ -122,7 +124,6 @@
                                         success:(void (^)(id responseObject))success
                                         failure:(void (^)(NSError *error))failure;
 // Contract Transaction
-- (void)getTransactionWithModel:(ConfirmTransactionModel *)confirmTransactionModel;
 - (void)getContractTransactionWithModel:(ConfirmTransactionModel *)confirmTransactionModel
                                 success:(void (^)(id responseObject))success
                                 failure:(void (^)(NSError *error))failure;
@@ -221,6 +222,12 @@
                                 nonce:(int64_t)nonce
                               success:(void (^)(TransactionResultModel * resultModel))success
                               failure:(void (^)(TransactionResultModel * resultModel))failure;
+
+#pragma mark - 调用底层合约
+- (void)getTransactionWithModel:(DposModel *)dposModel
+                       password:(NSString *)password
+                        success:(void (^)(TransactionResultModel * resultModel))success
+                        failure:(void (^)(TransactionResultModel * resultModel))failure;
 
 
 @end

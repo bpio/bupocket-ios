@@ -2,7 +2,7 @@
 //  NodeSharingViewController.m
 //  bupocket
 //
-//  Created by huoss on 2019/4/9.
+//  Created by bupocket on 2019/4/9.
 //  Copyright © 2019年 bupocket. All rights reserved.
 //
 
@@ -10,8 +10,9 @@
 #import "NodePlanViewCell.h"
 #import "SharingCanvassingAlertView.h"
 #import <WebKit/WebKit.h>
+#import "WKWebViewController.h"
 
-@interface NodeSharingViewController ()<UITableViewDelegate, UITableViewDataSource, WKNavigationDelegate>
+@interface NodeSharingViewController ()<UITableViewDelegate, UITableViewDataSource, WKNavigationDelegate, WKUIDelegate>
 
 @property (nonatomic, strong) NodePlanModel * nodePlanModel;
 @property (nonatomic, strong) UITableView * tableView;
@@ -30,10 +31,18 @@ static NSString * const NodeSharingID = @"NodeSharingID";
 - (void)viewDidLoad {
     [super viewDidLoad];
     self.navigationItem.title = Localized(@"InvitationToVote");
+    [self setupNav];
     [self setupView];
     [self.wkWebView addObserver:self forKeyPath:@"estimatedProgress" options:NSKeyValueObservingOptionNew| NSKeyValueObservingOptionOld context:nil];
     [self setupRefresh];
     // Do any additional setup after loading the view.
+}
+- (void)setupNav
+{
+    UIButton * shareBtn = [UIButton createButtonWithNormalImage:@"invitationToVote" SelectedImage:@"invitationToVote" Target:self Selector:@selector(shareAction)];
+    shareBtn.frame = CGRectMake(0, 0, ScreenScale(60), ScreenScale(44));
+    shareBtn.contentHorizontalAlignment = UIControlContentHorizontalAlignmentRight;
+    self.navigationItem.rightBarButtonItem = [[UIBarButtonItem alloc]initWithCustomView:shareBtn];
 }
 - (void)dealloc {
     [[NSURLCache sharedURLCache] removeAllCachedResponses];
@@ -55,7 +64,9 @@ static NSString * const NodeSharingID = @"NodeSharingID";
         NSInteger code = [[responseObject objectForKey:@"errCode"] integerValue];
         if (code == Success_Code) {
             self.nodePlanModel = [NodePlanModel mj_objectWithKeyValues:responseObject[@"data"]];
-            [self.wkWebView loadHTMLString:self.nodePlanModel.introduce baseURL:nil];
+            if (NULLString(self.nodePlanModel.introduce)) {
+                [self.wkWebView loadHTMLString:self.nodePlanModel.introduce baseURL:nil];
+            }
             self.titleLabel.text = Localized(@"NodeIntroduction");
             [self.tableView reloadData];
         } else {
@@ -118,8 +129,10 @@ static NSString * const NodeSharingID = @"NodeSharingID";
 - (UIView *)tableView:(UITableView *)tableView viewForFooterInSection:(NSInteger)section
 {
     UIView * footerView = [[UIView alloc] init];
-    [footerView addSubview:self.titleLabel];
-    [footerView addSubview:self.wkWebView];
+    if (NULLString(self.nodePlanModel.introduce)) {
+        [footerView addSubview:self.titleLabel];
+        [footerView addSubview:self.wkWebView];
+    }
     footerView.frame = CGRectMake(0, 0, DEVICE_WIDTH, ScreenScale(40) + self.wkWebView.height  + NavBarH + SafeAreaBottomH);
     return footerView;
 }
@@ -150,12 +163,33 @@ static NSString * const NodeSharingID = @"NodeSharingID";
         wkWebConfig.preferences = preference;
         _wkWebView = [[WKWebView alloc] initWithFrame:CGRectMake(Margin_10, Margin_40, DEVICE_WIDTH - Margin_20, CGFLOAT_MIN) configuration:wkWebConfig];
         _wkWebView.navigationDelegate = self;
+        _wkWebView.UIDelegate = self;
         _wkWebView.layer.masksToBounds = YES;
         _wkWebView.layer.cornerRadius = MAIN_CORNER;
     }
     return _wkWebView;
 }
-
+// WKWebView内点击链接跳转
+- (WKWebView *)webView:(WKWebView *)webView createWebViewWithConfiguration:(WKWebViewConfiguration *)configuration forNavigationAction:(WKNavigationAction *)navigationAction windowFeatures:(WKWindowFeatures *)windowFeatures
+{
+    if (!navigationAction.targetFrame.isMainFrame) {
+//        [webView loadRequest:navigationAction.request];
+        WKWebViewController * VC = [[WKWebViewController alloc] init];
+        [VC loadWebURLSring:[navigationAction.request.URL absoluteString]];
+        [self.navigationController pushViewController:VC animated:NO];
+    }
+    return nil;
+}
+- (void)viewWillDisappear:(BOOL)animated {
+    [self.wkWebView setNavigationDelegate:nil];
+    [self.wkWebView setUIDelegate:nil];
+}
+- (void)viewWillAppear:(BOOL)animated
+{
+    [super viewWillAppear:animated];
+    _wkWebView.navigationDelegate = self;
+    _wkWebView.UIDelegate = self;
+}
 //MARK:-kvo监听
 - (void)observeValueForKeyPath:(NSString *)keyPath ofObject:(id)object change:(NSDictionary *)change context:(void *)context {
     if ([keyPath isEqual: @"estimatedProgress"] && object == self.wkWebView) {
@@ -185,16 +219,18 @@ static NSString * const NodeSharingID = @"NodeSharingID";
 
 - (CGFloat)tableView:(UITableView *)tableView heightForRowAtIndexPath:(NSIndexPath *)indexPath
 {
-    return ScreenScale(80);
+//    return ScreenScale(80);
+    NodePlanModel * nodePlanModel = self.nodePlanModel;
+    return nodePlanModel.cellHeight;
 }
 - (UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath
 {
     NodePlanViewCell * cell = [NodePlanViewCell cellWithTableView:tableView identifier:NodeSharingID];
     cell.selectionStyle = UITableViewCellSelectionStyleNone;
     cell.nodePlanModel = self.nodePlanModel;
-    cell.shareClick = ^{
-        [self shareAction];
-    };
+//    cell.shareClick = ^{
+//        [self shareAction];
+//    };
     return cell;
 }
 - (void)shareAction

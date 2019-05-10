@@ -7,6 +7,7 @@
 //
 
 #import "BaseViewController.h"
+#import "ConfirmTransactionModel.h"
 
 NS_ASSUME_NONNULL_BEGIN
 
@@ -18,6 +19,8 @@ NS_ASSUME_NONNULL_BEGIN
 @property (nonatomic, strong) TransactionResultModel * resultModel;
 //@property (nonatomic, assign) int32_t errorCode;
 //@property (nonatomic, copy) NSString * errorDesc;
+
+@property (nonatomic, strong) ConfirmTransactionModel * confirmTransactionModel;
 
 @end
 

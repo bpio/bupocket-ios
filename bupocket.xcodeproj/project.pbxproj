@@ -158,6 +158,9 @@
 		95A8A41D219D5FF7008E978E /* YBRectConst.m in Sources */ = {isa = PBXBuildFile; fileRef = 95A8A41A219D5FF7008E978E /* YBRectConst.m */; };
 		95A8A41E219D5FF7008E978E /* YBPopupMenuPath.m in Sources */ = {isa = PBXBuildFile; fileRef = 95A8A41B219D5FF7008E978E /* YBPopupMenuPath.m */; };
 		95AD144021F1BB730097CCDE /* sdk_ios.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 95AD143F21F1BB730097CCDE /* sdk_ios.framework */; };
+		95B066BC2282AABD0005731A /* WechatTool.m in Sources */ = {isa = PBXBuildFile; fileRef = 95B066BB2282AABD0005731A /* WechatTool.m */; };
+		95B066BF2282AED70005731A /* QQTool.m in Sources */ = {isa = PBXBuildFile; fileRef = 95B066BE2282AED70005731A /* QQTool.m */; };
+		95B066C22282CD890005731A /* DposModel.m in Sources */ = {isa = PBXBuildFile; fileRef = 95B066C12282CD890005731A /* DposModel.m */; };
 		95DC83C821E2FD3B00F745E6 /* WalletManagementViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 95DC83C721E2FD3B00F745E6 /* WalletManagementViewController.m */; };
 		C78AA58ABD5C4F75C67B6250 /* Pods_bupocketTests.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 248F98B6791F2F7C55E77E0E /* Pods_bupocketTests.framework */; };
 		E0A64C5CAFFFD9486B7713D7 /* Pods_bupocket.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = EB267DD938A42BAD30A164A2 /* Pods_bupocket.framework */; };
@@ -503,6 +506,12 @@
 		95A8A41A219D5FF7008E978E /* YBRectConst.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = YBRectConst.m; sourceTree = "<group>"; };
 		95A8A41B219D5FF7008E978E /* YBPopupMenuPath.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = YBPopupMenuPath.m; sourceTree = "<group>"; };
 		95AD143F21F1BB730097CCDE /* sdk_ios.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; path = sdk_ios.framework; sourceTree = "<group>"; };
+		95B066BA2282AABD0005731A /* WechatTool.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = WechatTool.h; sourceTree = "<group>"; };
+		95B066BB2282AABD0005731A /* WechatTool.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = WechatTool.m; sourceTree = "<group>"; };
+		95B066BD2282AED70005731A /* QQTool.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = QQTool.h; sourceTree = "<group>"; };
+		95B066BE2282AED70005731A /* QQTool.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = QQTool.m; sourceTree = "<group>"; };
+		95B066C02282CD890005731A /* DposModel.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = DposModel.h; sourceTree = "<group>"; };
+		95B066C12282CD890005731A /* DposModel.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = DposModel.m; sourceTree = "<group>"; };
 		95DC83C621E2FD3B00F745E6 /* WalletManagementViewController.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = WalletManagementViewController.h; sourceTree = "<group>"; };
 		95DC83C721E2FD3B00F745E6 /* WalletManagementViewController.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = WalletManagementViewController.m; sourceTree = "<group>"; };
 		95ECFF972272E2FF007701B4 /* Constants.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = Constants.h; sourceTree = "<group>"; };
@@ -545,6 +554,7 @@
 		833799292177091500C222A5 /* Tool */ = {
 			isa = PBXGroup;
 			children = (
+				95B066B92282AA9D0005731A /* Wechat */,
 				959E2931225C9E04006FCA30 /* QQ */,
 				9579E74D21B5353700051EDB /* Lib */,
 				95A8A415219D5FE2008E978E /* YBPopupMenu */,
@@ -824,6 +834,8 @@
 				959E28FE224A1B6A006FCA30 /* LoginConfirmModel.m */,
 				959E290C224F1F25006FCA30 /* ConfirmTransactionModel.h */,
 				959E290D224F1F25006FCA30 /* ConfirmTransactionModel.m */,
+				95B066C02282CD890005731A /* DposModel.h */,
+				95B066C12282CD890005731A /* DposModel.m */,
 			);
 			path = Model;
 			sourceTree = "<group>";
@@ -1123,6 +1135,8 @@
 			isa = PBXGroup;
 			children = (
 				959E2932225C9E04006FCA30 /* TencentOpenAPI.framework */,
+				95B066BD2282AED70005731A /* QQTool.h */,
+				95B066BE2282AED70005731A /* QQTool.m */,
 			);
 			path = QQ;
 			sourceTree = "<group>";
@@ -1165,6 +1179,15 @@
 				95A8A41A219D5FF7008E978E /* YBRectConst.m */,
 			);
 			path = YBPopupMenu;
+			sourceTree = "<group>";
+		};
+		95B066B92282AA9D0005731A /* Wechat */ = {
+			isa = PBXGroup;
+			children = (
+				95B066BA2282AABD0005731A /* WechatTool.h */,
+				95B066BB2282AABD0005731A /* WechatTool.m */,
+			);
+			path = Wechat;
 			sourceTree = "<group>";
 		};
 		AAA27303C314FA52BBDCAB7B /* Frameworks */ = {
@@ -1492,12 +1515,14 @@
 				83B594B12175E6FA009F91BA /* PlaceholderTextView.m in Sources */,
 				8395AF312189496E0082EA30 /* DistributionModel.m in Sources */,
 				83379AA9217F006600C222A5 /* HTTPManager.m in Sources */,
+				95B066BF2282AED70005731A /* QQTool.m in Sources */,
 				83FB4423219035B700D68569 /* SearchAssetsModel.m in Sources */,
 				83FB443521904AA400D68569 /* HMScannerMaskView.m in Sources */,
 				83FB443721904AA400D68569 /* HMScanner.m in Sources */,
 				83379A182178682100C222A5 /* UIView+CustomAlertView.m in Sources */,
 				95266CE422703868002CD915 /* CooperateDetailViewCell.m in Sources */,
 				959726BF21E43EB50022CB78 /* WalletModel.m in Sources */,
+				95B066C22282CD890005731A /* DposModel.m in Sources */,
 				95A8A3B9219D15D8008E978E /* RegexPatternTool.m in Sources */,
 				8395AF34218958840082EA30 /* TransactionResultModel.m in Sources */,
 				958127EF219ABD9D0081A02E /* VersionUpdateAlertView.m in Sources */,
@@ -1557,6 +1582,7 @@
 				95266CDB226F062E002CD915 /* CooperateViewCell.m in Sources */,
 				959726C221E44FFB0022CB78 /* ModifyAlertView.m in Sources */,
 				950E4145219E6ADD002C7900 /* AssetCurrencyModel.m in Sources */,
+				95B066BC2282AABD0005731A /* WechatTool.m in Sources */,
 				959726E521E88C610022CB78 /* UILabel+Extension.m in Sources */,
 				959726F421E8D1970022CB78 /* ExplainInfoViewController.m in Sources */,
 				83379A6E2179CB9E00C222A5 /* FeedbackViewController.m in Sources */,

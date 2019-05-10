@@ -32,6 +32,16 @@ static NSString * const TransferResultsCellID = @"DetailListCellID";
 - (void)viewDidLoad {
     [super viewDidLoad];
     [self setupView];
+    if (self.transferInfoArray.count == 0 && self.confirmTransactionModel) {
+        self.transferInfoArray = [NSMutableArray arrayWithObjects:self.confirmTransactionModel.destAddress, [NSString stringAppendingBUWithStr:self.confirmTransactionModel.amount], nil];
+        if (NULLString(self.confirmTransactionModel.qrRemark)) {
+            NSString * qrRemark = self.confirmTransactionModel.qrRemark;
+            if ([CurrentAppLanguage isEqualToString:EN]) {
+                qrRemark = self.confirmTransactionModel.qrRemarkEn;
+            }
+            self.resultModel.remark = qrRemark;
+        }
+    }
     [self.transferInfoArray insertObject:CurrentWalletAddress atIndex:0];
     [self.transferInfoArray addObjectsFromArray:@[[NSString stringAppendingBUWithStr:self.resultModel.actualFee], self.resultModel.transactionHash, [DateTool getDateStringWithTimeStr:[NSString stringWithFormat:@"%lld", self.resultModel.transactionTime]]]];
     self.listArray = @[@[Localized(@"SendingAccount"), Localized(@"ReceivingAccount"), Localized(@"Value"), Localized(@"TransactionCost"), Localized(@"TxHash"), Localized(@"TransferTime"), Localized(@"Remarks")], self.transferInfoArray];

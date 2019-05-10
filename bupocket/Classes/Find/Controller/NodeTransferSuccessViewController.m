@@ -2,13 +2,13 @@
 //  NodeTransferSuccessViewController.m
 //  bupocket
 //
-//  Created by huoss on 2019/4/12.
+//  Created by bupocket on 2019/4/12.
 //  Copyright © 2019年 bupocket. All rights reserved.
 //
 
 #import "NodeTransferSuccessViewController.h"
 #import "NodeTransferSuccessViewCell.h"
-#import <WXApi.h>
+#import "WechatTool.h"
 #import "AdsModel.h"
 #import "WKWebViewController.h"
 
@@ -104,11 +104,7 @@ static NSString * const NodeTransferSuccessID = @"NodeTransferSuccessID";
 - (void)adAction
 {
     if ([self.adsModel.type isEqualToString:@"1"]) {
-        WXLaunchMiniProgramReq * launchMiniProgramReq = [WXLaunchMiniProgramReq object];
-        launchMiniProgramReq.userName = XCX_YouPin_Original_ID;
-        //        launchMiniProgramReq.path = @"";//拉起小程序页面的可带参路径，不填默认拉起小程序首页
-        launchMiniProgramReq.miniProgramType = 0;
-        [WXApi sendReq:launchMiniProgramReq];
+        [WechatTool enterWechatMiniProgram];
     } else if ([self.adsModel.type isEqualToString:@"2"]) {
         if (NULLString(self.adsModel.url)) {
             WKWebViewController * VC = [[WKWebViewController alloc] init];

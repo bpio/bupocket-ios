@@ -2,7 +2,7 @@
 //  ConfirmTransactionModel.h
 //  bupocket
 //
-//  Created by huoss on 2019/3/30.
+//  Created by bupocket on 2019/3/30.
 //  Copyright © 2019年 bupocket. All rights reserved.
 //
 
@@ -45,8 +45,6 @@ NS_ASSUME_NONNULL_BEGIN
 
 // 区分扫码操作还是共建详情页操作
 @property (nonatomic, assign) BOOL isCooperateDetail;
-// 是否直接调用底层合约交易
-@property (nonatomic, assign) BOOL isNodeURL;
 
 @end
 

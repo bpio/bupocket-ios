@@ -27,7 +27,7 @@
 
 #import "LoginConfirmModel.h"
 #import "ConfirmTransactionModel.h"
-
+#import "DposModel.h"
 
 #import "UINavigationController+Extension.h"
 
@@ -58,6 +58,9 @@
 @property (nonatomic, strong) NSDictionary * scanDic;
 @property (nonatomic, assign) UIStatusBarStyle statusBarStyle;
 @property (nonatomic, strong) NSString * assetsCacheDataKey;
+
+@property (nonatomic, strong) ConfirmTransactionModel * confirmTransactionModel;
+@property (nonatomic, strong) DposModel * dposModel;
 
 //@property (nonatomic, strong) ConfirmTransactionAlertView * confirmAlertView;
 
@@ -429,16 +432,7 @@ static UIButton * _noBackup;
         }
         result = stringValue;
         if ([stringValue hasPrefix:Dpos_Prefix]) {
-            NSString * scanStr = [stringValue substringFromIndex:[Dpos_Prefix length]];
-            NSDictionary * scanData = [JsonTool dictionaryOrArrayWithJSONSString:scanStr];
-            DLog(@"scanStr = %@, scanDic = %@", scanStr, scanData);
-            if (scanData) {
-                ConfirmTransactionModel * confirmTransactionModel = [ConfirmTransactionModel mj_objectWithKeyValues:scanData];
-                confirmTransactionModel.isNodeURL = YES;
-                [self getDpos:confirmTransactionModel];
-            } else {
-                [MBProgressHUD showTipMessageInWindow:Localized(@"ScanFailure")];
-            }
+            [self getDposTransactionWithStr:stringValue];
             return;
         }
         if ([stringValue hasPrefix:@"http"] && [stringValue containsString:Account_Center_Contains] && ![[[[[stringValue componentsSeparatedByString:Account_Center_Contains] firstObject] componentsSeparatedByString:@"://"] lastObject] containsString:@"/"] && [[[stringValue componentsSeparatedByString:Account_Center_Contains] lastObject] length] == 32) {
@@ -502,8 +496,8 @@ static UIButton * _noBackup;
         NSInteger code = [[responseObject objectForKey:@"errCode"] integerValue];
         if (code == Success_Code) {
             DLog(@"json = %@", [JsonTool JSONStringWithDictionaryOrArray:[responseObject objectForKey:@"data"]]);
-            ConfirmTransactionModel * confirmTransactionModel = [ConfirmTransactionModel mj_objectWithKeyValues:[responseObject objectForKey:@"data"]];
-            [self getDpos:confirmTransactionModel];
+            self.confirmTransactionModel = [ConfirmTransactionModel mj_objectWithKeyValues:[responseObject objectForKey:@"data"]];
+            [self getDposData];
         } else if (code == ErrorQRCodeExpired) {
             ScanCodeFailureViewController * VC = [[ScanCodeFailureViewController alloc] init];
             VC.exceptionPromptStr = Localized(@"Overdue");
@@ -516,11 +510,11 @@ static UIButton * _noBackup;
 
     }];
 }
-- (void)getDpos:(ConfirmTransactionModel *)confirmTransactionModel
+- (void)getDposData
 {
-    ConfirmTransactionAlertView * confirmAlertView = [[ConfirmTransactionAlertView alloc] initWithDpos:confirmTransactionModel confrimBolck:^(NSString * _Nonnull transactionCost) {
+    ConfirmTransactionAlertView * confirmAlertView = [[ConfirmTransactionAlertView alloc] initWithDpos:self.confirmTransactionModel confrimBolck:^(NSString * _Nonnull transactionCost) {
         dispatch_after(dispatch_time(DISPATCH_TIME_NOW, (int64_t)(Dispatch_After_Time * NSEC_PER_SEC)), dispatch_get_main_queue(), ^{
-            NSDecimalNumber * amount = [NSDecimalNumber decimalNumberWithString:confirmTransactionModel.amount];
+            NSDecimalNumber * amount = [NSDecimalNumber decimalNumberWithString:self.confirmTransactionModel.amount];
             NSDecimalNumber * minTransactionCost = [NSDecimalNumber decimalNumberWithString:transactionCost];
             NSDecimalNumber * totleAmount = [amount decimalNumberByAdding:minTransactionCost];
             NSDecimalNumber * amountNumber = [[HTTPManager shareManager] getDataWithBalanceJudgmentWithCost:[totleAmount stringValue] ifShowLoading:NO];
@@ -528,11 +522,8 @@ static UIButton * _noBackup;
             if (!NULLString(totleAmountStr) || [amountNumber isEqualToNumber:NSDecimalNumber.notANumber]) {
             } else if ([totleAmountStr hasPrefix:@"-"]) {
                 [MBProgressHUD showTipMessageInWindow:Localized(@"NotSufficientFunds")];
-            } else if (confirmTransactionModel.isNodeURL) {
-                [[HTTPManager shareManager] getTransactionWithModel:confirmTransactionModel];
-                [self showPWAlertView:confirmTransactionModel];
             } else {
-                [self getContractTransactionData:confirmTransactionModel];
+                [self getContractTransactionData];
             }
         });
     } cancelBlock:^{
@@ -542,9 +533,9 @@ static UIButton * _noBackup;
 }
 
 // Transaction confirmation and submission
-- (void)getContractTransactionData:(ConfirmTransactionModel *)confirmTransactionModel
+- (void)getContractTransactionData
 {
-    [[HTTPManager shareManager] getContractTransactionWithModel:confirmTransactionModel  success:^(id responseObject) {
+    [[HTTPManager shareManager] getContractTransactionWithModel:self.confirmTransactionModel  success:^(id responseObject) {
         NSInteger code = [[responseObject objectForKey:@"errCode"] integerValue];
         if (code == Success_Code || code == ErrorNotSubmitted) {
             NSString * dateStr = [NSString stringWithFormat:@"%@", [[responseObject objectForKey:@"data"] objectForKey:@"expiryTime"]];
@@ -555,7 +546,7 @@ static UIButton * _noBackup;
                     [Encapsulation showAlertControllerWithMessage:Localized(@"Overtime") handler:nil];
                     //                [MBProgressHUD showTipMessageInWindow:Localized(@"Overtime")];
                 } else {
-                    [self showPWAlertView:confirmTransactionModel];
+                    [self showPWAlertView];
                 }
             } else {
                 [Encapsulation showAlertControllerWithMessage:[NSString stringWithFormat:Localized(@"NotSubmitted%@"), [DateTool getTimeIntervalWithStr:dateStr]] handler:nil];
@@ -567,27 +558,23 @@ static UIButton * _noBackup;
         
     }];
 }
-- (void)showPWAlertView:(ConfirmTransactionModel *)confirmTransactionModel
+- (void)showPWAlertView
 {
     PasswordAlertView * PWAlertView = [[PasswordAlertView alloc] initWithPrompt:Localized(@"TransactionWalletPWPrompt") walletKeyStore:CurrentWalletKeyStore isAutomaticClosing:YES confrimBolck:^(NSString * _Nonnull password, NSArray * _Nonnull words) {
-        [self submitTransactionWithPassword:password confirmTransactionModel:confirmTransactionModel];
+        if (self.confirmTransactionModel) {
+            [self submitTransactionWithPassword:password];
+        } else if (self.dposModel) {
+            [self submitDposTransactionWithPassword:password];
+        }
     } cancelBlock:^{
         
     }];
     [PWAlertView showInWindowWithMode:CustomAnimationModeAlert inView:nil bgAlpha:AlertBgAlpha needEffectView:NO];
     [PWAlertView.PWTextField becomeFirstResponder];
 }
-- (void)submitTransactionWithPassword:(NSString *)password confirmTransactionModel:(ConfirmTransactionModel *)confirmTransactionModel
+- (void)submitTransactionWithPassword:(NSString *)password
 {
     [[HTTPManager shareManager] submitContractTransactionPassword:password success:^(TransactionResultModel *resultModel) {
-        NSMutableArray * transferInfoArray = [NSMutableArray arrayWithObjects:confirmTransactionModel.destAddress, [NSString stringAppendingBUWithStr:confirmTransactionModel.amount], nil];
-        if (NULLString(confirmTransactionModel.qrRemark)) {
-            NSString * qrRemark = confirmTransactionModel.qrRemark;
-            if ([CurrentAppLanguage isEqualToString:EN]) {
-                qrRemark = confirmTransactionModel.qrRemarkEn;
-            }
-            resultModel.remark = qrRemark;
-        }
         if (resultModel.errorCode == Success_Code) {
             NodeTransferSuccessViewController * VC = [[NodeTransferSuccessViewController alloc] init];
             [self.navigationController pushViewController:VC animated:NO];
@@ -595,7 +582,7 @@ static UIButton * _noBackup;
             TransferResultsViewController * VC = [[TransferResultsViewController alloc] init];
             VC.state = NO;
             VC.resultModel = resultModel;
-            VC.transferInfoArray = transferInfoArray;
+            VC.confirmTransactionModel = self.confirmTransactionModel;
             [self.navigationController pushViewController:VC animated:NO];
         }
     } failure:^(TransactionResultModel *resultModel) {
@@ -604,7 +591,74 @@ static UIButton * _noBackup;
         [self.navigationController pushViewController:VC animated:NO];
     }];
 }
-
+#pragma mark 扫描调用底层合约操作
+- (void)getDposTransactionWithStr:(NSString *)str
+{
+    NSString * scanStr = [str substringFromIndex:[Dpos_Prefix length]];
+    NSDictionary * scanData = [JsonTool dictionaryOrArrayWithJSONSString:scanStr];
+    DLog(@"scanStr = %@, scanDic = %@", scanStr, scanData);
+    if (scanData) {
+        self.dposModel = [DposModel mj_objectWithKeyValues:scanData];
+        if (!NULLString(self.dposModel.dest_address)) {
+            [MBProgressHUD showTipMessageInWindow:@"目标地址不可为空"];
+            return;
+        }
+        if (!NULLString(self.dposModel.tx_fee)) {
+            [MBProgressHUD showTipMessageInWindow:@"交易费不可为空"];
+            return;
+        }
+        if (!NULLString(self.dposModel.amount)) {
+            [MBProgressHUD showTipMessageInWindow:@"交易数量不可为空"];
+            return;
+        }
+        if (!NULLString(self.dposModel.input)) {
+            [MBProgressHUD showTipMessageInWindow:@"交易信息不可为空"];
+            return;
+        }
+        ConfirmTransactionAlertView * confirmAlertView = [[ConfirmTransactionAlertView alloc] initWithDpos:nil confrimBolck:^(NSString * _Nonnull transactionCost) {
+            dispatch_after(dispatch_time(DISPATCH_TIME_NOW, (int64_t)(Dispatch_After_Time * NSEC_PER_SEC)), dispatch_get_main_queue(), ^{
+                NSDecimalNumber * amount = [NSDecimalNumber decimalNumberWithString:self.dposModel.amount];
+                NSDecimalNumber * minTransactionCost = [NSDecimalNumber decimalNumberWithString:transactionCost];
+                NSDecimalNumber * totleAmount = [amount decimalNumberByAdding:minTransactionCost];
+                NSDecimalNumber * amountNumber = [[HTTPManager shareManager] getDataWithBalanceJudgmentWithCost:[totleAmount stringValue] ifShowLoading:NO];
+                NSString * totleAmountStr = [amountNumber stringValue];
+                if (!NULLString(totleAmountStr) || [amountNumber isEqualToNumber:NSDecimalNumber.notANumber]) {
+                } else if ([totleAmountStr hasPrefix:@"-"]) {
+                    [MBProgressHUD showTipMessageInWindow:Localized(@"NotSufficientFunds")];
+                } else {
+                    [self showPWAlertView];
+                }
+            });
+        } cancelBlock:^{
+            
+        }];
+        confirmAlertView.dposModel = self.dposModel;
+        [confirmAlertView showInWindowWithMode:CustomAnimationModeShare inView:nil bgAlpha:AlertBgAlpha needEffectView:NO];
+        
+        //                [self showPWAlertView:confirmTransactionModel];
+    } else {
+        [MBProgressHUD showTipMessageInWindow:Localized(@"ScanFailure")];
+    }
+}
+- (void)submitDposTransactionWithPassword:(NSString *)password
+{
+    [[HTTPManager shareManager] getTransactionWithModel:self.dposModel password:password success:^(TransactionResultModel *resultModel) {
+        resultModel.remark = Localized(@"DposContract");
+        TransferResultsViewController * VC = [[TransferResultsViewController alloc] init];
+        if (resultModel.errorCode == Success_Code) {
+            VC.state = YES;
+        } else {
+            VC.state = NO;
+        }
+        VC.resultModel = resultModel;
+        VC.transferInfoArray = [NSMutableArray arrayWithObjects:self.dposModel.dest_address, [NSString stringAppendingBUWithStr:self.dposModel.amount], nil];
+        [self.navigationController pushViewController:VC animated:NO];
+    } failure:^(TransactionResultModel *resultModel) {
+        RequestTimeoutViewController * VC = [[RequestTimeoutViewController alloc] init];
+        VC.transactionHash = resultModel.transactionHash;
+        [self.navigationController pushViewController:VC animated:NO];
+    }];
+}
 - (CGFloat)tableView:(UITableView *)tableView heightForRowAtIndexPath:(NSIndexPath *)indexPath
 {
     return ScreenScale(90);

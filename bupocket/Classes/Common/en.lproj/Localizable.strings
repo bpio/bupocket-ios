@@ -481,7 +481,7 @@
 "IWantToSupport" = "Sponsor";
 "Support" = "Sponsor";
 "Withdraw" = "Withdraw";
-"RiskStatementPrompt" = "1. Node co-funding is not a commodity transaction. The sponsors can choose which project to support according to the rules such as award sharing ratio by the initiator and then receive awards; \n2. BUMO only provides cyberspace and technical services and is in no interest connection with the initiators and sponsors, so BUMO will take no responsibility if any legal dispute arising from the node co-funding project, and the initiators and sponsors will take all related responsibilities. \n3. Before the node co-funding project is completed, the sponsors can manually withdraw all BUs; if the project initiator terminates the project before the project is completed, the sponsors can also manually withdraw the BUs sponsored. ";
+"RiskStatementPrompt" = "1. Node co-funding is not a commodity transaction. The sponsors can independently choose the relevant node co-funding projects to support. The sponsors can get reward which is based on the proportion between the sponsoring amount by sponsors and the deposit plus target funding to the project. \n2. BUMO only provides intermediate services such cyberspace and technical services, and BUMO is in no interest relationship to any project initiators and sponsors. BUMO will not take any responsibilities to any legal disputes arising from the node co-funding project, and the initiators and sponsors will take all responsibilities to these legal disputes. \n3. Before the node co-funding project is completed, the node co-funding project sponsors can manually withdraw all BUs sponsored. If the project initiator cancels the project before the project is completed, the node co-funding sponsors can also manually withdraw all BUs sponsored. ";
 // Sponsor
 "SupportProjects" = "Project";
 "SupportCopies" = "Shares";
@@ -517,16 +517,21 @@
 "InsufficientSurplus" = "The remaining number is insufficient. It is recommended that you adjust the number to sponsor";
 "CooperateUnsupported" = "You have not sponsored this project so you cannot withdraw from it";
 "CooperateCompleted" = "The node co-funding project is finished, and you cannot withdraw from it";
-"InitiatorAddressUnavailable" = "Only the initiator can initiate this operation";
+//"InitiatorAddressUnavailable" = "Only the initiator can initiate this operation";
+"InitiatorAddressUnavailable" = "Only the initiator of this node can initiate this operation";
 "InitiatorCanNotSupport" = "The initiator of the node co-funding project cannot be a sponsor";
 "NonRepeatableWithdrawal" = "You have withdrawn successfully. Frequent operations are not allowed";
 "NodeStatusExiting" = "The current node is exiting, and is not accessible for vote invitation";
 "NodeStatusExited" = "The current node has exited, and is not accessible for vote invitation";
+"NotSupportedOperation" = "This operation is not supported now.";
 // share
 "WXAppUninstalled" = "Please use it after downloading WeChat";
 "Unsupported" = "Please use it after upgrading to the latest version";
 "QQAppUninstalled" = "Please use it after downloading QQ";
 "SharingFailure" = "Error! Please try again later";
+
+// 调用底层合约
+"DposContract" = "调用合约";
 
 // SDK Errors
 "SYSTEM_ERROR" = "System error";

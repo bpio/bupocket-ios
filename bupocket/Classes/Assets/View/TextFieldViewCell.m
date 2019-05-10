@@ -34,6 +34,13 @@ static NSString * const TextFieldPWCellID = @"TextFieldPWCellID";
             ifSecure.frame = CGRectMake(0, 0, Margin_20, TEXTFIELD_HEIGHT);
             self.textField.rightView = ifSecure;
         }
+        if (@available(iOS 11.0, *)) {
+            self.textField.textContentType = UITextContentTypeName;
+        }
+//        else {
+//            self.textField.secureTextEntry = NO;
+//            self.textField.keyboardType = UIKeyboardTypeNamePhonePad;
+//        }
     }
     return self;
 }

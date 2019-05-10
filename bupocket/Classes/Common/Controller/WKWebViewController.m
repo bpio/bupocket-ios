@@ -226,7 +226,10 @@ static void *WkwebBrowserContext = &WkwebBrowserContext;
         self.needLoadJSPOST = NO;
     }
     // 获取加载网页的标题
-    
+    if (self.navigationItem.title.length == 0) {
+        self.navigationItem.title = self.wkWebView.title;
+    }
+
 //    if (self.title.length == 0) {
 //        self.title = self.wkWebView.title;
 //    }
@@ -380,6 +383,14 @@ static void *WkwebBrowserContext = &WkwebBrowserContext;
     [self presentViewController:alert animated:YES completion:NULL];
     
 }
+//// WKWebView内点击链接跳转
+//- (WKWebView *)webView:(WKWebView *)webView createWebViewWithConfiguration:(WKWebViewConfiguration *)configuration forNavigationAction:(WKNavigationAction *)navigationAction windowFeatures:(WKWindowFeatures *)windowFeatures
+//{
+//    if (!navigationAction.targetFrame.isMainFrame) {
+//        [webView loadRequest:navigationAction.request];
+//    }
+//    return nil;
+//}
 
 //KVO监听进度条
 - (void)observeValueForKeyPath:(NSString *)keyPath ofObject:(id)object change:(NSDictionary *)change context:(void *)context {

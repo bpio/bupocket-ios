@@ -2,7 +2,7 @@
 //  ConfirmTransactionAlertView.m
 //  bupocket
 //
-//  Created by huoss on 2019/3/30.
+//  Created by bupocket on 2019/3/30.
 //  Copyright © 2019年 bupocket. All rights reserved.
 //
 
@@ -40,7 +40,9 @@
     if (self) {
         _sureBlock = confrimBlock;
         _cancleBlock = cancelBlock;
-        _confirmTransactionModel = confirmTransactionModel;
+        if (confirmTransactionModel) {
+            self.confirmTransactionModel = confirmTransactionModel;            
+        }
         [self setupView];
     }
     return self;
@@ -72,6 +74,77 @@
     
     [self addSubview:self.confirm];
     
+    
+    //    CGFloat maxH = MAX(infoLabelTotalH, detailTotalH);
+    //    self.infoBg.height = maxH;
+    //    _infoBg.frame = CGRectMake(Margin_20, ScreenScale(120), DEVICE_WIDTH - Margin_40, infoLabelTotalH);
+    //    [UIView setViewBorder:_infoBg color:LINE_COLOR border:LINE_WIDTH type:UIViewBorderLineTypeBottom];
+    //    CGFloat H = maxH + ScreenScale(140);
+    //    self.frame = CGRectMake(0, DEVICE_HEIGHT - H, DEVICE_WIDTH, H);
+}
+- (void)layoutSubviews
+{
+    [super layoutSubviews];
+    
+    [self.closeBtn mas_makeConstraints:^(MASConstraintMaker *make) {
+        make.top.right.equalTo(self);
+        make.size.mas_equalTo(CGSizeMake(Margin_50, ScreenScale(55)));
+    }];
+    
+    [self.title mas_makeConstraints:^(MASConstraintMaker *make) {
+        make.top.mas_equalTo(0);
+        make.left.mas_equalTo(Margin_20);
+        make.size.mas_equalTo(CGSizeMake(DEVICE_WIDTH - ScreenScale(70), Margin_50));
+    }];
+    
+    [self.lineView mas_makeConstraints:^(MASConstraintMaker *make) {
+        make.top.equalTo(self.title.mas_bottom);
+        make.centerX.equalTo(self);
+        make.size.mas_equalTo(CGSizeMake(DEVICE_WIDTH - Margin_40, LINE_WIDTH));
+    }];
+    
+    [self.back mas_makeConstraints:^(MASConstraintMaker *make) {
+        make.left.mas_equalTo(DEVICE_WIDTH + Margin_20);
+        make.top.height.equalTo(self.title);
+        make.width.mas_equalTo(Margin_50);
+    }];
+    //    [self.amount mas_makeConstraints:^(MASConstraintMaker *make) {
+    //        make.top.equalTo(self.title.mas_bottom);
+    //        make.left.width.equalTo(self.details);
+    //        make.height.mas_equalTo(ScreenScale(70));
+    //    }];
+    
+    //    [self.infoBg mas_makeConstraints:^(MASConstraintMaker *make) {
+    //        make.top.equalTo(self.title.mas_bottom);
+    //        make.left.equalTo(self.title);
+    //        make.width.mas_equalTo(DEVICE_WIDTH * 2 - Margin_40);
+    //        make.height.mas_equalTo(self.height - ScreenScale(140));
+    //    }];
+    [self.transactionScrollView mas_makeConstraints:^(MASConstraintMaker *make) {
+        make.left.mas_equalTo(0);
+        make.top.equalTo(self.title.mas_bottom);
+        make.size.mas_equalTo(CGSizeMake(DEVICE_WIDTH, self.height - ScreenScale(140)));
+    }];
+    [self.details mas_makeConstraints:^(MASConstraintMaker *make) {
+        make.left.equalTo(self.title);
+        make.bottom.equalTo(self.transactionScrollView);
+        make.width.mas_equalTo(DEVICE_WIDTH - Margin_40);
+        make.height.mas_equalTo(Margin_30);
+    }];
+    [self.infoScrollView mas_makeConstraints:^(MASConstraintMaker *make) {
+        make.left.mas_equalTo(DEVICE_WIDTH);
+        make.size.top.equalTo(self.transactionScrollView);
+    }];
+    
+    [self.confirm mas_makeConstraints:^(MASConstraintMaker *make) {
+        make.bottom.equalTo(self.mas_bottom).offset(-Margin_25);
+        make.centerX.equalTo(self);
+        make.size.mas_equalTo(CGSizeMake(DEVICE_WIDTH - Margin_40, MAIN_HEIGHT));
+    }];
+}
+- (void)setConfirmTransactionModel:(ConfirmTransactionModel *)confirmTransactionModel
+{
+    _confirmTransactionModel = confirmTransactionModel;
     int transactionInfoCount = 6;
     NSArray * infoArray;
     self.transactionCost = TransactionCost_Check_MIN;
@@ -153,72 +226,65 @@
     infoLabelTotalH = infoLabelTotalH + Margin_15;
     _infoScrollView.contentSize = CGSizeMake(0, infoLabelTotalH);
     _transactionScrollView.contentSize = CGSizeMake(0, transactionTotalH);
-    //    CGFloat maxH = MAX(infoLabelTotalH, detailTotalH);
-    //    self.infoBg.height = maxH;
-    //    _infoBg.frame = CGRectMake(Margin_20, ScreenScale(120), DEVICE_WIDTH - Margin_40, infoLabelTotalH);
-    //    [UIView setViewBorder:_infoBg color:LINE_COLOR border:LINE_WIDTH type:UIViewBorderLineTypeBottom];
-    //    CGFloat H = maxH + ScreenScale(140);
-    //    self.frame = CGRectMake(0, DEVICE_HEIGHT - H, DEVICE_WIDTH, H);
 }
-- (void)layoutSubviews
+- (void)setDposModel:(DposModel *)dposModel
 {
-    [super layoutSubviews];
+    _dposModel = dposModel;
+    int transactionInfoCount = 6;
+    NSArray * infoArray;
+    self.transactionCost = dposModel.tx_fee;
+    NSString * destAddress = dposModel.dest_address;
+    _infoTitleArray = @[Localized(@"TransactionDetail"), Localized(@"ReceivingAccount"), Localized(@"MaximumTransactionCosts"), Localized(@"SendingAccount"), Localized(@"ReceivingAccount"), Localized(@"Number（BU）"), Localized(@"TransactionCosts（BU）"), Localized(@"Parameter")];
+    infoArray = @[Localized(@"DposContract"), destAddress, self.transactionCost, CurrentWalletAddress, destAddress, dposModel.amount, self.transactionCost, dposModel.input];
+   
+    CGFloat infoLabelTotalH = 0;
+    CGFloat transactionTotalH = 0;
+    for (NSInteger i = 0; i < _infoTitleArray.count * 2; i++) {
+        UILabel * infoLabel = [[UILabel alloc] init];
+        infoLabel.tag = i;
+        if (i < transactionInfoCount) {
+            [self.transactionScrollView addSubview:infoLabel];
+        } else {
+            [self.infoScrollView addSubview:infoLabel];
+        }
+        if (i % 2) {
+            infoLabel.font = FONT(14);
+            infoLabel.textColor = COLOR_6;
+            infoLabel.text = infoArray[i / 2];
+        } else {
+            infoLabel.font = FONT(13);
+            infoLabel.textColor = COLOR_9;
+            infoLabel.text = self.infoTitleArray[i / 2];
+        }
+        CGFloat infoLabelX = Margin_20;
+        CGFloat infoLabelW = DEVICE_WIDTH - Margin_40;
+        infoLabel.preferredMaxLayoutWidth = infoLabelW;
+        infoLabel.numberOfLines = 0;
+        //        infoLabel.lineBreakMode = NSLineBreakByCharWrapping;
+        [infoLabel sizeToFit];
+        CGFloat infoLabelH = ceil([Encapsulation rectWithText:infoLabel.text font:infoLabel.font textWidth:infoLabelW].size.height) + 1;
+        if (i == 0 && [_confirmTransactionModel.type integerValue] == TransactionTypeApplyNode) {
+            infoLabelTotalH = self.amount.height;
+        } else if (i == transactionInfoCount) {
+            transactionTotalH = infoLabelTotalH + Margin_50;
+            infoLabelTotalH = Margin_15;
+        } else if (i % 2) {
+            infoLabelTotalH += Margin_5;
+        } else {
+            infoLabelTotalH += Margin_15;
+        }
+        //        infoLabel.frame = CGRectMake(infoLabelX, infoLabelTotalH, DEVICE_WIDTH - Margin_40, infoLabelH);
+        [infoLabel mas_makeConstraints:^(MASConstraintMaker *make) {
+            make.left.mas_equalTo(infoLabelX);
+            make.top.mas_equalTo(infoLabelTotalH);
+            make.size.mas_equalTo(CGSizeMake(infoLabelW, infoLabelH));
+        }];
+        infoLabelTotalH = infoLabelTotalH + infoLabelH;
+    }
     
-    [self.closeBtn mas_makeConstraints:^(MASConstraintMaker *make) {
-        make.top.right.equalTo(self);
-        make.size.mas_equalTo(CGSizeMake(Margin_50, ScreenScale(55)));
-    }];
-    
-    [self.title mas_makeConstraints:^(MASConstraintMaker *make) {
-        make.top.mas_equalTo(0);
-        make.left.mas_equalTo(Margin_20);
-        make.size.mas_equalTo(CGSizeMake(DEVICE_WIDTH - ScreenScale(70), Margin_50));
-    }];
-    
-    [self.lineView mas_makeConstraints:^(MASConstraintMaker *make) {
-        make.top.equalTo(self.title.mas_bottom);
-        make.centerX.equalTo(self);
-        make.size.mas_equalTo(CGSizeMake(DEVICE_WIDTH - Margin_40, LINE_WIDTH));
-    }];
-    
-    [self.back mas_makeConstraints:^(MASConstraintMaker *make) {
-        make.left.mas_equalTo(DEVICE_WIDTH + Margin_20);
-        make.top.height.equalTo(self.title);
-        make.width.mas_equalTo(Margin_50);
-    }];
-    //    [self.amount mas_makeConstraints:^(MASConstraintMaker *make) {
-    //        make.top.equalTo(self.title.mas_bottom);
-    //        make.left.width.equalTo(self.details);
-    //        make.height.mas_equalTo(ScreenScale(70));
-    //    }];
-    
-    //    [self.infoBg mas_makeConstraints:^(MASConstraintMaker *make) {
-    //        make.top.equalTo(self.title.mas_bottom);
-    //        make.left.equalTo(self.title);
-    //        make.width.mas_equalTo(DEVICE_WIDTH * 2 - Margin_40);
-    //        make.height.mas_equalTo(self.height - ScreenScale(140));
-    //    }];
-    [self.transactionScrollView mas_makeConstraints:^(MASConstraintMaker *make) {
-        make.left.mas_equalTo(0);
-        make.top.equalTo(self.title.mas_bottom);
-        make.size.mas_equalTo(CGSizeMake(DEVICE_WIDTH, self.height - ScreenScale(140)));
-    }];
-    [self.details mas_makeConstraints:^(MASConstraintMaker *make) {
-        make.left.equalTo(self.title);
-        make.bottom.equalTo(self.transactionScrollView);
-        make.width.mas_equalTo(DEVICE_WIDTH - Margin_40);
-        make.height.mas_equalTo(Margin_30);
-    }];
-    [self.infoScrollView mas_makeConstraints:^(MASConstraintMaker *make) {
-        make.left.mas_equalTo(DEVICE_WIDTH);
-        make.size.top.equalTo(self.transactionScrollView);
-    }];
-    
-    [self.confirm mas_makeConstraints:^(MASConstraintMaker *make) {
-        make.bottom.equalTo(self.mas_bottom).offset(-Margin_25);
-        make.centerX.equalTo(self);
-        make.size.mas_equalTo(CGSizeMake(DEVICE_WIDTH - Margin_40, MAIN_HEIGHT));
-    }];
+    infoLabelTotalH = infoLabelTotalH + Margin_15;
+    _infoScrollView.contentSize = CGSizeMake(0, infoLabelTotalH);
+    _transactionScrollView.contentSize = CGSizeMake(0, transactionTotalH);
 }
 - (UIScrollView *)bgScrollView
 {

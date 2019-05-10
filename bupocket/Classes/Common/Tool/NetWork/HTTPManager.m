@@ -493,8 +493,12 @@ static int64_t const gasPrice = 1000;
     }];
 }
 // Contract Transaction
-- (void)getTransactionWithModel:(ConfirmTransactionModel *)confirmTransactionModel
+- (void)getContractTransactionWithModel:(ConfirmTransactionModel *)confirmTransactionModel
+                                success:(void (^)(id responseObject))success
+                                failure:(void (^)(NSError *error))failure
 {
+    // Build BUSendOperation
+    [MBProgressHUD showActivityMessageInWindow:Localized(@"DataChecking")];
     NSString * sourceAddress = CurrentWalletAddress;
     NSString * ID = confirmTransactionModel.qrcodeSessionId;
     if (confirmTransactionModel.nodeId) {
@@ -528,14 +532,6 @@ static int64_t const gasPrice = 1000;
     }
     _hash = [[HTTPManager shareManager] buildBlobAndSignAndSubmit:nil :sourceAddress :nonce :gasPrice :fee :operations :notes];
     DLog(@"hash:%@", _hash);
-}
-- (void)getContractTransactionWithModel:(ConfirmTransactionModel *)confirmTransactionModel
-                                success:(void (^)(id responseObject))success
-                                failure:(void (^)(NSError *error))failure
-{
-    // Build BUSendOperation
-    [MBProgressHUD showActivityMessageInWindow:Localized(@"DataChecking")];
-    [self getTransactionWithModel:confirmTransactionModel];
     if (_hash) {
         if (([confirmTransactionModel.type integerValue] == TransactionTypeCooperateSupport || [confirmTransactionModel.type integerValue] == TransactionTypeCooperateSignOut) && confirmTransactionModel.isCooperateDetail == YES) {
             NSString * URL = Node_Cooperate_Exit;
@@ -1012,6 +1008,7 @@ static int64_t const gasPrice = 1000;
     }
     return !imported;
 }
+#pragma mark - 转账
 // Transfer accounts
 - (void)setTransferDataWithTokenType:(NSInteger)tokenType
                             password:(NSString *)password
@@ -1277,5 +1274,41 @@ static int64_t const gasPrice = 1000;
     });
     dispatch_resume(gcdTimer);
 }
+
+#pragma mark - 调用底层合约
+- (void)getTransactionWithModel:(DposModel *)dposModel
+                       password:(NSString *)password
+                        success:(void (^)(TransactionResultModel * resultModel))success
+                        failure:(void (^)(TransactionResultModel * resultModel))failure
+{
+    // Build BUSendOperation
+    NSString * sourceAddress = CurrentWalletAddress;
+    NSString * walletKeyStore = CurrentWalletKeyStore;
+    NSString * privateKey = [NSString decipherKeyStoreWithPW:password keyStoreValueStr:walletKeyStore];
+    if ([Tools isEmpty:privateKey]) {
+        [MBProgressHUD showTipMessageInWindow:Localized(@"PasswordIsIncorrect")];
+        return;
+    }
+    NSString * notes = Localized(@"DposContract");
+    int64_t fee = [[[NSDecimalNumber decimalNumberWithString:dposModel.tx_fee] decimalNumberByMultiplyingByPowerOf10: Decimals_BU] longLongValue];
+    int64_t nonce = [[HTTPManager shareManager] getAccountNonce: sourceAddress] + 1;
+    if (nonce == 0) return;
+    NSMutableArray * operations = [NSMutableArray array];
+    int64_t amount = [[[NSDecimalNumber decimalNumberWithString:dposModel.amount] decimalNumberByMultiplyingByPowerOf10: Decimals_BU] longLongValue];
+    
+    ContractInvokeByBUOperation *operation = [ContractInvokeByBUOperation new];
+    [operation setSourceAddress: sourceAddress];
+    [operation setContractAddress: dposModel.dest_address];
+    [operation setAmount: amount];
+    [operation setInput:dposModel.input];
+    [operation setMetadata:notes];
+    [operations addObject:operation];
+    _hash = [[HTTPManager shareManager] buildBlobAndSignAndSubmit:privateKey :sourceAddress :nonce :gasPrice :fee :operations :notes];
+    DLog(@"hash:%@", _hash);
+    if (![Tools isEmpty: _hash]) {
+        [[HTTPManager shareManager] getTransactionStatusHash:_hash success:success failure:failure];
+    }
+}
+
 
 @end

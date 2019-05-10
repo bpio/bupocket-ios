@@ -2,7 +2,7 @@
 //  Constants.h
 //  bupocket
 //
-//  Created by huoss on 2019/4/26.
+//  Created by bupocket on 2019/4/26.
 //  Copyright © 2019年 bupocket. All rights reserved.
 //
 
@@ -22,6 +22,7 @@
 //#define BUMO_NODE_URL_TEST @"http://192.168.21.35:36002"
 //#define WEB_SERVER_DOMAIN_TEST @"http://test-bupocket-api.bumocdn.com/"
 //#define BUMO_NODE_URL_TEST @"http://192.168.3.65:36002"
+
 #define BUMO_TOOLS_URL_TEST @"https://ws-tools.bumotest.io"
 
 #define Information_URL @"https://m-news.bumo.io"
@@ -63,7 +64,7 @@
 #define Node_Cooperate_Detail @"nodeServer/node/v1/cooperate/detail"
 // 投票记录
 #define Voting_Record @"nodeServer/node/v1/vote/list"
-#define Node_Image_URL @"img-dpos/"
+#define Node_Image_URL @"img_dpos/"
 // 生成短链接
 #define Node_ShortLink_URL @"nodeServer/shortlink"
 #define Validate_Node_Path @"dpos/detail/validate/"

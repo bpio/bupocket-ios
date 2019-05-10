@@ -2,7 +2,7 @@
 //  CooperateDetailViewController.m
 //  bupocket
 //
-//  Created by huoss on 2019/4/8.
+//  Created by bupocket on 2019/4/8.
 //  Copyright © 2019年 bupocket. All rights reserved.
 //
 
@@ -277,14 +277,6 @@ static NSString * const CooperateDetailCellID = @"CooperateDetailCellID";
 - (void)submitTransactionWithPassword:(NSString *)password confirmTransactionModel:(ConfirmTransactionModel *)confirmTransactionModel
 {
     [[HTTPManager shareManager] submitContractTransactionPassword:password success:^(TransactionResultModel *resultModel) {
-        NSMutableArray * transferInfoArray = [NSMutableArray arrayWithObjects:confirmTransactionModel.destAddress, [NSString stringAppendingBUWithStr:confirmTransactionModel.amount], nil];
-        if (NULLString(confirmTransactionModel.qrRemark)) {
-            NSString * qrRemark = confirmTransactionModel.qrRemark;
-            if ([CurrentAppLanguage isEqualToString:EN]) {
-                qrRemark = confirmTransactionModel.qrRemarkEn;
-            }
-            resultModel.remark = qrRemark;
-        }
         if (resultModel.errorCode == Success_Code) {
             NodeTransferSuccessViewController * VC = [[NodeTransferSuccessViewController alloc] init];
             [self.navigationController pushViewController:VC animated:NO];
@@ -292,8 +284,7 @@ static NSString * const CooperateDetailCellID = @"CooperateDetailCellID";
             TransferResultsViewController * VC = [[TransferResultsViewController alloc] init];
             VC.state = NO;
             VC.resultModel = resultModel;
-            //            [MBProgressHUD showTipMessageInWindow:[ErrorTypeTool getDescription:resultModel.errorCode]];
-            VC.transferInfoArray = transferInfoArray;
+            VC.confirmTransactionModel = confirmTransactionModel;
             [self.navigationController pushViewController:VC animated:NO];
         }
     } failure:^(TransactionResultModel *resultModel) {

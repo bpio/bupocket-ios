@@ -2,7 +2,7 @@
 //  NodePlanModel.h
 //  bupocket
 //
-//  Created by huoss on 2019/4/2.
+//  Created by bupocket on 2019/4/2.
 //  Copyright © 2019年 bupocket. All rights reserved.
 //
 
@@ -39,6 +39,7 @@ NS_ASSUME_NONNULL_BEGIN
 @property (nonatomic, copy) NSString * status;
 
 @property (nonatomic, copy) NSString * shortLink;
+@property (nonatomic, assign) CGFloat cellHeight;
 
 @end
 

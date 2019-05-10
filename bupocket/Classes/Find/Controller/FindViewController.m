@@ -10,7 +10,7 @@
 #import "SDCycleScrollView.h"
 #import "ListTableViewCell.h"
 #import "WKWebViewController.h"
-#import <WXApi.h>
+#import "WechatTool.h"
 #import "NodePlanViewController.h"
 #import "CooperateViewController.h"
 
@@ -174,11 +174,7 @@ static NSString * const ExportCellID = @"ExportCellID";
         [VC loadWebURLSring:Information_URL];
         [self.navigationController pushViewController:VC animated:NO];
     } else if (indexPath.section == 2) {
-        WXLaunchMiniProgramReq * launchMiniProgramReq = [WXLaunchMiniProgramReq object];
-        launchMiniProgramReq.userName = XCX_YouPin_Original_ID;
-//        launchMiniProgramReq.path = @"";//拉起小程序页面的可带参路径，不填默认拉起小程序首页
-        launchMiniProgramReq.miniProgramType = 0;
-        [WXApi sendReq:launchMiniProgramReq];
+        [WechatTool enterWechatMiniProgram];
     }
 }
 

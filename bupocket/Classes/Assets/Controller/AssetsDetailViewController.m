@@ -239,6 +239,17 @@
             return;
         }
         result = stringValue;
+        if ([stringValue hasPrefix:Dpos_Prefix]) {
+            [self showAlert];
+            return;
+        }
+        if ([stringValue hasPrefix:@"http"] && [stringValue containsString:Account_Center_Contains] && ![[[[[stringValue componentsSeparatedByString:Account_Center_Contains] firstObject] componentsSeparatedByString:@"://"] lastObject] containsString:@"/"] && [[[stringValue componentsSeparatedByString:Account_Center_Contains] lastObject] length] == 32) {
+            [self showAlert];
+            return;
+        } else if ([stringValue hasPrefix:@"http"] && [stringValue containsString:Dpos_Contains] && ![[[[[stringValue componentsSeparatedByString:Dpos_Contains] firstObject] componentsSeparatedByString:@"://"] lastObject] containsString:@"/"] && [[[stringValue componentsSeparatedByString:Dpos_Contains] lastObject] length] == 32) {
+            [self showAlert];
+            return;
+        }
         NSOperationQueue * queue = [[NSOperationQueue alloc] init];
         [queue addOperationWithBlock:^{
             BOOL isCorrectAddress = [Keypair isAddressValid: stringValue];
@@ -253,11 +264,15 @@
                 }
             }];
         }];
-        
-        
     }];
     [scanner setTitleColor:[UIColor whiteColor] tintColor:MAIN_COLOR];
     [self showDetailViewController:scanner sender:nil];
+}
+- (void)showAlert
+{
+    dispatch_after(dispatch_time(DISPATCH_TIME_NOW, (int64_t)(Dispatch_After_Time * NSEC_PER_SEC)), dispatch_get_main_queue(), ^{
+        [Encapsulation showAlertControllerWithMessage:Localized(@"NotSupportedOperation") handler:nil];
+    });
 }
 #pragma mark - transferAccountsAction
 - (void)transferAccountsAction:(UIButton *)button

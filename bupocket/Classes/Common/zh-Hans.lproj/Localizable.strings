@@ -468,7 +468,7 @@
 "IWantToSupport" = "我要支持";
 "Support" = "支持";
 "Withdraw" = "撤回";
-"RiskStatementPrompt" = "1. 节点共建不是商品交易。支持者根据节点共建发起者的奖励分享比例等其他因素，自主选择支持何种共建项目并获得相应的回报奖励；\n2. BUMO只提供网络空间、技术服务等中间服务，与项目发起者和支持者无任何利益关联。节点共建项目仅存在于发起者和支持者之间，若因节点共建产生的任何法律纠纷将由项目发起者和支持者自行承担，平台对此不承担任何责任；\n3. 节点共建项目未完成前，节点共建支持者可手动撤回全部支持金额；若项目发起者在项目未完成前主动退出，节点共建支持者也可手动撤回全部支持金额。";
+"RiskStatementPrompt" = "1.节点共建不是商品交易。支持者自主选择相关节点共建项目进行支持，节点共建支持者可获得奖励，奖励是根据共建支持者的支持金额占共建保证金加目标金额总和的比重进行奖励分配；\n2.BUMO只提供网络空间、技术服务等中间服务，与项目发起者和支持者无任何利益关联。节点共建项目仅存在于发起者和支持者之间，若因节点共建产生的任何法律纠纷将由项目发起者和支持者自行承担，平台对此不承担任何责任；\n3.节点共建项目未完成前，节点共建支持者可手动撤回全部支持金额；若项目发起者在项目未完成前主动退出，节点共建支持者也可手动撤回全部支持金额。";
 // 支持
 "SupportProjects" = "支持项目";
 "SupportCopies" = "支持份数";
@@ -507,16 +507,21 @@
 "InsufficientSurplus" = "剩余份数不足，建议您调整支持份数";
 "CooperateUnsupported" = "您还未支持过此项目，暂不能撤回";
 "CooperateCompleted" = "节点共建项目已完成，暂不支持退出";
-"InitiatorAddressUnavailable" = "该账户不是发起者，无法发起该操作";
+//"InitiatorAddressUnavailable" = "该账户不是发起者，无法发起该操作";
+"InitiatorAddressUnavailable" = "不是该节点发起者，无法使用该操作";
 "InitiatorCanNotSupport" = "节点共建项目发起者不能参与支持";
 "NonRepeatableWithdrawal" = "您已成功撤回，不能重复操作";
 "NodeStatusExiting" = "当前节点处于\"退出中\"状态，暂不支持邀请投票";
 "NodeStatusExited" = "当前节点处于\"已退出\"状态，暂不支持邀请投票";
+"NotSupportedOperation" = "暂不支持该操作";
 // share
 "WXAppUninstalled" = "请下载微信后使用";
 "Unsupported" = "当前版本太低，请更新后使用";
 "QQAppUninstalled" = "请下载QQ后使用";
 "SharingFailure" = "出错了，请稍后重试";
+
+// 调用底层合约
+"DposContract" = "调用合约";
 
 // SDK Errors
 "SYSTEM_ERROR" = "系统错误";

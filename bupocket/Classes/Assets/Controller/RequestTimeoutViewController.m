@@ -7,7 +7,7 @@
 //
 
 #import "RequestTimeoutViewController.h"
-#import <WXApi.h>
+#import "WechatTool.h"
 #import "AdsModel.h"
 #import "WKWebViewController.h"
 
@@ -164,11 +164,7 @@
 - (void)adAction
 {
     if ([self.adsModel.type isEqualToString:@"1"]) {
-        WXLaunchMiniProgramReq * launchMiniProgramReq = [WXLaunchMiniProgramReq object];
-        launchMiniProgramReq.userName = XCX_YouPin_Original_ID;
-        //        launchMiniProgramReq.path = @"";//拉起小程序页面的可带参路径，不填默认拉起小程序首页
-        launchMiniProgramReq.miniProgramType = 0;
-        [WXApi sendReq:launchMiniProgramReq];
+        [WechatTool enterWechatMiniProgram];
     } else if ([self.adsModel.type isEqualToString:@"2"]) {
         if (NULLString(self.adsModel.url)) {
             WKWebViewController * VC = [[WKWebViewController alloc] init];
