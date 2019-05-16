@@ -106,7 +106,7 @@ static NSString * const NodeTransferSuccessID = @"NodeTransferSuccessID";
     if ([self.adsModel.type isEqualToString:@"1"]) {
         [WechatTool enterWechatMiniProgram];
     } else if ([self.adsModel.type isEqualToString:@"2"]) {
-        if (NULLString(self.adsModel.url)) {
+        if (NotNULLString(self.adsModel.url)) {
             WKWebViewController * VC = [[WKWebViewController alloc] init];
             //    VC.navigationItem.title = self.listArray[indexPath.section][indexPath.row];
             [VC loadWebURLSring: self.adsModel.url];

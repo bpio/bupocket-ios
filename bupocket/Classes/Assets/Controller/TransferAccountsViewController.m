@@ -152,7 +152,7 @@
             self.isCorrectText = YES;
             if (self.isCorrectText == YES) {
                 self.transferInfoArray = [NSMutableArray arrayWithObjects:self.address, [NSString stringWithFormat:@"%@ %@", [sendNumber stringValue], self.listModel.assetCode], [NSString stringAppendingBUWithStr:[cost stringValue]], nil];
-                if (NULLString(self.remarksStr)) {
+                if (NotNULLString(self.remarksStr)) {
                     [self.transferInfoArray addObject:self.remarksStr];
                 }
                 [self showTransferInfo];
@@ -165,11 +165,11 @@
     __weak typeof(self) weakSelf = self;
     TransferDetailsAlertView * transferDetailsAlertView = [[TransferDetailsAlertView alloc] initWithTransferInfoArray:self.transferInfoArray confrimBolck:^{
         dispatch_after(dispatch_time(DISPATCH_TIME_NOW, (int64_t)(Dispatch_After_Time * NSEC_PER_SEC)), dispatch_get_main_queue(), ^{
-            int64_t nonce = [[HTTPManager shareManager] getAccountNonce: CurrentWalletAddress] + 1;
-            DLog(@"nonce=%lld", nonce);
-            if (nonce == 0) return;
-            PasswordAlertView * alertView = [[PasswordAlertView alloc] initWithPrompt:Localized(@"TransactionWalletPWPrompt") walletKeyStore:CurrentWalletKeyStore isAutomaticClosing:YES confrimBolck:^(NSString * _Nonnull password, NSArray * _Nonnull words) {
-                [weakSelf getDataWithPassword:password nonce:nonce];
+            if (![[HTTPManager shareManager] setTransferDataWithTokenType:self.listModel.type destAddress:self.address assets:self.transferVolumeStr decimals:self.listModel.decimals feeLimit:self.transactionCostsStr notes:self.remarksStr code:self.listModel.assetCode issuer:self.listModel.issuer]) return;
+            PasswordAlertView * alertView = [[PasswordAlertView alloc] initWithPrompt:Localized(@"TransactionWalletPWPrompt") confrimBolck:^(NSString * _Nonnull password, NSArray * _Nonnull words) {
+                if (NotNULLString(password)) {
+                    [weakSelf submitTransaction];
+                }
             } cancelBlock:^{
                 
             }];
@@ -182,9 +182,9 @@
     [transferDetailsAlertView showInWindowWithMode:CustomAnimationModeShare inView:nil bgAlpha:AlertBgAlpha needEffectView:NO];
 }
 
-- (void)getDataWithPassword:(NSString *)password nonce:(int64_t)nonce
+- (void)submitTransaction
 {
-    [[HTTPManager shareManager] setTransferDataWithTokenType:self.listModel.type password:password destAddress:self.address assets:_transferVolumeStr decimals:self.listModel.decimals feeLimit:_transactionCostsStr notes:_remarksStr code:self.listModel.assetCode issuer:self.listModel.issuer nonce:nonce success:^(TransactionResultModel *resultModel) {
+    [[HTTPManager shareManager] submitTransactionWithSuccess:^(TransactionResultModel *resultModel) {
 //        [self.transferInfoArray addObject:[DateTool getDateStringWithTimeStr:[NSString stringWithFormat:@"%lld", resultModel.transactionTime]]];
 //        [self.transferInfoArray replaceObjectAtIndex:2 withObject:[NSString stringAppendingBUWithStr:resultModel.actualFee]];
         resultModel.remark = self.remarksStr;

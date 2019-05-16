@@ -378,26 +378,28 @@ static NSString * const NodePlanCellID = @"NodePlanCellID";
     } else if ([nodePlanModel.identityType integerValue] == NodeIDTypeEcological) {
         role = Role_kol;
     }
-    confirmTransactionModel.script = [NSString stringWithFormat:@"{\"method\":\"unVote\",\"params\":{\"role\":\"%@\",\"address\":\"%@\"}}", role, nodePlanModel.nodeCapitalAddress];
+    confirmTransactionModel.script = DposUnVote(role, nodePlanModel.nodeCapitalAddress);
     confirmTransactionModel.nodeId = nodePlanModel.nodeId;
     confirmTransactionModel.type = [NSString stringWithFormat:@"%zd", TransactionTypeNodeWithdrawal];
-    ConfirmTransactionAlertView * alertView = [[ConfirmTransactionAlertView alloc] initWithDpos:confirmTransactionModel confrimBolck:^(NSString * _Nonnull transactionCost) {
+    ConfirmTransactionAlertView * alertView = [[ConfirmTransactionAlertView alloc] initWithDposConfrimBolck:^(NSString * _Nonnull transactionCost) {
         dispatch_after(dispatch_time(DISPATCH_TIME_NOW, (int64_t)(Dispatch_After_Time * NSEC_PER_SEC)), dispatch_get_main_queue(), ^{
             NSDecimalNumber * amount = [NSDecimalNumber decimalNumberWithString:confirmTransactionModel.amount];
             NSDecimalNumber * minTransactionCost = [NSDecimalNumber decimalNumberWithString:transactionCost];
             NSDecimalNumber * totleAmount = [amount decimalNumberByAdding:minTransactionCost];
             NSDecimalNumber * amountNumber = [[HTTPManager shareManager] getDataWithBalanceJudgmentWithCost:[totleAmount stringValue] ifShowLoading:NO];
             NSString * totleAmountStr = [amountNumber stringValue];
-            if (!NULLString(totleAmountStr) || [amountNumber isEqualToNumber:NSDecimalNumber.notANumber]) {
+            if (!NotNULLString(totleAmountStr) || [amountNumber isEqualToNumber:NSDecimalNumber.notANumber]) {
             } else if ([totleAmountStr hasPrefix:@"-"]) {
                 [MBProgressHUD showTipMessageInWindow:Localized(@"NotSufficientFunds")];
             } else {
-                [self getContractTransactionData:confirmTransactionModel];
+                if (![[HTTPManager shareManager] getTransactionHashWithModel: confirmTransactionModel]) return;
+                [self showPWAlertView:confirmTransactionModel];
             }
         });
     } cancelBlock:^{
         
     }];
+    alertView.confirmTransactionModel = confirmTransactionModel;
     [alertView showInWindowWithMode:CustomAnimationModeShare inView:nil bgAlpha:AlertBgAlpha needEffectView:NO];
 }
 // Transaction confirmation and submission
@@ -414,7 +416,7 @@ static NSString * const NodePlanCellID = @"NodePlanCellID";
                     [Encapsulation showAlertControllerWithMessage:Localized(@"Overtime") handler:nil];
                     //                [MBProgressHUD showTipMessageInWindow:Localized(@"Overtime")];
                 } else {
-                    [self showPWAlertView:confirmTransactionModel];
+                    [self submitTransactionWithConfirmTransactionModel:confirmTransactionModel];
                 }
             } else {
                 [Encapsulation showAlertControllerWithMessage:[NSString stringWithFormat:Localized(@"NotSubmitted%@"), [DateTool getTimeIntervalWithStr:dateStr]] handler:nil];
@@ -429,17 +431,19 @@ static NSString * const NodePlanCellID = @"NodePlanCellID";
 }
 - (void)showPWAlertView:(ConfirmTransactionModel *)confirmTransactionModel
 {
-    PasswordAlertView * PWAlertView = [[PasswordAlertView alloc] initWithPrompt:Localized(@"TransactionWalletPWPrompt") walletKeyStore:CurrentWalletKeyStore isAutomaticClosing:YES confrimBolck:^(NSString * _Nonnull password, NSArray * _Nonnull words) {
-        [self submitTransactionWithPassword:password confirmTransactionModel:confirmTransactionModel];
+    PasswordAlertView * PWAlertView = [[PasswordAlertView alloc] initWithPrompt:Localized(@"TransactionWalletPWPrompt") confrimBolck:^(NSString * _Nonnull password, NSArray * _Nonnull words) {
+        if (NotNULLString(password)) {
+            [self getContractTransactionData:confirmTransactionModel];            
+        }
     } cancelBlock:^{
         
     }];
     [PWAlertView showInWindowWithMode:CustomAnimationModeAlert inView:nil bgAlpha:AlertBgAlpha needEffectView:NO];
     [PWAlertView.PWTextField becomeFirstResponder];
 }
-- (void)submitTransactionWithPassword:(NSString *)password confirmTransactionModel:(ConfirmTransactionModel *)confirmTransactionModel
+- (void)submitTransactionWithConfirmTransactionModel:(ConfirmTransactionModel *)confirmTransactionModel
 {
-    [[HTTPManager shareManager] submitContractTransactionPassword:password success:^(TransactionResultModel *resultModel) {
+    [[HTTPManager shareManager] submitTransactionWithSuccess:^(TransactionResultModel *resultModel) {
         if (resultModel.errorCode == Success_Code) {
             NodeTransferSuccessViewController * VC = [[NodeTransferSuccessViewController alloc] init];
             [self.navigationController pushViewController:VC animated:NO];

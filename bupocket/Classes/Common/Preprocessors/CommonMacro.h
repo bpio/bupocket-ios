@@ -52,6 +52,7 @@
 //#define COLOR(R, G, B) [UIColor colorWithRed:(R)/255.0 green:(G)/255.0 blue:(B)/255.0 alpha:(1.0)]
 // Color
 #define COLOR(HexString)  [UIColor colorWithHexString:HexString]
+
 #define RandomColor [UIColor colorWithRed:arc4random_uniform(255) / 255.0 green:arc4random_uniform(255) / 255.0 blue:arc4random_uniform(255) / 255.0 alpha:1.0]
 //#define NAVITEM_COLOR COLOR(@"5745C3")
 //#define NAVITEM_COLOR COLOR(@"7C96F8")
@@ -88,8 +89,11 @@
 #define Localized_Language(key, language) [[NSBundle bundleWithPath:[[NSBundle mainBundle] pathForResource:[NSString stringWithFormat:@"%@", language] ofType:@"lproj"]] localizedStringForKey:(key) value:nil table:@"Localizable"]
 
 // Determine whether a string is empty
-#define NULLString(string) (([string isKindOfClass:[NSString class]]) && ![string isEqualToString:@""] && (string != nil) && ![string isEqualToString:@""] && ![string isKindOfClass:[NSNull class]] && [[string stringByTrimmingCharactersInSet:[NSCharacterSet whitespaceCharacterSet]] length] != 0)
+#define NotNULLString(string) (([string isKindOfClass:[NSString class]]) && ![string isEqualToString:@""] && (string != nil) && ![string isEqualToString:@""] && ![string isKindOfClass:[NSNull class]] && [[string stringByTrimmingCharactersInSet:[NSCharacterSet whitespaceCharacterSet]] length] != 0)
 
+#define DposUnVote(role, address) [NSString stringWithFormat:@"{\"method\":\"unVote\",\"params\":{\"role\":\"%@\",\"address\":\"%@\"}}", role, address]
+#define DopsRevoke @"{\"method\":\"revoke\"}"
+#define DopsSubscribe(shares) [NSString stringWithFormat:@"{\"method\":\"subscribe\",\"params\":{\"shares\":%@}}", shares]
 // Remove the first and last blanks of the input box
 #define TrimmingCharacters(string) [string stringByTrimmingCharactersInSet:[NSCharacterSet whitespaceAndNewlineCharacterSet]]
 

@@ -107,14 +107,17 @@
 }
 - (void)backupIdentityAction
 {
-    PasswordAlertView * alertView = [[PasswordAlertView alloc] initWithPrompt:Localized(@"IdentityCipherPrompt") walletKeyStore:@"" isAutomaticClosing:YES confrimBolck:^(NSString * _Nonnull password, NSArray * _Nonnull words) {
-        BackupMnemonicsViewController * VC = [[BackupMnemonicsViewController alloc] init];
-        VC.mnemonicArray = words;
-        [self.navigationController pushViewController:VC animated:NO];
+    PasswordAlertView * alertView = [[PasswordAlertView alloc] initWithPrompt:Localized(@"IdentityCipherPrompt") confrimBolck:^(NSString * _Nonnull password, NSArray * _Nonnull words) {
+        if (words.count > 0) {
+            BackupMnemonicsViewController * VC = [[BackupMnemonicsViewController alloc] init];
+            VC.mnemonicArray = words;
+            [self.navigationController pushViewController:VC animated:NO];
+        }
 //        [UIApplication sharedApplication].keyWindow.rootViewController = [[NavigationViewController alloc] initWithRootViewController:VC];
     } cancelBlock:^{
         
     }];
+    alertView.passwordType = PWTypeBackUpID;
     [alertView showInWindowWithMode:CustomAnimationModeAlert inView:nil bgAlpha:AlertBgAlpha needEffectView:NO];
     [alertView.PWTextField becomeFirstResponder];
 }
@@ -123,16 +126,17 @@
     [Encapsulation showAlertControllerWithTitle:Localized(@"ExitCurrentIdentity") message:Localized(@"ExitCurrentIdentityPrompt") cancelHandler:^(UIAlertAction *action) {
         
     } confirmHandler:^(UIAlertAction *action) {
-        PasswordAlertView * alertView = [[PasswordAlertView alloc] initWithPrompt:Localized(@"IdentityCipherWarning") walletKeyStore:@"" isAutomaticClosing:YES confrimBolck:^(NSString * _Nonnull password, NSArray * _Nonnull words) {
-            [self exitIDDataWithPassword:password];
+        PasswordAlertView * alertView = [[PasswordAlertView alloc] initWithPrompt:Localized(@"IdentityCipherWarning") confrimBolck:^(NSString * _Nonnull password, NSArray * _Nonnull words) {
+            [self exitIDData];
         } cancelBlock:^{
             
         }];
+        alertView.passwordType = PWTypeExitID;
         [alertView showInWindowWithMode:CustomAnimationModeAlert inView:nil bgAlpha:AlertBgAlpha needEffectView:NO];
         [alertView.PWTextField becomeFirstResponder];
     }];
 }
-- (void)exitIDDataWithPassword:(NSString *)password
+- (void)exitIDData
 {
     [MBProgressHUD showActivityMessageInWindow:Localized(@"Loading")];
     NSOperationQueue * queue = [[NSOperationQueue alloc] init];

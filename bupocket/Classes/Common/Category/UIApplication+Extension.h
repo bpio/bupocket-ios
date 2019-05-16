@@ -13,6 +13,7 @@ NS_ASSUME_NONNULL_BEGIN
 @interface UIApplication (Extension)
 
 + (UIViewController *)topViewController:(UIViewController *)baseViewController;
++ (UIViewController *)currentViewController;
 
 @end
 

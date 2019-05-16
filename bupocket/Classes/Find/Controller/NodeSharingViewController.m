@@ -64,7 +64,7 @@ static NSString * const NodeSharingID = @"NodeSharingID";
         NSInteger code = [[responseObject objectForKey:@"errCode"] integerValue];
         if (code == Success_Code) {
             self.nodePlanModel = [NodePlanModel mj_objectWithKeyValues:responseObject[@"data"]];
-            if (NULLString(self.nodePlanModel.introduce)) {
+            if (NotNULLString(self.nodePlanModel.introduce)) {
                 [self.wkWebView loadHTMLString:self.nodePlanModel.introduce baseURL:nil];
             }
             self.titleLabel.text = Localized(@"NodeIntroduction");
@@ -129,7 +129,7 @@ static NSString * const NodeSharingID = @"NodeSharingID";
 - (UIView *)tableView:(UITableView *)tableView viewForFooterInSection:(NSInteger)section
 {
     UIView * footerView = [[UIView alloc] init];
-    if (NULLString(self.nodePlanModel.introduce)) {
+    if (NotNULLString(self.nodePlanModel.introduce)) {
         [footerView addSubview:self.titleLabel];
         [footerView addSubview:self.wkWebView];
     }

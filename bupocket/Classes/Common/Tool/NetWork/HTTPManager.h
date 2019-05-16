@@ -7,6 +7,7 @@
 //
 
 #import <Foundation/Foundation.h>
+#import <sdk_ios/sdk_ios.h>
 #import "RegisteredModel.h"
 #import "TransactionResultModel.h"
 #import "ConfirmTransactionModel.h"
@@ -123,15 +124,19 @@
 - (void)getDposApplyNodeDataWithQRcodeSessionId:(NSString *)QRcodeSessionId
                                         success:(void (^)(id responseObject))success
                                         failure:(void (^)(NSError *error))failure;
+// 校验密码，私钥
+//- (BOOL)getContractTransactionWithPassword:(NSString *)password;
 // Contract Transaction
+#pragma mark 确认交易
+// Contract Transaction
+- (BOOL)getTransactionHashWithModel:(ConfirmTransactionModel *)confirmTransactionModel;
 - (void)getContractTransactionWithModel:(ConfirmTransactionModel *)confirmTransactionModel
                                 success:(void (^)(id responseObject))success
                                 failure:(void (^)(NSError *error))failure;
 
 // submit Contract Transaction / Transaction Status
-- (void)submitContractTransactionPassword:(NSString *)password
-                                  success:(void (^)(TransactionResultModel * resultModel))success
-                                  failure:(void (^)(TransactionResultModel * resultModel))failure;
+//- (void)submitContractTransactionSuccess:(void (^)(TransactionResultModel * resultModel))success
+//                                 failure:(void (^)(TransactionResultModel * resultModel))failure;
 // short link
 - (void)getShortLinkDataWithType:(NSString *)type
                             path:(NSString *)path
@@ -172,7 +177,21 @@
 // Balance of assets
 - (int64_t)getAssetInfoWithAddress:(NSString *)address code:(NSString *)code issuer:(NSString *)issuer;
 
+#pragma mark - Nonce
 - (int64_t) getAccountNonce: (NSString *)address;
+#pragma mark - hash
+- (BOOL)getHashWithSourceAddress:(NSString *)sourceAddress
+                           nonce:(int64_t)nonce
+                        gasPrice:(int64_t)gasPrice
+                        feeLimit:(int64_t)feeLimit
+                      operations:(NSMutableArray<BaseOperation *> *)operations
+                           notes:(NSString *) notes;
+#pragma mark - sign
+- (BOOL)getSignWithPrivateKey:(NSString *)privateKey;
+
+#pragma mark 提交交易
+- (void)submitTransactionWithSuccess:(void (^)(TransactionResultModel * resultModel))success
+                             failure:(void (^)(TransactionResultModel * resultModel))failure;
 
 // Query account / Is it activated?
 - (NSString *)getAccountInfoWithAddress:(NSString *)address;
@@ -193,41 +212,40 @@
 - (BOOL)importWalletDataWalletName:(NSString *)walletName
                      walletAddress:(NSString *)walletAddress
                     walletKeyStore:(NSString *)walletKeyStore;
+#pragma mark - 转账
 // Transfer accounts
-- (void)setTransferDataWithTokenType:(NSInteger)tokenType
-                            password:(NSString *)password
+- (BOOL)setTransferDataWithTokenType:(NSInteger)tokenType
                          destAddress:(NSString *)destAddress
                               assets:(NSString *)assets
                             decimals:(NSInteger)decimals
                             feeLimit:(NSString *)feeLimit
                                notes:(NSString *)notes
                                 code:(NSString *)code
-                              issuer:(NSString *)issuer
-                               nonce:(int64_t)nonce
-                             success:(void (^)(TransactionResultModel * resultModel))success
-                             failure:(void (^)(TransactionResultModel * resultModel))failure;
+                              issuer:(NSString *)issuer;
 
 
 // register
-- (void)getRegisteredDataWithPassword:(NSString *)password
-                      registeredModel:(RegisteredModel *)registeredModel
-                                nonce:(int64_t)nonce
-                              success:(void (^)(TransactionResultModel * resultModel))success
-                              failure:(void (^)(TransactionResultModel * resultModel))failure;
+- (BOOL)getRegisteredDataWithRegisteredModel:(RegisteredModel *)registeredModel;
+//- (void)getRegisteredDataWithPrivateKey:(NSString *)privateKey
+//                        registeredModel:(RegisteredModel *)registeredModel
+//                                  nonce:(int64_t)nonce
+//                                success:(void (^)(TransactionResultModel * resultModel))success
+//                                failure:(void (^)(TransactionResultModel * resultModel))failure;
 // Issue
-- (void)getIssueAssetDataWithPassword:(NSString *)password
-                            assetCode:(NSString *)assetCode
-                          assetAmount:(int64_t)assetAmount
-                             decimals:(NSInteger)decimals
-                                nonce:(int64_t)nonce
-                              success:(void (^)(TransactionResultModel * resultModel))success
-                              failure:(void (^)(TransactionResultModel * resultModel))failure;
+- (BOOL)getIssueAssetDataWithAssetCode:(NSString *)assetCode
+                           assetAmount:(int64_t)assetAmount
+                              decimals:(NSInteger)decimals;
+//- (void)getIssueAssetDataWithPrivateKey:(NSString *)privateKey
+//                              assetCode:(NSString *)assetCode
+//                            assetAmount:(int64_t)assetAmount
+//                               decimals:(NSInteger)decimals
+//                                  nonce:(int64_t)nonce
+//                                success:(void (^)(TransactionResultModel * resultModel))success
+//                                failure:(void (^)(TransactionResultModel * resultModel))failure;
 
 #pragma mark - 调用底层合约
-- (void)getTransactionWithModel:(DposModel *)dposModel
-                       password:(NSString *)password
-                        success:(void (^)(TransactionResultModel * resultModel))success
-                        failure:(void (^)(TransactionResultModel * resultModel))failure;
+- (BOOL)getTransactionWithDposModel:(DposModel *)dposModel;
+
 
 
 @end

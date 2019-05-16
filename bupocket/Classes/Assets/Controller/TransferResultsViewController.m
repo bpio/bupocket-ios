@@ -34,7 +34,7 @@ static NSString * const TransferResultsCellID = @"DetailListCellID";
     [self setupView];
     if (self.transferInfoArray.count == 0 && self.confirmTransactionModel) {
         self.transferInfoArray = [NSMutableArray arrayWithObjects:self.confirmTransactionModel.destAddress, [NSString stringAppendingBUWithStr:self.confirmTransactionModel.amount], nil];
-        if (NULLString(self.confirmTransactionModel.qrRemark)) {
+        if (NotNULLString(self.confirmTransactionModel.qrRemark)) {
             NSString * qrRemark = self.confirmTransactionModel.qrRemark;
             if ([CurrentAppLanguage isEqualToString:EN]) {
                 qrRemark = self.confirmTransactionModel.qrRemarkEn;
@@ -94,7 +94,7 @@ static NSString * const TransferResultsCellID = @"DetailListCellID";
 - (CGFloat)tableView:(UITableView *)tableView heightForRowAtIndexPath:(NSIndexPath *)indexPath
 {
     if (indexPath.row == [self.listArray[0] count] - 1) {
-        return (NULLString(self.resultModel.remark)) ? ([Encapsulation rectWithText:self.resultModel.remark font:FONT(15) textWidth:Info_Width_Max].size.height + Margin_30) : MAIN_HEIGHT;
+        return (NotNULLString(self.resultModel.remark)) ? ([Encapsulation rectWithText:self.resultModel.remark font:FONT(15) textWidth:Info_Width_Max].size.height + Margin_30) : MAIN_HEIGHT;
     } else {
         return [Encapsulation rectWithText:self.listArray[1][indexPath.row] font:FONT(15) textWidth:Info_Width_Max].size.height + Margin_30;
     }
@@ -112,7 +112,7 @@ static NSString * const TransferResultsCellID = @"DetailListCellID";
     DetailListViewCell * cell = [DetailListViewCell cellWithTableView:tableView identifier:TransferResultsCellID];
     cell.title.text = self.listArray[0][indexPath.row];
     if (indexPath.row == [self.listArray[0] count] - 1) {
-        cell.infoTitle.text = !NULLString(self.resultModel.remark) ? @"" : self.resultModel.remark;
+        cell.infoTitle.text = !NotNULLString(self.resultModel.remark) ? @"" : self.resultModel.remark;
     } else {
         cell.infoTitle.text = self.listArray[1][indexPath.row];
     }

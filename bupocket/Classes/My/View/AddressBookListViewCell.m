@@ -114,7 +114,7 @@ static NSString * const WalletCellID = @"WalletCellID";
     self.describe.text = addressBookModel.remark;
     CGFloat addressNameH = [Encapsulation rectWithText:self.addressName.text font:self.addressName.font textWidth:DEVICE_WIDTH - Margin_50].size.height;
     CGFloat describeH = 0;
-    if (NULLString(self.describe.text)) {
+    if (NotNULLString(self.describe.text)) {
         describeH = (Margin_5 + [Encapsulation rectWithText:self.describe.text font:self.describe.font textWidth:DEVICE_WIDTH - Margin_50].size.height);
     }
     addressBookModel.cellHeight = ScreenScale(72) + addressNameH + describeH + Margin_10;

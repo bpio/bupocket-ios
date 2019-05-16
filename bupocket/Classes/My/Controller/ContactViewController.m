@@ -195,7 +195,7 @@ static NSString * const TextFieldCellID = @"TextFieldCellID";
         [MBProgressHUD showTipMessageInWindow:Localized(@"NickNameFormatIncorrect")];
         return;
     }
-    if (NULLString(self.describe) && self.describe.length > PW_MAX_LENGTH) {
+    if (NotNULLString(self.describe) && self.describe.length > PW_MAX_LENGTH) {
         [MBProgressHUD showTipMessageInWindow:Localized(@"DescribeFormatIncorrect")];
         return;
     }

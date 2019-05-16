@@ -153,7 +153,7 @@ static NSString * const Register_Leave = @"leaveRoomForApp";
         NSDecimalNumber * amountNumber = [[HTTPManager shareManager] getDataWithBalanceJudgmentWithCost:Registered_Cost ifShowLoading:YES];
         NSString * amount = [amountNumber stringValue];
         [[NSOperationQueue mainQueue] addOperationWithBlock:^{
-            if (!NULLString(amount) || [amountNumber isEqualToNumber:NSDecimalNumber.notANumber]) {
+            if (!NotNULLString(amount) || [amountNumber isEqualToNumber:NSDecimalNumber.notANumber]) {
                 return;
             }
             if ([amount hasPrefix:@"-"]) {
@@ -161,10 +161,13 @@ static NSString * const Register_Leave = @"leaveRoomForApp";
                 return;
             }
             [weakSelf.socket emit:Register_Processing with:@[]];
-            int64_t nonce = [[HTTPManager shareManager] getAccountNonce: CurrentWalletAddress] + 1;
-            if (nonce == 0) return;
-            PasswordAlertView * alertView = [[PasswordAlertView alloc] initWithPrompt:Localized(@"RegistrationWalletPWPrompt") walletKeyStore:CurrentWalletKeyStore isAutomaticClosing:YES confrimBolck:^(NSString * _Nonnull password, NSArray * _Nonnull words) {
-                [weakSelf getRegisteredDataWithPassword:password nonce:nonce];
+            if (![[HTTPManager shareManager] getRegisteredDataWithRegisteredModel:self.registeredModel]) return;
+//            int64_t nonce = [[HTTPManager shareManager] getAccountNonce: CurrentWalletAddress] + 1;
+//            if (nonce == 0) return;
+            PasswordAlertView * alertView = [[PasswordAlertView alloc] initWithPrompt:Localized(@"RegistrationWalletPWPrompt") confrimBolck:^(NSString * _Nonnull password, NSArray * _Nonnull words) {
+                if (NotNULLString(password)) {
+                    [weakSelf submitTransaction];
+                }
             } cancelBlock:^{
             }];
             [alertView showInWindowWithMode:CustomAnimationModeAlert inView:nil bgAlpha:AlertBgAlpha needEffectView:NO];
@@ -172,9 +175,9 @@ static NSString * const Register_Leave = @"leaveRoomForApp";
         }];
     }];
 }
-- (void)getRegisteredDataWithPassword:(NSString *)password nonce:(int64_t)nonce
+- (void)submitTransaction
 {
-    [[HTTPManager shareManager] getRegisteredDataWithPassword:password registeredModel:self.registeredModel nonce:nonce success:^(TransactionResultModel *resultModel) {
+    [[HTTPManager shareManager] submitTransactionWithSuccess:^(TransactionResultModel *resultModel) {
         self.registeredModel.transactionHash = resultModel.transactionHash;
         self.registeredModel.registeredFee = resultModel.actualFee;
         [self loadDataWithIsOvertime:NO resultModel:resultModel];

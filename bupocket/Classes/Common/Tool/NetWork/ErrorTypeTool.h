@@ -23,6 +23,7 @@ typedef NS_ENUM(NSInteger, ErrorType) {
 
 // SDK Error type
 typedef NS_ENUM(NSInteger, ErrorCode) {
+    ERRCODE_NOT_EXIST = 4,
     ERRCODE_ACCOUNT_LOW_RESERVE = 100, //  your credit is running low
     ERRCODE_FEE_NOT_ENOUGH = 111, // Insufficient transaction costs
     ERRCODE_CONTRACT_EXECUTE_FAIL = 151,

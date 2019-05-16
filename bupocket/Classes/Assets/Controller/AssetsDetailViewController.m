@@ -260,7 +260,12 @@
                     VC.address = stringValue;
                     [weakself.navigationController pushViewController:VC animated:NO];
                 } else {
-                    [MBProgressHUD showTipMessageInWindow:Localized(@"ScanFailure")];
+                    NSDictionary * scanDic = [JsonTool dictionaryOrArrayWithJSONSString:[NSString dencode:stringValue]];
+                    if (scanDic) {
+                        [self showAlert];
+                    } else {
+                        [MBProgressHUD showTipMessageInWindow:Localized(@"ScanFailure")];
+                    }
                 }
             }];
         }];

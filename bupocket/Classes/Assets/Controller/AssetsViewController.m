@@ -34,6 +34,7 @@
 #import "NodeTransferSuccessViewController.h"
 #import "TransferResultsViewController.h"
 #import "RequestTimeoutViewController.h"
+#import "YBPopupMenu.h"
 
 
 @interface AssetsViewController ()<UITableViewDelegate, UITableViewDataSource>
@@ -61,6 +62,7 @@
 
 @property (nonatomic, strong) ConfirmTransactionModel * confirmTransactionModel;
 @property (nonatomic, strong) DposModel * dposModel;
+@property (nonatomic, strong) YBPopupMenu *popupMenu;
 
 //@property (nonatomic, strong) ConfirmTransactionAlertView * confirmAlertView;
 
@@ -324,10 +326,12 @@ static UIButton * _noBackup;
             make.width.mas_lessThanOrEqualTo(DEVICE_WIDTH - Margin_40);
         }];
         
-        UILabel * totalAssetsTitle = [[UILabel alloc] init];
-        totalAssetsTitle.font = FONT(15);
-        totalAssetsTitle.textColor = [UIColor whiteColor];
-        totalAssetsTitle.text = Localized(@"TotalAssets");
+        CustomButton * totalAssetsTitle = [[CustomButton alloc] init];
+        totalAssetsTitle.layoutMode = HorizontalInverted;
+        totalAssetsTitle.titleLabel.font = FONT(15);
+        [totalAssetsTitle setTitle:Localized(@"TotalAssets") forState:UIControlStateNormal];
+        [totalAssetsTitle setImage:[UIImage imageNamed:@"award_sharing_ratio_info"] forState:UIControlStateNormal];
+        [totalAssetsTitle addTarget:self action:@selector(assetsInfo:) forControlEvents:UIControlEventTouchUpInside];
         [self.headerViewBg addSubview:totalAssetsTitle];
         [totalAssetsTitle mas_makeConstraints:^(MASConstraintMaker *make) {
             make.top.equalTo(self.totalAssets.mas_bottom).offset(Margin_10);
@@ -369,7 +373,24 @@ static UIButton * _noBackup;
     }
     return _headerBg;
 }
-
+- (void)assetsInfo:(UIButton *)button
+{
+    NSString * title = Localized(@"AssetsInfo");
+    CGFloat titleHeight = [Encapsulation rectWithText:title font:TITLE_FONT textWidth:DEVICE_WIDTH - ScreenScale(120)].size.height;
+    _popupMenu = [YBPopupMenu showRelyOnView:button.imageView titles:@[title] icons:nil menuWidth:DEVICE_WIDTH - ScreenScale(100) otherSettings:^(YBPopupMenu * popupMenu) {
+        popupMenu.priorityDirection = YBPopupMenuPriorityDirectionTop;
+        popupMenu.itemHeight = titleHeight + Margin_30;
+        popupMenu.dismissOnTouchOutside = YES;
+        popupMenu.dismissOnSelected = NO;
+        popupMenu.fontSize = TITLE_FONT;
+        popupMenu.textColor = [UIColor whiteColor];
+        popupMenu.backColor = COLOR(@"56526D");
+        popupMenu.tableView.separatorStyle = UITableViewCellSeparatorStyleNone;
+        popupMenu.tableView.scrollEnabled = NO;
+        popupMenu.tableView.allowsSelection = NO;
+        popupMenu.height = titleHeight + Margin_40;
+    }];
+}
 - (void)scrollViewDidScroll:(UIScrollView *)scrollView
 {
     CGFloat offsetY = scrollView.contentOffset.y;
@@ -512,28 +533,31 @@ static UIButton * _noBackup;
 }
 - (void)getDposData
 {
-    ConfirmTransactionAlertView * confirmAlertView = [[ConfirmTransactionAlertView alloc] initWithDpos:self.confirmTransactionModel confrimBolck:^(NSString * _Nonnull transactionCost) {
+    ConfirmTransactionAlertView * confirmAlertView = [[ConfirmTransactionAlertView alloc] initWithDposConfrimBolck:^(NSString * _Nonnull transactionCost) {
         dispatch_after(dispatch_time(DISPATCH_TIME_NOW, (int64_t)(Dispatch_After_Time * NSEC_PER_SEC)), dispatch_get_main_queue(), ^{
             NSDecimalNumber * amount = [NSDecimalNumber decimalNumberWithString:self.confirmTransactionModel.amount];
             NSDecimalNumber * minTransactionCost = [NSDecimalNumber decimalNumberWithString:transactionCost];
             NSDecimalNumber * totleAmount = [amount decimalNumberByAdding:minTransactionCost];
             NSDecimalNumber * amountNumber = [[HTTPManager shareManager] getDataWithBalanceJudgmentWithCost:[totleAmount stringValue] ifShowLoading:NO];
             NSString * totleAmountStr = [amountNumber stringValue];
-            if (!NULLString(totleAmountStr) || [amountNumber isEqualToNumber:NSDecimalNumber.notANumber]) {
+            if (!NotNULLString(totleAmountStr) || [amountNumber isEqualToNumber:NSDecimalNumber.notANumber]) {
             } else if ([totleAmountStr hasPrefix:@"-"]) {
                 [MBProgressHUD showTipMessageInWindow:Localized(@"NotSufficientFunds")];
             } else {
-                [self getContractTransactionData];
+                if (![[HTTPManager shareManager] getTransactionHashWithModel: self.confirmTransactionModel]) return;
+                [self showPWAlertView];
             }
         });
     } cancelBlock:^{
         
     }];
+    confirmAlertView.confirmTransactionModel = self.confirmTransactionModel;
     [confirmAlertView showInWindowWithMode:CustomAnimationModeShare inView:nil bgAlpha:AlertBgAlpha needEffectView:NO];
 }
 
 // Transaction confirmation and submission
-- (void)getContractTransactionData
+
+- (void)getConfirmTransactionData
 {
     [[HTTPManager shareManager] getContractTransactionWithModel:self.confirmTransactionModel  success:^(id responseObject) {
         NSInteger code = [[responseObject objectForKey:@"errCode"] integerValue];
@@ -546,7 +570,7 @@ static UIButton * _noBackup;
                     [Encapsulation showAlertControllerWithMessage:Localized(@"Overtime") handler:nil];
                     //                [MBProgressHUD showTipMessageInWindow:Localized(@"Overtime")];
                 } else {
-                    [self showPWAlertView];
+                    [self submitTransaction];
                 }
             } else {
                 [Encapsulation showAlertControllerWithMessage:[NSString stringWithFormat:Localized(@"NotSubmitted%@"), [DateTool getTimeIntervalWithStr:dateStr]] handler:nil];
@@ -558,13 +582,16 @@ static UIButton * _noBackup;
         
     }];
 }
+
 - (void)showPWAlertView
 {
-    PasswordAlertView * PWAlertView = [[PasswordAlertView alloc] initWithPrompt:Localized(@"TransactionWalletPWPrompt") walletKeyStore:CurrentWalletKeyStore isAutomaticClosing:YES confrimBolck:^(NSString * _Nonnull password, NSArray * _Nonnull words) {
-        if (self.confirmTransactionModel) {
-            [self submitTransactionWithPassword:password];
-        } else if (self.dposModel) {
-            [self submitDposTransactionWithPassword:password];
+    PasswordAlertView * PWAlertView = [[PasswordAlertView alloc] initWithPrompt:Localized(@"TransactionWalletPWPrompt") confrimBolck:^(NSString * _Nonnull password, NSArray * _Nonnull words) {
+        if (NotNULLString(password)) {
+            if (self.confirmTransactionModel) {
+                [self getConfirmTransactionData];
+            } else if (self.dposModel) {
+                [self submitDposTransaction];
+            }
         }
     } cancelBlock:^{
         
@@ -572,9 +599,9 @@ static UIButton * _noBackup;
     [PWAlertView showInWindowWithMode:CustomAnimationModeAlert inView:nil bgAlpha:AlertBgAlpha needEffectView:NO];
     [PWAlertView.PWTextField becomeFirstResponder];
 }
-- (void)submitTransactionWithPassword:(NSString *)password
+- (void)submitTransaction
 {
-    [[HTTPManager shareManager] submitContractTransactionPassword:password success:^(TransactionResultModel *resultModel) {
+    [[HTTPManager shareManager] submitTransactionWithSuccess:^(TransactionResultModel *resultModel) {
         if (resultModel.errorCode == Success_Code) {
             NodeTransferSuccessViewController * VC = [[NodeTransferSuccessViewController alloc] init];
             [self.navigationController pushViewController:VC animated:NO];
@@ -599,33 +626,51 @@ static UIButton * _noBackup;
     DLog(@"scanStr = %@, scanDic = %@", scanStr, scanData);
     if (scanData) {
         self.dposModel = [DposModel mj_objectWithKeyValues:scanData];
-        if (!NULLString(self.dposModel.dest_address)) {
-            [MBProgressHUD showTipMessageInWindow:@"目标地址不可为空"];
+        if (!NotNULLString(self.dposModel.dest_address)) {
+            [MBProgressHUD showTipMessageInWindow:Localized(@"DestAddressNotNull")];
             return;
         }
-        if (!NULLString(self.dposModel.tx_fee)) {
-            [MBProgressHUD showTipMessageInWindow:@"交易费不可为空"];
+        if (!NotNULLString(self.dposModel.tx_fee)) {
+            [MBProgressHUD showTipMessageInWindow:Localized(@"TxFeeNotNull")];
             return;
         }
-        if (!NULLString(self.dposModel.amount)) {
-            [MBProgressHUD showTipMessageInWindow:@"交易数量不可为空"];
+        if (!NotNULLString(self.dposModel.amount)) {
+            [MBProgressHUD showTipMessageInWindow:Localized(@"AmountNotNull")];
             return;
         }
-        if (!NULLString(self.dposModel.input)) {
-            [MBProgressHUD showTipMessageInWindow:@"交易信息不可为空"];
+        if (!NotNULLString(self.dposModel.input)) {
+            [MBProgressHUD showTipMessageInWindow:Localized(@"InputNotNull")];
             return;
         }
-        ConfirmTransactionAlertView * confirmAlertView = [[ConfirmTransactionAlertView alloc] initWithDpos:nil confrimBolck:^(NSString * _Nonnull transactionCost) {
+        BOOL isCorrectAddress = [Keypair isAddressValid: self.dposModel.dest_address];
+        if (!isCorrectAddress) {
+            [MBProgressHUD showTipMessageInWindow:Localized(@"BUAddressIsIncorrect")];
+            return;
+        }
+        RegexPatternTool * regex = [[RegexPatternTool alloc] init];
+        BOOL txFeeRegx = [regex validateIsPositiveFloatingPoint:self.dposModel.tx_fee];
+        if (txFeeRegx == NO) {
+            [MBProgressHUD showTipMessageInWindow:Localized(@"TxFeeIsIncorrect")];
+            return;
+        }
+        
+        BOOL amountRegx = [regex validateIsNonNegativeFloatingPoint:self.dposModel.amount];
+        if (amountRegx == NO) {
+            [MBProgressHUD showTipMessageInWindow:Localized(@"AmountIsIncorrect")];
+            return;
+        }
+        ConfirmTransactionAlertView * confirmAlertView = [[ConfirmTransactionAlertView alloc] initWithDposConfrimBolck:^(NSString * _Nonnull transactionCost) {
             dispatch_after(dispatch_time(DISPATCH_TIME_NOW, (int64_t)(Dispatch_After_Time * NSEC_PER_SEC)), dispatch_get_main_queue(), ^{
                 NSDecimalNumber * amount = [NSDecimalNumber decimalNumberWithString:self.dposModel.amount];
                 NSDecimalNumber * minTransactionCost = [NSDecimalNumber decimalNumberWithString:transactionCost];
                 NSDecimalNumber * totleAmount = [amount decimalNumberByAdding:minTransactionCost];
                 NSDecimalNumber * amountNumber = [[HTTPManager shareManager] getDataWithBalanceJudgmentWithCost:[totleAmount stringValue] ifShowLoading:NO];
                 NSString * totleAmountStr = [amountNumber stringValue];
-                if (!NULLString(totleAmountStr) || [amountNumber isEqualToNumber:NSDecimalNumber.notANumber]) {
+                if (!NotNULLString(totleAmountStr) || [amountNumber isEqualToNumber:NSDecimalNumber.notANumber]) {
                 } else if ([totleAmountStr hasPrefix:@"-"]) {
                     [MBProgressHUD showTipMessageInWindow:Localized(@"NotSufficientFunds")];
                 } else {
+                    if (![[HTTPManager shareManager] getTransactionWithDposModel: self.dposModel]) return;
                     [self showPWAlertView];
                 }
             });
@@ -640,9 +685,9 @@ static UIButton * _noBackup;
         [MBProgressHUD showTipMessageInWindow:Localized(@"ScanFailure")];
     }
 }
-- (void)submitDposTransactionWithPassword:(NSString *)password
+- (void)submitDposTransaction
 {
-    [[HTTPManager shareManager] getTransactionWithModel:self.dposModel password:password success:^(TransactionResultModel *resultModel) {
+    [[HTTPManager shareManager] submitTransactionWithSuccess:^(TransactionResultModel *resultModel) {
         resultModel.remark = Localized(@"DposContract");
         TransferResultsViewController * VC = [[TransferResultsViewController alloc] init];
         if (resultModel.errorCode == Success_Code) {

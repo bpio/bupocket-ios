@@ -16,12 +16,12 @@
 #define BUMO_NODE_URL @"https://wallet-node.bumo.io"
 #define BUMO_TOOLS_URL @"https://ws-tools.bumo.io"
 
-#define WEB_SERVER_DOMAIN_TEST @"http://api-bp.bumotest.io/"
-#define BUMO_NODE_URL_TEST @"https://wallet-node.bumotest.io"
+//#define WEB_SERVER_DOMAIN_TEST @"http://api-bp.bumotest.io/"
+//#define BUMO_NODE_URL_TEST @"https://wallet-node.bumotest.io"
 //#define WEB_SERVER_DOMAIN_TEST @"http://192.168.6.97:5648/"
 //#define BUMO_NODE_URL_TEST @"http://192.168.21.35:36002"
-//#define WEB_SERVER_DOMAIN_TEST @"http://test-bupocket-api.bumocdn.com/"
-//#define BUMO_NODE_URL_TEST @"http://192.168.3.65:36002"
+#define WEB_SERVER_DOMAIN_TEST @"http://test-bupocket-api.bumocdn.com/"
+#define BUMO_NODE_URL_TEST @"http://192.168.3.65:36002"
 
 #define BUMO_TOOLS_URL_TEST @"https://ws-tools.bumotest.io"
 
@@ -52,6 +52,7 @@
 #define Node_Ad_Banner @"nodeServer/slideshow/v1"
 
 #define Node_Content @"nodeServer/qr/v1/content"
+// 确认交易
 #define Node_Confirm @"nodeServer/tx/v1/confirm"
 // 节点撤票
 #define Node_Withdrawal_Confirm @"nodeServer/node/v1/vote/revoke/user"

@@ -98,7 +98,7 @@ static NSString * const ExportCellID = @"ExportCellID";
 - (void)cycleScrollView:(SDCycleScrollView *)cycleScrollView didSelectItemAtIndex:(NSInteger)index
 {
     NSString * url = [self.bannerArray valueForKeyPath:@"url"][index];
-    if (NULLString(url)) {
+    if (NotNULLString(url)) {
         WKWebViewController * VC = [[WKWebViewController alloc] init];
         //    VC.navigationItem.title = self.listArray[indexPath.section][indexPath.row];
         [VC loadWebURLSring: url];

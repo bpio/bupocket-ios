@@ -113,7 +113,7 @@
     NSString * str = [NSString stringWithFormat:@"%@ %@", perAmount, Localized(@"BU/Portion")];
     self.numberOfCopies.attributedText = [Encapsulation attrWithString:str preFont:FONT_Bold(18) preColor:MAIN_COLOR index:perAmount.length sufFont:FONT(12) sufColor:MAIN_COLOR lineSpacing:0];
     self.purchaseAmount.text = Localized(@"PurchaseAmount");
-    if (NULLString(cooperateModel.totalCopies)) {
+    if (NotNULLString(cooperateModel.totalCopies)) {
         NSString * supported = [NSString stringWithFormat:@"%lld", [cooperateModel.cobuildCopies longLongValue] - [cooperateModel.leftCopies longLongValue]];
         double progress = [[[NSDecimalNumber decimalNumberWithString:supported] decimalNumberByDividingBy:[NSDecimalNumber decimalNumberWithString:cooperateModel.cobuildCopies]] doubleValue];
         self.progressView.progress = progress;

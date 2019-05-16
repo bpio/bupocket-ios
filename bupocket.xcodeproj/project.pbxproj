@@ -89,6 +89,7 @@
 		950E4145219E6ADD002C7900 /* AssetCurrencyModel.m in Sources */ = {isa = PBXBuildFile; fileRef = 950E4144219E6ADD002C7900 /* AssetCurrencyModel.m */; };
 		950EF2A3219D801300F5121A /* MonetaryUnitViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 950EF2A2219D801300F5121A /* MonetaryUnitViewController.m */; };
 		9510A3CC219A91D4007A49A4 /* ErrorTypeTool.m in Sources */ = {isa = PBXBuildFile; fileRef = 9510A3CB219A91D4007A49A4 /* ErrorTypeTool.m */; };
+		9510C614228D16D800A48E7D /* sdk_ios.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 9510C613228D16D700A48E7D /* sdk_ios.framework */; };
 		95266CCD226F062E002CD915 /* NodePlanViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 95266CA1226F062E002CD915 /* NodePlanViewController.m */; };
 		95266CCE226F062E002CD915 /* CooperateViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 95266CA4226F062E002CD915 /* CooperateViewController.m */; };
 		95266CCF226F062E002CD915 /* NodeSharingViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 95266CA7226F062E002CD915 /* NodeSharingViewController.m */; };
@@ -157,7 +158,6 @@
 		95A8A41C219D5FF7008E978E /* YBPopupMenu.m in Sources */ = {isa = PBXBuildFile; fileRef = 95A8A417219D5FF6008E978E /* YBPopupMenu.m */; };
 		95A8A41D219D5FF7008E978E /* YBRectConst.m in Sources */ = {isa = PBXBuildFile; fileRef = 95A8A41A219D5FF7008E978E /* YBRectConst.m */; };
 		95A8A41E219D5FF7008E978E /* YBPopupMenuPath.m in Sources */ = {isa = PBXBuildFile; fileRef = 95A8A41B219D5FF7008E978E /* YBPopupMenuPath.m */; };
-		95AD144021F1BB730097CCDE /* sdk_ios.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 95AD143F21F1BB730097CCDE /* sdk_ios.framework */; };
 		95B066BC2282AABD0005731A /* WechatTool.m in Sources */ = {isa = PBXBuildFile; fileRef = 95B066BB2282AABD0005731A /* WechatTool.m */; };
 		95B066BF2282AED70005731A /* QQTool.m in Sources */ = {isa = PBXBuildFile; fileRef = 95B066BE2282AED70005731A /* QQTool.m */; };
 		95B066C22282CD890005731A /* DposModel.m in Sources */ = {isa = PBXBuildFile; fileRef = 95B066C12282CD890005731A /* DposModel.m */; };
@@ -365,6 +365,7 @@
 		950EF2A2219D801300F5121A /* MonetaryUnitViewController.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = MonetaryUnitViewController.m; sourceTree = "<group>"; };
 		9510A3CA219A91D4007A49A4 /* ErrorTypeTool.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = ErrorTypeTool.h; sourceTree = "<group>"; };
 		9510A3CB219A91D4007A49A4 /* ErrorTypeTool.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = ErrorTypeTool.m; sourceTree = "<group>"; };
+		9510C613228D16D700A48E7D /* sdk_ios.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; path = sdk_ios.framework; sourceTree = "<group>"; };
 		95266CA1226F062E002CD915 /* NodePlanViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = NodePlanViewController.m; sourceTree = "<group>"; };
 		95266CA2226F062E002CD915 /* VotingRecordsViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = VotingRecordsViewController.h; sourceTree = "<group>"; };
 		95266CA3226F062E002CD915 /* NodeTransferSuccessViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = NodeTransferSuccessViewController.h; sourceTree = "<group>"; };
@@ -505,7 +506,6 @@
 		95A8A419219D5FF7008E978E /* YBPopupMenuPath.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = YBPopupMenuPath.h; sourceTree = "<group>"; };
 		95A8A41A219D5FF7008E978E /* YBRectConst.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = YBRectConst.m; sourceTree = "<group>"; };
 		95A8A41B219D5FF7008E978E /* YBPopupMenuPath.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = YBPopupMenuPath.m; sourceTree = "<group>"; };
-		95AD143F21F1BB730097CCDE /* sdk_ios.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; path = sdk_ios.framework; sourceTree = "<group>"; };
 		95B066BA2282AABD0005731A /* WechatTool.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = WechatTool.h; sourceTree = "<group>"; };
 		95B066BB2282AABD0005731A /* WechatTool.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = WechatTool.m; sourceTree = "<group>"; };
 		95B066BD2282AED70005731A /* QQTool.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = QQTool.h; sourceTree = "<group>"; };
@@ -526,8 +526,8 @@
 			buildActionMask = 2147483647;
 			files = (
 				9569288321D7541400B7721A /* libc++.tbd in Frameworks */,
+				9510C614228D16D800A48E7D /* sdk_ios.framework in Frameworks */,
 				959E2933225C9E04006FCA30 /* TencentOpenAPI.framework in Frameworks */,
-				95AD144021F1BB730097CCDE /* sdk_ios.framework in Frameworks */,
 				E0A64C5CAFFFD9486B7713D7 /* Pods_bupocket.framework in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -1095,7 +1095,7 @@
 		9579E74D21B5353700051EDB /* Lib */ = {
 			isa = PBXGroup;
 			children = (
-				95AD143F21F1BB730097CCDE /* sdk_ios.framework */,
+				9510C613228D16D700A48E7D /* sdk_ios.framework */,
 			);
 			path = Lib;
 			sourceTree = "<group>";

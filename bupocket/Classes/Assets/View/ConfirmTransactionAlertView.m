@@ -34,15 +34,12 @@
 
 @implementation ConfirmTransactionAlertView
 
-- (instancetype)initWithDpos:(ConfirmTransactionModel *)confirmTransactionModel confrimBolck:(void (^)(NSString * transactionCost))confrimBlock cancelBlock:(void (^)(void))cancelBlock
+- (instancetype)initWithDposConfrimBolck:(void (^)(NSString * transactionCost))confrimBlock cancelBlock:(void (^)(void))cancelBlock
 {
     self = [super init];
     if (self) {
         _sureBlock = confrimBlock;
         _cancleBlock = cancelBlock;
-        if (confirmTransactionModel) {
-            self.confirmTransactionModel = confirmTransactionModel;            
-        }
         [self setupView];
     }
     return self;
@@ -162,10 +159,10 @@
             accountTag = self.confirmTransactionModel.accountTagEn;
         }
     }
-    if (NULLString(self.confirmTransactionModel.destAddress)) {
+    if (NotNULLString(self.confirmTransactionModel.destAddress)) {
         _infoTitleArray = @[Localized(@"TransactionDetail"), Localized(@"ReceivingAccount"), Localized(@"MaximumTransactionCosts"), Localized(@"SendingAccount"), Localized(@"ReceivingAccount"), Localized(@"Number（BU）"), Localized(@"TransactionCosts（BU）"), Localized(@"Parameter")];
         NSString * destAddress;
-        if (NULLString(accountTag)) {
+        if (NotNULLString(accountTag)) {
             destAddress = [NSString stringWithFormat:@"%@%@", self.confirmTransactionModel.destAddress, accountTag];
         } else {
             destAddress = self.confirmTransactionModel.destAddress;

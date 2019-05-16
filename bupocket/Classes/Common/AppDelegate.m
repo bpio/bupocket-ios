@@ -100,11 +100,15 @@
     if (!lastVersion || [@"1.4.3" compare:lastVersion] == NSOrderedDescending) {
         SafetyReinforcementAlertView * alertView = [[SafetyReinforcementAlertView alloc] initWithTitle:Localized(@"SafetyReinforcementTitle") promptText:Localized(@"SafetyReinforcementPrompt") confrim:Localized(@"StartReinforcement") confrimBolck:^{
             dispatch_after(dispatch_time(DISPATCH_TIME_NOW, (int64_t)(Dispatch_After_Time * NSEC_PER_SEC)), dispatch_get_main_queue(), ^{
-                self.PWAlertView = [[PasswordAlertView alloc] initWithPrompt:Localized(@"IdentityCipherPrompt") walletKeyStore:@"" isAutomaticClosing:NO confrimBolck:^(NSString * _Nonnull password, NSArray * _Nonnull words) {
-                    NSData * random = [Mnemonic randomFromMnemonicCode: words];
-                    [self upDateAccountDataWithRandom:random password:password];
+                self.PWAlertView = [[PasswordAlertView alloc] initWithPrompt:Localized(@"IdentityCipherPrompt") confrimBolck:^(NSString * _Nonnull password, NSArray * _Nonnull words) {
+                    if (words.count > 0) {
+                        NSData * random = [Mnemonic randomFromMnemonicCode: words];
+                        [self upDateAccountDataWithRandom:random password:password];
+                    }
                 } cancelBlock:^{
                 }];
+                self.PWAlertView.passwordType = PWTypeDataReinforcement;
+                self.PWAlertView.isAutomaticClosing = NO;
                 [self.PWAlertView showInWindowWithMode:CustomAnimationModeDisabled inView:nil bgAlpha:AlertBgAlpha needEffectView:NO];
                 [self.PWAlertView.PWTextField becomeFirstResponder];
             });

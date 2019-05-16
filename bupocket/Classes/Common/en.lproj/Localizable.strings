@@ -104,6 +104,7 @@
 
 // Tokens
 "TotalAssets" = "Total tokens";
+"AssetsInfo" = "The price is based on data from the third-party exchanges, only for your reference.";
 "MyAssets" = "My tokens";
 "PaymentCode" = "Receive";
 "SafetyTipsTitle" = "Safety tips";
@@ -244,7 +245,7 @@
 
 // alert Massage
 "Loading" = "Loading...";
-"DataChecking" = "Checking data";
+"DataChecking" = "Checking";
 "Signature" = "Signing";
 // SDK
 "CreateIdentityFailure" = "Failed to create an identity";
@@ -531,11 +532,18 @@
 "SharingFailure" = "Error! Please try again later";
 
 // 调用底层合约
-"DposContract" = "调用合约";
+"DposContract" = "Contract call";
+"DestAddressNotNull" = "The target address cannot be empty";
+"TxFeeNotNull" = "The transaction cannot be empty";
+"AmountNotNull" = "The transaction amount of BU cannot be empty";
+"InputNotNull" = "The contract parameter cannot be empty";
+"TxFeeIsIncorrect" = "Invalid transaction fee";
+"AmountIsIncorrect" = "Invalid transaction amount of BU";
 
 // SDK Errors
 "SYSTEM_ERROR" = "System error";
 "INVALID_ADDRESS_ERROR" = "Invalid address";
 // 底层 错误信息
+"ERRCODE_NOT_EXIST" = "The current account is not activated. You can transfer 0.02BU to this account to activate it. After the account is activated, transactions can be done.";
 "ERRCODE_FEE_NOT_ENOUGH" = "Transaction not enough";
 

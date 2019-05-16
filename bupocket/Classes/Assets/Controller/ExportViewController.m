@@ -102,7 +102,7 @@ static NSString * const ExportCellID = @"ExportCellID";
         [defaults setObject:[[[AccountTool shareTool] account] walletName] forKey:Current_WalletName];
         [defaults synchronize];
     }
-    PasswordAlertView * alertView = [[PasswordAlertView alloc] initWithPrompt:Localized(@"WalletPWPrompt") walletKeyStore:self.walletModel.walletKeyStore isAutomaticClosing:YES confrimBolck:^(NSString * _Nonnull password, NSArray * _Nonnull words) {
+    PasswordAlertView * alertView = [[PasswordAlertView alloc] initWithPrompt:Localized(@"WalletPWPrompt") confrimBolck:^(NSString * _Nonnull password, NSArray * _Nonnull words) {
         [self.walletArray removeObject:self.walletModel];
         [[WalletTool shareTool] save:self.walletArray];
         [Encapsulation showAlertControllerWithMessage:Localized(@"DeleteWalletSuccessfully") handler:^(UIAlertAction *action) {
@@ -110,6 +110,8 @@ static NSString * const ExportCellID = @"ExportCellID";
         }];
     } cancelBlock:^{
     }];
+    alertView.walletKeyStore = self.walletModel.walletKeyStore;
+    alertView.passwordType = PWTypeDeleteWallet;
     [alertView showInWindowWithMode:CustomAnimationModeAlert inView:nil bgAlpha:AlertBgAlpha needEffectView:NO];
     [alertView.PWTextField becomeFirstResponder];
 }
@@ -176,27 +178,37 @@ static NSString * const ExportCellID = @"ExportCellID";
         }];
         [alertView showInWindowWithMode:CustomAnimationModeAlert inView:nil bgAlpha:AlertBgAlpha needEffectView:NO];
     } else {
-        NSString * walletKeyStore = self.walletModel.walletKeyStore;
-        if (indexPath.row == 2) {
-            walletKeyStore = @"";
-        }
-        PasswordAlertView * alertView = [[PasswordAlertView alloc] initWithPrompt:Localized(@"WalletPWPrompt") walletKeyStore:walletKeyStore isAutomaticClosing:YES confrimBolck:^(NSString * _Nonnull password, NSArray * _Nonnull words) {
+        PasswordAlertView * alertView = [[PasswordAlertView alloc] initWithPrompt:Localized(@"WalletPWPrompt") confrimBolck:^(NSString * _Nonnull password, NSArray * _Nonnull words) {
             if (indexPath.row == 0) {
                 ExportKeystoreViewController * VC = [[ExportKeystoreViewController alloc] init];
                 VC.walletModel = self.walletModel;
                 [self.navigationController pushViewController:VC animated:NO];
             } else if (indexPath.row == 1) {
-                ExportPrivateKeyViewController * VC = [[ExportPrivateKeyViewController alloc] init];
-                VC.walletModel = self.walletModel;
-                VC.password = password;
-                [self.navigationController pushViewController:VC animated:NO];
+                if (NotNULLString(password)) {
+                    ExportPrivateKeyViewController * VC = [[ExportPrivateKeyViewController alloc] init];
+                    VC.walletModel = self.walletModel;
+                    VC.password = password;
+                    [self.navigationController pushViewController:VC animated:NO];
+                }
             } else if (indexPath.row == 2) {
-                BackupMnemonicsViewController * VC = [[BackupMnemonicsViewController alloc] init];
-                VC.mnemonicArray = words;
-                [self.navigationController pushViewController:VC animated:NO];
+                if (words.count > 0) {
+                    BackupMnemonicsViewController * VC = [[BackupMnemonicsViewController alloc] init];
+                    VC.mnemonicArray = words;
+                    [self.navigationController pushViewController:VC animated:NO];
+                }
             }
         } cancelBlock:^{
         }];
+        if (indexPath.row == 2) {
+            alertView.passwordType = PWTypeBackUpID;
+        } else {
+            alertView.walletKeyStore = self.walletModel.walletKeyStore;
+            if (indexPath.row == 0) {
+                alertView.passwordType = PWTypeExportKeystore;
+            } else if (indexPath.row == 1) {
+                alertView.passwordType = PWTypeExportPrivateKey;
+            }
+        }
         [alertView showInWindowWithMode:CustomAnimationModeAlert inView:nil bgAlpha:AlertBgAlpha needEffectView:NO];
         [alertView.PWTextField becomeFirstResponder];
     }

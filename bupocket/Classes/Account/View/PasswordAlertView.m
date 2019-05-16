@@ -8,30 +8,29 @@
 
 #import "PasswordAlertView.h"
 
+
 @interface PasswordAlertView()<UITextFieldDelegate>
 
-@property (nonatomic, assign) PasswordType passwordType;
 @property (nonatomic, assign) CGFloat bgHeight;
 @property (nonatomic, strong) UILabel * promptLabel;
 @property (nonatomic, strong) UIButton * sureBtn;
 
 @property (nonatomic, copy) OnCancleButtonClick cancleBlock;
 @property (nonatomic, copy) OnSureWalletPWClick sureBlock;
-@property (nonatomic, assign) BOOL isAutomaticClosing;
-@property (nonatomic, copy) NSString * walletKeyStore;
+@property (nonatomic, strong) UIButton * closeBtn;
 
 @end
 
 @implementation PasswordAlertView
 
-- (instancetype)initWithPrompt:(NSString *)prompt walletKeyStore:(NSString *)walletKeyStore isAutomaticClosing:(BOOL)isAutomaticClosing confrimBolck:(void (^)(NSString * password, NSArray * words))confrimBlock cancelBlock:(void (^)(void))cancelBlock
+- (instancetype)initWithPrompt:(NSString *)prompt confrimBolck:(void (^)(NSString * password, NSArray * words))confrimBlock cancelBlock:(void (^)(void))cancelBlock
 {
     self = [super init];
     if (self) {
         _sureBlock = confrimBlock;
         _cancleBlock = cancelBlock;
-        self.isAutomaticClosing = isAutomaticClosing;
-        self.walletKeyStore = walletKeyStore;
+        self.isAutomaticClosing = YES;
+        self.walletKeyStore = CurrentWalletKeyStore;
         [self setupView];
         _promptLabel.text = prompt;
         if ([_promptLabel.text isEqualToString:Localized(@"IdentityCipherWarning")]) {
@@ -48,14 +47,13 @@
 - (void)setupView {
     self.backgroundColor = [UIColor whiteColor];
     self.layer.cornerRadius = MAIN_CORNER;
-    if (self.isAutomaticClosing) {
-        UIButton * closeBtn = [UIButton createButtonWithNormalImage:@"close" SelectedImage:@"close" Target:self Selector:@selector(cancleBtnClick)];
-        [self addSubview:closeBtn];
-        [closeBtn mas_makeConstraints:^(MASConstraintMaker *make) {
-            make.top.right.equalTo(self);
-            make.size.mas_equalTo(CGSizeMake(MAIN_HEIGHT, MAIN_HEIGHT));
-        }];
-    }
+    self.closeBtn = [UIButton createButtonWithNormalImage:@"close" SelectedImage:@"close" Target:self Selector:@selector(cancleBtnClick)];
+    [self addSubview:self.closeBtn];
+    [self.closeBtn mas_makeConstraints:^(MASConstraintMaker *make) {
+        make.top.right.equalTo(self);
+        make.size.mas_equalTo(CGSizeMake(MAIN_HEIGHT, MAIN_HEIGHT));
+    }];
+    self.closeBtn.hidden = YES;
     
     UILabel * title = [UILabel new];
     title.font = FONT(25);
@@ -122,6 +120,15 @@
         self.sureBtn.backgroundColor = DISABLED_COLOR;
     }
 }
+- (void)setIsAutomaticClosing:(BOOL)isAutomaticClosing
+{
+    _isAutomaticClosing = isAutomaticClosing;
+    self.closeBtn.hidden = !isAutomaticClosing;
+}
+- (void)setWalletKeyStore:(NSString *)walletKeyStore
+{
+    _walletKeyStore = walletKeyStore;
+}
 - (void)cancleBtnClick {
     [self hideView];
     if (_cancleBlock) {
@@ -132,12 +139,61 @@
     if (self.isAutomaticClosing) {
         [self hideView];
     }
+    NSString * password = TrimmingCharacters(self.PWTextField.text);
+    if (password.length < PW_MIN_LENGTH || password.length > PW_MAX_LENGTH) {
+        //    if ([RegexPatternTool validatePassword:password] == NO) {
+        [MBProgressHUD showTipMessageInWindow:Localized(@"PasswordIsIncorrect")];
+    } else {
+        [MBProgressHUD showActivityMessageInWindow:Localized(@"Signature")];
+        [self checkPassword:password];
+    }
+}
+#pragma mark check password
+- (void)checkPassword:(NSString *)password
+{
+    if (self.passwordType == PWTypeBackUpID || self.passwordType == PWTypeDataReinforcement) {
+        // Identity password
+        NSData * random = [NSString decipherKeyStoreWithPW:password randomKeyStoreValueStr:[[AccountTool shareTool] account].randomNumber];
+        if (random) {
+            NSArray * words = [Mnemonic generateMnemonicCode: random];
+            [MBProgressHUD hideHUD];
+            if (_sureBlock) {
+                _sureBlock(password, words);
+            }
+        } else {
+            [MBProgressHUD hideHUD];
+            [MBProgressHUD showTipMessageInWindow:Localized(@"PasswordIsIncorrect")];
+        }
+    } else {
+        // Password for Wallet
+        NSString * privateKey = [NSString decipherKeyStoreWithPW:password keyStoreValueStr:self.walletKeyStore];
+        if ([Tools isEmpty:privateKey]) {
+            [MBProgressHUD hideHUD];
+            [MBProgressHUD showTipMessageInWindow:Localized(@"PasswordIsIncorrect")];
+        } else {
+            [MBProgressHUD hideHUD];
+            if (self.passwordType == PWTypeTransaction) {
+                if (![[HTTPManager shareManager] getSignWithPrivateKey:privateKey]) {
+                    password = @"";
+                }
+            }
+            if (_sureBlock) {
+                _sureBlock(password, [NSArray array]);
+            }
+        }
+    }
+}
+/*
+- (void)sureBtnClick {
+    if (self.isAutomaticClosing) {
+        [self hideView];
+    }
     __block NSString * password = TrimmingCharacters(self.PWTextField.text);
     if (password.length < PW_MIN_LENGTH || password.length > PW_MAX_LENGTH) {
 //    if ([RegexPatternTool validatePassword:password] == NO) {
         [MBProgressHUD showTipMessageInWindow:Localized(@"PasswordIsIncorrect")];
     } else {
-        [MBProgressHUD showActivityMessageInWindow:Localized(@"Loading")];
+        [MBProgressHUD showActivityMessageInWindow:Localized(@"Signature")];
         NSOperationQueue * queue = [[NSOperationQueue alloc] init];
         [queue addOperationWithBlock:^{
             [[NSOperationQueue mainQueue] addOperationWithBlock:^{
@@ -160,7 +216,7 @@
             dispatch_async(dispatch_get_main_queue(), ^{
                 [MBProgressHUD hideHUD];
                 if (self->_sureBlock) {
-                    self->_sureBlock(password, [NSArray array]);
+                    self->_sureBlock(privateKey, [NSArray array]);
                 }
             });
         }
@@ -184,7 +240,7 @@
        
     }
 }
-
+*/
 /*
 // Only override drawRect: if you perform custom drawing.
 // An empty implementation adversely affects performance during animation.

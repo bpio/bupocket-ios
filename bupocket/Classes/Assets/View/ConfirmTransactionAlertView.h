@@ -23,7 +23,7 @@ typedef void (^OnSureClick)(NSString * transactionCost);
 @property (nonatomic, strong) ConfirmTransactionModel * confirmTransactionModel;
 @property (nonatomic, strong) DposModel * dposModel;
 
-- (instancetype)initWithDpos:(ConfirmTransactionModel *)confirmTransactionModel confrimBolck:(void (^)(NSString * transactionCost))confrimBlock cancelBlock:(void (^)(void))cancelBlock;
+- (instancetype)initWithDposConfrimBolck:(void (^)(NSString * transactionCost))confrimBlock cancelBlock:(void (^)(void))cancelBlock;
 
 @end
 
