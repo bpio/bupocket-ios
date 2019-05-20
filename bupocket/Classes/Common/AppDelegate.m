@@ -72,7 +72,7 @@
     IQKeyboardManager * keyboardManager = [IQKeyboardManager sharedManager];
     keyboardManager.shouldResignOnTouchOutside = YES;
 //    keyboardManager.enableAutoToolbar = NO;
-    keyboardManager.keyboardDistanceFromTextField = Margin_15;
+//    keyboardManager.keyboardDistanceFromTextField = Margin_15;
 }
 
 - (void)setRootVC
@@ -195,7 +195,7 @@
 - (void)onResp:(BaseResp *)resp
 {
     if ([resp isKindOfClass:[WXLaunchMiniProgramResp class]]) {
-        NSLog(@"跳转微信后的回调 %d %@", resp.errCode, resp.errStr);
+        DLog(@"跳转微信后的回调 %d %@", resp.errCode, resp.errStr);
         
     }
 }

@@ -101,7 +101,7 @@
 "TestNetworkPrompt" = "测试网";
 
 // 资产
-"TotalAssets" = "总资产";
+"TotalAssets" = "总资产估值";
 "AssetsInfo" = "价格基于第三方交易所平台数据估算，仅供参考。";
 "MyAssets" = "我的资产";
 "PaymentCode" = "收款码";

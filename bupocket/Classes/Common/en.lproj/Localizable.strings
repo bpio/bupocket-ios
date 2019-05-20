@@ -103,7 +103,7 @@
 "TestNetworkPrompt" = "Test Network";
 
 // Tokens
-"TotalAssets" = "Total tokens";
+"TotalAssets" = "Estimated Total Assets";
 "AssetsInfo" = "The price is based on data from the third-party exchanges, only for your reference.";
 "MyAssets" = "My tokens";
 "PaymentCode" = "Receive";

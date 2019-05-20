@@ -34,7 +34,6 @@
 #import "NodeTransferSuccessViewController.h"
 #import "TransferResultsViewController.h"
 #import "RequestTimeoutViewController.h"
-#import "YBPopupMenu.h"
 
 
 @interface AssetsViewController ()<UITableViewDelegate, UITableViewDataSource>
@@ -62,7 +61,6 @@
 
 @property (nonatomic, strong) ConfirmTransactionModel * confirmTransactionModel;
 @property (nonatomic, strong) DposModel * dposModel;
-@property (nonatomic, strong) YBPopupMenu *popupMenu;
 
 //@property (nonatomic, strong) ConfirmTransactionAlertView * confirmAlertView;
 
@@ -330,11 +328,14 @@ static UIButton * _noBackup;
         totalAssetsTitle.layoutMode = HorizontalInverted;
         totalAssetsTitle.titleLabel.font = FONT(15);
         [totalAssetsTitle setTitle:Localized(@"TotalAssets") forState:UIControlStateNormal];
-        [totalAssetsTitle setImage:[UIImage imageNamed:@"award_sharing_ratio_info"] forState:UIControlStateNormal];
-        [totalAssetsTitle addTarget:self action:@selector(assetsInfo:) forControlEvents:UIControlEventTouchUpInside];
+        [totalAssetsTitle setImage:[UIImage imageNamed:@"estimated_total_assets"] forState:UIControlStateNormal];
+        [totalAssetsTitle addTarget:self action:@selector(totalAssetsInfo:) forControlEvents:UIControlEventTouchUpInside];
         [self.headerViewBg addSubview:totalAssetsTitle];
+        CGFloat btnW = [Encapsulation rectWithText:totalAssetsTitle.titleLabel.text font:totalAssetsTitle.titleLabel.font textHeight:Margin_20].size.width + Margin_20;
         [totalAssetsTitle mas_makeConstraints:^(MASConstraintMaker *make) {
             make.top.equalTo(self.totalAssets.mas_bottom).offset(Margin_10);
+            make.size.mas_equalTo(CGSizeMake(btnW, Margin_20));
+//            make.left.equalTo(self.headerViewBg.mas_left).offset((DEVICE_WIDTH - btnW) / 2);
             make.centerX.equalTo(self.headerViewBg);
         }];
         
@@ -373,23 +374,9 @@ static UIButton * _noBackup;
     }
     return _headerBg;
 }
-- (void)assetsInfo:(UIButton *)button
+- (void)totalAssetsInfo:(UIButton *)button
 {
-    NSString * title = Localized(@"AssetsInfo");
-    CGFloat titleHeight = [Encapsulation rectWithText:title font:TITLE_FONT textWidth:DEVICE_WIDTH - ScreenScale(120)].size.height;
-    _popupMenu = [YBPopupMenu showRelyOnView:button.imageView titles:@[title] icons:nil menuWidth:DEVICE_WIDTH - ScreenScale(100) otherSettings:^(YBPopupMenu * popupMenu) {
-        popupMenu.priorityDirection = YBPopupMenuPriorityDirectionTop;
-        popupMenu.itemHeight = titleHeight + Margin_30;
-        popupMenu.dismissOnTouchOutside = YES;
-        popupMenu.dismissOnSelected = NO;
-        popupMenu.fontSize = TITLE_FONT;
-        popupMenu.textColor = [UIColor whiteColor];
-        popupMenu.backColor = COLOR(@"56526D");
-        popupMenu.tableView.separatorStyle = UITableViewCellSeparatorStyleNone;
-        popupMenu.tableView.scrollEnabled = NO;
-        popupMenu.tableView.allowsSelection = NO;
-        popupMenu.height = titleHeight + Margin_40;
-    }];
+    [Encapsulation showAlertControllerWithMessage:Localized(@"AssetsInfo") handler:nil];
 }
 - (void)scrollViewDidScroll:(UIScrollView *)scrollView
 {
@@ -714,9 +701,15 @@ static UIButton * _noBackup;
 }
 - (CGFloat)tableView:(UITableView *)tableView heightForHeaderInSection:(NSInteger)section
 {
+    DLog(@"%f", ScreenScale(150) + [Encapsulation rectWithText:Localized(@"SafetyTips") font:TITLE_FONT textWidth:DEVICE_WIDTH - Margin_40].size.height);
     if (section == 0) {
         NSUserDefaults * defaults = [NSUserDefaults standardUserDefaults];
         if (![defaults boolForKey:If_Backup] && _noBackup.selected == NO) {
+            if (iPhone6plus && [CurrentAppLanguage isEqualToString:ZhHans]) {
+                return 184;
+            } else if (iPhone6plus && [CurrentAppLanguage isEqualToString:ZhHans]) {
+                return 217;
+            }
             return ScreenScale(150) + [Encapsulation rectWithText:Localized(@"SafetyTips") font:TITLE_FONT textWidth:DEVICE_WIDTH - Margin_40].size.height;
         } else {
             return Margin_40;

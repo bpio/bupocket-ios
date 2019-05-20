@@ -214,7 +214,7 @@ static NSString * const CooperateDetailCellID = @"CooperateDetailCellID";
     } cancelBlock:^{
         
     }];
-    [alertView showInWindowWithMode:CustomAnimationModeShare inView:nil bgAlpha:AlertBgAlpha needEffectView:NO];
+    [alertView showInWindowWithMode:CustomAnimationModeNone inView:nil bgAlpha:AlertBgAlpha needEffectView:NO];
 }
 - (void)showConfirmAlertView:(ConfirmTransactionModel *)confirmTransactionModel
 {

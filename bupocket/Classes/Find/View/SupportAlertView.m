@@ -16,7 +16,7 @@
 @property (nonatomic, strong) UILabel * amount;
 @property (nonatomic, strong) UILabel * supportNumber;
 @property (nonatomic, strong) UIButton * reduce;
-@property (nonatomic, strong) UILabel * number;
+@property (nonatomic, strong) UITextField * numberText;
 @property (nonatomic, strong) UIButton * plus;
 @property (nonatomic, strong) UIButton * total;
 @property (nonatomic, strong) UIButton * confirm;
@@ -24,6 +24,7 @@
 
 @property (nonatomic, strong) NSString * purchaseAmountStr;
 @property (nonatomic, strong) NSString * totalTarget;
+@property (nonatomic, strong) NSString * numberStr;
 
 @end
 
@@ -60,7 +61,7 @@
     
     [self addSubview:self.reduce];
     
-    [self addSubview:self.number];
+    [self addSubview:self.numberText];
     
     [self addSubview:self.plus];
     
@@ -111,15 +112,15 @@
         make.right.equalTo(self.amount);
     }];
     
-    [self.number mas_makeConstraints:^(MASConstraintMaker *make) {
+    [self.numberText mas_makeConstraints:^(MASConstraintMaker *make) {
         make.right.equalTo(self.plus.mas_left).offset(-Margin_15);
         make.top.height.equalTo(self.supportNumber);
-//        make.width.mas_equalTo(Margin_40);
+        make.width.mas_equalTo(Margin_40);
     }];
     
     [self.reduce mas_makeConstraints:^(MASConstraintMaker *make) {
         make.top.height.equalTo(self.supportNumber);
-        make.right.equalTo(self.number.mas_left).offset(-Margin_15);
+        make.right.equalTo(self.numberText.mas_left).offset(-Margin_15);
     }];
     
     [self.confirm mas_makeConstraints:^(MASConstraintMaker *make) {
@@ -199,24 +200,69 @@
 }
 - (void)reduceAction:(UIButton *)button
 {
-    if ([self.number.text integerValue] > 1) {
-        self.number.text = [NSString stringWithFormat:@"%zd", [self.number.text integerValue] - 1];
+    self.numberText.text = [NSString stringWithFormat:@"%zd", [self.numberStr integerValue] - 1];
+    self.numberStr = self.numberText.text;
+    [self setTotalText];
+    [self setButtonEnabled];
+//    if ([self.numberStr integerValue] > 1) {
+//        self.plus.enabled = YES;
+//        if ([self.numberStr integerValue] == 1) {
+//            button.enabled = NO;
+//        }
+//    }
+}
+//- (UILabel *)number
+//{
+//    if (!_number) {
+//        _number = [[UILabel alloc] init];
+//        _number.textColor = TITLE_COLOR;
+//        _number.font = FONT(16);
+//        _number.text = @"1";
+//    }
+//    return _number;
+//}
+- (UITextField *)numberText
+{
+    if (!_numberText) {
+        _numberText = [[UITextField alloc] init];
+        _numberText.textColor = TITLE_COLOR;
+        _numberText.font = FONT(16);
+        _numberText.text = @"1";
+        _numberText.keyboardType = UIKeyboardTypeNumberPad;
+        [_numberText addTarget:self action:@selector(textChange:) forControlEvents:UIControlEventEditingChanged];
+        _numberText.textAlignment = NSTextAlignmentCenter;
+        _numberStr = self.numberText.text;
+    }
+    return _numberText;
+}
+- (void)textChange:(UITextField *)textField
+{
+    self.numberStr = [self.numberText.text stringByTrimmingCharactersInSet:[NSCharacterSet whitespaceAndNewlineCharacterSet]];
+    [self setButtonEnabled];
+    if ([self.numberStr integerValue] < 1 || [self.numberStr integerValue] > [self.totalTarget doubleValue] / [self.purchaseAmountStr integerValue]) {
+        self.confirm.enabled = NO;
+        self.confirm.backgroundColor = DISABLED_COLOR;
+    } else {
+        self.confirm.enabled = YES;
+        self.confirm.backgroundColor = MAIN_COLOR;
         [self setTotalText];
-        self.plus.enabled = YES;
-        if ([self.number.text integerValue] == 1) {
-            button.enabled = NO;
-        }
     }
 }
-- (UILabel *)number
+- (void)setButtonEnabled
 {
-    if (!_number) {
-        _number = [[UILabel alloc] init];
-        _number.textColor = TITLE_COLOR;
-        _number.font = FONT(16);
-        _number.text = @"1";
+    if ([self.numberStr integerValue] <= 1) {
+        self.reduce.enabled = NO;
+        self.plus.enabled = YES;
+    } else if ([self.numberStr integerValue] >= [self.totalTarget doubleValue] / [self.purchaseAmountStr integerValue]) {
+        self.reduce.enabled = YES;
+        self.plus.enabled = NO;
+    } else if ([self.numberStr integerValue] <= 1 && [self.numberStr integerValue] >= [self.totalTarget doubleValue] / [self.purchaseAmountStr integerValue]) {
+        self.reduce.enabled = NO;
+        self.plus.enabled = NO;
+    } else {
+        self.reduce.enabled = YES;
+        self.plus.enabled = YES;
     }
-    return _number;
 }
 - (UIButton *)plus
 {
@@ -231,19 +277,21 @@
 }
 - (void)plusAction:(UIButton *)button
 {
-    if ([self.number.text integerValue] < [self.totalTarget doubleValue] / [self.purchaseAmountStr integerValue]) {
-        self.number.text = [NSString stringWithFormat:@"%zd", [self.number.text integerValue] + 1];
-        [self setTotalText];
-        self.reduce.enabled = YES;
-        if ([self.number.text integerValue] == [self.totalTarget doubleValue] / [self.purchaseAmountStr integerValue]) {
-            button.enabled = NO;
-        }
-    }
+    self.numberText.text = [NSString stringWithFormat:@"%zd", [self.numberStr integerValue] + 1];
+    self.numberStr = self.numberText.text;
+    [self setTotalText];
+    [self setButtonEnabled];
+//    if ([self.numberStr integerValue] < [self.totalTarget doubleValue] / [self.purchaseAmountStr integerValue]) {
+//        self.reduce.enabled = YES;
+//        if ([self.numberStr integerValue] == [self.totalTarget doubleValue] / [self.purchaseAmountStr integerValue]) {
+//            button.enabled = NO;
+//        }
+//    }
 }
 - (void)setTotalText
 {
 //    int64_t fee = [[[NSDecimalNumber decimalNumberWithString:feeLimit] decimalNumberByMultiplyingByPowerOf10: Decimals_BU] longLongValue];
-    NSString * totleAmount = [NSString stringWithFormat:@"%@%@ BU", Localized(@"Total"), [NSString stringAmountSplitWith:[NSString stringWithFormat:@"%lld", [self.number.text longLongValue] * [self.purchaseAmountStr longLongValue]]]];
+    NSString * totleAmount = [NSString stringWithFormat:@"%@%@ BU", Localized(@"Total"), [NSString stringAmountSplitWith:[NSString stringWithFormat:@"%lld", [self.numberStr longLongValue] * [self.purchaseAmountStr longLongValue]]]];
     NSMutableAttributedString * attr = [Encapsulation attrWithString:totleAmount preFont:FONT(13) preColor:TITLE_COLOR index:[Localized(@"Total") length] sufFont:FONT_Bold(18) sufColor:WARNING_COLOR lineSpacing:0];
     NSRange range = NSMakeRange(attr.length - 2, 2);
     [attr addAttribute:NSForegroundColorAttributeName value:WARNING_COLOR range:range];
@@ -280,7 +328,7 @@
 - (void)sureBtnClick {
     [self hideView];
     if (_confirmClick) {
-        NSString * totalAmount = [NSString stringWithFormat:@"%lld", [self.number.text longLongValue] * [self.purchaseAmountStr longLongValue]];
+        NSString * totalAmount = [NSString stringWithFormat:@"%lld", [self.numberStr longLongValue] * [self.purchaseAmountStr longLongValue]];
         _confirmClick(totalAmount);
     }
 }
