@@ -150,8 +150,8 @@
 #define Decimals_BU 8
 // Number of transfers sent
 //#define SendingQuantity_MIN @"0.00000001"
-#define SendingQuantity_MAX @"1000000"
-#define SendingQuantity_MAX_Division @"1,000,000"
+#define SendingQuantity_MAX @"100000000"
+#define SendingQuantity_MAX_Division @"100,000,000"
 // Maximum length of ID and password / Transaction memo length / Length of feedback contact mode
 #define MAX_LENGTH 20
 #define PW_MIN_LENGTH 6

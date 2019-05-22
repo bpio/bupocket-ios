@@ -28,7 +28,7 @@
 @property (nonatomic, strong) TxInfoModel * txInfoModel;
 @property (nonatomic, strong) UIView * noNetWork;
 
-@property (nonatomic, strong) NSString * amount;
+//@property (nonatomic, strong) NSString * amount;
 @property (nonatomic, strong) NSString * assets;
 
 @end
@@ -44,13 +44,15 @@ static NSInteger const TxInfoNormalCount = 6;
     [super viewDidLoad];
     self.navigationItem.title = Localized(@"TransactionDetail");
     NSString * outOrIn;
-    if (self.listModel.outinType == Transaction_Type_TurnOut) {
+    if ([self.listModel.amount isEqualToString:@"~"] || [self.listModel.amount isEqualToString:@"0"]) {
+        outOrIn = @"";
+    } else if (self.listModel.outinType == Transaction_Type_TurnOut) {
         outOrIn = @"-";
     } else {
         outOrIn = @"+";
     }
-    self.amount = ([self.listModel.amount isEqualToString:@"~"] || [self.listModel.amount isEqualToString:@"0"]) ? self.listModel.amount : [NSString stringWithFormat:@"%@%@", outOrIn, self.listModel.amount];
-    self.assets = [NSString stringWithFormat:@"%@ %@", self.amount, self.assetCode];
+//    self.amount = ( ? self.listModel.amount : [NSString stringWithFormat:@"%@%@", outOrIn, self.listModel.amount];
+    self.assets = [NSString stringWithFormat:@"%@%@ %@", outOrIn, self.listModel.amount, self.assetCode];
     _headerViewH = ScreenScale(170) + [Encapsulation rectWithText:self.assets font:FONT_Bold(27) textWidth:DEVICE_WIDTH - Margin_40].size.height;
     [self setupView];
     [self setupRefresh];
@@ -102,7 +104,7 @@ static NSInteger const TxInfoNormalCount = 6;
 }
 - (void)setListData
 {
-    NSMutableArray * infoTitleArray = [NSMutableArray arrayWithObjects:@"TX Hash", @"Source Address", @"Dest Address", @"Amount", @"TX Fee", @"Nonce", nil];
+    NSMutableArray * infoTitleArray = [NSMutableArray arrayWithObjects:@"TX Hash", @"From", @"To", @"Value", @"TX Fee", @"Nonce", nil];
     if (self.txInfoModel.signatureStr) {
         [infoTitleArray addObject:@"Transaction Signature"];
     }
@@ -121,7 +123,7 @@ static NSInteger const TxInfoNormalCount = 6;
     [infoArray addObject:self.txInfoModel.hashStr];
     [infoArray addObject:self.txInfoModel.sourceAddress];
     [infoArray addObject:self.txInfoModel.destAddress];
-    [infoArray addObject:self.amount];
+    [infoArray addObject:[NSString stringWithFormat:@"%@ %@", self.listModel.amount, self.assetCode]];
     [infoArray addObject:[NSString stringAppendingBUWithStr:self.txInfoModel.fee]];
     [infoArray addObject:self.txInfoModel.nonce];
 //    [infoArray addObject:self.txInfoModel.ledgerSeq];
@@ -145,7 +147,7 @@ static NSInteger const TxInfoNormalCount = 6;
     [blockInfoArray addObject:[DateTool getDateStringWithTimeStr:self.blockInfoModel.closeTimeDate]];
     [self.infoArray addObject:blockInfoArray];
     
-    self.listArray = @[@[Localized(@"OriginatorAdress"), Localized(@"RecipientAddress"), Localized(@"TransactionCost"), Localized(@"SendingTime"), Localized(@"Remarks")], infoTitleArray, @[@"Block Height", @"Block Hash", @"Prev Block Hash", @"TX Count", @"Consensus Time"]];
+    self.listArray = @[@[Localized(@"OriginatorAdress"), Localized(@"RecipientAddress"), Localized(@"TransactionCost"), Localized(@"TransferTime"), Localized(@"Remarks")], infoTitleArray, @[@"Block Height", @"Block Hash", @"Prev Block Hash", @"TX Count", @"Consensus Time"]];
 }
 
 - (void)setupView
@@ -298,7 +300,7 @@ static NSInteger const TxInfoNormalCount = 6;
         cell.infoTitle.text = self.infoArray[indexPath.section][indexPath.row];
     }
     cell.selectionStyle = UITableViewCellSelectionStyleNone;
-    if ([cell.title.text isEqualToString:Localized(@"OriginatorAdress")] || [cell.title.text isEqualToString:Localized(@"RecipientAddress")] || [cell.title.text isEqualToString:@"TX Hash"] || [cell.title.text isEqualToString:@"Source Address"] || [cell.title.text isEqualToString:@"Dest Address"] || [cell.title.text isEqualToString:@"Block Hash"] || [cell.title.text isEqualToString:@"Prev Block Hash"]) {
+    if ([cell.title.text isEqualToString:Localized(@"OriginatorAdress")] || [cell.title.text isEqualToString:Localized(@"RecipientAddress")] || [cell.title.text isEqualToString:@"TX Hash"] || [cell.title.text isEqualToString:@"From"] || [cell.title.text isEqualToString:@"To"] || [cell.title.text isEqualToString:@"Block Hash"] || [cell.title.text isEqualToString:@"Prev Block Hash"]) {
         cell.infoTitle.copyable = YES;
     } else {
         cell.infoTitle.copyable = NO;

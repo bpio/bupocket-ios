@@ -164,7 +164,7 @@
 "Failure" = "失败";
 "OriginatorAdress" = "发送方地址";
 "RecipientAddress" = "接收方地址";
-"SendingTime" = "发送时间";
+//"SendingTime" = "发送时间";
 // 发行资产
 // 登记资产确认
 "ConfirmationOfRegisteredAssets" = "登记资产确认";
@@ -221,7 +221,7 @@
 "MinuteAgo" = "分钟前";
 "SecondsAgo" = "秒前";
 "SecondAgo" = "秒前";
-"Just" = "刚刚";
+//"Just" = "刚刚";
 //"Yesterday" = "昨天";
 "DaysAgo" = "天前";
 "DayAgo" = "天前";
@@ -367,8 +367,8 @@
 "Immediate login %@, please confirm that it is my operation." = "即将登录%@，请确认是本人操作。";
 "LoginPromptInfo" = "您的账户地址将被公开";
 "ConfirmLogin" = "确认登录";
-"LoginException" = "该钱包账户未在该平台绑定";
-"LoginExceptionPrompt" = "请联系该平台管理进行绑定";
+//"LoginException" = "该钱包账户未在该平台绑定";
+//"LoginExceptionPrompt" = "请联系该平台管理进行绑定";
 "RefreshQRCode" = "请刷新二维码，再次进行扫码";
 "Parameter" = "参数";
 // 发现

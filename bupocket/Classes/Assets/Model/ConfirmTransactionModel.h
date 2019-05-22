@@ -23,7 +23,7 @@ NS_ASSUME_NONNULL_BEGIN
 @interface ConfirmTransactionModel : BaseModel
 
 @property (nonatomic, copy) NSString * qrcodeSessionId;
-// 1-转入质押金 2-追加质押金 3-用户投票 4-共建自购 5-共建支持 6-节点退出 7-共建退出 8-委员会审核 9-奖励提取 10-撤票
+// 1-转入保证金 2-追加保证金 3-用户投票 4-共建自购 5-共建支持 6-节点退出 7-共建退出 8-委员会审核 9-奖励提取 10-撤票
 @property (nonatomic, copy) NSString * type;
 // 目标地址
 @property (nonatomic, copy) NSString * destAddress;

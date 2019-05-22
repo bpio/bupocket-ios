@@ -218,7 +218,7 @@
         } else if (button.tag == 1) {
             [QQTool QQShareWithImage:shareImage];
         } else if (button.tag == 2) {
-            self.linkAlertView = [[LinkAlertView alloc] initWithNodeName:self.nodePlanModel.nodeName link:@"https://baidu.com" confrimBolck:^{
+            self.linkAlertView = [[LinkAlertView alloc] initWithNodeName:self.nodePlanModel.nodeName link:self.nodePlanModel.shortLink confrimBolck:^{
                 
             } cancelBlock:^{
                 

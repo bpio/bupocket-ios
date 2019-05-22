@@ -26,6 +26,7 @@
 #import "VotingRecordsViewController.h"
 #import "CooperateDetailViewController.h"
 #import "NodeSharingViewController.h"
+#import "NodeTransferSuccessViewController.h"
 #import "WKWebViewController.h"
 
 @interface NavigationViewController ()<UINavigationControllerDelegate>
@@ -76,6 +77,7 @@
                              [viewController isKindOfClass:[RegisteredResultViewController class]] ||
                              [viewController isKindOfClass:[DistributionResultsViewController class]] ||
                              [viewController isKindOfClass:[RequestTimeoutViewController class]] ||
+                             [viewController isKindOfClass:[NodeTransferSuccessViewController class]] ||
                              [viewController isKindOfClass:[OrderDetailsViewController class]] ||
                              [viewController isKindOfClass:[ImportWalletViewController class]] ||
                              [viewController isKindOfClass:[ExportKeystoreViewController class]] ||

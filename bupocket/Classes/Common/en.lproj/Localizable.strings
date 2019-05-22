@@ -168,7 +168,7 @@
 "Failure" = "Failure";
 "OriginatorAdress" = "Sending address";
 "RecipientAddress" = "Recipient address";
-"SendingTime" = "Sending time";
+//"SendingTime" = "Sending time";
 // Issue tokens
 // Confirm token registration
 "ConfirmationOfRegisteredAssets" = "Confirm token registration";
@@ -223,13 +223,13 @@
 "Album" = "Album";
 "ScanPrompt" = "Automatically scan the QR code in the box";
 // date
-"HoursAgo" = "hours ago";
-"HourAgo" = "hour ago";
-"MinutesAgo" = "minutes ago";
-"MinuteAgo" = "minute ago";
-"SecondsAgo" = "seconds ago";
-"SecondAgo" = "second ago";
-"Just" = "Just now";
+"HoursAgo" = "hrs ago";
+"HourAgo" = "hr ago";
+"MinutesAgo" = "mins ago";
+"MinuteAgo" = "min ago";
+"SecondsAgo" = "secs ago";
+"SecondAgo" = "sec ago";
+//"Just" = "Just now";
 //"Yesterday" = "Yesterday";
 "DaysAgo" = "days ago";
 "DayAgo" = "day ago";
@@ -379,8 +379,8 @@
 "Immediate login %@, please confirm that it is my operation." = "Log in %@ soon, and please make sure that is your personal operation.";
 "LoginPromptInfo" = "Your account address will be made public";
 "ConfirmLogin" = "Confirm login";
-"LoginException" = "The wallet account is not bound to the platform";
-"LoginExceptionPrompt" = "Please contact the platform manager for binding";
+//"LoginException" = "The wallet account is not bound to the platform";
+//"LoginExceptionPrompt" = "Please contact the platform manager for binding";
 "RefreshQRCode" = "Please refresh the QR code and scan the code again";
 // Explore
 "CardBag" = "Cards";
@@ -477,7 +477,7 @@
 "TotalSupport" = "Total amount received";
 "RiskStatement" = "Risk Statement";
 "SupportRecords" = "Record of Node Co-funding";
-"RedemptionAllSupport" = "Withdraw All";
+"RedemptionAllSupport" = "Withdraw";
 "WithdrawalOfSupport" = "Withdraw";
 "IWantToSupport" = "Sponsor";
 "Support" = "Sponsor";

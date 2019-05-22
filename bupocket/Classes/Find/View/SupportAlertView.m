@@ -200,7 +200,7 @@
 }
 - (void)reduceAction:(UIButton *)button
 {
-    self.numberText.text = [NSString stringWithFormat:@"%zd", [self.numberStr integerValue] - 1];
+    self.numberText.text = [NSString stringWithFormat:@"%ld", [self.numberStr integerValue] - 1];
     self.numberStr = self.numberText.text;
     [self setTotalText];
     [self setButtonEnabled];
@@ -238,15 +238,17 @@
 - (void)textChange:(UITextField *)textField
 {
     self.numberStr = [self.numberText.text stringByTrimmingCharactersInSet:[NSCharacterSet whitespaceAndNewlineCharacterSet]];
-    [self setButtonEnabled];
-    if ([self.numberStr integerValue] < 1 || [self.numberStr integerValue] > [self.totalTarget doubleValue] / [self.purchaseAmountStr integerValue]) {
-        self.confirm.enabled = NO;
-        self.confirm.backgroundColor = DISABLED_COLOR;
-    } else {
-        self.confirm.enabled = YES;
-        self.confirm.backgroundColor = MAIN_COLOR;
-        [self setTotalText];
+    if (NotNULLString(self.numberStr)) {
+        if ([self.numberStr integerValue] < 1) {
+            textField.text = @"1";
+            self.numberStr = self.numberText.text;
+        } else if ([self.numberStr integerValue] > [self.totalTarget doubleValue] / [self.purchaseAmountStr integerValue]) {
+            textField.text = [NSString stringWithFormat:@"%ld", [self.totalTarget integerValue] / [self.purchaseAmountStr integerValue]];
+            self.numberStr = self.numberText.text;
+        }
     }
+    [self setTotalText];
+    [self setButtonEnabled];
 }
 - (void)setButtonEnabled
 {
@@ -277,11 +279,11 @@
 }
 - (void)plusAction:(UIButton *)button
 {
-    self.numberText.text = [NSString stringWithFormat:@"%zd", [self.numberStr integerValue] + 1];
+    self.numberText.text = [NSString stringWithFormat:@"%ld", [self.numberStr integerValue] + 1];
     self.numberStr = self.numberText.text;
     [self setTotalText];
     [self setButtonEnabled];
-//    if ([self.numberStr integerValue] < [self.totalTarget doubleValue] / [self.purchaseAmountStr integerValue]) {
+//    if ([self.numberStr integerValue] < [self.totalTarget  doubleValue] / [self.purchaseAmountStr integerValue]) {
 //        self.reduce.enabled = YES;
 //        if ([self.numberStr integerValue] == [self.totalTarget doubleValue] / [self.purchaseAmountStr integerValue]) {
 //            button.enabled = NO;
@@ -328,6 +330,9 @@
 - (void)sureBtnClick {
     [self hideView];
     if (_confirmClick) {
+        if (!NotNULLString(self.numberStr)) {
+            self.numberStr = @"1";
+        }
         NSString * totalAmount = [NSString stringWithFormat:@"%lld", [self.numberStr longLongValue] * [self.purchaseAmountStr longLongValue]];
         _confirmClick(totalAmount);
     }

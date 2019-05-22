@@ -24,7 +24,7 @@
 
 @property (nonatomic, strong) UITableView * tableView;
 @property (nonatomic, strong) NSMutableArray * listArray;
-//@property (nonatomic, strong) UIView * noData;
+@property (nonatomic, strong) UIView * noData;
 @property (nonatomic, strong) UIView * noNetWork;
 
 @property (nonatomic, strong) CooperateDetailModel * cooperateDetailModel;
@@ -95,7 +95,6 @@ static NSString * const CooperateDetailCellID = @"CooperateDetailCellID";
             [MBProgressHUD showTipMessageInWindow:[ErrorTypeTool getDescriptionWithNodeErrorCode:code]];
         }
         [self.tableView.mj_header endRefreshing];
-//        (self.listArray.count > 0) ? (self.tableView.tableFooterView = [[UIView alloc] initWithFrame:CGRectMake(0, 0, DEVICE_WIDTH, CGFLOAT_MIN)]) : (self.tableView.tableFooterView = self.noData);
         self.noNetWork.hidden = YES;
         self.tableView.mj_footer.hidden = (self.listArray.count == 0);
     } failure:^(NSError *error) {
@@ -300,7 +299,8 @@ static NSString * const CooperateDetailCellID = @"CooperateDetailCellID";
 - (NSInteger)numberOfSectionsInTableView:(UITableView *)tableView
 {
     if (self.cooperateDetailModel) {
-        self.sectionNumber = self.listArray.count > 0 ? 3 : 2;
+//        self.sectionNumber = self.listArray.count > 0 ? 3 : 2;
+        self.sectionNumber = 3;
     } else {
         self.sectionNumber = 0;
     }
@@ -347,9 +347,25 @@ static NSString * const CooperateDetailCellID = @"CooperateDetailCellID";
         if ([self.cooperateDetailModel.status integerValue] == CooperateStatusFailure || ([self.cooperateDetailModel.status integerValue] == CooperateStatusInProcessing && ![self.cooperateDetailModel.originatorAddress isEqualToString:CurrentWalletAddress])) {
             footerH += ScreenScale(75);
         }
-        return  footerH;
+        if (self.listArray.count == 0) {
+            footerH += ScreenScale(280);
+        }
+        return footerH;
     } else {
         return CGFLOAT_MIN;
+    }
+}
+- (UIView *)tableView:(UITableView *)tableView viewForFooterInSection:(NSInteger)section
+{
+    if (section == self.sectionNumber - 1 && self.listArray.count == 0) {
+        CGFloat noDataH = ScreenScale(280);
+        _noData = [[UIView alloc] initWithFrame:CGRectMake(0, 0, DEVICE_WIDTH, noDataH)];
+        UIButton * noDataBtn = [Encapsulation showNoDataWithTitle:Localized(@"NoRecord") imageName:@"noRecord" superView:_noData frame:CGRectMake(0, (noDataH - ScreenScale(160)) / 2, DEVICE_WIDTH, ScreenScale(160))];
+        noDataBtn.hidden = NO;
+        [_noData addSubview:noDataBtn];
+        return self.noData;
+    } else {
+        return [[UIView alloc] init];
     }
 }
 

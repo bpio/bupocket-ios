@@ -48,7 +48,7 @@
     [transactionStatus mas_makeConstraints:^(MASConstraintMaker *make) {
         make.top.mas_equalTo(Margin_20);
         make.centerX.mas_equalTo(0);
-        make.height.mas_equalTo(ScreenScale(100) + [Encapsulation rectWithText:Localized(@"LoginException") font:transactionStatus.titleLabel.font textWidth:DEVICE_WIDTH - Margin_60].size.height);
+        make.height.mas_equalTo(ScreenScale(100) + [Encapsulation rectWithText:transactionStatus.titleLabel.text font:transactionStatus.titleLabel.font textWidth:DEVICE_WIDTH - Margin_60].size.height);
         make.width.mas_lessThanOrEqualTo(DEVICE_WIDTH - Margin_60);
     }];
     
