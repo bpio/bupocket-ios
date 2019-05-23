@@ -78,7 +78,6 @@ static NSString * const NodeTransferSuccessID = @"NodeTransferSuccessID";
 {
     if (!_lineView) {
         _lineView = [[UIView alloc] init];
-//        _lineView.backgroundColor = LINE_COLOR;
     }
     return _lineView;
 }

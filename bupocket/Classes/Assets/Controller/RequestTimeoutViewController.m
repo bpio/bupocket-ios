@@ -168,43 +168,11 @@
     } else if ([self.adsModel.type isEqualToString:@"2"]) {
         if (NotNULLString(self.adsModel.url)) {
             WKWebViewController * VC = [[WKWebViewController alloc] init];
-            //    VC.navigationItem.title = self.listArray[indexPath.section][indexPath.row];
             [VC loadWebURLSring: self.adsModel.url];
             [self.navigationController pushViewController:VC animated:NO];
         }
     }
 }
-/*
-- (void)setupView
-{
-    CustomButton * requestTimeout = [[CustomButton alloc] init];
-    requestTimeout.layoutMode = VerticalNormal;
-    [requestTimeout setTitle:Localized(@"RequestTimeout") forState:UIControlStateNormal];
-    // TransferFailure
-    [requestTimeout setTitleColor:COLOR_6 forState:UIControlStateNormal];
-    requestTimeout.titleLabel.font = FONT(16);
-    [requestTimeout setImage:[UIImage imageNamed:@"requestTimeout"] forState:UIControlStateNormal];
-    [self.view addSubview:requestTimeout];
-    [requestTimeout mas_makeConstraints:^(MASConstraintMaker *make) {
-        make.top.equalTo(self.view.mas_top).offset(NavBarH);
-        make.centerX.equalTo(self.view);
-        make.size.mas_equalTo(CGSizeMake(DEVICE_WIDTH - Margin_40, ScreenScale(120)));
-    }];
-    // IGotIt
-    UIButton * gotIt = [UIButton createButtonWithTitle:Localized(@"IGotIt") isEnabled:YES Target:self Selector:@selector(gotItAction)];
-    [self.view addSubview:gotIt];
-    [gotIt mas_makeConstraints:^(MASConstraintMaker *make) {
-        make.top.equalTo(requestTimeout.mas_bottom).offset(Margin_15);
-        make.left.equalTo(self.view.mas_left).offset(Margin_20);
-        make.right.equalTo(self.view.mas_right).offset(-Margin_20);
-        make.height.mas_equalTo(MAIN_HEIGHT);
-    }];
-}
-- (void)gotItAction
-{
-    [self.navigationController popToRootViewControllerAnimated:NO];
-}
- */
 /*
 #pragma mark - Navigation
 

@@ -51,7 +51,6 @@ static NSInteger const TxInfoNormalCount = 6;
     } else {
         outOrIn = @"+";
     }
-//    self.amount = ( ? self.listModel.amount : [NSString stringWithFormat:@"%@%@", outOrIn, self.listModel.amount];
     self.assets = [NSString stringWithFormat:@"%@%@ %@", outOrIn, self.listModel.amount, self.assetCode];
     _headerViewH = ScreenScale(170) + [Encapsulation rectWithText:self.assets font:FONT_Bold(27) textWidth:DEVICE_WIDTH - Margin_40].size.height;
     [self setupView];
@@ -108,14 +107,12 @@ static NSInteger const TxInfoNormalCount = 6;
     if (self.txInfoModel.signatureStr) {
         [infoTitleArray addObject:@"Transaction Signature"];
     }
-    // , @"Ledger Seq"
     self.infoArray = [NSMutableArray array];
     NSMutableArray * detailArray = [NSMutableArray array];
     [detailArray addObject:self.txDetailModel.sourceAddress];
     [detailArray addObject:self.txDetailModel.destAddress];
     [detailArray addObject:[NSString stringAppendingBUWithStr: self.txDetailModel.fee]];
     [detailArray addObject:[DateTool getDateStringWithTimeStr:self.txDetailModel.applyTimeDate]];
-//    [detailArray addObject:self.txDetailModel.originalMetadata];
     [detailArray addObject:self.txDetailModel.txMetadata];
     [self.infoArray addObject:detailArray];
     // TX Info
@@ -126,7 +123,6 @@ static NSInteger const TxInfoNormalCount = 6;
     [infoArray addObject:[NSString stringWithFormat:@"%@ %@", self.listModel.amount, self.assetCode]];
     [infoArray addObject:[NSString stringAppendingBUWithStr:self.txInfoModel.fee]];
     [infoArray addObject:self.txInfoModel.nonce];
-//    [infoArray addObject:self.txInfoModel.ledgerSeq];
     NSArray * signatureArray = [JsonTool dictionaryOrArrayWithJSONSString: self.txInfoModel.signatureStr];
     [infoArray addObject:@"Transaction Signature"];
     for (NSInteger i = 0; i < signatureArray.count; i ++) {
@@ -143,7 +139,6 @@ static NSInteger const TxInfoNormalCount = 6;
     [blockInfoArray addObject:self.blockInfoModel.hashStr];
     [blockInfoArray addObject:self.blockInfoModel.previousHash];
     [blockInfoArray addObject:self.blockInfoModel.txCount];
-//    [blockInfoArray addObject:self.blockInfoModel.validatorsHash]; , @"Validators Hash"
     [blockInfoArray addObject:[DateTool getDateStringWithTimeStr:self.blockInfoModel.closeTimeDate]];
     [self.infoArray addObject:blockInfoArray];
     

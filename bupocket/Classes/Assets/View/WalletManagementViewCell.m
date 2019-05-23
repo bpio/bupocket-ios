@@ -43,7 +43,6 @@ static NSString * const WalletCellID = @"WalletCellID";
         make.top.equalTo(self.contentView.mas_top).offset(Margin_20);
         make.left.equalTo(self.contentView.mas_left).offset(Margin_15);
         make.height.mas_equalTo(ScreenScale(18));
-//        make.right.mas_lessThanOrEqualTo(self.manage.mas_left).offset(-Margin_10);
     }];
     if ([self.reuseIdentifier isEqualToString:WalletManagementCellID]) {
         [self.manage mas_makeConstraints:^(MASConstraintMaker *make) {

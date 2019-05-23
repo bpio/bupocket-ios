@@ -404,28 +404,23 @@ static NSString * const CooperateDetailCellID = @"CooperateDetailCellID";
                 cell.infoTitle.text = nil;
                 cell.stateBtn.hidden = NO;
                 if ([self.cooperateDetailModel.status integerValue] == CooperateStatusInProcessing) {
-                    // 1-共建中
-                    cell.stateBtn.selected = NO;
+                    [cell.stateBtn setTitle:Localized(@"InProgress") forState:UIControlStateNormal];
+                    [cell.stateBtn setBackgroundImage:[UIImage imageNamed:@"cooperate_state"] forState:UIControlStateNormal];
                 } else if ([self.cooperateDetailModel.status integerValue] == CooperateStatusSuccess) {
-                    // 2-共建成功
-                    cell.stateBtn.selected = YES;
+                    [cell.stateBtn setTitle:Localized(@"Completed") forState:UIControlStateNormal];
+                    [cell.stateBtn setBackgroundImage:[UIImage imageNamed:@"cooperate_state_s"] forState:UIControlStateNormal];
                 } else if ([self.cooperateDetailModel.status integerValue] == CooperateStatusFailure) {
-                    // 3-共建失败
-                    cell.stateBtn.enabled = NO;
+                    [cell.stateBtn setTitle:Localized(@"Quit") forState:UIControlStateNormal];
+                    [cell.stateBtn setBackgroundImage:[UIImage imageNamed:@"cooperate_state_s"] forState:UIControlStateNormal];
                 }
             } else if (indexPath.row == 1) {
-//                cell.infoTitle.font = FONT_Bold(18);
-//                cell.infoTitle.textColor = WARNING_COLOR;
                 NSString * perAmount = [NSString stringAmountSplitWith:self.cooperateDetailModel.perAmount];
                 NSString * str = [NSString stringWithFormat:@"%@ %@", perAmount, Localized(@"BU/Portion")];
                 cell.title.attributedText = [Encapsulation attrWithString:str preFont:FONT_Bold(18) preColor:MAIN_COLOR index:perAmount.length sufFont:FONT(12) sufColor:MAIN_COLOR lineSpacing:0];
-//                cell.infoTitle.text = [NSString stringWithFormat:@"%@%%", self.cooperateDetailModel.rewardRate];
             } else if (indexPath.row == 2) {
                 cell.title.font = cell.infoTitle.font = FONT(12);
                 cell.title.textColor = cell.infoTitle.textColor = COLOR(@"B2B2B2");
                 cell.title.text = Localized(@"PurchaseAmount");
-//                cell.shareRatioBtn.hidden = NO;
-//                [cell.shareRatioBtn addTarget:self action:@selector(shareRatioAction:) forControlEvents:UIControlEventTouchUpInside];
             } else {
                 if (indexPath.row == 3) {
                     cell.title.font = cell.infoTitle.font = FONT(12);
@@ -458,7 +453,6 @@ static NSString * const CooperateDetailCellID = @"CooperateDetailCellID";
                     cell.title.text = Localized(@"TotalSupport");
                     cell.infoTitle.text = [NSString stringAppendingBUWithStr:[NSString stringAmountSplitWith:self.cooperateDetailModel.supportAmount]];
                 } else if (indexPath.row == 6) {
-//                    cell.title.text = Localized(@"Bond");
                     cell.bondButton.hidden = NO;
                     [cell.bondButton addTarget:self action:@selector(bondAction:) forControlEvents:UIControlEventTouchUpInside];
                     cell.infoTitle.text = [NSString stringAppendingBUWithStr:[NSString stringAmountSplitWith:self.cooperateDetailModel.initiatorAmount]];
@@ -466,10 +460,7 @@ static NSString * const CooperateDetailCellID = @"CooperateDetailCellID";
             }
         } else {
             cell.riskStatementBtn.hidden = NO;
-//            cell.riskStatementBg.backgroundColor = self.tableView.backgroundColor;
             cell.contentView.backgroundColor = self.tableView.backgroundColor;
-//            cell.title.text = nil;
-//            cell.infoTitle.text = nil;
         }
         cell.selectionStyle = UITableViewCellSelectionStyleNone;
         return cell;
@@ -484,14 +475,8 @@ static NSString * const CooperateDetailCellID = @"CooperateDetailCellID";
 
 - (void)bondAction:(UIButton *)button
 {
-    [self infoAction:button title:Localized(@"CooperateBond")];
+    [self infoAction:button title:Localized(@"CooperateDeposit")];
 }
-/*
-- (void)shareRatioAction:(UIButton *)btn
-{
-    [self infoAction:btn title:Localized(@"ShareRatioInfo")];
-}
- */
 - (void)infoAction:(UIButton *)button title:(NSString *)title
 {
     CGFloat titleHeight = [Encapsulation rectWithText:title font:TITLE_FONT textWidth:DEVICE_WIDTH - ScreenScale(120)].size.height;
@@ -502,7 +487,7 @@ static NSString * const CooperateDetailCellID = @"CooperateDetailCellID";
         popupMenu.dismissOnSelected = NO;
         popupMenu.fontSize = TITLE_FONT;
         popupMenu.textColor = [UIColor whiteColor];
-        popupMenu.backColor = COLOR(@"56526D");
+        popupMenu.backColor = COLOR_POPUPMENU;
         popupMenu.tableView.separatorStyle = UITableViewCellSeparatorStyleNone;
         popupMenu.tableView.scrollEnabled = NO;
         popupMenu.tableView.allowsSelection = NO;

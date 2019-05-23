@@ -45,7 +45,7 @@ static NSString * const ExportCellID = @"ExportCellID";
             make.right.equalTo(self.contentView.mas_right).offset(-Margin_10);
             make.top.bottom.equalTo(self.contentView);
         }];
-        self.contentView.backgroundColor = self.contentView.superview.superview.backgroundColor;
+        self.contentView.backgroundColor = VIEWBG_COLOR;
     } else {
         [self.listBg mas_makeConstraints:^(MASConstraintMaker *make) {
             make.edges.equalTo(self.contentView);

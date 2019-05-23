@@ -20,7 +20,6 @@ NS_ASSUME_NONNULL_BEGIN
 @property (nonatomic, copy) NSString * fee;
 @property (nonatomic, copy) NSString * sourceAddress;
 @property (nonatomic, copy) NSString * status;
-//@property (nonatomic, copy) NSString * originalMetadata;
 @property (nonatomic, copy) NSString * txMetadata;
 @property (nonatomic, copy) NSString * operaMetadata;
 @end

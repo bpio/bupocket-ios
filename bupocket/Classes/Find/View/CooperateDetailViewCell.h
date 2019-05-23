@@ -18,12 +18,10 @@ NS_ASSUME_NONNULL_BEGIN
 @property (nonatomic, strong) UILabel * infoTitle;
 
 @property (nonatomic, strong) UIButton * stateBtn;
-//@property (nonatomic, strong) CustomButton * shareRatioBtn;
 @property (nonatomic, strong) UIProgressView * progressView;
 @property (nonatomic, strong) UILabel * votingRatio;
 @property (nonatomic, strong) UIView * lineView;
 @property (nonatomic, strong) CustomButton * bondButton;
-//@property (nonatomic, strong) UIView * riskStatementBg;
 @property (nonatomic, strong) UIButton * riskStatementBtn;
 
 @end

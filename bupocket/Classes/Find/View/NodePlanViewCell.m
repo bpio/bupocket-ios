@@ -37,7 +37,6 @@ static NSString * const NodeSharingID = @"NodeSharingID";
             _listBg.layer.cornerRadius = BG_CORNER;
             [self setupMoreOperations];
         }
-//        [self.listBg addSubview:self.shareBtn];
     }
     return self;
 }
@@ -104,13 +103,9 @@ static NSString * const NodeSharingID = @"NodeSharingID";
         }];
         if ([self.reuseIdentifier isEqualToString:NodeSharingID]) {
             self.name.numberOfLines = 2;
-//            [self.shareBtn mas_makeConstraints:^(MASConstraintMaker *make) {
-//                make.centerY.equalTo(self.name);
-//                make.right.equalTo(self.listBg);
-//            }];
         }
     }
-    self.contentView.backgroundColor = self.contentView.superview.superview.backgroundColor;
+    self.contentView.backgroundColor = VIEWBG_COLOR;
     [self.listImage mas_makeConstraints:^(MASConstraintMaker *make) {
         make.left.equalTo(self.listBg.mas_left).offset(Margin_10);
         make.top.equalTo(self.listBg.mas_top).offset(Margin_15);
@@ -120,12 +115,9 @@ static NSString * const NodeSharingID = @"NodeSharingID";
         make.centerX.centerY.equalTo(self.listImage);
         make.width.height.mas_equalTo(ScreenScale(53));
     }];
-//    CGFloat nameW = DEVICE_WIDTH - ([Encapsulation rectWithText:self.nodeType.text font:self.nodeType.font textHeight:ScreenScale(16)].size.width + Margin_10) - ScreenScale(80);
     [self.name mas_makeConstraints:^(MASConstraintMaker *make) {
         make.top.equalTo(self.listBg.mas_top).offset(Margin_20);
         make.left.equalTo(self.listImage.mas_right).offset(Margin_10);
-//        make.height.mas_lessThanOrEqualTo([Encapsulation rectWithText:self.name.text font:self.name.font textWidth:nameW].size.height);
-//        make.height.mas_equalTo(Margin_15);
     }];
     [self.nodeType mas_makeConstraints:^(MASConstraintMaker *make) {
         make.left.equalTo(self.name.mas_right).offset(Margin_10);
@@ -133,15 +125,9 @@ static NSString * const NodeSharingID = @"NodeSharingID";
         make.height.mas_equalTo(ScreenScale(16));
         make.width.mas_equalTo([Encapsulation rectWithText:self.nodeType.text font:self.nodeType.font textHeight:ScreenScale(16)].size.width + Margin_10);
     }];
-//    if ([self.reuseIdentifier isEqualToString:NodeSharingID]) {
-//        [self.nodeType mas_makeConstraints:^(MASConstraintMaker *make) {
-//            make.right.mas_lessThanOrEqualTo(self.shareBtn.mas_left).offset(-Margin_10);
-//        }];
-//    } else {
-        [self.nodeType mas_makeConstraints:^(MASConstraintMaker *make) {
-            make.right.mas_lessThanOrEqualTo(self.listBg.mas_right).offset(-Margin_10);
-        }];
-//    }
+    [self.nodeType mas_makeConstraints:^(MASConstraintMaker *make) {
+        make.right.mas_lessThanOrEqualTo(self.listBg.mas_right).offset(-Margin_10);
+    }];
     [self.nodeType setContentCompressionResistancePriority:UILayoutPriorityRequired forAxis:UILayoutConstraintAxisHorizontal];
     [self.votesObtained mas_makeConstraints:^(MASConstraintMaker *make) {
         make.left.equalTo(self.name);
@@ -231,19 +217,6 @@ static NSString * const NodeSharingID = @"NodeSharingID";
     }
     return _moreOperations;
 }
-//- (CustomButton *)shareBtn
-//{
-//    if (!_shareBtn) {
-//        _shareBtn = [[CustomButton alloc] init];
-//        _shareBtn.layoutMode = HorizontalNormal;
-//        _shareBtn.titleLabel.font = FONT(14);
-//        [_shareBtn setBackgroundImage:[UIImage imageNamed:@"sharing_canvassing_bg"] forState:UIControlStateNormal];
-//        [_shareBtn setTitle:Localized(@"Share") forState:UIControlStateNormal];
-//        [_shareBtn setImage:[UIImage imageNamed:@"sharing_canvassing"] forState:UIControlStateNormal];
-//        [_shareBtn addTarget:self action:@selector(shareAction) forControlEvents:UIControlEventTouchUpInside];
-//    }
-//    return _shareBtn;
-//}
 - (void)invitationVoteAction
 {
     if (self.invitationVoteClick) {
@@ -262,12 +235,6 @@ static NSString * const NodeSharingID = @"NodeSharingID";
         self.cancellationVotesClick();
     }
 }
-//- (void)shareAction
-//{
-//    if (self.shareClick) {
-//        self.shareClick();
-//    }
-//}
 - (void)setNodePlanModel:(NodePlanModel *)nodePlanModel
 {
     _nodePlanModel = nodePlanModel;
@@ -296,33 +263,9 @@ static NSString * const NodeSharingID = @"NodeSharingID";
     }
     self.numberOfVotes.attributedText = [Encapsulation attrWithString:[NSString stringWithFormat:@"%@ %@", myVote, nodePlanModel.myVoteCount] preFont:FONT(12) preColor:COLOR(@"B2B2B2") index:myVote.length sufFont:FONT(14) sufColor:COLOR_6 lineSpacing:0];
     if ([self.reuseIdentifier isEqualToString:NodeSharingID]) {
-//        NSString * votesObtainedStr = [NSString stringWithFormat:Localized(@"%@ Votes"), nodePlanModel.nodeVote];
-//        if ([nodePlanModel.nodeVote longLongValue] < 2) {
-//            votesObtainedStr = [NSString stringWithFormat:Localized(@"%@ Vote"), nodePlanModel.nodeVote];
-//        }
-//        self.votesObtained.attributedText = [Encapsulation attrWithString:votesObtainedStr preFont:FONT(14) preColor:COLOR_6 index:nodePlanModel.nodeVote.length sufFont:FONT(12) sufColor:COLOR(@"B2B2B2") lineSpacing:0];
-//        NSString * sponsorStr = [NSString stringWithFormat:Localized(@"%@ Sponsors"), nodePlanModel.support];
-//        if ([nodePlanModel.support longLongValue] < 2) {
-//            sponsorStr = [NSString stringWithFormat:Localized(@"%@ Sponsor"), nodePlanModel.support];
-//        }
-//        self.numberOfVotes.text = sponsorStr;
         CGFloat nameW = DEVICE_WIDTH - (ceil([Encapsulation rectWithText:self.nodeType.text font:self.nodeType.font textHeight:ScreenScale(16)].size.width) + 1 + Margin_10) - ScreenScale(80);
         nodePlanModel.cellHeight = ceil([Encapsulation rectWithText:self.name.text font:self.name.font textWidth:nameW].size.height) + 1 + ScreenScale(60);
-        DLog(@"cell的高度：%f", nodePlanModel.cellHeight);
-//        [self.contentView layoutIfNeeded];
-//        nodePlanModel.cellHeight = CGRectGetMaxY(self.votesObtained.frame) + Margin_15;
-    } else {
-//        NSString * vote = Localized(@"Votes");
-//        if ([nodePlanModel.nodeVote longLongValue] < 2) {
-//            vote = Localized(@"Vote");
-//        }
-//        self.votesObtained.attributedText = [Encapsulation attrWithString:[NSString stringWithFormat:@"%@ %@", vote, nodePlanModel.nodeVote] preFont:FONT(12) preColor:COLOR(@"B2B2B2") index:vote.length sufFont:FONT(14) sufColor:COLOR_6 lineSpacing:0];
-//        NSString * myVote = Localized(@"My votes");
-//        if ([nodePlanModel.myVoteCount longLongValue] < 2) {
-//            myVote = Localized(@"My vote");
-//        }
-//        self.numberOfVotes.attributedText = [Encapsulation attrWithString:[NSString stringWithFormat:@"%@ %@", myVote, nodePlanModel.myVoteCount] preFont:FONT(12) preColor:COLOR(@"B2B2B2") index:myVote.length sufFont:FONT(14) sufColor:COLOR_6 lineSpacing:0];
-    }
+    } 
 }
 
 - (void)awakeFromNib {

@@ -26,8 +26,6 @@
 @property (nonatomic, strong) NSMutableArray * nodeListArray;
 @property (nonatomic, strong) UITextField * searchTextField;
 @property (nonatomic, strong) YBPopupMenu * popupMenu;
-//@property (nonatomic, strong) YBPopupMenu * operationsMenu;
-//@property (nonatomic, assign) NSInteger index;
 @property (nonatomic, strong) UIView * noData;
 @property (nonatomic, strong) UIView * noNetWork;
 @property (nonatomic, strong) NSString * contractAddress;
@@ -63,8 +61,6 @@ static NSString * const NodePlanCellID = @"NodePlanCellID";
     self.navigationItem.title = Localized(@"NodePlan");
     [self setupNav];
     [self setupView];
-    
-//    [self getData];
     [self setupRefresh];
     // Do any additional setup after loading the view.
 }
@@ -164,7 +160,6 @@ static NSString * const NodePlanCellID = @"NodePlanCellID";
     self.tableView.backgroundColor = VIEWBG_COLOR;
     [self.view addSubview:self.tableView];
     self.noNetWork = [Encapsulation showNoNetWorkWithSuperView:self.view target:self action:@selector(reloadData)];
-//    self.tableView.tableHeaderView = self.headerView;
 }
 - (UIView *)noData
 {
@@ -286,7 +281,7 @@ static NSString * const NodePlanCellID = @"NodePlanCellID";
         popupMenu.dismissOnSelected = NO;
         popupMenu.fontSize = TITLE_FONT;
         popupMenu.textColor = [UIColor whiteColor];
-        popupMenu.backColor = COLOR(@"56526D");
+        popupMenu.backColor = COLOR_POPUPMENU;
         popupMenu.tableView.separatorStyle = UITableViewCellSeparatorStyleNone;
         popupMenu.tableView.scrollEnabled = NO;
         popupMenu.tableView.allowsSelection = NO;
@@ -296,22 +291,8 @@ static NSString * const NodePlanCellID = @"NodePlanCellID";
 
 - (CGFloat)tableView:(UITableView *)tableView heightForFooterInSection:(NSInteger)section
 {
-//    if (self.listArray.count > 0) {
-//        return SafeAreaBottomH + NavBarH;
-//    } else {
-        return CGFLOAT_MIN;
-//    }
+    return CGFLOAT_MIN;
 }
-//- (UIView *)tableView:(UITableView *)tableView viewForFooterInSection:(NSInteger)section
-//{
-//    if (self.listArray.count > 0) {
-//        UIView * footerView = [[UIView alloc] init];
-//        footerView.backgroundColor = self.tableView.backgroundColor;
-//        return footerView;
-//    } else {
-//        return nil;
-//    }
-//}
 - (CGFloat)tableView:(UITableView *)tableView heightForRowAtIndexPath:(NSIndexPath *)indexPath
 {
     return ScreenScale(160);
@@ -348,9 +329,6 @@ static NSString * const NodePlanCellID = @"NodePlanCellID";
         }
         [Encapsulation showAlertControllerWithMessage:status handler:nil];
     }
-}
-- (void)invitationVoteWithIndex:(NSInteger)index
-{
 }
 - (void)votingRecordWithIndex:(NSInteger)index
 {
@@ -414,7 +392,6 @@ static NSString * const NodePlanCellID = @"NodePlanCellID";
                 NSTimeInterval time = [date timeIntervalSinceNow];
                 if (time < 0) {
                     [Encapsulation showAlertControllerWithMessage:Localized(@"Overtime") handler:nil];
-                    //                [MBProgressHUD showTipMessageInWindow:Localized(@"Overtime")];
                 } else {
                     [self submitTransactionWithConfirmTransactionModel:confirmTransactionModel];
                 }

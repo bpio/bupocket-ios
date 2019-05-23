@@ -193,7 +193,6 @@
 {
     if (!_reduce) {
         _reduce = [UIButton createButtonWithNormalImage:@"reduce" SelectedImage:@"reduce" Target:self Selector:@selector(reduceAction:)];
-//        [_reduce setImage:[UIImage imageNamed:@"reduce_d"] forState:UIControlStateDisabled];
         _reduce.enabled = NO;
     }
     return _reduce;
@@ -204,23 +203,7 @@
     self.numberStr = self.numberText.text;
     [self setTotalText];
     [self setButtonEnabled];
-//    if ([self.numberStr integerValue] > 1) {
-//        self.plus.enabled = YES;
-//        if ([self.numberStr integerValue] == 1) {
-//            button.enabled = NO;
-//        }
-//    }
 }
-//- (UILabel *)number
-//{
-//    if (!_number) {
-//        _number = [[UILabel alloc] init];
-//        _number.textColor = TITLE_COLOR;
-//        _number.font = FONT(16);
-//        _number.text = @"1";
-//    }
-//    return _number;
-//}
 - (UITextField *)numberText
 {
     if (!_numberText) {
@@ -270,7 +253,6 @@
 {
     if (!_plus) {
         _plus = [UIButton createButtonWithNormalImage:@"plus" SelectedImage:@"plus" Target:self Selector:@selector(plusAction:)];
-//        [_plus setImage:[UIImage imageNamed:@"plus_d"] forState:UIControlStateDisabled];
         if ([_purchaseAmountStr longLongValue] == [_totalTarget longLongValue]) {
             _plus.enabled = NO;
         }
@@ -283,16 +265,9 @@
     self.numberStr = self.numberText.text;
     [self setTotalText];
     [self setButtonEnabled];
-//    if ([self.numberStr integerValue] < [self.totalTarget  doubleValue] / [self.purchaseAmountStr integerValue]) {
-//        self.reduce.enabled = YES;
-//        if ([self.numberStr integerValue] == [self.totalTarget doubleValue] / [self.purchaseAmountStr integerValue]) {
-//            button.enabled = NO;
-//        }
-//    }
 }
 - (void)setTotalText
 {
-//    int64_t fee = [[[NSDecimalNumber decimalNumberWithString:feeLimit] decimalNumberByMultiplyingByPowerOf10: Decimals_BU] longLongValue];
     NSString * totleAmount = [NSString stringWithFormat:@"%@%@ BU", Localized(@"Total"), [NSString stringAmountSplitWith:[NSString stringWithFormat:@"%lld", [self.numberStr longLongValue] * [self.purchaseAmountStr longLongValue]]]];
     NSMutableAttributedString * attr = [Encapsulation attrWithString:totleAmount preFont:FONT(13) preColor:TITLE_COLOR index:[Localized(@"Total") length] sufFont:FONT_Bold(18) sufColor:WARNING_COLOR lineSpacing:0];
     NSRange range = NSMakeRange(attr.length - 2, 2);

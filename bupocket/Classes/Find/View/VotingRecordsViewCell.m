@@ -31,21 +31,6 @@ static NSString * const NodeRecordsCellID = @"NodeRecordsCellID";
         [self.listBg addSubview:self.number];
         [self.listBg addSubview:self.state];
         [self.listBg addSubview:self.date];
-        
-//        _recordType.backgroundColor = MAIN_COLOR;
-//        self.title.text = @"会飞的比特币";
-//        self.nodeType.text = Localized(@"ConsensusNode");
-//        self.number.attributedText = [Encapsulation attrWithString:[NSString stringWithFormat:@"%@\n%@", Localized(@"Number"), @"897000"] preFont:FONT(12) preColor:COLOR_9 index:Localized(@"Number").length sufFont:FONT(13) sufColor:TITLE_COLOR lineSpacing:Margin_5];
-//        self.number.textAlignment = NSTextAlignmentLeft;
-//
-//        NSString * stateStr;
-//        UIColor * stateColor;
-//        stateStr = Localized(@"InProcessing");
-//        stateColor = COLOR(@"FF7C14");
-//        self.state.attributedText = [Encapsulation attrWithString:[NSString stringWithFormat:@"%@\n%@", Localized(@"State"),stateStr] preFont:FONT(12) preColor:COLOR_9 index:Localized(@"State").length sufFont:FONT(13) sufColor:stateColor lineSpacing:Margin_5];
-//        self.state.textAlignment = NSTextAlignmentLeft;
-//        self.date.attributedText = [Encapsulation attrWithString:[NSString stringWithFormat:@"%@\n%@", Localized(@"Time"), @"14:10:55 03/11/2019 "] preFont:FONT(12) preColor:COLOR_9 index:Localized(@"Time").length sufFont:FONT(13) sufColor:TITLE_COLOR lineSpacing:Margin_5];
-//        self.date.textAlignment = NSTextAlignmentRight;
     }
     return self;
 }
@@ -60,7 +45,7 @@ static NSString * const NodeRecordsCellID = @"NodeRecordsCellID";
         make.top.equalTo(self.contentView.mas_top).offset(Margin_5);
         make.bottom.equalTo(self.contentView.mas_bottom).offset(-Margin_5);
     }];
-    self.contentView.backgroundColor = self.contentView.superview.superview.backgroundColor;
+    self.contentView.backgroundColor = VIEWBG_COLOR;
     CGFloat recordTypeW = [Encapsulation rectWithText:self.recordType.titleLabel.text font:self.recordType.titleLabel.font textHeight:ScreenScale(18)].size.width + Margin_5;
     [self.recordType mas_makeConstraints:^(MASConstraintMaker *make) {
         make.left.equalTo(self.listBg.mas_left).offset(Margin_10);
@@ -90,7 +75,6 @@ static NSString * const NodeRecordsCellID = @"NodeRecordsCellID";
         make.top.equalTo(self.recordType.mas_bottom).offset(Margin_15);
         make.left.equalTo(self.recordType);
         make.width.mas_equalTo(width * 1.8);
-        //        make.right.mas_lessThanOrEqualTo(self.nodeType.mas_left).offset(-Margin_15);
     }];
     [self.state mas_makeConstraints:^(MASConstraintMaker *make) {
         make.left.equalTo(self.number.mas_right).offset(Margin_5);
@@ -99,7 +83,6 @@ static NSString * const NodeRecordsCellID = @"NodeRecordsCellID";
     }];
     [self.date mas_makeConstraints:^(MASConstraintMaker *make) {
         make.left.equalTo(self.state.mas_right).offset(Margin_5);
-//        make.right.equalTo(self.listBg.mas_right).offset(-Margin_10);
         make.centerY.equalTo(self.number);
         make.width.mas_equalTo(width * 3);
     }];

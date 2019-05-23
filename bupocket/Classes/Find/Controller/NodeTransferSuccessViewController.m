@@ -108,7 +108,6 @@ static NSString * const NodeTransferSuccessID = @"NodeTransferSuccessID";
     } else if ([self.adsModel.type isEqualToString:@"2"]) {
         if (NotNULLString(self.adsModel.url)) {
             WKWebViewController * VC = [[WKWebViewController alloc] init];
-            //    VC.navigationItem.title = self.listArray[indexPath.section][indexPath.row];
             [VC loadWebURLSring: self.adsModel.url];
             [self.navigationController pushViewController:VC animated:NO];
         }

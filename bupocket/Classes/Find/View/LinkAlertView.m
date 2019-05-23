@@ -43,7 +43,6 @@
         [attr addAttribute:NSForegroundColorAttributeName value:MAIN_COLOR range:linkRange];
         [self.linkContent setAttributedTitle:attr forState:UIControlStateNormal];
         self.contentHeight = [Encapsulation getSizeSpaceLabelWithStr:linkStr font:FONT(14) width:DEVICE_WIDTH - ScreenScale(80) height:CGFLOAT_MAX lineSpacing:5.0].height + Margin_20;
-//        self.linkContent.height = height;
         self.bounds = CGRectMake(0, 0, DEVICE_WIDTH - Margin_40, self.contentHeight + ScreenScale(170));
     }
     return self;

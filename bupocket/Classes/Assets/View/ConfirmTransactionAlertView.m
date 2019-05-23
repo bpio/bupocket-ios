@@ -7,9 +7,6 @@
 //
 
 #import "ConfirmTransactionAlertView.h"
-//#import "NodeTransferSuccessViewController.h"
-//#import "TransferResultsViewController.h"
-//#import "RequestTimeoutViewController.h"
 
 @interface ConfirmTransactionAlertView()
 
@@ -20,15 +17,11 @@
 @property (nonatomic, strong) UIView * lineView;
 @property (nonatomic, strong) UIScrollView * infoScrollView;
 @property (nonatomic, strong) UIScrollView * transactionScrollView;
-//@property (nonatomic, strong) UIView * infoBg;
 @property (nonatomic, strong) NSArray * infoTitleArray;
 @property (nonatomic, strong) UIButton * details;
 @property (nonatomic, strong) UIButton * back;
 @property (nonatomic, strong) UIButton * confirm;
-
 @property (nonatomic, strong) NSString * transactionCost;
-//@property (nonatomic, strong) NSMutableArray * transferInfoArray;
-//@property (nonatomic, strong) PasswordAlertView * PWAlertView;
 
 @end
 
@@ -58,7 +51,6 @@
     
     [self.bgScrollView addSubview:self.lineView];
     
-    //    [self.bgScrollView addSubview:self.infoBg];
     [self.bgScrollView addSubview:self.transactionScrollView];
     
     [self.bgScrollView addSubview:self.infoScrollView];
@@ -70,14 +62,6 @@
     [self.bgScrollView addSubview:self.back];
     
     [self addSubview:self.confirm];
-    
-    
-    //    CGFloat maxH = MAX(infoLabelTotalH, detailTotalH);
-    //    self.infoBg.height = maxH;
-    //    _infoBg.frame = CGRectMake(Margin_20, ScreenScale(120), DEVICE_WIDTH - Margin_40, infoLabelTotalH);
-    //    [UIView setViewBorder:_infoBg color:LINE_COLOR border:LINE_WIDTH type:UIViewBorderLineTypeBottom];
-    //    CGFloat H = maxH + ScreenScale(140);
-    //    self.frame = CGRectMake(0, DEVICE_HEIGHT - H, DEVICE_WIDTH, H);
 }
 - (void)layoutSubviews
 {
@@ -105,18 +89,7 @@
         make.top.height.equalTo(self.title);
         make.width.mas_equalTo(Margin_50);
     }];
-    //    [self.amount mas_makeConstraints:^(MASConstraintMaker *make) {
-    //        make.top.equalTo(self.title.mas_bottom);
-    //        make.left.width.equalTo(self.details);
-    //        make.height.mas_equalTo(ScreenScale(70));
-    //    }];
     
-    //    [self.infoBg mas_makeConstraints:^(MASConstraintMaker *make) {
-    //        make.top.equalTo(self.title.mas_bottom);
-    //        make.left.equalTo(self.title);
-    //        make.width.mas_equalTo(DEVICE_WIDTH * 2 - Margin_40);
-    //        make.height.mas_equalTo(self.height - ScreenScale(140));
-    //    }];
     [self.transactionScrollView mas_makeConstraints:^(MASConstraintMaker *make) {
         make.left.mas_equalTo(0);
         make.top.equalTo(self.title.mas_bottom);
@@ -198,7 +171,6 @@
         CGFloat infoLabelW = DEVICE_WIDTH - Margin_40;
         infoLabel.preferredMaxLayoutWidth = infoLabelW;
         infoLabel.numberOfLines = 0;
-        //        infoLabel.lineBreakMode = NSLineBreakByCharWrapping;
         [infoLabel sizeToFit];
         CGFloat infoLabelH = ceil([Encapsulation rectWithText:infoLabel.text font:infoLabel.font textWidth:infoLabelW].size.height) + 1;
         if (i == 0 && [_confirmTransactionModel.type integerValue] == TransactionTypeApplyNode) {
@@ -211,7 +183,6 @@
         } else {
             infoLabelTotalH += Margin_15;
         }
-        //        infoLabel.frame = CGRectMake(infoLabelX, infoLabelTotalH, DEVICE_WIDTH - Margin_40, infoLabelH);
         [infoLabel mas_makeConstraints:^(MASConstraintMaker *make) {
             make.left.mas_equalTo(infoLabelX);
             make.top.mas_equalTo(infoLabelTotalH);
@@ -257,7 +228,6 @@
         CGFloat infoLabelW = DEVICE_WIDTH - Margin_40;
         infoLabel.preferredMaxLayoutWidth = infoLabelW;
         infoLabel.numberOfLines = 0;
-        //        infoLabel.lineBreakMode = NSLineBreakByCharWrapping;
         [infoLabel sizeToFit];
         CGFloat infoLabelH = ceil([Encapsulation rectWithText:infoLabel.text font:infoLabel.font textWidth:infoLabelW].size.height) + 1;
         if (i == 0 && [_confirmTransactionModel.type integerValue] == TransactionTypeApplyNode) {
@@ -270,7 +240,6 @@
         } else {
             infoLabelTotalH += Margin_15;
         }
-        //        infoLabel.frame = CGRectMake(infoLabelX, infoLabelTotalH, DEVICE_WIDTH - Margin_40, infoLabelH);
         [infoLabel mas_makeConstraints:^(MASConstraintMaker *make) {
             make.left.mas_equalTo(infoLabelX);
             make.top.mas_equalTo(infoLabelTotalH);
@@ -346,14 +315,6 @@
     }
     return _amount;
 }
-
-//- (UIView *)infoBg
-//{
-//    if (!_infoBg) {
-//        _infoBg = [[UIView alloc] init];
-//    }
-//    return _infoBg;
-//}
 - (UIButton *)details
 {
     if (!_details) {

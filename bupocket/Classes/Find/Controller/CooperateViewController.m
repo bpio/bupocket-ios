@@ -129,11 +129,6 @@ static NSString * const CooperateCellID = @"CooperateCellID";
     CooperateViewCell * cell = [CooperateViewCell cellWithTableView:tableView identifier:CooperateCellID];
     cell.cooperateModel = self.listArray[indexPath.section];
     cell.selectionStyle = UITableViewCellSelectionStyleNone;
-    /*
-    cell.shareRatioBtnClick = ^(UIButton * _Nonnull btn) {
-        [self infoAction:btn];
-    };
-     */
     return cell;
 }
 - (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath
@@ -144,26 +139,7 @@ static NSString * const CooperateCellID = @"CooperateCellID";
     VC.nodeId = cooperateModel.nodeId;
     [self.navigationController pushViewController:VC animated:NO];
 }
-/*
-- (void)infoAction:(UIButton *)button
-{
-    NSString * title = Localized(@"ShareRatioInfo");
-    CGFloat titleHeight = [Encapsulation rectWithText:title font:TITLE_FONT textWidth:DEVICE_WIDTH - ScreenScale(120)].size.height;
-    _popupMenu = [YBPopupMenu showRelyOnView:button.imageView titles:@[title] icons:nil menuWidth:DEVICE_WIDTH - ScreenScale(100) otherSettings:^(YBPopupMenu * popupMenu) {
-        popupMenu.priorityDirection = YBPopupMenuPriorityDirectionTop;
-        popupMenu.itemHeight = titleHeight + Margin_30;
-        popupMenu.dismissOnTouchOutside = YES;
-        popupMenu.dismissOnSelected = NO;
-        popupMenu.fontSize = TITLE_FONT;
-        popupMenu.textColor = [UIColor whiteColor];
-        popupMenu.backColor = COLOR(@"56526D");
-        popupMenu.tableView.separatorStyle = UITableViewCellSeparatorStyleNone;
-        popupMenu.tableView.scrollEnabled = NO;
-        popupMenu.tableView.allowsSelection = NO;
-        popupMenu.height = titleHeight + Margin_40;
-    }];
-}
-*/
+
 /*
 #pragma mark - Navigation
 

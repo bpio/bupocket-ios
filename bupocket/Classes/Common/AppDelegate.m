@@ -32,7 +32,6 @@
     // Override point for customization after application launch.
     self.window = [[UIWindow alloc] initWithFrame:[UIScreen mainScreen].bounds];
     self.window.backgroundColor = [UIColor whiteColor];
-//    [self setDefaultLocale];
     [[LanguageManager shareInstance] setDefaultLocale];
     [self.window makeKeyAndVisible];
     [self initializationSettings];
@@ -41,17 +40,8 @@
     [[HTTPManager shareManager] getBlockLatestFees];
     [WXApi registerApp:Wechat_APP_ID];
     _tencentOAuth = [[TencentOAuth alloc] initWithAppId:Tencent_App_ID andDelegate:self];
-    
-    /** 初始化友盟所有组件产品
-     @param appKey 开发者在友盟官网申请的AppKey.
-     @param channel 渠道标识，可设置nil表示"App Store".
-     */
+
     [UMConfigure initWithAppkey:UM_App_Key channel:@""];
-    /** 开启CrashReport收集, 默认YES(开启状态).
-     @param value 设置为NO,可关闭友盟CrashReport收集功能.
-     @return void.
-     */
-    //    [MobClick setCrashReportEnabled:NO];   // 关闭Crash收集
 
     return YES;
 }
@@ -66,13 +56,9 @@
         UITableView.appearance.estimatedSectionHeaderHeight = 0;
         [[UINavigationBar appearance] setPrefersLargeTitles:true];
     }
-    //    else {
-    //        self.automaticallyAdjustsScrollViewInsets = NO;
-    //    }
     IQKeyboardManager * keyboardManager = [IQKeyboardManager sharedManager];
     keyboardManager.shouldResignOnTouchOutside = YES;
-//    keyboardManager.enableAutoToolbar = NO;
-//    keyboardManager.keyboardDistanceFromTextField = Margin_15;
+    keyboardManager.keyboardDistanceFromTextField = Margin_15;
 }
 
 - (void)setRootVC
@@ -87,9 +73,6 @@
         [self storageSafetyReinforcement];
     } else {
         self.window.rootViewController = [[NavigationViewController alloc] initWithRootViewController:[[IdentityViewController alloc] init]];
-//        NSString * currentVersion = AppVersion;
-//        [defaults setObject:currentVersion forKey:LastVersion];
-//        [defaults synchronize];
         [self getVersionData];
     }
 }
@@ -139,7 +122,6 @@
         NSInteger code = [[responseObject objectForKey:@"errCode"] integerValue];
         VersionModel * versionModel  = [VersionModel mj_objectWithKeyValues:[responseObject objectForKey:@"data"]];
         if (code == Success_Code) {
-//            NSDictionary * infoDictionary = [[NSBundle mainBundle] infoDictionary];
             NSString * currentVersion = AppVersion;
             BOOL result = [currentVersion compare:versionModel.verNumber] == NSOrderedAscending;
             if (result) {
@@ -152,7 +134,6 @@
                 if ([language hasPrefix:ZhHans]) {
                     updateContent = versionModel.verContents;
                 } else {
-                    //  if ([language hasPrefix:EN])
                     updateContent = versionModel.englishVerContents;
                 }
                 self.alertView = [[VersionUpdateAlertView alloc] initWithUpdateVersionNumber:versionModel.verNumber versionSize:versionModel.appSize content:updateContent verType:versionModel.verType confrimBolck:^{
@@ -196,7 +177,6 @@
 {
     if ([resp isKindOfClass:[WXLaunchMiniProgramResp class]]) {
         DLog(@"跳转微信后的回调 %d %@", resp.errCode, resp.errStr);
-        
     }
 }
 - (void)applicationWillResignActive:(UIApplication *)application {
@@ -225,34 +205,27 @@
     // Called when the application is about to terminate. Save data if appropriate. See also applicationDidEnterBackground:.
 }
 
-//登录功能没添加，但调用TencentOAuth相关方法进行分享必须添加<TencentSessionDelegate>，则以下方法必须实现，尽管并不需要实际使用它们
-//登录成功
+// 登录功能没添加，但调用TencentOAuth相关方法进行分享必须添加<TencentSessionDelegate>，则以下方法必须实现，尽管并不需要实际使用它们
+// 登录成功
 - (void)tencentDidLogin {
-    //    _labelTitle.text = @"登录完成";
-    if (_tencentOAuth.accessToken && 0 != [_tencentOAuth.accessToken length])
-    {
-        // 记录登录用户的OpenID、Token以及过期时间
-        //        _labelAccessToken.text = _tencentOAuth.accessToken;
-    }
-    else
-    {
-        //        _labelAccessToken.text = @"登录不成功 没有获取accesstoken";
+    // 登录完成
+    if (_tencentOAuth.accessToken && 0 != [_tencentOAuth.accessToken length]) {
+        // 记录登录用户的OpenID、Token以及过期时间  _tencentOAuth.accessToken;
+    } else {
+        // 登录不成功 没有获取accesstoken
     }
 }
-//非网络错误导致登录失败
+// 非网络错误导致登录失败
 - (void)tencentDidNotLogin:(BOOL)cancelled {
-    if (cancelled)
-    {
-        //        _labelTitle.text = @"用户取消登录";
-    }
-    else
-    {
-        //        _labelTitle.text = @"登录失败";
+    if (cancelled) {
+        // 用户取消登录
+    } else {
+        // 登录失败
     }
 }
-//网络错误导致登录失败
+// 网络错误导致登录失败
 - (void)tencentDidNotNetWork {
-    //    _labelTitle.text=@"无网络连接，请设置网络";
+    // 无网络连接，请设置网络
 }
 
 

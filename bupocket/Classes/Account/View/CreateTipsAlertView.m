@@ -63,7 +63,6 @@
     }];
     
     [self.sureBtn mas_makeConstraints:^(MASConstraintMaker *make) {
-//        make.top.equalTo(self.title.mas_bottom).offset(Margin_15);
         make.bottom.equalTo(self.mas_bottom).offset(-Margin_20);
         make.left.right.equalTo(self.title);
         make.height.mas_equalTo(MAIN_HEIGHT);
@@ -86,7 +85,6 @@
     if (!_title) {
         _title = [[UILabel alloc] init];
         _title.numberOfLines = 0;
-//        _title.lineBreakMode = NSLineBreakByWordWrapping;
     }
     return _title;
 }

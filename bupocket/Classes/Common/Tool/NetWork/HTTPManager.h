@@ -16,14 +16,6 @@
 
 @interface HTTPManager : NSObject
 
-//// Dpos Type
-//typedef NS_ENUM(NSInteger, DposType) {
-//    DposTypeDefault,
-//    DposTypeVote,
-//    DposTypeUnVote,
-//    DposTypeExtract,
-//};
-
 @property (nonatomic, strong) NSString * pushMessageSocketUrl;
 
 + (instancetype)shareManager;
@@ -106,16 +98,6 @@
                                  uuid:(NSString *)uuid
                               success:(void (^)(id responseObject))success
                               failure:(void (^)(NSError *error))failure;
-// user Scan Qr Login
-//- (void)getScanCodeLoginDataWithAddress:(NSString *)address
-//                                   uuid:(NSString *)uuid
-//                                success:(void (^)(id responseObject))success
-//                                failure:(void (^)(NSError *error))failure;
-//// Confirm Login
-//- (void)getConfirmLoginDataWithAppId:(NSString *)appId
-//                                uuid:(NSString *)uuid
-//                             success:(void (^)(id responseObject))success
-//                             failure:(void (^)(NSError *error))failure;
 // find ad banner
 - (void)getAdsDataWithURL:(NSString *)URL
                   success:(void (^)(id responseObject))success
@@ -124,8 +106,6 @@
 - (void)getDposApplyNodeDataWithQRcodeSessionId:(NSString *)QRcodeSessionId
                                         success:(void (^)(id responseObject))success
                                         failure:(void (^)(NSError *error))failure;
-// 校验密码，私钥
-//- (BOOL)getContractTransactionWithPassword:(NSString *)password;
 // Contract Transaction
 #pragma mark 确认交易
 // Contract Transaction
@@ -133,10 +113,6 @@
 - (void)getContractTransactionWithModel:(ConfirmTransactionModel *)confirmTransactionModel
                                 success:(void (^)(id responseObject))success
                                 failure:(void (^)(NSError *error))failure;
-
-// submit Contract Transaction / Transaction Status
-//- (void)submitContractTransactionSuccess:(void (^)(TransactionResultModel * resultModel))success
-//                                 failure:(void (^)(TransactionResultModel * resultModel))failure;
 // short link
 - (void)getShortLinkDataWithType:(NSString *)type
                             path:(NSString *)path
@@ -226,22 +202,10 @@
 
 // register
 - (BOOL)getRegisteredDataWithRegisteredModel:(RegisteredModel *)registeredModel;
-//- (void)getRegisteredDataWithPrivateKey:(NSString *)privateKey
-//                        registeredModel:(RegisteredModel *)registeredModel
-//                                  nonce:(int64_t)nonce
-//                                success:(void (^)(TransactionResultModel * resultModel))success
-//                                failure:(void (^)(TransactionResultModel * resultModel))failure;
 // Issue
 - (BOOL)getIssueAssetDataWithAssetCode:(NSString *)assetCode
                            assetAmount:(int64_t)assetAmount
                               decimals:(NSInteger)decimals;
-//- (void)getIssueAssetDataWithPrivateKey:(NSString *)privateKey
-//                              assetCode:(NSString *)assetCode
-//                            assetAmount:(int64_t)assetAmount
-//                               decimals:(NSInteger)decimals
-//                                  nonce:(int64_t)nonce
-//                                success:(void (^)(TransactionResultModel * resultModel))success
-//                                failure:(void (^)(TransactionResultModel * resultModel))failure;
 
 #pragma mark - 调用底层合约
 - (BOOL)getTransactionWithDposModel:(DposModel *)dposModel;

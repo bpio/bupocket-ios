@@ -26,13 +26,9 @@ NS_ASSUME_NONNULL_BEGIN
 @property (nonatomic, strong) UILabel * numberOfVotes;
 @property (nonatomic, strong) UIView * moreOperations;
 
-//@property (nonatomic, strong) CustomButton * shareBtn;
-
 @property (nonatomic, copy) void (^invitationVoteClick)(void);
 @property (nonatomic, copy) void (^votingRecordClick)(void);
 @property (nonatomic, copy) void (^cancellationVotesClick)(void);
-
-//@property (nonatomic, copy) void (^shareClick)(void);
 
 @end
 

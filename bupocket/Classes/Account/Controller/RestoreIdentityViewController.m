@@ -201,7 +201,6 @@
         [MBProgressHUD showTipMessageInWindow:Localized(@"WalletNameFormatIncorrect")];
         return;
     }
-//    if ([RegexPatternTool validatePassword:walletPW] == NO) {
     if (self.walletPW.length < PW_MIN_LENGTH || self.walletPW.length > PW_MAX_LENGTH) {
         [MBProgressHUD showTipMessageInWindow:Localized(@"CryptographicFormat")];
         return;

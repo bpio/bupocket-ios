@@ -163,7 +163,6 @@ static NSString * const VotingRecordsCellID = @"VotingRecordsCellID";
     if (self.nodePlanModel && indexPath.section == 0) {
         NodePlanViewCell * cell = [NodePlanViewCell cellWithTableView:tableView identifier:NodeCellID];
         cell.selectionStyle = UITableViewCellSelectionStyleNone;
-//        cell.moreOperations.hidden = YES;
         cell.nodePlanModel = self.nodePlanModel;
         return cell;
     } else {
@@ -182,10 +181,6 @@ static NSString * const VotingRecordsCellID = @"VotingRecordsCellID";
 - (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath
 {
     [tableView deselectRowAtIndexPath:indexPath animated:NO];
-//    if (self.nodePlanModel && indexPath.section == 0) {
-//    } else {
-    
-//    }
 }
 /*
 #pragma mark - Navigation

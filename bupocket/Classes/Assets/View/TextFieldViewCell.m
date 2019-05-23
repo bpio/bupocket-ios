@@ -37,10 +37,6 @@ static NSString * const TextFieldPWCellID = @"TextFieldPWCellID";
         if (@available(iOS 11.0, *)) {
             self.textField.textContentType = UITextContentTypeName;
         }
-//        else {
-//            self.textField.secureTextEntry = NO;
-//            self.textField.keyboardType = UIKeyboardTypeNamePhonePad;
-//        }
     }
     return self;
 }

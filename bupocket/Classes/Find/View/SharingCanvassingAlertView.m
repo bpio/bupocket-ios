@@ -85,7 +85,6 @@
     [self.imageBg mas_makeConstraints:^(MASConstraintMaker *make) {
         make.centerX.centerY.mas_equalTo(0);
         make.size.mas_equalTo(CGSizeMake(self.imageBg.width, self.imageBg.height));
-//        make.top.mas_equalTo(Margin_20);
     }];
     [self.nodeLogo mas_makeConstraints:^(MASConstraintMaker *make) {
         make.top.equalTo(self.imageBg.mas_centerY);
@@ -126,7 +125,6 @@
 {
     if (!_scrollView) {
         _scrollView = [[UIScrollView alloc] init];
-//        _scrollView.contentSize = CGSizeMake(DEVICE_WIDTH * 2, ScreenScale(380));
     }
     return _scrollView;
 }
@@ -257,17 +255,7 @@
     UIImage * resultImage = UIGraphicsGetImageFromCurrentImageContext();
     UIGraphicsEndImageContext();
     return resultImage;
-//    NSData * imageData = UIImagePNGRepresentation(resultImage);
-//    [imageData writeToFile:@"/Users/bupocket/Desktop/margeImage.png" atomically:YES];
-//    UIImageWriteToSavedPhotosAlbum(resultImage, self, @selector(image:didFinishSavingWithError:contextInfo:),nil);
     
-}
-- (void)image:(UIImage *)image didFinishSavingWithError:(NSError *)error contextInfo:(void *)contextInfo{
-    if (error == nil){
-        DLog(@"已保存到本地相册");
-    } else {
-        DLog(@"保存失败，请重试!");
-    }
 }
 
 

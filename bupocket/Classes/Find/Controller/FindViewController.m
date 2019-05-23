@@ -31,7 +31,6 @@ static NSString * const ExportCellID = @"ExportCellID";
 
 - (void)viewDidLoad {
     [super viewDidLoad];
-    // @[Localized(@"CardBag")],
     self.listArray = @[@[Localized(@"NodePlan"), Localized(@"JointlyCooperate")], @[Localized(@"Information")], @[Localized(@"SmallClothGoods")]];
     [self setupView];
     [self setupRefresh];
@@ -85,8 +84,6 @@ static NSString * const ExportCellID = @"ExportCellID";
     _cycleScrollView.backgroundColor = [UIColor clearColor];
     _cycleScrollView.layer.cornerRadius = BG_CORNER;
     _cycleScrollView.clipsToBounds = YES;
-    // self.cycleScrollView.pageControlBottomOffset = 25;
-//    _cycleScrollView.bannerImageViewContentMode = UIViewContentModeScaleAspectFit;
     [headerView addSubview:_cycleScrollView];
     self.tableView.tableHeaderView = headerView;
     self.noNetWork = [Encapsulation showNoNetWorkWithSuperView:self.view target:self action:@selector(reloadData)];
@@ -100,7 +97,6 @@ static NSString * const ExportCellID = @"ExportCellID";
     NSString * url = [self.bannerArray valueForKeyPath:@"url"][index];
     if (NotNULLString(url)) {
         WKWebViewController * VC = [[WKWebViewController alloc] init];
-        //    VC.navigationItem.title = self.listArray[indexPath.section][indexPath.row];
         [VC loadWebURLSring: url];
         [self.navigationController pushViewController:VC animated:NO];
     }
@@ -135,7 +131,7 @@ static NSString * const ExportCellID = @"ExportCellID";
     cell.selectionStyle = UITableViewCellSelectionStyleNone;
     cell.detailImage.image = [UIImage imageNamed:@"list_arrow"];
     cell.title.text = self.listArray[indexPath.section][indexPath.row];
-    cell.listImage.image = [UIImage imageNamed:[NSString stringWithFormat:@"find_list_%zd_%zd", indexPath.section + 1, indexPath.row]];
+    cell.listImage.image = [UIImage imageNamed:[NSString stringWithFormat:@"find_list_%ld_%ld", indexPath.section + 1, indexPath.row]];
     CGSize cellSize = CGSizeMake(DEVICE_WIDTH - Margin_20, Margin_50);
     if ([self.listArray[indexPath.section] count] - 1 == 0) {
         [cell.listBg setViewSize:cellSize borderRadius:BG_CORNER corners:UIRectCornerAllCorners];
@@ -158,8 +154,6 @@ static NSString * const ExportCellID = @"ExportCellID";
 - (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath
 {
     [tableView deselectRowAtIndexPath:indexPath animated:YES];
-//    if (indexPath.section == 0) {
-//    } else
         if (indexPath.section == 0) {
         if (indexPath.row == 0) {
             NodePlanViewController * VC = [[NodePlanViewController alloc] init];

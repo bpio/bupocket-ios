@@ -61,7 +61,6 @@
 - (void)setupView
 {
     self.scrollView = [[UIScrollView alloc] initWithFrame:CGRectMake(0, 0, DEVICE_WIDTH, DEVICE_HEIGHT)];
-//    self.scrollView.contentInset = UIEdgeInsetsMake(0, 0, SafeAreaBottomH + NavBarH + Margin_10, 0);
     self.scrollView.keyboardDismissMode = UIScrollViewKeyboardDismissModeOnDrag;
     [self.view addSubview:self.scrollView];
     NSString * numberOfTransfers = [NSString stringWithFormat:Localized(@"AmountOfTransfer（%@）*"), self.listModel.assetCode];
@@ -185,15 +184,12 @@
 - (void)submitTransaction
 {
     [[HTTPManager shareManager] submitTransactionWithSuccess:^(TransactionResultModel *resultModel) {
-//        [self.transferInfoArray addObject:[DateTool getDateStringWithTimeStr:[NSString stringWithFormat:@"%lld", resultModel.transactionTime]]];
-//        [self.transferInfoArray replaceObjectAtIndex:2 withObject:[NSString stringAppendingBUWithStr:resultModel.actualFee]];
         resultModel.remark = self.remarksStr;
         TransferResultsViewController * VC = [[TransferResultsViewController alloc] init];
         if (resultModel.errorCode == Success_Code) {
             VC.state = YES;
         } else {
             VC.state = NO;
-//            [MBProgressHUD showTipMessageInWindow:[ErrorTypeTool getDescription:resultModel.errorCode]];
         }
         VC.resultModel = resultModel;
         VC.transferInfoArray = [NSMutableArray arrayWithObjects:self.address, [NSString stringWithFormat:@"%@ %@", self.transferVolumeStr, self.listModel.assetCode], nil];
@@ -257,7 +253,6 @@
         self.availableBalance = [[UILabel alloc] init];
         self.availableBalance.numberOfLines = 0;
         [header addSubview:self.availableBalance];
-//        double amount = [self.listModel.amount doubleValue];
         [self.availableBalance mas_makeConstraints:^(MASConstraintMaker *make) {
             make.right.top.equalTo(header);
             make.width.mas_lessThanOrEqualTo(DEVICE_WIDTH - Margin_40);
@@ -334,7 +329,6 @@
 - (void)IsActivatedWithAddress:(NSString *)address
 {
     if (self.listModel.type == Token_Type_BU) return;
-//    if ([self.transactionCosts hasText]) return;
         __weak typeof(self) weakSelf = self;
         NSOperationQueue * queue = [[NSOperationQueue alloc] init];
         [queue addOperationWithBlock:^{
@@ -347,38 +341,9 @@
 - (void)textFieldDidEndEditing:(UITextField *)textField
 {
     if (textField == _destinationAddress) {
-//        __weak typeof (self) weakself = self;
-//        NSOperationQueue * queue = [[NSOperationQueue alloc] init];
-//        [queue addOperationWithBlock:^{
-//            BOOL isCorrectAddress = [Keypair isAddressValid: weakself.address];
-//            [[NSOperationQueue mainQueue] addOperationWithBlock:^{
-//                if (isCorrectAddress) {
-                    [self IsActivatedWithAddress:textField.text];
-//                } else {
-//                    [MBProgressHUD showTipMessageInWindow:Localized(@"BUAddressIsIncorrect")];
-//                }
-//            }];
-//        }];
+        [self IsActivatedWithAddress:textField.text];
     }
 }
-/*
-- (BOOL)textField:(UITextField *)textField shouldChangeCharactersInRange:(NSRange)range replacementString:(NSString *)string
-{
-    NSString * str = [textField.text stringByReplacingCharactersInRange:range withString:string];
-    if (string.length == 0) {
-        return YES;
-    }
-    if (textField == _remarks) {
-        if (str.length > MAX_LENGTH) {
-            textField.text = [str substringToIndex:MAX_LENGTH];
-            return NO;
-        } else {
-            return YES;
-        }
-    }
-    return YES;
-}
- */
 - (void)scanAction
 {
     __block NSString * result = nil;
@@ -388,18 +353,10 @@
             return;
         }
         result = stringValue;
-//        NSOperationQueue * queue = [[NSOperationQueue alloc] init];
-//        [queue addOperationWithBlock:^{
-//            BOOL isCorrectAddress = [Keypair isAddressValid: stringValue];
-            [[NSOperationQueue mainQueue] addOperationWithBlock:^{
-//                if (isCorrectAddress) {
-                    weakself.destinationAddress.text = stringValue;
-                    [weakself.destinationAddress sendActionsForControlEvents:UIControlEventEditingChanged];
-                    [weakself IsActivatedWithAddress:stringValue];
-//                } else {
-//                    [MBProgressHUD showTipMessageInWindow:Localized(@"ScanFailure")];
-//                }
-//            }];
+        [[NSOperationQueue mainQueue] addOperationWithBlock:^{
+            weakself.destinationAddress.text = stringValue;
+            [weakself.destinationAddress sendActionsForControlEvents:UIControlEventEditingChanged];
+            [weakself IsActivatedWithAddress:stringValue];
         }];
     }];
     [scanner setTitleColor:[UIColor whiteColor] tintColor:MAIN_COLOR];

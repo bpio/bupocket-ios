@@ -52,7 +52,6 @@
     for (NSInteger i = 0; i < [[_transferInfoArray firstObject] count]; i ++) {
         [self setUpTransferInfoWithIndex:i];
     }
-//    self.frame = CGRectMake(0, DEVICE_HEIGHT - ScreenScale(440) - SafeAreaBottomH, DEVICE_WIDTH, ScreenScale(440));
 }
 
 - (void)setUpTransferInfoWithIndex:(NSInteger)index
@@ -73,44 +72,28 @@
     if ([titleLabel.text isEqualToString:Localized(@"ReceivingAccount")]) {
         infoLabel.copyable = YES;
     }
-//    infoLabel.preferredMaxLayoutWidth = ScreenScale(150);
-//    [infoLabel mas_makeConstraints:^(MASConstraintMaker *make) {
-//        make.bottom.equalTo(self.mas_bottom).offset(-ScreenScale(250) + MAIN_HEIGHT * index);
-        
-//        make.height.mas_greaterThanOrEqualTo(Margin_15);
-//    }];
-//    [titleLabel setContentCompressionResistancePriority:UILayoutPriorityRequired forAxis:UILayoutConstraintAxisHorizontal];
-//    [titleLabel mas_makeConstraints:^(MASConstraintMaker *make) {
-//        make.top.equalTo(infoLabel);
-//        make.left.equalTo(self.mas_left).offset(Margin_20);
-////        make.right.mas_lessThanOrEqualTo(infoLabel.mas_left).offset(-Margin_10);
-//    }];
     switch (index) {
         case 0: {
             self.reciprocalAccountTitle = titleLabel;
             self.reciprocalAccount = infoLabel;
-            
         }
             break;
         case 1:
         {
             self.amountOfTransferTitle = titleLabel;
             self.amountOfTransfer = infoLabel;
-            
         }
             break;
         case 2:
         {
             self.estimatedMaximumTitle = titleLabel;
             self.estimatedMaximum = infoLabel;
-            
         }
             break;
         case 3:
         {
             self.remarksTitle = titleLabel;
             self.remarks = infoLabel;
-           
         }
             break;
         default:
@@ -197,7 +180,6 @@
     }];
     [self mas_makeConstraints:^(MASConstraintMaker *make) {
         make.left.right.equalTo([UIApplication sharedApplication].keyWindow);
-//        make.height.mas_equalTo(ScreenScale(440));
         make.bottom.equalTo([UIApplication sharedApplication].keyWindow.mas_bottom).offset(-SafeAreaBottomH);
     }];
 }

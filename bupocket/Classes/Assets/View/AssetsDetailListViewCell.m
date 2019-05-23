@@ -81,7 +81,6 @@ static NSString * const AssetsDetailCellID = @"AssetsDetailCellID";
     }
     self.date.text = [DateTool getDateProcessingWithTimeStr:listModel.txTime];
     self.assets.text = ([listModel.amount isEqualToString:@"~"] || [listModel.amount isEqualToString:@"0"]) ? listModel.amount : [NSString stringWithFormat:@"%@%@", outOrIn, listModel.amount];
-//    self.assets.text = [listModel.amount isEqualToString:@"~"] ? listModel.amount : [NSString stringWithFormat:@"%@%@ %@", outOrIn, listModel.amount, self.assetCode];
     if (listModel.txStatus == 0) {
         self.state.text = Localized(@"Success");
         self.state.textColor = COLOR_9;
@@ -93,7 +92,6 @@ static NSString * const AssetsDetailCellID = @"AssetsDetailCellID";
 - (void)setCooperateSupportModel:(CooperateSupportModel *)cooperateSupportModel
 {
     _cooperateSupportModel = cooperateSupportModel;
-//    self.listImage.image = [UIImage imageNamed:@"payment"];
     self.listImage.image = [UIImage imageNamed:@"user_placeholder"];
     self.walletAddress.text = [NSString stringEllipsisWithStr:cooperateSupportModel.initiatorAddress subIndex:SubIndex_Address];
     self.date.text = cooperateSupportModel.createTime;

@@ -105,7 +105,6 @@
 		95266CD9226F062E002CD915 /* CooperateDetailModel.m in Sources */ = {isa = PBXBuildFile; fileRef = 95266CB6226F062E002CD915 /* CooperateDetailModel.m */; };
 		95266CDA226F062E002CD915 /* NodeTransferSuccessViewCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 95266CBD226F062E002CD915 /* NodeTransferSuccessViewCell.m */; };
 		95266CDB226F062E002CD915 /* CooperateViewCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 95266CBF226F062E002CD915 /* CooperateViewCell.m */; };
-		95266CDC226F062E002CD915 /* CancellationOfVotingAlertView.m in Sources */ = {isa = PBXBuildFile; fileRef = 95266CC5226F062E002CD915 /* CancellationOfVotingAlertView.m */; };
 		95266CDD226F062E002CD915 /* NodePlanViewCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 95266CC7226F062E002CD915 /* NodePlanViewCell.m */; };
 		95266CDE226F062E002CD915 /* LinkAlertView.m in Sources */ = {isa = PBXBuildFile; fileRef = 95266CC9226F062E002CD915 /* LinkAlertView.m */; };
 		95266CDF226F062E002CD915 /* VotingRecordsViewCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 95266CCA226F062E002CD915 /* VotingRecordsViewCell.m */; };
@@ -393,14 +392,12 @@
 		95266CBA226F062E002CD915 /* AdsModel.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = AdsModel.h; sourceTree = "<group>"; };
 		95266CBB226F062E002CD915 /* CooperateSupportModel.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = CooperateSupportModel.h; sourceTree = "<group>"; };
 		95266CBD226F062E002CD915 /* NodeTransferSuccessViewCell.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = NodeTransferSuccessViewCell.m; sourceTree = "<group>"; };
-		95266CBE226F062E002CD915 /* CancellationOfVotingAlertView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = CancellationOfVotingAlertView.h; sourceTree = "<group>"; };
 		95266CBF226F062E002CD915 /* CooperateViewCell.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = CooperateViewCell.m; sourceTree = "<group>"; };
 		95266CC0226F062E002CD915 /* NodePlanViewCell.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = NodePlanViewCell.h; sourceTree = "<group>"; };
 		95266CC1226F062E002CD915 /* VotingRecordsViewCell.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = VotingRecordsViewCell.h; sourceTree = "<group>"; };
 		95266CC2226F062E002CD915 /* LinkAlertView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = LinkAlertView.h; sourceTree = "<group>"; };
 		95266CC3226F062E002CD915 /* SharingCanvassingAlertView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SharingCanvassingAlertView.h; sourceTree = "<group>"; };
 		95266CC4226F062E002CD915 /* SupportAlertView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SupportAlertView.h; sourceTree = "<group>"; };
-		95266CC5226F062E002CD915 /* CancellationOfVotingAlertView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = CancellationOfVotingAlertView.m; sourceTree = "<group>"; };
 		95266CC6226F062E002CD915 /* NodeTransferSuccessViewCell.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = NodeTransferSuccessViewCell.h; sourceTree = "<group>"; };
 		95266CC7226F062E002CD915 /* NodePlanViewCell.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = NodePlanViewCell.m; sourceTree = "<group>"; };
 		95266CC8226F062E002CD915 /* CooperateViewCell.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = CooperateViewCell.h; sourceTree = "<group>"; };
@@ -1075,8 +1072,6 @@
 				95266CCB226F062E002CD915 /* SupportAlertView.m */,
 				95266CC6226F062E002CD915 /* NodeTransferSuccessViewCell.h */,
 				95266CBD226F062E002CD915 /* NodeTransferSuccessViewCell.m */,
-				95266CBE226F062E002CD915 /* CancellationOfVotingAlertView.h */,
-				95266CC5226F062E002CD915 /* CancellationOfVotingAlertView.m */,
 				95266CE222703868002CD915 /* CooperateDetailViewCell.h */,
 				95266CE322703868002CD915 /* CooperateDetailViewCell.m */,
 			);
@@ -1286,7 +1281,7 @@
 		83B4659821745C9300187961 /* Project object */ = {
 			isa = PBXProject;
 			attributes = {
-				LastUpgradeCheck = 1010;
+				LastUpgradeCheck = 1020;
 				ORGANIZATIONNAME = bupocket;
 				TargetAttributes = {
 					83B4659F21745C9300187961 = {
@@ -1496,7 +1491,6 @@
 				83379A95217EB08600C222A5 /* DetailListViewCell.m in Sources */,
 				95266CDD226F062E002CD915 /* NodePlanViewCell.m in Sources */,
 				83B594B42175F46E009F91BA /* TermsOfUseViewController.m in Sources */,
-				95266CDC226F062E002CD915 /* CancellationOfVotingAlertView.m in Sources */,
 				959726CB21E5A8640022CB78 /* ImportWalletViewController.m in Sources */,
 				83379AAA217F006600C222A5 /* HttpTool.m in Sources */,
 				8372C86F2174D03F00FF9506 /* UIButton+Extension.m in Sources */,
@@ -1812,6 +1806,7 @@
 			isa = XCBuildConfiguration;
 			baseConfigurationReference = A61F11E76D6541BC859B703E /* Pods-bupocket.debug.xcconfig */;
 			buildSettings = {
+				ALWAYS_EMBED_SWIFT_STANDARD_LIBRARIES = YES;
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				ASSETCATALOG_COMPILER_LAUNCHIMAGE_NAME = LaunchImage;
 				CODE_SIGN_IDENTITY = "iPhone Developer";
@@ -1877,6 +1872,7 @@
 			isa = XCBuildConfiguration;
 			baseConfigurationReference = 8BAFA7A3EC4992591E7450DA /* Pods-bupocket.release.xcconfig */;
 			buildSettings = {
+				ALWAYS_EMBED_SWIFT_STANDARD_LIBRARIES = YES;
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				ASSETCATALOG_COMPILER_LAUNCHIMAGE_NAME = LaunchImage;
 				CODE_SIGN_IDENTITY = "iPhone Developer";

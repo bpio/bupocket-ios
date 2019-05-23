@@ -40,7 +40,7 @@ static NSString * const WalletCellID = @"WalletCellID";
         make.top.equalTo(self.contentView.mas_top).offset(Margin_5);
         make.bottom.equalTo(self.contentView.mas_bottom).offset(-Margin_5);
     }];
-    self.contentView.backgroundColor = self.contentView.superview.superview.backgroundColor;
+    self.contentView.backgroundColor = VIEWBG_COLOR;
     [self.addressName mas_makeConstraints:^(MASConstraintMaker *make) {
         make.top.equalTo(self.listBg.mas_top).offset(Margin_20);
         make.left.equalTo(self.listBg.mas_left).offset(Margin_15);

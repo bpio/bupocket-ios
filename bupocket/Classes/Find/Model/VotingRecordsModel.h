@@ -8,7 +8,7 @@
 
 #import "BaseModel.h"
 
-// 操作状态 "0 处理中 1 成功 2 失败"
+// status "0 处理中 1 成功 2 失败"
 typedef NS_ENUM(NSInteger, VoteStatus) {
     VoteStatusInProcessing = 0,
     VoteStatusSuccess = 1,

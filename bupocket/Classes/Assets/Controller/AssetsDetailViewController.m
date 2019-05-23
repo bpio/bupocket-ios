@@ -26,8 +26,6 @@
 @property (nonatomic, strong) UIView * noData;
 @property (nonatomic, assign) NSInteger pageindex;
 @property (nonatomic, strong) UIView * noNetWork;
-//@property (nonatomic, strong) NSString * assetsStr;
-//@property (nonatomic, strong) NSString * amountStr;
 
 @end
 
@@ -45,12 +43,6 @@
     [super viewDidLoad];
     self.navigationItem.title = self.listModel.assetCode;
     self.headerViewH = ScreenScale(240);
-//    self.assetsStr = [NSString stringWithFormat:@"%@ %@", self.listModel.amount, self.listModel.assetCode];
-//    NSString * currencyUnit = [AssetCurrencyModel getCurrencyUnitWithAssetCurrency:[[[NSUserDefaults standardUserDefaults] objectForKey:Current_Currency] integerValue]];
-//    self.amountStr = [self.listModel.assetAmount isEqualToString:@"~"] ? self.listModel.assetAmount : [NSString stringWithFormat:@"≈%@%@", currencyUnit, self.listModel.assetAmount];
-//    CGFloat assetsH = [Encapsulation rectWithText:self.assetsStr font:FONT_Bold(24) textWidth:DEVICE_WIDTH - Margin_40].size.height;
-//    CGFloat amountH = [Encapsulation rectWithText:self.amountStr font:FONT(15) textWidth:DEVICE_WIDTH - Margin_40].size.height;
-//    self.headerViewH = ScreenScale(200) + assetsH + amountH;
     [self setupView];
     self.noNetWork = [Encapsulation showNoNetWorkWithSuperView:self.view target:self action:@selector(reloadData)];
     [self setupRefresh];
@@ -87,7 +79,6 @@
             [self.tableView addSubview:self.headerBg];
             [self.tableView insertSubview:self.headerBg atIndex:0];
             [self setHeaderDataWithDic:responseObject[@"data"] [@"assetData"]];
-//            NSDecimalNumber * balanceNumber = [NSDecimalNumber decimalNumberWithString:responseObject[@"data"][@"assetData"][@"balance"]];
             NSArray * listArray = [AssetsDetailModel mj_objectArrayWithKeyValuesArray:responseObject[@"data"] [@"txRecord"]];
             if (pageindex == PageIndex_Default) {
                 [self.listArray removeAllObjects];

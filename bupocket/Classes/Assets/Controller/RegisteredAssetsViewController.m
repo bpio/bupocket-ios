@@ -162,8 +162,6 @@ static NSString * const Register_Leave = @"leaveRoomForApp";
             }
             [weakSelf.socket emit:Register_Processing with:@[]];
             if (![[HTTPManager shareManager] getRegisteredDataWithRegisteredModel:self.registeredModel]) return;
-//            int64_t nonce = [[HTTPManager shareManager] getAccountNonce: CurrentWalletAddress] + 1;
-//            if (nonce == 0) return;
             PasswordAlertView * alertView = [[PasswordAlertView alloc] initWithPrompt:Localized(@"RegistrationWalletPWPrompt") confrimBolck:^(NSString * _Nonnull password, NSArray * _Nonnull words) {
                 if (NotNULLString(password)) {
                     [weakSelf submitTransaction];

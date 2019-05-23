@@ -471,8 +471,8 @@
 "InProgress" = "In progress";
 "Completed" = "Success";
 "Quit" = "Failure";
-"Bond" = "Deposit";
-"CooperateBond" = "The initiator of the node co-funding project transfers the deposit to an account as the amount to be locked in node co-funding";
+"Margin" = "Margin of Co-funding";
+"CooperateDeposit" = "The initiator of the node co-funding project transfers the margin of co-funding to an account as the amount to be locked in node co-funding";
 //"The remaining %@ copies" = " %@ shares remaining";
 "TotalSupport" = "Total amount received";
 "RiskStatement" = "Risk Statement";

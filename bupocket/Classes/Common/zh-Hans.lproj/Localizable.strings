@@ -444,7 +444,7 @@
 "PurchaseAmount" = "起购金额";
 "AwardSharingRatio" = "奖励分享比例";
 "TargetNumber" = "目标数量";
-"TargetAmount" = "目标共建金额";
+"TargetAmount" = "目标金额";
 "%lld shares received" = "已获得支持 %lld 份";
 "%lld share received" = "已获得支持 %lld 份";
 "Received" = "已获得支持";
@@ -458,8 +458,8 @@
 "InProgress" = "共建中";
 "Completed" = "共建成功";
 "Quit" = "共建失败";
-"Bond" = "保证金";
-"CooperateBond" = "节点共建项目发起者转入保证金作为节点共建的锁仓金额";
+"Margin" = "共建保证金";
+"CooperateDeposit" = "节点共建项目发起者转入共建保证金作为节点共建的锁仓金额";
 //"The remaining %@ copies" = "剩余 %@ 份";
 "TotalSupport" = "已获得支持金额";
 "RiskStatement" = "风险说明";

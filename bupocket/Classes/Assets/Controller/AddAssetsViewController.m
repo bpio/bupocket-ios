@@ -26,13 +26,6 @@
 
 static NSString * const SearchID = @"SearchID";
 
-//- (NSMutableArray *)results {
-//    if (!_results) {
-//        _results = [NSMutableArray array];
-//    }
-//    return _results;
-//}
-
 - (NSMutableArray *)listArray
 {
     if (!_listArray) {
@@ -222,7 +215,6 @@ static NSString * const SearchID = @"SearchID";
 }
 - (CGFloat)tableView:(UITableView *)tableView heightForRowAtIndexPath:(NSIndexPath *)indexPath
 {
-//    return ScreenScale(130);
     SearchAssetsModel * searchAssetsModel = self.listArray[indexPath.row];
     return searchAssetsModel.cellHeight;
 }

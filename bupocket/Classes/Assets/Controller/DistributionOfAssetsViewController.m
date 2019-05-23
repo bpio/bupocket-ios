@@ -71,7 +71,6 @@ static NSString * const Issue_Leave = @"leaveRoomForApp";
 - (void)setupView
 {
     self.scrollView = [[UIScrollView alloc] initWithFrame:CGRectMake(0, 0, DEVICE_WIDTH, DEVICE_HEIGHT)];
-//    self.scrollView.contentInset = UIEdgeInsetsMake(0, 0, SafeAreaBottomH + NavBarH + Margin_10, 0);
     [self.view addSubview:self.scrollView];
     
     CustomButton * confirmationPrompt = [[CustomButton alloc] init];
@@ -166,8 +165,6 @@ static NSString * const Issue_Leave = @"leaveRoomForApp";
             }
             int64_t issueAsset = [[[NSDecimalNumber decimalNumberWithString:self.registeredModel.amount] decimalNumberByMultiplyingByPowerOf10: self.distributionModel.decimals] longLongValue];
             if (![[HTTPManager shareManager] getIssueAssetDataWithAssetCode:self.registeredModel.code assetAmount:issueAsset decimals:self.distributionModel.decimals]) return;
-//            int64_t nonce = [[HTTPManager shareManager] getAccountNonce: CurrentWalletAddress] + 1;
-//            if (nonce == 0) return;
             [weakSelf.socket emit:Issue_Processing with:@[]];
             PasswordAlertView * alertView = [[PasswordAlertView alloc] initWithPrompt:Localized(@"DistributionWalletPWPrompt") confrimBolck:^(NSString * _Nonnull password, NSArray * _Nonnull words) {
                 if (NotNULLString(password)) {

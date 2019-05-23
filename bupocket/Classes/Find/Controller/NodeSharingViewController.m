@@ -17,7 +17,6 @@
 @property (nonatomic, strong) NodePlanModel * nodePlanModel;
 @property (nonatomic, strong) UITableView * tableView;
 @property (nonatomic, strong) UIView * noNetWork;
-//@property (nonatomic, strong) UIWebView * webView;
 @property (nonatomic, strong) WKWebView * wkWebView;
 @property (nonatomic,strong) UIProgressView * progressView;
 @property (nonatomic,strong) UILabel * titleLabel;
@@ -154,12 +153,8 @@ static NSString * const NodeSharingID = @"NodeSharingID";
         
         WKWebViewConfiguration *wkWebConfig = [[WKWebViewConfiguration alloc] init];
         wkWebConfig.userContentController = wkUController;
-        
-        // 创建设置对象
         WKPreferences *preference = [[WKPreferences alloc]init];
-        // 设置字体大小(最小的字体大小)
         preference.minimumFontSize = ScreenScale(14);
-        // 设置偏好设置对象
         wkWebConfig.preferences = preference;
         _wkWebView = [[WKWebView alloc] initWithFrame:CGRectMake(Margin_10, Margin_40, DEVICE_WIDTH - Margin_20, CGFLOAT_MIN) configuration:wkWebConfig];
         _wkWebView.navigationDelegate = self;
@@ -173,7 +168,6 @@ static NSString * const NodeSharingID = @"NodeSharingID";
 - (WKWebView *)webView:(WKWebView *)webView createWebViewWithConfiguration:(WKWebViewConfiguration *)configuration forNavigationAction:(WKNavigationAction *)navigationAction windowFeatures:(WKWindowFeatures *)windowFeatures
 {
     if (!navigationAction.targetFrame.isMainFrame) {
-//        [webView loadRequest:navigationAction.request];
         WKWebViewController * VC = [[WKWebViewController alloc] init];
         [VC loadWebURLSring:[navigationAction.request.URL absoluteString]];
         [self.navigationController pushViewController:VC animated:NO];
@@ -190,13 +184,12 @@ static NSString * const NodeSharingID = @"NodeSharingID";
     _wkWebView.navigationDelegate = self;
     _wkWebView.UIDelegate = self;
 }
-//MARK:-kvo监听
 - (void)observeValueForKeyPath:(NSString *)keyPath ofObject:(id)object change:(NSDictionary *)change context:(void *)context {
     if ([keyPath isEqual: @"estimatedProgress"] && object == self.wkWebView) {
         [self.progressView setAlpha:1.0f];
         [self.progressView setProgress:self.wkWebView.estimatedProgress animated:YES];
         if(self.wkWebView.estimatedProgress >= 1.0f) {
-            [UIView animateWithDuration:0.5 delay:0.5 options:UIViewAnimationOptionCurveEaseOut animations:^{
+            [UIView animateWithDuration:Dispatch_After_Time delay:Dispatch_After_Time options:UIViewAnimationOptionCurveEaseOut animations:^{
                 [self.progressView setAlpha:0.0f];
             } completion:^(BOOL finished) {
                 [self.progressView setProgress:0.0f animated:NO];
@@ -209,7 +202,6 @@ static NSString * const NodeSharingID = @"NodeSharingID";
 - (void)webView:(WKWebView *)webView didFinishNavigation:(WKNavigation *)navigation {
 
     [webView evaluateJavaScript:@"document.body.offsetHeight" completionHandler:^(id _Nullable result, NSError * _Nullable error) {
-//        CGFloat documentHeight = [result doubleValue];
         CGRect webFrame = webView.frame;
         webFrame.size.height = webView.scrollView.contentSize.height;
         webView.frame = webFrame;
@@ -219,7 +211,6 @@ static NSString * const NodeSharingID = @"NodeSharingID";
 
 - (CGFloat)tableView:(UITableView *)tableView heightForRowAtIndexPath:(NSIndexPath *)indexPath
 {
-//    return ScreenScale(80);
     NodePlanModel * nodePlanModel = self.nodePlanModel;
     return nodePlanModel.cellHeight;
 }
@@ -228,9 +219,6 @@ static NSString * const NodeSharingID = @"NodeSharingID";
     NodePlanViewCell * cell = [NodePlanViewCell cellWithTableView:tableView identifier:NodeSharingID];
     cell.selectionStyle = UITableViewCellSelectionStyleNone;
     cell.nodePlanModel = self.nodePlanModel;
-//    cell.shareClick = ^{
-//        [self shareAction];
-//    };
     return cell;
 }
 - (void)shareAction

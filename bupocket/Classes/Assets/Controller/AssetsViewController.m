@@ -44,7 +44,6 @@
 @property (nonatomic, strong) UIView * headerViewBg;
 @property (nonatomic, strong) UIImageView * headerImageView;
 @property (nonatomic, strong) UIImage * headerImage;
-//@property (nonatomic, strong) UIButton * noBackup;
 // Switch the test network
 @property (nonatomic, strong) UIButton * networkPrompt;
 
@@ -62,8 +61,6 @@
 @property (nonatomic, strong) ConfirmTransactionModel * confirmTransactionModel;
 @property (nonatomic, strong) DposModel * dposModel;
 
-//@property (nonatomic, strong) ConfirmTransactionAlertView * confirmAlertView;
-
 @end
 
 @implementation AssetsViewController
@@ -80,6 +77,7 @@ static UIButton * _noBackup;
 - (void)viewDidLoad {
     [super viewDidLoad];
     self.edgesForExtendedLayout = UIRectEdgeAll;
+    self.automaticallyAdjustsScrollViewInsets = NO;
     self.statusBarStyle = UIStatusBarStyleLightContent;
     [self setupNav];
     [self setupView];
@@ -182,7 +180,6 @@ static UIButton * _noBackup;
         NSString * currencyUnit = [AssetCurrencyModel getCurrencyUnitWithAssetCurrency:[[[NSUserDefaults standardUserDefaults] objectForKey:Current_Currency] integerValue]];
         NSString * amountString = [NSString stringWithFormat:@"≈%@%@", amountStr, currencyUnit];
         NSMutableAttributedString * attr = [Encapsulation attrWithString:amountString preFont:FONT(36) preColor:[UIColor whiteColor] index:amountString.length - currencyUnit.length sufFont:FONT(18) sufColor:[UIColor whiteColor] lineSpacing:0];
-        // @(FONT(18).lineHeight)/2 + ((FONT(36).descender - FONT(18).descender)))
         [attr addAttribute:NSBaselineOffsetAttributeName value:@((FONT(18).lineHeight)/2) range:NSMakeRange(amountString.length - currencyUnit.length, currencyUnit.length)];
         self.totalAssets.attributedText = attr;
     }
@@ -335,7 +332,6 @@ static UIButton * _noBackup;
         [totalAssetsTitle mas_makeConstraints:^(MASConstraintMaker *make) {
             make.top.equalTo(self.totalAssets.mas_bottom).offset(Margin_10);
             make.size.mas_equalTo(CGSizeMake(btnW, Margin_20));
-//            make.left.equalTo(self.headerViewBg.mas_left).offset((DEVICE_WIDTH - btnW) / 2);
             make.centerX.equalTo(self.headerViewBg);
         }];
         
@@ -543,7 +539,6 @@ static UIButton * _noBackup;
 }
 
 // Transaction confirmation and submission
-
 - (void)getConfirmTransactionData
 {
     [[HTTPManager shareManager] getContractTransactionWithModel:self.confirmTransactionModel  success:^(id responseObject) {
@@ -555,7 +550,6 @@ static UIButton * _noBackup;
                 NSTimeInterval time = [date timeIntervalSinceNow];
                 if (time < 0) {
                     [Encapsulation showAlertControllerWithMessage:Localized(@"Overtime") handler:nil];
-                    //                [MBProgressHUD showTipMessageInWindow:Localized(@"Overtime")];
                 } else {
                     [self submitTransaction];
                 }
@@ -610,7 +604,6 @@ static UIButton * _noBackup;
 {
     NSString * scanStr = [str substringFromIndex:[Dpos_Prefix length]];
     NSDictionary * scanData = [JsonTool dictionaryOrArrayWithJSONSString:scanStr];
-    DLog(@"scanStr = %@, scanDic = %@", scanStr, scanData);
     if (scanData) {
         self.dposModel = [DposModel mj_objectWithKeyValues:scanData];
         if (!NotNULLString(self.dposModel.dest_address)) {
@@ -666,8 +659,6 @@ static UIButton * _noBackup;
         }];
         confirmAlertView.dposModel = self.dposModel;
         [confirmAlertView showInWindowWithMode:CustomAnimationModeShare inView:nil bgAlpha:AlertBgAlpha needEffectView:NO];
-        
-        //                [self showPWAlertView:confirmTransactionModel];
     } else {
         [MBProgressHUD showTipMessageInWindow:Localized(@"ScanFailure")];
     }
@@ -701,7 +692,6 @@ static UIButton * _noBackup;
 }
 - (CGFloat)tableView:(UITableView *)tableView heightForHeaderInSection:(NSInteger)section
 {
-    DLog(@"%f", ScreenScale(150) + [Encapsulation rectWithText:Localized(@"SafetyTips") font:TITLE_FONT textWidth:DEVICE_WIDTH - Margin_40].size.height);
     if (section == 0) {
         NSUserDefaults * defaults = [NSUserDefaults standardUserDefaults];
         if (![defaults boolForKey:If_Backup] && _noBackup.selected == NO) {

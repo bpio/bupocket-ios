@@ -167,7 +167,7 @@
         popupMenu.dismissOnSelected = NO;
         popupMenu.fontSize = TITLE_FONT;
         popupMenu.textColor = [UIColor whiteColor];
-        popupMenu.backColor = COLOR(@"56526D");
+        popupMenu.backColor = COLOR_POPUPMENU;
         popupMenu.tableView.separatorStyle = UITableViewCellSeparatorStyleNone;
         popupMenu.tableView.scrollEnabled = NO;
         popupMenu.tableView.allowsSelection = NO;

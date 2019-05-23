@@ -17,7 +17,6 @@
     TransactionBuildBlobResponse * _buildBlobResponse;
     TransactionSignResponse * _signResponse;
     NSString * _hash;
-//    NSString * _privateKey;
 }
 
 @end
@@ -398,31 +397,6 @@ static int64_t const gasPrice = 1000;
     }];
 }
 #pragma mark - Account Center
-// user Scan Qr Login
-//- (void)getScanCodeLoginDataWithAddress:(NSString *)address
-//                                   uuid:(NSString *)uuid
-//                                success:(void (^)(id responseObject))success
-//                                failure:(void (^)(NSError *error))failure
-//{
-//    [MBProgressHUD showActivityMessageInWindow:Localized(@"Loading")];
-//    NSString * url = SERVER_COMBINE_API(_webServerDomain, Account_Center_ScanQRLogin);
-//    NSDictionary * parameters = @{
-//                                  @"address": address,
-//                                  @"uuid": uuid,
-//                                  };
-//    [[HttpTool shareTool] POST:url parameters:parameters success:^(id responseObject) {
-//        if(success != nil)
-//        {
-//            success(responseObject);
-//        }
-//    } failure:^(NSError *error) {
-//        if(failure != nil)
-//        {
-//            failure(error);
-//            [MBProgressHUD showTipMessageInWindow:Localized(@"NoNetWork")];
-//        }
-//    }];
-//}
 // Confirm Login
 - (void)getAccountCenterDataWithAppId:(NSString *)appId
                                  uuid:(NSString *)uuid
@@ -495,23 +469,6 @@ static int64_t const gasPrice = 1000;
     }];
 }
 
-#pragma mark 校验密码，私钥
-/*
-- (BOOL)getContractTransactionWithPassword:(NSString *)password
-{
-    [MBProgressHUD showActivityMessageInWindow:Localized(@"Signature")];
-    NSString * walletKeyStore = CurrentWalletKeyStore;
-    NSString * privateKey = [NSString decipherKeyStoreWithPW:password keyStoreValueStr:walletKeyStore];
-    if ([Tools isEmpty:privateKey]) {
-        [MBProgressHUD hideHUD];
-        [MBProgressHUD showTipMessageInWindow:Localized(@"PasswordIsIncorrect")];
-        return NO;
-    } else {
-        [MBProgressHUD hideHUD];
-        _privateKey = privateKey;
-        return YES;
-    }
-}*/
 #pragma mark 确认交易
 // Contract Transaction hash
 - (BOOL)getTransactionHashWithModel:(ConfirmTransactionModel *)confirmTransactionModel
@@ -617,14 +574,6 @@ static int64_t const gasPrice = 1000;
         }
     }];
 }
-//// submit Contract Transaction / Transaction Status
-//- (void)submitContractTransactionSuccess:(void (^)(TransactionResultModel * resultModel))success
-//                                 failure:(void (^)(TransactionResultModel * resultModel))failure
-//{
-////    if (![[HTTPManager shareManager] getSignWithPrivateKey:privateKey]) return;
-//    if (![[HTTPManager shareManager] submitTransaction]) return;
-//    [[HTTPManager shareManager] getTransactionStatusSuccess:success failure:failure];
-//}
 // short link
 - (void)getShortLinkDataWithType:(NSString *)type
                             path:(NSString *)path
@@ -839,9 +788,7 @@ static int64_t const gasPrice = 1000;
             }
         });
         balance = [[NSDecimalNumber decimalNumberWithString:[NSString stringWithFormat:@"%lld", response.result.balance]] decimalNumberByMultiplyingByPowerOf10: -Decimals_BU];
-//        balance = [Tools MO2BU:response.result.balance];
         amount = [[balance decimalNumberBySubtracting:minLimitationNumber] decimalNumberBySubtracting: costNumber];
-//        balance - baseReserve - cost;
     } else {
         dispatch_async(dispatch_get_main_queue(), ^{
             if (ifShowLoading == YES) {
@@ -873,29 +820,15 @@ static int64_t const gasPrice = 1000;
 
 // Query account / Is it activated?
 - (NSString *)getAccountInfoWithAddress:(NSString *)address {
-//    dispatch_async(dispatch_get_main_queue(), ^{
-//        [MBProgressHUD showActivityMessageInWindow:Localized(@"Loading")];
-//    });
     AccountService * accountService = [[[SDK sharedInstance] setUrl:_bumoNodeUrl] getAccountService];
     AccountGetInfoRequest *request = [AccountGetInfoRequest new];
     [request setAddress : address];
     AccountGetInfoResponse *response = [accountService getInfo : request];
     if (response.errorCode == 0) {
-        //        NSLog(@"%@", [response.result yy_modelToJSONString]);
-//        dispatch_async(dispatch_get_main_queue(), ^{
-//            [MBProgressHUD hideHUD];
-//        });
         return TransactionCost_MIN;
     } else if (response.errorCode == 4) {
-//        dispatch_async(dispatch_get_main_queue(), ^{
-//            [MBProgressHUD hideHUD];
-//        });
         return TransactionCost_NotActive_MIN;
     } else {
-//        dispatch_async(dispatch_get_main_queue(), ^{
-//            [MBProgressHUD hideHUD];
-//            [MBProgressHUD showTipMessageInWindow:[ErrorTypeTool getDescription:response.errorCode]];
-//        });
         return TransactionCost_MIN;
     }
 }
@@ -909,7 +842,6 @@ static int64_t const gasPrice = 1000;
                          failure:(void (^)(NSError *error))failure
 {
     [MBProgressHUD showActivityMessageInWindow:Localized(@"Loading")];
-//    __weak typeof(self) weakSelf = self;
     NSOperationQueue * queue = [[NSOperationQueue alloc] init];
     [queue addOperationWithBlock:^{
         // Random number -> mnemonic
@@ -967,7 +899,6 @@ static int64_t const gasPrice = 1000;
                            failure:(void (^)(NSError *error))failure
 {
     [MBProgressHUD showActivityMessageInWindow:Localized(@"Loading")];
-    //    __weak typeof(self) weakSelf = self;
     NSOperationQueue * queue = [[NSOperationQueue alloc] init];
     [queue addOperationWithBlock:^{
         // Random number -> mnemonic
@@ -1031,8 +962,6 @@ static int64_t const gasPrice = 1000;
                                notes:(NSString *)notes
                                 code:(NSString *)code
                               issuer:(NSString *)issuer
-//                             success:(void (^)(TransactionResultModel * resultModel))success
-//                             failure:(void (^)(TransactionResultModel * resultModel))failure
 {
     // Build BUSendOperation
     NSString * sourceAddress = CurrentWalletAddress;
@@ -1051,7 +980,6 @@ static int64_t const gasPrice = 1000;
     } else {
         // Other currencies
         int64_t amount = [[[NSDecimalNumber decimalNumberWithString:assets] decimalNumberByMultiplyingByPowerOf10: decimals] longLongValue];
-//        int64_t amount = multiplierNumber * powl(10, decimals);
         if ([[self getAccountInfoWithAddress: destAddress] isEqualToString:TransactionCost_NotActive_MIN]) {
             AccountActivateOperation *activateOperation = [AccountActivateOperation new];
             [activateOperation setSourceAddress: sourceAddress];
@@ -1070,18 +998,10 @@ static int64_t const gasPrice = 1000;
         [operations addObject: operation];
     }
     return [[HTTPManager shareManager] getHashWithSourceAddress:sourceAddress nonce:nonce gasPrice:gasPrice feeLimit:fee operations:operations notes:notes];
-//    DLog(@"hash:%@", _hash);
-//    if (![[HTTPManager shareManager] getSignWithPrivateKey:privateKey]) return;
-//    [[HTTPManager shareManager] submitTransactionWithSuccess:success failure:failure];
-//    if (![[HTTPManager shareManager] submitTransaction]) return;
-//    [[HTTPManager shareManager] getTransactionStatusSuccess:success failure:failure];
 }
 
 // register
 - (BOOL)getRegisteredDataWithRegisteredModel:(RegisteredModel *)registeredModel
-//                                  nonce:(int64_t)nonce
-//                                success:(void (^)(TransactionResultModel * resultModel))success
-//                                failure:(void (^)(TransactionResultModel * resultModel))failure
 {
     NSString * sourceAddress = CurrentWalletAddress;
     int64_t nonce = [[HTTPManager shareManager] getAccountNonce: CurrentWalletAddress] + 1;
@@ -1105,24 +1025,16 @@ static int64_t const gasPrice = 1000;
     NSMutableArray * operations = [NSMutableArray array];
     [operations addObject:operation];
     return [[HTTPManager shareManager] getHashWithSourceAddress:sourceAddress nonce:nonce gasPrice:gasPrice feeLimit:feeLimit operations:operations notes:nil];
-//    return [[HTTPManager shareManager] getSignWithPrivateKey:privateKey]);
-//    [[HTTPManager shareManager] submitTransactionWithSuccess:success failure:failure];
-//    if (![[HTTPManager shareManager] submitTransaction]) return;
-//    [[HTTPManager shareManager] getTransactionStatusSuccess:success failure:failure];
 }
 // Issue
 - (BOOL)getIssueAssetDataWithAssetCode:(NSString *)assetCode
                             assetAmount:(int64_t)assetAmount
                                decimals:(NSInteger)decimals
-//                                  nonce:(int64_t)nonce
-//                                success:(void (^)(TransactionResultModel * resultModel))success
-//                                failure:(void (^)(TransactionResultModel * resultModel))failure
 {
     NSString * sourceAddress = CurrentWalletAddress;
     int64_t nonce = [[HTTPManager shareManager] getAccountNonce: CurrentWalletAddress] + 1;
     if (nonce == 0) return NO;
     // Asset amount
-//    int64_t amount = [assetAmount longLongValue] * powl(10, decimals);
     AssetIssueOperation *operation = [AssetIssueOperation new];
     [operation setSourceAddress: sourceAddress];
     [operation setCode: assetCode];
@@ -1131,11 +1043,6 @@ static int64_t const gasPrice = 1000;
     NSMutableArray * operations = [NSMutableArray array];
     [operations addObject:operation];
     return [[HTTPManager shareManager] getHashWithSourceAddress:sourceAddress nonce:nonce gasPrice:gasPrice feeLimit:feeLimit operations:operations notes:nil];
-//    DLog(@"hash:%@", _hash);
-//    if (![[HTTPManager shareManager] getSignWithPrivateKey:privateKey]) return;
-//    [[HTTPManager shareManager] submitTransactionWithSuccess:success failure:failure];
-//    if (![[HTTPManager shareManager] submitTransaction]) return;
-//    [[HTTPManager shareManager] getTransactionStatusSuccess:success failure:failure];
 }
 
 #pragma mark - Nonce
@@ -1165,7 +1072,6 @@ static int64_t const gasPrice = 1000;
     [buildBlobRequest setNonce : nonce];
     [buildBlobRequest setGasPrice : gasPrice];
     [buildBlobRequest setFeeLimit : feeLimit];
-    //[buildBlobRequest addOperation : operation];
     [buildBlobRequest setOperations: operations];
     [buildBlobRequest setMetadata: notes];
     
@@ -1180,19 +1086,6 @@ static int64_t const gasPrice = 1000;
         [MBProgressHUD showTipMessageInWindow:[ErrorTypeTool getDescription:_buildBlobResponse.errorCode]];
         return NO;
     }
-//    if (![Tools isEmpty: _hash]) {
-//        return YES;
-//    } else {
-//        return NO;
-//    }
-//    // 转账、登记、发行 立即提交
-//    if (hash && privateKey) {
-//        BOOL ifSubmitSuccess = [[HTTPManager shareManager] submitTransaction];
-//        if (!ifSubmitSuccess) {
-//            hash = nil;
-//        }
-//    }
-//    return hash;
 }
 #pragma mark - sign
 - (BOOL)getSignWithPrivateKey:(NSString *)privateKey
@@ -1244,14 +1137,10 @@ static int64_t const gasPrice = 1000;
     __block TransactionResultModel * resultModel = [[TransactionResultModel alloc] init];
     resultModel.transactionHash = _hash;
     __block NSInteger state = 0;
-    
-    // 创建一个定时器(dispatch_source_t本质还是个OC对象)
     dispatch_queue_t queue = dispatch_get_main_queue();
     __block dispatch_source_t gcdTimer = dispatch_source_create(DISPATCH_SOURCE_TYPE_TIMER, 0, 0, queue);
     uint64_t interval = (uint64_t)(1 * NSEC_PER_SEC);
-    //  DISPATCH_TIME_NOW 立即执行
     dispatch_source_set_timer(gcdTimer, DISPATCH_TIME_NOW, interval, 0);
-    // 设置回调
     dispatch_source_set_event_handler(gcdTimer, ^{
         DLog(@"循环次数：%zd", state);
         if (state == Maximum_Number) {
@@ -1279,7 +1168,7 @@ static int64_t const gasPrice = 1000;
             }
             if(response.result.transactions != nil && success != nil)
             {
-                DLog(@"请求成功或失败");
+                DLog(@"请求超时（成功或失败）");
                 [MBProgressHUD hideHUD];
                 TransactionHistory * history = response.result.transactions[0];
                 resultModel.transactionTime = history.closeTime;
@@ -1290,10 +1179,6 @@ static int64_t const gasPrice = 1000;
                 success(resultModel);
             }
         }
-//        TransactionGetInfoRequest *request = [TransactionGetInfoRequest new];
-//        [request setHash: self->_hash];
-//        TransactionService *service = [[[SDK sharedInstance] setUrl: _bumoNodeUrl] getTransactionService];
-//        response = [service getInfo: request];
     });
     dispatch_resume(gcdTimer);
 }

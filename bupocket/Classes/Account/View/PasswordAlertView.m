@@ -80,7 +80,6 @@
     PWTextField.delegate = self;
     PWTextField.textColor = TITLE_COLOR;
     PWTextField.font = TITLE_FONT;
-//    PWTextField.placeholder = Localized(@"PWPlaceholder");
     PWTextField.layer.cornerRadius = ScreenScale(3);
     PWTextField.layer.borderColor = LINE_COLOR.CGColor;
     PWTextField.layer.borderWidth = LINE_WIDTH;
@@ -141,7 +140,6 @@
     }
     NSString * password = TrimmingCharacters(self.PWTextField.text);
     if (password.length < PW_MIN_LENGTH || password.length > PW_MAX_LENGTH) {
-        //    if ([RegexPatternTool validatePassword:password] == NO) {
         [MBProgressHUD showTipMessageInWindow:Localized(@"PasswordIsIncorrect")];
     } else {
         [MBProgressHUD showActivityMessageInWindow:Localized(@"Signature")];
@@ -183,64 +181,7 @@
         }
     }
 }
-/*
-- (void)sureBtnClick {
-    if (self.isAutomaticClosing) {
-        [self hideView];
-    }
-    __block NSString * password = TrimmingCharacters(self.PWTextField.text);
-    if (password.length < PW_MIN_LENGTH || password.length > PW_MAX_LENGTH) {
-//    if ([RegexPatternTool validatePassword:password] == NO) {
-        [MBProgressHUD showTipMessageInWindow:Localized(@"PasswordIsIncorrect")];
-    } else {
-        [MBProgressHUD showActivityMessageInWindow:Localized(@"Signature")];
-        NSOperationQueue * queue = [[NSOperationQueue alloc] init];
-        [queue addOperationWithBlock:^{
-            [[NSOperationQueue mainQueue] addOperationWithBlock:^{
-                [self checkPassword:password];
-            }];
-        }];
-    }
-}
-- (void)checkPassword:(NSString *)password
-{
-    if (self.walletKeyStore.length > 0) {
-        // Password for Wallet
-        NSString * privateKey = [NSString decipherKeyStoreWithPW:password keyStoreValueStr:self.walletKeyStore];
-        if ([Tools isEmpty:privateKey]) {
-            dispatch_async(dispatch_get_main_queue(), ^{
-                [MBProgressHUD hideHUD];
-                [MBProgressHUD showTipMessageInWindow:Localized(@"PasswordIsIncorrect")];
-            });
-        } else {
-            dispatch_async(dispatch_get_main_queue(), ^{
-                [MBProgressHUD hideHUD];
-                if (self->_sureBlock) {
-                    self->_sureBlock(privateKey, [NSArray array]);
-                }
-            });
-        }
-    } else {
-        // Identity password
-        NSData * random = [NSString decipherKeyStoreWithPW:password randomKeyStoreValueStr:[[AccountTool shareTool] account].randomNumber];
-        if (random) {
-            NSArray * words = [Mnemonic generateMnemonicCode: random];
-            dispatch_async(dispatch_get_main_queue(), ^{
-                [MBProgressHUD hideHUD];
-                if (self->_sureBlock) {
-                    self->_sureBlock(password, words);
-                }
-            });
-        } else {
-            dispatch_async(dispatch_get_main_queue(), ^{
-                [MBProgressHUD hideHUD];
-                [MBProgressHUD showTipMessageInWindow:Localized(@"PasswordIsIncorrect")];
-            });
-        }
-       
-    }
-}
-*/
+
 /*
 // Only override drawRect: if you perform custom drawing.
 // An empty implementation adversely affects performance during animation.
