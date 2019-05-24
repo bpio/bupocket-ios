@@ -25,6 +25,8 @@
 //关闭按钮
 @property (nonatomic)UIBarButtonItem* closeButtonItem;
 
+@property (nonatomic, strong) UIView * noNetWork;
+
 @end
 
 static void *WkwebBrowserContext = &WkwebBrowserContext;
@@ -35,9 +37,17 @@ static void *WkwebBrowserContext = &WkwebBrowserContext;
     [super viewDidLoad];
     [self.view addSubview:self.wkWebView];
     [self.view addSubview:self.progressView];
+    self.noNetWork = [Encapsulation showNoNetWorkWithSuperView:self.view target:self action:@selector(reloadData)];
 }
 
-
+- (void)reloadData
+{
+    [self webViewloadURLType];
+//    if (NotNULLString(self.URLString)) {
+//        [self loadWebURLSring:self.URLString];
+//    }
+//    [self.wkWebView reload];
+}
 - (UIProgressView *)progressView{
     if (!_progressView) {
         _progressView = [[UIProgressView alloc]initWithProgressViewStyle:UIProgressViewStyleDefault];
@@ -142,10 +152,6 @@ static void *WkwebBrowserContext = &WkwebBrowserContext;
 }
 
 
-- (void)roadLoadClicked {
-    [self.wkWebView reload];
-}
-
 -(void)customBackItemClicked {
     if (self.wkWebView.goBack) {
         [self.wkWebView goBack];
@@ -215,8 +221,7 @@ static void *WkwebBrowserContext = &WkwebBrowserContext;
 
 //这个是网页加载完成，导航的变化
 -(void)webView:(WKWebView *)webView didFinishNavigation:(WKNavigation *)navigation{
-    /*
-     主意：这个方法是当网页的内容全部显示（网页内的所有图片必须都正常显示）的时候调用（不是出现的时候就调用），，否则不显示，或则部分显示时这个方法就不调用。
+    /* 主意：这个方法是当网页的内容全部显示（网页内的所有图片必须都正常显示）的时候调用（不是出现的时候就调用），，否则不显示，或则部分显示时这个方法就不调用。
      */
     // 判断是否需要加载（仅在第一次加载）
     if (self.needLoadJSPOST) {
@@ -235,23 +240,23 @@ static void *WkwebBrowserContext = &WkwebBrowserContext;
 //    }
     
     [[UIApplication sharedApplication] setNetworkActivityIndicatorVisible:NO];
+    self.noNetWork.hidden = YES;
     //    [self updateNavigationItems];
 }
 
 //开始加载
--(void)webView:(WKWebView *)webView didStartProvisionalNavigation:(WKNavigation *)navigation{
+- (void)webView:(WKWebView *)webView didStartProvisionalNavigation:(WKNavigation *)navigation{
     //开始加载的时候，让加载进度条显示
     self.progressView.hidden = NO;
-    
 }
 
 //内容返回时调用
--(void)webView:(WKWebView *)webView didCommitNavigation:(WKNavigation *)navigation{
+- (void)webView:(WKWebView *)webView didCommitNavigation:(WKNavigation *)navigation{
     
 }
 
 //服务器请求跳转的时候调用
--(void)webView:(WKWebView *)webView didReceiveServerRedirectForProvisionalNavigation:(WKNavigation *)navigation{
+- (void)webView:(WKWebView *)webView didReceiveServerRedirectForProvisionalNavigation:(WKNavigation *)navigation{
     
 }
 
@@ -328,19 +333,30 @@ static void *WkwebBrowserContext = &WkwebBrowserContext;
 
 // 内容加载失败时候调用
 -(void)webView:(WKWebView *)webView didFailProvisionalNavigation:(WKNavigation *)navigation withError:(NSError *)error{
-    [MBProgressHUD showTipMessageInWindow:Localized(@"LoadFailure")];
+    DLog(@"Error:%@",error.localizedDescription);
+    self.progressView.hidden = YES;
+    if (error.code == NSURLErrorCancelled) {
+        return;
+    }
+    self.noNetWork.hidden = NO;
+//    [MBProgressHUD showTipMessageInWindow:Localized(@"LoadFailure")];
 }
 
 //跳转失败的时候调用
 -(void)webView:(WKWebView *)webView didFailNavigation:(WKNavigation *)navigation withError:(NSError *)error
 {
-    
+    DLog(@"Error:%@",error.localizedDescription);
+    self.progressView.hidden = YES;
+    // 如果请求被取消
+    if (error.code == NSURLErrorCancelled) {
+        return;
+    }
 }
 
-//进度条
+// 当Web视图的Web内容进程终止时调用。
 - (void)webViewWebContentProcessDidTerminate:(WKWebView *)webView
 {
-    
+    self.progressView.hidden = YES;
 }
 
 #pragma mark - WKUIDelegate

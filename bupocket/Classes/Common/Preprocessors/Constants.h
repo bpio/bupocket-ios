@@ -16,12 +16,12 @@
 #define BUMO_NODE_URL @"https://wallet-node.bumo.io"
 #define BUMO_TOOLS_URL @"https://ws-tools.bumo.io"
 
-//#define WEB_SERVER_DOMAIN_TEST @"http://api-bp.bumotest.io/"
-//#define BUMO_NODE_URL_TEST @"https://wallet-node.bumotest.io"
+#define WEB_SERVER_DOMAIN_TEST @"http://api-bp.bumotest.io/"
+#define BUMO_NODE_URL_TEST @"https://wallet-node.bumotest.io"
 //#define WEB_SERVER_DOMAIN_TEST @"http://192.168.6.97:5648/"
 //#define BUMO_NODE_URL_TEST @"http://192.168.21.35:36002"
-#define WEB_SERVER_DOMAIN_TEST @"http://test-bupocket-api.bumocdn.com/"
-#define BUMO_NODE_URL_TEST @"http://192.168.3.65:36002"
+//#define WEB_SERVER_DOMAIN_TEST @"http://test-bupocket-api.bumocdn.com/"
+//#define BUMO_NODE_URL_TEST @"http://192.168.3.65:36002"
 
 #define BUMO_TOOLS_URL_TEST @"https://ws-tools.bumotest.io"
 
@@ -68,8 +68,8 @@
 #define Node_Image_URL @"img_dpos/"
 // 生成短链接
 #define Node_ShortLink_URL @"nodeServer/shortlink"
-#define Validate_Node_Path @"dpos/detail/validate/"
-#define Kol_Node_Path @"dpos/detail/kol/"
+#define Validate_Node_Path @"supernodes/detail/validate/"
+#define Kol_Node_Path @"supernodes/detail/kol/"
 // 共建节点支持验证
 #define Node_Cooperate_Support @"nodeServer/node/v1/cooperate/support"
 // 共建节点退出验证

@@ -35,10 +35,12 @@
     UIImageView * icon = [[UIImageView alloc] init];
     [icon sd_setImageWithURL:[NSURL URLWithString:self.loginConfirmModel.appPic] placeholderImage:[UIImage imageNamed:@"placeholderBg"]];
     [self.scrollView addSubview:icon];
+    CGSize iconSize = CGSizeMake(ScreenScale(90), ScreenScale(90));
+    [icon setViewSize:iconSize borderRadius:ScreenScale(15) corners:UIRectCornerAllCorners];
     [icon mas_makeConstraints:^(MASConstraintMaker *make) {
         make.top.mas_equalTo(Margin_20);
         make.centerX.mas_equalTo(0);
-        make.size.mas_equalTo(CGSizeMake(ScreenScale(90), ScreenScale(90)));
+        make.size.mas_equalTo(iconSize);
     }];
     
     UILabel * title = [[UILabel alloc] init];
@@ -89,7 +91,7 @@
         make.size.centerX.equalTo(confirmBtn);
     }];
     [self.view layoutIfNeeded];
-    self.scrollView.contentSize = CGSizeMake(0, CGRectGetMaxY(cancelBtn.frame) + ContentSizeBottom + ScreenScale(50));
+    self.scrollView.contentSize = CGSizeMake(0, CGRectGetMaxY(cancelBtn.frame) + ContentSizeBottom + ScreenScale(100));
 }
 
 - (void)confirmAction

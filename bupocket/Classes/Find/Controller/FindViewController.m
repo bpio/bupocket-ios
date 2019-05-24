@@ -20,7 +20,6 @@
 @property (nonatomic, strong) UITableView * tableView;
 @property (nonatomic, strong) SDCycleScrollView * cycleScrollView;
 @property (nonatomic, strong) NSArray * listArray;
-@property (nonatomic, strong) UIView * noNetWork;
 @property (nonatomic, strong) NSArray * bannerArray;
 
 @end
@@ -61,11 +60,9 @@ static NSString * const ExportCellID = @"ExportCellID";
             [MBProgressHUD showTipMessageInWindow:[ErrorTypeTool getDescriptionWithNodeErrorCode:code]];
         }
         [self.tableView.mj_header endRefreshing];
-        self.noNetWork.hidden = YES;
         self.tableView.mj_footer.hidden = (self.listArray.count == 0);
     } failure:^(NSError *error) {
         [self.tableView.mj_header endRefreshing];
-        self.noNetWork.hidden = NO;
     }];
 }
 
@@ -86,7 +83,6 @@ static NSString * const ExportCellID = @"ExportCellID";
     _cycleScrollView.clipsToBounds = YES;
     [headerView addSubview:_cycleScrollView];
     self.tableView.tableHeaderView = headerView;
-    self.noNetWork = [Encapsulation showNoNetWorkWithSuperView:self.view target:self action:@selector(reloadData)];
 }
 - (void)reloadData
 {
