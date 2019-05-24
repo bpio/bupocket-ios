@@ -20,12 +20,21 @@
 @property (nonatomic, strong) UIView * headerViewBg;
 @property (nonatomic, assign) CGFloat headerViewH;
 @property (nonatomic, strong) NSMutableArray * listArray;
+
+@property (nonatomic, strong) UIImageView * assetsIconBg;
+@property (nonatomic, strong) UIImageView * assetsIcon;
+@property (nonatomic, strong) CustomButton * scanBtn;
+@property (nonatomic, strong) CustomButton * transferAccounts;
+
 @property (nonatomic, strong) UILabel * assets;
 @property (nonatomic, strong) UILabel * amount;
 @property (nonatomic, strong) UILabel * header;
 @property (nonatomic, strong) UIView * noData;
 @property (nonatomic, assign) NSInteger pageindex;
 @property (nonatomic, strong) UIView * noNetWork;
+
+@property (nonatomic, strong) NSString * assetsStr;
+@property (nonatomic, strong) NSString * amountStr;
 
 @end
 
@@ -43,6 +52,7 @@
     [super viewDidLoad];
     self.navigationItem.title = self.listModel.assetCode;
     self.headerViewH = ScreenScale(240);
+    [self setHeaderDataWithAsset:self.listModel.amount amount:self.listModel.assetAmount];
     [self setupView];
     self.noNetWork = [Encapsulation showNoNetWorkWithSuperView:self.view target:self action:@selector(reloadData)];
     [self setupRefresh];
@@ -76,9 +86,16 @@
     [[HTTPManager shareManager] getAssetsDetailDataWithTokenType:self.listModel.type currencyType:currentCurrency assetCode:self.listModel.assetCode issuer:self.listModel.issuer address:CurrentWalletAddress pageIndex:pageindex success:^(id responseObject) {
         NSInteger code = [[responseObject objectForKey:@"errCode"] integerValue];
         if (code == Success_Code) {
+            NSDictionary * assetDic = responseObject[@"data"] [@"assetData"];
+            [self setHeaderDataWithAsset:assetDic[@"balance"] amount:assetDic[@"totalAmount"]];
+            if (self.headerBg) {
+                [self.headerBg removeFromSuperview];
+                self.headerBg = nil;
+                [self upDateLayout];
+            }
             [self.tableView addSubview:self.headerBg];
             [self.tableView insertSubview:self.headerBg atIndex:0];
-            [self setHeaderDataWithDic:responseObject[@"data"] [@"assetData"]];
+            [self layoutSubView];
             NSArray * listArray = [AssetsDetailModel mj_objectArrayWithKeyValuesArray:responseObject[@"data"] [@"txRecord"]];
             if (pageindex == PageIndex_Default) {
                 [self.listArray removeAllObjects];
@@ -106,20 +123,55 @@
     }];
 }
 
-- (void)setHeaderDataWithDic:(NSDictionary *)dic
+- (void)setHeaderDataWithAsset:(NSString *)asset amount:(NSString *)amount
 {
-    self.assets.text = [NSString stringWithFormat:@"%@ %@", dic[@"balance"], self.listModel.assetCode];
+    self.assetsStr = [NSString stringWithFormat:@"%@ %@", asset, self.listModel.assetCode];
     NSString * currencyUnit = [AssetCurrencyModel getCurrencyUnitWithAssetCurrency:[[[NSUserDefaults standardUserDefaults] objectForKey:Current_Currency] integerValue]];
-    NSString * amountStr = dic[@"totalAmount"];
-    self.amount.text = [amountStr isEqualToString:@"~"] ? amountStr : [NSString stringWithFormat:@"≈%@%@", currencyUnit, amountStr];
-    
-    CGFloat assetsH = [Encapsulation rectWithText:self.assets.text font:self.assets.font textWidth:DEVICE_WIDTH - Margin_40].size.height;
-    CGFloat amountH = [Encapsulation rectWithText:self.amount.text font:self.amount.font textWidth:DEVICE_WIDTH - Margin_40].size.height;
+    self.amountStr = [amount isEqualToString:@"~"] ? amount : [NSString stringWithFormat:@"≈%@%@", currencyUnit, amount];
+    CGFloat assetsH = [Encapsulation rectWithText:self.assetsStr font:FONT_Bold(24) textWidth:DEVICE_WIDTH - Margin_40].size.height;
+    CGFloat amountH = [Encapsulation rectWithText:self.amountStr font:FONT(15) textWidth:DEVICE_WIDTH - Margin_40].size.height;
     self.headerViewH = ScreenScale(200) + assetsH + amountH;
+}
+- (void)upDateLayout
+{
+    self.tableView.mj_header.ignoredScrollViewContentInsetTop = _headerViewH;
     self.tableView.contentInset = UIEdgeInsetsMake(_headerViewH, 0, 0, 0);
+    DLog(@"%f", self.tableView.contentInset.top);
     self.headerBg.frame = CGRectMake(0, -_headerViewH, DEVICE_WIDTH, _headerViewH);
     self.headerViewBg.frame = CGRectMake(0, 0, DEVICE_WIDTH, _headerViewH);
-    self.tableView.mj_header.ignoredScrollViewContentInsetTop = _headerViewH;
+   
+}
+- (void)layoutSubView
+{
+    [_assetsIconBg mas_makeConstraints:^(MASConstraintMaker *make) {
+        make.top.equalTo(self.headerViewBg.mas_top).offset(Margin_10);
+        make.centerX.equalTo(self.headerViewBg);
+        make.size.mas_equalTo(CGSizeMake(ScreenScale(82), ScreenScale(82)));
+    }];
+    [_assetsIcon mas_makeConstraints:^(MASConstraintMaker *make) {
+        make.centerX.centerY.equalTo(self.assetsIconBg);
+        make.size.mas_equalTo(CGSizeMake(Margin_60, Margin_60));
+    }];
+    [self.assets mas_makeConstraints:^(MASConstraintMaker *make) {
+        make.top.equalTo(self.assetsIcon.mas_bottom).offset(Margin_15);
+        make.centerX.equalTo(self.headerViewBg);
+        make.width.mas_lessThanOrEqualTo(DEVICE_WIDTH - Margin_40);
+    }];
+    [self.amount mas_makeConstraints:^(MASConstraintMaker *make) {
+        make.top.equalTo(self.assets.mas_bottom).offset(Margin_15);
+        make.centerX.equalTo(self.headerViewBg);
+        make.width.mas_lessThanOrEqualTo(DEVICE_WIDTH - Margin_40);
+    }];
+    CGFloat btnW = (DEVICE_WIDTH - Margin_30) / 2;
+    [_scanBtn mas_makeConstraints:^(MASConstraintMaker *make) {
+        make.top.equalTo(self.amount.mas_bottom).offset(Margin_20);
+        make.left.equalTo(self.headerViewBg.mas_left).offset(Margin_10);
+        make.size.mas_equalTo(CGSizeMake(btnW, MAIN_HEIGHT));
+    }];
+    [_transferAccounts mas_makeConstraints:^(MASConstraintMaker *make) {
+        make.right.equalTo(self.headerViewBg.mas_right).offset(-Margin_10);
+        make.size.top.equalTo(self->_scanBtn);
+    }];
 }
 - (void)setupView
 {
@@ -150,75 +202,56 @@
         headerBg.frame = CGRectMake(0, -_headerViewH, DEVICE_WIDTH, _headerViewH);
         _headerViewBg = [[UIView alloc] initWithFrame:CGRectMake(0, 0, DEVICE_WIDTH, _headerViewH)];
         [headerBg addSubview:_headerViewBg];
-        UIImageView * assetsIconBg = [[UIImageView alloc] initWithImage:[UIImage imageNamed:@"placeholder_bg"]];
-        [_headerViewBg addSubview:assetsIconBg];
-        [assetsIconBg mas_makeConstraints:^(MASConstraintMaker *make) {
-            make.top.equalTo(self.headerViewBg.mas_top).offset(Margin_10);
-            make.centerX.equalTo(self.headerViewBg);
-            make.size.mas_equalTo(CGSizeMake(ScreenScale(82), ScreenScale(82)));
-        }];
+        _assetsIconBg = [[UIImageView alloc] initWithImage:[UIImage imageNamed:@"placeholder_bg"]];
+        [_headerViewBg addSubview:_assetsIconBg];
         
-        UIImageView * assetsIcon = [[UIImageView alloc] init];
-        [assetsIcon sd_setImageWithURL:[NSURL URLWithString:self.listModel.icon] placeholderImage:[UIImage imageNamed:@"placeholder"]];
-        [assetsIcon setViewSize:CGSizeMake(Margin_60, Margin_60) borderWidth:0 borderColor:nil borderRadius:Margin_30];
-        [assetsIconBg addSubview:assetsIcon];
-        [assetsIcon mas_makeConstraints:^(MASConstraintMaker *make) {
-            make.centerX.centerY.equalTo(assetsIconBg);
-            make.size.mas_equalTo(CGSizeMake(Margin_60, Margin_60));
-        }];
-        self.assets = [[UILabel alloc] init];
-        self.assets.textColor = TITLE_COLOR;
-        self.assets.font = FONT_Bold(24);
-        self.assets.numberOfLines = 0;
-        self.assets.textAlignment = NSTextAlignmentCenter;
-        [self.headerViewBg addSubview:self.assets];
-        [self.assets mas_makeConstraints:^(MASConstraintMaker *make) {
-            make.top.equalTo(assetsIcon.mas_bottom).offset(Margin_15);
-            make.centerX.equalTo(self.headerViewBg);
-            make.width.mas_lessThanOrEqualTo(DEVICE_WIDTH - Margin_40);
-        }];
-        self.amount = [[UILabel alloc] init];
-        self.amount.font = FONT(15);
-        self.amount.textColor = COLOR_9;
-        self.amount.numberOfLines = 0;
-        self.amount.textAlignment = NSTextAlignmentCenter;
-        [self.headerViewBg addSubview:self.amount];
-        [self.amount mas_makeConstraints:^(MASConstraintMaker *make) {
-            make.top.equalTo(self.assets.mas_bottom).offset(Margin_15);
-            make.centerX.equalTo(self.headerViewBg);
-            make.width.mas_lessThanOrEqualTo(DEVICE_WIDTH - Margin_40);
-        }];
+        _assetsIcon = [[UIImageView alloc] init];
+        [_assetsIcon sd_setImageWithURL:[NSURL URLWithString:self.listModel.icon] placeholderImage:[UIImage imageNamed:@"placeholder"]];
+        [_assetsIcon setViewSize:CGSizeMake(Margin_60, Margin_60) borderWidth:0 borderColor:nil borderRadius:Margin_30];
+        [_assetsIconBg addSubview:_assetsIcon];
         
-        CGFloat btnW = (DEVICE_WIDTH - Margin_30) / 2;
-        CustomButton * scanBtn = [[CustomButton alloc] init];
-        scanBtn.layoutMode = HorizontalNormal;
-        [scanBtn setTitleColor:[UIColor whiteColor] forState:UIControlStateNormal];
-        scanBtn.titleLabel.font = TITLE_FONT;
-        [scanBtn setTitle:Localized(@"AssetsDetailScan") forState:UIControlStateNormal];
-        [scanBtn setImage:[UIImage imageNamed:@"assetsDetail_scan"] forState:UIControlStateNormal];
-        [scanBtn addTarget:self action:@selector(scanAction:) forControlEvents:UIControlEventTouchUpInside];
-        [self.headerViewBg addSubview: scanBtn];
-        [scanBtn setViewSize:CGSizeMake(btnW, MAIN_HEIGHT) borderWidth:0 borderColor:nil borderRadius:ScreenScale(3)];
-        scanBtn.backgroundColor = COLOR(@"72AFFF");
-        [scanBtn mas_makeConstraints:^(MASConstraintMaker *make) {
-            make.top.equalTo(self.amount.mas_bottom).offset(Margin_20);
-            make.left.equalTo(self.headerViewBg.mas_left).offset(Margin_10);
-            make.size.mas_equalTo(CGSizeMake(btnW, MAIN_HEIGHT));
-        }];
-        CustomButton * transferAccounts = [[CustomButton alloc] init];
-        transferAccounts.layoutMode = HorizontalNormal;
-        [transferAccounts setTitleColor:[UIColor whiteColor] forState:UIControlStateNormal];
-        transferAccounts.titleLabel.font = TITLE_FONT;
-        [transferAccounts setTitle:Localized(@"TransferAccounts") forState:UIControlStateNormal];
-        [transferAccounts setImage:[UIImage imageNamed:@"transferAccounts"] forState:UIControlStateNormal];
-        [transferAccounts addTarget:self action:@selector(transferAccountsAction:) forControlEvents:UIControlEventTouchUpInside];
-        [self.headerViewBg addSubview: transferAccounts];
-        [transferAccounts setViewSize:CGSizeMake(btnW, MAIN_HEIGHT) borderWidth:0 borderColor:nil borderRadius:MAIN_CORNER];
-        transferAccounts.backgroundColor = MAIN_COLOR;
-        [transferAccounts mas_makeConstraints:^(MASConstraintMaker *make) {
-            make.right.equalTo(self.headerViewBg.mas_right).offset(-Margin_10);
-            make.size.top.equalTo(scanBtn);
-        }];
+        _assets = [[UILabel alloc] init];
+        _assets.textColor = TITLE_COLOR;
+        _assets.font = FONT_Bold(24);
+        _assets.numberOfLines = 0;
+        _assets.textAlignment = NSTextAlignmentCenter;
+        _assets.text = _assetsStr;
+        [_headerViewBg addSubview:_assets];
+        
+        _amount = [[UILabel alloc] init];
+        _amount.font = FONT(15);
+        _amount.textColor = COLOR_9;
+        _amount.numberOfLines = 0;
+        _amount.textAlignment = NSTextAlignmentCenter;
+        _amount.text = self.amountStr;
+        [_headerViewBg addSubview:_amount];
+        
+        _scanBtn = [[CustomButton alloc] init];
+        _scanBtn.layoutMode = HorizontalNormal;
+        [_scanBtn setTitleColor:[UIColor whiteColor] forState:UIControlStateNormal];
+        _scanBtn.titleLabel.font = TITLE_FONT;
+        [_scanBtn setTitle:Localized(@"AssetsDetailScan") forState:UIControlStateNormal];
+        [_scanBtn setImage:[UIImage imageNamed:@"assetsDetail_scan"] forState:UIControlStateNormal];
+        [_scanBtn addTarget:self action:@selector(scanAction:) forControlEvents:UIControlEventTouchUpInside];
+        [_headerViewBg addSubview: _scanBtn];
+        _scanBtn.layer.masksToBounds = YES;
+        _scanBtn.layer.cornerRadius = ScreenScale(3);
+//        [_scanBtn setViewSize:CGSizeMake(btnW, MAIN_HEIGHT) borderWidth:0 borderColor:nil borderRadius:ScreenScale(3)];
+        _scanBtn.backgroundColor = COLOR(@"72AFFF");
+        
+        _transferAccounts = [[CustomButton alloc] init];
+        _transferAccounts.layoutMode = HorizontalNormal;
+        [_transferAccounts setTitleColor:[UIColor whiteColor] forState:UIControlStateNormal];
+        _transferAccounts.titleLabel.font = TITLE_FONT;
+        [_transferAccounts setTitle:Localized(@"TransferAccounts") forState:UIControlStateNormal];
+        [_transferAccounts setImage:[UIImage imageNamed:@"transferAccounts"] forState:UIControlStateNormal];
+        [_transferAccounts addTarget:self action:@selector(transferAccountsAction:) forControlEvents:UIControlEventTouchUpInside];
+        [_headerViewBg addSubview: _transferAccounts];
+        _transferAccounts.layer.masksToBounds = YES;
+        _transferAccounts.layer.cornerRadius = ScreenScale(3);
+//        [_transferAccounts setViewSize:CGSizeMake(btnW, MAIN_HEIGHT) borderWidth:0 borderColor:nil borderRadius:MAIN_CORNER];
+        _transferAccounts.backgroundColor = MAIN_COLOR;
+        
         _headerBg = headerBg;
     }
     return _headerBg;
