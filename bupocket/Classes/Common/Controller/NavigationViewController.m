@@ -22,6 +22,12 @@
 #import "ExportKeystoreViewController.h"
 #import "ExportPrivateKeyViewController.h"
 #import "ContactViewController.h"
+#import "FindViewController.h"
+#import "VotingRecordsViewController.h"
+#import "CooperateDetailViewController.h"
+#import "NodeSharingViewController.h"
+#import "NodeTransferSuccessViewController.h"
+#import "WKWebViewController.h"
 
 @interface NavigationViewController ()<UINavigationControllerDelegate>
 
@@ -71,11 +77,17 @@
                              [viewController isKindOfClass:[RegisteredResultViewController class]] ||
                              [viewController isKindOfClass:[DistributionResultsViewController class]] ||
                              [viewController isKindOfClass:[RequestTimeoutViewController class]] ||
+                             [viewController isKindOfClass:[NodeTransferSuccessViewController class]] ||
                              [viewController isKindOfClass:[OrderDetailsViewController class]] ||
                              [viewController isKindOfClass:[ImportWalletViewController class]] ||
                              [viewController isKindOfClass:[ExportKeystoreViewController class]] ||
                              [viewController isKindOfClass:[ExportPrivateKeyViewController class]] ||
-                             [viewController isKindOfClass:[ContactViewController class]]
+                             [viewController isKindOfClass:[ContactViewController class]] ||
+                             [viewController isKindOfClass:[FindViewController class]] ||
+                             [viewController isKindOfClass:[VotingRecordsViewController class]] ||
+                             [viewController isKindOfClass:[CooperateDetailViewController class]] ||
+                             [viewController isKindOfClass:[NodeSharingViewController class]] ||
+                             [viewController isKindOfClass:[WKWebViewController class]]
                              );
     if (@available(iOS 11.0, *)) {
         [self.navigationBar setPrefersLargeTitles:!isSetLargeTitles];

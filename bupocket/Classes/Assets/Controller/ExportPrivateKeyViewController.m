@@ -25,7 +25,9 @@ static NSString * const ExportPrivateKeyID = @"ExportPrivateKeyID";
     [super viewDidLoad];
     self.navigationItem.title = Localized(@"ExportPrivateKey");
     self.walletPrivateKeys = [NSString decipherKeyStoreWithPW:self.password keyStoreValueStr:self.walletModel.walletKeyStore];
-    self.listArray = @[@[Localized(@"WalletAddress"), Localized(@"WalletPrivateKeys")], @[self.walletModel.walletAddress, self.walletPrivateKeys]];
+    if (NotNULLString(self.walletPrivateKeys)) {
+        self.listArray = @[@[Localized(@"WalletAddress"), Localized(@"WalletPrivateKeys")], @[self.walletModel.walletAddress, self.walletPrivateKeys]];        
+    }
     [self setupView];
     // Do any additional setup after loading the view.
 }

@@ -101,7 +101,6 @@ static NSString * const TextFieldCellID = @"TextFieldCellID";
             [self.navigationController popViewControllerAnimated:NO];
         } else {
             [MBProgressHUD showTipMessageInWindow:Localized(@"DeleteFailed")];
-            //            [MBProgressHUD showTipMessageInWindow:[ErrorTypeTool getDescriptionWithErrorCode:code]];
         }
     } failure:^(NSError *error) {
         
@@ -162,8 +161,13 @@ static NSString * const TextFieldCellID = @"TextFieldCellID";
 }
 - (void)scanAction
 {
+    __block NSString * result = nil;
     __weak typeof (self) weakself = self;
     HMScannerController *scanner = [HMScannerController scannerWithCardName:nil avatar:nil completion:^(NSString *stringValue) {
+        if (result) {
+            return;
+        }
+        result = stringValue;
         NSOperationQueue * queue = [[NSOperationQueue alloc] init];
         [queue addOperationWithBlock:^{
 //            BOOL isCorrectAddress = [Keypair isAddressValid: stringValue];
@@ -191,7 +195,7 @@ static NSString * const TextFieldCellID = @"TextFieldCellID";
         [MBProgressHUD showTipMessageInWindow:Localized(@"NickNameFormatIncorrect")];
         return;
     }
-    if (NULLString(self.describe) && self.describe.length > PW_MAX_LENGTH) {
+    if (NotNULLString(self.describe) && self.describe.length > PW_MAX_LENGTH) {
         [MBProgressHUD showTipMessageInWindow:Localized(@"DescribeFormatIncorrect")];
         return;
     }
@@ -201,13 +205,10 @@ static NSString * const TextFieldCellID = @"TextFieldCellID";
             if (code == Success_Code) {
                 [MBProgressHUD showTipMessageInWindow:Localized(@"SaveSuccessfully")];
                 [self.navigationController popViewControllerAnimated:NO];
-            } else if (code == 100055) {
-                [MBProgressHUD showTipMessageInWindow:Localized(@"ContactExisted")];
-            } else if (code == 100008) {
-                [MBProgressHUD showTipMessageInWindow:Localized(@"INVALID_ADDRESS_ERROR")];
-            } else {
+            } else if (code == ErrorTypeParams) {
                 [MBProgressHUD showTipMessageInWindow:Localized(@"SaveFailed")];
-                //            [MBProgressHUD showTipMessageInWindow:[ErrorTypeTool getDescriptionWithErrorCode:code]];
+            } else {
+                [MBProgressHUD showTipMessageInWindow:[ErrorTypeTool getDescriptionWithErrorCode:code]];
             }
         } failure:^(NSError *error) {
             
@@ -218,13 +219,10 @@ static NSString * const TextFieldCellID = @"TextFieldCellID";
             if (code == Success_Code) {
                 [MBProgressHUD showTipMessageInWindow:Localized(@"SaveSuccessfully")];
                 [self.navigationController popViewControllerAnimated:NO];
-            } else if (code == 100055) {
-                [MBProgressHUD showTipMessageInWindow:Localized(@"ContactExisted")];
-            } else if (code == 100008) {
-                [MBProgressHUD showTipMessageInWindow:Localized(@"INVALID_ADDRESS_ERROR")];
-            } else {
+            } else if (code == ErrorTypeParams) {
                 [MBProgressHUD showTipMessageInWindow:Localized(@"SaveFailed")];
-                //            [MBProgressHUD showTipMessageInWindow:[ErrorTypeTool getDescriptionWithErrorCode:code]];
+            } else {
+                [MBProgressHUD showTipMessageInWindow:[ErrorTypeTool getDescriptionWithErrorCode:code]];
             }
         } failure:^(NSError *error) {
             

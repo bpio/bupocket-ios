@@ -38,9 +38,15 @@
     if (jsonString == nil) {
         return nil;
     }
-    NSData *jsonData = [jsonString dataUsingEncoding:NSUTF8StringEncoding];
-    
-    return [NSJSONSerialization JSONObjectWithData:jsonData options:NSJSONReadingMutableLeaves error:nil];
+    NSData * jsonData = [jsonString dataUsingEncoding:NSUTF8StringEncoding];
+    NSError * error;
+    NSDictionary *dic = [NSJSONSerialization JSONObjectWithData:jsonData options:NSJSONReadingMutableLeaves error:&error];
+    if(error)
+    {
+        DLog(@"json解析失败：%@",error);
+        return nil;
+    }
+    return dic;
 }
 
 + (id)dictionaryOrArrayWithJSONSData:(NSData *)jsonData

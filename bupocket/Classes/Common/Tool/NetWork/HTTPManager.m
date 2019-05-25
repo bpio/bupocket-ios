@@ -10,6 +10,17 @@
 #import "HttpTool.h"
 #import "AtpProperty.h"
 
+@interface HTTPManager ()
+
+{
+    TransactionService * _transactionService;
+    TransactionBuildBlobResponse * _buildBlobResponse;
+    TransactionSignResponse * _signResponse;
+    NSString * _hash;
+}
+
+@end
+
 @implementation HTTPManager
 
 static NSString * _webServerDomain;
@@ -42,11 +53,11 @@ static int64_t const gasPrice = 1000;
     if ([[NSUserDefaults standardUserDefaults] boolForKey:If_Switch_TestNetwork] == YES) {
         _webServerDomain = WEB_SERVER_DOMAIN_TEST;
         _bumoNodeUrl = BUMO_NODE_URL_TEST;
-        _shareManager.pushMessageSocketUrl = PUSH_MESSAGE_SOCKET_URL_TEST;
+        _shareManager.pushMessageSocketUrl = BUMO_TOOLS_URL_TEST;
     } else {
         _webServerDomain = WEB_SERVER_DOMAIN;
         _bumoNodeUrl = BUMO_NODE_URL;
-        _shareManager.pushMessageSocketUrl = PUSH_MESSAGE_SOCKET_URL;
+        _shareManager.pushMessageSocketUrl = BUMO_TOOLS_URL;
     }
 }
 - (id)copyWithZone:(NSZone *)zone
@@ -54,6 +65,28 @@ static int64_t const gasPrice = 1000;
     return _shareManager;
 }
 
+#pragma mark -- 辅助函数 处理共同的特性等.
+/**
+ *  将HTTP的string类型参数转换成字典
+ *
+ *  @param body phone=1234567&password=321
+ *
+ *  @return @{@"phone":@"1234567",@"password":@"321"}
+ */
+- (NSDictionary *)parametersWithHTTPBody:(NSString *)body
+{
+    if (body.length == 0) {
+        return nil;
+    }
+    NSArray *array = [body componentsSeparatedByString:@"&"];
+    NSMutableDictionary * parameters = [NSMutableDictionary dictionary];
+    for (NSString * str in array) {
+        NSString * key = [str componentsSeparatedByString:@"="][0];
+        NSString * value = [str componentsSeparatedByString:@"="][1];
+        [parameters setValue:value forKey:key];
+    }
+    return parameters;
+}
 // Switched network
 - (void)SwitchedNetworkWithIsTest:(BOOL)isTest
 {
@@ -89,11 +122,11 @@ static int64_t const gasPrice = 1000;
                          failure:(void (^)(NSError *error))failure
 {
     NSString * url = SERVER_COMBINE_API(_webServerDomain, Assets_List);
-    NSDictionary * parmenters = @{@"address": address,
+    NSDictionary * parameters = @{@"address": address,
                                   @"currencyType": currencyType,
                                   @"tokenList": tokenList
                                   };
-    [[HttpTool shareTool] POST:url parameters:parmenters success:^(id responseObject) {
+    [[HttpTool shareTool] POST:url parameters:parameters success:^(id responseObject) {
         if(success != nil)
         {
             success(responseObject);
@@ -112,12 +145,12 @@ static int64_t const gasPrice = 1000;
                                  failure:(void (^)(NSError *error))failure
 {
     NSString * url = SERVER_COMBINE_API(_webServerDomain, Assets_Search);
-    NSDictionary * parmenters = @{@"address": CurrentWalletAddress,
+    NSDictionary * parameters = @{@"address": CurrentWalletAddress,
                                   @"assetCode" : assetCode,
                                   @"supportFuzzy" : @"true",
                                   @"startPage" : @(pageIndex),
                                   @"pageSize" : @(PageSize_Max)};
-    [[HttpTool shareTool] POST:url parameters:parmenters success:^(id responseObject) {
+    [[HttpTool shareTool] POST:url parameters:parameters success:^(id responseObject) {
         if(success != nil)
         {
             success(responseObject);
@@ -140,8 +173,8 @@ static int64_t const gasPrice = 1000;
                                  failure:(void (^)(NSError *error))failure
 {
     NSString * url = SERVER_COMBINE_API(_webServerDomain, Transaction_Record);
-    NSMutableDictionary * parmenters = [NSMutableDictionary dictionary];
-    [parmenters addEntriesFromDictionary:@{@"tokenType" : @(tokenType),
+    NSMutableDictionary * parameters = [NSMutableDictionary dictionary];
+    [parameters addEntriesFromDictionary:@{@"tokenType" : @(tokenType),
                                            @"currencyType": currencyType,
                                            @"assetCode" : assetCode,
                                            @"issuer" : issuer,
@@ -149,7 +182,7 @@ static int64_t const gasPrice = 1000;
                                            @"startPage" : @(pageIndex),
                                            @"pageSize" : @(PageSize_Max)
                                            }];
-    [[HttpTool shareTool] POST:url parameters:parmenters success:^(id responseObject) {
+    [[HttpTool shareTool] POST:url parameters:parameters success:^(id responseObject) {
         if(success != nil)
         {
             success(responseObject);
@@ -168,11 +201,11 @@ static int64_t const gasPrice = 1000;
                                failure:(void (^)(NSError *error))failure
 {
     NSString * url = SERVER_COMBINE_API(_webServerDomain, Order_Details);
-    NSDictionary * parmenters = @{
+    NSDictionary * parameters = @{
                                   @"address" : address,
                                   @"optNo": @(optNo)
                                   };
-    [[HttpTool shareTool] POST:url parameters:parmenters success:^(id responseObject) {
+    [[HttpTool shareTool] POST:url parameters:parameters success:^(id responseObject) {
         if(success != nil)
         {
             success(responseObject);
@@ -191,8 +224,8 @@ static int64_t const gasPrice = 1000;
 {
     [MBProgressHUD showActivityMessageInWindow:Localized(@"Loading")];
     NSString * url = SERVER_COMBINE_API(_webServerDomain, Transaction_Details);
-    NSDictionary * parmenters = @{@"Hash" : hash};
-    [[HttpTool shareTool] POST:url parameters:parmenters success:^(id responseObject) {
+    NSDictionary * parameters = @{@"Hash" : hash};
+    [[HttpTool shareTool] POST:url parameters:parameters success:^(id responseObject) {
         if(success != nil)
         {
             success(responseObject);
@@ -214,11 +247,11 @@ static int64_t const gasPrice = 1000;
 {
     [MBProgressHUD showActivityMessageInWindow:Localized(@"Loading")];
     NSString * url = SERVER_COMBINE_API(_webServerDomain, Registered_And_Distribution);
-    NSDictionary * parmenters = @{
+    NSDictionary * parameters = @{
                                   @"assetCode": assetCode,
                                   @"issueAddress": issueAddress
                                   };
-    [[HttpTool shareTool] POST:url parameters:parmenters success:^(id responseObject) {
+    [[HttpTool shareTool] POST:url parameters:parameters success:^(id responseObject) {
         if(success != nil)
         {
             success(responseObject);
@@ -239,11 +272,11 @@ static int64_t const gasPrice = 1000;
 {
     [MBProgressHUD showActivityMessageInWindow:Localized(@"Loading")];
     NSString * url = SERVER_COMBINE_API(_webServerDomain, Help_And_Feedback);
-    NSDictionary * parmenters = @{
+    NSDictionary * parameters = @{
                                   @"content": content,
                                   @"contact": contact
                                   };
-    [[HttpTool shareTool] POST:url parameters:parmenters success:^(id responseObject) {
+    [[HttpTool shareTool] POST:url parameters:parameters success:^(id responseObject) {
         if(success != nil)
         {
             success(responseObject);
@@ -263,10 +296,10 @@ static int64_t const gasPrice = 1000;
                                       failure:(void (^)(NSError *error))failure
 {
     NSString * url = SERVER_COMBINE_API(_webServerDomain, AddressBook_List);
-    NSDictionary * parmenters = @{@"identityAddress": identityAddress,
+    NSDictionary * parameters = @{@"identityAddress": identityAddress,
                                   @"startPage" : @(pageIndex),
                                   @"pageSize" : @(PageSize_Max)};
-    [[HttpTool shareTool] POST:url parameters:parmenters success:^(id responseObject) {
+    [[HttpTool shareTool] POST:url parameters:parameters success:^(id responseObject) {
         if(success != nil)
         {
             success(responseObject);
@@ -288,13 +321,13 @@ static int64_t const gasPrice = 1000;
 {
     [MBProgressHUD showActivityMessageInWindow:Localized(@"Loading")];
     NSString * url = SERVER_COMBINE_API(_webServerDomain, Add_AddressBook);
-    NSDictionary * parmenters = @{
+    NSDictionary * parameters = @{
                                   @"identityAddress": identityAddress,
                                   @"linkmanAddress": linkmanAddress,
                                   @"nickName": nickName,
                                   @"remark": remark
                                   };
-    [[HttpTool shareTool] POST:url parameters:parmenters success:^(id responseObject) {
+    [[HttpTool shareTool] POST:url parameters:parameters success:^(id responseObject) {
         if(success != nil)
         {
             success(responseObject);
@@ -318,14 +351,14 @@ static int64_t const gasPrice = 1000;
 {
     [MBProgressHUD showActivityMessageInWindow:Localized(@"Loading")];
     NSString * url = SERVER_COMBINE_API(_webServerDomain, Update_AddressBook);
-    NSDictionary * parmenters = @{
+    NSDictionary * parameters = @{
                                   @"identityAddress": identityAddress,
                                   @"oldLinkmanAddress": oldLinkmanAddress,
                                   @"newLinkmanAddress": newLinkmanAddress,
                                   @"nickName": nickName,
                                   @"remark": remark
                                   };
-    [[HttpTool shareTool] POST:url parameters:parmenters success:^(id responseObject) {
+    [[HttpTool shareTool] POST:url parameters:parameters success:^(id responseObject) {
         if(success != nil)
         {
             success(responseObject);
@@ -346,11 +379,11 @@ static int64_t const gasPrice = 1000;
 {
     [MBProgressHUD showActivityMessageInWindow:Localized(@"Loading")];
     NSString * url = SERVER_COMBINE_API(_webServerDomain, Delete_AddressBook);
-    NSDictionary * parmenters = @{
+    NSDictionary * parameters = @{
                                   @"identityAddress": identityAddress,
                                   @"linkmanAddress": linkmanAddress
                                   };
-    [[HttpTool shareTool] POST:url parameters:parmenters success:^(id responseObject) {
+    [[HttpTool shareTool] POST:url parameters:parameters success:^(id responseObject) {
         if(success != nil)
         {
             success(responseObject);
@@ -360,6 +393,329 @@ static int64_t const gasPrice = 1000;
         {
             failure(error);
             [MBProgressHUD showTipMessageInWindow:Localized(@"NoNetWork")];
+        }
+    }];
+}
+#pragma mark - Account Center
+// Confirm Login
+- (void)getAccountCenterDataWithAppId:(NSString *)appId
+                                 uuid:(NSString *)uuid
+                              success:(void (^)(id responseObject))success
+                              failure:(void (^)(NSError *error))failure
+{
+    [MBProgressHUD showActivityMessageInWindow:Localized(@"Loading")];
+    NSString * URL = Account_Center_ScanQRLogin;
+    if (appId) {
+        URL = Account_Center_Confirm_Login;
+    }
+    NSString * url = SERVER_COMBINE_API(_webServerDomain, URL);
+    NSString * body = [NSString stringWithFormat:@"address=%@&uuid=%@&appId=%@", CurrentWalletAddress, uuid, appId];
+    NSDictionary * parameters = [[HTTPManager shareManager] parametersWithHTTPBody:body];
+    [[HttpTool shareTool] POST:url parameters:parameters success:^(id responseObject) {
+        if(success != nil)
+        {
+            success(responseObject);
+        }
+    } failure:^(NSError *error) {
+        if(failure != nil)
+        {
+            failure(error);
+            [MBProgressHUD showTipMessageInWindow:Localized(@"NoNetWork")];
+        }
+    }];
+}
+// find ad banner
+- (void)getAdsDataWithURL:(NSString *)URL
+                  success:(void (^)(id responseObject))success
+                  failure:(void (^)(NSError *error))failure
+{
+    NSString * url = SERVER_COMBINE_API(_webServerDomain, URL);
+    [[HttpTool shareTool] GET:url parameters:nil success:^(id responseObject) {
+        if(success != nil)
+        {
+            success(responseObject);
+        }
+    } failure:^(NSError *error) {
+        if(failure != nil)
+        {
+            failure(error);
+        }
+    }];
+}
+#pragma mark - Node application
+// QR code information
+- (void)getDposApplyNodeDataWithQRcodeSessionId:(NSString *)QRcodeSessionId
+                                        success:(void (^)(id responseObject))success
+                                        failure:(void (^)(NSError *error))failure
+{
+    [MBProgressHUD showActivityMessageInWindow:Localized(@"Loading")];
+    NSString * url = SERVER_COMBINE_API(_webServerDomain, Node_Content);
+    NSDictionary * parameters = @{
+                                  @"qrcodeSessionId": QRcodeSessionId,
+                                  @"initiatorAddress": CurrentWalletAddress
+                                  };
+    [[HttpTool shareTool] POST:url parameters:parameters success:^(id responseObject) {
+        if(success != nil)
+        {
+            success(responseObject);
+        }
+    } failure:^(NSError *error) {
+        if(failure != nil)
+        {
+            failure(error);
+            [MBProgressHUD showTipMessageInWindow:Localized(@"NoNetWork")];
+        }
+    }];
+}
+
+#pragma mark 确认交易
+// Contract Transaction hash
+- (BOOL)getTransactionHashWithModel:(ConfirmTransactionModel *)confirmTransactionModel
+{
+    NSString * sourceAddress = CurrentWalletAddress;
+    NSString * ID = confirmTransactionModel.qrcodeSessionId;
+    if (confirmTransactionModel.nodeId) {
+        ID = confirmTransactionModel.nodeId;
+    }
+    NSString * notes = confirmTransactionModel.qrRemarkEn;
+    int64_t fee = [[[NSDecimalNumber decimalNumberWithString:confirmTransactionModel.transactionCost] decimalNumberByMultiplyingByPowerOf10: Decimals_BU] longLongValue];
+    int64_t nonce = [[HTTPManager shareManager] getAccountNonce: sourceAddress] + 1;
+    if (nonce == 0) return NO;
+    NSMutableArray * operations = [NSMutableArray array];
+    int64_t amount = [[[NSDecimalNumber decimalNumberWithString:confirmTransactionModel.amount] decimalNumberByMultiplyingByPowerOf10: Decimals_BU] longLongValue];
+    
+    if ([confirmTransactionModel.type integerValue] == TransactionTypeCooperate) {
+        ContractCreateOperation * contractCreateOperation = [ContractCreateOperation new];
+        [contractCreateOperation setSourceAddress: sourceAddress];
+        int64_t activateCost = [[[NSDecimalNumber decimalNumberWithString:Activate_Cooperate_MIN] decimalNumberByMultiplyingByPowerOf10: Decimals_BU] longLongValue];
+        [contractCreateOperation setInitBalance:amount + activateCost];
+        NSDictionary * scriptDic = [JsonTool dictionaryOrArrayWithJSONSString:confirmTransactionModel.script];
+        [contractCreateOperation setInitInput:scriptDic[@"input"]];
+        [contractCreateOperation setPayload:scriptDic[@"payload"]];
+        [contractCreateOperation setMetadata:notes];
+        [operations addObject:contractCreateOperation];
+    } else {
+        ContractInvokeByBUOperation *operation = [ContractInvokeByBUOperation new];
+        [operation setSourceAddress: sourceAddress];
+        [operation setContractAddress: confirmTransactionModel.destAddress];
+        [operation setAmount: amount];
+        [operation setInput:confirmTransactionModel.script];
+        [operation setMetadata:notes];
+        [operations addObject:operation];
+    }
+    return [[HTTPManager shareManager] getHashWithSourceAddress:sourceAddress nonce:nonce gasPrice:gasPrice feeLimit:fee operations:operations notes:notes];
+}
+#pragma mark 确认交易
+- (void)getContractTransactionWithModel:(ConfirmTransactionModel *)confirmTransactionModel
+                                success:(void (^)(id responseObject))success
+                                failure:(void (^)(NSError *error))failure
+{
+    // Build BUSendOperation
+    [MBProgressHUD showActivityMessageInWindow:Localized(@"DataChecking")];
+    DLog(@"hash:%@", _hash);
+    if (([confirmTransactionModel.type integerValue] == TransactionTypeCooperateSupport || [confirmTransactionModel.type integerValue] == TransactionTypeCooperateSignOut) && confirmTransactionModel.isCooperateDetail == YES) {
+        NSString * URL = Node_Cooperate_Exit;
+        if ([confirmTransactionModel.type integerValue] == TransactionTypeCooperateSupport) {
+            URL = Node_Cooperate_Support;
+        }
+        [[HTTPManager shareManager] getNodeCooperateCheckDataWithURL:URL nodeId:confirmTransactionModel.nodeId copies:confirmTransactionModel.copies success:^(id responseObject) {
+            if(success != nil)
+            {
+                success(responseObject);
+            }
+        } failure:^(NSError *error) {
+            if(failure != nil)
+            {
+                failure(error);
+                [MBProgressHUD showTipMessageInWindow:Localized(@"NoNetWork")];
+            }
+        }];
+    } else {
+        [[HTTPManager shareManager] getConfirmTransactionDataWithModel:confirmTransactionModel initiatorAddress:CurrentWalletAddress success:^(id responseObject) {
+            if(success != nil)
+            {
+                success(responseObject);
+            }
+        } failure:^(NSError *error) {
+            if(failure != nil)
+            {
+                failure(error);
+                [MBProgressHUD showTipMessageInWindow:Localized(@"NoNetWork")];
+            }
+        }];
+    }
+
+}
+
+// Confirm Transaction
+- (void)getConfirmTransactionDataWithModel:(ConfirmTransactionModel *)confirmTransactionModel
+                          initiatorAddress:(NSString *)initiatorAddress
+                                   success:(void (^)(id responseObject))success
+                                   failure:(void (^)(NSError *error))failure
+{
+    NSString * URL = Node_Confirm;
+    if ([confirmTransactionModel.type integerValue] == TransactionTypeNodeWithdrawal) {
+        URL = Node_Withdrawal_Confirm;
+    }
+    NSString * url = SERVER_COMBINE_API(_webServerDomain, URL);
+    NSString * body = [NSString stringWithFormat:@"qrcodeSessionId=%@&hash=%@&initiatorAddress=%@&nodeId=%@", confirmTransactionModel.qrcodeSessionId, _hash, initiatorAddress, confirmTransactionModel.nodeId];
+    NSDictionary * parameters = [[HTTPManager shareManager] parametersWithHTTPBody:body];
+    [[HttpTool shareTool] POST:url parameters:parameters success:^(id responseObject) {
+        if(success != nil)
+        {
+            success(responseObject);
+        }
+    } failure:^(NSError *error) {
+        if(failure != nil)
+        {
+            failure(error);
+            [MBProgressHUD showTipMessageInWindow:Localized(@"NoNetWork")];
+        }
+    }];
+}
+// short link
+- (void)getShortLinkDataWithType:(NSString *)type
+                            path:(NSString *)path
+                         success:(void (^)(id responseObject))success
+                         failure:(void (^)(NSError *error))failure
+{
+    [MBProgressHUD showActivityMessageInWindow:Localized(@"Loading")];
+    NSString * url = SERVER_COMBINE_API(_webServerDomain, Node_ShortLink_URL);
+    NSString * body = [NSString stringWithFormat:@"type=%@&path=%@", type, path];
+    NSDictionary * parameters = [[HTTPManager shareManager] parametersWithHTTPBody:body];
+    [[HttpTool shareTool] POST:url parameters:parameters success:^(id responseObject) {
+        if(success != nil)
+        {
+            success(responseObject);
+        }
+    } failure:^(NSError *error) {
+        if(failure != nil)
+        {
+            failure(error);
+        }
+    }];
+}
+// Node List
+- (void)getNodeListDataWithIdentityType:(NSString *)identityType
+                               nodeName:(NSString *)nodeName
+                         capitalAddress:(NSString *)capitalAddress
+                                success:(void (^)(id responseObject))success
+                                failure:(void (^)(NSError *error))failure
+{
+    NSString * url = SERVER_COMBINE_API(_webServerDomain, Node_List);
+    NSString * body = [NSString stringWithFormat:@"address=%@&identityType=%@&nodeName=%@&capitalAddress=%@", CurrentWalletAddress, identityType, nodeName, capitalAddress];
+    NSDictionary * parameters = [[HTTPManager shareManager] parametersWithHTTPBody:body];
+    [[HttpTool shareTool] POST:url parameters:parameters success:^(id responseObject) {
+        if(success != nil)
+        {
+            success(responseObject);
+        }
+    } failure:^(NSError *error) {
+        if(failure != nil)
+        {
+            failure(error);
+        }
+    }];
+}
+
+// Node Invitation Vote
+- (void)getNodeInvitationVoteDataWithNodeId:(NSString *)nodeId
+                                    success:(void (^)(id responseObject))success
+                                    failure:(void (^)(NSError *error))failure
+{
+    NSString * url = SERVER_COMBINE_API(_webServerDomain, Node_Invitation_Vote);
+    NSString * body = [NSString stringWithFormat:@"address=%@&nodeId=%@", CurrentWalletAddress, nodeId];
+    NSDictionary * parameters = [[HTTPManager shareManager] parametersWithHTTPBody:body];
+    [[HttpTool shareTool] POST:url parameters:parameters success:^(id responseObject) {
+        if(success != nil)
+        {
+            success(responseObject);
+        }
+    } failure:^(NSError *error) {
+        if(failure != nil)
+        {
+            failure(error);
+        }
+    }];
+}
+
+// Voting Record
+- (void)getVotingRecordDataWithNodeId:(NSString *)nodeId
+                              success:(void (^)(id responseObject))success
+                              failure:(void (^)(NSError *error))failure
+{
+    NSString * url = SERVER_COMBINE_API(_webServerDomain, Voting_Record);
+    NSString * body = [NSString stringWithFormat:@"address=%@&nodeId=%@", CurrentWalletAddress, nodeId];
+    NSDictionary * parameters = [[HTTPManager shareManager] parametersWithHTTPBody:body];
+    [[HttpTool shareTool] POST:url parameters:parameters success:^(id responseObject) {
+        if(success != nil)
+        {
+            success(responseObject);
+        }
+    } failure:^(NSError *error) {
+        if(failure != nil)
+        {
+            failure(error);
+        }
+    }];
+}
+// Node Cooperate List
+- (void)getNodeCooperateListDataSuccess:(void (^)(id responseObject))success
+                                failure:(void (^)(NSError *error))failure
+{
+    NSString * url = SERVER_COMBINE_API(_webServerDomain, Node_Cooperate_List);
+    [[HttpTool shareTool] POST:url parameters:nil success:^(id responseObject) {
+        if(success != nil)
+        {
+            success(responseObject);
+        }
+    } failure:^(NSError *error) {
+        if(failure != nil)
+        {
+            failure(error);
+        }
+    }];
+}
+// Node Cooperate Detail
+- (void)getNodeCooperateDetailDataWithNodeId:(NSString *)nodeId
+                                     success:(void (^)(id responseObject))success
+                                     failure:(void (^)(NSError *error))failure
+{
+    NSString * url = SERVER_COMBINE_API(_webServerDomain, Node_Cooperate_Detail);
+    NSString * body = [NSString stringWithFormat:@"nodeId=%@", nodeId];
+    NSDictionary * parameters = [[HTTPManager shareManager] parametersWithHTTPBody:body];
+    [[HttpTool shareTool] POST:url parameters:parameters success:^(id responseObject) {
+        if(success != nil)
+        {
+            success(responseObject);
+        }
+    } failure:^(NSError *error) {
+        if(failure != nil)
+        {
+            failure(error);
+        }
+    }];
+}
+// Node Cooperate Check
+- (void)getNodeCooperateCheckDataWithURL:(NSString *)URL
+                                  nodeId:(NSString *)nodeId
+                                  copies:(NSString *)copies
+                                 success:(void (^)(id responseObject))success
+                                 failure:(void (^)(NSError *error))failure
+{
+    [MBProgressHUD showActivityMessageInWindow:Localized(@"DataChecking")];
+    NSString * url = SERVER_COMBINE_API(_webServerDomain, URL);
+    NSString * body = [NSString stringWithFormat:@"nodeId=%@&hash=%@&copies=%@&initiatorAddress=%@", nodeId, _hash, copies, CurrentWalletAddress];
+    NSDictionary * parameters = [[HTTPManager shareManager] parametersWithHTTPBody:body];
+    [[HttpTool shareTool] POST:url parameters:parameters success:^(id responseObject) {
+        if(success != nil)
+        {
+            success(responseObject);
+        }
+    } failure:^(NSError *error) {
+        if(failure != nil)
+        {
+            failure(error);
         }
     }];
 }
@@ -392,7 +748,7 @@ static int64_t const gasPrice = 1000;
 - (void)getBlockLatestFees {
     BlockService *service = [[[SDK sharedInstance] setUrl: _bumoNodeUrl] getBlockService];
     BlockGetLatestFeesResponse * response = [service getLatestFees];
-    NSString * minAssetLimit = @"0.01";
+    NSString * minAssetLimit = TransactionCost_MIN;
     NSUserDefaults * defaults = [NSUserDefaults standardUserDefaults];
     if (response.errorCode == Success_Code) {
         minAssetLimit = [[[NSDecimalNumber decimalNumberWithString:[NSString stringWithFormat:@"%lld", response.result.fees.baseReserve]] decimalNumberByMultiplyingByPowerOf10: -Decimals_BU] stringValue];
@@ -426,9 +782,7 @@ static int64_t const gasPrice = 1000;
             }
         });
         balance = [[NSDecimalNumber decimalNumberWithString:[NSString stringWithFormat:@"%lld", response.result.balance]] decimalNumberByMultiplyingByPowerOf10: -Decimals_BU];
-//        balance = [Tools MO2BU:response.result.balance];
         amount = [[balance decimalNumberBySubtracting:minLimitationNumber] decimalNumberBySubtracting: costNumber];
-//        balance - baseReserve - cost;
     } else {
         dispatch_async(dispatch_get_main_queue(), ^{
             if (ifShowLoading == YES) {
@@ -460,29 +814,15 @@ static int64_t const gasPrice = 1000;
 
 // Query account / Is it activated?
 - (NSString *)getAccountInfoWithAddress:(NSString *)address {
-//    dispatch_async(dispatch_get_main_queue(), ^{
-//        [MBProgressHUD showActivityMessageInWindow:Localized(@"Loading")];
-//    });
     AccountService * accountService = [[[SDK sharedInstance] setUrl:_bumoNodeUrl] getAccountService];
     AccountGetInfoRequest *request = [AccountGetInfoRequest new];
     [request setAddress : address];
     AccountGetInfoResponse *response = [accountService getInfo : request];
     if (response.errorCode == 0) {
-        //        NSLog(@"%@", [response.result yy_modelToJSONString]);
-//        dispatch_async(dispatch_get_main_queue(), ^{
-//            [MBProgressHUD hideHUD];
-//        });
         return TransactionCost_MIN;
     } else if (response.errorCode == 4) {
-//        dispatch_async(dispatch_get_main_queue(), ^{
-//            [MBProgressHUD hideHUD];
-//        });
         return TransactionCost_NotActive_MIN;
     } else {
-//        dispatch_async(dispatch_get_main_queue(), ^{
-//            [MBProgressHUD hideHUD];
-//            [MBProgressHUD showTipMessageInWindow:[ErrorTypeTool getDescription:response.errorCode]];
-//        });
         return TransactionCost_MIN;
     }
 }
@@ -496,7 +836,6 @@ static int64_t const gasPrice = 1000;
                          failure:(void (^)(NSError *error))failure
 {
     [MBProgressHUD showActivityMessageInWindow:Localized(@"Loading")];
-//    __weak typeof(self) weakSelf = self;
     NSOperationQueue * queue = [[NSOperationQueue alloc] init];
     [queue addOperationWithBlock:^{
         // Random number -> mnemonic
@@ -554,7 +893,6 @@ static int64_t const gasPrice = 1000;
                            failure:(void (^)(NSError *error))failure
 {
     [MBProgressHUD showActivityMessageInWindow:Localized(@"Loading")];
-    //    __weak typeof(self) weakSelf = self;
     NSOperationQueue * queue = [[NSOperationQueue alloc] init];
     [queue addOperationWithBlock:^{
         // Random number -> mnemonic
@@ -608,9 +946,9 @@ static int64_t const gasPrice = 1000;
     }
     return !imported;
 }
+#pragma mark - 转账
 // Transfer accounts
-- (void)setTransferDataWithTokenType:(NSInteger)tokenType
-                            password:(NSString *)password
+- (BOOL)setTransferDataWithTokenType:(NSInteger)tokenType
                          destAddress:(NSString *)destAddress
                               assets:(NSString *)assets
                             decimals:(NSInteger)decimals
@@ -618,22 +956,16 @@ static int64_t const gasPrice = 1000;
                                notes:(NSString *)notes
                                 code:(NSString *)code
                               issuer:(NSString *)issuer
-                             success:(void (^)(TransactionResultModel * resultModel))success
-                             failure:(void (^)(TransactionResultModel * resultModel))failure
 {
+    dispatch_async(dispatch_get_main_queue(), ^{
+        [MBProgressHUD showActivityMessageInWindow:Localized(@"Loading")];
+    });
     // Build BUSendOperation
     NSString * sourceAddress = CurrentWalletAddress;
-    NSString * walletKeyStore = CurrentWalletKeyStore;
-    NSString * privateKey = [NSString decipherKeyStoreWithPW:password keyStoreValueStr:walletKeyStore];
-    if ([Tools isEmpty:privateKey]) {
-        [MBProgressHUD showTipMessageInWindow:Localized(@"PasswordIsIncorrect")];
-        return;
-    }
     int64_t fee = [[[NSDecimalNumber decimalNumberWithString:feeLimit] decimalNumberByMultiplyingByPowerOf10: Decimals_BU] longLongValue];
-    int64_t nonce = [[HTTPManager shareManager] getAccountNonce: sourceAddress] + 1;
-    if (nonce == 0) return;
-    NSString * hash;
     NSMutableArray * operations = [NSMutableArray array];
+    int64_t nonce = [[HTTPManager shareManager] getAccountNonce: sourceAddress] + 1;
+    if (nonce == 0) return NO;
     if (tokenType == Token_Type_BU) {
         // BU
         int64_t amount = [[[NSDecimalNumber decimalNumberWithString:assets] decimalNumberByMultiplyingByPowerOf10: Decimals_BU] longLongValue];
@@ -642,11 +974,9 @@ static int64_t const gasPrice = 1000;
         [operation setDestAddress: destAddress];
         [operation setAmount: amount];
         [operations addObject:operation];
-        hash = [[HTTPManager shareManager] buildBlobAndSignAndSubmit:privateKey :sourceAddress :nonce :gasPrice :fee :operations :notes];
     } else {
         // Other currencies
         int64_t amount = [[[NSDecimalNumber decimalNumberWithString:assets] decimalNumberByMultiplyingByPowerOf10: decimals] longLongValue];
-//        int64_t amount = multiplierNumber * powl(10, decimals);
         if ([[self getAccountInfoWithAddress: destAddress] isEqualToString:TransactionCost_NotActive_MIN]) {
             AccountActivateOperation *activateOperation = [AccountActivateOperation new];
             [activateOperation setSourceAddress: sourceAddress];
@@ -663,20 +993,19 @@ static int64_t const gasPrice = 1000;
         [operation setIssuer: issuer];
         [operation setAmount: amount];
         [operations addObject: operation];
-        hash = [[HTTPManager shareManager] buildBlobAndSignAndSubmit:privateKey :sourceAddress :nonce :gasPrice :fee :operations :notes];
     }
-    if (![Tools isEmpty: hash]) {
-        [[HTTPManager shareManager] getTransactionStatusHash:hash success:success failure:failure];
-    }
+    return [[HTTPManager shareManager] getHashWithSourceAddress:sourceAddress nonce:nonce gasPrice:gasPrice feeLimit:fee operations:operations notes:notes];
 }
 
 // register
-- (void)getRegisteredDataWithPassword:(NSString *)password
-                      registeredModel:(RegisteredModel *)registeredModel
-                              success:(void (^)(TransactionResultModel * resultModel))success
-                              failure:(void (^)(TransactionResultModel * resultModel))failure
+- (BOOL)getRegisteredDataWithRegisteredModel:(RegisteredModel *)registeredModel
 {
+    dispatch_async(dispatch_get_main_queue(), ^{
+        [MBProgressHUD showActivityMessageInWindow:Localized(@"Loading")];
+    });
     NSString * sourceAddress = CurrentWalletAddress;
+    int64_t nonce = [[HTTPManager shareManager] getAccountNonce: CurrentWalletAddress] + 1;
+    if (nonce == 0) return NO;
     NSString *key = [NSString stringWithFormat: @"asset_property_%@", registeredModel.code];
     AtpProperty * atpProperty = [[AtpProperty alloc] init];
     int64_t total = [[[NSDecimalNumber decimalNumberWithString:registeredModel.amount] decimalNumberByMultiplyingByPowerOf10: registeredModel.decimals] longLongValue];
@@ -692,52 +1021,34 @@ static int64_t const gasPrice = 1000;
     [operation setSourceAddress : sourceAddress];
     [operation setKey : key];
     [operation setValue : value];
-    NSString * privateKey = [NSString decipherKeyStoreWithPW:password keyStoreValueStr:CurrentWalletKeyStore];
-    if ([Tools isEmpty:privateKey]) {
-        [MBProgressHUD showTipMessageInWindow:Localized(@"PasswordIsIncorrect")];
-        return;
-    }
     int64_t feeLimit = [[[NSDecimalNumber decimalNumberWithString:Registered_Cost] decimalNumberByMultiplyingByPowerOf10: Decimals_BU] longLongValue];
-    int64_t nonce = [[HTTPManager shareManager] getAccountNonce: sourceAddress] + 1;
-    if (nonce == 0) return;
     NSMutableArray * operations = [NSMutableArray array];
     [operations addObject:operation];
-    NSString * hash = [[HTTPManager shareManager] buildBlobAndSignAndSubmit:privateKey :sourceAddress :nonce :gasPrice :feeLimit :operations :nil];
-    if (![Tools isEmpty: hash]) {
-        [[HTTPManager shareManager] getTransactionStatusHash:hash success:success failure:failure];
-    }
+    return [[HTTPManager shareManager] getHashWithSourceAddress:sourceAddress nonce:nonce gasPrice:gasPrice feeLimit:feeLimit operations:operations notes:nil];
 }
 // Issue
-- (void)getIssueAssetDataWithPassword:(NSString *)password
-                            assetCode:(NSString *)assetCode
-                           assetAmount:(int64_t)assetAmount
-                             decimals:(NSInteger)decimals
-                              success:(void (^)(TransactionResultModel * resultModel))success
-                              failure:(void (^)(TransactionResultModel * resultModel))failure
+- (BOOL)getIssueAssetDataWithAssetCode:(NSString *)assetCode
+                            assetAmount:(int64_t)assetAmount
+                               decimals:(NSInteger)decimals
 {
+    dispatch_async(dispatch_get_main_queue(), ^{
+        [MBProgressHUD showActivityMessageInWindow:Localized(@"Loading")];
+    });
     NSString * sourceAddress = CurrentWalletAddress;
+    int64_t nonce = [[HTTPManager shareManager] getAccountNonce: CurrentWalletAddress] + 1;
+    if (nonce == 0) return NO;
     // Asset amount
-//    int64_t amount = [assetAmount longLongValue] * powl(10, decimals);
     AssetIssueOperation *operation = [AssetIssueOperation new];
     [operation setSourceAddress: sourceAddress];
     [operation setCode: assetCode];
     [operation setAmount: assetAmount];
-    NSString * privateKey = [NSString decipherKeyStoreWithPW:password keyStoreValueStr:CurrentWalletKeyStore];
-    if ([Tools isEmpty:privateKey]) {
-        [MBProgressHUD showTipMessageInWindow:Localized(@"PasswordIsIncorrect")];
-        return;
-    }
     int64_t feeLimit = [[[NSDecimalNumber decimalNumberWithString:Distribution_Cost] decimalNumberByMultiplyingByPowerOf10: Decimals_BU] longLongValue];
-    int64_t nonce = [[HTTPManager shareManager] getAccountNonce: sourceAddress] + 1;
-    if (nonce == 0) return;
     NSMutableArray * operations = [NSMutableArray array];
     [operations addObject:operation];
-    NSString * hash = [[HTTPManager shareManager] buildBlobAndSignAndSubmit:privateKey :sourceAddress :nonce :gasPrice :feeLimit :operations :nil];
-    if (![Tools isEmpty: hash]) {
-        [[HTTPManager shareManager] getTransactionStatusHash:hash success:success failure:failure];
-    }
+    return [[HTTPManager shareManager] getHashWithSourceAddress:sourceAddress nonce:nonce gasPrice:gasPrice feeLimit:feeLimit operations:operations notes:nil];
 }
 
+#pragma mark - Nonce
 - (int64_t) getAccountNonce: (NSString *)address {
     int64_t nonce = -1;
     AccountService *accountService = [[[SDK sharedInstance] setUrl:_bumoNodeUrl] getAccountService];
@@ -751,105 +1062,158 @@ static int64_t const gasPrice = 1000;
     }
     return nonce;
 }
-// transaction information
-- (NSString *) buildBlobAndSignAndSubmit : (NSString *) privateKey : (NSString *) sourceAddress : (int64_t) nonce : (int64_t) gasPrice : (int64_t) feeLimit : (NSMutableArray<BaseOperation *> *) operations : (NSString *) notes {
+#pragma mark - hash
+- (BOOL)getHashWithSourceAddress:(NSString *)sourceAddress
+                           nonce:(int64_t)nonce
+                        gasPrice:(int64_t)gasPrice
+                        feeLimit:(int64_t)feeLimit
+                      operations:(NSMutableArray<BaseOperation *> *)operations
+                           notes:(NSString *) notes
+{
     TransactionBuildBlobRequest *buildBlobRequest = [TransactionBuildBlobRequest new];
     [buildBlobRequest setSourceAddress : sourceAddress];
     [buildBlobRequest setNonce : nonce];
     [buildBlobRequest setGasPrice : gasPrice];
     [buildBlobRequest setFeeLimit : feeLimit];
-    //[buildBlobRequest addOperation : operation];
     [buildBlobRequest setOperations: operations];
     [buildBlobRequest setMetadata: notes];
     
     // Serialization transaction
-    TransactionService *transactionServer = [[[SDK sharedInstance] setUrl:_bumoNodeUrl] getTransactionService];
-    TransactionBuildBlobResponse *buildBlobResponse = [transactionServer buildBlob : buildBlobRequest];
-    NSString *hash = nil;
-    if (buildBlobResponse.errorCode == Success_Code) {
-        hash = buildBlobResponse.result.transactionHash;
+    _transactionService = [[[SDK sharedInstance] setUrl:_bumoNodeUrl] getTransactionService];
+    _buildBlobResponse = [_transactionService buildBlob : buildBlobRequest];
+    if (_buildBlobResponse.errorCode == Success_Code) {
+        dispatch_async(dispatch_get_main_queue(), ^{
+            [MBProgressHUD hideHUD];
+        });
+        _hash = _buildBlobResponse.result.transactionHash;
+        return YES;
     } else {
-        [MBProgressHUD showTipMessageInWindow:[ErrorTypeTool getDescription:buildBlobResponse.errorCode]];
-        return nil;
+        dispatch_async(dispatch_get_main_queue(), ^{
+            [MBProgressHUD hideHUD];
+            [MBProgressHUD showTipMessageInWindow:[ErrorTypeTool getDescription:self->_buildBlobResponse.errorCode]];
+        });
+        return NO;
     }
-    
-    // sign
+}
+#pragma mark - sign
+- (BOOL)getSignWithPrivateKey:(NSString *)privateKey
+{
     TransactionSignRequest *signRequest = [TransactionSignRequest new];
-    [signRequest setBlob : buildBlobResponse.result.transactionBlob];
+    [signRequest setBlob : _buildBlobResponse.result.transactionBlob];
     [signRequest addPrivateKey : privateKey];
-    TransactionSignResponse * signResponse = [transactionServer sign : signRequest];
-    if (signResponse.errorCode == Success_Code) {
+    _signResponse = [_transactionService sign : signRequest];
+    if (_signResponse.errorCode == Success_Code) {
+        return YES;
     } else {
-        [MBProgressHUD showTipMessageInWindow:[ErrorTypeTool getDescription:signResponse.errorCode]];
-        return nil;
+        [MBProgressHUD showTipMessageInWindow:[ErrorTypeTool getDescription:_signResponse.errorCode]];
+        return NO;
     }
+}
+#pragma mark - Submit transaction
+- (BOOL)submitTransaction
+{
+    [MBProgressHUD showActivityMessageInWindow:Localized(@"InProcessing")];
     // Submission of transactions
     TransactionSubmitRequest *submitRequest = [TransactionSubmitRequest new];
-    [submitRequest setTransactionBlob : buildBlobResponse.result.transactionBlob];
-    [submitRequest setSignatures : [signResponse.result.signatures copy]];
-    TransactionSubmitResponse *submitResponse = [transactionServer submit : submitRequest];
+    [submitRequest setTransactionBlob : _buildBlobResponse.result.transactionBlob];
+    [submitRequest setSignatures : [_signResponse.result.signatures copy]];
+    TransactionSubmitResponse *submitResponse = [_transactionService submit : submitRequest];
     if (submitResponse.errorCode == Success_Code) {
+        [MBProgressHUD hideHUD];
+        return YES;
     } else {
+        [MBProgressHUD hideHUD];
         [MBProgressHUD showTipMessageInWindow:[ErrorTypeTool getDescription:submitResponse.errorCode]];
-        return nil;
+        return NO;
     }
-    return hash;
+}
+#pragma mark 提交交易
+- (void)submitTransactionWithSuccess:(void (^)(TransactionResultModel * resultModel))success
+                             failure:(void (^)(TransactionResultModel * resultModel))failure
+{
+    if (![[HTTPManager shareManager] submitTransaction]) return;
+    [[HTTPManager shareManager] getTransactionStatusSuccess:success failure:failure];
 }
 
+
 // Judge whether the transfer / registration / issuance is successful.
-- (void)getTransactionStatusHash:(NSString *)hash
-                         success:(void (^)(TransactionResultModel * resultModel))success
+- (void)getTransactionStatusSuccess:(void (^)(TransactionResultModel * resultModel))success
                          failure:(void (^)(TransactionResultModel * resultModel))failure
 {
-    [MBProgressHUD showActivityMessageInWindow:Localized(@"Loading")];
+    [MBProgressHUD showActivityMessageInWindow:Localized(@"InProcessing")];
     __block TransactionGetInfoResponse *response = [TransactionGetInfoResponse new];
     __block TransactionResultModel * resultModel = [[TransactionResultModel alloc] init];
-    resultModel.transactionHash = hash;
+    resultModel.transactionHash = _hash;
     __block NSInteger state = 0;
-    dispatch_group_t group = dispatch_group_create();
-    dispatch_queue_t queue = dispatch_get_global_queue(0, 0);
-    dispatch_group_async(group, queue, ^{
-        for (int i = 0; i < Maximum_Number; i++) {
-            dispatch_semaphore_t semaphore = dispatch_semaphore_create(0);
+    dispatch_queue_t queue = dispatch_get_main_queue();
+    __block dispatch_source_t gcdTimer = dispatch_source_create(DISPATCH_SOURCE_TYPE_TIMER, 0, 0, queue);
+    uint64_t interval = (uint64_t)(1 * NSEC_PER_SEC);
+    dispatch_source_set_timer(gcdTimer, DISPATCH_TIME_NOW, interval, 0);
+    dispatch_source_set_event_handler(gcdTimer, ^{
+        DLog(@"循环次数：%zd", state);
+        if (state == Maximum_Number) {
+            DLog(@"请求超时");
+            dispatch_cancel(gcdTimer);
+            gcdTimer = nil;
+            [MBProgressHUD hideHUD];
+            if(failure != nil)
+            {
+                resultModel.errorCode = response.errorCode;
+                failure(resultModel);
+            }
+        } else {
             TransactionGetInfoRequest *request = [TransactionGetInfoRequest new];
-            [request setHash: hash];
+            [request setHash: self->_hash];
             TransactionService *service = [[[SDK sharedInstance] setUrl: _bumoNodeUrl] getTransactionService];
             response = [service getInfo: request];
             if (response.errorCode == Success_Code) {
-                dispatch_semaphore_signal(semaphore);
-                break;
+                DLog(@"请求成功");
+                dispatch_cancel(gcdTimer);
+                gcdTimer = nil;
             } else {
-                dispatch_semaphore_signal(semaphore);
+                DLog(@"请求失败");
                 state ++;
             }
-            dispatch_semaphore_wait(semaphore, DISPATCH_TIME_FOREVER);
+            if(response.result.transactions != nil && success != nil)
+            {
+                DLog(@"请求超时（成功或失败）");
+                [MBProgressHUD hideHUD];
+                TransactionHistory * history = response.result.transactions[0];
+                resultModel.transactionTime = history.closeTime;
+                resultModel.transactionHash = history.transactionHash;
+                resultModel.actualFee = [[[NSDecimalNumber decimalNumberWithString:history.actualFee] decimalNumberByMultiplyingByPowerOf10: -Decimals_BU] stringValue];
+                resultModel.errorCode = history.errorCode;
+                resultModel.errorDesc = history.errorDesc;
+                success(resultModel);
+            }
         }
     });
+    dispatch_resume(gcdTimer);
+}
+
+#pragma mark - 调用底层合约
+- (BOOL)getTransactionWithDposModel:(DposModel *)dposModel
+{
+    // Build BUSendOperation
+    dispatch_async(dispatch_get_main_queue(), ^{
+        [MBProgressHUD showActivityMessageInWindow:Localized(@"Loading")];
+    });
+    NSString * sourceAddress = CurrentWalletAddress;
+    NSString * notes = Localized(@"DposContract");
+    int64_t fee = [[[NSDecimalNumber decimalNumberWithString:dposModel.tx_fee] decimalNumberByMultiplyingByPowerOf10: Decimals_BU] longLongValue];
+    int64_t nonce = [[HTTPManager shareManager] getAccountNonce: sourceAddress] + 1;
+    if (nonce == 0) return NO;
+    NSMutableArray * operations = [NSMutableArray array];
+    int64_t amount = [[[NSDecimalNumber decimalNumberWithString:dposModel.amount] decimalNumberByMultiplyingByPowerOf10: Decimals_BU] longLongValue];
     
-    dispatch_group_notify(group, dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_DEFAULT, 0), ^{
-        if (state == Maximum_Number) {
-            dispatch_async(dispatch_get_main_queue(), ^{
-                [MBProgressHUD hideHUD];
-                if(failure != nil)
-                {
-                    resultModel.errorCode = response.errorCode;
-                    failure(resultModel);
-                }
-            });
-        } else {
-            dispatch_async(dispatch_get_main_queue(), ^{
-                [MBProgressHUD hideHUD];
-                if(success != nil)
-                {
-                    TransactionHistory * history = response.result.transactions[0];
-                    resultModel.transactionTime = history.closeTime;
-                    resultModel.actualFee = [[[NSDecimalNumber decimalNumberWithString:history.actualFee] decimalNumberByMultiplyingByPowerOf10: -Decimals_BU] stringValue];
-                    resultModel.errorCode = history.errorCode;
-                    success(resultModel);
-                }
-            });
-        }
-    });
+    ContractInvokeByBUOperation *operation = [ContractInvokeByBUOperation new];
+    [operation setSourceAddress: sourceAddress];
+    [operation setContractAddress: dposModel.dest_address];
+    [operation setAmount: amount];
+    [operation setInput:dposModel.input];
+    [operation setMetadata:notes];
+    [operations addObject:operation];
+    return [[HTTPManager shareManager] getHashWithSourceAddress:sourceAddress nonce:nonce gasPrice:gasPrice feeLimit:fee operations:operations notes:notes];
 }
 
 

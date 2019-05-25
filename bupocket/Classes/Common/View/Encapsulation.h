@@ -10,23 +10,25 @@
 
 @interface Encapsulation : UIView
 
-// 设置label的自适应宽度
+// Setting the adaptive width of label
 + (CGRect)rectWithText:(NSString *)text font:(UIFont *)font textWidth:(CGFloat)textWidth;
-// 设置label的自适应高度
+// Setting the adaptive height of label
 + (CGRect)rectWithText:(NSString *)text font:(UIFont *)font textHeight:(CGFloat)textHeight;
-// 设置行间距和字间距
+// Set line spacing and word spacing
 + (NSMutableAttributedString *)attrWithString:(NSString *)str preFont:(UIFont *)preFont preColor:(UIColor *)preColor index:(NSInteger)index sufFont:(UIFont *)sufFont sufColor:(UIColor *)sufColor lineSpacing:(CGFloat)lineSpacing;
-// 设置标题属性文字
+// Setting Title Property text
 + (NSMutableAttributedString *)attrTitle:(NSString *)title ifRequired:(BOOL)ifRequired;
-//计算UILabel的宽度、高度(带有行间距的情况)
+//将HTML字符串转化为NSAttributedString富文本字符串
++ (NSAttributedString *)attributedStringWithHTMLString:(NSString *)htmlString;
+// Calculate the width and height of UILabel (with row spacing)
 + (CGSize)getSizeSpaceLabelWithStr:(NSString *)str font:(UIFont *)font width:(CGFloat)width height:(CGFloat)height lineSpacing:(CGFloat)lineSpacing;
 
 + (void)showAlertControllerWithTitle:(NSString *)title message:(NSString*)message cancelHandler:(void(^)(UIAlertAction * action))cancelHandler confirmHandler:(void(^)(UIAlertAction * action))confirmHandler;
 + (void)showAlertControllerWithMessage:(NSString *)message handler:(void(^)(UIAlertAction * action))handle;
-
++ (void)showAlertControllerWithTitle:(NSString *)title message:(NSString*)message confirmHandler:(void(^)(UIAlertAction * action))confirmHandler;
 + (UIButton *)showNoDataWithTitle:(NSString *)title imageName:(NSString *)imageName superView:(UIView *)superView frame:(CGRect)frame;
 
-#pragma mark 连接服务器失败
+#pragma mark - Connection server failed
 + (UIView *)showNoNetWorkWithSuperView:(UIView *)superView target:(id)target action:(SEL)action;
 
 @end

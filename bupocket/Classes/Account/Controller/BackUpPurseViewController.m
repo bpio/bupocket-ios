@@ -27,7 +27,6 @@
 - (void)setupView
 {
     self.scrollView = [[UIScrollView alloc] initWithFrame:CGRectMake(0, 0, DEVICE_WIDTH, DEVICE_HEIGHT)];
-//    self.scrollView.contentInset = UIEdgeInsetsMake(0, 0, SafeAreaBottomH + NavBarH + Margin_10, 0);
     self.scrollView.keyboardDismissMode = UIScrollViewKeyboardDismissModeOnDrag;
     [self.view addSubview:self.scrollView];
     UIImageView * wallet = [[UIImageView alloc] initWithImage:[UIImage imageNamed:@"wallet"]];
@@ -91,13 +90,16 @@
         VC.mnemonicArray = self.mnemonicArray;
         [self.navigationController pushViewController:VC animated:NO];
     } else {
-        PasswordAlertView * alertView = [[PasswordAlertView alloc] initWithPrompt:Localized(@"IdentityCipherPrompt") walletKeyStore:@"" isAutomaticClosing:YES confrimBolck:^(NSString * _Nonnull password, NSArray * _Nonnull words) {
-            BackupMnemonicsViewController * VC = [[BackupMnemonicsViewController alloc] init];
-            VC.mnemonicArray = words;
-            [self.navigationController pushViewController:VC animated:NO];
+        PasswordAlertView * alertView = [[PasswordAlertView alloc] initWithPrompt:Localized(@"IdentityCipherPrompt") confrimBolck:^(NSString * _Nonnull password, NSArray * _Nonnull words) {
+            if (words.count > 0) {
+                BackupMnemonicsViewController * VC = [[BackupMnemonicsViewController alloc] init];
+                VC.mnemonicArray = words;
+                [self.navigationController pushViewController:VC animated:NO];
+            }
         } cancelBlock:^{
         }];
-        [alertView showInWindowWithMode:CustomAnimationModeAlert inView:nil bgAlpha:0.2 needEffectView:NO];
+        alertView.passwordType = PWTypeBackUpID;
+        [alertView showInWindowWithMode:CustomAnimationModeAlert inView:nil bgAlpha:AlertBgAlpha needEffectView:NO];
         [alertView.PWTextField becomeFirstResponder];
     }
 }

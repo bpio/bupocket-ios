@@ -77,11 +77,10 @@ static NSString * const AssetsDetailCellID = @"AssetsDetailCellID";
         self.listImage.image = [UIImage imageNamed:@"receivables"];
     }
     if (addressStr.length > 10) {
-        self.walletAddress.text = [NSString stringEllipsisWithStr:addressStr];
+        self.walletAddress.text = [NSString stringEllipsisWithStr:addressStr subIndex:SubIndex_Address];
     }
     self.date.text = [DateTool getDateProcessingWithTimeStr:listModel.txTime];
-    self.assets.text = [listModel.amount isEqualToString:@"~"] ? listModel.amount : [NSString stringWithFormat:@"%@%@", outOrIn, listModel.amount];
-//    self.assets.text = [listModel.amount isEqualToString:@"~"] ? listModel.amount : [NSString stringWithFormat:@"%@%@ %@", outOrIn, listModel.amount, self.assetCode];
+    self.assets.text = ([listModel.amount isEqualToString:@"~"] || [listModel.amount isEqualToString:@"0"]) ? listModel.amount : [NSString stringWithFormat:@"%@%@", outOrIn, listModel.amount];
     if (listModel.txStatus == 0) {
         self.state.text = Localized(@"Success");
         self.state.textColor = COLOR_9;
@@ -90,10 +89,26 @@ static NSString * const AssetsDetailCellID = @"AssetsDetailCellID";
         self.state.textColor = WARNING_COLOR;
     }
 }
+- (void)setCooperateSupportModel:(CooperateSupportModel *)cooperateSupportModel
+{
+    _cooperateSupportModel = cooperateSupportModel;
+    self.listImage.image = [UIImage imageNamed:@"user_placeholder"];
+    self.walletAddress.text = [NSString stringEllipsisWithStr:cooperateSupportModel.initiatorAddress subIndex:SubIndex_Address];
+    self.date.text = cooperateSupportModel.createTime;
+    self.assets.text = [NSString stringAppendingBUWithStr:[NSString stringAmountSplitWith:cooperateSupportModel.amount]];
+    if ([cooperateSupportModel.type isEqualToString:@"1"]) {
+        self.state.text = Localized(@"Support");
+        self.state.textColor = COLOR_6;
+    } else if ([cooperateSupportModel.type isEqualToString:@"2"]) {
+        self.state.text = Localized(@"Withdraw");
+        self.state.textColor = COLOR_9;
+    }
+}
 - (UIImageView *)listImage
 {
     if (!_listImage) {
-        _listImage = [[UIImageView alloc] initWithImage:[UIImage imageNamed:@"receivables"]];
+        _listImage = [[UIImageView alloc] init];
+        [_listImage setViewSize:CGSizeMake(ScreenScale(36), ScreenScale(36)) borderWidth:0 borderColor:nil borderRadius:ScreenScale(18)];
     }
     return _listImage;
 }

@@ -71,7 +71,6 @@ static NSString * const Issue_Leave = @"leaveRoomForApp";
 - (void)setupView
 {
     self.scrollView = [[UIScrollView alloc] initWithFrame:CGRectMake(0, 0, DEVICE_WIDTH, DEVICE_HEIGHT)];
-//    self.scrollView.contentInset = UIEdgeInsetsMake(0, 0, SafeAreaBottomH + NavBarH + Margin_10, 0);
     [self.view addSubview:self.scrollView];
     
     CustomButton * confirmationPrompt = [[CustomButton alloc] init];
@@ -157,27 +156,31 @@ static NSString * const Issue_Leave = @"leaveRoomForApp";
         NSDecimalNumber * amountNumber = [[HTTPManager shareManager] getDataWithBalanceJudgmentWithCost:Distribution_Cost ifShowLoading:YES];
         NSString * amount = [amountNumber stringValue];
         [[NSOperationQueue mainQueue] addOperationWithBlock:^{
-            if (!NULLString(amount) || [amountNumber isEqualToNumber:NSDecimalNumber.notANumber]) {
+            if (!NotNULLString(amount) || [amountNumber isEqualToNumber:NSDecimalNumber.notANumber]) {
                 return;
             }
             if ([amount hasPrefix:@"-"]) {
                 [MBProgressHUD showTipMessageInWindow:Localized(@"DistributionNotSufficientFunds")];
                 return;
             }
+            int64_t issueAsset = [[[NSDecimalNumber decimalNumberWithString:self.registeredModel.amount] decimalNumberByMultiplyingByPowerOf10: self.distributionModel.decimals] longLongValue];
+            if (![[HTTPManager shareManager] getIssueAssetDataWithAssetCode:self.registeredModel.code assetAmount:issueAsset decimals:self.distributionModel.decimals]) return;
             [weakSelf.socket emit:Issue_Processing with:@[]];
-            PasswordAlertView * alertView = [[PasswordAlertView alloc] initWithPrompt:Localized(@"DistributionWalletPWPrompt")  walletKeyStore:CurrentWalletKeyStore isAutomaticClosing:YES confrimBolck:^(NSString * _Nonnull password, NSArray * _Nonnull words) {
-                [weakSelf getIssueAssetDataWithPassword:password];
+            PasswordAlertView * alertView = [[PasswordAlertView alloc] initWithPrompt:Localized(@"DistributionWalletPWPrompt") confrimBolck:^(NSString * _Nonnull password, NSArray * _Nonnull words) {
+                if (NotNULLString(password)) {
+                    [weakSelf submitTransaction];
+                }
             } cancelBlock:^{
             }];
-            [alertView showInWindowWithMode:CustomAnimationModeAlert inView:nil bgAlpha:0.2 needEffectView:NO];
+            [alertView showInWindowWithMode:CustomAnimationModeAlert inView:nil bgAlpha:AlertBgAlpha needEffectView:NO];
             [alertView.PWTextField becomeFirstResponder];
         }];
     }];
 }
-- (void)getIssueAssetDataWithPassword:(NSString *)password
+- (void)submitTransaction
 {
-    int64_t issueAsset = [[[NSDecimalNumber decimalNumberWithString:self.registeredModel.amount] decimalNumberByMultiplyingByPowerOf10: self.distributionModel.decimals] longLongValue];
-    [[HTTPManager shareManager] getIssueAssetDataWithPassword:password assetCode: self.registeredModel.code assetAmount:issueAsset decimals:self.distributionModel.decimals success:^(TransactionResultModel *resultModel) {
+    
+    [[HTTPManager shareManager] submitTransactionWithSuccess:^(TransactionResultModel *resultModel) {
         self.distributionModel.transactionHash = resultModel.transactionHash;
         self.distributionModel.distributionFee = resultModel.actualFee;
         [self loadDataWithIsOvertime:NO resultModel:resultModel];

@@ -40,7 +40,7 @@ static NSString * const WalletCellID = @"WalletCellID";
         make.top.equalTo(self.contentView.mas_top).offset(Margin_5);
         make.bottom.equalTo(self.contentView.mas_bottom).offset(-Margin_5);
     }];
-    self.contentView.backgroundColor = self.contentView.superview.superview.backgroundColor;
+    self.contentView.backgroundColor = VIEWBG_COLOR;
     [self.addressName mas_makeConstraints:^(MASConstraintMaker *make) {
         make.top.equalTo(self.listBg.mas_top).offset(Margin_20);
         make.left.equalTo(self.listBg.mas_left).offset(Margin_15);
@@ -110,11 +110,11 @@ static NSString * const WalletCellID = @"WalletCellID";
 {
     _addressBookModel = addressBookModel;
     self.addressName.text = addressBookModel.nickName;
-    self.address.text = [NSString stringEllipsisWithStr:addressBookModel.linkmanAddress];
+    self.address.text = [NSString stringEllipsisWithStr:addressBookModel.linkmanAddress subIndex:SubIndex_Address];
     self.describe.text = addressBookModel.remark;
     CGFloat addressNameH = [Encapsulation rectWithText:self.addressName.text font:self.addressName.font textWidth:DEVICE_WIDTH - Margin_50].size.height;
     CGFloat describeH = 0;
-    if (NULLString(self.describe.text)) {
+    if (NotNULLString(self.describe.text)) {
         describeH = (Margin_5 + [Encapsulation rectWithText:self.describe.text font:self.describe.font textWidth:DEVICE_WIDTH - Margin_50].size.height);
     }
     addressBookModel.cellHeight = ScreenScale(72) + addressNameH + describeH + Margin_10;

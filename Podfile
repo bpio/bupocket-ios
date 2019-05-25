@@ -30,6 +30,14 @@ pod 'IQKeyboardManager'
 pod 'FMDB'
 pod 'XHToast'
 pod 'SocketRocket'
+# 轮播图
+pod 'SDCycleScrollView'
+
+pod 'WechatOpenSDK'
+#无IDFA版SDK
+#pod 'UMengAnalytics-NO-IDFA'
+pod 'UMCAnalytics'
+pod 'UMCCommon'
 #pod 'LinkedME_LinkPage'
 #pod 'FDFullscreenPopGesture'
 

@@ -15,6 +15,7 @@
 "NoNetWork" = "Network failure, please try again later";
 "Reload" = "Reload";
 "MyTitle" = "Profile";
+"FindTitle" = "Explore";
 "AssetsTitle" = "Tokens";
 // Identity
 "CreateDigitalIdentity" = "Create a digital identity";
@@ -102,7 +103,8 @@
 "TestNetworkPrompt" = "Test Network";
 
 // Tokens
-"TotalAssets" = "Total tokens";
+"TotalAssets" = "Estimated Total Assets";
+"AssetsInfo" = "The price is based on data from the third-party exchanges, only for your reference.";
 "MyAssets" = "My tokens";
 "PaymentCode" = "Receive";
 "SafetyTipsTitle" = "Safety tips";
@@ -125,13 +127,16 @@
 "NoTransactionRecord" = "No transaction records";
 // Transfer coins
 "ReciprocalAccount" = "Recipient account（BU address）*";
-"reciprocalAccount" = "Recipient account";
+//"reciprocalAccount" = "Recipient account";
+"SendingAccount" = "From";
+"ReceivingAccount" = "To";
 "PhoneOrAddress" = "Please enter the recipient address";
-"AmountOfTransfer" = "Amount to transfer";
+"AmountOfTransfer（%@）*" = "Amount to transfer（%@）*";
 "AvailableBalance" = "Available balance";
 //"MostOnce" = "Each transaction cannot exceed 10000 BU";
 "AmountOfTransferPlaceholder" = "Please enter the amount to be transferred";
-"Remarks" = "Remark ";
+"Value" = "Value";
+"Remarks" = "Memo ";
 "RemarksPlaceholder" = "Remarks cannot exceed 20 characters";
 "EstimatedMaximum" = "Maximum transaction fee（BU）*";
 "estimatedMaximum" = "Maximum transaction fee";
@@ -143,10 +148,18 @@
 "ConfirmationOfTransfer" = "Confirm";
 "TransferPrompt" = "Please confirm whether the transfer information is correct.";
 "Submission" = "Submit";
-"TransactionCost" = "Transaction fee";
-"TransferTime" = "Time";
+//"TransactionCost" = "Transaction fee";
+"TransactionCost" = "Tx Fee";
+"TransferTime" = "Timestamp";
+"TxHash" = "Tx Hash";
 //"TransferSuccess" = "Succeeded";
 //"TransferFailure" = "Failed";
+"TransactionStatus" = "Transaction status";
+"TransactionSuccessful" = "Transaction is broadcast successfully";
+"TransactionQueryPrompt" = "Transaction is broadcast successfully; please copy the transaction summary to ";
+"Query" = " to query the final transaction status";
+"TransactionSummary" = "Transaction summary";
+
 "RequestTimeout" = "Request timeout";
 "IGotIt" = "Got it";
 // Order details
@@ -155,7 +168,7 @@
 "Failure" = "Failure";
 "OriginatorAdress" = "Sending address";
 "RecipientAddress" = "Recipient address";
-"SendingTime" = "Sending time";
+//"SendingTime" = "Sending time";
 // Issue tokens
 // Confirm token registration
 "ConfirmationOfRegisteredAssets" = "Confirm token registration";
@@ -210,14 +223,30 @@
 "Album" = "Album";
 "ScanPrompt" = "Automatically scan the QR code in the box";
 // date
-"HoursAgo" = "hours ago";
-"MinutesAgo" = "minutes ago";
-"Just" = "Just now";
+"HoursAgo" = "hrs ago";
+"HourAgo" = "hr ago";
+"MinutesAgo" = "mins ago";
+"MinuteAgo" = "min ago";
+"SecondsAgo" = "secs ago";
+"SecondAgo" = "sec ago";
+//"Just" = "Just now";
 //"Yesterday" = "Yesterday";
 "DaysAgo" = "days ago";
+"DayAgo" = "day ago";
+
+"Seconds" = "seconds";
+"Second" = "second";
+"Minutes" = "minutes";
+"Minute" = "minute";
+"Hours" = "hours";
+"Hour" = "hour";
+"Days" = "days";
+"Day" = "day";
 
 // alert Massage
 "Loading" = "Loading...";
+"DataChecking" = "Checking";
+"Signature" = "Signing";
 // SDK
 "CreateIdentityFailure" = "Failed to create an identity";
 "IssueNumberIsIncorrect" = "Invalid circulation";
@@ -346,12 +375,177 @@
 "DeleteSuccessful" = "Deleted successfully";
 "DeleteFailed" = "Failed to delete; please try again later";
 
+// Login
+"Immediate login %@, please confirm that it is my operation." = "Log in %@ soon, and please make sure that is your personal operation.";
+"LoginPromptInfo" = "Your account address will be made public";
+"ConfirmLogin" = "Confirm login";
+//"LoginException" = "The wallet account is not bound to the platform";
+//"LoginExceptionPrompt" = "Please contact the platform manager for binding";
+"RefreshQRCode" = "Please refresh the QR code and scan the code again";
+// Explore
+"CardBag" = "Cards";
+"NodePlan" = "Node Campaign";
+"JointlyCooperate" = "Node Co-funding";
+"Information" = "Information";
+"YoPin" = "YoPin";
+// Node Campaign
+//"VotesObtained" = "Votes received";
+"Vote" = "Vote";
+"Votes" = "Votes";
+"My votes" = "My votes";
+"My vote" = "My vote";
+"ConsensusNode" = "Validator Node";
+"EcologicalNodes" = "Ecological node";
+"InterdependentNode" = "Nodes related to me";
+"RelevantNodes" = "Filter the nodes that are related to me, such as the node I voted for or the campaign node itself";
+"Search" = "Search";
+"CancellationOfVotes" = "Cancel Votes";
+"VotingRecords" = "Record of Votes";
+"InvitationToVote" = "Invite to Vote";
+"IrrevocableVotes" = "No revocable votes";
+// Records of voting
+"Throw" = "Vote";
+"withdraw" = "Cancel";
+//"Number" = "Number";
+"State" = "Status";
+"Time" = "Time";
+"InProcessing" = "Processing";
+// Details of voting
+"Share" = "Share";
+"%@ Votes" = "%@ Votes";
+"%@ Vote" = "%@ Vote";
+"%@ Sponsors" = "%@ Sponsors";
+"%@ Sponsor" = "%@ Sponsor";
+"NodeIntroduction" = "Introduction to node";
+// share
+"InvitationPrompt" = "Welcome to vote in BU Pocket";
+"LongPressPrompt" = "（Scan the QR code）";
+"WeChat" = "WeChat";
+"QQ" = "QQ";
+"CopyBULink" = "Copy link";
+"LinkTitle" = "The BU link is generated";
+"CopyLink" = "Copy";
+"BULink" = "BU Link";
+"LinkPerfix" = " I will sponsor the BUMO Super Node Campaign, ";
+"LinkSuffix%@" = ", and click the link %@ to vote for him.";
+
+// Details of cancelling votes
+"Number of votes revoked on '%@'" = "Cancel votes to \"%@\"";
+//"Revoke" = "撤销";
+//"Vote" = "投票";
+//"Whole" = "全部";
+//"Maximum revocable %@ votes" = "最多可撤销%@投票数量";
+//"The maximum transaction cost is about %@ BU" = "本次最多支付交易费用约 %@ BU";
+//"Retract" = "收起";
+//"More" = "更多";
+//"TransactionInitiator" = "交易发起方";
+//"ContractingParty" = "合约方";
+//"ContractCode" = "合约代码";
+//"ConfirmTicketWithdrawal" = "确认撤票";
+//"After successful withdrawal, the frozen BU is returned to the original purse\n（%@）" = "撤票成功后，将冻结的BU退回至原钱包\n（%@）";
+// Transaction
+"ConfirmTransaction" = "Confirm transaction";
+"MaximumTransactionCosts" = "Maximum transaction costs（BU）";
+"Overdue" = "The request is expired";
+//"Initiator" = "Initiator";
+//"CounterAccount" = "The receiving account";
+"Details" = "Details";
+"TransactionCosts（BU）" = "Transaction fees（BU）";
+"Parameter" = "Parameter";
+"Number（BU）" = "Number（BU）";
+// Node co-funding
+"PurchaseAmount" = "Minimum purchase";
+"AwardSharingRatio" = "Award ratio";
+"TargetNumber" = "Target number";
+"TargetAmount" = "Target amount";
+"%lld shares received" = "%lld shares received";
+"%lld share received" = "%lld share received";
+"Received" = "received";
+"%lld shares left" = "%lld shares left";
+"%lld share left" = "%lld share left";
+"Left" = "left";
+//"Shares" = "shares";
+"ShareRatioInfo" = "The initiator of the node co-funding project promises to share the reward proportionally with the sponsors after being successfully selected";
+// Details of node co-funding
+"JointlyCooperateDetail" = "Details of Co-funding";
+"InProgress" = "In progress";
+"Completed" = "Success";
+"Quit" = "Failure";
+"Margin" = "Margin of Co-funding";
+"CooperateDeposit" = "The initiator of the node co-funding project transfers the margin of co-funding to an account as the amount to be locked in node co-funding";
+//"The remaining %@ copies" = " %@ shares remaining";
+"TotalSupport" = "Total amount received";
+"RiskStatement" = "Risk Statement";
+"SupportRecords" = "Record of Node Co-funding";
+"RedemptionAllSupport" = "Withdraw";
+"WithdrawalOfSupport" = "Withdraw";
+"IWantToSupport" = "Sponsor";
+"Support" = "Sponsor";
+"Withdraw" = "Withdraw";
+"RiskStatementPrompt" = "1. Node co-funding is not a commodity transaction. The sponsors can independently choose the relevant node co-funding projects to support. The sponsors can get reward which is based on the proportion between the sponsoring amount by sponsors and the deposit plus target funding to the project. \n2. BUMO only provides intermediate services such cyberspace and technical services, and BUMO is in no interest relationship to any project initiators and sponsors. BUMO will not take any responsibilities to any legal disputes arising from the node co-funding project, and the initiators and sponsors will take all responsibilities to these legal disputes. \n3. Before the node co-funding project is completed, the node co-funding project sponsors can manually withdraw all BUs sponsored. If the project initiator cancels the project before the project is completed, the node co-funding sponsors can also manually withdraw all BUs sponsored. ";
+// Sponsor
+"SupportProjects" = "Project";
+"SupportCopies" = "Shares";
+"Total" = "Total：";
+"ConfirmSupport" = "Confirm";
+"BU/Portion" = "BU/share";
+// Exit, sponsor, transaction details
+"ConfirmWithdrawalPrompt" = "Are you sure to withdraw the amount voted?";
+"Exit '%@' Project" = "Withdraw sponsor \"%@\"";
+"Supporting '%@' Projects" = "Sponsor \"%@\" project";
+// Confirm transaction
+"Overtime" = "The request has timed out; please do it again";
+// Transaction success
+"TransferSuccess" = "Transaction success";
+"TransferSuccessPrompt" = "The transaction on the chain is successful";
+"BusinessData" = "Processing business data";
+"BusinessDataPrompt" = "Business data is analyzed and processed according to the transaction metadata of the chain, and the processing is expected to be completed within 20 seconds.";
+"DataRefreshed" = "Data is refreshed";
+"NodeTransferPrompt" = "Tips: after transactions such as voting to \n node or withdrawing votes from \n node are successful on the chain, the statistics of related data are delayed, and it is expected to be completed within 30 seconds. ";
+// Transaction failure
+"ContractTransferFailure" = "The contract call failed";
 // Errors
 "LoadFailure" = "Failed to load";
+// Node Errors
+"PhysicalAddressApplied" = "The physical address to be bound is already occupied. Please apply after replacing it";
+"AccountApplied" = "The wallet account has been applied for, please apply after replacing it";
+//"NotSubmitted" = "An uncommitted operation is detected; please try again later";
+"NotSubmitted%@" = "Please complete the remaining operations. You can trade again after %@";
+"CommitteeAuthority" = "No permission, please use the committee wallet to scan the code";
+"NoVoteJurisdiction" = "The voting channel is not yet open. Please vote after opening the channel";
+"ShareNotOpened" = "The voting channel is not yet open. Please share after opening the channel";
+"UnsupportedSubscription" = "The current project has obtained enough BUs, and you can choose other projects to sponsor";
+"InsufficientSurplus" = "The remaining number is insufficient. It is recommended that you adjust the number to sponsor";
+"CooperateUnsupported" = "You have not sponsored this project so you cannot withdraw from it";
+"CooperateCompleted" = "The node co-funding project is finished, and you cannot withdraw from it";
+//"InitiatorAddressUnavailable" = "Only the initiator can initiate this operation";
+"InitiatorAddressUnavailable" = "Only the initiator of this node can initiate this operation";
+"InitiatorCanNotSupport" = "The initiator of the node co-funding project cannot be a sponsor";
+"NonRepeatableWithdrawal" = "You have withdrawn successfully. Frequent operations are not allowed";
+"NodeStatusExiting" = "The current node is exiting, and is not accessible for vote invitation";
+"NodeStatusExited" = "The current node has exited, and is not accessible for vote invitation";
+"NotSupportedOperation" = "This operation is not supported now.";
+// share
+"WXAppUninstalled" = "Please use it after downloading WeChat";
+"Unsupported" = "Please use it after upgrading to the latest version";
+"QQAppUninstalled" = "Please use it after downloading QQ";
+"SharingFailure" = "Error! Please try again later";
+"Disclaimer" = "Disclaimer";
+"DisclaimerInfo" = "Service provide and liability covered by third party (YoPin) .For any questions,contact the company.";
+
+// 调用底层合约
+"DposContract" = "Contract call";
+"DestAddressNotNull" = "The target address cannot be empty";
+"TxFeeNotNull" = "The transaction cannot be empty";
+"AmountNotNull" = "The transaction amount of BU cannot be empty";
+"InputNotNull" = "The contract parameter cannot be empty";
+"TxFeeIsIncorrect" = "Invalid transaction fee";
+"AmountIsIncorrect" = "Invalid transaction amount of BU";
 
 // SDK Errors
 "SYSTEM_ERROR" = "System error";
 "INVALID_ADDRESS_ERROR" = "Invalid address";
 // 底层 错误信息
+"ERRCODE_NOT_EXIST" = "The current account is not activated. You can transfer 0.02BU to this account to activate it. After the account is activated, transactions can be done.";
 "ERRCODE_FEE_NOT_ENOUGH" = "Transaction not enough";
 

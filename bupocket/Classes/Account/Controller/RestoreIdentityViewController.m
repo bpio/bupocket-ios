@@ -104,6 +104,9 @@
 {
     UITextField * textField = [UITextField textFieldWithplaceholder:placeholder];
     textField.secureTextEntry = YES;
+    if (@available(iOS 11.0, *)) {
+        textField.textContentType = UITextContentTypeName;
+    }
     textField.delegate = self;
     UIButton * ifSecure = [UIButton createButtonWithNormalImage:@"password_ciphertext" SelectedImage:@"password_visual" Target:self Selector:@selector(secureAction:)];
     ifSecure.frame = CGRectMake(0, 0, Margin_20, TEXTFIELD_HEIGHT);
@@ -198,7 +201,6 @@
         [MBProgressHUD showTipMessageInWindow:Localized(@"WalletNameFormatIncorrect")];
         return;
     }
-//    if ([RegexPatternTool validatePassword:walletPW] == NO) {
     if (self.walletPW.length < PW_MIN_LENGTH || self.walletPW.length > PW_MAX_LENGTH) {
         [MBProgressHUD showTipMessageInWindow:Localized(@"CryptographicFormat")];
         return;

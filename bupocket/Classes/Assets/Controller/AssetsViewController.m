@@ -18,11 +18,23 @@
 #import "DistributionOfAssetsViewController.h"
 #import "TransferAccountsViewController.h"
 #import "WalletManagementViewController.h"
+#import "LoginConfirmViewController.h"
+#import "ConfirmTransactionAlertView.h"
+#import "ScanCodeFailureViewController.h"
 
 #import "RegisteredModel.h"
 #import "DistributionModel.h"
 
+#import "LoginConfirmModel.h"
+#import "ConfirmTransactionModel.h"
+#import "DposModel.h"
+
 #import "UINavigationController+Extension.h"
+
+#import "NodeTransferSuccessViewController.h"
+#import "TransferResultsViewController.h"
+#import "RequestTimeoutViewController.h"
+
 
 @interface AssetsViewController ()<UITableViewDelegate, UITableViewDataSource>
 
@@ -32,7 +44,6 @@
 @property (nonatomic, strong) UIView * headerViewBg;
 @property (nonatomic, strong) UIImageView * headerImageView;
 @property (nonatomic, strong) UIImage * headerImage;
-//@property (nonatomic, strong) UIButton * noBackup;
 // Switch the test network
 @property (nonatomic, strong) UIButton * networkPrompt;
 
@@ -47,6 +58,9 @@
 @property (nonatomic, assign) UIStatusBarStyle statusBarStyle;
 @property (nonatomic, strong) NSString * assetsCacheDataKey;
 
+@property (nonatomic, strong) ConfirmTransactionModel * confirmTransactionModel;
+@property (nonatomic, strong) DposModel * dposModel;
+
 @end
 
 @implementation AssetsViewController
@@ -60,10 +74,10 @@ static UIButton * _noBackup;
     }
     return _listArray;
 }
-
 - (void)viewDidLoad {
     [super viewDidLoad];
     self.edgesForExtendedLayout = UIRectEdgeAll;
+    self.automaticallyAdjustsScrollViewInsets = NO;
     self.statusBarStyle = UIStatusBarStyleLightContent;
     [self setupNav];
     [self setupView];
@@ -99,32 +113,12 @@ static UIButton * _noBackup;
     [super viewDidDisappear:animated];
     [self.tableView.mj_header endRefreshing];
 }
-
-- (void)setNetworkEnvironment
-{
-    if ([[NSUserDefaults standardUserDefaults] boolForKey:If_Switch_TestNetwork]) {
-        self.networkPrompt = [UIButton createNavButtonWithTitle:Localized(@"TestNetworkPrompt") Target:nil Selector:nil];
-        
-        self.navigationItem.leftBarButtonItem = [[UIBarButtonItem alloc] initWithCustomView:self.networkPrompt];
-        self.headerImageView.image = [UIImage imageNamed:@"assets_header_test"];
-//        self.headerImageView.backgroundColor = COLOR(@"4B4A66");
-//        self.headerImageView.image = nil;
-    } else {
-        self.navigationItem.leftBarButtonItem = nil;
-        self.headerImageView.image = self.headerImage;
-//        self.headerImageView.backgroundColor = COLOR(@"645FC3");
-    }
-//    self.navBackgroundColor = self.headerImageView.backgroundColor;
-//    self.navTitleColor = self.navTintColor = [UIColor clearColor];
-//    self.navAlpha = 1.0;
-}
-- (UIStatusBarStyle)preferredStatusBarStyle{
+- (UIStatusBarStyle)preferredStatusBarStyle {
     return _statusBarStyle;
 }
-
+#pragma mark - Asset List Data
 - (void)reloadData
 {
-//    [self setNetworkEnvironment];
     self.noNetWork.hidden = YES;
     [self.tableView.mj_header beginRefreshing];
 }
@@ -133,26 +127,6 @@ static UIButton * _noBackup;
     self.tableView.mj_header = [CustomRefreshHeader headerWithRefreshingTarget:self refreshingAction:@selector(loadData)];
     self.tableView.mj_header.automaticallyChangeAlpha = YES;
     self.tableView.mj_header.ignoredScrollViewContentInsetTop = _headerViewH - NavBarH;
-//    [self.tableView.mj_header beginRefreshing];
-}
-- (void)setDataWithResponseObject:(id)responseObject
-{
-    [self.tableView addSubview:self.headerBg];
-    [self.tableView insertSubview:self.headerBg atIndex:0];
-    self.listArray = [AssetsListModel mj_objectArrayWithKeyValuesArray:responseObject[@"data"] [@"tokenList"]];
-    NSString * amountStr = responseObject[@"data"][@"totalAmount"];
-    if ([amountStr isEqualToString:@"~"]) {
-        self.totalAssets.text = amountStr;
-    } else {
-        NSString * currencyUnit = [AssetCurrencyModel getCurrencyUnitWithAssetCurrency:[[[NSUserDefaults standardUserDefaults] objectForKey:Current_Currency] integerValue]];
-        NSString * amountString = [NSString stringWithFormat:@"≈%@%@", amountStr, currencyUnit];
-        NSMutableAttributedString * attr = [Encapsulation attrWithString:amountString preFont:FONT(36) preColor:[UIColor whiteColor] index:amountString.length - currencyUnit.length sufFont:FONT(18) sufColor:[UIColor whiteColor] lineSpacing:0];
-        // @(FONT(18).lineHeight)/2 + ((FONT(36).descender - FONT(18).descender)))
-        [attr addAttribute:NSBaselineOffsetAttributeName value:@((FONT(18).lineHeight)/2) range:NSMakeRange(amountString.length - currencyUnit.length, currencyUnit.length)];
-        self.totalAssets.attributedText = attr;
-    }
-    [self setNetworkEnvironment];
-    [self.tableView reloadData];
 }
 - (void)loadData
 {
@@ -181,7 +155,6 @@ static UIButton * _noBackup;
             [MBProgressHUD showTipMessageInWindow:[ErrorTypeTool getDescriptionWithErrorCode:code]];
         }
         [self.tableView.mj_header endRefreshing];
-//        self.noNetWork.hidden = YES;
         self.statusBarStyle = UIStatusBarStyleLightContent;
         [self.navigationController setNeedsStatusBarAppearanceUpdate];
     } failure:^(NSError *error) {
@@ -195,7 +168,38 @@ static UIButton * _noBackup;
         }
     }];
 }
-
+- (void)setDataWithResponseObject:(id)responseObject
+{
+    [self.tableView addSubview:self.headerBg];
+    [self.tableView insertSubview:self.headerBg atIndex:0];
+    self.listArray = [AssetsListModel mj_objectArrayWithKeyValuesArray:responseObject[@"data"] [@"tokenList"]];
+    NSString * amountStr = responseObject[@"data"][@"totalAmount"];
+    if ([amountStr isEqualToString:@"~"]) {
+        self.totalAssets.text = amountStr;
+    } else {
+        NSString * currencyUnit = [AssetCurrencyModel getCurrencyUnitWithAssetCurrency:[[[NSUserDefaults standardUserDefaults] objectForKey:Current_Currency] integerValue]];
+        NSString * amountString = [NSString stringWithFormat:@"≈%@%@", amountStr, currencyUnit];
+        NSMutableAttributedString * attr = [Encapsulation attrWithString:amountString preFont:FONT(36) preColor:[UIColor whiteColor] index:amountString.length - currencyUnit.length sufFont:FONT(18) sufColor:[UIColor whiteColor] lineSpacing:0];
+        [attr addAttribute:NSBaselineOffsetAttributeName value:@((FONT(18).lineHeight)/2) range:NSMakeRange(amountString.length - currencyUnit.length, currencyUnit.length)];
+        self.totalAssets.attributedText = attr;
+    }
+    [self setNetworkEnvironment];
+    [self.tableView reloadData];
+}
+#pragma mark - Switching Network Environment
+- (void)setNetworkEnvironment
+{
+    if ([[NSUserDefaults standardUserDefaults] boolForKey:If_Switch_TestNetwork]) {
+        self.networkPrompt = [UIButton createNavButtonWithTitle:Localized(@"TestNetworkPrompt") Target:nil Selector:nil];
+        
+        self.navigationItem.leftBarButtonItem = [[UIBarButtonItem alloc] initWithCustomView:self.networkPrompt];
+        self.headerImageView.image = [UIImage imageNamed:@"assets_header_test"];
+    } else {
+        self.navigationItem.leftBarButtonItem = nil;
+        self.headerImageView.image = self.headerImage;
+    }
+}
+#pragma mark - Scan code registration / issue
 - (void)getAssetsStateData
 {
     NSString * currentWalletAddress = CurrentWalletAddress;
@@ -236,7 +240,33 @@ static UIButton * _noBackup;
     }];
 }
 
-
+#pragma mark - Scan code login
+- (void)getScanCodeLoginDataWithUUid:(NSString *)uuid
+{
+    [[HTTPManager shareManager] getAccountCenterDataWithAppId:nil uuid:uuid success:^(id responseObject) {
+        NSInteger code = [[responseObject objectForKey:@"errCode"] integerValue];
+        if (code == Success_Code) {
+            LoginConfirmViewController * VC = [[LoginConfirmViewController alloc] init];
+            VC.loginConfirmModel = [LoginConfirmModel mj_objectWithKeyValues:[responseObject objectForKey:@"data"]];
+            [self.navigationController pushViewController:VC animated:NO];
+        } else if (code == ErrorAccountUnbound) {
+            NSDictionary * dic = responseObject[@"data"];
+            ScanCodeFailureViewController * VC = [[ScanCodeFailureViewController alloc] init];
+            VC.exceptionPromptStr = dic[@"errorMsg"];
+            VC.promptStr = dic[@"errorDescription"];
+            [self.navigationController pushViewController:VC animated:NO];
+        } else if (code == ErrorQRCodeExpired || code == ErrorAccountQRCodeExpired) {
+            ScanCodeFailureViewController * VC = [[ScanCodeFailureViewController alloc] init];
+            VC.exceptionPromptStr = Localized(@"Overdue");
+            VC.promptStr = Localized(@"RefreshQRCode");
+            [self.navigationController pushViewController:VC animated:NO];
+        } else {
+            [Encapsulation showAlertControllerWithMessage:[ErrorTypeTool getDescriptionWithNodeErrorCode:code] handler:nil];
+        }
+    } failure:^(NSError *error) {
+        
+    }];
+}
 - (void)pushDistributionVC
 {
     DistributionOfAssetsViewController * VC = [[DistributionOfAssetsViewController alloc] init];
@@ -280,24 +310,6 @@ static UIButton * _noBackup;
         
         _headerViewBg = [[UIView alloc] initWithFrame:CGRectMake(0, 0, DEVICE_WIDTH, _headerViewH)];
         [headerBg addSubview:_headerViewBg];
-        
-//        UIButton * wallet = [UIButton createButtonWithNormalImage:@"nav_wallet" SelectedImage:@"nav_wallet" Target:self Selector:@selector(walletAction)];
-//        [_headerViewBg addSubview:wallet];
-//        [wallet mas_makeConstraints:^(MASConstraintMaker *make) {
-//            make.top.equalTo(self.headerViewBg.mas_top).offset(StatusBarHeight);
-//            make.right.equalTo(self.headerViewBg.mas_right).offset(-Margin_15);
-//            make.height.mas_equalTo(Margin_40);
-//        }];
-//        UILabel * walletName = [[UILabel alloc] init];
-//        walletName.font = FONT(21);
-//        walletName.textColor = [UIColor whiteColor];
-//        walletName.text = @"钱包名称钱包名称钱包名称钱包名称钱包名称钱包名称钱包名称钱包名称钱包名称钱包名称";
-//        [_headerViewBg addSubview:walletName];
-//        [walletName mas_makeConstraints:^(MASConstraintMaker *make) {
-//            make.top.equalTo(self.headerViewBg.mas_top).offset(StatusBarHeight + Margin_10);
-//            make.centerX.equalTo(self.headerViewBg);
-//            make.width.mas_lessThanOrEqualTo(DEVICE_WIDTH - ScreenScale(100));
-//        }];
     
         _totalAssets = [[UILabel alloc] init];
         _totalAssets.font = FONT(36);
@@ -309,13 +321,17 @@ static UIButton * _noBackup;
             make.width.mas_lessThanOrEqualTo(DEVICE_WIDTH - Margin_40);
         }];
         
-        UILabel * totalAssetsTitle = [[UILabel alloc] init];
-        totalAssetsTitle.font = FONT(15);
-        totalAssetsTitle.textColor = [UIColor whiteColor];
-        totalAssetsTitle.text = Localized(@"TotalAssets");
+        CustomButton * totalAssetsTitle = [[CustomButton alloc] init];
+        totalAssetsTitle.layoutMode = HorizontalInverted;
+        totalAssetsTitle.titleLabel.font = FONT(15);
+        [totalAssetsTitle setTitle:Localized(@"TotalAssets") forState:UIControlStateNormal];
+        [totalAssetsTitle setImage:[UIImage imageNamed:@"estimated_total_assets"] forState:UIControlStateNormal];
+        [totalAssetsTitle addTarget:self action:@selector(totalAssetsInfo:) forControlEvents:UIControlEventTouchUpInside];
         [self.headerViewBg addSubview:totalAssetsTitle];
+        CGFloat btnW = [Encapsulation rectWithText:totalAssetsTitle.titleLabel.text font:totalAssetsTitle.titleLabel.font textHeight:Margin_20].size.width + Margin_20;
         [totalAssetsTitle mas_makeConstraints:^(MASConstraintMaker *make) {
             make.top.equalTo(self.totalAssets.mas_bottom).offset(Margin_10);
+            make.size.mas_equalTo(CGSizeMake(btnW, Margin_20));
             make.centerX.equalTo(self.headerViewBg);
         }];
         
@@ -354,7 +370,10 @@ static UIButton * _noBackup;
     }
     return _headerBg;
 }
-
+- (void)totalAssetsInfo:(UIButton *)button
+{
+    [Encapsulation showAlertControllerWithMessage:Localized(@"AssetsInfo") handler:nil];
+}
 - (void)scrollViewDidScroll:(UIScrollView *)scrollView
 {
     CGFloat offsetY = scrollView.contentOffset.y;
@@ -373,20 +392,12 @@ static UIButton * _noBackup;
         _headerBg.y = offsetY;
         _headerBg.height = - offsetY;
         _headerImageView.alpha = 1.0;
-//        self.navTitleColor = self.navTintColor = [UIColor clearColor];
-//        self.navAlpha = 0;
-//        self.scanButton.selected = NO;
     } else {
         CGFloat min = - _headerViewH;
         CGFloat progress = (offsetY / min);
         _headerBg.y = -_headerViewH;
         _headerBg.height = _headerViewH;
         _headerImageView.alpha = progress;
-//        _statusBarStyle = (progress < 0.5) ? UIStatusBarStyleDefault : UIStatusBarStyleLightContent;
-//        [self.navigationController setNeedsStatusBarAppearanceUpdate];
-//        self.navTitleColor = self.navTintColor = (progress < 0.5) ? TITLE_COLOR : [UIColor clearColor];
-//        self.navAlpha = 1 - progress;
-//        self.scanButton.selected = (progress < 0.5) ? YES : NO;
     }
     _headerImageView.frame = CGRectMake(0, 0, DEVICE_WIDTH, _headerBg.height - Margin_15);
     _headerViewBg.y = _headerBg.height - _headerViewH;
@@ -404,7 +415,7 @@ static UIButton * _noBackup;
             [self scanAction];
             break;
         case 1:
-            [self QRCodeAction];
+            [self showWalletAddress];
             break;
         case 2:
             [self addAssetsAcrion];
@@ -417,8 +428,24 @@ static UIButton * _noBackup;
 #pragma mark - scan
 - (void)scanAction
 {
+    __block NSString * result = nil;
     __weak typeof (self) weakself = self;
     HMScannerController *scanner = [HMScannerController scannerWithCardName:nil avatar:nil completion:^(NSString *stringValue) {
+        if (result) {
+            return;
+        }
+        result = stringValue;
+        if ([stringValue hasPrefix:Dpos_Prefix]) {
+            [self getDposTransactionWithStr:stringValue];
+            return;
+        }
+        if ([stringValue hasPrefix:@"http"] && [stringValue containsString:Account_Center_Contains] && ![[[[[stringValue componentsSeparatedByString:Account_Center_Contains] firstObject] componentsSeparatedByString:@"://"] lastObject] containsString:@"/"] && [[[stringValue componentsSeparatedByString:Account_Center_Contains] lastObject] length] == 32) {
+            [self getScanCodeLoginDataWithUUid:[[stringValue componentsSeparatedByString:Account_Center_Contains] lastObject]];
+            return;
+        } else if ([stringValue hasPrefix:@"http"] && [stringValue containsString:Dpos_Contains] && ![[[[[stringValue componentsSeparatedByString:Dpos_Contains] firstObject] componentsSeparatedByString:@"://"] lastObject] containsString:@"/"] && [[[stringValue componentsSeparatedByString:Dpos_Contains] lastObject] length] == 32) {
+            [self getApplyNodeDataWithStr:[[stringValue componentsSeparatedByString:Dpos_Contains] lastObject]];
+            return;
+        }
         NSOperationQueue * queue = [[NSOperationQueue alloc] init];
         [queue addOperationWithBlock:^{
             BOOL isCorrectAddress = [Keypair isAddressValid: stringValue];
@@ -448,8 +475,8 @@ static UIButton * _noBackup;
     [scanner setTitleColor:[UIColor whiteColor] tintColor:MAIN_COLOR];
     [self showDetailViewController:scanner sender:nil];
 }
-#pragma mark - QRCode
-- (void)QRCodeAction
+#pragma mark - wallet address
+- (void)showWalletAddress
 {
     WalletAddressAlertView * alertView = [[WalletAddressAlertView alloc] initWithWalletAddress:CurrentWalletAddress confrimBolck:^{
         [[UIPasteboard generalPasteboard] setString:CurrentWalletAddress];
@@ -457,17 +484,204 @@ static UIButton * _noBackup;
     } cancelBlock:^{
         
     }];
-    [alertView showInWindowWithMode:CustomAnimationModeShare inView:nil bgAlpha:0.2 needEffectView:NO];
+    [alertView showInWindowWithMode:CustomAnimationModeShare inView:nil bgAlpha:AlertBgAlpha needEffectView:NO];
 }
 
-#pragma mark - addAssets
+#pragma mark - add Assets
 - (void)addAssetsAcrion
 {
     AddAssetsViewController * VC = [[AddAssetsViewController alloc] init];
     [self.navigationController pushViewController:VC animated:NO];
 }
+#pragma mark - Dpos
+- (void)getApplyNodeDataWithStr:(NSString *)str
+{
+    [[HTTPManager shareManager] getDposApplyNodeDataWithQRcodeSessionId:str success:^(id responseObject) {
+        NSInteger code = [[responseObject objectForKey:@"errCode"] integerValue];
+        if (code == Success_Code) {
+            DLog(@"json = %@", [JsonTool JSONStringWithDictionaryOrArray:[responseObject objectForKey:@"data"]]);
+            self.confirmTransactionModel = [ConfirmTransactionModel mj_objectWithKeyValues:[responseObject objectForKey:@"data"]];
+            [self getDposData];
+        } else if (code == ErrorQRCodeExpired) {
+            ScanCodeFailureViewController * VC = [[ScanCodeFailureViewController alloc] init];
+            VC.exceptionPromptStr = Localized(@"Overdue");
+            VC.promptStr = Localized(@"RefreshQRCode");
+            [self.navigationController pushViewController:VC animated:NO];
+        } else {
+            [Encapsulation showAlertControllerWithMessage:[ErrorTypeTool getDescriptionWithNodeErrorCode:code] handler:nil];
+        }
+    } failure:^(NSError *error) {
 
+    }];
+}
+- (void)getDposData
+{
+    ConfirmTransactionAlertView * confirmAlertView = [[ConfirmTransactionAlertView alloc] initWithDposConfrimBolck:^(NSString * _Nonnull transactionCost) {
+        dispatch_after(dispatch_time(DISPATCH_TIME_NOW, (int64_t)(Dispatch_After_Time * NSEC_PER_SEC)), dispatch_get_main_queue(), ^{
+            NSDecimalNumber * amount = [NSDecimalNumber decimalNumberWithString:self.confirmTransactionModel.amount];
+            NSDecimalNumber * minTransactionCost = [NSDecimalNumber decimalNumberWithString:transactionCost];
+            NSDecimalNumber * totleAmount = [amount decimalNumberByAdding:minTransactionCost];
+            NSDecimalNumber * amountNumber = [[HTTPManager shareManager] getDataWithBalanceJudgmentWithCost:[totleAmount stringValue] ifShowLoading:NO];
+            NSString * totleAmountStr = [amountNumber stringValue];
+            if (!NotNULLString(totleAmountStr) || [amountNumber isEqualToNumber:NSDecimalNumber.notANumber]) {
+            } else if ([totleAmountStr hasPrefix:@"-"]) {
+                [MBProgressHUD showTipMessageInWindow:Localized(@"NotSufficientFunds")];
+            } else {
+                if (![[HTTPManager shareManager] getTransactionHashWithModel: self.confirmTransactionModel]) return;
+                [self showPWAlertView];
+            }
+        });
+    } cancelBlock:^{
+        
+    }];
+    confirmAlertView.confirmTransactionModel = self.confirmTransactionModel;
+    [confirmAlertView showInWindowWithMode:CustomAnimationModeShare inView:nil bgAlpha:AlertBgAlpha needEffectView:NO];
+}
 
+// Transaction confirmation and submission
+- (void)getConfirmTransactionData
+{
+    [[HTTPManager shareManager] getContractTransactionWithModel:self.confirmTransactionModel  success:^(id responseObject) {
+        NSInteger code = [[responseObject objectForKey:@"errCode"] integerValue];
+        if (code == Success_Code || code == ErrorNotSubmitted) {
+            NSString * dateStr = [NSString stringWithFormat:@"%@", [[responseObject objectForKey:@"data"] objectForKey:@"expiryTime"]];
+            if (code == Success_Code) {
+                NSDate * date = [NSDate dateWithTimeIntervalSince1970:[dateStr longLongValue] / 1000];
+                NSTimeInterval time = [date timeIntervalSinceNow];
+                if (time < 0) {
+                    [Encapsulation showAlertControllerWithMessage:Localized(@"Overtime") handler:nil];
+                } else {
+                    [self submitTransaction];
+                }
+            } else {
+                [Encapsulation showAlertControllerWithMessage:[NSString stringWithFormat:Localized(@"NotSubmitted%@"), [DateTool getTimeIntervalWithStr:dateStr]] handler:nil];
+            }
+        } else {
+            [Encapsulation showAlertControllerWithMessage:[ErrorTypeTool getDescriptionWithNodeErrorCode:code] handler:nil];
+        }
+    } failure:^(NSError *error) {
+        
+    }];
+}
+
+- (void)showPWAlertView
+{
+    PasswordAlertView * PWAlertView = [[PasswordAlertView alloc] initWithPrompt:Localized(@"TransactionWalletPWPrompt") confrimBolck:^(NSString * _Nonnull password, NSArray * _Nonnull words) {
+        if (NotNULLString(password)) {
+            if (self.confirmTransactionModel) {
+                [self getConfirmTransactionData];
+            } else if (self.dposModel) {
+                [self submitDposTransaction];
+            }
+        }
+    } cancelBlock:^{
+        
+    }];
+    [PWAlertView showInWindowWithMode:CustomAnimationModeAlert inView:nil bgAlpha:AlertBgAlpha needEffectView:NO];
+    [PWAlertView.PWTextField becomeFirstResponder];
+}
+- (void)submitTransaction
+{
+    [[HTTPManager shareManager] submitTransactionWithSuccess:^(TransactionResultModel *resultModel) {
+        if (resultModel.errorCode == Success_Code) {
+            NodeTransferSuccessViewController * VC = [[NodeTransferSuccessViewController alloc] init];
+            [self.navigationController pushViewController:VC animated:NO];
+        } else {
+            TransferResultsViewController * VC = [[TransferResultsViewController alloc] init];
+            VC.state = NO;
+            VC.resultModel = resultModel;
+            VC.confirmTransactionModel = self.confirmTransactionModel;
+            [self.navigationController pushViewController:VC animated:NO];
+        }
+    } failure:^(TransactionResultModel *resultModel) {
+        RequestTimeoutViewController * VC = [[RequestTimeoutViewController alloc] init];
+        VC.transactionHash = resultModel.transactionHash;
+        [self.navigationController pushViewController:VC animated:NO];
+    }];
+}
+#pragma mark 扫描调用底层合约操作
+- (void)getDposTransactionWithStr:(NSString *)str
+{
+    NSString * scanStr = [str substringFromIndex:[Dpos_Prefix length]];
+    NSDictionary * scanData = [JsonTool dictionaryOrArrayWithJSONSString:scanStr];
+    if (scanData) {
+        self.dposModel = [DposModel mj_objectWithKeyValues:scanData];
+        if (!NotNULLString(self.dposModel.dest_address)) {
+            [MBProgressHUD showTipMessageInWindow:Localized(@"DestAddressNotNull")];
+            return;
+        }
+        if (!NotNULLString(self.dposModel.tx_fee)) {
+            [MBProgressHUD showTipMessageInWindow:Localized(@"TxFeeNotNull")];
+            return;
+        }
+        if (!NotNULLString(self.dposModel.amount)) {
+            [MBProgressHUD showTipMessageInWindow:Localized(@"AmountNotNull")];
+            return;
+        }
+        if (!NotNULLString(self.dposModel.input)) {
+            [MBProgressHUD showTipMessageInWindow:Localized(@"InputNotNull")];
+            return;
+        }
+        BOOL isCorrectAddress = [Keypair isAddressValid: self.dposModel.dest_address];
+        if (!isCorrectAddress) {
+            [MBProgressHUD showTipMessageInWindow:Localized(@"BUAddressIsIncorrect")];
+            return;
+        }
+        RegexPatternTool * regex = [[RegexPatternTool alloc] init];
+        BOOL txFeeRegx = [regex validateIsPositiveFloatingPoint:self.dposModel.tx_fee];
+        if (txFeeRegx == NO) {
+            [MBProgressHUD showTipMessageInWindow:Localized(@"TxFeeIsIncorrect")];
+            return;
+        }
+        
+        BOOL amountRegx = [regex validateIsNonNegativeFloatingPoint:self.dposModel.amount];
+        if (amountRegx == NO) {
+            [MBProgressHUD showTipMessageInWindow:Localized(@"AmountIsIncorrect")];
+            return;
+        }
+        ConfirmTransactionAlertView * confirmAlertView = [[ConfirmTransactionAlertView alloc] initWithDposConfrimBolck:^(NSString * _Nonnull transactionCost) {
+            dispatch_after(dispatch_time(DISPATCH_TIME_NOW, (int64_t)(Dispatch_After_Time * NSEC_PER_SEC)), dispatch_get_main_queue(), ^{
+                NSDecimalNumber * amount = [NSDecimalNumber decimalNumberWithString:self.dposModel.amount];
+                NSDecimalNumber * minTransactionCost = [NSDecimalNumber decimalNumberWithString:transactionCost];
+                NSDecimalNumber * totleAmount = [amount decimalNumberByAdding:minTransactionCost];
+                NSDecimalNumber * amountNumber = [[HTTPManager shareManager] getDataWithBalanceJudgmentWithCost:[totleAmount stringValue] ifShowLoading:NO];
+                NSString * totleAmountStr = [amountNumber stringValue];
+                if (!NotNULLString(totleAmountStr) || [amountNumber isEqualToNumber:NSDecimalNumber.notANumber]) {
+                } else if ([totleAmountStr hasPrefix:@"-"]) {
+                    [MBProgressHUD showTipMessageInWindow:Localized(@"NotSufficientFunds")];
+                } else {
+                    if (![[HTTPManager shareManager] getTransactionWithDposModel: self.dposModel]) return;
+                    [self showPWAlertView];
+                }
+            });
+        } cancelBlock:^{
+            
+        }];
+        confirmAlertView.dposModel = self.dposModel;
+        [confirmAlertView showInWindowWithMode:CustomAnimationModeShare inView:nil bgAlpha:AlertBgAlpha needEffectView:NO];
+    } else {
+        [MBProgressHUD showTipMessageInWindow:Localized(@"ScanFailure")];
+    }
+}
+- (void)submitDposTransaction
+{
+    [[HTTPManager shareManager] submitTransactionWithSuccess:^(TransactionResultModel *resultModel) {
+        resultModel.remark = Localized(@"DposContract");
+        TransferResultsViewController * VC = [[TransferResultsViewController alloc] init];
+        if (resultModel.errorCode == Success_Code) {
+            VC.state = YES;
+        } else {
+            VC.state = NO;
+        }
+        VC.resultModel = resultModel;
+        VC.transferInfoArray = [NSMutableArray arrayWithObjects:self.dposModel.dest_address, [NSString stringAppendingBUWithStr:self.dposModel.amount], nil];
+        [self.navigationController pushViewController:VC animated:NO];
+    } failure:^(TransactionResultModel *resultModel) {
+        RequestTimeoutViewController * VC = [[RequestTimeoutViewController alloc] init];
+        VC.transactionHash = resultModel.transactionHash;
+        [self.navigationController pushViewController:VC animated:NO];
+    }];
+}
 - (CGFloat)tableView:(UITableView *)tableView heightForRowAtIndexPath:(NSIndexPath *)indexPath
 {
     return ScreenScale(90);
@@ -481,8 +695,12 @@ static UIButton * _noBackup;
     if (section == 0) {
         NSUserDefaults * defaults = [NSUserDefaults standardUserDefaults];
         if (![defaults boolForKey:If_Backup] && _noBackup.selected == NO) {
+            if (iPhone6plus && [CurrentAppLanguage isEqualToString:ZhHans]) {
+                return 184;
+            } else if (iPhone6plus && [CurrentAppLanguage isEqualToString:ZhHans]) {
+                return 217;
+            }
             return ScreenScale(150) + [Encapsulation rectWithText:Localized(@"SafetyTips") font:TITLE_FONT textWidth:DEVICE_WIDTH - Margin_40].size.height;
-//            return ScreenScale(210);
         } else {
             return Margin_40;
         }
@@ -506,8 +724,6 @@ static UIButton * _noBackup;
                 make.top.equalTo(headerView.mas_top).offset(Margin_10);
                 make.left.equalTo(headerView.mas_left).offset(Margin_10);
                 make.right.equalTo(headerView.mas_right).offset(- Margin_10);
-//                make.height.mas_equalTo(ScreenScale(105) + []);
-//                make.height.mas_equalTo(ScreenScale(160));
             }];
             UILabel * safetyTipsTitle = [[UILabel alloc] init];
             safetyTipsTitle.textColor = COLOR_6;
@@ -574,12 +790,7 @@ static UIButton * _noBackup;
 - (void)noBackupAction:(UIButton *)button
 {
     button.selected = YES;
-//    [self.tableView beginUpdates];
     [self.tableView reloadData];
-//    [self.tableView endUpdates];
-//    [UIView performWithoutAnimation:^{
-//        [self.tableView reloadSections:[NSIndexSet indexSetWithIndex:0] withRowAnimation:UITableViewRowAnimationNone];
-//    }];
     NSUserDefaults * defaults = [NSUserDefaults standardUserDefaults];
     [defaults setBool:YES forKey:If_Skip];
     [defaults synchronize];

@@ -17,6 +17,8 @@
 @property (nonatomic, strong) UITableView * tableView;
 @property (nonatomic, strong) UIView * headerView;
 @property (nonatomic, strong) UIView * headerViewBg;
+@property (nonatomic, strong) UILabel * state;
+
 @property (nonatomic, assign) CGFloat headerViewH;
 @property (nonatomic, strong) NSDictionary * dataDic;
 @property (nonatomic, strong) NSArray * listArray;
@@ -26,7 +28,7 @@
 @property (nonatomic, strong) TxInfoModel * txInfoModel;
 @property (nonatomic, strong) UIView * noNetWork;
 
-@property (nonatomic, strong) NSString * amount;
+//@property (nonatomic, strong) NSString * amount;
 @property (nonatomic, strong) NSString * assets;
 
 @end
@@ -42,13 +44,14 @@ static NSInteger const TxInfoNormalCount = 6;
     [super viewDidLoad];
     self.navigationItem.title = Localized(@"TransactionDetail");
     NSString * outOrIn;
-    if (self.listModel.outinType == Transaction_Type_TurnOut) {
+    if ([self.listModel.amount isEqualToString:@"~"] || [self.listModel.amount isEqualToString:@"0"]) {
+        outOrIn = @"";
+    } else if (self.listModel.outinType == Transaction_Type_TurnOut) {
         outOrIn = @"-";
     } else {
         outOrIn = @"+";
     }
-    self.amount = [self.listModel.amount isEqualToString:@"~"] ? self.listModel.amount : [NSString stringWithFormat:@"%@ %@", self.listModel.amount, self.assetCode];
-    self.assets = [NSString stringWithFormat:@"%@%@", outOrIn, self.amount];
+    self.assets = [NSString stringWithFormat:@"%@%@ %@", outOrIn, self.listModel.amount, self.assetCode];
     _headerViewH = ScreenScale(170) + [Encapsulation rectWithText:self.assets font:FONT_Bold(27) textWidth:DEVICE_WIDTH - Margin_40].size.height;
     [self setupView];
     [self setupRefresh];
@@ -84,6 +87,9 @@ static NSInteger const TxInfoNormalCount = 6;
             self.txInfoModel = [TxInfoModel mj_objectWithKeyValues:responseObject[@"data"][@"txInfoRespBo"]];
             [self setListData];
             [self.tableView reloadData];
+            if ([self.txDetailModel.errorCode longLongValue] == ERRCODE_CONTRACT_EXECUTE_FAIL) {
+                self.state.text = [ErrorTypeTool getDescription:ERRCODE_CONTRACT_EXECUTE_FAIL];
+            }
         } else {
             [MBProgressHUD showTipMessageInWindow:[ErrorTypeTool getDescriptionWithErrorCode:code]];
         }
@@ -97,15 +103,16 @@ static NSInteger const TxInfoNormalCount = 6;
 }
 - (void)setListData
 {
-    NSMutableArray * infoTitleArray = [NSMutableArray arrayWithObjects:@"TX Hash", @"Source Address", @"Dest Address", @"Amount", @"TX Fee", @"Nonce", @"Transaction Signature", nil];
-    // , @"Ledger Seq"
+    NSMutableArray * infoTitleArray = [NSMutableArray arrayWithObjects:@"TX Hash", @"From", @"To", @"Value", @"TX Fee", @"Nonce", nil];
+    if (self.txInfoModel.signatureStr) {
+        [infoTitleArray addObject:@"Transaction Signature"];
+    }
     self.infoArray = [NSMutableArray array];
     NSMutableArray * detailArray = [NSMutableArray array];
     [detailArray addObject:self.txDetailModel.sourceAddress];
     [detailArray addObject:self.txDetailModel.destAddress];
     [detailArray addObject:[NSString stringAppendingBUWithStr: self.txDetailModel.fee]];
     [detailArray addObject:[DateTool getDateStringWithTimeStr:self.txDetailModel.applyTimeDate]];
-//    [detailArray addObject:self.txDetailModel.originalMetadata];
     [detailArray addObject:self.txDetailModel.txMetadata];
     [self.infoArray addObject:detailArray];
     // TX Info
@@ -113,12 +120,11 @@ static NSInteger const TxInfoNormalCount = 6;
     [infoArray addObject:self.txInfoModel.hashStr];
     [infoArray addObject:self.txInfoModel.sourceAddress];
     [infoArray addObject:self.txInfoModel.destAddress];
-    [infoArray addObject:self.amount];
+    [infoArray addObject:[NSString stringWithFormat:@"%@ %@", self.listModel.amount, self.assetCode]];
     [infoArray addObject:[NSString stringAppendingBUWithStr:self.txInfoModel.fee]];
     [infoArray addObject:self.txInfoModel.nonce];
-//    [infoArray addObject:self.txInfoModel.ledgerSeq];
-    [infoArray addObject:@"Transaction Signature"];
     NSArray * signatureArray = [JsonTool dictionaryOrArrayWithJSONSString: self.txInfoModel.signatureStr];
+    [infoArray addObject:@"Transaction Signature"];
     for (NSInteger i = 0; i < signatureArray.count; i ++) {
         [infoTitleArray addObject:@"Public Key"];
         [infoArray addObject:signatureArray[i][@"publicKey"]];
@@ -133,11 +139,10 @@ static NSInteger const TxInfoNormalCount = 6;
     [blockInfoArray addObject:self.blockInfoModel.hashStr];
     [blockInfoArray addObject:self.blockInfoModel.previousHash];
     [blockInfoArray addObject:self.blockInfoModel.txCount];
-//    [blockInfoArray addObject:self.blockInfoModel.validatorsHash]; , @"Validators Hash"
     [blockInfoArray addObject:[DateTool getDateStringWithTimeStr:self.blockInfoModel.closeTimeDate]];
     [self.infoArray addObject:blockInfoArray];
     
-    self.listArray = @[@[Localized(@"OriginatorAdress"), Localized(@"RecipientAddress"), Localized(@"TransactionCost"), Localized(@"SendingTime"), Localized(@"Remarks")], infoTitleArray, @[@"Block Height", @"Block Hash", @"Prev Block Hash", @"TX Count", @"Consensus Time"]];
+    self.listArray = @[@[Localized(@"OriginatorAdress"), Localized(@"RecipientAddress"), Localized(@"TransactionCost"), Localized(@"TransferTime"), Localized(@"Remarks")], infoTitleArray, @[@"Block Height", @"Block Hash", @"Prev Block Hash", @"TX Count", @"Consensus Time"]];
 }
 
 - (void)setupView
@@ -177,15 +182,15 @@ static NSInteger const TxInfoNormalCount = 6;
             make.centerX.equalTo(self.headerViewBg);
             make.width.mas_lessThanOrEqualTo(DEVICE_WIDTH - Margin_40);
         }];
-        UILabel * state = [[UILabel alloc] init];
-        state.font = TITLE_FONT;
-        state.textColor = COLOR_6;
-        [self.headerViewBg addSubview:state];
-        [state mas_makeConstraints:^(MASConstraintMaker *make) {
+        _state = [[UILabel alloc] init];
+        _state.font = TITLE_FONT;
+        _state.textColor = COLOR_6;
+        [self.headerViewBg addSubview:_state];
+        [_state mas_makeConstraints:^(MASConstraintMaker *make) {
             make.top.equalTo(orderResults.mas_bottom).offset(Margin_10);
             make.centerX.equalTo(self.headerViewBg);
         }];
-        state.text = (self.listModel.txStatus == 0) ? Localized(@"Success") : Localized(@"Failure");
+        _state.text = (self.listModel.txStatus == 0) ? Localized(@"Success") : Localized(@"Failure");
         _headerView = headerView;
     }
     return _headerView;
@@ -290,7 +295,7 @@ static NSInteger const TxInfoNormalCount = 6;
         cell.infoTitle.text = self.infoArray[indexPath.section][indexPath.row];
     }
     cell.selectionStyle = UITableViewCellSelectionStyleNone;
-    if ([cell.title.text isEqualToString:Localized(@"OriginatorAdress")] || [cell.title.text isEqualToString:Localized(@"RecipientAddress")] || [cell.title.text isEqualToString:@"TX Hash"] || [cell.title.text isEqualToString:@"Source Address"] || [cell.title.text isEqualToString:@"Dest Address"] || [cell.title.text isEqualToString:@"Block Hash"] || [cell.title.text isEqualToString:@"Prev Block Hash"]) {
+    if ([cell.title.text isEqualToString:Localized(@"OriginatorAdress")] || [cell.title.text isEqualToString:Localized(@"RecipientAddress")] || [cell.title.text isEqualToString:@"TX Hash"] || [cell.title.text isEqualToString:@"From"] || [cell.title.text isEqualToString:@"To"] || [cell.title.text isEqualToString:@"Block Hash"] || [cell.title.text isEqualToString:@"Prev Block Hash"]) {
         cell.infoTitle.copyable = YES;
     } else {
         cell.infoTitle.copyable = NO;

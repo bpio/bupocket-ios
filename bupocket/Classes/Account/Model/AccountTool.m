@@ -49,16 +49,5 @@ static AccountTool * _shareTool = nil;
     if ([[NSFileManager defaultManager] isDeletableFileAtPath:AccountFilePath]) {
         [[NSFileManager defaultManager] removeItemAtPath:AccountFilePath error:nil];
     }
-//    NSArray *subPathArr = [[NSFileManager defaultManager] contentsOfDirectoryAtPath:AccountFilePath error:nil];
-//    NSString *filePath = nil;
-//    NSError *error = nil;
-//    for (NSString *subPath in subPathArr) {
-//        filePath = [AccountFilePath stringByAppendingPathComponent:subPath];
-//        [[NSFileManager defaultManager] removeItemAtPath:filePath error:&error];
-//        if (error) {
-//            return NO;
-//        }
-//    }
-//    return YES;
 }
 @end

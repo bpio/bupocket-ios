@@ -114,9 +114,6 @@ static NSString * const AddAssetsCellID = @"AddAssetsCellID";
     [self layoutIfNeeded];
     CGFloat lineViewY = CGRectGetMaxY(self.lineView.frame);
     searchAssetsModel.cellHeight = lineViewY;
-//    CGFloat titleW = DEVICE_WIDTH - (ScreenScale(53) + Margin_30 + ScreenScale(85));
-//    CGFloat infoW = DEVICE_WIDTH - (Margin_20 + ScreenScale(85));
-//    searchAssetsModel.cellHeight = Margin_20 + [Encapsulation rectWithText:_title.text font:_title.font textWidth:titleW].size.height + Margin_10 + [Encapsulation rectWithText:_detailTitle.text font:_detailTitle.font textWidth:titleW].size.height + Margin_10 + [Encapsulation rectWithText:_infoTitle.text font:_infoTitle.font textWidth:infoW].size.height + Margin_15;
 }
 - (UIImageView *)listImageBg
 {
@@ -175,7 +172,6 @@ static NSString * const AddAssetsCellID = @"AddAssetsCellID";
     if (!_switchControl) {
         _switchControl = [[UISwitch alloc] init];
         [_switchControl addTarget:self action:@selector(switchChange:) forControlEvents:UIControlEventValueChanged];
-//        [_switchControl setOn:[[NSUserDefaults standardUserDefaults] boolForKey:If_Switch_TestNetwork] animated:YES];
     }
     return _switchControl;
 }

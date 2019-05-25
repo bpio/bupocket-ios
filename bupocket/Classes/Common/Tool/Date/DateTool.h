@@ -12,9 +12,11 @@ NS_ASSUME_NONNULL_BEGIN
 
 @interface DateTool : NSObject
 
-// 时间戳转时间
+// Time stamp - > time
 + (NSString *)getDateStringWithTimeStr:(NSString *)str;
 + (NSString *)getDateProcessingWithTimeStr:(NSString *)str;
+// 计算时间间隔
++ (NSString *)getTimeIntervalWithStr:(NSString *)str;
 
 @end
 

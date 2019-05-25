@@ -12,6 +12,7 @@ static NSString * const ListCellID = @"ListCellID";
 static NSString * const SettingCellID = @"SettingCellID";
 static NSString * const MonetaryUnitCellID = @"MonetaryUnitCellID";
 static NSString * const ExportCellID = @"ExportCellID";
+//static NSString * const FindCellID = @"FindCellID";
 
 @implementation ListTableViewCell
 
@@ -44,7 +45,7 @@ static NSString * const ExportCellID = @"ExportCellID";
             make.right.equalTo(self.contentView.mas_right).offset(-Margin_10);
             make.top.bottom.equalTo(self.contentView);
         }];
-        self.contentView.backgroundColor = self.contentView.superview.superview.backgroundColor;
+        self.contentView.backgroundColor = VIEWBG_COLOR;
     } else {
         [self.listBg mas_makeConstraints:^(MASConstraintMaker *make) {
             make.edges.equalTo(self.contentView);
@@ -123,6 +124,14 @@ static NSString * const ExportCellID = @"ExportCellID";
         _detailImage = [[UIImageView alloc] init];
     }
     return _detailImage;
+}
+- (UIView *)lineView
+{
+    if (!_lineView) {
+        _lineView = [[UIView alloc] init];
+        _lineView.backgroundColor = LINE_COLOR;
+    }
+    return _lineView;
 }
 - (void)awakeFromNib {
     [super awakeFromNib];

@@ -12,7 +12,7 @@ NS_ASSUME_NONNULL_BEGIN
 
 @interface NSString (Extension)
 
-+ (NSString *)stringEllipsisWithStr:(NSString *)str;
++ (NSString *)stringEllipsisWithStr:(NSString *)str subIndex:(NSInteger)subIndex;
 
 + (NSString *)stringAppendingBUWithStr:(NSString *)str;
 
@@ -26,6 +26,8 @@ NS_ASSUME_NONNULL_BEGIN
 + (NSString *)encode:(NSString *)string;
 // base64 Decode
 + (NSString *)dencode:(NSString *)base64String;
+
++ (NSString *)stringAmountSplitWith:(NSString *)str;
 
 
 @end

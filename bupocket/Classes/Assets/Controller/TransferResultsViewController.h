@@ -7,13 +7,17 @@
 //
 
 #import "BaseViewController.h"
+#import "ConfirmTransactionModel.h"
 
 NS_ASSUME_NONNULL_BEGIN
 
 @interface TransferResultsViewController : BaseViewController
 
-@property (nonatomic, copy) NSArray * transferInfoArray;
+@property (nonatomic, strong) NSMutableArray * transferInfoArray;
 @property (nonatomic, assign) BOOL state;
+
+@property (nonatomic, strong) TransactionResultModel * resultModel;
+@property (nonatomic, strong) ConfirmTransactionModel * confirmTransactionModel;
 
 @end
 

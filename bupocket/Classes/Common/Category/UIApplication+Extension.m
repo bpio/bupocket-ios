@@ -33,4 +33,10 @@
     return baseViewController;
 }
 
++ (UIViewController *)currentViewController {
+    // Find best view controller
+    UIViewController * VC = [UIApplication sharedApplication].keyWindow.rootViewController;
+    return [UIApplication topViewController:VC];
+}
+
 @end

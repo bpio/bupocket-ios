@@ -13,11 +13,15 @@
 #import "SafetyReinforcementAlertView.h"
 #import "VersionModel.h"
 #import <IQKeyboardManager/IQKeyboardManager.h>
+#import <WXApi.h>
+#import <TencentOpenAPI/TencentOAuth.h>
+#import <UMCommon/UMCommon.h>
 
-@interface AppDelegate ()
+@interface AppDelegate ()<WXApiDelegate, TencentSessionDelegate>
 
 @property (nonatomic, strong) VersionUpdateAlertView * alertView;
 @property (nonatomic, strong) PasswordAlertView * PWAlertView;
+@property (nonatomic, strong) TencentOAuth * tencentOAuth;
 
 @end
 
@@ -28,13 +32,17 @@
     // Override point for customization after application launch.
     self.window = [[UIWindow alloc] initWithFrame:[UIScreen mainScreen].bounds];
     self.window.backgroundColor = [UIColor whiteColor];
-//    [self setDefaultLocale];
     [[LanguageManager shareInstance] setDefaultLocale];
     [self.window makeKeyAndVisible];
     [self initializationSettings];
     [self setRootVC];
     // Minimum Asset Limitation
     [[HTTPManager shareManager] getBlockLatestFees];
+    [WXApi registerApp:Wechat_APP_ID];
+    _tencentOAuth = [[TencentOAuth alloc] initWithAppId:Tencent_App_ID andDelegate:self];
+
+    [UMConfigure initWithAppkey:UM_App_Key channel:@""];
+
     return YES;
 }
 - (void)initializationSettings
@@ -48,12 +56,8 @@
         UITableView.appearance.estimatedSectionHeaderHeight = 0;
         [[UINavigationBar appearance] setPrefersLargeTitles:true];
     }
-    //    else {
-    //        self.automaticallyAdjustsScrollViewInsets = NO;
-    //    }
     IQKeyboardManager * keyboardManager = [IQKeyboardManager sharedManager];
     keyboardManager.shouldResignOnTouchOutside = YES;
-//    keyboardManager.enableAutoToolbar = NO;
     keyboardManager.keyboardDistanceFromTextField = Margin_15;
 }
 
@@ -69,9 +73,6 @@
         [self storageSafetyReinforcement];
     } else {
         self.window.rootViewController = [[NavigationViewController alloc] initWithRootViewController:[[IdentityViewController alloc] init]];
-//        NSString * currentVersion = AppVersion;
-//        [defaults setObject:currentVersion forKey:LastVersion];
-//        [defaults synchronize];
         [self getVersionData];
     }
 }
@@ -81,17 +82,21 @@
     NSString * lastVersion = [defaults objectForKey:LastVersion];
     if (!lastVersion || [@"1.4.3" compare:lastVersion] == NSOrderedDescending) {
         SafetyReinforcementAlertView * alertView = [[SafetyReinforcementAlertView alloc] initWithTitle:Localized(@"SafetyReinforcementTitle") promptText:Localized(@"SafetyReinforcementPrompt") confrim:Localized(@"StartReinforcement") confrimBolck:^{
-            dispatch_after(dispatch_time(DISPATCH_TIME_NOW, (int64_t)(0.5 * NSEC_PER_SEC)), dispatch_get_main_queue(), ^{
-                self.PWAlertView = [[PasswordAlertView alloc] initWithPrompt:Localized(@"IdentityCipherPrompt") walletKeyStore:@"" isAutomaticClosing:NO confrimBolck:^(NSString * _Nonnull password, NSArray * _Nonnull words) {
-                    NSData * random = [Mnemonic randomFromMnemonicCode: words];
-                    [self upDateAccountDataWithRandom:random password:password];
+            dispatch_after(dispatch_time(DISPATCH_TIME_NOW, (int64_t)(Dispatch_After_Time * NSEC_PER_SEC)), dispatch_get_main_queue(), ^{
+                self.PWAlertView = [[PasswordAlertView alloc] initWithPrompt:Localized(@"IdentityCipherPrompt") confrimBolck:^(NSString * _Nonnull password, NSArray * _Nonnull words) {
+                    if (words.count > 0) {
+                        NSData * random = [Mnemonic randomFromMnemonicCode: words];
+                        [self upDateAccountDataWithRandom:random password:password];
+                    }
                 } cancelBlock:^{
                 }];
-                [self.PWAlertView showInWindowWithMode:CustomAnimationModeDisabled inView:nil bgAlpha:0.2 needEffectView:NO];
+                self.PWAlertView.passwordType = PWTypeDataReinforcement;
+                self.PWAlertView.isAutomaticClosing = NO;
+                [self.PWAlertView showInWindowWithMode:CustomAnimationModeDisabled inView:nil bgAlpha:AlertBgAlpha needEffectView:NO];
                 [self.PWAlertView.PWTextField becomeFirstResponder];
             });
         }];
-        [alertView showInWindowWithMode:CustomAnimationModeDisabled inView:nil bgAlpha:0.2 needEffectView:NO];
+        [alertView showInWindowWithMode:CustomAnimationModeDisabled inView:nil bgAlpha:AlertBgAlpha needEffectView:NO];
     } else {
         [self getVersionData];
     }
@@ -117,7 +122,6 @@
         NSInteger code = [[responseObject objectForKey:@"errCode"] integerValue];
         VersionModel * versionModel  = [VersionModel mj_objectWithKeyValues:[responseObject objectForKey:@"data"]];
         if (code == Success_Code) {
-//            NSDictionary * infoDictionary = [[NSBundle mainBundle] infoDictionary];
             NSString * currentVersion = AppVersion;
             BOOL result = [currentVersion compare:versionModel.verNumber] == NSOrderedAscending;
             if (result) {
@@ -129,7 +133,7 @@
                 }
                 if ([language hasPrefix:ZhHans]) {
                     updateContent = versionModel.verContents;
-                } else if ([language hasPrefix:EN]) {
+                } else {
                     updateContent = versionModel.englishVerContents;
                 }
                 self.alertView = [[VersionUpdateAlertView alloc] initWithUpdateVersionNumber:versionModel.verNumber versionSize:versionModel.appSize content:updateContent verType:versionModel.verType confrimBolck:^{
@@ -137,7 +141,7 @@
                 } cancelBlock:^{
                     
                 }];
-                [self.alertView showInWindowWithMode:CustomAnimationModeDisabled inView:nil bgAlpha:0.2 needEffectView:NO];
+                [self.alertView showInWindowWithMode:CustomAnimationModeDisabled inView:nil bgAlpha:AlertBgAlpha needEffectView:NO];
             }
         } else {
 //            [MBProgressHUD showTipMessageInWindow:[ErrorTypeTool getDescriptionWithErrorCode:code]];
@@ -146,7 +150,35 @@
         
     }];
 }
-
+- (BOOL)application:(UIApplication *)app openURL:(NSURL *)url options:(NSDictionary<UIApplicationOpenURLOptionsKey,id> *)options
+{
+    NSString * str = [url absoluteString];
+    if ([str hasPrefix:Wechat_APP_ID]) {
+        return [WXApi handleOpenURL:url delegate:self];
+    } else if ([str containsString:Tencent_App_ID]) {
+        return [TencentOAuth HandleOpenURL:url];
+    }
+    return NO;
+}
+- (BOOL)application:(UIApplication *)application handleOpenURL:(NSURL *)url{
+    NSString * str = [url absoluteString];
+    if ([str hasPrefix:Wechat_APP_ID]) {
+        return [WXApi handleOpenURL:url delegate:self];
+    } else if ([str containsString:Tencent_App_ID]) {
+        return [TencentOAuth HandleOpenURL:url];
+    }
+    return NO;
+}
+- (void)onReq:(BaseReq *)req
+{
+    
+}
+- (void)onResp:(BaseResp *)resp
+{
+    if ([resp isKindOfClass:[WXLaunchMiniProgramResp class]]) {
+        DLog(@"跳转微信后的回调 %d %@", resp.errCode, resp.errStr);
+    }
+}
 - (void)applicationWillResignActive:(UIApplication *)application {
     // Sent when the application is about to move from active to inactive state. This can occur for certain types of temporary interruptions (such as an incoming phone call or SMS message) or when the user quits the application and it begins the transition to the background state.
     // Use this method to pause ongoing tasks, disable timers, and invalidate graphics rendering callbacks. Games should use this method to pause the game.
@@ -171,6 +203,29 @@
 
 - (void)applicationWillTerminate:(UIApplication *)application {
     // Called when the application is about to terminate. Save data if appropriate. See also applicationDidEnterBackground:.
+}
+
+// 登录功能没添加，但调用TencentOAuth相关方法进行分享必须添加<TencentSessionDelegate>，则以下方法必须实现，尽管并不需要实际使用它们
+// 登录成功
+- (void)tencentDidLogin {
+    // 登录完成
+    if (_tencentOAuth.accessToken && 0 != [_tencentOAuth.accessToken length]) {
+        // 记录登录用户的OpenID、Token以及过期时间  _tencentOAuth.accessToken;
+    } else {
+        // 登录不成功 没有获取accesstoken
+    }
+}
+// 非网络错误导致登录失败
+- (void)tencentDidNotLogin:(BOOL)cancelled {
+    if (cancelled) {
+        // 用户取消登录
+    } else {
+        // 登录失败
+    }
+}
+// 网络错误导致登录失败
+- (void)tencentDidNotNetWork {
+    // 无网络连接，请设置网络
 }
 
 

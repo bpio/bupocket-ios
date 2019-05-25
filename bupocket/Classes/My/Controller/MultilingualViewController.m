@@ -26,7 +26,8 @@ static NSString * const ListCellID = @"ListCellID";
     self.navigationItem.title = Localized(@"MultiLingual");
     if ([CurrentAppLanguage isEqualToString:ZhHans]) {
         self.index = 0;
-    } else if ([CurrentAppLanguage isEqualToString:EN]) {
+    } else {
+        //  if ([CurrentAppLanguage isEqualToString:EN])
         self.index = 1;
     }
     [self setupView];

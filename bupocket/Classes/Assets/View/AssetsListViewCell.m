@@ -44,7 +44,6 @@ static NSString * const AssetsCellID = @"AssetsCellID";
         make.centerX.centerY.equalTo(self.listImage);
         make.width.height.mas_equalTo(ScreenScale(68));
     }];
-//    [self.title setContentHuggingPriority:UILayoutPriorityRequired forAxis:UILayoutConstraintAxisHorizontal];
     [self.title setContentCompressionResistancePriority:UILayoutPriorityRequired forAxis:UILayoutConstraintAxisHorizontal];
     [self.title mas_makeConstraints:^(MASConstraintMaker *make) {
         make.left.equalTo(self.listImage.mas_right).offset(Margin_10);

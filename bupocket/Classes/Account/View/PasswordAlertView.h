@@ -10,9 +10,13 @@
 #import "UIView+CustomAlertView.h"
 
 typedef NS_ENUM(NSInteger, PasswordType) {
-    PasswordBackupType,
-    PasswordTurnOutType,
-    PasswordWarnType
+    PWTypeTransaction, // sign
+    PWTypeBackUpID, // words ""
+    PWTypeExitID, // null
+    PWTypeDataReinforcement, // password, words ""
+    PWTypeDeleteWallet, // null
+    PWTypeExportKeystore, // null
+    PWTypeExportPrivateKey, // password
 };
 
 NS_ASSUME_NONNULL_BEGIN
@@ -22,7 +26,12 @@ typedef void (^OnSureWalletPWClick)(NSString * password, NSArray * words);
 
 @interface PasswordAlertView : UIView
 
-- (instancetype)initWithPrompt:(NSString *)prompt walletKeyStore:(NSString *)walletKeyStore isAutomaticClosing:(BOOL)isAutomaticClosing confrimBolck:(void (^)(NSString * password, NSArray * words))confrimBlock cancelBlock:(void (^)(void))cancelBlock;
+- (instancetype)initWithPrompt:(NSString *)prompt confrimBolck:(void (^)(NSString * password, NSArray * words))confrimBlock cancelBlock:(void (^)(void))cancelBlock;
+
+
+@property (nonatomic, assign) NSInteger passwordType;
+@property (nonatomic, assign) BOOL isAutomaticClosing;
+@property (nonatomic, copy) NSString * walletKeyStore;
 
 @property (nonatomic, strong) UITextField * PWTextField;
 

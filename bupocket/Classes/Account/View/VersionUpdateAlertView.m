@@ -137,7 +137,6 @@
         _versionUpdateTitle.textColor = TITLE_COLOR;
         _versionUpdateTitle.font = FONT(18);
         _versionUpdateTitle.numberOfLines = 0;
-//        _versionUpdateTitle.text = Localized(@"VersionUpdate");
     }
     return _versionUpdateTitle;
 }

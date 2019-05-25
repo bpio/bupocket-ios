@@ -64,14 +64,14 @@
     self.identityIDTitle.titleLabel.font = IDNameTitle.font;
     [self.identityIDTitle setTitleColor:IDNameTitle.textColor forState:UIControlStateNormal];
     [self.identityIDTitle setTitle:Localized(@"IdentityIDTitle") forState:UIControlStateNormal];
-    [self.identityIDTitle setImage:[UIImage imageNamed:@"explain"] forState:UIControlStateNormal];
+    [self.identityIDTitle setImage:[UIImage imageNamed:@"explain_info"] forState:UIControlStateNormal];
     [self.identityIDTitle addTarget:self action:@selector(identityIDInfo:) forControlEvents:UIControlEventTouchUpInside];
     [myIdentityBg addSubview:self.identityIDTitle];
     
     UILabel * IdentityID = [[UILabel alloc] init];
     IdentityID.font = IDName.font;
     IdentityID.textColor = IDName.textColor;
-    IdentityID.text = [NSString stringEllipsisWithStr:[[AccountTool shareTool] account].identityAddress];
+    IdentityID.text = [NSString stringEllipsisWithStr:[[AccountTool shareTool] account].identityAddress subIndex:SubIndex_Address];
     IdentityID.numberOfLines = 0;
     IdentityID.textAlignment = NSTextAlignmentRight;
     [myIdentityBg addSubview:IdentityID];
@@ -107,15 +107,18 @@
 }
 - (void)backupIdentityAction
 {
-    PasswordAlertView * alertView = [[PasswordAlertView alloc] initWithPrompt:Localized(@"IdentityCipherPrompt") walletKeyStore:@"" isAutomaticClosing:YES confrimBolck:^(NSString * _Nonnull password, NSArray * _Nonnull words) {
-        BackupMnemonicsViewController * VC = [[BackupMnemonicsViewController alloc] init];
-        VC.mnemonicArray = words;
-        [self.navigationController pushViewController:VC animated:NO];
+    PasswordAlertView * alertView = [[PasswordAlertView alloc] initWithPrompt:Localized(@"IdentityCipherPrompt") confrimBolck:^(NSString * _Nonnull password, NSArray * _Nonnull words) {
+        if (words.count > 0) {
+            BackupMnemonicsViewController * VC = [[BackupMnemonicsViewController alloc] init];
+            VC.mnemonicArray = words;
+            [self.navigationController pushViewController:VC animated:NO];
+        }
 //        [UIApplication sharedApplication].keyWindow.rootViewController = [[NavigationViewController alloc] initWithRootViewController:VC];
     } cancelBlock:^{
         
     }];
-    [alertView showInWindowWithMode:CustomAnimationModeAlert inView:nil bgAlpha:0.2 needEffectView:NO];
+    alertView.passwordType = PWTypeBackUpID;
+    [alertView showInWindowWithMode:CustomAnimationModeAlert inView:nil bgAlpha:AlertBgAlpha needEffectView:NO];
     [alertView.PWTextField becomeFirstResponder];
 }
 - (void)exitIDAction
@@ -123,16 +126,17 @@
     [Encapsulation showAlertControllerWithTitle:Localized(@"ExitCurrentIdentity") message:Localized(@"ExitCurrentIdentityPrompt") cancelHandler:^(UIAlertAction *action) {
         
     } confirmHandler:^(UIAlertAction *action) {
-        PasswordAlertView * alertView = [[PasswordAlertView alloc] initWithPrompt:Localized(@"IdentityCipherWarning") walletKeyStore:@"" isAutomaticClosing:YES confrimBolck:^(NSString * _Nonnull password, NSArray * _Nonnull words) {
-            [self exitIDDataWithPassword:password];
+        PasswordAlertView * alertView = [[PasswordAlertView alloc] initWithPrompt:Localized(@"IdentityCipherWarning") confrimBolck:^(NSString * _Nonnull password, NSArray * _Nonnull words) {
+            [self exitIDData];
         } cancelBlock:^{
             
         }];
-        [alertView showInWindowWithMode:CustomAnimationModeAlert inView:nil bgAlpha:0.2 needEffectView:NO];
+        alertView.passwordType = PWTypeExitID;
+        [alertView showInWindowWithMode:CustomAnimationModeAlert inView:nil bgAlpha:AlertBgAlpha needEffectView:NO];
         [alertView.PWTextField becomeFirstResponder];
     }];
 }
-- (void)exitIDDataWithPassword:(NSString *)password
+- (void)exitIDData
 {
     [MBProgressHUD showActivityMessageInWindow:Localized(@"Loading")];
     NSOperationQueue * queue = [[NSOperationQueue alloc] init];
@@ -163,7 +167,7 @@
         popupMenu.dismissOnSelected = NO;
         popupMenu.fontSize = TITLE_FONT;
         popupMenu.textColor = [UIColor whiteColor];
-        popupMenu.backColor = COLOR(@"56526D");
+        popupMenu.backColor = COLOR_POPUPMENU;
         popupMenu.tableView.separatorStyle = UITableViewCellSeparatorStyleNone;
         popupMenu.tableView.scrollEnabled = NO;
         popupMenu.tableView.allowsSelection = NO;

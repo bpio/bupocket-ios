@@ -47,14 +47,6 @@ static WalletTool * _shareTool = nil;
     if ([[NSFileManager defaultManager] isDeletableFileAtPath:WalletFilePath]) {
         [[NSFileManager defaultManager] removeItemAtPath:WalletFilePath error:nil];
     }
-//    if ([fileManager fileExistsAtPath:WalletFilePath]) {
-//        [fileManager removeItemAtPath:WalletFilePath error:nil];
-//        NSArray * childerFiles = [fileManager subpathsAtPath:WalletFilePath];
-//        for (NSString *fileName in childerFiles) {
-//            //如有需要，加入条件，过滤掉不想删除的文件
-//            NSString * absolutePath = [WalletFilePath stringByAppendingPathComponent:fileName];
-//        }
-//    }
 }
 
 @end

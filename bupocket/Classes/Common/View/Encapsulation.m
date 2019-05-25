@@ -10,15 +10,19 @@
 
 @implementation Encapsulation
 
-// 设置label的自适应宽度
+// Setting the adaptive width of label
 + (CGRect)rectWithText:(NSString *)text font:(UIFont *)font textWidth:(CGFloat)textWidth
 {
-    NSDictionary *dic = @{NSFontAttributeName:font};
+    NSMutableParagraphStyle * style = [[NSParagraphStyle defaultParagraphStyle] mutableCopy];
+    style.lineBreakMode = NSLineBreakByWordWrapping;
+    style.alignment = NSTextAlignmentLeft;
+
+    NSDictionary *dic = @{NSFontAttributeName:font, NSParagraphStyleAttributeName:style};
     CGSize size = CGSizeMake(textWidth, CGFLOAT_MAX);
-    CGRect rect = [text boundingRectWithSize:size options:NSStringDrawingUsesLineFragmentOrigin attributes:dic context:nil];
+    CGRect rect = [text boundingRectWithSize:size options:NSStringDrawingUsesLineFragmentOrigin | NSStringDrawingUsesFontLeading attributes:dic context:nil];
     return rect;
 }
-// 设置label的自适应高度
+// Setting the adaptive height of label
 + (CGRect)rectWithText:(NSString *)text font:(UIFont *)font textHeight:(CGFloat)textHeight
 {
     NSDictionary *dic = @{NSFontAttributeName:font};
@@ -26,7 +30,7 @@
     CGRect rect = [text boundingRectWithSize:size options:NSStringDrawingUsesLineFragmentOrigin attributes:dic context:nil];
     return rect;
 }
-// 设置行间距和字间距
+// Set line spacing and word spacing
 + (NSMutableAttributedString *)attrWithString:(NSString *)str preFont:(UIFont *)preFont preColor:(UIColor *)preColor index:(NSInteger)index sufFont:(UIFont *)sufFont sufColor:(UIColor *)sufColor lineSpacing:(CGFloat)lineSpacing
 {
     NSMutableAttributedString * attr = [[NSMutableAttributedString alloc] initWithString:str];
@@ -48,12 +52,12 @@
     paraStyle.tailIndent = 0;
 //    paraStyleDic[NSFontAttributeName] = TITLE_FONT;
     paraStyleDic[NSParagraphStyleAttributeName] = paraStyle;
-    //设置字间距 NSKernAttributeName:@1.5f
+    //word spacing NSKernAttributeName:@1.5f
 //    paraStyleDic[NSKernAttributeName] = @1.0f;
     [attr addAttributes:paraStyleDic range:NSMakeRange(0, str.length)];
     return attr;
 }
-// 设置标题属性文字
+// Setting Title Property text
 + (NSMutableAttributedString *)attrTitle:(NSString *)title ifRequired:(BOOL)ifRequired
 {
     NSMutableAttributedString * attr = [[NSMutableAttributedString alloc] initWithString:[NSString stringWithFormat:@"%@", title]];
@@ -75,7 +79,15 @@
     }
     return attr;
 }
-//计算UILabel的高度(带有行间距的情况)
+//将HTML字符串转化为NSAttributedString富文本字符串
++ (NSAttributedString *)attributedStringWithHTMLString:(NSString *)htmlString
+{
+    NSDictionary *options = @{ NSDocumentTypeDocumentAttribute : NSHTMLTextDocumentType,
+                               NSCharacterEncodingDocumentAttribute :@(NSUTF8StringEncoding) };
+    NSData * data = [htmlString dataUsingEncoding:NSUTF8StringEncoding];
+    return [[NSAttributedString alloc] initWithData:data options:options documentAttributes:nil error:nil];
+}
+// Calculate the width and height of UILabel (with row spacing)
 + (CGSize)getSizeSpaceLabelWithStr:(NSString *)str font:(UIFont *)font width:(CGFloat)width height:(CGFloat)height lineSpacing:(CGFloat)lineSpacing
 {
     NSMutableParagraphStyle *paraStyle = [[NSMutableParagraphStyle alloc] init];
@@ -83,7 +95,7 @@
     paraStyle.alignment = NSTextAlignmentLeft;
     paraStyle.lineSpacing = lineSpacing;
     paraStyle.hyphenationFactor = 1.0;
-    paraStyle.firstLineHeadIndent =0.0;
+    paraStyle.firstLineHeadIndent = 0.0;
     paraStyle.paragraphSpacingBefore =0.0;
     paraStyle.headIndent = 0;
     paraStyle.tailIndent = 0;
@@ -124,6 +136,26 @@
     [[[UIApplication sharedApplication] keyWindow].rootViewController presentViewController:alertController animated:YES completion:nil];
 }
 
++ (void)showAlertControllerWithTitle:(NSString *)title message:(NSString*)message confirmHandler:(void(^)(UIAlertAction * action))confirmHandler
+{
+    UIAlertController * alertController = [UIAlertController alertControllerWithTitle:title message:message preferredStyle:UIAlertControllerStyleAlert];
+    UIAlertAction * confirmAction = [UIAlertAction actionWithTitle:Localized(@"IGotIt") style:UIAlertActionStyleDefault handler:confirmHandler];
+    [alertController addAction:confirmAction];
+    UIView * alertBg = alertController.view.subviews[0].subviews[0].subviews[0];
+    alertBg.backgroundColor = [UIColor whiteColor];
+    alertBg.layer.cornerRadius = BG_CORNER;
+    if (title.length > 0) {
+        UILabel * titleLabel = alertBg.subviews[0].subviews[0].subviews[0];
+        titleLabel.height = ScreenScale(65);
+        //    NSMutableAttributedString * attrTitle = [Encapsulation attrWithString:title preFont:FONT(18) preColor:TITLE_COLOR index:0 sufFont:FONT(18) sufColor:TITLE_COLOR lineSpacing:Margin_10];
+        NSMutableAttributedString * attrTitle = [[NSMutableAttributedString alloc] initWithString:title attributes:@{NSForegroundColorAttributeName: TITLE_COLOR, NSFontAttributeName: FONT_Bold(18)}];
+        [alertController setValue:attrTitle forKey:@"attributedTitle"];
+    }
+    NSMutableAttributedString * attr = [[NSMutableAttributedString alloc] initWithString:[NSString stringWithFormat:@"\n%@", message] attributes:@{NSForegroundColorAttributeName: COLOR_6, NSFontAttributeName: FONT(15)}];
+    [alertController setValue:attr forKey:@"attributedMessage"];
+    [confirmAction setValue:MAIN_COLOR forKey:@"titleTextColor"];
+    [[[UIApplication sharedApplication] keyWindow].rootViewController presentViewController:alertController animated:YES completion:nil];
+}
 + (UIButton *)showNoDataWithTitle:(NSString *)title imageName:(NSString *)imageName superView:(UIView *)superView frame:(CGRect)frame
 {
     CustomButton * button = [[CustomButton alloc] init];
@@ -139,7 +171,7 @@
     return button;
 }
 
-#pragma mark 连接服务器失败
+#pragma mark - Connection server failed
 + (UIView *)showNoNetWorkWithSuperView:(UIView *)superView target:(id)target action:(SEL)action
 {
     UIView * noNetWork = [[UIView alloc] init];
