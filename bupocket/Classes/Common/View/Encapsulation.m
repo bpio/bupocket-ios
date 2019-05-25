@@ -136,6 +136,26 @@
     [[[UIApplication sharedApplication] keyWindow].rootViewController presentViewController:alertController animated:YES completion:nil];
 }
 
++ (void)showAlertControllerWithTitle:(NSString *)title message:(NSString*)message confirmHandler:(void(^)(UIAlertAction * action))confirmHandler
+{
+    UIAlertController * alertController = [UIAlertController alertControllerWithTitle:title message:message preferredStyle:UIAlertControllerStyleAlert];
+    UIAlertAction * confirmAction = [UIAlertAction actionWithTitle:Localized(@"IGotIt") style:UIAlertActionStyleDefault handler:confirmHandler];
+    [alertController addAction:confirmAction];
+    UIView * alertBg = alertController.view.subviews[0].subviews[0].subviews[0];
+    alertBg.backgroundColor = [UIColor whiteColor];
+    alertBg.layer.cornerRadius = BG_CORNER;
+    if (title.length > 0) {
+        UILabel * titleLabel = alertBg.subviews[0].subviews[0].subviews[0];
+        titleLabel.height = ScreenScale(65);
+        //    NSMutableAttributedString * attrTitle = [Encapsulation attrWithString:title preFont:FONT(18) preColor:TITLE_COLOR index:0 sufFont:FONT(18) sufColor:TITLE_COLOR lineSpacing:Margin_10];
+        NSMutableAttributedString * attrTitle = [[NSMutableAttributedString alloc] initWithString:title attributes:@{NSForegroundColorAttributeName: TITLE_COLOR, NSFontAttributeName: FONT_Bold(18)}];
+        [alertController setValue:attrTitle forKey:@"attributedTitle"];
+    }
+    NSMutableAttributedString * attr = [[NSMutableAttributedString alloc] initWithString:[NSString stringWithFormat:@"\n%@", message] attributes:@{NSForegroundColorAttributeName: COLOR_6, NSFontAttributeName: FONT(15)}];
+    [alertController setValue:attr forKey:@"attributedMessage"];
+    [confirmAction setValue:MAIN_COLOR forKey:@"titleTextColor"];
+    [[[UIApplication sharedApplication] keyWindow].rootViewController presentViewController:alertController animated:YES completion:nil];
+}
 + (UIButton *)showNoDataWithTitle:(NSString *)title imageName:(NSString *)imageName superView:(UIView *)superView frame:(CGRect)frame
 {
     CustomButton * button = [[CustomButton alloc] init];

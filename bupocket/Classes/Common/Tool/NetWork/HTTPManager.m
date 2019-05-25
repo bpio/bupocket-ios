@@ -429,7 +429,6 @@ static int64_t const gasPrice = 1000;
                   success:(void (^)(id responseObject))success
                   failure:(void (^)(NSError *error))failure
 {
-    [MBProgressHUD showActivityMessageInWindow:Localized(@"Loading")];
     NSString * url = SERVER_COMBINE_API(_webServerDomain, URL);
     [[HttpTool shareTool] GET:url parameters:nil success:^(id responseObject) {
         if(success != nil)
@@ -603,7 +602,6 @@ static int64_t const gasPrice = 1000;
                                 success:(void (^)(id responseObject))success
                                 failure:(void (^)(NSError *error))failure
 {
-    [MBProgressHUD showActivityMessageInWindow:Localized(@"Loading")];
     NSString * url = SERVER_COMBINE_API(_webServerDomain, Node_List);
     NSString * body = [NSString stringWithFormat:@"address=%@&identityType=%@&nodeName=%@&capitalAddress=%@", CurrentWalletAddress, identityType, nodeName, capitalAddress];
     NSDictionary * parameters = [[HTTPManager shareManager] parametersWithHTTPBody:body];
@@ -625,7 +623,6 @@ static int64_t const gasPrice = 1000;
                                     success:(void (^)(id responseObject))success
                                     failure:(void (^)(NSError *error))failure
 {
-    [MBProgressHUD showActivityMessageInWindow:Localized(@"Loading")];
     NSString * url = SERVER_COMBINE_API(_webServerDomain, Node_Invitation_Vote);
     NSString * body = [NSString stringWithFormat:@"address=%@&nodeId=%@", CurrentWalletAddress, nodeId];
     NSDictionary * parameters = [[HTTPManager shareManager] parametersWithHTTPBody:body];
@@ -647,7 +644,6 @@ static int64_t const gasPrice = 1000;
                               success:(void (^)(id responseObject))success
                               failure:(void (^)(NSError *error))failure
 {
-    [MBProgressHUD showActivityMessageInWindow:Localized(@"Loading")];
     NSString * url = SERVER_COMBINE_API(_webServerDomain, Voting_Record);
     NSString * body = [NSString stringWithFormat:@"address=%@&nodeId=%@", CurrentWalletAddress, nodeId];
     NSDictionary * parameters = [[HTTPManager shareManager] parametersWithHTTPBody:body];
@@ -667,7 +663,6 @@ static int64_t const gasPrice = 1000;
 - (void)getNodeCooperateListDataSuccess:(void (^)(id responseObject))success
                                 failure:(void (^)(NSError *error))failure
 {
-    [MBProgressHUD showActivityMessageInWindow:Localized(@"Loading")];
     NSString * url = SERVER_COMBINE_API(_webServerDomain, Node_Cooperate_List);
     [[HttpTool shareTool] POST:url parameters:nil success:^(id responseObject) {
         if(success != nil)
@@ -686,7 +681,6 @@ static int64_t const gasPrice = 1000;
                                      success:(void (^)(id responseObject))success
                                      failure:(void (^)(NSError *error))failure
 {
-    [MBProgressHUD showActivityMessageInWindow:Localized(@"Loading")];
     NSString * url = SERVER_COMBINE_API(_webServerDomain, Node_Cooperate_Detail);
     NSString * body = [NSString stringWithFormat:@"nodeId=%@", nodeId];
     NSDictionary * parameters = [[HTTPManager shareManager] parametersWithHTTPBody:body];
@@ -963,6 +957,9 @@ static int64_t const gasPrice = 1000;
                                 code:(NSString *)code
                               issuer:(NSString *)issuer
 {
+    dispatch_async(dispatch_get_main_queue(), ^{
+        [MBProgressHUD showActivityMessageInWindow:Localized(@"Loading")];
+    });
     // Build BUSendOperation
     NSString * sourceAddress = CurrentWalletAddress;
     int64_t fee = [[[NSDecimalNumber decimalNumberWithString:feeLimit] decimalNumberByMultiplyingByPowerOf10: Decimals_BU] longLongValue];
@@ -1003,6 +1000,9 @@ static int64_t const gasPrice = 1000;
 // register
 - (BOOL)getRegisteredDataWithRegisteredModel:(RegisteredModel *)registeredModel
 {
+    dispatch_async(dispatch_get_main_queue(), ^{
+        [MBProgressHUD showActivityMessageInWindow:Localized(@"Loading")];
+    });
     NSString * sourceAddress = CurrentWalletAddress;
     int64_t nonce = [[HTTPManager shareManager] getAccountNonce: CurrentWalletAddress] + 1;
     if (nonce == 0) return NO;
@@ -1031,6 +1031,9 @@ static int64_t const gasPrice = 1000;
                             assetAmount:(int64_t)assetAmount
                                decimals:(NSInteger)decimals
 {
+    dispatch_async(dispatch_get_main_queue(), ^{
+        [MBProgressHUD showActivityMessageInWindow:Localized(@"Loading")];
+    });
     NSString * sourceAddress = CurrentWalletAddress;
     int64_t nonce = [[HTTPManager shareManager] getAccountNonce: CurrentWalletAddress] + 1;
     if (nonce == 0) return NO;
@@ -1079,11 +1082,16 @@ static int64_t const gasPrice = 1000;
     _transactionService = [[[SDK sharedInstance] setUrl:_bumoNodeUrl] getTransactionService];
     _buildBlobResponse = [_transactionService buildBlob : buildBlobRequest];
     if (_buildBlobResponse.errorCode == Success_Code) {
+        dispatch_async(dispatch_get_main_queue(), ^{
+            [MBProgressHUD hideHUD];
+        });
         _hash = _buildBlobResponse.result.transactionHash;
         return YES;
     } else {
-        [MBProgressHUD hideHUD];
-        [MBProgressHUD showTipMessageInWindow:[ErrorTypeTool getDescription:_buildBlobResponse.errorCode]];
+        dispatch_async(dispatch_get_main_queue(), ^{
+            [MBProgressHUD hideHUD];
+            [MBProgressHUD showTipMessageInWindow:[ErrorTypeTool getDescription:self->_buildBlobResponse.errorCode]];
+        });
         return NO;
     }
 }
@@ -1187,6 +1195,9 @@ static int64_t const gasPrice = 1000;
 - (BOOL)getTransactionWithDposModel:(DposModel *)dposModel
 {
     // Build BUSendOperation
+    dispatch_async(dispatch_get_main_queue(), ^{
+        [MBProgressHUD showActivityMessageInWindow:Localized(@"Loading")];
+    });
     NSString * sourceAddress = CurrentWalletAddress;
     NSString * notes = Localized(@"DposContract");
     int64_t fee = [[[NSDecimalNumber decimalNumberWithString:dposModel.tx_fee] decimalNumberByMultiplyingByPowerOf10: Decimals_BU] longLongValue];

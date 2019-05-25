@@ -387,7 +387,7 @@
 "NodePlan" = "Node Campaign";
 "JointlyCooperate" = "Node Co-funding";
 "Information" = "Information";
-"SmallClothGoods" = "BU Pocket Goods";
+"YoPin" = "YoPin";
 // Node Campaign
 //"VotesObtained" = "Votes received";
 "Vote" = "Vote";
@@ -530,6 +530,8 @@
 "Unsupported" = "Please use it after upgrading to the latest version";
 "QQAppUninstalled" = "Please use it after downloading QQ";
 "SharingFailure" = "Error! Please try again later";
+"Disclaimer" = "Disclaimer";
+"DisclaimerInfo" = "Service provide and liability covered by third party (YoPin) .For any questions,contact the company.";
 
 // 调用底层合约
 "DposContract" = "Contract call";

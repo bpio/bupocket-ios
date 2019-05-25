@@ -164,7 +164,21 @@
     __weak typeof(self) weakSelf = self;
     TransferDetailsAlertView * transferDetailsAlertView = [[TransferDetailsAlertView alloc] initWithTransferInfoArray:self.transferInfoArray confrimBolck:^{
         dispatch_after(dispatch_time(DISPATCH_TIME_NOW, (int64_t)(Dispatch_After_Time * NSEC_PER_SEC)), dispatch_get_main_queue(), ^{
-            if (![[HTTPManager shareManager] setTransferDataWithTokenType:self.listModel.type destAddress:self.address assets:self.transferVolumeStr decimals:self.listModel.decimals feeLimit:self.transactionCostsStr notes:self.remarksStr code:self.listModel.assetCode issuer:self.listModel.issuer]) return;
+            [self showPWAlert];
+        });
+    } cancelBlock:^{
+        
+    }];
+    [transferDetailsAlertView showInWindowWithMode:CustomAnimationModeShare inView:nil bgAlpha:AlertBgAlpha needEffectView:NO];
+}
+
+- (void)showPWAlert
+{
+    __weak typeof(self) weakSelf = self;
+    NSOperationQueue * queue = [[NSOperationQueue alloc] init];
+    [queue addOperationWithBlock:^{
+        if (![[HTTPManager shareManager] setTransferDataWithTokenType:self.listModel.type destAddress:self.address assets:self.transferVolumeStr decimals:self.listModel.decimals feeLimit:self.transactionCostsStr notes:self.remarksStr code:self.listModel.assetCode issuer:self.listModel.issuer]) return;
+        [[NSOperationQueue mainQueue] addOperationWithBlock:^{
             PasswordAlertView * alertView = [[PasswordAlertView alloc] initWithPrompt:Localized(@"TransactionWalletPWPrompt") confrimBolck:^(NSString * _Nonnull password, NSArray * _Nonnull words) {
                 if (NotNULLString(password)) {
                     [weakSelf submitTransaction];
@@ -174,11 +188,9 @@
             }];
             [alertView showInWindowWithMode:CustomAnimationModeAlert inView:nil bgAlpha:AlertBgAlpha needEffectView:NO];
             [alertView.PWTextField becomeFirstResponder];
-        });
-    } cancelBlock:^{
-        
+           
+        }];
     }];
-    [transferDetailsAlertView showInWindowWithMode:CustomAnimationModeShare inView:nil bgAlpha:AlertBgAlpha needEffectView:NO];
 }
 
 - (void)submitTransaction

@@ -21,6 +21,7 @@
 @property (nonatomic, strong) SDCycleScrollView * cycleScrollView;
 @property (nonatomic, strong) NSArray * listArray;
 @property (nonatomic, strong) NSArray * bannerArray;
+@property (nonatomic, strong) UIView * headerView;
 
 @end
 
@@ -30,7 +31,7 @@ static NSString * const ExportCellID = @"ExportCellID";
 
 - (void)viewDidLoad {
     [super viewDidLoad];
-    self.listArray = @[@[Localized(@"NodePlan"), Localized(@"JointlyCooperate")], @[Localized(@"Information")], @[Localized(@"SmallClothGoods")]];
+    self.listArray = @[@[Localized(@"NodePlan"), Localized(@"JointlyCooperate")], @[Localized(@"Information")], @[Localized(@"YoPin")]];
     [self setupView];
     [self setupRefresh];
     // Do any additional setup after loading the view.
@@ -52,8 +53,11 @@ static NSString * const ExportCellID = @"ExportCellID";
         if (code == Success_Code) {
             self.bannerArray = responseObject[@"data"][@"slideshow"];
             if (self.bannerArray.count > 0) {
+                self.tableView.tableHeaderView = self.headerView;
                 NSArray * imageArray = [self.bannerArray valueForKeyPath:@"imageUrl"];
                 self.cycleScrollView.imageURLStringsGroup = imageArray;
+            } else {
+                self.tableView.tableHeaderView = [[UIView alloc] init];
             }
             [self.tableView reloadData];
         } else {
@@ -73,16 +77,21 @@ static NSString * const ExportCellID = @"ExportCellID";
     self.tableView.dataSource = self;
     self.tableView.separatorStyle = UITableViewCellSeparatorStyleNone;
     [self.view addSubview:self.tableView];
-    CGFloat headerH = (DEVICE_WIDTH - Margin_20) * 375 / 700;
-    UIView * headerView = [[UIView alloc] initWithFrame:CGRectMake(0, 0, DEVICE_WIDTH, headerH + Margin_10)];
-    _cycleScrollView = [SDCycleScrollView cycleScrollViewWithFrame:CGRectMake(Margin_10, Margin_10, DEVICE_WIDTH - Margin_20, headerH) delegate:self placeholderImage:[UIImage imageNamed:@"banner_placehoder"]];
-    _cycleScrollView.autoScrollTimeInterval = 2.5;
-    _cycleScrollView.hidesForSinglePage = YES;
-    _cycleScrollView.backgroundColor = [UIColor clearColor];
-    _cycleScrollView.layer.cornerRadius = BG_CORNER;
-    _cycleScrollView.clipsToBounds = YES;
-    [headerView addSubview:_cycleScrollView];
-    self.tableView.tableHeaderView = headerView;
+}
+- (UIView *)headerView
+{
+    if (!_headerView) {
+         CGFloat headerH = (DEVICE_WIDTH - Margin_20) * 375 / 700;
+        _headerView = [[UIView alloc] initWithFrame:CGRectMake(0, 0, DEVICE_WIDTH, headerH + Margin_10)];
+        _cycleScrollView = [SDCycleScrollView cycleScrollViewWithFrame:CGRectMake(Margin_10, Margin_10, DEVICE_WIDTH - Margin_20, headerH) delegate:self placeholderImage:[UIImage imageNamed:@"banner_placehoder"]];
+        _cycleScrollView.autoScrollTimeInterval = 2.5;
+        _cycleScrollView.hidesForSinglePage = YES;
+        _cycleScrollView.backgroundColor = [UIColor clearColor];
+        _cycleScrollView.layer.cornerRadius = BG_CORNER;
+        _cycleScrollView.clipsToBounds = YES;
+        [_headerView addSubview:_cycleScrollView];
+    }
+    return _headerView;
 }
 - (void)reloadData
 {
@@ -164,7 +173,9 @@ static NSString * const ExportCellID = @"ExportCellID";
         [VC loadWebURLSring:Information_URL];
         [self.navigationController pushViewController:VC animated:NO];
     } else if (indexPath.section == 2) {
-        [WechatTool enterWechatMiniProgram];
+        [Encapsulation showAlertControllerWithTitle:Localized(@"Disclaimer") message:Localized(@"DisclaimerInfo") confirmHandler:^(UIAlertAction *action) {
+            [WechatTool enterWechatMiniProgram];
+        }];
     }
 }
 
