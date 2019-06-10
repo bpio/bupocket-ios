@@ -20,6 +20,7 @@
 @property (nonatomic, strong) WKWebView * wkWebView;
 @property (nonatomic,strong) UIProgressView * progressView;
 @property (nonatomic,strong) UILabel * titleLabel;
+@property (nonatomic, strong) UIButton * shareBtn;
 
 @end
 
@@ -38,10 +39,11 @@ static NSString * const NodeSharingID = @"NodeSharingID";
 }
 - (void)setupNav
 {
-    UIButton * shareBtn = [UIButton createButtonWithNormalImage:@"invitationToVote" SelectedImage:@"invitationToVote" Target:self Selector:@selector(shareAction)];
-    shareBtn.frame = CGRectMake(0, 0, ScreenScale(60), ScreenScale(44));
-    shareBtn.contentHorizontalAlignment = UIControlContentHorizontalAlignmentRight;
-    self.navigationItem.rightBarButtonItem = [[UIBarButtonItem alloc]initWithCustomView:shareBtn];
+    self.shareBtn = [UIButton createButtonWithNormalImage:@"invitationToVote" SelectedImage:@"invitationToVote" Target:self Selector:@selector(shareAction)];
+    self.shareBtn.frame = CGRectMake(0, 0, ScreenScale(60), ScreenScale(44));
+    self.shareBtn.contentHorizontalAlignment = UIControlContentHorizontalAlignmentRight;
+    self.navigationItem.rightBarButtonItem = [[UIBarButtonItem alloc]initWithCustomView:self.shareBtn];
+    self.shareBtn.userInteractionEnabled = NO;
 }
 - (void)dealloc {
     [[NSURLCache sharedURLCache] removeAllCachedResponses];
@@ -62,6 +64,7 @@ static NSString * const NodeSharingID = @"NodeSharingID";
     [[HTTPManager shareManager] getNodeInvitationVoteDataWithNodeId:self.nodeID success:^(id responseObject) {
         NSInteger code = [[responseObject objectForKey:@"errCode"] integerValue];
         if (code == Success_Code) {
+            self.shareBtn.userInteractionEnabled = YES;
             self.nodePlanModel = [NodePlanModel mj_objectWithKeyValues:responseObject[@"data"]];
             if (NotNULLString(self.nodePlanModel.introduce)) {
                 [self.wkWebView loadHTMLString:self.nodePlanModel.introduce baseURL:nil];
@@ -200,7 +203,7 @@ static NSString * const NodeSharingID = @"NodeSharingID";
     }
 }
 - (void)webView:(WKWebView *)webView didFinishNavigation:(WKNavigation *)navigation {
-
+    
     [webView evaluateJavaScript:@"document.body.offsetHeight" completionHandler:^(id _Nullable result, NSError * _Nullable error) {
         CGRect webFrame = webView.frame;
         webFrame.size.height = webView.scrollView.contentSize.height;
@@ -232,9 +235,9 @@ static NSString * const NodeSharingID = @"NodeSharingID";
     }
     NSString * path = nil;
     if ([self.nodePlanModel.identityType integerValue] == NodeIDTypeConsensus) {
-        path = [NSString stringWithFormat:@"%@%@", Validate_Node_Path, self.nodePlanModel.nodeId];
+        path = [NSString stringWithFormat:@"%@%@", Validate_Node_Path, self.nodeID];
     } else if ([self.nodePlanModel.identityType integerValue] == NodeIDTypeEcological) {
-        path = [NSString stringWithFormat:@"%@%@", Kol_Node_Path, self.nodePlanModel.nodeId];
+        path = [NSString stringWithFormat:@"%@%@", Kol_Node_Path, self.nodeID];
     }
     [[HTTPManager shareManager] getShortLinkDataWithType:@"1" path:path success:^(id responseObject) {
         NSInteger code = [[responseObject objectForKey:@"errCode"] integerValue];
@@ -255,13 +258,13 @@ static NSString * const NodeSharingID = @"NodeSharingID";
 }
 
 /*
-#pragma mark - Navigation
-
-// In a storyboard-based application, you will often want to do a little preparation before navigation
-- (void)prepareForSegue:(UIStoryboardSegue *)segue sender:(id)sender {
-    // Get the new view controller using [segue destinationViewController].
-    // Pass the selected object to the new view controller.
-}
-*/
+ #pragma mark - Navigation
+ 
+ // In a storyboard-based application, you will often want to do a little preparation before navigation
+ - (void)prepareForSegue:(UIStoryboardSegue *)segue sender:(id)sender {
+ // Get the new view controller using [segue destinationViewController].
+ // Pass the selected object to the new view controller.
+ }
+ */
 
 @end

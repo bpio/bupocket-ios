@@ -274,7 +274,11 @@ static int64_t const gasPrice = 1000;
     NSString * url = SERVER_COMBINE_API(_webServerDomain, Help_And_Feedback);
     NSDictionary * parameters = @{
                                   @"content": content,
-                                  @"contact": contact
+                                  @"contact": contact,
+                                  @"walletAddress": CurrentWalletAddress,
+                                  @"walletVer": [NSString stringWithFormat:@"V%@", App_Version],
+                                  @"osVer": [NSString stringWithFormat:@"%@ %@", iOS_Name, iOS_Version],
+                                  @"brandName": [[UIDevice currentDevice] machineModelName]
                                   };
     [[HttpTool shareTool] POST:url parameters:parameters success:^(id responseObject) {
         if(success != nil)

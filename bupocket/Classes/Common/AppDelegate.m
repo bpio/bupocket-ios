@@ -106,9 +106,8 @@
     [[HTTPManager shareManager] setAccountDataWithRandom:random password:password identityName:[[AccountTool shareTool] account].identityName typeTitle:Localized(@"SafetyReinforcementTitle") success:^(id responseObject) {
         [self.PWAlertView hideView];
         [Encapsulation showAlertControllerWithMessage:Localized(@"SuccessfulReinforcement") handler:^(UIAlertAction *action) {
-            NSString * currentVersion = AppVersion;
             NSUserDefaults * defaults = [NSUserDefaults standardUserDefaults];
-            [defaults setObject:currentVersion forKey:LastVersion];
+            [defaults setObject:App_Version forKey:LastVersion];
             [defaults synchronize];
             [self getVersionData];
         }];
@@ -122,8 +121,7 @@
         NSInteger code = [[responseObject objectForKey:@"errCode"] integerValue];
         VersionModel * versionModel  = [VersionModel mj_objectWithKeyValues:[responseObject objectForKey:@"data"]];
         if (code == Success_Code) {
-            NSString * currentVersion = AppVersion;
-            BOOL result = [currentVersion compare:versionModel.verNumber] == NSOrderedAscending;
+            BOOL result = [App_Version compare:versionModel.verNumber] == NSOrderedAscending;
             if (result) {
                 NSString * updateContent = nil;
                 NSString * language = CurrentAppLanguage;

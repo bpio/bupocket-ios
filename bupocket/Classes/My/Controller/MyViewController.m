@@ -157,8 +157,7 @@ static NSString * const ListCellID = @"ListCellID";
     cell.selectionStyle = UITableViewCellSelectionStyleNone;
     if (indexPath.row == self.listArray.count - 1) {
         cell.detailImage.hidden = YES;
-        NSString * currentVersion = [NSBundle mainBundle].infoDictionary[@"CFBundleVersion"];
-        cell.detailTitle.text = [NSString stringWithFormat:@"V%@", currentVersion];
+        cell.detailTitle.text = [NSString stringWithFormat:@"V%@", App_Version];
     } else {
         cell.detailImage.hidden = NO;
         cell.detailTitle.text = nil;
