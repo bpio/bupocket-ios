@@ -36,6 +36,9 @@ PODS:
   - UMCCommon (2.0.0)
   - WechatOpenSDK (1.8.4)
   - XHToast (1.4.0)
+  - YYKit (1.0.9):
+    - YYKit/no-arc (= 1.0.9)
+  - YYKit/no-arc (1.0.9)
 
 DEPENDENCIES:
   - AFNetworking
@@ -53,6 +56,7 @@ DEPENDENCIES:
   - UMCCommon
   - WechatOpenSDK
   - XHToast
+  - YYKit
 
 SPEC REPOS:
   https://github.com/cocoapods/specs.git:
@@ -72,6 +76,7 @@ SPEC REPOS:
     - UMCCommon
     - WechatOpenSDK
     - XHToast
+    - YYKit
 
 SPEC CHECKSUMS:
   AFNetworking: b6f891fdfaed196b46c7a83cf209e09697b94057
@@ -90,7 +95,8 @@ SPEC CHECKSUMS:
   UMCCommon: 79b5a614c958db367113eed5740109d9a98e1223
   WechatOpenSDK: 9b721089507c895d05f997408c30bb6e6f5f9b60
   XHToast: 3b354766d56d9df8fef8e64387bbd25c90d71a86
+  YYKit: 7cda43304a8dc3696c449041e2cb3107b4e236e7
 
-PODFILE CHECKSUM: 986e952c966bcdde5c3e59993f19fddaed1e80ef
+PODFILE CHECKSUM: 4cfedf13447772bfbcef8e01e770561f6ed880f7
 
 COCOAPODS: 1.5.3

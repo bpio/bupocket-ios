@@ -8,6 +8,7 @@
 
 #import <Foundation/Foundation.h>
 #import <sdk_ios/sdk_ios.h>
+#import <YYKit/YYKit.h>
 #import "RegisteredModel.h"
 #import "TransactionResultModel.h"
 #import "ConfirmTransactionModel.h"

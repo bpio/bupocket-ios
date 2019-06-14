@@ -24,8 +24,7 @@
 {
     [super viewDidLoad];
     NSUserDefaults * defaults = [NSUserDefaults standardUserDefaults];
-    NSString * currentVersion = AppVersion;
-    [defaults setObject:currentVersion forKey:LastVersion];
+    [defaults setObject:App_Version forKey:LastVersion];
     [defaults synchronize];
     [self setupView];
 }

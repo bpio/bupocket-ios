@@ -531,7 +531,7 @@
 "QQAppUninstalled" = "Please use it after downloading QQ";
 "SharingFailure" = "Error! Please try again later";
 "Disclaimer" = "Disclaimer";
-"DisclaimerInfo" = "Service provide and liability covered by third party (YoPin) .For any questions,contact the company.";
+"DisclaimerInfo" = "Service provided and liability covered by third party (YoPin). For any questions,contact the company.";
 
 // 调用底层合约
 "DposContract" = "Contract call";
