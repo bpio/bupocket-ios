@@ -16,10 +16,10 @@
 #define BUMO_NODE_URL @"https://wallet-node.bumo.io"
 #define BUMO_TOOLS_URL @"https://ws-tools.bumo.io"
 
-//#define WEB_SERVER_DOMAIN_TEST @"http://api-bp.bumotest.io/"
-//#define BUMO_NODE_URL_TEST @"https://wallet-node.bumotest.io"
-#define WEB_SERVER_DOMAIN_TEST @"http://192.168.6.97:5648/"
-#define BUMO_NODE_URL_TEST @"http://192.168.21.35:36002"
+#define WEB_SERVER_DOMAIN_TEST @"http://api-bp.bumotest.io/"
+#define BUMO_NODE_URL_TEST @"https://wallet-node.bumotest.io"
+//#define WEB_SERVER_DOMAIN_TEST @"http://192.168.6.97:5648/"
+//#define BUMO_NODE_URL_TEST @"http://192.168.21.35:36002"
 //#define WEB_SERVER_DOMAIN_TEST @"http://test-bupocket-api.bumocdn.com/"
 //#define BUMO_NODE_URL_TEST @"http://192.168.3.65:36002"
 
