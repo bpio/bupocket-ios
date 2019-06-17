@@ -188,7 +188,8 @@
                            failure:(void (^)(NSError *error))failure;
 - (BOOL)importWalletDataWalletName:(NSString *)walletName
                      walletAddress:(NSString *)walletAddress
-                    walletKeyStore:(NSString *)walletKeyStore;
+                    walletKeyStore:(NSString *)walletKeyStore
+                      randomNumber:(NSString *)randomNumber;
 #pragma mark - 转账
 // Transfer accounts
 - (BOOL)setTransferDataWithTokenType:(NSInteger)tokenType

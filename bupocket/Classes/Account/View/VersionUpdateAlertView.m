@@ -145,7 +145,7 @@
     if (!_versionSize) {
         _versionSize = [[UILabel alloc] init];
         _versionSize.textColor = COLOR_6;
-        _versionSize.font = TITLE_FONT;
+        _versionSize.font = FONT_TITLE;
         _versionSize.numberOfLines = 0;
     }
     return _versionSize;
@@ -155,7 +155,7 @@
     if (!_updateContent) {
         _updateContent = [[UILabel alloc] init];
         _updateContent.textColor = COLOR_6;
-        _updateContent.font = TITLE_FONT;
+        _updateContent.font = FONT_TITLE;
         _updateContent.numberOfLines = 0;
     }
     return _updateContent;

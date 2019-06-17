@@ -24,6 +24,7 @@ NS_ASSUME_NONNULL_BEGIN
 /** 通过身份私钥和密码生成的keystore */
 @property (nonatomic, strong) NSString * identityKeyStore;
 
+#pragma mark - Wallet
 /** 钱包名 */
 @property (nonatomic, strong) NSString * walletName;
 
@@ -33,6 +34,7 @@ NS_ASSUME_NONNULL_BEGIN
 
 /** 通过钱包私钥和密码生成的keystore */
 @property (nonatomic, strong) NSString * walletKeyStore;
+
 
 @end
 

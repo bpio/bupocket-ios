@@ -164,7 +164,7 @@
     if (!_purchaseAmount) {
         _purchaseAmount = [[UILabel alloc] init];
         _purchaseAmount.textColor = COLOR_9;
-        _purchaseAmount.font = TITLE_FONT;
+        _purchaseAmount.font = FONT_TITLE;
         _purchaseAmount.text = Localized(@"PurchaseAmount");
     }
     return _purchaseAmount;
@@ -183,7 +183,7 @@
     if (!_supportNumber) {
         _supportNumber = [[UILabel alloc] init];
         _supportNumber.textColor = COLOR_9;
-        _supportNumber.font = TITLE_FONT;
+        _supportNumber.font = FONT_TITLE;
         _supportNumber.text = Localized(@"SupportCopies");
     }
     return _supportNumber;
@@ -290,7 +290,7 @@
 - (UIButton *)confirm
 {
     if (!_confirm) {
-        _confirm = [UIButton createButtonWithTitle:Localized(@"ConfirmSupport") TextFont:16 TextNormalColor:[UIColor whiteColor] TextSelectedColor:[UIColor whiteColor] Target:self Selector:@selector(sureBtnClick)];
+        _confirm = [UIButton createButtonWithTitle:Localized(@"ConfirmSupport") TextFont:FONT_16 TextNormalColor:[UIColor whiteColor] TextSelectedColor:[UIColor whiteColor] Target:self Selector:@selector(sureBtnClick)];
         _confirm.backgroundColor = MAIN_COLOR;
     }
     return _confirm;

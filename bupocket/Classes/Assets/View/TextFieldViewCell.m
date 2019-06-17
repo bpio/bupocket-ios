@@ -52,7 +52,7 @@ static NSString * const TextFieldPWCellID = @"TextFieldPWCellID";
     [self.textField mas_makeConstraints:^(MASConstraintMaker *make) {
         make.left.right.equalTo(self.line);
         make.bottom.equalTo(self.line.mas_top);
-        make.height.mas_equalTo(ScreenScale(35));
+        make.height.mas_equalTo(ScreenScale(40));
     }];
     [self.title mas_makeConstraints:^(MASConstraintMaker *make) {
         make.left.right.equalTo(self.line);
@@ -64,7 +64,7 @@ static NSString * const TextFieldPWCellID = @"TextFieldPWCellID";
 {
     if (!_title) {
         _title = [[UILabel alloc] init];
-        _title.font = FONT(16);
+        _title.font = FONT(15);
         _title.textColor = COLOR_6;
         _title.numberOfLines = 0;
     }
@@ -75,7 +75,7 @@ static NSString * const TextFieldPWCellID = @"TextFieldPWCellID";
     if (!_textField) {
         _textField = [[UITextField alloc] init];
         _textField.textColor = TITLE_COLOR;
-        _textField.font = FONT(14);
+        _textField.font = FONT(13);
         _textField.clearButtonMode = UITextFieldViewModeWhileEditing;
         _textField.rightViewMode = UITextFieldViewModeAlways;
         [_textField addTarget:self action:@selector(textChange:) forControlEvents:UIControlEventEditingChanged];

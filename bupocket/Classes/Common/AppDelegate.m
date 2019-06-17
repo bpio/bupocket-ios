@@ -8,7 +8,7 @@
 
 #import "AppDelegate.h"
 #import "IdentityViewController.h"
-#import "BackUpPurseViewController.h"
+#import "BackUpWalletViewController.h"
 #import "VersionUpdateAlertView.h"
 #import "SafetyReinforcementAlertView.h"
 #import "VersionModel.h"
@@ -68,7 +68,7 @@
         if ([defaults boolForKey:If_Backup] || [defaults boolForKey:If_Skip]) {
             self.window.rootViewController = [[TabBarViewController alloc] init];
         } else {
-            self.window.rootViewController = [[NavigationViewController alloc] initWithRootViewController:[[BackUpPurseViewController alloc] init]];
+            self.window.rootViewController = [[NavigationViewController alloc] initWithRootViewController:[[BackUpWalletViewController alloc] init]];
         }
         [self storageSafetyReinforcement];
     } else {

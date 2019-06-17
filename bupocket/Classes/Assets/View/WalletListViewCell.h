@@ -1,9 +1,9 @@
 //
-//  WalletManagementViewCell.h
+//  WalletListViewCell.h
 //  bupocket
 //
-//  Created by bupocket on 2019/1/7.
-//  Copyright © 2019年 bupocket. All rights reserved.
+//  Created by huoss on 2019/6/14.
+//  Copyright © 2019 bupocket. All rights reserved.
 //
 
 #import <UIKit/UIKit.h>
@@ -11,7 +11,7 @@
 
 NS_ASSUME_NONNULL_BEGIN
 
-@interface WalletManagementViewCell : UITableViewCell
+@interface WalletListViewCell : UITableViewCell
 
 + (instancetype)cellWithTableView:(UITableView *)tableView identifier:(NSString *)identifier;
 

@@ -149,7 +149,7 @@
 {
     if (!_nodeName) {
         _nodeName = [[UILabel alloc] init];
-        _nodeName.font = TITLE_FONT;
+        _nodeName.font = FONT_TITLE;
         _nodeName.textColor = MAIN_COLOR;
     }
     return _nodeName;
@@ -160,7 +160,7 @@
         _invitationPrompt = [UIButton buttonWithType:UIButtonTypeCustom];
         _invitationPrompt.contentEdgeInsets = UIEdgeInsetsMake(Margin_10, Margin_10, Margin_10, Margin_10);
         _invitationPrompt.titleLabel.numberOfLines = 0;
-        [_invitationPrompt setAttributedTitle:[Encapsulation attrWithString:[NSString stringWithFormat:@"%@\n%@", Localized(@"InvitationPrompt"), Localized(@"LongPressPrompt")] preFont:FONT(13) preColor:COLOR(@"BABCC9") index:[Localized(@"InvitationPrompt") length] sufFont:FONT(12) sufColor:COLOR(@"737791") lineSpacing:5.0] forState:UIControlStateNormal];
+        [_invitationPrompt setAttributedTitle:[Encapsulation attrWithString:[NSString stringWithFormat:@"%@\n%@", Localized(@"InvitationPrompt"), Localized(@"LongPressPrompt")] preFont:FONT(13) preColor:COLOR(@"BABCC9") index:[Localized(@"InvitationPrompt") length] sufFont:FONT(12) sufColor:COLOR(@"737791") lineSpacing:Margin_5] forState:UIControlStateNormal];
         _invitationPrompt.contentHorizontalAlignment = UIControlContentVerticalAlignmentCenter;
     }
     return _invitationPrompt;
@@ -230,7 +230,7 @@
 - (UIButton *)cancel
 {
     if (!_cancel) {
-        _cancel = [UIButton createButtonWithTitle:Localized(@"Cancel") TextFont:18 TextNormalColor:COLOR_9 TextSelectedColor:COLOR_9 Target:self Selector:@selector(cancleBtnClick)];
+        _cancel = [UIButton createButtonWithTitle:Localized(@"Cancel") TextFont:FONT_BUTTON TextNormalColor:COLOR_9 TextSelectedColor:COLOR_9 Target:self Selector:@selector(cancleBtnClick)];
     }
     return _cancel;
 }

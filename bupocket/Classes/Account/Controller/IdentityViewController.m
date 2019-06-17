@@ -8,7 +8,6 @@
 
 #import "IdentityViewController.h"
 #import "TermsOfUseViewController.h"
-#import "RestoreIdentityViewController.h"
 
 @interface IdentityViewController ()
 
@@ -54,7 +53,8 @@
         make.centerX.equalTo(identityBg);
         make.top.equalTo(logoImage.mas_bottom).offset(Margin_25);
     }];
-    UIButton * createIdentity = [UIButton createButtonWithTitle:Localized(@"ImmediateCreation") isEnabled:YES Target:self Selector:@selector(createAction)];
+    UIButton * createIdentity = [UIButton createButtonWithTitle:Localized(@"ImmediateCreation") isEnabled:YES Target:self Selector:@selector(IDAction:)];
+    createIdentity.tag = 0;
     [identityBg addSubview:createIdentity];
     [createIdentity mas_makeConstraints:^(MASConstraintMaker *make) {
         make.top.equalTo(titleLabel.mas_bottom).offset(ScreenScale(90));
@@ -63,7 +63,8 @@
         make.height.mas_equalTo(MAIN_HEIGHT);
     }];
     
-    UIButton * restoreIdentity = [UIButton createButtonWithTitle:Localized(@"RestoreIdentity") isEnabled:YES Target:self Selector:@selector(restoreAction)];
+    UIButton * restoreIdentity = [UIButton createButtonWithTitle:Localized(@"RestoreIdentity") isEnabled:YES Target:self Selector:@selector(IDAction:)];
+    restoreIdentity.tag = 1;
     restoreIdentity.backgroundColor = [UIColor whiteColor];
     restoreIdentity.layer.borderColor = MAIN_COLOR.CGColor;
     restoreIdentity.layer.borderWidth = LINE_WIDTH;
@@ -74,14 +75,10 @@
         make.left.right.height.equalTo(createIdentity);
     }];
 }
-- (void)createAction
+- (void)IDAction:(UIButton *)button
 {
     TermsOfUseViewController * VC = [[TermsOfUseViewController alloc] init];
-    [self.navigationController pushViewController:VC animated:NO];
-}
-- (void)restoreAction
-{
-    RestoreIdentityViewController * VC = [[RestoreIdentityViewController alloc] init];
+    VC.IDType = button.tag;
     [self.navigationController pushViewController:VC animated:NO];
 }
 /*

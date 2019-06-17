@@ -21,31 +21,55 @@
 "CreateDigitalIdentity" = "Create a digital identity";
 "ImmediateCreation" = "Create now";
 "RestoreIdentity" = "Restore identity";
-// Terms of use
-"TermsOfUse" = "Terms of service";
+
+// 小布口袋用户服务协议
+"TermsOfUse" = "小布口袋用户服务协议";
+//"TermsOfUse" = "Terms of service";
 "TermsOfUseFileName" = "Terms of use_EN";
 "Continue" = "Continue";
 "ReadAndAgree" = "Agreed";
 // Create an identity
 "CreateIdentity" = "Create an identity";
 "IdentityName" = "Please create your identity name";
-"SetPassword" = "Please set your password";
-"ConfirmPassword" = "Please confirm your password";
-"Create" = "Create";
-"CreatePWPrompt" = "Tips";
-"CreatePWWarn" = "The password must be strong as it is used to encrypt and protect the private key, transfer coins, call contracts, etc. Please bear in mind that BU Pocket does not store passwords, and can't help you retrieve passwords.";
+"IDNamePlaceholder" = "允许输入字母/汉字/数字/下划线，且不能超过20个字符";
+"SetPassword" = "请设置安全密码";
+"PWPlaceholder" = "6-30个字符，大小写字母和数字任意两种组合";
+"PWErrorPrompt" = "密码必须是6-30个字符，大小写字母和数字任意两种的组合";
+"ConfirmPassword" = "请再次确认安全密码";
+//"SetPassword" = "Please set your password";
+//"ConfirmPassword" = "Please confirm your password";
+//"Create" = "Create";
+"Create" = "开始创建";
+"PromptTitle" = "Tips";
+//"CreatePWWarn" = "The password must be strong as it is used to encrypt and protect the private key, transfer coins, call contracts, etc. Please bear in mind that BU Pocket does not store passwords, and can't help you retrieve passwords.";
+"PWPrompt" = "• 安全密码用于加密保护私钥、确认交易转账和调用合约等，请您务必牢记\n• 小布口袋不会存储您的密码\n• 安全密码只能修改，无法找回或重置，请务必牢记";
+"PWPrompt1" = "1. 安全密码用于加密保护私钥、确认交易转账和调用合约等，强度非常重要，请您务必牢记";
+"PWPrompt2" = "2. 小布口袋不会存储您的密码";
+"PWPrompt3" = "3. 安全密码只能修改，无法找回或重置，请务必牢记";
 "CryptographicFormat" = "The length is 6~30 characters. It is recommended to mix uppercase and lowercase letters plus numbers.";
 "Confirm" = "Confirm";
 "Cancel" = "Cancel";
 // Restore identity
-"newIdentityName" = "Please enter a new identity name";
-"MnemonicPrompt" = "Enter mnemonics, separated by spaces";
+"MnemonicPrompt" = "请填写您的助记词";
+"MnemonicPlaceholder" = "12个英文单词，请按空格分隔单词";
+"RecoveryIDName" = "请设置新的身份名";
+"Restore" = "恢复身份";
+
+//"newIdentityName" = "Please enter a new identity name";
+//"MnemonicPrompt" = "Enter mnemonics, separated by spaces";
 "ConfirmRecoveryID" = "Are you sure to update your password and import your identity?";
-"Restore" = "Restore";
+//"Restore" = "Restore";
 // Backup
-"BackUpPurse" = "Backup wallet";
-"BackupInformation" = "Token security cannot be guaranteed without proper backup. After deleting the program or wallet, you need to back up the file to restore the wallet.";
-"BackupPrompt" = "Make sure to back up in a safe environment with no people around and no cameras.";
+//"BackUpPurse" = "Backup wallet";
+"BackUpWallet" = "备份助记词";
+"BackUpWalletTitle" = "拥有助记词等于拥有钱包资产的所有权";
+"Note" = "注意事项";
+"BackUpWalletNote1" = "• 禁止截屏，请确保在四周无人、无摄像头的安全环境下进行备份";
+"BackUpWalletNote2" = "• 请用纸和笔正确抄写助记词，并妥善保管至隔离网络的安全地方";
+"BackUpWalletNote3" = "• 禁止以任何形式或方法将助记词透露或公开，比如邮件、相册等";
+"BackUpWalletNote4" = "• 没有妥善备份就无法保障资产安全，删除钱包或卸载程序后，您可以通过助记词来恢复身份/钱包";
+//"BackupInformation" = "Token security cannot be guaranteed without proper backup. After deleting the program or wallet, you need to back up the file to restore the wallet.";
+//"BackupPrompt" = "Make sure to back up in a safe environment with no people around and no cameras.";
 "TemporaryBackup" = "Back up later";
 "BackupMnemonics" = "Back up mnemonics";
 "IdentityCipherConfirm" = "Confirm password";
@@ -251,11 +275,13 @@
 "CreateIdentityFailure" = "Failed to create an identity";
 "IssueNumberIsIncorrect" = "Invalid circulation";
 // Accout
-"IDNameFormatIncorrect" = "The identity name is only allowed to enter letters, characters, numbers, underscores, and it cannot exceed 20 characters in length";
+"IDNameFormatIncorrect" = "The identity name is only allowed to enter letters/characters/numbers/underscores, and it cannot exceed 20 characters in length";
 "WalletNameFormatIncorrect" = "The wallet names is only allowed to enter letters, characters, numbers, underscores, and it cannot exceed 20 characters in length.";
-"PasswordIsDifferent" = "Passwords do not match";
+"PasswordIsDifferent" = "两次密码输入不一致";
+//"PasswordIsDifferent" = "Passwords do not match";
 //"MnemonicIsIncorrect" = "The mnemonics input are incorrect. Please enter again";
-"MnemonicIsIncorrect" = "Mnemonics are illegal. Please revise them";
+"MnemonicIsIncorrect" = "助记词输入有误";
+//"MnemonicIsIncorrect" = "Mnemonics are illegal. Please revise them";
 // Tokens
 "Replicating" = "Copied";
 // registered
@@ -334,6 +360,7 @@
 // Management
 "ExportKeystore" = "Export Keystore";
 "ExportPrivateKey" = "Export Private Key";
+"ModifyWalletPW" = "修改钱包密码";
 "DeleteWallet" = "Delete Wallet";
 "ModifyWalletName" = "Change wallet name";
 "WalletPWPrompt" = "Please enter the wallet password";
@@ -533,6 +560,7 @@
 "Disclaimer" = "Disclaimer";
 "DisclaimerInfo" = "Service provided and liability covered by third party (YoPin). For any questions,contact the company.";
 
+"ErrorPrompt" = "错误提示";
 // 调用底层合约
 "DposContract" = "Contract call";
 "DestAddressNotNull" = "The target address cannot be empty";

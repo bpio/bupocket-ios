@@ -10,6 +10,8 @@
 #import "IdentityViewController.h"
 #import "MyViewController.h"
 
+#import "BackUpWalletViewController.h"
+#import "RestoreIdentityViewController.h"
 #import "AssetsViewController.h"
 #import "AddAssetsViewController.h"
 #import "AssetsDetailViewController.h"
@@ -70,8 +72,9 @@
 {
     [viewController viewWillAppear:animated];
     BOOL isSetLargeTitles = (
+                             [viewController isKindOfClass:[BackUpWalletViewController class]] ||
+                             [viewController isKindOfClass:[RestoreIdentityViewController class]] ||
                              [viewController isKindOfClass:[AssetsViewController class]]  ||
-//                             [viewController isKindOfClass:[AddAssetsViewController class]] ||
                              [viewController isKindOfClass:[AssetsDetailViewController class]] ||
                              [viewController isKindOfClass:[TransferResultsViewController class]] ||
                              [viewController isKindOfClass:[RegisteredResultViewController class]] ||

@@ -146,7 +146,7 @@
 - (UIButton *)stateBtn
 {
     if (!_stateBtn) {
-        _stateBtn = [UIButton createButtonWithTitle:Localized(@"InProgress") TextFont:14 TextNormalColor:[UIColor whiteColor] TextSelectedColor:[UIColor whiteColor] NormalBackgroundImage:@"cooperate_state" SelectedBackgroundImage:@"cooperate_state" Target:nil Selector:nil];
+        _stateBtn = [UIButton createButtonWithTitle:Localized(@"InProgress") TextFont:FONT_TITLE TextNormalColor:[UIColor whiteColor] TextSelectedColor:[UIColor whiteColor] NormalBackgroundImage:@"cooperate_state" SelectedBackgroundImage:@"cooperate_state" Target:nil Selector:nil];
         _stateBtn.hidden = YES;
     }
     return _stateBtn;
@@ -204,7 +204,7 @@
         _riskStatementBtn.layer.masksToBounds = YES;
         _riskStatementBtn.layer.cornerRadius = BG_CORNER;
         _riskStatementBtn.contentEdgeInsets = UIEdgeInsetsMake(Margin_5, Margin_10, Margin_5, Margin_10);
-        [_riskStatementBtn setAttributedTitle:[Encapsulation attrWithString:Localized(@"RiskStatementPrompt") preFont:FONT(13) preColor:COLOR_6 index:0 sufFont:FONT(13) sufColor:COLOR_6 lineSpacing:5.0] forState:UIControlStateNormal];
+        [_riskStatementBtn setAttributedTitle:[Encapsulation attrWithString:Localized(@"RiskStatementPrompt") preFont:FONT(13) preColor:COLOR_6 index:0 sufFont:FONT(13) sufColor:COLOR_6 lineSpacing:Margin_5] forState:UIControlStateNormal];
         _riskStatementBtn.hidden = YES;
     }
     return _riskStatementBtn;

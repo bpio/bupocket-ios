@@ -43,7 +43,7 @@
     CustomButton * noScreenshot = [[CustomButton alloc] init];
     [noScreenshot setTitle:Localized(@"NoScreenshot") forState:UIControlStateNormal];
     [noScreenshot setTitleColor:WARNING_COLOR forState:UIControlStateNormal];
-    noScreenshot.titleLabel.font = TITLE_FONT;
+    noScreenshot.titleLabel.font = FONT_TITLE;
     [noScreenshot setImage:[UIImage imageNamed:@"noScreenshot"] forState:UIControlStateNormal];
     [promptBg addSubview:noScreenshot];
     [noScreenshot mas_makeConstraints:^(MASConstraintMaker *make) {
@@ -52,7 +52,7 @@
         make.height.mas_equalTo(Margin_30);
     }];
     UILabel * prompt = [[UILabel alloc] init];
-    prompt.font = TITLE_FONT;
+    prompt.font = FONT_TITLE;
     prompt.textColor = WARNING_COLOR;
     prompt.numberOfLines = 0;
     prompt.text = Localized(@"MnemonicsPrompt");
@@ -64,7 +64,7 @@
         make.bottom.equalTo(promptBg.mas_bottom).offset(-Margin_20);
     }];
     UILabel * savePrompt = [[UILabel alloc] init];
-    savePrompt.font = TITLE_FONT;
+    savePrompt.font = FONT_TITLE;
     savePrompt.textColor = COLOR_9;
     savePrompt.numberOfLines = 0;
     savePrompt.text = Localized(@"MnemonicsSavePrompt");
@@ -76,7 +76,7 @@
     CGFloat tagW = (DEVICE_WIDTH - ScreenScale(70)) / 4;
     CGFloat tagH = Margin_40;
     for (NSInteger i = 0; i < self.mnemonicArray.count; i ++) {
-        UIButton * tagBtn = [UIButton createButtonWithTitle:self.mnemonicArray[i] TextFont:14 TextNormalColor:COLOR_9 TextSelectedColor:COLOR_9 Target:nil Selector:nil];
+        UIButton * tagBtn = [UIButton createButtonWithTitle:self.mnemonicArray[i] TextFont:FONT_TITLE TextNormalColor:COLOR_9 TextSelectedColor:COLOR_9 Target:nil Selector:nil];
         tagBtn.backgroundColor = VIEWBG_COLOR;
         tagBtn.layer.cornerRadius = TAG_CORNER;
         [self.scrollView addSubview:tagBtn];

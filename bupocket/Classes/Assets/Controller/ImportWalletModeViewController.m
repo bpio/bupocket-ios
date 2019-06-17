@@ -65,7 +65,7 @@ static NSString * const TextFieldPWCellID = @"TextFieldPWCellID";
     
     UILabel * importPrompt = [[UILabel alloc] init];
     importPrompt.textColor = COLOR_9;
-    importPrompt.font = TITLE_FONT;
+    importPrompt.font = FONT_TITLE;
     importPrompt.numberOfLines = 0;
     [headerView addSubview:importPrompt];
     
@@ -88,7 +88,7 @@ static NSString * const TextFieldPWCellID = @"TextFieldPWCellID";
     
     CustomButton * explain = [[CustomButton alloc] init];
     explain.layoutMode = HorizontalInverted;
-    explain.titleLabel.font = TITLE_FONT;
+    explain.titleLabel.font = FONT_TITLE;
     [explain setTitleColor:COLOR_9 forState:UIControlStateNormal];
     [explain setImage:[UIImage imageNamed:@"explain"] forState:UIControlStateNormal];
     [explain addTarget:self action:@selector(explainInfo:) forControlEvents:UIControlEventTouchUpInside];
@@ -227,7 +227,7 @@ static NSString * const TextFieldPWCellID = @"TextFieldPWCellID";
 {
     // walletPrivateKey -> walletAddress
     NSString * walletAddress = [Keypair getEncAddress : [Keypair getEncPublicKey: walletPrivateKey]];
-    BOOL ifImportSuccess = [[HTTPManager shareManager] importWalletDataWalletName:_walletName walletAddress:walletAddress walletKeyStore:walletKeyStore];
+    BOOL ifImportSuccess = [[HTTPManager shareManager] importWalletDataWalletName:_walletName walletAddress:walletAddress walletKeyStore:walletKeyStore randomNumber:nil];
     if (ifImportSuccess) {
         [Encapsulation showAlertControllerWithMessage:Localized(@"ImportWalletSuccessfully") handler:^(UIAlertAction *action) {
             [self.navigationController popViewControllerAnimated:NO];

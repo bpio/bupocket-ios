@@ -116,7 +116,7 @@ static NSString * const AssetsDetailCellID = @"AssetsDetailCellID";
 {
     if (!_walletAddress) {
         _walletAddress = [[UILabel alloc] init];
-        _walletAddress.font = TITLE_FONT;
+        _walletAddress.font = FONT_TITLE;
         _walletAddress.textColor = COLOR_6;
     }
     return _walletAddress;

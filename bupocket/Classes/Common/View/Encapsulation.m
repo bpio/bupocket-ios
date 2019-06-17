@@ -43,14 +43,14 @@
     NSMutableDictionary * paraStyleDic = [NSMutableDictionary dictionary];
     NSMutableParagraphStyle *paraStyle = [[NSMutableParagraphStyle alloc] init];
 //    paraStyle.lineBreakMode =NSLineBreakByCharWrapping;
-    paraStyle.alignment =NSTextAlignmentLeft;
-    paraStyle.lineSpacing = ScreenScale(lineSpacing); //设置行间距
+    paraStyle.alignment = NSTextAlignmentLeft;
+    paraStyle.lineSpacing = lineSpacing; //设置行间距
     paraStyle.hyphenationFactor = 1.0;
-    paraStyle.firstLineHeadIndent =0.0;
-    paraStyle.paragraphSpacingBefore =0.0;
+    paraStyle.firstLineHeadIndent = 0.0;
+    paraStyle.paragraphSpacingBefore = 0.0;
     paraStyle.headIndent = 0;
     paraStyle.tailIndent = 0;
-//    paraStyleDic[NSFontAttributeName] = TITLE_FONT;
+//    paraStyleDic[NSFontAttributeName] = FONT_TITLE;
     paraStyleDic[NSParagraphStyleAttributeName] = paraStyle;
     //word spacing NSKernAttributeName:@1.5f
 //    paraStyleDic[NSKernAttributeName] = @1.0f;
@@ -96,7 +96,7 @@
     paraStyle.lineSpacing = lineSpacing;
     paraStyle.hyphenationFactor = 1.0;
     paraStyle.firstLineHeadIndent = 0.0;
-    paraStyle.paragraphSpacingBefore =0.0;
+    paraStyle.paragraphSpacingBefore = 0.0;
     paraStyle.headIndent = 0;
     paraStyle.tailIndent = 0;
     NSDictionary * dic = @{NSFontAttributeName:font,NSParagraphStyleAttributeName:paraStyle,NSKernAttributeName:@1.0f};
@@ -130,6 +130,31 @@
 + (void)showAlertControllerWithMessage:(NSString *)message handler:(void(^)(UIAlertAction * action))handle
 {
     UIAlertController * alertController = [UIAlertController alertControllerWithTitle:nil message:message preferredStyle:UIAlertControllerStyleAlert];
+    UIView * alertBg = alertController.view.subviews[0].subviews[0].subviews[0];
+    alertBg.backgroundColor = [UIColor whiteColor];
+    alertBg.layer.cornerRadius = BG_CORNER;
+    UIAlertAction * cancelAction = [UIAlertAction actionWithTitle:Localized(@"IGotIt") style:UIAlertActionStyleCancel handler:handle];
+    [cancelAction setValue:MAIN_COLOR forKey:@"titleTextColor"];
+    [alertController addAction:cancelAction];
+    [[[UIApplication sharedApplication] keyWindow].rootViewController presentViewController:alertController animated:YES completion:nil];
+}
++ (void)showAlertControllerWithErrorMessage:(NSString *)message handler:(void(^)(UIAlertAction * action))handle
+{
+    UIAlertController * alertController = [UIAlertController alertControllerWithTitle:Localized(@"ErrorPrompt") message:message preferredStyle:UIAlertControllerStyleAlert];
+    UIView * alertBg = alertController.view.subviews[0].subviews[0].subviews[0];
+    alertBg.backgroundColor = [UIColor whiteColor];
+    alertBg.layer.cornerRadius = BG_CORNER;
+    
+    UILabel * titleLabel = alertBg.subviews[0].subviews[0].subviews[1];
+    titleLabel.height = ScreenScale(65);
+    //    NSMutableAttributedString * attrTitle = [Encapsulation attrWithString:title preFont:FONT(18) preColor:TITLE_COLOR index:0 sufFont:FONT(18) sufColor:TITLE_COLOR lineSpacing:Margin_10];
+    NSMutableAttributedString * attrTitle = [[NSMutableAttributedString alloc] initWithString:Localized(@"ErrorPrompt") attributes:@{NSForegroundColorAttributeName: TITLE_COLOR, NSFontAttributeName: FONT_Bold(18)}];
+    [alertController setValue:attrTitle forKey:@"attributedTitle"];
+    UILabel * messageLabel = alertBg.subviews[0].subviews[0].subviews[2];
+    NSMutableAttributedString * attr = [Encapsulation attrWithString:[NSString stringWithFormat:@"\n%@", message] preFont:FONT_TITLE preColor:COLOR_6 index:0 sufFont:FONT_TITLE sufColor:COLOR_6 lineSpacing:Margin_5];
+    messageLabel.textAlignment = NSTextAlignmentLeft;
+    [alertController setValue:attr forKey:@"attributedMessage"];
+    
     UIAlertAction * cancelAction = [UIAlertAction actionWithTitle:Localized(@"IGotIt") style:UIAlertActionStyleCancel handler:handle];
     [cancelAction setValue:MAIN_COLOR forKey:@"titleTextColor"];
     [alertController addAction:cancelAction];
@@ -200,7 +225,7 @@
         make.top.equalTo(noNetWorkImage.mas_bottom).offset(ScreenScale(50));
     }];
     
-    UIButton * reloadBtn = [UIButton createButtonWithTitle:Localized(@"Reload") TextFont:18 TextNormalColor:[UIColor whiteColor] TextSelectedColor:[UIColor whiteColor] Target:target Selector:action];
+    UIButton * reloadBtn = [UIButton createButtonWithTitle:Localized(@"Reload") TextFont:FONT_BUTTON TextNormalColor:[UIColor whiteColor] TextSelectedColor:[UIColor whiteColor] Target:target Selector:action];
     reloadBtn.layer.masksToBounds = YES;
     reloadBtn.clipsToBounds = YES;
     reloadBtn.layer.cornerRadius = MAIN_CORNER;

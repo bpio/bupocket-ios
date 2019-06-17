@@ -10,7 +10,13 @@
 
 NS_ASSUME_NONNULL_BEGIN
 
+typedef NS_ENUM(NSInteger, IDType) {
+    IDTypeCreate,
+    IDTypeRestore
+};
 @interface TermsOfUseViewController : WKWebViewController
+
+@property (nonatomic, assign) IDType IDType;
 
 @end
 

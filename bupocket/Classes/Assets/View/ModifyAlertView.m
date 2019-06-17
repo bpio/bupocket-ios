@@ -48,7 +48,7 @@
     self.textField = [[UITextField alloc] init];
     self.textField.delegate = self;
     self.textField.textColor = TITLE_COLOR;
-    self.textField.font = TITLE_FONT;
+    self.textField.font = FONT_TITLE;
     self.textField.layer.cornerRadius = ScreenScale(3);
     self.textField.layer.borderColor = LINE_COLOR.CGColor;
     self.textField.layer.borderWidth = LINE_WIDTH;
@@ -74,7 +74,7 @@
         make.height.mas_equalTo(LINE_WIDTH);
     }];
     
-    UIButton * cancel = [UIButton createButtonWithTitle:Localized(@"Cancel") TextFont:18 TextNormalColor:COLOR_9 TextSelectedColor:COLOR_9 Target:self Selector:@selector(cancleBtnClick)];
+    UIButton * cancel = [UIButton createButtonWithTitle:Localized(@"Cancel") TextFont:FONT_BUTTON TextNormalColor:COLOR_9 TextSelectedColor:COLOR_9 Target:self Selector:@selector(cancleBtnClick)];
     [self addSubview:cancel];
     [cancel mas_makeConstraints:^(MASConstraintMaker *make) {
         make.top.equalTo(line.mas_bottom);
@@ -82,7 +82,7 @@
         make.left.equalTo(self.textField);
         make.size.mas_equalTo(CGSizeMake(DEVICE_WIDTH / 2 - Margin_40, ScreenScale(55)));
     }];
-    self.confirm = [UIButton createButtonWithTitle:Localized(@"Confirm") TextFont:18 TextNormalColor:MAIN_COLOR TextSelectedColor:MAIN_COLOR Target:self Selector:@selector(sureBtnClick)];
+    self.confirm = [UIButton createButtonWithTitle:Localized(@"Confirm") TextFont:FONT_BUTTON TextNormalColor:MAIN_COLOR TextSelectedColor:MAIN_COLOR Target:self Selector:@selector(sureBtnClick)];
     self.confirm.enabled = NO;
     [self addSubview:self.confirm];
     [self.confirm mas_makeConstraints:^(MASConstraintMaker *make) {

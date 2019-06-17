@@ -13,7 +13,7 @@
 #import "AddressBookViewController.h"
 #import "ChangePasswordViewController.h"
 #import "FeedbackViewController.h"
-#import "WalletManagementViewController.h"
+#import "WalletListViewController.h"
 //#import "UINavigationController+Extension.h"
 
 @interface MyViewController ()<UITableViewDelegate, UITableViewDataSource>
@@ -191,7 +191,7 @@ static NSString * const ListCellID = @"ListCellID";
         AddressBookViewController * VC = [[AddressBookViewController alloc] init];
         [self.navigationController pushViewController:VC animated:NO];
     } else if (indexPath.row == 2) {
-        WalletManagementViewController * VC = [[WalletManagementViewController alloc] init];
+        WalletListViewController * VC = [[WalletListViewController alloc] init];
         [self.navigationController pushViewController:VC animated:NO];
     } else if (indexPath.row == 3) {
         ChangePasswordViewController * VC = [[ChangePasswordViewController alloc] init];

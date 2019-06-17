@@ -128,7 +128,7 @@ static NSString * const VotingRecordsCellID = @"VotingRecordsCellID";
 - (UIView *)tableView:(UITableView *)tableView viewForHeaderInSection:(NSInteger)section
 {
     if (self.nodePlanModel && section == 1) {
-        UIButton * title = [UIButton createButtonWithTitle:Localized(@"VotingRecords") TextFont:13 TextNormalColor:COLOR_9 TextSelectedColor:COLOR_9 Target:nil Selector:nil];
+        UIButton * title = [UIButton createButtonWithTitle:Localized(@"VotingRecords") TextFont:FONT_13 TextNormalColor:COLOR_9 TextSelectedColor:COLOR_9 Target:nil Selector:nil];
         title.contentEdgeInsets = UIEdgeInsetsMake(0, Margin_10, 0, 0);
         title.contentHorizontalAlignment = UIControlContentHorizontalAlignmentLeft;
         return title;

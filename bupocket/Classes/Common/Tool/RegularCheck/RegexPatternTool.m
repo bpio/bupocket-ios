@@ -340,7 +340,8 @@
 //密码
 + (BOOL)validatePassword:(NSString *)passWord
 {
-    NSString *passWordRegex = @"^[a-zA-Z0-9]{8,20}+$";
+    NSString * passWordRegex =@"^(?![0-9]+$)(?![a-zA-Z]+$)[a-zA-Z0-9]{6,30}";
+//    NSString *passWordRegex = @"^[a-zA-Z0-9]{8,20}+$";
     NSPredicate *passWordPredicate = [NSPredicate predicateWithFormat:@"SELF MATCHES %@",passWordRegex];
     return [passWordPredicate evaluateWithObject:passWord];
 }

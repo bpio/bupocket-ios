@@ -47,10 +47,10 @@ static NSString * const ExportPrivateKeyID = @"ExportPrivateKeyID";
     [privateKeysPrompt setImage:[UIImage imageNamed:@"copyPrivateKey"] forState:UIControlStateNormal];
     [privateKeysPrompt setTitle:Localized(@"CopyPrivateKeyPrompt") forState:UIControlStateNormal];
     [privateKeysPrompt setTitleColor:COLOR_9 forState:UIControlStateNormal];
-    privateKeysPrompt.titleLabel.font = TITLE_FONT;
+    privateKeysPrompt.titleLabel.font = FONT_TITLE;
     privateKeysPrompt.titleLabel.numberOfLines = 0;
     [headerView addSubview:privateKeysPrompt];
-    CGFloat promptH = [Encapsulation rectWithText:Localized(@"CopyPrivateKeyPrompt") font:TITLE_FONT textWidth:DEVICE_WIDTH - Margin_40].size.height;
+    CGFloat promptH = [Encapsulation rectWithText:Localized(@"CopyPrivateKeyPrompt") font:FONT_TITLE textWidth:DEVICE_WIDTH - Margin_40].size.height;
     [privateKeysPrompt mas_makeConstraints:^(MASConstraintMaker *make) {
         make.centerX.centerY.equalTo(headerView);
         make.height.mas_equalTo(ScreenScale(130) + promptH);

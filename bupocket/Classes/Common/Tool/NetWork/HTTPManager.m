@@ -913,7 +913,9 @@ static int64_t const gasPrice = 1000;
                 [MBProgressHUD hideHUD];
                 if(success != nil)
                 {
-                    BOOL ifImportSuccess = [self importWalletDataWalletName:walletName walletAddress:walletAddress walletKeyStore:walletKeyStore];
+                    NSData * random = [Mnemonic randomFromMnemonicCode: mnemonics];
+                    NSString * randomKey = [NSString generateKeyStoreWithPW:password randomKey:random];
+                    BOOL ifImportSuccess = [self importWalletDataWalletName:walletName walletAddress:walletAddress walletKeyStore:walletKeyStore randomNumber:randomKey];
                     if (ifImportSuccess) {
                         success(walletAddress);
                     }
@@ -925,6 +927,7 @@ static int64_t const gasPrice = 1000;
 - (BOOL)importWalletDataWalletName:(NSString *)walletName
                      walletAddress:(NSString *)walletAddress
                     walletKeyStore:(NSString *)walletKeyStore
+                      randomNumber:(NSString *)randomNumber
 {
     BOOL imported = NO;
     if ([walletAddress isEqualToString:[[[AccountTool shareTool] account] walletAddress]]) {
@@ -945,6 +948,7 @@ static int64_t const gasPrice = 1000;
         walletModel.walletName = walletName;
         walletModel.walletAddress = walletAddress;
         walletModel.walletKeyStore = walletKeyStore;
+        walletModel.randomNumber = randomNumber;
         [importedWallet addObject:walletModel];
         [[WalletTool shareTool] save:importedWallet];
     }

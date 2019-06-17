@@ -132,7 +132,7 @@ static NSString * const CooperateDetailCellID = @"CooperateDetailCellID";
         _footerView = [[UIView alloc] init];
         _footerView.backgroundColor = _tableView.backgroundColor;
         CGFloat signOutW = (DEVICE_WIDTH - Margin_30) / 5;
-        _signOut = [UIButton createButtonWithTitle:Localized(@"WithdrawalOfSupport") TextFont:18 TextNormalColor:[UIColor whiteColor] TextSelectedColor:[UIColor whiteColor] Target:self Selector:@selector(signOutAction:)];
+        _signOut = [UIButton createButtonWithTitle:Localized(@"WithdrawalOfSupport") TextFont:FONT_BUTTON TextNormalColor:[UIColor whiteColor] TextSelectedColor:[UIColor whiteColor] Target:self Selector:@selector(signOutAction:)];
         _signOut.backgroundColor = COLOR(@"A1A7C7");
         _signOut.layer.masksToBounds = YES;
         _signOut.layer.cornerRadius = BG_CORNER;
@@ -142,7 +142,7 @@ static NSString * const CooperateDetailCellID = @"CooperateDetailCellID";
             make.left.equalTo(self->_footerView.mas_left).offset(Margin_10);
             make.size.mas_equalTo(CGSizeMake(signOutW * 2, MAIN_HEIGHT));
         }];
-        _support = [UIButton createButtonWithTitle:Localized(@"IWantToSupport") TextFont:18 TextNormalColor:[UIColor whiteColor] TextSelectedColor:[UIColor whiteColor] Target:self Selector:@selector(supportAction)];
+        _support = [UIButton createButtonWithTitle:Localized(@"IWantToSupport") TextFont:FONT_BUTTON TextNormalColor:[UIColor whiteColor] TextSelectedColor:[UIColor whiteColor] Target:self Selector:@selector(supportAction)];
         _support.backgroundColor = MAIN_COLOR;
         _support.layer.masksToBounds = YES;
         _support.layer.cornerRadius = BG_CORNER;
@@ -152,7 +152,7 @@ static NSString * const CooperateDetailCellID = @"CooperateDetailCellID";
             make.right.equalTo(self->_footerView.mas_right).offset(-Margin_10);
             make.size.mas_equalTo(CGSizeMake(signOutW * 3, MAIN_HEIGHT));
         }];
-        _redemptionAllSupport = [UIButton createButtonWithTitle:Localized(@"RedemptionAllSupport") TextFont:18 TextNormalColor:[UIColor whiteColor] TextSelectedColor:[UIColor whiteColor] Target:self Selector:@selector(signOutAction:)];
+        _redemptionAllSupport = [UIButton createButtonWithTitle:Localized(@"RedemptionAllSupport") TextFont:FONT_BUTTON TextNormalColor:[UIColor whiteColor] TextSelectedColor:[UIColor whiteColor] Target:self Selector:@selector(signOutAction:)];
         _redemptionAllSupport.backgroundColor = COLOR(@"A1A7C7");
         _redemptionAllSupport.layer.masksToBounds = YES;
         _redemptionAllSupport.layer.cornerRadius = BG_CORNER;
@@ -331,7 +331,7 @@ static NSString * const CooperateDetailCellID = @"CooperateDetailCellID";
 {
     if (section == 1 || section == 2) {
         NSArray * titles = @[Localized(@"RiskStatement"), Localized(@"SupportRecords")];
-        UIButton * title = [UIButton createButtonWithTitle:titles[section - 1] TextFont:13 TextNormalColor:COLOR_9 TextSelectedColor:COLOR_9 Target:nil Selector:nil];
+        UIButton * title = [UIButton createButtonWithTitle:titles[section - 1] TextFont:FONT_13 TextNormalColor:COLOR_9 TextSelectedColor:COLOR_9 Target:nil Selector:nil];
         title.contentHorizontalAlignment = UIControlContentHorizontalAlignmentLeft;
         title.contentEdgeInsets = UIEdgeInsetsMake(0, Margin_10, 0, Margin_10);
         return title;
@@ -386,7 +386,7 @@ static NSString * const CooperateDetailCellID = @"CooperateDetailCellID";
             return ScreenScale(35);
         }
     } else if (indexPath.section == 1) {
-        return ceil([Encapsulation getSizeSpaceLabelWithStr:Localized(@"RiskStatementPrompt") font:FONT(13) width:DEVICE_WIDTH - Margin_40 height:CGFLOAT_MAX lineSpacing:5.0].height) + 1 + Margin_25;
+        return ceil([Encapsulation getSizeSpaceLabelWithStr:Localized(@"RiskStatementPrompt") font:FONT(13) width:DEVICE_WIDTH - Margin_40 height:CGFLOAT_MAX lineSpacing:Margin_5].height) + 1 + Margin_25;
 //        [Encapsulation rectWithText:self.riskStatement font:FONT(13) textWidth:DEVICE_WIDTH - Margin_30].size.height + Margin_20;
     } else {
         return ScreenScale(85);
@@ -479,13 +479,13 @@ static NSString * const CooperateDetailCellID = @"CooperateDetailCellID";
 }
 - (void)infoAction:(UIButton *)button title:(NSString *)title
 {
-    CGFloat titleHeight = [Encapsulation rectWithText:title font:TITLE_FONT textWidth:DEVICE_WIDTH - ScreenScale(120)].size.height;
+    CGFloat titleHeight = [Encapsulation rectWithText:title font:FONT_TITLE textWidth:DEVICE_WIDTH - ScreenScale(120)].size.height;
     _popupMenu = [YBPopupMenu showRelyOnView:button.imageView titles:@[title] icons:nil menuWidth:DEVICE_WIDTH - ScreenScale(100) otherSettings:^(YBPopupMenu * popupMenu) {
         popupMenu.priorityDirection = YBPopupMenuPriorityDirectionTop;
         popupMenu.itemHeight = titleHeight + Margin_30;
         popupMenu.dismissOnTouchOutside = YES;
         popupMenu.dismissOnSelected = NO;
-        popupMenu.fontSize = TITLE_FONT;
+        popupMenu.fontSize = FONT_TITLE;
         popupMenu.textColor = [UIColor whiteColor];
         popupMenu.backColor = COLOR_POPUPMENU;
         popupMenu.tableView.separatorStyle = UITableViewCellSeparatorStyleNone;

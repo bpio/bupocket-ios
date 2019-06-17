@@ -1,23 +1,23 @@
 //
-//  WalletManagementViewCell.m
+//  WalletListViewCell.m
 //  bupocket
 //
-//  Created by bupocket on 2019/1/7.
-//  Copyright © 2019年 bupocket. All rights reserved.
+//  Created by huoss on 2019/6/14.
+//  Copyright © 2019 bupocket. All rights reserved.
 //
 
-#import "WalletManagementViewCell.h"
+#import "WalletListViewCell.h"
 
-static NSString * const WalletManagementCellID = @"WalletManagementCellID";
+static NSString * const WalletListCellID = @"WalletListCellID";
 static NSString * const WalletCellID = @"WalletCellID";
 
-@implementation WalletManagementViewCell
+@implementation WalletListViewCell
 
 + (instancetype)cellWithTableView:(UITableView *)tableView identifier:(NSString *)identifier
 {
-    WalletManagementViewCell * cell = [tableView dequeueReusableCellWithIdentifier:identifier];
+    WalletListViewCell * cell = [tableView dequeueReusableCellWithIdentifier:identifier];
     if (cell == nil) {
-        cell = [[WalletManagementViewCell alloc] initWithStyle:UITableViewCellStyleValue1 reuseIdentifier:identifier];
+        cell = [[WalletListViewCell alloc] initWithStyle:UITableViewCellStyleValue1 reuseIdentifier:identifier];
     }
     return cell;
 }
@@ -26,7 +26,7 @@ static NSString * const WalletCellID = @"WalletCellID";
     if (self = [super initWithStyle:style reuseIdentifier:reuseIdentifier]) {
         [self.contentView addSubview:self.walletName];
         [self.contentView addSubview:self.walletAddress];
-        if ([reuseIdentifier isEqualToString:WalletManagementCellID]) {
+        if ([reuseIdentifier isEqualToString:WalletListCellID]) {
             [self.contentView addSubview:self.currentUse];
             [self.contentView addSubview:self.manage];
         } else if ([reuseIdentifier isEqualToString:WalletCellID]) {
@@ -44,7 +44,7 @@ static NSString * const WalletCellID = @"WalletCellID";
         make.left.equalTo(self.contentView.mas_left).offset(Margin_15);
         make.height.mas_equalTo(ScreenScale(18));
     }];
-    if ([self.reuseIdentifier isEqualToString:WalletManagementCellID]) {
+    if ([self.reuseIdentifier isEqualToString:WalletListCellID]) {
         [self.manage mas_makeConstraints:^(MASConstraintMaker *make) {
             make.right.equalTo(self.contentView.mas_right).offset(-Margin_15);
             make.centerY.equalTo(self.contentView);
@@ -105,7 +105,7 @@ static NSString * const WalletCellID = @"WalletCellID";
 - (UIButton *)currentUse
 {
     if (!_currentUse) {
-        _currentUse = [UIButton createButtonWithTitle:Localized(@"CurrentUse") TextFont:13 TextNormalColor:[UIColor whiteColor] TextSelectedColor:[UIColor whiteColor] Target:nil Selector:nil];
+        _currentUse = [UIButton createButtonWithTitle:Localized(@"CurrentUse") TextFont:FONT_13 TextNormalColor:[UIColor whiteColor] TextSelectedColor:[UIColor whiteColor] Target:nil Selector:nil];
         _currentUse.layer.masksToBounds = YES;
         _currentUse.clipsToBounds = YES;
         _currentUse.layer.cornerRadius = MAIN_CORNER;
@@ -117,7 +117,7 @@ static NSString * const WalletCellID = @"WalletCellID";
 - (UIButton *)manage
 {
     if (!_manage) {
-        _manage = [UIButton createButtonWithTitle:Localized(@"Manage") TextFont:15 TextNormalColor:MAIN_COLOR TextSelectedColor:MAIN_COLOR Target:self Selector:@selector(manageAction)];
+        _manage = [UIButton createButtonWithTitle:Localized(@"Manage") TextFont:FONT_15 TextNormalColor:MAIN_COLOR TextSelectedColor:MAIN_COLOR Target:self Selector:@selector(manageAction)];
         _manage.layer.masksToBounds = YES;
         _manage.clipsToBounds = YES;
         _manage.layer.cornerRadius = MAIN_CORNER;
@@ -146,7 +146,7 @@ static NSString * const WalletCellID = @"WalletCellID";
     _walletModel = walletModel;
     self.walletName.text = walletModel.walletName;
     self.walletAddress.text = [NSString stringEllipsisWithStr:walletModel.walletAddress subIndex:SubIndex_Address];
-    if ([self.reuseIdentifier isEqualToString:WalletManagementCellID]) {
+    if ([self.reuseIdentifier isEqualToString:WalletListCellID]) {
         self.currentUse.hidden = ![walletModel.walletAddress isEqualToString:CurrentWalletAddress];
     }
 }
@@ -158,6 +158,7 @@ static NSString * const WalletCellID = @"WalletCellID";
     frame.size.height -= Margin_10;
     [super setFrame:frame];
 }
+
 - (void)awakeFromNib {
     [super awakeFromNib];
     // Initialization code
@@ -165,7 +166,7 @@ static NSString * const WalletCellID = @"WalletCellID";
 
 - (void)setSelected:(BOOL)selected animated:(BOOL)animated {
     [super setSelected:selected animated:animated];
-    
+
     // Configure the view for the selected state
 }
 

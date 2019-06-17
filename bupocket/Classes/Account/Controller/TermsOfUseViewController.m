@@ -8,6 +8,7 @@
 
 #import "TermsOfUseViewController.h"
 #import "CreateIdentityViewController.h"
+#import "RestoreIdentityViewController.h"
 
 @interface TermsOfUseViewController ()
 
@@ -34,7 +35,7 @@
     }
     self.wkWebView.height = DEVICE_HEIGHT - NavBarH - SafeAreaBottomH - ScreenScale(55);
     self.isNavHidden = NO;
-    UIButton * ifReaded = [UIButton createButtonWithTitle:[NSString stringWithFormat:@"  %@", Localized(@"ReadAndAgree")] TextFont:14 TextNormalColor:COLOR_6 TextSelectedColor:COLOR_6 NormalImage:@"ifReaded_n" SelectedImage:@"ifReaded_s" Target:self Selector:@selector(agreeAction:)];
+    UIButton * ifReaded = [UIButton createButtonWithTitle:[NSString stringWithFormat:@"  %@", Localized(@"ReadAndAgree")] TextFont:FONT_TITLE TextNormalColor:COLOR_6 TextSelectedColor:COLOR_6 NormalImage:@"ifReaded_n" SelectedImage:@"ifReaded_s" Target:self Selector:@selector(agreeAction:)];
     ifReaded.titleLabel.numberOfLines = 0;
     ifReaded.contentHorizontalAlignment = UIControlContentHorizontalAlignmentLeft;
     ifReaded.contentEdgeInsets = UIEdgeInsetsMake(0, Margin_10, 0, Margin_10);
@@ -45,7 +46,7 @@
         make.bottom.equalTo(self.view.mas_bottom).offset(- SafeAreaBottomH);
         make.size.mas_equalTo(CGSizeMake(ScreenScale(230), ScreenScale(55)));
     }];
-    self.continueBtn = [UIButton createButtonWithTitle:Localized(@"Continue") TextFont:18 TextNormalColor:[UIColor whiteColor] TextSelectedColor:[UIColor whiteColor] Target:self Selector:@selector(continueAction:)];
+    self.continueBtn = [UIButton createButtonWithTitle:Localized(@"Continue") TextFont:FONT_BUTTON TextNormalColor:[UIColor whiteColor] TextSelectedColor:[UIColor whiteColor] Target:self Selector:@selector(continueAction:)];
     self.continueBtn.backgroundColor = DISABLED_COLOR;
     self.continueBtn.enabled = NO;
     [self.view addSubview:self.continueBtn];
@@ -63,8 +64,13 @@
 }
 - (void)continueAction:(UIButton *)button
 {
-    CreateIdentityViewController * VC = [[CreateIdentityViewController alloc] init];
-    [self.navigationController pushViewController:VC animated:NO];
+    if (self.IDType == IDTypeCreate) {
+        CreateIdentityViewController * VC = [[CreateIdentityViewController alloc] init];
+        [self.navigationController pushViewController:VC animated:NO];        
+    } else if (self.IDType == IDTypeRestore) {
+        RestoreIdentityViewController * VC = [[RestoreIdentityViewController alloc] init];
+        [self.navigationController pushViewController:VC animated:NO];
+    }
 }
 /*
 #pragma mark - Navigation

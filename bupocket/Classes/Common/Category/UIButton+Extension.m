@@ -14,11 +14,11 @@ static NSString *_title;
 
 @implementation UIButton (Extension)
 
-+ (UIButton *)createButtonWithTitle:(NSString *)title TextFont:(CGFloat)textFont TextNormalColor:(UIColor *)textNormalColor TextSelectedColor:(UIColor *)textSelectedColor Target:(id)target Selector:(SEL)selector
++ (UIButton *)createButtonWithTitle:(NSString *)title TextFont:(UIFont *)textFont TextNormalColor:(UIColor *)textNormalColor TextSelectedColor:(UIColor *)textSelectedColor Target:(id)target Selector:(SEL)selector
 {
     UIButton * button = [UIButton buttonWithType:UIButtonTypeCustom];
     [button setTitle:title forState:UIControlStateNormal];
-    button.titleLabel.font = [UIFont systemFontOfSize:textFont];
+    button.titleLabel.font = textFont;
     [button setTitleColor:textNormalColor forState:UIControlStateNormal];
     [button setTitleColor:textSelectedColor forState:UIControlStateSelected];
     [button addTarget:target action:selector forControlEvents:UIControlEventTouchUpInside];
@@ -34,11 +34,11 @@ static NSString *_title;
     return button;
 }
 
-+ (UIButton *)createButtonWithTitle:(NSString *)title TextFont:(CGFloat)textFont TextNormalColor:(UIColor *)textNormalColor TextSelectedColor:(UIColor *)textSelectedColor NormalImage:(NSString *)normalImage SelectedImage:(NSString *)selectedImage Target:(id)target Selector:(SEL)selector
++ (UIButton *)createButtonWithTitle:(NSString *)title TextFont:(UIFont *)textFont TextNormalColor:(UIColor *)textNormalColor TextSelectedColor:(UIColor *)textSelectedColor NormalImage:(NSString *)normalImage SelectedImage:(NSString *)selectedImage Target:(id)target Selector:(SEL)selector
 {
     UIButton * button = [UIButton buttonWithType:UIButtonTypeCustom];
     [button setTitle:title forState:UIControlStateNormal];
-    button.titleLabel.font = FONT(textFont);
+    button.titleLabel.font = textFont;
     [button setTitleColor:textNormalColor forState:UIControlStateNormal];
     [button setTitleColor:textSelectedColor forState:UIControlStateSelected];
     [button setImage:[UIImage imageNamed:normalImage] forState:UIControlStateNormal];
@@ -52,11 +52,11 @@ static NSString *_title;
 //    button.frame = CGRectMake(0, 0, buttonSize.width + 20, buttonSize.height);
     return button;
 }
-+ (UIButton *)createButtonWithTitle:(NSString *)title TextFont:(CGFloat)textFont TextNormalColor:(UIColor *)textNormalColor TextSelectedColor:(UIColor *)textSelectedColor NormalBackgroundImage:(NSString *)normalBackgroundImage SelectedBackgroundImage:(NSString *)selectedBackgroundImage Target:(id)target Selector:(SEL)selector
++ (UIButton *)createButtonWithTitle:(NSString *)title TextFont:(UIFont *)textFont TextNormalColor:(UIColor *)textNormalColor TextSelectedColor:(UIColor *)textSelectedColor NormalBackgroundImage:(NSString *)normalBackgroundImage SelectedBackgroundImage:(NSString *)selectedBackgroundImage Target:(id)target Selector:(SEL)selector
 {
     UIButton * button = [UIButton buttonWithType:UIButtonTypeCustom];
     [button setTitle:title forState:UIControlStateNormal];
-    button.titleLabel.font = FONT(textFont);
+    button.titleLabel.font = textFont;
     [button setTitleColor:textNormalColor forState:UIControlStateNormal];
     [button setTitleColor:textSelectedColor forState:UIControlStateSelected];
     [button setBackgroundImage:[UIImage imageNamed:normalBackgroundImage] forState:UIControlStateNormal];
@@ -97,11 +97,11 @@ static NSString *_title;
     [button addTarget:target action:selector forControlEvents:UIControlEventTouchUpInside];
     return button;
 }
-+ (UIButton *)createButtonWithTitle:(NSString *)title TextFont:(CGFloat)textFont TextColor:(UIColor *)textColor BackgroundImage:(NSString *)backgroundImage
++ (UIButton *)createButtonWithTitle:(NSString *)title TextFont:(UIFont *)textFont TextColor:(UIColor *)textColor BackgroundImage:(NSString *)backgroundImage
 {
     UIButton * button = [UIButton buttonWithType:UIButtonTypeCustom];
     [button setTitle:title forState:UIControlStateNormal];
-    button.titleLabel.font = FONT(textFont);
+    button.titleLabel.font = textFont;
     //    button.contentHorizontalAlignment = 1;
     //    button.titleEdgeInsets = UIEdgeInsetsMake(0, 10, 0, 0);
     [button setTitleColor:textColor forState:UIControlStateNormal];
