@@ -267,7 +267,8 @@
 "IssueNumberIsIncorrect" = "无效的发行量";
 // Accout
 "IDNameFormatIncorrect" = "身份名只允许输入字母/汉字/数字/下划线，并且长度不能超过20个字符";
-"WalletNameFormatIncorrect" = "钱包名只允许输入字母、汉字、数字、下划线，并且长度不能超过20个字符";
+"WalletNameFormatIncorrect" = "钱包名称只允许输入字母/汉字/数字/下划线，并且长度不能超过20个字符";
+//"WalletNameFormatIncorrect" = "钱包名只允许输入字母、汉字、数字、下划线，并且长度不能超过20个字符";
 "PasswordIsDifferent" = "两次密码输入不一致";
 //"PasswordIsDifferent" = "密码与确认密码不一致";
 "MnemonicIsIncorrect" = "助记词输入有误";
@@ -318,20 +319,26 @@
 "Mnemonics" = "助记词";
 "Keystore" = "Keystore";
 "PrivateKey" = "私钥";
-"ImportMnemonicsPrompt" = "请输入钱包助记词（12个英文单词），按空格分离";
-"PleaseEnterMnemonics" = "请输入助记词";
-"WalletName" = "钱包名称";
-"EnterWalletName" = "输入钱包名称，以便区分其它钱包";
-"SetThePW" = "设置密码";
+//"ImportMnemonicsPrompt" = "请输入钱包助记词（12个英文单词），按空格分离";
+//"PleaseEnterMnemonics" = "请输入助记词";
+//"WalletName" = "钱包名称";
+//"EnterWalletName" = "输入钱包名称，以便区分其它钱包";
+"EnterWalletName" = "用于区分其他钱包，不能超过20个字符";
+//"SetThePW" = "设置密码";
 "StartImporting" = "开始导入";
 "UnderstandingMnemonics" = "了解助记词";
-"ImportKeystorePrompt" = "复制粘贴BUMO官方钱包Keystore文件内容至输入框";
-"PleaseEnterKeystore" = "Keystore文件内容";
-"KeystorePW" = "Keystore密码";
-"PleaseEnterKeystorePW" = "请输入原Keystore文件内容的密码";
+"ImportKeystorePrompt" = "请填写Keystore文件内容";
+"PleaseEnterKeystore" = "请填写由BUMO官方钱包生成的Keystore文件";
+//"ImportKeystorePrompt" = "复制粘贴BUMO官方钱包Keystore文件内容至输入框";
+//"PleaseEnterKeystore" = "Keystore文件内容";
+//"KeystorePW" = "Keystore密码";
+"KeystorePW" = "请输入安全密码";
+"PleaseEnterKeystorePW" = "请输入导出Keystore时使用的安全密码";
+//"PleaseEnterKeystorePW" = "请输入原Keystore文件内容的密码";
 "UnderstandingKeystore" = "了解Keystore";
-"ImportPrivateKeyPrompt" = "粘贴私钥（Private Key）至输入框内";
-"PleaseEnterPrivateKey" = "私钥（Private key）";
+"PleaseEnterPrivateKey" = "请填写您的私钥";
+//"ImportPrivateKeyPrompt" = "粘贴私钥（Private Key）至输入框内";
+//"PleaseEnterPrivateKey" = "私钥（Private key）";
 "UnderstandingPrivateKey" = "了解私钥";
 "ImportWalletSuccessfully" = "钱包导入成功";
 "FailureToImportWallet" = "钱包导入失败，请重新导入";
@@ -345,6 +352,10 @@
 "KeystoreExplain" = "Keystore 文件是钱包存储私钥的一种文件格式 (JSON)。它使用用户自定义密码加密，以起到一定程度上的保护作用，而保护的程度取决于用户加密该钱包的密码强度，如果类似于 123456 这样的密码，是极为不安全的。密码忘记是无法找回的，所以一定要保管好Keystore文件及密码。";
 "PrivateKeyExplainTitle" = "什么是私钥？";
 "PrivateKeyExplain" = "私钥是在区块链交易中用于生成交易签名，以证明账户身份。所以私钥必须安全保管，一旦私钥被任何人拿到，就可以拿走您的数字资产。";
+// 创建钱包
+"CreateWallet" = "创建钱包";
+"SetWalletName" = "请设置钱包名称";
+"SetWalletNamePlaceholder" = "用于区分其他钱包，不能超过20个字符";
 // 管理
 "ExportKeystore" = "导出Keystore";
 "ExportPrivateKey" = "导出私钥";
@@ -353,6 +364,10 @@
 "ModifyWalletName" = "更改钱包名称";
 "WalletPWPrompt" = "请填写钱包密码";
 "DeleteWalletSuccessfully" = "删除钱包成功";
+// 钱包详情
+"WalletDetails" = "钱包详情";
+"ChangeWalletIcon" = "更改钱包头像";
+"ChangeWalletName" = "更改钱包名称";
 // 导出Keystore
 "CopyKeystorePrompt" = "请复制keystore文件到安全的地方保存";
 "CopyKeystore" = "复制Keystore";

@@ -8,11 +8,19 @@
 
 #import <UIKit/UIKit.h>
 
+typedef NS_ENUM(NSInteger, CellType) {
+    CellTypeDefault, // 图片，文字，文字/箭头
+    CellTypeDetail, // 图片，文字，文字，箭头
+    CellTypeNormal, // 图片，文字，箭头 圆角
+    CellTypeChoice, // 文字，图片
+    CellTypeWalletDetail // 文字，图片/文字，箭头 圆角
+};
+
 NS_ASSUME_NONNULL_BEGIN
 
 @interface ListTableViewCell : UITableViewCell
 
-+ (instancetype)cellWithTableView:(UITableView *)tableView identifier:(NSString *)identifier;
++ (instancetype)cellWithTableView:(UITableView *)tableView cellType:(CellType)cellType;
 
 @property (nonatomic, strong) UIView * listBg;
 @property (nonatomic, strong) UIImageView * listImage;

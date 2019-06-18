@@ -15,6 +15,14 @@
 
 #import "DposModel.h"
 
+typedef NS_ENUM(NSInteger, AccountDataType) {
+    AccountDataCreateID,
+    AccountDataCreateWallet,
+    AccountDataRecoveryID,
+    AccountDataChangePW,
+    AccountDataSafe
+};
+
 @interface HTTPManager : NSObject
 
 @property (nonatomic, strong) NSString * pushMessageSocketUrl;
@@ -173,11 +181,11 @@
 // Query account / Is it activated?
 - (NSString *)getAccountInfoWithAddress:(NSString *)address;
 
-// identity data
+#pragma mark - account data
 - (void)setAccountDataWithRandom:(NSData *)random
                         password:(NSString *)password
-                    identityName:(NSString *)identityName
-                       typeTitle:(NSString *)typeTitle
+                            name:(NSString *)name
+                 accountDataType:(AccountDataType)accountDataType
                          success:(void (^)(id responseObject))success
                          failure:(void (^)(NSError *error))failure;
 // Wallet data
@@ -186,10 +194,10 @@
                         walletName:(NSString *)walletName
                            success:(void (^)(id responseObject))success
                            failure:(void (^)(NSError *error))failure;
-- (BOOL)importWalletDataWalletName:(NSString *)walletName
-                     walletAddress:(NSString *)walletAddress
-                    walletKeyStore:(NSString *)walletKeyStore
-                      randomNumber:(NSString *)randomNumber;
+- (BOOL)setWalletDataWalletName:(NSString *)walletName
+                  walletAddress:(NSString *)walletAddress
+                 walletKeyStore:(NSString *)walletKeyStore
+                   randomNumber:(NSString *)randomNumber;
 #pragma mark - 转账
 // Transfer accounts
 - (BOOL)setTransferDataWithTokenType:(NSInteger)tokenType

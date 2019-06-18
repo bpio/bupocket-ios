@@ -71,7 +71,7 @@
     }
     NSData * random = [NSString decipherKeyStoreWithPW:self.oldPW randomKeyStoreValueStr:[[AccountTool shareTool] account].randomNumber];
     if (random) {
-        [[HTTPManager shareManager] setAccountDataWithRandom:random password:self.PW identityName:[[AccountTool shareTool] account].identityName typeTitle:self.navigationItem.title success:^(id responseObject) {
+        [[HTTPManager shareManager] setAccountDataWithRandom:random password:self.PW name:[[AccountTool shareTool] account].identityName accountDataType:AccountDataChangePW success:^(id responseObject) {
             [Encapsulation showAlertControllerWithMessage:Localized(@"PasswordModifiedSuccessfully") handler:^(UIAlertAction *action) {
                 [self.navigationController popViewControllerAnimated:NO];
             }];

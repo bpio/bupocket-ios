@@ -7,7 +7,6 @@
 //
 
 #import <UIKit/UIKit.h>
-#import "WalletModel.h"
 
 NS_ASSUME_NONNULL_BEGIN
 
@@ -15,6 +14,7 @@ NS_ASSUME_NONNULL_BEGIN
 
 + (instancetype)cellWithTableView:(UITableView *)tableView identifier:(NSString *)identifier;
 
+@property (nonatomic, strong) UIImageView * walletImage;
 @property (nonatomic, strong) UILabel * walletName;
 @property (nonatomic, strong) UILabel * walletAddress;
 @property (nonatomic, strong) UIButton * currentUse;

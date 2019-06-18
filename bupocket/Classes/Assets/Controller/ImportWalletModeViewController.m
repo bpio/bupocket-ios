@@ -9,7 +9,6 @@
 #import "ImportWalletModeViewController.h"
 #import "TextFieldViewCell.h"
 #import "PlaceholderTextView.h"
-#import "WalletModel.h"
 #import "ExplainInfoViewController.h"
 
 @interface ImportWalletModeViewController ()<UITextViewDelegate, UITextFieldDelegate, UITableViewDelegate, UITableViewDataSource>
@@ -64,10 +63,18 @@ static NSString * const TextFieldPWCellID = @"TextFieldPWCellID";
     UIView * headerView = [[UIView alloc] init];
     
     UILabel * importPrompt = [[UILabel alloc] init];
-    importPrompt.textColor = COLOR_9;
-    importPrompt.font = FONT_TITLE;
+    importPrompt.textColor = COLOR_6;
+    importPrompt.font = FONT_15;
     importPrompt.numberOfLines = 0;
     [headerView addSubview:importPrompt];
+    
+    CustomButton * explain = [[CustomButton alloc] init];
+    explain.layoutMode = HorizontalInverted;
+    explain.titleLabel.font = FONT_13;
+    [explain setTitleColor:MAIN_COLOR forState:UIControlStateNormal];
+    [explain setImage:[UIImage imageNamed:@"explain"] forState:UIControlStateNormal];
+    [explain addTarget:self action:@selector(explainInfo:) forControlEvents:UIControlEventTouchUpInside];
+    [headerView addSubview:explain];
     
     
     self.importText = [[PlaceholderTextView alloc] init];
@@ -77,64 +84,50 @@ static NSString * const TextFieldPWCellID = @"TextFieldPWCellID";
     self.importText.layer.cornerRadius = BG_CORNER;
     [headerView addSubview:self.importText];
     
-    
-    
     UIView * footerView = [[UIView alloc] initWithFrame:CGRectMake(0, 0, DEVICE_WIDTH, ScreenScale(150) + SafeAreaBottomH)];
     self.tableView.tableFooterView = footerView;
     
     self.import = [UIButton createButtonWithTitle:Localized(@"StartImporting") isEnabled:NO Target:self Selector:@selector(importAction)];
     [footerView addSubview:self.import];
     
-    
-    CustomButton * explain = [[CustomButton alloc] init];
-    explain.layoutMode = HorizontalInverted;
-    explain.titleLabel.font = FONT_TITLE;
-    [explain setTitleColor:COLOR_9 forState:UIControlStateNormal];
-    [explain setImage:[UIImage imageNamed:@"explain"] forState:UIControlStateNormal];
-    [explain addTarget:self action:@selector(explainInfo:) forControlEvents:UIControlEventTouchUpInside];
-    [footerView addSubview:explain];
-    
-    
-    self.listArray = [NSMutableArray arrayWithObjects:@[Localized(@"WalletName"), Localized(@"EnterWalletName")], @[Localized(@"SetThePW"), Localized(@"SetPassword")], @[Localized(@"ConfirmedPassword"), Localized(@"ConfirmPassword")], nil];
-    if ([self.title isEqualToString:Localized(@"Mnemonics")]) {
-        importPrompt.text = Localized(@"ImportMnemonicsPrompt");
-        self.importText.placeholder = Localized(@"PleaseEnterMnemonics");
-        [explain setTitle:Localized(@"UnderstandingMnemonics") forState:UIControlStateNormal];
-    } else if ([self.title isEqualToString:Localized(@"Keystore")]) {
-        importPrompt.text = Localized(@"ImportKeystorePrompt");
-        self.importText.placeholder = Localized(@"PleaseEnterKeystore");
-        self.listArray = [NSMutableArray arrayWithObjects:@[Localized(@"WalletName"), Localized(@"EnterWalletName")], @[Localized(@"KeystorePW"), Localized(@"PleaseEnterKeystorePW")], nil];
-        [explain setTitle:Localized(@"UnderstandingKeystore") forState:UIControlStateNormal];
-    } else if ([self.title isEqualToString:Localized(@"PrivateKey")]) {
-        importPrompt.text = Localized(@"ImportPrivateKeyPrompt");
-        self.importText.placeholder = Localized(@"PleaseEnterPrivateKey");
-        [explain setTitle:Localized(@"UnderstandingPrivateKey") forState:UIControlStateNormal];
+    self.listArray = [NSMutableArray arrayWithObjects:@[Localized(@"SetWalletName"), Localized(@"EnterWalletName")], @[Localized(@"SetPassword"), Localized(@"PWPlaceholder")], @[Localized(@"ConfirmPassword"), Localized(@"ConfirmPassword")], nil];
+    NSArray * textArray = @[@[Localized(@"MnemonicPrompt"), Localized(@"MnemonicPlaceholder"), Localized(@"UnderstandingMnemonics")], @[Localized(@"PleaseEnterPrivateKey"), Localized(@"PleaseEnterPrivateKey"), Localized(@"UnderstandingPrivateKey")], @[Localized(@"ImportKeystorePrompt"), Localized(@"PleaseEnterKeystore"), Localized(@"UnderstandingKeystore")]];
+    importPrompt.text = textArray[self.importWalletMode][0];
+    self.importText.placeholder = textArray[self.importWalletMode][1];
+    [explain setTitle:textArray[self.importWalletMode][2] forState:UIControlStateNormal];
+    if (self.importWalletMode == ImportWalletKeystore) {
+        self.listArray = [NSMutableArray arrayWithObjects:@[Localized(@"SetWalletName"), Localized(@"EnterWalletName")], @[Localized(@"KeystorePW"), Localized(@"PleaseEnterKeystorePW")], nil];
     }
-    CGFloat headerViewH = Margin_30 + [Encapsulation rectWithText:importPrompt.text font:importPrompt.font textWidth:DEVICE_WIDTH - Margin_30].size.height + ScreenScale(120);
+    CGFloat explainW = ceil([Encapsulation rectWithText:explain.titleLabel.text font:explain.titleLabel.font textHeight:Margin_15].size.width + Margin_15) + 1;
+    CGFloat headerViewH = Margin_30 + ceil([Encapsulation rectWithText:importPrompt.text font:importPrompt.font textWidth:DEVICE_WIDTH - Margin_30 - explainW].size.height) + 1 + ScreenScale(120);
     headerView.frame = CGRectMake(0, 0, DEVICE_WIDTH, headerViewH);
     self.tableView.tableHeaderView = headerView;
+    
     [importPrompt mas_makeConstraints:^(MASConstraintMaker *make) {
         make.top.equalTo(headerView.mas_top).offset(Margin_15);
         make.left.equalTo(headerView.mas_left).offset(Margin_15);
-        make.right.equalTo(headerView.mas_right).offset(-Margin_15);
+        make.right.mas_lessThanOrEqualTo(explain.mas_left).offset(-Margin_10);
     }];
+    [explain mas_makeConstraints:^(MASConstraintMaker *make) {
+        make.top.equalTo(headerView);
+        make.height.mas_equalTo(headerViewH - ScreenScale(120));
+        make.right.equalTo(headerView.mas_right).offset(-Margin_15);
+//        make.width.mas_equalTo(explainW);
+    }];
+    [explain setContentCompressionResistancePriority:UILayoutPriorityRequired forAxis:UILayoutConstraintAxisHorizontal];
     [self.importText mas_makeConstraints:^(MASConstraintMaker *make) {
         make.top.equalTo(importPrompt.mas_bottom).offset(Margin_15);
-        make.left.right.equalTo(importPrompt);
+        make.left.equalTo(importPrompt);
+        make.right.equalTo(explain);
         make.height.mas_equalTo(ScreenScale(120));
         make.bottom.equalTo(headerView);
     }];
     
     [self.import mas_makeConstraints:^(MASConstraintMaker *make) {
-        make.top.equalTo(footerView.mas_top).offset(Margin_25);
+        make.top.equalTo(footerView.mas_top).offset(MAIN_HEIGHT);
         make.left.equalTo(footerView.mas_left).offset(Margin_15);
         make.right.equalTo(footerView.mas_right).offset(-Margin_15);
         make.height.mas_equalTo(MAIN_HEIGHT);
-    }];
-    [explain mas_makeConstraints:^(MASConstraintMaker *make) {
-        make.top.equalTo(self.import.mas_bottom).offset(Margin_15);
-        make.right.equalTo(self.import);
-        make.height.mas_equalTo(Margin_30);
     }];
 }
 - (CGFloat)tableView:(UITableView *)tableView heightForRowAtIndexPath:(NSIndexPath *)indexPath
@@ -227,7 +220,7 @@ static NSString * const TextFieldPWCellID = @"TextFieldPWCellID";
 {
     // walletPrivateKey -> walletAddress
     NSString * walletAddress = [Keypair getEncAddress : [Keypair getEncPublicKey: walletPrivateKey]];
-    BOOL ifImportSuccess = [[HTTPManager shareManager] importWalletDataWalletName:_walletName walletAddress:walletAddress walletKeyStore:walletKeyStore randomNumber:nil];
+    BOOL ifImportSuccess = [[HTTPManager shareManager] setWalletDataWalletName:_walletName walletAddress:walletAddress walletKeyStore:walletKeyStore randomNumber:nil];
     if (ifImportSuccess) {
         [Encapsulation showAlertControllerWithMessage:Localized(@"ImportWalletSuccessfully") handler:^(UIAlertAction *action) {
             [self.navigationController popViewControllerAnimated:NO];
@@ -266,20 +259,10 @@ static NSString * const TextFieldPWCellID = @"TextFieldPWCellID";
 - (void)explainInfo:(UIButton *)button
 {
     ExplainInfoViewController * VC = [[ExplainInfoViewController alloc] init];
-//    Localized(@"Mnemonics"), Localized(@"Keystore"), Localized(@"PrivateKey")
-    if ([self.title isEqualToString:Localized(@"Mnemonics")]) {
-        VC.navigationItem.title = Localized(@"Mnemonics");
-        VC.titleText = Localized(@"MnemonicsExplainTitle");
-        VC.explainInfoText = Localized(@"MnemonicsExplain");
-    } else if ([self.title isEqualToString:Localized(@"Keystore")]) {
-        VC.navigationItem.title = Localized(@"Keystore");
-        VC.titleText = Localized(@"KeystoreExplainTitle");
-        VC.explainInfoText = Localized(@"KeystoreExplain");
-    } else if ([self.title isEqualToString:Localized(@"PrivateKey")]) {
-        VC.navigationItem.title = Localized(@"PrivateKey");
-        VC.titleText = Localized(@"PrivateKeyExplainTitle");
-        VC.explainInfoText = Localized(@"PrivateKeyExplain");
-    }
+    NSArray * textArray = @[@[Localized(@"Mnemonics"), Localized(@"MnemonicsExplainTitle"), Localized(@"MnemonicsExplain")], @[Localized(@"PrivateKey"), Localized(@"PrivateKeyExplainTitle"), Localized(@"PrivateKeyExplain")], @[Localized(@"Keystore"), Localized(@"KeystoreExplainTitle"), Localized(@"KeystoreExplain")]];
+    VC.navigationItem.title = textArray[self.importWalletMode][0];
+    VC.titleText = textArray[self.importWalletMode][1];
+    VC.explainInfoText = textArray[self.importWalletMode][2];
     [self.navigationController pushViewController:VC animated:NO];
 }
 - (void)textViewDidChange:(UITextView *)textView

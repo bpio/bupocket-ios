@@ -55,7 +55,7 @@
 {
     [super layoutSubviews];
     [self.promptBtn mas_makeConstraints:^(MASConstraintMaker *make) {
-        make.top.equalTo(self.mas_top).offset(Margin_20);
+        make.top.equalTo(self.mas_top).offset(Margin_15);
         make.centerX.equalTo(self);
         make.height.mas_equalTo(ScreenScale(100));
     }];

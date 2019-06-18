@@ -25,7 +25,7 @@
         _sureBlock = confrimBlock;
         _cancleBlock = cancelBlock;
         [self setupView];
-        self.textField.placeholder = text;
+//        self.textField.placeholder = text;
         self.bounds = CGRectMake(0, 0, DEVICE_WIDTH - Margin_40, ScreenScale(220));
     }
     return self;
@@ -36,7 +36,7 @@
     self.layer.cornerRadius = MAIN_CORNER;
     
     UILabel * title = [UILabel new];
-    title.font = FONT(18);
+    title.font = FONT_Bold(18);
     title.textColor = TITLE_COLOR;
     title.text = Localized(@"ModifyWalletName");
     [self addSubview:title];
@@ -56,6 +56,7 @@
     self.textField.leftViewMode = UITextFieldViewModeAlways;
     self.textField.rightView = [[UIView alloc] initWithFrame:CGRectMake(0, 0, Margin_10, MAIN_HEIGHT)];
     self.textField.rightViewMode = UITextFieldViewModeAlways;
+    self.textField.placeholder = Localized(@"EnterWalletName");
     [self.textField addTarget:self action:@selector(textChange:) forControlEvents:UIControlEventEditingChanged];
     [self addSubview:self.textField];
     [self.textField mas_makeConstraints:^(MASConstraintMaker *make) {

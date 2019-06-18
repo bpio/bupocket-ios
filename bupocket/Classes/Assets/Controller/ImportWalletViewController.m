@@ -38,7 +38,7 @@
 }
 - (void)setupView
 {
-    self.typeArray = @[Localized(@"Mnemonics"), Localized(@"Keystore"), Localized(@"PrivateKey")];
+    self.typeArray = @[Localized(@"Mnemonics"), Localized(@"PrivateKey"), Localized(@"Keystore")];
     CGFloat width = DEVICE_WIDTH / self.typeArray.count;
     for (int i = 0; i < self.typeArray.count; i++) {
         UIButton * navBtn = [UIButton createButtonWithTitle:self.typeArray[i] TextFont:FONT_16 TextNormalColor:COLOR_6 TextSelectedColor:MAIN_COLOR Target:self Selector:@selector(navAction:)];
@@ -99,6 +99,7 @@
     for (int i = 0; i < titleArray.count; i++) {
         ImportWalletModeViewController * VC = [[ImportWalletModeViewController alloc] init];
         VC.title = titleArray[i];
+        VC.importWalletMode = i;
         VC.view.frame = CGRectMake(DEVICE_WIDTH * i, 0, _contentScrollView.frame.size.width, _contentScrollView.frame.size.height);
         [self.contentScrollView addSubview:VC.view];
         [self addChildViewController:VC];

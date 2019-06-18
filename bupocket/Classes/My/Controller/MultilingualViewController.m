@@ -17,8 +17,6 @@
 
 @end
 
-static NSString * const ListCellID = @"ListCellID";
-
 @implementation MultilingualViewController
 
 - (void)viewDidLoad {
@@ -67,7 +65,7 @@ static NSString * const ListCellID = @"ListCellID";
 }
 - (UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath
 {
-    ListTableViewCell * cell = [ListTableViewCell cellWithTableView:tableView identifier:ListCellID];
+    ListTableViewCell * cell = [ListTableViewCell cellWithTableView:tableView cellType:CellTypeDefault];
     cell.selectionStyle = UITableViewCellSelectionStyleNone;
     cell.listImage.image = [UIImage imageNamed:[NSString stringWithFormat:@"multilingual_list_%zd", indexPath.row]];
     cell.detailImage.image = [UIImage imageNamed:@"checked"];

@@ -1,27 +1,27 @@
 //
-//  CreateIdentityViewController.m
+//  CreateViewController.m
 //  bupocket
 //
-//  Created by bupocket on 2018/10/16.
-//  Copyright © 2018年 bupocket. All rights reserved.
+//  Created by huoss on 2019/6/18.
+//  Copyright © 2019 bupocket. All rights reserved.
 //
 
-#import "CreateIdentityViewController.h"
+#import "CreateViewController.h"
 #import "TextFieldViewCell.h"
 #import "BackUpWalletViewController.h"
 #import "CreateTipsAlertView.h"
 
-@interface CreateIdentityViewController ()<UITextFieldDelegate, UITableViewDelegate, UITableViewDataSource>
+@interface CreateViewController ()<UITextFieldDelegate, UITableViewDelegate, UITableViewDataSource>
 
 @property (nonatomic, strong) UITableView * tableView;
 @property (nonatomic, strong) NSMutableArray * listArray;
 
-@property (nonatomic, strong) UITextField * IDNameText;
-@property (nonatomic, strong) UITextField * IDPWText;
+@property (nonatomic, strong) UITextField * nameText;
+@property (nonatomic, strong) UITextField * PWText;
 @property (nonatomic, strong) UITextField * confirmPWText;
 
-@property (nonatomic, strong) NSString * IDName;
-@property (nonatomic, strong) NSString * IDPW;
+@property (nonatomic, strong) NSString * name;
+@property (nonatomic, strong) NSString * PW;
 @property (nonatomic, strong) NSString * confirmPW;
 
 @property (nonatomic, strong) UIButton * createBtn;
@@ -31,7 +31,7 @@
 static NSString * const TextFieldCellID = @"TextFieldCellID";
 static NSString * const TextFieldPWCellID = @"TextFieldPWCellID";
 
-@implementation CreateIdentityViewController
+@implementation CreateViewController
 
 - (NSMutableArray *)listArray
 {
@@ -44,8 +44,14 @@ static NSString * const TextFieldPWCellID = @"TextFieldPWCellID";
 - (void)viewDidLoad
 {
     [super viewDidLoad];
-    self.navigationItem.title = Localized(@"CreateIdentity");
-    self.listArray = [NSMutableArray arrayWithObjects:@[Localized(@"IdentityName"), Localized(@"IDNamePlaceholder")], @[Localized(@"SetPassword"), Localized(@"PWPlaceholder")], @[Localized(@"ConfirmPassword"), Localized(@"ConfirmPassword")], nil];
+    if (self.createType == CreateIdentity) {
+        self.navigationItem.title = Localized(@"CreateIdentity");
+        self.listArray = [NSMutableArray arrayWithObjects:@[Localized(@"IdentityName"), Localized(@"IDNamePlaceholder")], @[Localized(@"SetPassword"), Localized(@"PWPlaceholder")], @[Localized(@"ConfirmPassword"), Localized(@"ConfirmPassword")], nil];
+    } else if (self.createType == CreateWallet) {
+        self.navigationItem.title = Localized(@"CreateWallet");
+        self.listArray = [NSMutableArray arrayWithObjects:@[Localized(@"SetWalletName"), Localized(@"SetWalletNamePlaceholder")], @[Localized(@"SetPassword"), Localized(@"PWPlaceholder")], @[Localized(@"ConfirmPassword"), Localized(@"ConfirmPassword")], nil];
+        
+    }
     [self setupView];
     [self showCreateTips];
 }
@@ -61,7 +67,11 @@ static NSString * const TextFieldPWCellID = @"TextFieldPWCellID";
     NSMutableData *random = [NSMutableData dataWithLength: Random_Length];
     int status = SecRandomCopyBytes(kSecRandomDefault, random.length, random.mutableBytes);
     if (status == 0) {
-        [[HTTPManager shareManager] setAccountDataWithRandom:random password:PW identityName:identityName typeTitle:self.navigationItem.title success:^(id responseObject) {
+        AccountDataType accountDataType = AccountDataCreateID;
+        if (self.createType == CreateWallet) {
+            accountDataType = AccountDataCreateWallet;
+        }
+        [[HTTPManager shareManager] setAccountDataWithRandom:random password:PW name:identityName accountDataType:accountDataType success:^(id responseObject) {
             NSUserDefaults * defaults = [NSUserDefaults standardUserDefaults];
             [defaults setBool:YES forKey:If_Created];
             [defaults synchronize];
@@ -78,7 +88,7 @@ static NSString * const TextFieldPWCellID = @"TextFieldPWCellID";
 - (void)createAction
 {
     if ([self textRegexJudge]) {
-        [self getDataWithPW:self.IDPW identityName:self.IDName];
+        [self getDataWithPW:self.PW identityName:self.name];
     }
 }
 
@@ -158,10 +168,10 @@ static NSString * const TextFieldPWCellID = @"TextFieldPWCellID";
     cell.selectionStyle = UITableViewCellSelectionStyleNone;
     switch (indexPath.row) {
         case 0:
-            self.IDNameText = cell.textField;
+            self.nameText = cell.textField;
             break;
         case 1:
-            self.IDPWText = cell.textField;
+            self.PWText = cell.textField;
             break;
         case 2:
             self.confirmPWText = cell.textField;
@@ -181,13 +191,17 @@ static NSString * const TextFieldPWCellID = @"TextFieldPWCellID";
 
 - (BOOL)textRegexJudge
 {
-    if ([RegexPatternTool validateUserName:self.IDName] == NO) {
-        [Encapsulation showAlertControllerWithErrorMessage:Localized(@"IDNameFormatIncorrect") handler:nil];
+    if ([RegexPatternTool validateUserName:self.name] == NO) {
+        NSString * message = Localized(@"IDNameFormatIncorrect");
+        if (self.createType == CreateWallet) {
+            message = Localized(@"WalletNameFormatIncorrect");
+        }
+        [Encapsulation showAlertControllerWithErrorMessage:message handler:nil];
         return NO;
-    } else if ([RegexPatternTool validatePassword:self.IDPW] == NO) {
+    } else if ([RegexPatternTool validatePassword:self.PW] == NO) {
         [Encapsulation showAlertControllerWithErrorMessage:Localized(@"PWErrorPrompt") handler:nil];
         return NO;
-    } else if (![self.confirmPW isEqualToString:self.IDPW]) {
+    } else if (![self.confirmPW isEqualToString:self.PW]) {
         [Encapsulation showAlertControllerWithErrorMessage:Localized(@"PasswordIsDifferent") handler:nil];
         return NO;
     } else {
@@ -197,7 +211,7 @@ static NSString * const TextFieldPWCellID = @"TextFieldPWCellID";
 - (void)judgeHasText
 {
     [self updateText];
-    if (self.IDName.length > 0 && self.IDPW.length > 0 && self.confirmPW.length > 0) {
+    if (self.name.length > 0 && self.PW.length > 0 && self.confirmPW.length > 0) {
         self.createBtn.enabled = YES;
         self.createBtn.backgroundColor = MAIN_COLOR;
     } else {
@@ -207,8 +221,8 @@ static NSString * const TextFieldPWCellID = @"TextFieldPWCellID";
 }
 - (void)updateText
 {
-    self.IDName = TrimmingCharacters(self.IDNameText.text);
-    self.IDPW = TrimmingCharacters(self.IDPWText.text);
+    self.name = TrimmingCharacters(self.nameText.text);
+    self.PW = TrimmingCharacters(self.PWText.text);
     self.confirmPW = TrimmingCharacters(self.confirmPWText.text);
 }
 - (void)didReceiveMemoryWarning

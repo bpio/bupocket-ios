@@ -32,8 +32,6 @@
 
 @end
 
-static NSString * const ListCellID = @"ListCellID";
-
 @implementation MyViewController
 
 
@@ -150,7 +148,7 @@ static NSString * const ListCellID = @"ListCellID";
 }
 - (UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath
 {
-    ListTableViewCell * cell = [ListTableViewCell cellWithTableView:tableView identifier:ListCellID];
+    ListTableViewCell * cell = [ListTableViewCell cellWithTableView:tableView cellType:CellTypeDefault];
     cell.listImage.image = [UIImage imageNamed:[NSString stringWithFormat:@"my_list_%zd", indexPath.row]];
     cell.detailImage.image = [UIImage imageNamed:@"list_arrow"];
     cell.title.text = self.listArray[indexPath.row];

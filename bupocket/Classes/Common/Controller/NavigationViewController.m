@@ -10,6 +10,7 @@
 #import "IdentityViewController.h"
 #import "MyViewController.h"
 
+#import "CreateViewController.h"
 #import "BackUpWalletViewController.h"
 #import "RestoreIdentityViewController.h"
 #import "AssetsViewController.h"
@@ -20,6 +21,8 @@
 #import "RequestTimeoutViewController.h"
 #import "RegisteredResultViewController.h"
 #import "DistributionResultsViewController.h"
+#import "WalletManagementViewController.h"
+#import "WalletDetailsViewController.h"
 #import "ImportWalletViewController.h"
 #import "ExportKeystoreViewController.h"
 #import "ExportPrivateKeyViewController.h"
@@ -72,6 +75,7 @@
 {
     [viewController viewWillAppear:animated];
     BOOL isSetLargeTitles = (
+                             [viewController isKindOfClass:[CreateViewController class]] ||
                              [viewController isKindOfClass:[BackUpWalletViewController class]] ||
                              [viewController isKindOfClass:[RestoreIdentityViewController class]] ||
                              [viewController isKindOfClass:[AssetsViewController class]]  ||
@@ -79,6 +83,8 @@
                              [viewController isKindOfClass:[TransferResultsViewController class]] ||
                              [viewController isKindOfClass:[RegisteredResultViewController class]] ||
                              [viewController isKindOfClass:[DistributionResultsViewController class]] ||
+                             [viewController isKindOfClass:[WalletManagementViewController class]] ||
+                             [viewController isKindOfClass:[WalletDetailsViewController class]] ||
                              [viewController isKindOfClass:[RequestTimeoutViewController class]] ||
                              [viewController isKindOfClass:[NodeTransferSuccessViewController class]] ||
                              [viewController isKindOfClass:[OrderDetailsViewController class]] ||

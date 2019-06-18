@@ -19,8 +19,6 @@
 
 @end
 
-static NSString * const SettingCellID = @"SettingCellID";
-
 @implementation SettingViewController
 
 - (void)viewDidLoad {
@@ -70,7 +68,7 @@ static NSString * const SettingCellID = @"SettingCellID";
 }
 - (UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath
 {
-    ListTableViewCell * cell = [ListTableViewCell cellWithTableView:tableView identifier:SettingCellID];
+    ListTableViewCell * cell = [ListTableViewCell cellWithTableView:tableView cellType:CellTypeDetail];
     cell.listImage.image = [UIImage imageNamed:[NSString stringWithFormat:@"setting_list_%zd", indexPath.row]];
     cell.detailImage.image = [UIImage imageNamed:@"list_arrow"];
     cell.title.text = self.listArray[indexPath.row];

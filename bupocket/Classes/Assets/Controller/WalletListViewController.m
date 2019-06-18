@@ -9,9 +9,10 @@
 #import "WalletListViewController.h"
 #import "WalletListViewCell.h"
 #import "WalletManagementViewController.h"
-#import "WalletModel.h"
 #import "ImportWalletViewController.h"
 #import "MyViewController.h"
+#import "BottomAlertView.h"
+#import "CreateViewController.h"
 
 @interface WalletListViewController ()<UITableViewDelegate, UITableViewDataSource>
 
@@ -104,80 +105,32 @@ static NSString * const WalletListCellID = @"WalletListCellID";
 {
     if (section == 0) {
         return CGFLOAT_MIN;
-        //        if (self.listArray.count == 0) {
-        //            return ScreenScale(115);
-        //        } else {
-        return MAIN_HEIGHT;
-        //        }
     } else {
         return ContentSizeBottom;
     }
 }
-/*
- - (UIView *)tableView:(UITableView *)tableView viewForFooterInSection:(NSInteger)section
- {
- if (section == 0) {
- UIButton * titleBtn = [self setupHeaderTitle:Localized(@"ImportedWallet")];
- if (self.listArray.count == 0) {
- UIView * importBg = [[UIView alloc] init];
- [importBg addSubview:titleBtn];
- CustomButton * importBtn = [[CustomButton alloc] init];
- [importBtn setTitle:Localized(@"ImmediateImport") forState:UIControlStateNormal];
- [importBtn setImage:[UIImage imageNamed:@"immediateImport"] forState:UIControlStateNormal];
- [importBg addSubview:importBtn];
- importBtn.backgroundColor = MAIN_COLOR;
- importBtn.layer.masksToBounds = YES;
- importBtn.clipsToBounds = YES;
- importBtn.layer.cornerRadius = MAIN_CORNER;
- [importBtn addTarget:self action:@selector(importedAction) forControlEvents:UIControlEventTouchUpInside];
- [importBtn mas_makeConstraints:^(MASConstraintMaker *make) {
- make.top.equalTo(titleBtn.mas_bottom).offset(Margin_25);
- make.centerX.equalTo(importBg);
- make.size.mas_equalTo(CGSizeMake(DEVICE_WIDTH - ScreenScale(160), MAIN_HEIGHT));
- }];
- return importBg;
- } else {
- UIButton * importedBtn = [UIButton createButtonWithNormalImage:@"import" SelectedImage:@"import" Target:self Selector:@selector(importedAction)];
- [titleBtn addSubview:importedBtn];
- [importedBtn mas_makeConstraints:^(MASConstraintMaker *make) {
- make.right.equalTo(titleBtn.mas_right).offset(-Margin_15);
- make.top.equalTo(titleBtn);
- make.height.mas_equalTo(MAIN_HEIGHT);
- }];
- return titleBtn;
- }
- } else {
- return [[UIView alloc] init];
- }
- }
- */
 - (void)importedAction
 {
-    UIAlertController *alertController = [UIAlertController alertControllerWithTitle:nil message:nil preferredStyle: UIAlertControllerStyleActionSheet];
-    UIView * alertBg = alertController.view.subviews[0].subviews[0].subviews[0];
-    alertBg.backgroundColor = [UIColor whiteColor];
-    alertBg.layer.cornerRadius = BG_CORNER;
-    UIAlertAction *cancelAction = [UIAlertAction actionWithTitle:@"取消" style:UIAlertActionStyleCancel handler:^(UIAlertAction * action) {
-        NSLog(@"点击了取消");
+    NSArray * titleArray = @[Localized(@"CreateWallet"), Localized(@"ImportWallet")];
+    BottomAlertView * alertView = [[BottomAlertView alloc] initWithHandlerArray:titleArray handlerType:HandlerTypeWallet handlerClick:^(UIButton * _Nonnull btn) {
+        if ([btn.titleLabel.text isEqualToString:titleArray[0]]) {
+            dispatch_after(dispatch_time(DISPATCH_TIME_NOW, (int64_t)(Dispatch_After_Time * NSEC_PER_SEC)), dispatch_get_main_queue(), ^{
+                CreateViewController * VC = [[CreateViewController alloc] init];
+                VC.createType = CreateWallet;
+                [self.navigationController pushViewController:VC animated:NO];    
+            });
+        } else if ([btn.titleLabel.text isEqualToString:titleArray[1]]) {
+            ImportWalletViewController * VC = [[ImportWalletViewController alloc] init];
+            [self.navigationController pushViewController:VC animated:NO];
+        }
+    } cancleClick:^{
+        
     }];
-    [cancelAction setValue:TITLE_COLOR forKey:@"titleTextColor"];
-    UIAlertAction * createAction = [UIAlertAction actionWithTitle:@"创建钱包" style:UIAlertActionStyleDefault handler:^(UIAlertAction * action) {
-    }];
-    [createAction setValue:TITLE_COLOR forKey:@"titleTextColor"];
-    UIAlertAction * importAction = [UIAlertAction actionWithTitle:@"导入钱包" style:UIAlertActionStyleDefault handler:^(UIAlertAction * action) {
-        ImportWalletViewController * VC = [[ImportWalletViewController alloc] init];
-        [self.navigationController pushViewController:VC animated:NO];
-    }];
-    [importAction setValue:TITLE_COLOR forKey:@"titleTextColor"];
-    
-    [alertController addAction:cancelAction];
-    [alertController addAction:createAction];
-    [alertController addAction:importAction];
-    [self presentViewController:alertController animated:YES completion:nil];
+    [alertView showInWindowWithMode:CustomAnimationModeShare inView:nil bgAlpha:AlertBgAlpha needEffectView:NO];
 }
 - (NSInteger)numberOfSectionsInTableView:(UITableView *)tableView
 {
-    return 2;
+    return self.listArray.count > 0 ? 2 : 1;
 }
 - (NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section
 {
@@ -202,8 +155,6 @@ static NSString * const WalletListCellID = @"WalletListCellID";
     cell.manageClick = ^{
         WalletManagementViewController * VC = [[WalletManagementViewController alloc] init];
         VC.walletModel = weakCell.walletModel;
-        VC.walletArray = self.listArray;
-        VC.index = indexPath.row;
         [self.navigationController pushViewController:VC animated:NO];
     };
     return cell;

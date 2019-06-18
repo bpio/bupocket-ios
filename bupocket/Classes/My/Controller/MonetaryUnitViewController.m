@@ -17,8 +17,6 @@
 
 @end
 
-static NSString * const MonetaryUnitCellID = @"MonetaryUnitCellID";
-
 @implementation MonetaryUnitViewController
 
 - (void)viewDidLoad {
@@ -63,7 +61,7 @@ static NSString * const MonetaryUnitCellID = @"MonetaryUnitCellID";
 }
 - (UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath
 {
-    ListTableViewCell * cell = [ListTableViewCell cellWithTableView:tableView identifier:MonetaryUnitCellID];
+    ListTableViewCell * cell = [ListTableViewCell cellWithTableView:tableView cellType:CellTypeChoice];
     cell.selectionStyle = UITableViewCellSelectionStyleNone;
     cell.detailImage.image = [UIImage imageNamed:@"checked"];
     cell.title.text = self.listArray[indexPath.row];

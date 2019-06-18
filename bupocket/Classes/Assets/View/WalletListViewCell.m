@@ -24,6 +24,7 @@ static NSString * const WalletCellID = @"WalletCellID";
 - (instancetype)initWithStyle:(UITableViewCellStyle)style reuseIdentifier:(NSString *)reuseIdentifier
 {
     if (self = [super initWithStyle:style reuseIdentifier:reuseIdentifier]) {
+        [self.contentView addSubview:self.walletImage];
         [self.contentView addSubview:self.walletName];
         [self.contentView addSubview:self.walletAddress];
         if ([reuseIdentifier isEqualToString:WalletListCellID]) {
@@ -39,9 +40,14 @@ static NSString * const WalletCellID = @"WalletCellID";
 - (void)layoutSubviews
 {
     [super layoutSubviews];
-    [self.walletName mas_makeConstraints:^(MASConstraintMaker *make) {
+    [self.walletImage mas_makeConstraints:^(MASConstraintMaker *make) {
         make.top.equalTo(self.contentView.mas_top).offset(Margin_20);
         make.left.equalTo(self.contentView.mas_left).offset(Margin_15);
+        make.size.mas_equalTo(CGSizeMake(Margin_30, Margin_30));
+    }];
+    [self.walletName mas_makeConstraints:^(MASConstraintMaker *make) {
+        make.top.equalTo(self.walletImage);
+        make.left.equalTo(self.walletImage.mas_right).offset(Margin_10);
         make.height.mas_equalTo(ScreenScale(18));
     }];
     if ([self.reuseIdentifier isEqualToString:WalletListCellID]) {
@@ -83,11 +89,19 @@ static NSString * const WalletCellID = @"WalletCellID";
     }];
     [self setViewSize:CGSizeMake(DEVICE_WIDTH - Margin_20, ScreenScale(90)) borderWidth:0 borderColor:nil borderRadius:BG_CORNER];
 }
+- (UIImageView *)walletImage
+{
+    if (!_walletImage) {
+        _walletImage = [[UIImageView alloc] initWithImage:[UIImage imageNamed:@"wallet_list_placeholder"]];
+        [_walletImage setViewSize:CGSizeMake(Margin_30, Margin_30) borderWidth:0 borderColor:nil borderRadius:MAIN_CORNER];
+    }
+    return _walletImage;
+}
 - (UILabel *)walletName
 {
     if (!_walletName) {
         _walletName = [[UILabel alloc] init];
-        _walletName.font = FONT(16);
+        _walletName.font = FONT_Bold(16);
         _walletName.textColor = TITLE_COLOR;
     }
     return _walletName;
@@ -96,7 +110,7 @@ static NSString * const WalletCellID = @"WalletCellID";
 {
     if (!_walletAddress) {
         _walletAddress = [[UILabel alloc] init];
-        _walletAddress.font = FONT(15);
+        _walletAddress.font = FONT_TITLE;
         _walletAddress.textColor = COLOR_9;
         _walletAddress.lineBreakMode = NSLineBreakByTruncatingMiddle;
     }

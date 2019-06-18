@@ -9,20 +9,21 @@
 #import "WalletManagementViewController.h"
 #import "WalletListViewCell.h"
 #import "ListTableViewCell.h"
-#import "ModifyAlertView.h"
+#import "WalletDetailsViewController.h"
 #import "ExportKeystoreViewController.h"
 #import "ExportPrivateKeyViewController.h"
 #import "BackupMnemonicsViewController.h"
+#import "ChangePasswordViewController.h"
 
 @interface WalletManagementViewController ()<UITableViewDelegate, UITableViewDataSource>
 
 @property (nonatomic, strong) UITableView * tableView;
 @property (nonatomic, strong) NSArray * listArray;
+@property (nonatomic, strong) NSMutableArray * walletArray;
 
 @end
 
 static NSString * const WalletCellID = @"WalletCellID";
-static NSString * const ExportCellID = @"ExportCellID";
 
 @implementation WalletManagementViewController
 
@@ -37,6 +38,7 @@ static NSString * const ExportCellID = @"ExportCellID";
 - (void)viewDidLoad {
     [super viewDidLoad];
     self.navigationItem.title = Localized(@"Manage");
+    self.walletArray = [NSMutableArray arrayWithArray:[[WalletTool shareTool] walletArray]];
     if (self.walletModel.randomNumber) {
         self.listArray = @[Localized(@"ExportKeystore"), Localized(@"ExportPrivateKey"), Localized(@"BackupMnemonics")];
     } else {
@@ -50,7 +52,7 @@ static NSString * const ExportCellID = @"ExportCellID";
     self.tableView = [[UITableView alloc] initWithFrame:self.view.frame style:UITableViewStyleGrouped];
     self.tableView.delegate = self;
     self.tableView.dataSource = self;
-    self.tableView.separatorStyle = UITableViewCellSeparatorStyleNone;
+//    self.tableView.separatorStyle = UITableViewCellSeparatorStyleNone;
     [self.view addSubview:self.tableView];
 }
 
@@ -137,12 +139,12 @@ static NSString * const ExportCellID = @"ExportCellID";
         cell.walletModel = self.walletModel;
         return cell;
     } else {
-        ListTableViewCell * cell = [ListTableViewCell cellWithTableView:tableView identifier:ExportCellID];
+        ListTableViewCell * cell = [ListTableViewCell cellWithTableView:tableView cellType:CellTypeNormal];
         cell.selectionStyle = UITableViewCellSelectionStyleNone;
         cell.detailImage.image = [UIImage imageNamed:@"list_arrow"];
-        cell.listImage.image = [UIImage imageNamed:[NSString stringWithFormat:@"export_list_%zd", indexPath.row]];
         CGSize cellSize = CGSizeMake(DEVICE_WIDTH - Margin_20, ScreenScale(60));
         if (indexPath.section == 1) {
+            cell.listImage.image = [UIImage imageNamed:[NSString stringWithFormat:@"export_list_%zd", indexPath.row]];
             cell.title.text = self.listArray[indexPath.row];
             if (indexPath.row == 0) {
                 [cell.listBg setViewSize:cellSize borderRadius:BG_CORNER corners:UIRectCornerTopLeft | UIRectCornerTopRight];
@@ -152,6 +154,7 @@ static NSString * const ExportCellID = @"ExportCellID";
         } else if (indexPath.section == 2) {
             cell.title.text = Localized(@"ModifyWalletPW");
             [cell.listBg setViewSize:cellSize borderRadius:BG_CORNER corners:UIRectCornerAllCorners];
+            cell.listImage.image = [UIImage imageNamed:@"change_password"];
         }
         return cell;
     }
@@ -160,31 +163,15 @@ static NSString * const ExportCellID = @"ExportCellID";
 {
     [tableView deselectRowAtIndexPath:indexPath animated:YES];
     if (indexPath.section == 0) {
-        NSIndexPath * walletIndex = [NSIndexPath indexPathForRow:0 inSection:indexPath.section];
-        WalletListViewCell * cell = [tableView cellForRowAtIndexPath:walletIndex];
-        ModifyAlertView * alertView = [[ModifyAlertView alloc] initWithText:cell.walletName.text confrimBolck:^(NSString * _Nonnull text) {
-            if ([RegexPatternTool validateUserName:text]) {
-                cell.walletName.text = text;
-                if ([self.walletModel.walletAddress isEqualToString:[[[AccountTool shareTool] account] walletAddress]]) {
-                    AccountModel * account = [[AccountModel alloc] init];
-                    account = [[AccountTool shareTool] account];
-                    account.walletName = text;
-                    [[AccountTool shareTool] save:account];
-                    NSUserDefaults * defaults = [NSUserDefaults standardUserDefaults];
-                    [defaults setObject:text forKey:Current_WalletName];
-                    [defaults synchronize];
-                } else {
-                    self.walletModel.walletName = text;
-                    [self.walletArray replaceObjectAtIndex:self.index withObject:self.walletModel];
-                    [[WalletTool shareTool] save:self.walletArray];
-                }
-            } else {
-                [MBProgressHUD showTipMessageInWindow:Localized(@"WalletNameFormatIncorrect")];
-            }
-        } cancelBlock:^{
-            
-        }];
-        [alertView showInWindowWithMode:CustomAnimationModeAlert inView:nil bgAlpha:AlertBgAlpha needEffectView:NO];
+        WalletListViewCell * cell = [tableView cellForRowAtIndexPath:indexPath];
+        WalletDetailsViewController * VC = [[WalletDetailsViewController alloc] init];
+        VC.walletIcon = cell.walletImage.image;
+        VC.walletModel = self.walletModel;
+        VC.returnValueBlock = ^(UIImage *walletIcon, NSString *walletName) {
+            cell.walletImage.image = walletIcon;
+            cell.walletName.text = walletName;
+        };
+        [self.navigationController pushViewController:VC animated:NO];
     } else if (indexPath.section == 1) {
         PasswordAlertView * alertView = [[PasswordAlertView alloc] initWithPrompt:Localized(@"WalletPWPrompt") confrimBolck:^(NSString * _Nonnull password, NSArray * _Nonnull words) {
             if (indexPath.row == 0) {
@@ -220,6 +207,9 @@ static NSString * const ExportCellID = @"ExportCellID";
         }
         [alertView showInWindowWithMode:CustomAnimationModeAlert inView:nil bgAlpha:AlertBgAlpha needEffectView:NO];
         [alertView.PWTextField becomeFirstResponder];
+    } else if (indexPath.section == 2) {
+        ChangePasswordViewController * VC = [[ChangePasswordViewController alloc] init];
+        [self.navigationController pushViewController:VC animated:NO];
     }
 }
 /*

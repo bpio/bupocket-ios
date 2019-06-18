@@ -25,8 +25,6 @@
 
 @end
 
-static NSString * const ExportCellID = @"ExportCellID";
-
 @implementation FindViewController
 
 - (void)viewDidLoad {
@@ -132,7 +130,7 @@ static NSString * const ExportCellID = @"ExportCellID";
 }
 - (UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath
 {
-    ListTableViewCell * cell = [ListTableViewCell cellWithTableView:tableView identifier:ExportCellID];
+    ListTableViewCell * cell = [ListTableViewCell cellWithTableView:tableView cellType:CellTypeNormal];
     cell.selectionStyle = UITableViewCellSelectionStyleNone;
     cell.detailImage.image = [UIImage imageNamed:@"list_arrow"];
     cell.title.text = self.listArray[indexPath.section][indexPath.row];

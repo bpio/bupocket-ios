@@ -269,7 +269,7 @@ static NSString * const TextFieldPWCellID = @"TextFieldPWCellID";
 {
     NSArray * words = [_memorizingWords.text componentsSeparatedByString:@" "];
     NSData * random = [Mnemonic randomFromMnemonicCode: words];
-    [[HTTPManager shareManager] setAccountDataWithRandom:random password:self.walletPassword.text identityName:self.walletName.text typeTitle:self.navigationItem.title success:^(id responseObject) {
+    [[HTTPManager shareManager] setAccountDataWithRandom:random password:self.walletPassword.text name:self.walletName.text accountDataType:AccountDataRecoveryID success:^(id responseObject) {
         [UIApplication sharedApplication].keyWindow.rootViewController = [[TabBarViewController alloc] init];
         NSUserDefaults * defaults = [NSUserDefaults standardUserDefaults];
         [defaults setBool:YES forKey:If_Created];

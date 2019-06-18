@@ -7,7 +7,7 @@
 //
 
 #import "TermsOfUseViewController.h"
-#import "CreateIdentityViewController.h"
+#import "CreateViewController.h"
 #import "RestoreIdentityViewController.h"
 
 @interface TermsOfUseViewController ()
@@ -65,7 +65,8 @@
 - (void)continueAction:(UIButton *)button
 {
     if (self.IDType == IDTypeCreate) {
-        CreateIdentityViewController * VC = [[CreateIdentityViewController alloc] init];
+        CreateViewController * VC = [[CreateViewController alloc] init];
+        VC.createType = CreateIdentity;
         [self.navigationController pushViewController:VC animated:NO];        
     } else if (self.IDType == IDTypeRestore) {
         RestoreIdentityViewController * VC = [[RestoreIdentityViewController alloc] init];
