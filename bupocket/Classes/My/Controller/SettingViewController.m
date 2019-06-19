@@ -70,11 +70,11 @@
 {
     ListTableViewCell * cell = [ListTableViewCell cellWithTableView:tableView cellType:CellTypeDetail];
     cell.listImage.image = [UIImage imageNamed:[NSString stringWithFormat:@"setting_list_%zd", indexPath.row]];
-    cell.detailImage.image = [UIImage imageNamed:@"list_arrow"];
+//    cell.detailImage.image = [UIImage imageNamed:@"list_arrow"];
     cell.title.text = self.listArray[indexPath.row];
     cell.selectionStyle = UITableViewCellSelectionStyleNone;
     if (indexPath.row == 2) {
-        cell.detailImage.hidden = YES;
+        cell.detail.hidden = YES;
         cell.detailTitle.text = nil;
         [cell.contentView addSubview:self.switchControl];
         [_switchControl mas_makeConstraints:^(MASConstraintMaker *make) {
@@ -82,7 +82,7 @@
             make.right.equalTo(cell.contentView.mas_right).offset(-Margin_20);
         }];
     } else {
-        cell.detailImage.hidden = NO;
+        cell.detail.hidden = NO;
         if (indexPath.row == 0) {
             cell.detailTitle.text = [AssetCurrencyModel getAssetCurrencyTypeWithAssetCurrency:[[[NSUserDefaults standardUserDefaults] objectForKey:Current_Currency] integerValue]];
         } else if (indexPath.row == 1) {

@@ -18,7 +18,7 @@
 
 @implementation ModifyAlertView
 
-- (instancetype)initWithText:(NSString *)text confrimBolck:(void (^)(NSString * text))confrimBlock cancelBlock:(void (^)(void))cancelBlock
+- (instancetype)initWithTitle:(NSString *)title placeholder:(NSString *)placeholder modifyType:(ModifyType)modifyType confrimBolck:(void (^)(NSString * text))confrimBlock cancelBlock:(void (^)(void))cancelBlock
 {
     self = [super init];
     if (self) {
@@ -26,6 +26,15 @@
         _cancleBlock = cancelBlock;
         [self setupView];
 //        self.textField.placeholder = text;
+//        title.text = Localized(@"ModifyWalletName");
+//        self.textField.placeholder = Localized(@"EnterWalletName");
+        if (modifyType == ModifyTypeNodeEdit) {
+            self.textField.text = placeholder;
+        } else {
+            self.textField.placeholder = placeholder;
+        }
+        self.titleLabel.text = title;
+        
         self.bounds = CGRectMake(0, 0, DEVICE_WIDTH - Margin_40, ScreenScale(220));
     }
     return self;
@@ -35,36 +44,8 @@
     self.backgroundColor = [UIColor whiteColor];
     self.layer.cornerRadius = MAIN_CORNER;
     
-    UILabel * title = [UILabel new];
-    title.font = FONT_Bold(18);
-    title.textColor = TITLE_COLOR;
-    title.text = Localized(@"ModifyWalletName");
-    [self addSubview:title];
-    [title mas_makeConstraints:^(MASConstraintMaker *make) {
-        make.top.equalTo(self).offset(Margin_30);
-        make.centerX.equalTo(self);
-    }];
-    
-    self.textField = [[UITextField alloc] init];
-    self.textField.delegate = self;
-    self.textField.textColor = TITLE_COLOR;
-    self.textField.font = FONT_TITLE;
-    self.textField.layer.cornerRadius = ScreenScale(3);
-    self.textField.layer.borderColor = LINE_COLOR.CGColor;
-    self.textField.layer.borderWidth = LINE_WIDTH;
-    self.textField.leftView = [[UIView alloc] initWithFrame:CGRectMake(0, 0, Margin_10, MAIN_HEIGHT)];
-    self.textField.leftViewMode = UITextFieldViewModeAlways;
-    self.textField.rightView = [[UIView alloc] initWithFrame:CGRectMake(0, 0, Margin_10, MAIN_HEIGHT)];
-    self.textField.rightViewMode = UITextFieldViewModeAlways;
-    self.textField.placeholder = Localized(@"EnterWalletName");
-    [self.textField addTarget:self action:@selector(textChange:) forControlEvents:UIControlEventEditingChanged];
+    [self addSubview:self.titleLabel];
     [self addSubview:self.textField];
-    [self.textField mas_makeConstraints:^(MASConstraintMaker *make) {
-        make.top.equalTo(title.mas_bottom).offset(Margin_25);
-        make.left.equalTo(self).offset(Margin_20);
-        make.right.equalTo(self).offset(-Margin_20);
-        make.height.mas_equalTo(MAIN_HEIGHT);
-    }];
     
     UIView * line = [[UIView alloc] init];
     line.backgroundColor = LINE_COLOR;
@@ -83,8 +64,7 @@
         make.left.equalTo(self.textField);
         make.size.mas_equalTo(CGSizeMake(DEVICE_WIDTH / 2 - Margin_40, ScreenScale(55)));
     }];
-    self.confirm = [UIButton createButtonWithTitle:Localized(@"Confirm") TextFont:FONT_BUTTON TextNormalColor:MAIN_COLOR TextSelectedColor:MAIN_COLOR Target:self Selector:@selector(sureBtnClick)];
-    self.confirm.enabled = NO;
+    
     [self addSubview:self.confirm];
     [self.confirm mas_makeConstraints:^(MASConstraintMaker *make) {
         make.size.top.bottom.equalTo(cancel);
@@ -98,6 +78,55 @@
         make.centerY.equalTo(cancel);
         make.size.mas_equalTo(CGSizeMake(LINE_WIDTH, Margin_20));
     }];
+}
+- (void)layoutSubviews
+{
+    [super layoutSubviews];
+    [self.titleLabel mas_makeConstraints:^(MASConstraintMaker *make) {
+        make.top.equalTo(self).offset(Margin_30);
+        make.centerX.equalTo(self);
+    }];
+    [self.textField mas_makeConstraints:^(MASConstraintMaker *make) {
+        make.top.equalTo(self.titleLabel.mas_bottom).offset(Margin_25);
+        make.left.equalTo(self).offset(Margin_20);
+        make.right.equalTo(self).offset(-Margin_20);
+        make.height.mas_equalTo(MAIN_HEIGHT);
+    }];
+}
+- (UILabel *)titleLabel
+{
+    if (!_titleLabel) {
+        _titleLabel = [UILabel new];
+        _titleLabel.font = FONT_Bold(18);
+        _titleLabel.textColor = TITLE_COLOR;
+    }
+    return _titleLabel;
+}
+- (UITextField *)textField
+{
+    if (!_textField) {
+        _textField = [[UITextField alloc] init];
+        _textField.delegate = self;
+        _textField.textColor = TITLE_COLOR;
+        _textField.font = FONT_TITLE;
+        _textField.layer.cornerRadius = ScreenScale(3);
+        _textField.layer.borderColor = LINE_COLOR.CGColor;
+        _textField.layer.borderWidth = LINE_WIDTH;
+        _textField.leftView = [[UIView alloc] initWithFrame:CGRectMake(0, 0, Margin_10, MAIN_HEIGHT)];
+        _textField.leftViewMode = UITextFieldViewModeAlways;
+        _textField.rightView = [[UIView alloc] initWithFrame:CGRectMake(0, 0, Margin_10, MAIN_HEIGHT)];
+        _textField.rightViewMode = UITextFieldViewModeAlways;
+        [_textField addTarget:self action:@selector(textChange:) forControlEvents:UIControlEventEditingChanged];
+    }
+    return _textField;
+}
+- (UIButton *)confirm
+{
+    if (!_confirm) {
+        _confirm = [UIButton createButtonWithTitle:Localized(@"Confirm") TextFont:FONT_BUTTON TextNormalColor:MAIN_COLOR TextSelectedColor:MAIN_COLOR Target:self Selector:@selector(sureBtnClick)];
+        _confirm.enabled = NO;
+    }
+    return _confirm;
 }
 - (void)textChange:(UITextField *)textField
 {

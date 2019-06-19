@@ -1,19 +1,27 @@
 //
-//  WalletListViewCell.h
+//  SubtitleListViewCell.h
 //  bupocket
 //
-//  Created by huoss on 2019/6/14.
+//  Created by huoss on 2019/6/19.
 //  Copyright © 2019 bupocket. All rights reserved.
 //
 
 #import <UIKit/UIKit.h>
 
+
 NS_ASSUME_NONNULL_BEGIN
 
-@interface WalletListViewCell : UITableViewCell
+@interface SubtitleListViewCell : UITableViewCell
 
-+ (instancetype)cellWithTableView:(UITableView *)tableView identifier:(NSString *)identifier;
+typedef NS_ENUM(NSInteger, SubtitleCellType) {
+    SubtitleCellDefault,
+    SubtitleCellManage,
+    SubtitleCellNormal
+};
 
++ (instancetype)cellWithTableView:(UITableView *)tableView cellType:(SubtitleCellType)cellType;
+
+@property (nonatomic, strong) UIView * listBg;
 @property (nonatomic, strong) UIImageView * walletImage;
 @property (nonatomic, strong) UILabel * walletName;
 @property (nonatomic, strong) UILabel * walletAddress;

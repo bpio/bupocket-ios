@@ -74,7 +74,7 @@
 #define Current_WalletAddress @"CurrentWalletAddress"
 #define CurrentWalletAddress [[NSUserDefaults standardUserDefaults] objectForKey:Current_WalletAddress]
 
-#define Current_WalletName @"Wallet-1"
+#define Current_WalletName @"Wallet_1"
 #define CurrentWalletName [[NSUserDefaults standardUserDefaults] objectForKey:Current_WalletName]
 
 #define Current_WalletKeyStore @"CurrentWalletKeyStore"

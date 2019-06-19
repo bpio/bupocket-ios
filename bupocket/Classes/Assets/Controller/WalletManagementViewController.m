@@ -7,7 +7,7 @@
 //
 
 #import "WalletManagementViewController.h"
-#import "WalletListViewCell.h"
+#import "SubtitleListViewCell.h"
 #import "ListTableViewCell.h"
 #import "WalletDetailsViewController.h"
 #import "ExportKeystoreViewController.h"
@@ -19,11 +19,8 @@
 
 @property (nonatomic, strong) UITableView * tableView;
 @property (nonatomic, strong) NSArray * listArray;
-@property (nonatomic, strong) NSMutableArray * walletArray;
 
 @end
-
-static NSString * const WalletCellID = @"WalletCellID";
 
 @implementation WalletManagementViewController
 
@@ -38,7 +35,7 @@ static NSString * const WalletCellID = @"WalletCellID";
 - (void)viewDidLoad {
     [super viewDidLoad];
     self.navigationItem.title = Localized(@"Manage");
-    self.walletArray = [NSMutableArray arrayWithArray:[[WalletTool shareTool] walletArray]];
+//    self.walletArray = [NSMutableArray arrayWithArray:[[WalletTool shareTool] walletArray]];
     if (self.walletModel.randomNumber) {
         self.listArray = @[Localized(@"ExportKeystore"), Localized(@"ExportPrivateKey"), Localized(@"BackupMnemonics")];
     } else {
@@ -52,28 +49,26 @@ static NSString * const WalletCellID = @"WalletCellID";
     self.tableView = [[UITableView alloc] initWithFrame:self.view.frame style:UITableViewStyleGrouped];
     self.tableView.delegate = self;
     self.tableView.dataSource = self;
-//    self.tableView.separatorStyle = UITableViewCellSeparatorStyleNone;
+    self.tableView.separatorStyle = UITableViewCellSeparatorStyleNone;
     [self.view addSubview:self.tableView];
 }
 
 - (CGFloat)tableView:(UITableView *)tableView heightForRowAtIndexPath:(NSIndexPath *)indexPath
 {
     if (indexPath.section == 0) {
-        return ScreenScale(100);
+        return ScreenScale(85);
     } else {
         return ScreenScale(60);
     }
 }
 - (CGFloat)tableView:(UITableView *)tableView heightForHeaderInSection:(NSInteger)section
 {
-    return Margin_5;
+    return Margin_10;
 }
 - (CGFloat)tableView:(UITableView *)tableView heightForFooterInSection:(NSInteger)section
 {
     if (section == 2 && ![self.walletModel.walletAddress isEqualToString:[[[AccountTool shareTool] account] walletAddress]]) {
         return ScreenScale(200);
-    } else if (section == 1) {
-        return Margin_5;
     } else {
         return CGFLOAT_MIN;
     }
@@ -134,27 +129,30 @@ static NSString * const WalletCellID = @"WalletCellID";
 - (UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath
 {
     if (indexPath.section == 0) {
-        WalletListViewCell * cell = [WalletListViewCell cellWithTableView:tableView identifier:WalletCellID];
+        SubtitleListViewCell * cell = [SubtitleListViewCell cellWithTableView:tableView cellType:SubtitleCellManage];
         cell.selectionStyle = UITableViewCellSelectionStyleNone;
         cell.walletModel = self.walletModel;
         return cell;
     } else {
         ListTableViewCell * cell = [ListTableViewCell cellWithTableView:tableView cellType:CellTypeNormal];
         cell.selectionStyle = UITableViewCellSelectionStyleNone;
-        cell.detailImage.image = [UIImage imageNamed:@"list_arrow"];
+//        cell.detailImage.image = [UIImage imageNamed:@"list_arrow"];
         CGSize cellSize = CGSizeMake(DEVICE_WIDTH - Margin_20, ScreenScale(60));
         if (indexPath.section == 1) {
             cell.listImage.image = [UIImage imageNamed:[NSString stringWithFormat:@"export_list_%zd", indexPath.row]];
             cell.title.text = self.listArray[indexPath.row];
             if (indexPath.row == 0) {
                 [cell.listBg setViewSize:cellSize borderRadius:BG_CORNER corners:UIRectCornerTopLeft | UIRectCornerTopRight];
+                cell.lineView.hidden = NO;
             } else if (indexPath.row == self.listArray.count - 1 || indexPath.section == 2) {
                 [cell.listBg setViewSize:cellSize borderRadius:BG_CORNER corners:UIRectCornerBottomLeft | UIRectCornerBottomRight];
+                cell.lineView.hidden = YES;
             }
         } else if (indexPath.section == 2) {
             cell.title.text = Localized(@"ModifyWalletPW");
             [cell.listBg setViewSize:cellSize borderRadius:BG_CORNER corners:UIRectCornerAllCorners];
             cell.listImage.image = [UIImage imageNamed:@"change_password"];
+            cell.lineView.hidden = YES;
         }
         return cell;
     }
@@ -163,10 +161,12 @@ static NSString * const WalletCellID = @"WalletCellID";
 {
     [tableView deselectRowAtIndexPath:indexPath animated:YES];
     if (indexPath.section == 0) {
-        WalletListViewCell * cell = [tableView cellForRowAtIndexPath:indexPath];
+        SubtitleListViewCell * cell = [tableView cellForRowAtIndexPath:indexPath];
         WalletDetailsViewController * VC = [[WalletDetailsViewController alloc] init];
         VC.walletIcon = cell.walletImage.image;
         VC.walletModel = self.walletModel;
+        VC.walletArray = self.walletArray;
+        VC.index = self.index;
         VC.returnValueBlock = ^(UIImage *walletIcon, NSString *walletName) {
             cell.walletImage.image = walletIcon;
             cell.walletName.text = walletName;

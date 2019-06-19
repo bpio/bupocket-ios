@@ -54,7 +54,6 @@
         make.top.equalTo(logoImage.mas_bottom).offset(Margin_25);
     }];
     UIButton * createIdentity = [UIButton createButtonWithTitle:Localized(@"ImmediateCreation") isEnabled:YES Target:self Selector:@selector(IDAction:)];
-    createIdentity.tag = 0;
     [identityBg addSubview:createIdentity];
     [createIdentity mas_makeConstraints:^(MASConstraintMaker *make) {
         make.top.equalTo(titleLabel.mas_bottom).offset(ScreenScale(90));
@@ -64,7 +63,6 @@
     }];
     
     UIButton * restoreIdentity = [UIButton createButtonWithTitle:Localized(@"RestoreIdentity") isEnabled:YES Target:self Selector:@selector(IDAction:)];
-    restoreIdentity.tag = 1;
     restoreIdentity.backgroundColor = [UIColor whiteColor];
     restoreIdentity.layer.borderColor = MAIN_COLOR.CGColor;
     restoreIdentity.layer.borderWidth = LINE_WIDTH;
@@ -78,7 +76,11 @@
 - (void)IDAction:(UIButton *)button
 {
     TermsOfUseViewController * VC = [[TermsOfUseViewController alloc] init];
-    VC.IDType = button.tag;
+    if ([button.titleLabel.text isEqualToString:Localized(@"ImmediateCreation")]) {
+        VC.userProtocolType = UserProtocolCreateID;
+    } else if ([button.titleLabel.text isEqualToString:Localized(@"RestoreIdentity")]) {
+        VC.userProtocolType = UserProtocolRestoreID;
+    }
     [self.navigationController pushViewController:VC animated:NO];
 }
 /*

@@ -90,13 +90,13 @@
 		9510C614228D16D800A48E7D /* sdk_ios.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 9510C613228D16D700A48E7D /* sdk_ios.framework */; };
 		9513637E22B3990500BF8DF5 /* WalletListViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 9513637D22B3990500BF8DF5 /* WalletListViewController.m */; };
 		9513638122B39A5600BF8DF5 /* WalletManagementViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 9513638022B39A5600BF8DF5 /* WalletManagementViewController.m */; };
-		9513638722B39D0E00BF8DF5 /* WalletListViewCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 9513638622B39D0E00BF8DF5 /* WalletListViewCell.m */; };
 		9513638A22B7A1A100BF8DF5 /* BackUpWalletViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 9513638922B7A1A100BF8DF5 /* BackUpWalletViewController.m */; };
 		9513638D22B88DE300BF8DF5 /* BottomAlertView.m in Sources */ = {isa = PBXBuildFile; fileRef = 9513638C22B88DE300BF8DF5 /* BottomAlertView.m */; };
 		9513639022B8B83A00BF8DF5 /* CreateViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 9513638F22B8B83A00BF8DF5 /* CreateViewController.m */; };
 		9513639B22B8CCDF00BF8DF5 /* WalletModel.m in Sources */ = {isa = PBXBuildFile; fileRef = 9513639722B8CCDE00BF8DF5 /* WalletModel.m */; };
 		9513639C22B8CCDF00BF8DF5 /* WalletTool.m in Sources */ = {isa = PBXBuildFile; fileRef = 9513639822B8CCDE00BF8DF5 /* WalletTool.m */; };
 		9513639F22B8F4E700BF8DF5 /* WalletDetailsViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 9513639E22B8F4E700BF8DF5 /* WalletDetailsViewController.m */; };
+		951363A222B9E2B000BF8DF5 /* SubtitleListViewCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 951363A122B9E2B000BF8DF5 /* SubtitleListViewCell.m */; };
 		95266CCD226F062E002CD915 /* NodePlanViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 95266CA1226F062E002CD915 /* NodePlanViewController.m */; };
 		95266CCE226F062E002CD915 /* CooperateViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 95266CA4226F062E002CD915 /* CooperateViewController.m */; };
 		95266CCF226F062E002CD915 /* NodeSharingViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 95266CA7226F062E002CD915 /* NodeSharingViewController.m */; };
@@ -163,6 +163,7 @@
 		95B066BC2282AABD0005731A /* WechatTool.m in Sources */ = {isa = PBXBuildFile; fileRef = 95B066BB2282AABD0005731A /* WechatTool.m */; };
 		95B066BF2282AED70005731A /* QQTool.m in Sources */ = {isa = PBXBuildFile; fileRef = 95B066BE2282AED70005731A /* QQTool.m */; };
 		95B066C22282CD890005731A /* DposModel.m in Sources */ = {isa = PBXBuildFile; fileRef = 95B066C12282CD890005731A /* DposModel.m */; };
+		95D92D9222BA27CF00AFC8C2 /* NodeSettingsViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 95D92D9122BA27CF00AFC8C2 /* NodeSettingsViewController.m */; };
 		C78AA58ABD5C4F75C67B6250 /* Pods_bupocketTests.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 248F98B6791F2F7C55E77E0E /* Pods_bupocketTests.framework */; };
 		E0A64C5CAFFFD9486B7713D7 /* Pods_bupocket.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = EB267DD938A42BAD30A164A2 /* Pods_bupocket.framework */; };
 /* End PBXBuildFile section */
@@ -367,8 +368,6 @@
 		9513637D22B3990500BF8DF5 /* WalletListViewController.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = WalletListViewController.m; sourceTree = "<group>"; };
 		9513637F22B39A5600BF8DF5 /* WalletManagementViewController.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = WalletManagementViewController.h; sourceTree = "<group>"; };
 		9513638022B39A5600BF8DF5 /* WalletManagementViewController.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = WalletManagementViewController.m; sourceTree = "<group>"; };
-		9513638522B39D0E00BF8DF5 /* WalletListViewCell.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = WalletListViewCell.h; sourceTree = "<group>"; };
-		9513638622B39D0E00BF8DF5 /* WalletListViewCell.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = WalletListViewCell.m; sourceTree = "<group>"; };
 		9513638822B7A1A100BF8DF5 /* BackUpWalletViewController.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = BackUpWalletViewController.h; sourceTree = "<group>"; };
 		9513638922B7A1A100BF8DF5 /* BackUpWalletViewController.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = BackUpWalletViewController.m; sourceTree = "<group>"; };
 		9513638B22B88DE300BF8DF5 /* BottomAlertView.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = BottomAlertView.h; sourceTree = "<group>"; };
@@ -381,6 +380,8 @@
 		9513639A22B8CCDE00BF8DF5 /* WalletTool.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = WalletTool.h; sourceTree = "<group>"; };
 		9513639D22B8F4E700BF8DF5 /* WalletDetailsViewController.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = WalletDetailsViewController.h; sourceTree = "<group>"; };
 		9513639E22B8F4E700BF8DF5 /* WalletDetailsViewController.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = WalletDetailsViewController.m; sourceTree = "<group>"; };
+		951363A022B9E2B000BF8DF5 /* SubtitleListViewCell.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = SubtitleListViewCell.h; sourceTree = "<group>"; };
+		951363A122B9E2B000BF8DF5 /* SubtitleListViewCell.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = SubtitleListViewCell.m; sourceTree = "<group>"; };
 		95266CA1226F062E002CD915 /* NodePlanViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = NodePlanViewController.m; sourceTree = "<group>"; };
 		95266CA2226F062E002CD915 /* VotingRecordsViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = VotingRecordsViewController.h; sourceTree = "<group>"; };
 		95266CA3226F062E002CD915 /* NodeTransferSuccessViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = NodeTransferSuccessViewController.h; sourceTree = "<group>"; };
@@ -517,6 +518,8 @@
 		95B066BE2282AED70005731A /* QQTool.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = QQTool.m; sourceTree = "<group>"; };
 		95B066C02282CD890005731A /* DposModel.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = DposModel.h; sourceTree = "<group>"; };
 		95B066C12282CD890005731A /* DposModel.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = DposModel.m; sourceTree = "<group>"; };
+		95D92D9022BA27CF00AFC8C2 /* NodeSettingsViewController.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = NodeSettingsViewController.h; sourceTree = "<group>"; };
+		95D92D9122BA27CF00AFC8C2 /* NodeSettingsViewController.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = NodeSettingsViewController.m; sourceTree = "<group>"; };
 		95ECFF972272E2FF007701B4 /* Constants.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = Constants.h; sourceTree = "<group>"; };
 		9D915F385F1A78B38EC83B6E /* Pods_bupocketUITests.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_bupocketUITests.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		A61F11E76D6541BC859B703E /* Pods-bupocket.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-bupocket.debug.xcconfig"; path = "Pods/Target Support Files/Pods-bupocket/Pods-bupocket.debug.xcconfig"; sourceTree = "<group>"; };
@@ -716,6 +719,12 @@
 				954371732199234100915BBE /* SettingViewController.m */,
 				83379A722179D62300C222A5 /* MyIdentityViewController.h */,
 				83379A732179D62300C222A5 /* MyIdentityViewController.m */,
+				950EF2A1219D801300F5121A /* MonetaryUnitViewController.h */,
+				950EF2A2219D801300F5121A /* MonetaryUnitViewController.m */,
+				833799182176E80D00C222A5 /* MultilingualViewController.h */,
+				833799192176E80D00C222A5 /* MultilingualViewController.m */,
+				95D92D9022BA27CF00AFC8C2 /* NodeSettingsViewController.h */,
+				95D92D9122BA27CF00AFC8C2 /* NodeSettingsViewController.m */,
 				959575BF21FFF00F0089479C /* AddressBookViewController.h */,
 				959575C021FFF00F0089479C /* AddressBookViewController.m */,
 				959575C921FFFD040089479C /* ContactViewController.h */,
@@ -724,10 +733,6 @@
 				83379A6A2179C1D500C222A5 /* ChangePasswordViewController.m */,
 				83379A6C2179CB9E00C222A5 /* FeedbackViewController.h */,
 				83379A6D2179CB9E00C222A5 /* FeedbackViewController.m */,
-				950EF2A1219D801300F5121A /* MonetaryUnitViewController.h */,
-				950EF2A2219D801300F5121A /* MonetaryUnitViewController.m */,
-				833799182176E80D00C222A5 /* MultilingualViewController.h */,
-				833799192176E80D00C222A5 /* MultilingualViewController.m */,
 			);
 			path = Controller;
 			sourceTree = "<group>";
@@ -860,8 +865,8 @@
 				83379A8E217DC0C700C222A5 /* TransferDetailsAlertView.m */,
 				83379A93217EB08600C222A5 /* DetailListViewCell.h */,
 				83379A94217EB08600C222A5 /* DetailListViewCell.m */,
-				9513638522B39D0E00BF8DF5 /* WalletListViewCell.h */,
-				9513638622B39D0E00BF8DF5 /* WalletListViewCell.m */,
+				951363A022B9E2B000BF8DF5 /* SubtitleListViewCell.h */,
+				951363A122B9E2B000BF8DF5 /* SubtitleListViewCell.m */,
 				959726C021E44FFB0022CB78 /* ModifyAlertView.h */,
 				959726C121E44FFB0022CB78 /* ModifyAlertView.m */,
 				959726D821E6DCA00022CB78 /* TextFieldViewCell.h */,
@@ -1527,19 +1532,20 @@
 				83FB443721904AA400D68569 /* HMScanner.m in Sources */,
 				83379A182178682100C222A5 /* UIView+CustomAlertView.m in Sources */,
 				95266CE422703868002CD915 /* CooperateDetailViewCell.m in Sources */,
-				9513638722B39D0E00BF8DF5 /* WalletListViewCell.m in Sources */,
 				95B066C22282CD890005731A /* DposModel.m in Sources */,
 				95A8A3B9219D15D8008E978E /* RegexPatternTool.m in Sources */,
 				8395AF34218958840082EA30 /* TransactionResultModel.m in Sources */,
 				958127EF219ABD9D0081A02E /* VersionUpdateAlertView.m in Sources */,
 				9513638122B39A5600BF8DF5 /* WalletManagementViewController.m in Sources */,
 				8372C8662174CC6F00FF9506 /* BaseViewController.m in Sources */,
+				95D92D9222BA27CF00AFC8C2 /* NodeSettingsViewController.m in Sources */,
 				835A45262174C14D005BFCDD /* main.m in Sources */,
 				83379AD921802FA900C222A5 /* AssetsDetailModel.m in Sources */,
 				959E2908224CCA45006FCA30 /* ScanCodeFailureViewController.m in Sources */,
 				959726DA21E6DCA10022CB78 /* TextFieldViewCell.m in Sources */,
 				959726EE21E8C84F0022CB78 /* PasswordAlertView.m in Sources */,
 				83379A89217DA4F900C222A5 /* AssetsDetailListViewCell.m in Sources */,
+				951363A222B9E2B000BF8DF5 /* SubtitleListViewCell.m in Sources */,
 				959E28FF224A1B6A006FCA30 /* LoginConfirmModel.m in Sources */,
 				959726D721E5E76F0022CB78 /* ImportWalletModeViewController.m in Sources */,
 				959726E821E893400022CB78 /* SafetyReinforcementAlertView.m in Sources */,

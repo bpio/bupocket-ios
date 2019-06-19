@@ -38,7 +38,7 @@
     [self addSubview:self.cancelBtn];
     for (NSInteger i = 0; i < self.handlerArray.count; i++) {
         UIColor * textColor = TITLE_COLOR;
-        if (self.handlerType == HandlerTypeNode && i == 0) {
+        if (self.handlerType == HandlerTypeNodeSettings && i == 0) {
             textColor = MAIN_COLOR;
         }
         UIButton * btn = [UIButton createButtonWithTitle:self.handlerArray[i] TextFont:FONT_15 TextNormalColor:textColor TextSelectedColor:textColor Target:self Selector:@selector(handlerBtnClick:)];

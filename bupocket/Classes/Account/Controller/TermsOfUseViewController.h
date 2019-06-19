@@ -10,13 +10,14 @@
 
 NS_ASSUME_NONNULL_BEGIN
 
-typedef NS_ENUM(NSInteger, IDType) {
-    IDTypeCreate,
-    IDTypeRestore
+typedef NS_ENUM(NSInteger, UserProtocolType) {
+    UserProtocolDefault,
+    UserProtocolCreateID,
+    UserProtocolRestoreID
 };
 @interface TermsOfUseViewController : WKWebViewController
 
-@property (nonatomic, assign) IDType IDType;
+@property (nonatomic, assign) UserProtocolType userProtocolType;
 
 @end
 

@@ -86,11 +86,18 @@
 "Skip" = "Skip";
 "Finished" = "Completed";
 // Profile
+"MoneyOfAccount" = "计价货币";
+"DisplayLanguage" = "显示语言";
+"NodeSettings" = "节点设置";
+"UserProtocol" = "用户协议";
+"Feedback" = "意见反馈";
+"AboutUs" = "关于我们";
+
 "Setting" = "Setting";
 "AddressBook" = "Address Book";
 "ModifyPassword" = "Modify password";
 "ModifyIdentityPassword" = "Change the Identity Password";
-"Feedback" = "Feedback";
+//"Feedback" = "Feedback";
 "MultiLingual" = "Languages";
 "VersionNumber" = "Version";
 "MonetaryUnit" = "Currency unit";
@@ -118,6 +125,12 @@
 // Language
 "SimplifiedChinese" = "Simplified Chinese";
 "English" = "English";
+// 节点设置
+"AddCustomNodes" = "添加自定义节点";
+"Edit" = "编辑";
+"ConfirmDeleteNode" = "确定删除该节点吗？";
+"AddNodePrompt" = "请输入有效的节点地址";
+"EditNodePrompt" = "编辑节点地址";
 // Switch network
 "SwitchToTestNetwork" = "Whether to switch to the test network?";
 "YES" = "Yes";
@@ -414,7 +427,7 @@
 // 钱包详情
 "WalletDetails" = "钱包详情";
 "ChangeWalletIcon" = "更改钱包头像";
-"ChangeWalletName" = "更改钱包名称";
+//"ChangeWalletName" = "更改钱包名称";
 // Login
 "Immediate login %@, please confirm that it is my operation." = "Log in %@ soon, and please make sure that is your personal operation.";
 "LoginPromptInfo" = "Your account address will be made public";

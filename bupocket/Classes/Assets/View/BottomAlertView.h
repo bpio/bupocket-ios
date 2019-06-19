@@ -11,7 +11,7 @@
 
 typedef NS_ENUM(NSInteger, HandlerType) {
     HandlerTypeWallet,
-    HandlerTypeNode
+    HandlerTypeNodeSettings
 };
 
 NS_ASSUME_NONNULL_BEGIN

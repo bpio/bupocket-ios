@@ -63,14 +63,10 @@
 {
     ListTableViewCell * cell = [ListTableViewCell cellWithTableView:tableView cellType:CellTypeChoice];
     cell.selectionStyle = UITableViewCellSelectionStyleNone;
-    cell.detailImage.image = [UIImage imageNamed:@"checked"];
+    [cell.detail setImage:[UIImage imageNamed:@"checked"] forState:UIControlStateNormal];
     cell.title.text = self.listArray[indexPath.row];
     cell.detailTitle.text = nil;
-    if (_index == indexPath.row) {
-        cell.detailImage.hidden = NO;
-    } else {
-        cell.detailImage.hidden = YES;
-    }
+    cell.detail.hidden = (_index != indexPath.row);
     return cell;
 }
 - (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath
@@ -78,9 +74,9 @@
     [tableView deselectRowAtIndexPath:indexPath animated:YES];
     NSIndexPath * lastIndex = [NSIndexPath indexPathForRow:_index inSection:indexPath.section];
     ListTableViewCell * lastcell = [tableView cellForRowAtIndexPath:lastIndex];
-    lastcell.detailImage.hidden = YES;
+    lastcell.detail.hidden = YES;
     ListTableViewCell * cell = [tableView cellForRowAtIndexPath:indexPath];
-    cell.detailImage.hidden = NO;
+    cell.detail.hidden = NO;
     _index = indexPath.row;
     
     NSUserDefaults * defaults = [NSUserDefaults standardUserDefaults];

@@ -7,7 +7,7 @@
 //
 
 #import "WalletListViewController.h"
-#import "WalletListViewCell.h"
+#import "SubtitleListViewCell.h"
 #import "WalletManagementViewController.h"
 #import "ImportWalletViewController.h"
 #import "MyViewController.h"
@@ -21,8 +21,6 @@
 @property (nonatomic, strong) WalletModel * currentIdentityModel;
 
 @end
-
-static NSString * const WalletListCellID = @"WalletListCellID";
 
 @implementation WalletListViewController
 
@@ -70,36 +68,56 @@ static NSString * const WalletListCellID = @"WalletListCellID";
     _tableView.separatorStyle = UITableViewCellSeparatorStyleNone;
     [self.view addSubview:self.tableView];
 }
-- (UIButton *)setupHeaderTitle:(NSString *)title ifTopOffect:(BOOL)ifTopOffect
+- (UIButton *)setupHeaderTitle:(NSString *)title
 {
     UIButton * titleBtn = [UIButton createButtonWithTitle:title TextFont:FONT_15 TextNormalColor:COLOR_6 TextSelectedColor:COLOR_6 Target:nil Selector:nil];
     titleBtn.contentHorizontalAlignment = UIControlContentHorizontalAlignmentLeft;
-    CGFloat top = ifTopOffect ? Margin_5 : 0;
-    titleBtn.contentEdgeInsets = UIEdgeInsetsMake(top, Margin_15, 0, 0);
+    titleBtn.contentEdgeInsets = UIEdgeInsetsMake(0, Margin_15, 0, Margin_15);
     titleBtn.frame = CGRectMake(0, 0, DEVICE_WIDTH, MAIN_HEIGHT);
     return titleBtn;
 }
 - (CGFloat)tableView:(UITableView *)tableView heightForHeaderInSection:(NSInteger)section
 {
     if (section == 0) {
-        return ScreenScale(40);
+        return MAIN_HEIGHT;
     } else {
-        return ScreenScale(35);
+        return self.listArray.count > 0 ? MAIN_HEIGHT : ScreenScale(135);
     }
 }
 - (UIView *)tableView:(UITableView *)tableView viewForHeaderInSection:(NSInteger)section
 {
     if (section == 0) {
-        return [self setupHeaderTitle:Localized(@"CurrentIdentity") ifTopOffect: YES];
+        return [self setupHeaderTitle:Localized(@"CurrentIdentity")];
     } else if (section == 1) {
-        return [self setupHeaderTitle:Localized(@"ImportedWallet") ifTopOffect: NO];
+        if (self.listArray.count > 0) {
+            return [self setupHeaderTitle:Localized(@"ImportedWallet")];
+        } else {
+            UIView * headerView = [[UIView alloc] initWithFrame:CGRectMake(0, 0, DEVICE_WIDTH, ScreenScale(125))];
+            UIButton * titleBtn = [self setupHeaderTitle:Localized(@"ImportedWallet")];
+            [headerView addSubview:titleBtn];
+            CustomButton * importBtn = [[CustomButton alloc] init];
+            [importBtn setTitle:Localized(@"ImmediateImport") forState:UIControlStateNormal];
+            [importBtn setImage:[UIImage imageNamed:@"immediateImport"] forState:UIControlStateNormal];
+            [headerView addSubview:importBtn];
+            importBtn.backgroundColor = MAIN_COLOR;
+            importBtn.layer.masksToBounds = YES;
+            importBtn.clipsToBounds = YES;
+            importBtn.layer.cornerRadius = MAIN_CORNER;
+            [importBtn addTarget:self action:@selector(importedAction) forControlEvents:UIControlEventTouchUpInside];
+            [importBtn mas_makeConstraints:^(MASConstraintMaker *make) {
+//                make.top.equalTo(titleBtn.mas_bottom).offset(Margin_25);
+                make.bottom.centerX.equalTo(headerView);
+                make.size.mas_equalTo(CGSizeMake(DEVICE_WIDTH - ScreenScale(160), MAIN_HEIGHT));
+            }];
+            return headerView;
+        }
     } else {
         return [[UIView alloc] init];
     }
 }
 - (CGFloat)tableView:(UITableView *)tableView heightForRowAtIndexPath:(NSIndexPath *)indexPath
 {
-    return ScreenScale(100);
+    return ScreenScale(85);
 }
 - (CGFloat)tableView:(UITableView *)tableView heightForFooterInSection:(NSInteger)section
 {
@@ -130,7 +148,8 @@ static NSString * const WalletListCellID = @"WalletListCellID";
 }
 - (NSInteger)numberOfSectionsInTableView:(UITableView *)tableView
 {
-    return self.listArray.count > 0 ? 2 : 1;
+//    return self.listArray.count > 0 ? 2 : 1;
+    return 2;
 }
 - (NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section
 {
@@ -142,7 +161,7 @@ static NSString * const WalletListCellID = @"WalletListCellID";
 }
 - (UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath
 {
-    WalletListViewCell * cell = [WalletListViewCell cellWithTableView:tableView identifier:WalletListCellID];
+    SubtitleListViewCell * cell = [SubtitleListViewCell cellWithTableView:tableView cellType:SubtitleCellDefault];
     cell.selectionStyle = UITableViewCellSelectionStyleNone;
     NSString * currentWalletAddress = CurrentWalletAddress;
     if (indexPath.section == 0) {
@@ -155,6 +174,8 @@ static NSString * const WalletListCellID = @"WalletListCellID";
     cell.manageClick = ^{
         WalletManagementViewController * VC = [[WalletManagementViewController alloc] init];
         VC.walletModel = weakCell.walletModel;
+        VC.walletArray = self.listArray;
+        VC.index = indexPath.row;
         [self.navigationController pushViewController:VC animated:NO];
     };
     return cell;
@@ -162,7 +183,7 @@ static NSString * const WalletListCellID = @"WalletListCellID";
 - (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath
 {
     [tableView deselectRowAtIndexPath:indexPath animated:YES];
-    WalletListViewCell * cell = [tableView cellForRowAtIndexPath:indexPath];
+    SubtitleListViewCell * cell = [tableView cellForRowAtIndexPath:indexPath];
     NSUserDefaults * defaults = [NSUserDefaults standardUserDefaults];
     [defaults setObject:cell.walletModel.walletAddress forKey:Current_WalletAddress];
     [defaults setObject:cell.walletModel.walletKeyStore forKey:Current_WalletKeyStore];

@@ -15,7 +15,6 @@
 
 @property (nonatomic, strong) UITableView * tableView;
 @property (nonatomic, strong) NSArray * listArray;
-@property (nonatomic, strong) NSMutableArray * walletArray;
 
 @end
 
@@ -32,9 +31,8 @@
 - (void)viewDidLoad {
     [super viewDidLoad];
     self.navigationItem.title = Localized(@"WalletDetails");
-    self.walletArray = [NSMutableArray arrayWithArray:[[WalletTool shareTool] walletArray]];
     [self setupView];
-    self.listArray = @[Localized(@"ChangeWalletIcon"), Localized(@"ChangeWalletName")];
+    self.listArray = @[Localized(@"ChangeWalletIcon"), Localized(@"ModifyWalletName")];
     // Do any additional setup after loading the view.
 }
 - (void)viewWillDisappear:(BOOL)animated
@@ -83,13 +81,15 @@
     } else if (indexPath.row == 1) {
         cell.detailTitle.text = self.walletModel.walletName;
     }
-    cell.detailImage.image = [UIImage imageNamed:@"list_arrow"];
+//    cell.detailImage.image = [UIImage imageNamed:@"list_arrow"];
     cell.selectionStyle = UITableViewCellSelectionStyleNone;
     CGSize cellSize = CGSizeMake(DEVICE_WIDTH - Margin_20, ScreenScale(55));
     if (indexPath.row == 0) {
         [cell.listBg setViewSize:cellSize borderRadius:BG_CORNER corners:UIRectCornerTopLeft | UIRectCornerTopRight];
+        cell.lineView.hidden = NO;
     } else if (indexPath.row == self.listArray.count - 1) {
         [cell.listBg setViewSize:cellSize borderRadius:BG_CORNER corners:UIRectCornerBottomLeft | UIRectCornerBottomRight];
+        cell.lineView.hidden = YES;
     }
     return cell;
 }
@@ -104,7 +104,7 @@
 - (void)modifyWalletNameWithIndexPath:(NSIndexPath *)indexPath
 {
     ListTableViewCell * cell = [self.tableView cellForRowAtIndexPath:indexPath];
-    ModifyAlertView * alertView = [[ModifyAlertView alloc] initWithText:self.walletModel.walletName confrimBolck:^(NSString * _Nonnull text) {
+    ModifyAlertView * alertView = [[ModifyAlertView alloc] initWithTitle:Localized(@"ModifyWalletName") placeholder:Localized(@"EnterWalletName") modifyType:ModifyTypeWalletName confrimBolck:^(NSString * _Nonnull text) {
         if ([RegexPatternTool validateUserName:text]) {
             cell.detailTitle.text = text;
             if ([self.walletModel.walletAddress isEqualToString:[[[AccountTool shareTool] account] walletAddress]]) {
@@ -117,14 +117,17 @@
                 [defaults setObject:text forKey:Current_WalletName];
                 [defaults synchronize];
             } else {
-                for (NSInteger i = 0; i < self.walletArray.count; i++) {
-                    WalletModel * walletModel = self.walletArray[i];
-                    if ([walletModel.walletAddress isEqualToString:self.walletModel.walletAddress]) {
-                        self.walletModel.walletName = text;
-                        [self.walletArray replaceObjectAtIndex:i withObject:self.walletModel];
-                        [[WalletTool shareTool] save:self.walletArray];
-                    }
-                }
+                self.walletModel.walletName = text;
+                [self.walletArray replaceObjectAtIndex:self.index withObject:self.walletModel];
+                [[WalletTool shareTool] save:self.walletArray];
+//                for (NSInteger i = 0; i < self.walletArray.count; i++) {
+//                    WalletModel * walletModel = self.walletArray[i];
+//                    if ([walletModel.walletAddress isEqualToString:self.walletModel.walletAddress]) {
+//                        self.walletModel.walletName = text;
+//                        [self.walletArray replaceObjectAtIndex:i withObject:self.walletModel];
+//                        [[WalletTool shareTool] save:self.walletArray];
+//                    }
+//                }
 //                NSInteger index = [[[WalletTool shareTool] walletArray] indexOfObject:self.walletModel];
             }
         } else {

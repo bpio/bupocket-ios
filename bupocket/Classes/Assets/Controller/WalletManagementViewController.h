@@ -13,6 +13,8 @@ NS_ASSUME_NONNULL_BEGIN
 @interface WalletManagementViewController : BaseViewController
 
 @property (nonatomic, strong) WalletModel * walletModel;
+@property (nonatomic, strong) NSMutableArray * walletArray;
+@property (nonatomic, assign) NSInteger index;
 
 @end
 

@@ -42,6 +42,8 @@
     _tencentOAuth = [[TencentOAuth alloc] initWithAppId:Tencent_App_ID andDelegate:self];
 
     [UMConfigure initWithAppkey:UM_App_Key channel:@""];
+    
+    [[NSUserDefaults standardUserDefaults] setObject:@[BUMO_NODE_URL] forKey:Node_URL_Array];
 
     return YES;
 }

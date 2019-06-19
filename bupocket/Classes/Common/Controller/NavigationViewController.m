@@ -79,6 +79,7 @@
                              [viewController isKindOfClass:[BackUpWalletViewController class]] ||
                              [viewController isKindOfClass:[RestoreIdentityViewController class]] ||
                              [viewController isKindOfClass:[AssetsViewController class]]  ||
+                             [viewController isKindOfClass:[MyViewController class]] ||
                              [viewController isKindOfClass:[AssetsDetailViewController class]] ||
                              [viewController isKindOfClass:[TransferResultsViewController class]] ||
                              [viewController isKindOfClass:[RegisteredResultViewController class]] ||
@@ -105,8 +106,9 @@
     }
     BOOL isHideNav = (
 //                      [viewController isKindOfClass:[AssetsViewController class]] ||
-                      [viewController isKindOfClass:[IdentityViewController class]] ||
-                      [viewController isKindOfClass:[MyViewController class]]);
+                      [viewController isKindOfClass:[IdentityViewController class]]
+//                      || [viewController isKindOfClass:[MyViewController class]]
+                      );
     [self setNavigationBarHidden:isHideNav animated:animated];
 }
 - (void)navigationController:(UINavigationController *)navigationController didShowViewController:(UIViewController *)viewController animated:(BOOL)animated

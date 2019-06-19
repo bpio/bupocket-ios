@@ -85,6 +85,7 @@
 #define Account_Center_Contains @"/xDnAs_login/"
 #define Dpos_Contains @"/xDnAs_dpos/"
 #define Dpos_Prefix @"###UDCBU###"
+#define Node_Check @"/getLedger"
 
 
 
@@ -104,6 +105,8 @@
 #define EN @"en"
 // Current currency index 0：CNY（¥）, 1：USD（$）, 2：JPY（¥）, 3：KRW（₩）,
 #define Current_Currency @"CurrentCurrency"
+#define Current_Node_URL @"CurrentNodeURL"
+#define Node_URL_Array @"NodeUrlArray"
 // imported Wallet
 //#define imported_Wallet @"importedWallet"
 // Network request timeout limit time

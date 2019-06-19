@@ -49,7 +49,8 @@ static NSString * const WalletDetailCellID = @"WalletDetailCellID";
         [self.listBg addSubview:self.listImage];
         [self.listBg addSubview:self.title];
         [self.listBg addSubview:self.detailTitle];
-        [self.listBg addSubview:self.detailImage];
+        [self.listBg addSubview:self.detail];
+        [self.listBg addSubview:self.lineView];
     }
     return self;
 }
@@ -80,7 +81,7 @@ static NSString * const WalletDetailCellID = @"WalletDetailCellID";
         }];
         [self.listImage setViewSize:CGSizeMake(Margin_30, Margin_30) borderWidth:0 borderColor:nil borderRadius:MAIN_CORNER];
         [self.listImage mas_makeConstraints:^(MASConstraintMaker *make) {
-            make.right.equalTo(self.detailImage.mas_left).offset(-Margin_10);
+            make.right.equalTo(self.detail.mas_left).offset(-Margin_10);
             make.centerY.equalTo(self.listBg);
             make.width.height.mas_equalTo(Margin_30);
         }];
@@ -95,13 +96,14 @@ static NSString * const WalletDetailCellID = @"WalletDetailCellID";
             make.width.height.mas_equalTo(Margin_20);
         }];
     }
-    [self.detailImage mas_makeConstraints:^(MASConstraintMaker *make) {
-        make.right.equalTo(self.listBg.mas_right).offset(-Margin_20);
-        make.centerY.equalTo(self.listBg);
+    [self.detail mas_makeConstraints:^(MASConstraintMaker *make) {
+//        make.right.equalTo(self.listBg.mas_right).offset(-Margin_20);
+        make.right.top.bottom.equalTo(self.listBg);
+        make.width.mas_greaterThanOrEqualTo(self.detail.imageView.width + Margin_15);
     }];
     if ([self.reuseIdentifier isEqualToString:DetailCellID] || [self.reuseIdentifier isEqualToString:WalletDetailCellID]) {
         [self.detailTitle mas_makeConstraints:^(MASConstraintMaker *make) {
-            make.right.equalTo(self.detailImage.mas_left).offset(-Margin_10);
+            make.right.equalTo(self.detail.mas_left).offset(-Margin_10);
         }];
     } else {
         [self.detailTitle mas_makeConstraints:^(MASConstraintMaker *make) {
@@ -110,6 +112,12 @@ static NSString * const WalletDetailCellID = @"WalletDetailCellID";
     }
     [self.detailTitle mas_makeConstraints:^(MASConstraintMaker *make) {
         make.centerY.equalTo(self.listBg);
+    }];
+    [self.lineView mas_makeConstraints:^(MASConstraintMaker *make) {
+        make.left.equalTo(self.listBg.mas_left).offset(Margin_10);
+        make.right.equalTo(self.listBg.mas_right).offset(-Margin_10);
+        make.bottom.equalTo(self.listBg);
+        make.height.mas_equalTo(LINE_WIDTH);
     }];
 }
 - (UIView *)listBg
@@ -146,18 +154,22 @@ static NSString * const WalletDetailCellID = @"WalletDetailCellID";
     }
     return _detailTitle;
 }
-- (UIImageView *)detailImage
+- (UIButton *)detail
 {
-    if (!_detailImage) {
-        _detailImage = [[UIImageView alloc] init];
+    if (!_detail) {
+        _detail = [UIButton buttonWithType:UIButtonTypeCustom];
+        [_detail setImage:[UIImage imageNamed:@"list_arrow"] forState:UIControlStateNormal];
+        _detail.contentEdgeInsets = UIEdgeInsetsMake(0, 0, 0, Margin_15);
+        _detail.contentHorizontalAlignment = UIControlContentHorizontalAlignmentLeft;
     }
-    return _detailImage;
+    return _detail;
 }
 - (UIView *)lineView
 {
     if (!_lineView) {
         _lineView = [[UIView alloc] init];
         _lineView.backgroundColor = LINE_COLOR;
+        _lineView.hidden = YES;
     }
     return _lineView;
 }
