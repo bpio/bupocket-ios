@@ -41,10 +41,7 @@
     [WXApi registerApp:Wechat_APP_ID];
     _tencentOAuth = [[TencentOAuth alloc] initWithAppId:Tencent_App_ID andDelegate:self];
 
-    [UMConfigure initWithAppkey:UM_App_Key channel:@""];
-    
-    [[NSUserDefaults standardUserDefaults] setObject:@[BUMO_NODE_URL] forKey:Node_URL_Array];
-
+//    [UMConfigure initWithAppkey:UM_App_Key channel:@""];
     return YES;
 }
 - (void)initializationSettings
@@ -121,8 +118,8 @@
 {
     [[HTTPManager shareManager] getVersionDataWithSuccess:^(id responseObject) {
         NSInteger code = [[responseObject objectForKey:@"errCode"] integerValue];
-        VersionModel * versionModel  = [VersionModel mj_objectWithKeyValues:[responseObject objectForKey:@"data"]];
         if (code == Success_Code) {
+            VersionModel * versionModel  = [VersionModel mj_objectWithKeyValues:[responseObject objectForKey:@"data"]];
             BOOL result = [App_Version compare:versionModel.verNumber] == NSOrderedAscending;
             if (result) {
                 NSString * updateContent = nil;
@@ -150,6 +147,7 @@
         
     }];
 }
+
 - (BOOL)application:(UIApplication *)app openURL:(NSURL *)url options:(NSDictionary<UIApplicationOpenURLOptionsKey,id> *)options
 {
     NSString * str = [url absoluteString];

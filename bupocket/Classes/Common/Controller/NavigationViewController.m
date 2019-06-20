@@ -9,6 +9,8 @@
 #import "NavigationViewController.h"
 #import "IdentityViewController.h"
 #import "MyViewController.h"
+#import "AboutUsViewController.h"
+#import "VersionLogViewController.h"
 
 #import "CreateViewController.h"
 #import "BackUpWalletViewController.h"
@@ -80,6 +82,8 @@
                              [viewController isKindOfClass:[RestoreIdentityViewController class]] ||
                              [viewController isKindOfClass:[AssetsViewController class]]  ||
                              [viewController isKindOfClass:[MyViewController class]] ||
+                             [viewController isKindOfClass:[AboutUsViewController class]] ||
+                             [viewController isKindOfClass:[VersionLogViewController class]] ||
                              [viewController isKindOfClass:[AssetsDetailViewController class]] ||
                              [viewController isKindOfClass:[TransferResultsViewController class]] ||
                              [viewController isKindOfClass:[RegisteredResultViewController class]] ||

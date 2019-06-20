@@ -9,17 +9,20 @@
 #import "MyViewController.h"
 #import "ListTableViewCell.h"
 #import "SubtitleListViewCell.h"
+
 #import "MyIdentityViewController.h"
+#import "AddressBookViewController.h"
+#import "WalletListViewController.h"
+
 #import "MonetaryUnitViewController.h"
 #import "MultilingualViewController.h"
 #import "NodeSettingsViewController.h"
 #import "TermsOfUseViewController.h"
+#import "FeedbackViewController.h"
+#import "AboutUsViewController.h"
 
 #import "SettingViewController.h"
-#import "AddressBookViewController.h"
 #import "ChangePasswordViewController.h"
-#import "FeedbackViewController.h"
-#import "WalletListViewController.h"
 //#import "UINavigationController+Extension.h"
 
 @interface MyViewController ()<UITableViewDelegate, UITableViewDataSource>
@@ -287,6 +290,9 @@
             [self.navigationController pushViewController:VC animated:NO];
         } else if (indexPath.row == 1) {
             FeedbackViewController * VC = [[FeedbackViewController alloc] init];
+            [self.navigationController pushViewController:VC animated:NO];
+        } else if (indexPath.row == 2) {
+            AboutUsViewController * VC = [[AboutUsViewController alloc] init];
             [self.navigationController pushViewController:VC animated:NO];
         }
     }

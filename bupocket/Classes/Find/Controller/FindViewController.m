@@ -62,7 +62,6 @@
             [MBProgressHUD showTipMessageInWindow:[ErrorTypeTool getDescriptionWithNodeErrorCode:code]];
         }
         [self.tableView.mj_header endRefreshing];
-        self.tableView.mj_footer.hidden = (self.listArray.count == 0);
     } failure:^(NSError *error) {
         [self.tableView.mj_header endRefreshing];
     }];

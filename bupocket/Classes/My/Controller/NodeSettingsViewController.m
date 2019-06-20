@@ -16,6 +16,8 @@
 @property (nonatomic, strong) UITableView * tableView;
 @property (nonatomic, strong) NSMutableArray * listArray;
 @property (nonatomic, assign) NSInteger index;
+@property (nonatomic, strong) NSString * currentNodeURLKey;
+@property (nonatomic, strong) NSString * nodeURLArrayKey;
 
 @end
 
@@ -32,8 +34,17 @@
 - (void)viewDidLoad {
     [super viewDidLoad];
     self.navigationItem.title = Localized(@"NodeSettings");
-    self.listArray = [NSMutableArray arrayWithArray:[[NSUserDefaults standardUserDefaults] objectForKey:Node_URL_Array]];
-    self.index = [self.listArray indexOfObject:[[NSUserDefaults standardUserDefaults] objectForKey:Current_Node_URL]];
+    NSUserDefaults * defaults = [NSUserDefaults standardUserDefaults];
+    if ([defaults boolForKey:If_Switch_TestNetwork]) {
+        self.nodeURLArrayKey = Node_URL_Array_Test;
+        self.currentNodeURLKey = Current_Node_URL_Test;
+    } else {
+        self.nodeURLArrayKey = Node_URL_Array;
+        self.currentNodeURLKey = Current_Node_URL;
+    }
+    self.listArray = [NSMutableArray arrayWithArray:[defaults objectForKey:self.nodeURLArrayKey]];
+    self.index = [self.listArray indexOfObject:[defaults objectForKey:self.currentNodeURLKey]];
+    
     if (self.index == NSNotFound) {
         self.index = 0;
     }
@@ -63,23 +74,46 @@
 }
 - (void)addNodesAction
 {
-    ModifyAlertView * alertView = [[ModifyAlertView alloc] initWithTitle:Localized(@"AddNodePrompt") placeholder:Localized(@"AddNodePrompt") modifyType:ModifyTypeNodeAdd confrimBolck:^(NSString * _Nonnull text) {
-        [self getDataWithURL:text];
+    [self showNodeSettingsAlertWithModifyType:ModifyTypeNodeAdd index:0];
+}
+- (void)showNodeSettingsAlertWithModifyType:(ModifyType)modifyType index:(NSInteger)index
+{
+    NSString * title = Localized(@"AddNodePrompt");
+    NSString * placeholder = title;
+    if (modifyType == ModifyTypeNodeEdit) {
+        title = Localized(@"EditNodePrompt");
+        placeholder = self.listArray[index];
+    }
+    ModifyAlertView * alertView = [[ModifyAlertView alloc] initWithTitle:title placeholder:placeholder modifyType:modifyType confrimBolck:^(NSString * _Nonnull text) {
+        if ([self.listArray containsObject:text]) {
+            if ([self.listArray indexOfObject:text] != index || modifyType == ModifyTypeNodeAdd) {
+                [Encapsulation showAlertControllerWithErrorMessage:Localized(@"重复添加节点") handler:nil];
+            }
+            return;
+        }
+        [self getDataWithURL:text modifyType:modifyType index:index];
     } cancelBlock:^{
         
     }];
     [alertView showInWindowWithMode:CustomAnimationModeAlert inView:nil bgAlpha:AlertBgAlpha needEffectView:NO];
 }
-- (void)getDataWithURL:(NSString *)URL
+- (void)getDataWithURL:(NSString *)URL modifyType:(ModifyType)modifyType index:(NSInteger)index
 {
-    [[HTTPManager shareManager] getAdsDataWithURL:[NSString stringWithFormat:@"%@%@", URL, Node_Check] success:^(id responseObject) {
+    [[HTTPManager shareManager] getNodeDataWithURL:[NSString stringWithFormat:@"%@%@", URL, Node_Check] success:^(id responseObject) {
         NSInteger code = [[responseObject objectForKey:@"errCode"] integerValue];
         if (code == Success_Code) {
-           
+            if (modifyType == ModifyTypeNodeAdd) {
+                [self.listArray addObject:URL];
+            } else if (modifyType == ModifyTypeNodeEdit) {
+                [self.listArray replaceObjectAtIndex:index withObject:URL];
+            }
+            [[NSUserDefaults standardUserDefaults] setObject:self.listArray forKey:self.nodeURLArrayKey];
+            [self.tableView reloadData];
         } else {
-            [MBProgressHUD showTipMessageInWindow:[ErrorTypeTool getDescriptionWithNodeErrorCode:code]];
+            [Encapsulation showAlertControllerWithErrorMessage:Localized(@"InvalidNodeURL") handler:nil];
         }
     } failure:^(NSError *error) {
+        [Encapsulation showAlertControllerWithErrorMessage:Localized(@"InvalidNodeURL") handler:nil];
     }];
 }
 - (NSInteger)numberOfSectionsInTableView:(UITableView *)tableView
@@ -128,34 +162,17 @@
     BottomAlertView * alertView = [[BottomAlertView alloc] initWithHandlerArray:titleArray handlerType:HandlerTypeNodeSettings handlerClick:^(UIButton * _Nonnull btn) {
         dispatch_after(dispatch_time(DISPATCH_TIME_NOW, (int64_t)(Dispatch_After_Time * NSEC_PER_SEC)), dispatch_get_main_queue(), ^{
             if ([btn.titleLabel.text isEqualToString:titleArray[0]]) {
-                ModifyAlertView * alertView = [[ModifyAlertView alloc] initWithTitle:Localized(@"EditNodePrompt") placeholder:self.listArray[button.tag] modifyType:ModifyTypeNodeEdit confrimBolck:^(NSString * _Nonnull text) {
-//                    if ([RegexPatternTool validateUserName:text]) {
-//                        cell.detailTitle.text = text;
-//                        if ([self.walletModel.walletAddress isEqualToString:[[[AccountTool shareTool] account] walletAddress]]) {
-//                            self.walletModel.walletName = text;
-//                            AccountModel * account = [[AccountModel alloc] init];
-//                            account = [[AccountTool shareTool] account];
-//                            account.walletName = text;
-//                            [[AccountTool shareTool] save:account];
-//                            NSUserDefaults * defaults = [NSUserDefaults standardUserDefaults];
-//                            [defaults setObject:text forKey:Current_WalletName];
-//                            [defaults synchronize];
-//                        } else {
-//                            self.walletModel.walletName = text;
-//                            [self.walletArray replaceObjectAtIndex:self.index withObject:self.walletModel];
-//                            [[WalletTool shareTool] save:self.walletArray];
-//                        }
-//                    } else {
-//                        [MBProgressHUD showTipMessageInWindow:Localized(@"WalletNameFormatIncorrect")];
-//                    }
-                } cancelBlock:^{
-                    
-                }];
-                [alertView showInWindowWithMode:CustomAnimationModeAlert inView:nil bgAlpha:AlertBgAlpha needEffectView:NO];
+                [self showNodeSettingsAlertWithModifyType:ModifyTypeNodeEdit index:button.tag];
             } else if ([btn.titleLabel.text isEqualToString:titleArray[1]]) {
                 [Encapsulation showAlertControllerWithTitle:nil message:Localized(@"ConfirmDeleteNode") cancelHandler:^(UIAlertAction *action) {
-                    
                 } confirmHandler:^(UIAlertAction *action) {
+                    if (self.index == button.tag) {
+                        self.index = 0;
+                        [self setNodeURLWithIndex:self.index];
+                    }
+                    [self.listArray removeObjectAtIndex:button.tag];
+                    [[NSUserDefaults standardUserDefaults] setObject:self.listArray forKey:self.nodeURLArrayKey];
+                    [self.tableView reloadData];
                 }];
             }
         });
@@ -167,17 +184,19 @@
 - (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath
 {
     [tableView deselectRowAtIndexPath:indexPath animated:YES];
-    NSIndexPath * lastIndex = [NSIndexPath indexPathForRow:_index inSection:indexPath.section];
-    ListTableViewCell * lastcell = [tableView cellForRowAtIndexPath:lastIndex];
-    lastcell.detail.hidden = YES;
-    ListTableViewCell * cell = [tableView cellForRowAtIndexPath:indexPath];
-    cell.detail.hidden = NO;
-    _index = indexPath.row;
-    
-    NSUserDefaults * defaults = [NSUserDefaults standardUserDefaults];
-    [defaults setObject:self.listArray[indexPath.row] forKey:Current_Node_URL];
-    [defaults synchronize];
+    [self setNodeURLWithIndex:indexPath.row];
     [UIApplication sharedApplication].keyWindow.rootViewController = [[TabBarViewController alloc] init];
+}
+- (void)setNodeURLWithIndex:(NSInteger)index
+{
+    NSIndexPath * lastIndex = [NSIndexPath indexPathForRow:_index inSection:0];
+    ListTableViewCell * lastcell = [self.tableView cellForRowAtIndexPath:lastIndex];
+    lastcell.detail.hidden = YES;
+    NSIndexPath * indexPath = [NSIndexPath indexPathForRow:index inSection:0];
+    ListTableViewCell * cell = [self.tableView cellForRowAtIndexPath:indexPath];
+    cell.detail.hidden = NO;
+    _index = index;
+    [[HTTPManager shareManager] SwitchedNodeWithURL:self.listArray[indexPath.row]];
 }
 /*
 #pragma mark - Navigation

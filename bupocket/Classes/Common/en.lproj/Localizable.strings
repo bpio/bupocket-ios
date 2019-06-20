@@ -131,6 +131,12 @@
 "ConfirmDeleteNode" = "确定删除该节点吗？";
 "AddNodePrompt" = "请输入有效的节点地址";
 "EditNodePrompt" = "编辑节点地址";
+"InvalidNodeURL" = "无效的节点地址";
+// 关于我们
+"Current version: %@" = "当前版本: %@";
+"VersionLog" = "版本日志";
+"VersionUpdate" = "版本更新";
+"CustomEnvironment" = "自定义环境";
 // Switch network
 "SwitchToTestNetwork" = "Whether to switch to the test network?";
 "YES" = "Yes";
@@ -286,6 +292,7 @@
 "Signature" = "Signing";
 // SDK
 "CreateIdentityFailure" = "Failed to create an identity";
+"CreateWalletFailure" = "钱包创建失败";
 "IssueNumberIsIncorrect" = "Invalid circulation";
 // Accout
 "IDNameFormatIncorrect" = "The identity name is only allowed to enter letters/characters/numbers/underscores, and it cannot exceed 20 characters in length";

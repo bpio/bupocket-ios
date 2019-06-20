@@ -29,7 +29,10 @@
 //        title.text = Localized(@"ModifyWalletName");
 //        self.textField.placeholder = Localized(@"EnterWalletName");
         if (modifyType == ModifyTypeNodeEdit) {
-            self.textField.text = placeholder;
+            self.textField.text = @"";
+            [self.textField insertText:placeholder];
+//            [self.textField setText:placeholder];
+//            self.textField.text = placeholder;
         } else {
             self.textField.placeholder = placeholder;
         }
@@ -130,10 +133,10 @@
 }
 - (void)textChange:(UITextField *)textField
 {
-    if (textField.text) {
+    if (NotNULLString(textField.text)) {
         self.confirm.enabled = YES;
     } else {
-        self.confirm.enabled = NO;
+        self.confirm.enabled = NO; 
     }
 }
 - (void)cancleBtnClick {
@@ -145,7 +148,7 @@
 - (void)sureBtnClick {
     [self hideView];
     if (_sureBlock) {
-        _sureBlock(self.textField.text);
+        _sureBlock(TrimmingCharacters(self.textField.text));
     }
 }
 

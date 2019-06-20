@@ -29,6 +29,7 @@
 
 // App type 1-android 2-iOS
 #define Version_Update @"wallet/version?appType=2"
+#define Version_Log @"wallet/version/log"
 #define Assets_List @"wallet/token/list"
 #define Transaction_Record @"wallet/v2/tx/list"
 #define Order_Details @"wallet/v2/tx/detail"
@@ -106,7 +107,9 @@
 // Current currency index 0：CNY（¥）, 1：USD（$）, 2：JPY（¥）, 3：KRW（₩）,
 #define Current_Currency @"CurrentCurrency"
 #define Current_Node_URL @"CurrentNodeURL"
+#define Current_Node_URL_Test @"CurrentNodeURLTest"
 #define Node_URL_Array @"NodeUrlArray"
+#define Node_URL_Array_Test @"NodeUrlArrayTest"
 // imported Wallet
 //#define imported_Wallet @"importedWallet"
 // Network request timeout limit time

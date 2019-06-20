@@ -114,14 +114,16 @@
     UIView * alertBg = alertController.view.subviews[0].subviews[0].subviews[0];
     alertBg.backgroundColor = [UIColor whiteColor];
     alertBg.layer.cornerRadius = BG_CORNER;
+    UILabel * messageLabel = alertBg.subviews[0].subviews[0].subviews[2];
+    NSMutableAttributedString * attr = [Encapsulation attrWithString:[NSString stringWithFormat:@"\n%@", message] preFont:FONT_TITLE preColor:COLOR_6 index:0 sufFont:FONT_15 sufColor:COLOR_6 lineSpacing:Margin_5];
     if (title.length > 0) {
-        UILabel * titleLabel = alertBg.subviews[0].subviews[0].subviews[0];
+        UILabel * titleLabel = alertBg.subviews[0].subviews[0].subviews[1];
         titleLabel.height = ScreenScale(65);
         //    NSMutableAttributedString * attrTitle = [Encapsulation attrWithString:title preFont:FONT(18) preColor:TITLE_COLOR index:0 sufFont:FONT(18) sufColor:TITLE_COLOR lineSpacing:Margin_10];
         NSMutableAttributedString * attrTitle = [[NSMutableAttributedString alloc] initWithString:title attributes:@{NSForegroundColorAttributeName: TITLE_COLOR, NSFontAttributeName: FONT_Bold(18)}];
         [alertController setValue:attrTitle forKey:@"attributedTitle"];
+        messageLabel.textAlignment = NSTextAlignmentLeft;
     }
-    NSMutableAttributedString * attr = [[NSMutableAttributedString alloc] initWithString:[NSString stringWithFormat:@"\n%@", message] attributes:@{NSForegroundColorAttributeName: COLOR_6, NSFontAttributeName: FONT(15)}];
     [alertController setValue:attr forKey:@"attributedMessage"];
     [cancelAction setValue:COLOR_9 forKey:@"titleTextColor"];
     [confirmAction setValue:MAIN_COLOR forKey:@"titleTextColor"];
@@ -170,7 +172,7 @@
     alertBg.backgroundColor = [UIColor whiteColor];
     alertBg.layer.cornerRadius = BG_CORNER;
     if (title.length > 0) {
-        UILabel * titleLabel = alertBg.subviews[0].subviews[0].subviews[0];
+        UILabel * titleLabel = alertBg.subviews[0].subviews[0].subviews[1];
         titleLabel.height = ScreenScale(65);
         //    NSMutableAttributedString * attrTitle = [Encapsulation attrWithString:title preFont:FONT(18) preColor:TITLE_COLOR index:0 sufFont:FONT(18) sufColor:TITLE_COLOR lineSpacing:Margin_10];
         NSMutableAttributedString * attrTitle = [[NSMutableAttributedString alloc] initWithString:title attributes:@{NSForegroundColorAttributeName: TITLE_COLOR, NSFontAttributeName: FONT_Bold(18)}];

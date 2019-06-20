@@ -81,7 +81,7 @@ static NSString * const WalletDetailCellID = @"WalletDetailCellID";
         }];
         [self.listImage setViewSize:CGSizeMake(Margin_30, Margin_30) borderWidth:0 borderColor:nil borderRadius:MAIN_CORNER];
         [self.listImage mas_makeConstraints:^(MASConstraintMaker *make) {
-            make.right.equalTo(self.detail.mas_left).offset(-Margin_10);
+            make.right.equalTo(self.detail.mas_left);
             make.centerY.equalTo(self.listBg);
             make.width.height.mas_equalTo(Margin_30);
         }];
@@ -99,11 +99,11 @@ static NSString * const WalletDetailCellID = @"WalletDetailCellID";
     [self.detail mas_makeConstraints:^(MASConstraintMaker *make) {
 //        make.right.equalTo(self.listBg.mas_right).offset(-Margin_20);
         make.right.top.bottom.equalTo(self.listBg);
-        make.width.mas_greaterThanOrEqualTo(self.detail.imageView.width + Margin_15);
+//        make.width.mas_equalTo(self.detail.imageView.width + ScreenScale(35));
     }];
     if ([self.reuseIdentifier isEqualToString:DetailCellID] || [self.reuseIdentifier isEqualToString:WalletDetailCellID]) {
         [self.detailTitle mas_makeConstraints:^(MASConstraintMaker *make) {
-            make.right.equalTo(self.detail.mas_left).offset(-Margin_10);
+            make.right.equalTo(self.detail.mas_left);
         }];
     } else {
         [self.detailTitle mas_makeConstraints:^(MASConstraintMaker *make) {
@@ -157,9 +157,9 @@ static NSString * const WalletDetailCellID = @"WalletDetailCellID";
 - (UIButton *)detail
 {
     if (!_detail) {
-        _detail = [UIButton buttonWithType:UIButtonTypeCustom];
+        _detail = [UIButton createButtonWithTitle:@"" TextFont:FONT(15) TextNormalColor:COLOR_6 TextSelectedColor:COLOR_6 Target:nil Selector:nil];
         [_detail setImage:[UIImage imageNamed:@"list_arrow"] forState:UIControlStateNormal];
-        _detail.contentEdgeInsets = UIEdgeInsetsMake(0, 0, 0, Margin_15);
+        _detail.contentEdgeInsets = UIEdgeInsetsMake(0, Margin_10, 0, Margin_15);
         _detail.contentHorizontalAlignment = UIControlContentHorizontalAlignmentLeft;
     }
     return _detail;

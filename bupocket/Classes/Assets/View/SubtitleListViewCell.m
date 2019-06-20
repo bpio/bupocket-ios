@@ -121,7 +121,7 @@ static NSString * const NormalSubtitleCellID = @"NormalSubtitleCellID";
         
     } else {
         [self.detailImage mas_makeConstraints:^(MASConstraintMaker *make) {
-            make.right.equalTo(self.listBg.mas_right).offset(-Margin_20);
+            make.right.equalTo(self.listBg.mas_right).offset(-Margin_15);
             make.centerY.equalTo(self.listBg);
         }];
 //        if ([self.reuseIdentifier isEqualToString:ManageSubtitleCellID]) {

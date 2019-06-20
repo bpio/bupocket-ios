@@ -164,6 +164,8 @@
 		95B066BF2282AED70005731A /* QQTool.m in Sources */ = {isa = PBXBuildFile; fileRef = 95B066BE2282AED70005731A /* QQTool.m */; };
 		95B066C22282CD890005731A /* DposModel.m in Sources */ = {isa = PBXBuildFile; fileRef = 95B066C12282CD890005731A /* DposModel.m */; };
 		95D92D9222BA27CF00AFC8C2 /* NodeSettingsViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 95D92D9122BA27CF00AFC8C2 /* NodeSettingsViewController.m */; };
+		95D92D9522BB6E1400AFC8C2 /* AboutUsViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 95D92D9422BB6E1400AFC8C2 /* AboutUsViewController.m */; };
+		95D92D9822BB85E600AFC8C2 /* VersionLogViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 95D92D9722BB85E600AFC8C2 /* VersionLogViewController.m */; };
 		C78AA58ABD5C4F75C67B6250 /* Pods_bupocketTests.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 248F98B6791F2F7C55E77E0E /* Pods_bupocketTests.framework */; };
 		E0A64C5CAFFFD9486B7713D7 /* Pods_bupocket.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = EB267DD938A42BAD30A164A2 /* Pods_bupocket.framework */; };
 /* End PBXBuildFile section */
@@ -520,6 +522,10 @@
 		95B066C12282CD890005731A /* DposModel.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = DposModel.m; sourceTree = "<group>"; };
 		95D92D9022BA27CF00AFC8C2 /* NodeSettingsViewController.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = NodeSettingsViewController.h; sourceTree = "<group>"; };
 		95D92D9122BA27CF00AFC8C2 /* NodeSettingsViewController.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = NodeSettingsViewController.m; sourceTree = "<group>"; };
+		95D92D9322BB6E1400AFC8C2 /* AboutUsViewController.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = AboutUsViewController.h; sourceTree = "<group>"; };
+		95D92D9422BB6E1400AFC8C2 /* AboutUsViewController.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = AboutUsViewController.m; sourceTree = "<group>"; };
+		95D92D9622BB85E600AFC8C2 /* VersionLogViewController.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = VersionLogViewController.h; sourceTree = "<group>"; };
+		95D92D9722BB85E600AFC8C2 /* VersionLogViewController.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = VersionLogViewController.m; sourceTree = "<group>"; };
 		95ECFF972272E2FF007701B4 /* Constants.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = Constants.h; sourceTree = "<group>"; };
 		9D915F385F1A78B38EC83B6E /* Pods_bupocketUITests.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_bupocketUITests.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		A61F11E76D6541BC859B703E /* Pods-bupocket.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-bupocket.debug.xcconfig"; path = "Pods/Target Support Files/Pods-bupocket/Pods-bupocket.debug.xcconfig"; sourceTree = "<group>"; };
@@ -733,6 +739,10 @@
 				83379A6A2179C1D500C222A5 /* ChangePasswordViewController.m */,
 				83379A6C2179CB9E00C222A5 /* FeedbackViewController.h */,
 				83379A6D2179CB9E00C222A5 /* FeedbackViewController.m */,
+				95D92D9322BB6E1400AFC8C2 /* AboutUsViewController.h */,
+				95D92D9422BB6E1400AFC8C2 /* AboutUsViewController.m */,
+				95D92D9622BB85E600AFC8C2 /* VersionLogViewController.h */,
+				95D92D9722BB85E600AFC8C2 /* VersionLogViewController.m */,
 			);
 			path = Controller;
 			sourceTree = "<group>";
@@ -1533,6 +1543,7 @@
 				83379A182178682100C222A5 /* UIView+CustomAlertView.m in Sources */,
 				95266CE422703868002CD915 /* CooperateDetailViewCell.m in Sources */,
 				95B066C22282CD890005731A /* DposModel.m in Sources */,
+				95D92D9522BB6E1400AFC8C2 /* AboutUsViewController.m in Sources */,
 				95A8A3B9219D15D8008E978E /* RegexPatternTool.m in Sources */,
 				8395AF34218958840082EA30 /* TransactionResultModel.m in Sources */,
 				958127EF219ABD9D0081A02E /* VersionUpdateAlertView.m in Sources */,
@@ -1568,6 +1579,7 @@
 				95266CD8226F062E002CD915 /* CooperateSupportModel.m in Sources */,
 				8372C8692174CCA000FF9506 /* AssetsViewController.m in Sources */,
 				95266CCD226F062E002CD915 /* NodePlanViewController.m in Sources */,
+				95D92D9822BB85E600AFC8C2 /* VersionLogViewController.m in Sources */,
 				83B594B72175FC8B009F91BA /* BackupMnemonicsViewController.m in Sources */,
 				95266CD4226F062E002CD915 /* AdsModel.m in Sources */,
 				9513639022B8B83A00BF8DF5 /* CreateViewController.m in Sources */,

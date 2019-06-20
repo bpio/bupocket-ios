@@ -35,6 +35,7 @@ static int64_t const gasPrice = 1000;
     dispatch_once(&onceToken, ^{
         if (!_shareManager) {
             _shareManager = [[HTTPManager alloc]init];
+            
             [_shareManager initNetWork];
         }
     });
@@ -50,14 +51,34 @@ static int64_t const gasPrice = 1000;
 }
 - (void)initNetWork
 {
-    if ([[NSUserDefaults standardUserDefaults] boolForKey:If_Switch_TestNetwork] == YES) {
+    [self setNodeURL];
+    NSUserDefaults * defaults = [NSUserDefaults standardUserDefaults];
+    if ([defaults boolForKey:If_Switch_TestNetwork] == YES) {
         _webServerDomain = WEB_SERVER_DOMAIN_TEST;
-        _bumoNodeUrl = BUMO_NODE_URL_TEST;
+        // BUMO_NODE_URL_TEST
+        _bumoNodeUrl = [defaults objectForKey:Current_Node_URL_Test];
         _shareManager.pushMessageSocketUrl = BUMO_TOOLS_URL_TEST;
     } else {
         _webServerDomain = WEB_SERVER_DOMAIN;
-        _bumoNodeUrl = BUMO_NODE_URL;
+        // BUMO_NODE_URL
+        _bumoNodeUrl = [defaults objectForKey:Current_Node_URL];
         _shareManager.pushMessageSocketUrl = BUMO_TOOLS_URL;
+    }
+}
+- (void)setNodeURL
+{
+    NSUserDefaults * defaults = [NSUserDefaults standardUserDefaults];
+    NSArray * nodeURLArray = [defaults objectForKey:Node_URL_Array];
+    if (nodeURLArray.count == 0) {
+        [defaults setObject:@[BUMO_NODE_URL] forKey:Node_URL_Array];
+        [defaults setObject:BUMO_NODE_URL forKey:Current_Node_URL];
+        [defaults synchronize];
+    }
+    NSArray * nodeURLTestArray = [defaults objectForKey:Node_URL_Array_Test];
+    if (nodeURLTestArray.count == 0) {
+        [defaults setObject:@[BUMO_NODE_URL_TEST] forKey:Node_URL_Array_Test];
+        [defaults setObject:BUMO_NODE_URL forKey:Current_Node_URL_Test];
+        [defaults synchronize];
     }
 }
 - (id)copyWithZone:(NSZone *)zone
@@ -96,13 +117,45 @@ static int64_t const gasPrice = 1000;
     [defaults synchronize];
     [self initNetWork];
 }
-
+// Switched Node url
+- (void)SwitchedNodeWithURL:(NSString *)URL
+{
+    NSUserDefaults * defaults = [NSUserDefaults standardUserDefaults];
+    if ([defaults boolForKey:If_Switch_TestNetwork]) {
+        [defaults setObject:URL forKey:Current_Node_URL_Test];
+    } else {
+        [defaults setObject:URL forKey:Current_Node_URL];
+    }
+    [defaults synchronize];
+    [self initNetWork];
+}
 // Version Update
 - (void)getVersionDataWithSuccess:(void (^)(id responseObject))success
                           failure:(void (^)(NSError *error))failure
 {
     NSString * url = SERVER_COMBINE_API(_webServerDomain, Version_Update);
     [[HttpTool shareTool] GET:url parameters:nil success:^(id responseObject) {
+        if(success != nil)
+        {
+            success(responseObject);
+        }
+    } failure:^(NSError *error) {
+        if(failure != nil)
+        {
+            failure(error);
+            [MBProgressHUD showTipMessageInWindow:Localized(@"NoNetWork")];
+        }
+    }];
+}
+// Version Log
+- (void)getVersionLogDataWithPageIndex:(NSInteger)pageIndex
+                               success:(void (^)(id responseObject))success
+                               failure:(void (^)(NSError *error))failure
+{
+    NSString * url = SERVER_COMBINE_API(_webServerDomain, Version_Log);
+    NSString * body = [NSString stringWithFormat:@"appType=2&pageStart=%zd&pageSize=%d", pageIndex, PageSize_Max];
+    NSDictionary * parameters = [[HTTPManager shareManager] parametersWithHTTPBody:body];
+    [[HttpTool shareTool] POST:url parameters:parameters success:^(id responseObject) {
         if(success != nil)
         {
             success(responseObject);
@@ -435,6 +488,25 @@ static int64_t const gasPrice = 1000;
 {
     NSString * url = SERVER_COMBINE_API(_webServerDomain, URL);
     [[HttpTool shareTool] GET:url parameters:nil success:^(id responseObject) {
+        if(success != nil)
+        {
+            success(responseObject);
+        }
+    } failure:^(NSError *error) {
+        if(failure != nil)
+        {
+            failure(error);
+            [MBProgressHUD showTipMessageInWindow:Localized(@"NoNetWork")];
+        }
+    }];
+}
+// Node URL Check
+- (void)getNodeDataWithURL:(NSString *)URL
+                  success:(void (^)(id responseObject))success
+                  failure:(void (^)(NSError *error))failure
+{
+    [MBProgressHUD showActivityMessageInWindow:Localized(@"Loading")];
+    [[HttpTool shareTool] GET:URL parameters:nil success:^(id responseObject) {
         if(success != nil)
         {
             success(responseObject);
@@ -859,7 +931,7 @@ static int64_t const gasPrice = 1000;
                     [Encapsulation showAlertControllerWithErrorMessage:Localized(@"CreateIdentityFailure") handler:nil];
                 } else if (accountDataType == AccountDataCreateWallet) {
                     //                    [MBProgressHUD showTipMessageInWindow:Localized(@"MnemonicIsIncorrect")];
-                    [Encapsulation showAlertControllerWithErrorMessage:@"钱包创建失败" handler:nil];
+                    [Encapsulation showAlertControllerWithErrorMessage:Localized(@"CreateWalletFailure") handler:nil];
                 } else if (accountDataType == AccountDataRecoveryID) {
 //                    [MBProgressHUD showTipMessageInWindow:Localized(@"MnemonicIsIncorrect")];
                     [Encapsulation showAlertControllerWithErrorMessage:Localized(@"MnemonicIsIncorrect") handler:nil];

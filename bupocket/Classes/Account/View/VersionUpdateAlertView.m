@@ -33,8 +33,11 @@
         [self setupViewWithVerType:verType];
         self.versionUpdateTitle.text = [NSString stringWithFormat:@"%@ %@？", Localized(@"IfUpdate"), versionNumber];
         self.versionSize.text = [NSString stringWithFormat:@"%@%@", Localized(@"AppSize"), versionSize];
-        self.updateContent.text = content;
-        CGFloat height = [Encapsulation rectWithText:self.versionUpdateTitle.text font:_versionUpdateTitle.font textWidth:DEVICE_WIDTH - ScreenScale(80)].size.height + [Encapsulation rectWithText:self.versionSize.text font:_versionSize.font textWidth:DEVICE_WIDTH - ScreenScale(80)].size.height + [Encapsulation rectWithText:self.updateContent.text font:_updateContent.font textWidth:DEVICE_WIDTH - ScreenScale(80)].size.height + ScreenScale(350);
+        self.updateContent.attributedText = [Encapsulation attrWithString:content preFont:FONT_TITLE preColor:COLOR_6 index:0 sufFont:FONT_TITLE sufColor:COLOR_6 lineSpacing:Margin_10];
+        CGFloat contentW = DEVICE_WIDTH - ScreenScale(80);
+        CGFloat updateContentH = [Encapsulation getSizeSpaceLabelWithStr:content font:FONT_TITLE width:contentW height:CGFLOAT_MAX lineSpacing:Margin_10].height;
+//        self.updateContent.text = content;
+        CGFloat height = [Encapsulation rectWithText:self.versionUpdateTitle.text font:_versionUpdateTitle.font textWidth:contentW].size.height + [Encapsulation rectWithText:self.versionSize.text font:_versionSize.font textWidth:contentW].size.height + updateContentH + ScreenScale(350);
         self.bounds = CGRectMake(0, 0, DEVICE_WIDTH - Margin_40, height);
     }
     return self;
