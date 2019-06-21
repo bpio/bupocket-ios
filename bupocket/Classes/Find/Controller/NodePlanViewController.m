@@ -215,7 +215,7 @@ static NSString * const NodePlanCellID = @"NodePlanCellID";
 {
     if (!_headerView) {
         _headerView = [[UIView alloc] initWithFrame:CGRectMake(0, 0, DEVICE_WIDTH, Margin_40)];
-        _interdependentNode = [UIButton createButtonWithTitle:[NSString stringWithFormat:@"  %@", Localized(@"InterdependentNode")] TextFont:14 TextNormalColor:COLOR_6 TextSelectedColor:COLOR_6 NormalImage:@"interdependent_node_n" SelectedImage:@"interdependent_node_s" Target:self Selector:@selector(interdependentNodeAction:)];
+        _interdependentNode = [UIButton createButtonWithTitle:[NSString stringWithFormat:@"  %@", Localized(@"InterdependentNode")] TextFont:FONT_TITLE TextNormalColor:COLOR_6 TextSelectedColor:COLOR_6 NormalImage:@"interdependent_node_n" SelectedImage:@"interdependent_node_s" Target:self Selector:@selector(interdependentNodeAction:)];
         _interdependentNode.contentHorizontalAlignment = UIControlContentHorizontalAlignmentLeft;
         [_headerView addSubview:_interdependentNode];
         CGFloat interdependentNodeW = [Encapsulation rectWithText:Localized(@"InterdependentNode") font:FONT(13) textHeight:MAIN_HEIGHT].size.width + Margin_30;
@@ -273,13 +273,13 @@ static NSString * const NodePlanCellID = @"NodePlanCellID";
 - (void)infoAction:(UIButton *)button
 {
     NSString * title = Localized(@"RelevantNodes");
-    CGFloat titleHeight = [Encapsulation rectWithText:title font:TITLE_FONT textWidth:DEVICE_WIDTH - ScreenScale(120)].size.height;
+    CGFloat titleHeight = [Encapsulation rectWithText:title font:FONT_TITLE textWidth:DEVICE_WIDTH - ScreenScale(120)].size.height;
     _popupMenu = [YBPopupMenu showRelyOnView:button.imageView titles:@[title] icons:nil menuWidth:DEVICE_WIDTH - ScreenScale(100) otherSettings:^(YBPopupMenu * popupMenu) {
         popupMenu.priorityDirection = YBPopupMenuPriorityDirectionTop;
         popupMenu.itemHeight = titleHeight + Margin_30;
         popupMenu.dismissOnTouchOutside = YES;
         popupMenu.dismissOnSelected = NO;
-        popupMenu.fontSize = TITLE_FONT;
+        popupMenu.fontSize = FONT_TITLE;
         popupMenu.textColor = [UIColor whiteColor];
         popupMenu.backColor = COLOR_POPUPMENU;
         popupMenu.tableView.separatorStyle = UITableViewCellSeparatorStyleNone;

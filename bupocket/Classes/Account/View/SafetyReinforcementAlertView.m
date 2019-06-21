@@ -83,7 +83,7 @@
     if (!_promptLabel) {
         _promptLabel = [[UILabel alloc] init];
         _promptLabel.textColor = WARNING_COLOR;
-        _promptLabel.font = TITLE_FONT;
+        _promptLabel.font = FONT_TITLE;
         _promptLabel.numberOfLines = 0;
     }
     return _promptLabel;

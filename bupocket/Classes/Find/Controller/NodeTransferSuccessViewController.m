@@ -73,9 +73,9 @@ static NSString * const NodeTransferSuccessID = @"NodeTransferSuccessID";
     self.tableView.tableFooterView = footerView;
     UIButton * prompt = [UIButton buttonWithType:UIButtonTypeCustom];
     prompt.backgroundColor = COLOR(@"F8F8F8");
-    [prompt setAttributedTitle:[Encapsulation attrWithString:Localized(@"NodeTransferPrompt") preFont:FONT(13) preColor:COLOR_9 index:0 sufFont:FONT(13) sufColor:COLOR_9 lineSpacing:5.0] forState:UIControlStateNormal];
+    [prompt setAttributedTitle:[Encapsulation attrWithString:Localized(@"NodeTransferPrompt") preFont:FONT(13) preColor:COLOR_9 index:0 sufFont:FONT(13) sufColor:COLOR_9 lineSpacing:Margin_5] forState:UIControlStateNormal];
     prompt.titleLabel.numberOfLines = 0;
-    CGFloat promptH = [Encapsulation getSizeSpaceLabelWithStr:Localized(@"NodeTransferPrompt") font:FONT(13) width:DEVICE_WIDTH - Margin_40 height:CGFLOAT_MAX lineSpacing:5.0].height + Margin_30;
+    CGFloat promptH = [Encapsulation getSizeSpaceLabelWithStr:Localized(@"NodeTransferPrompt") font:FONT(13) width:DEVICE_WIDTH - Margin_40 height:CGFLOAT_MAX lineSpacing:Margin_5].height + Margin_30;
     [footerView addSubview:prompt];
     prompt.contentEdgeInsets = UIEdgeInsetsMake(Margin_15, Margin_10, Margin_10, Margin_15);
     [prompt mas_makeConstraints:^(MASConstraintMaker *make) {

@@ -37,6 +37,7 @@ static NSString * const SearchID = @"SearchID";
     [super viewDidLoad];
     self.navigationItem.title = Localized(@"AddAssets");
     [self setupView];
+    [self setupRefresh];
     self.noNetWork = [Encapsulation showNoNetWorkWithSuperView:self.view target:self action:@selector(reloadData)];
     // Do any additional setup after loading the view.
 }

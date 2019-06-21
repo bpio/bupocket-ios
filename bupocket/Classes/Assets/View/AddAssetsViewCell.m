@@ -153,7 +153,7 @@ static NSString * const AddAssetsCellID = @"AddAssetsCellID";
 {
     if (!_infoTitle) {
         _infoTitle = [[UILabel alloc] init];
-        _infoTitle.font = TITLE_FONT;
+        _infoTitle.font = FONT_TITLE;
         _infoTitle.textColor = COLOR_9;
         _infoTitle.numberOfLines = 0;
     }

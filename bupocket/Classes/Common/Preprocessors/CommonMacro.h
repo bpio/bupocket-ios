@@ -49,7 +49,11 @@
 // font
 #define FONT(F) [UIFont systemFontOfSize:ScreenScale(F)]
 #define FONT_Bold(F) [UIFont boldSystemFontOfSize:ScreenScale(F)]
-#define TITLE_FONT FONT(14)
+#define FONT_TITLE FONT(14)
+#define FONT_BUTTON FONT(18)
+#define FONT_13 FONT(13)
+#define FONT_15 FONT(15)
+#define FONT_16 FONT(16)
 // Color
 #define COLOR(HexString)  [UIColor colorWithHexString:HexString]
 
@@ -70,7 +74,7 @@
 #define Current_WalletAddress @"CurrentWalletAddress"
 #define CurrentWalletAddress [[NSUserDefaults standardUserDefaults] objectForKey:Current_WalletAddress]
 
-#define Current_WalletName @"Wallet-1"
+#define Current_WalletName @"Wallet_1"
 #define CurrentWalletName [[NSUserDefaults standardUserDefaults] objectForKey:Current_WalletName]
 
 #define Current_WalletKeyStore @"CurrentWalletKeyStore"

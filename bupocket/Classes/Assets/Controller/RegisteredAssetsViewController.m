@@ -77,7 +77,7 @@ static NSString * const Register_Leave = @"leaveRoomForApp";
     
     CustomButton * confirmationPrompt = [[CustomButton alloc] init];
     confirmationPrompt.layoutMode = VerticalNormal;
-    confirmationPrompt.titleLabel.font = TITLE_FONT;
+    confirmationPrompt.titleLabel.font = FONT_TITLE;
     [confirmationPrompt setTitle:Localized(@"ConfirmRegistrationInformation") forState:UIControlStateNormal];
     [confirmationPrompt setTitleColor:COLOR_9 forState:UIControlStateNormal];
     [confirmationPrompt setImage:[UIImage imageNamed:@"assetsConfirmation"] forState:UIControlStateNormal];

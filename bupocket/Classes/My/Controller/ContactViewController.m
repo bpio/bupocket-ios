@@ -28,8 +28,6 @@
 
 @end
 
-static NSString * const TextFieldCellID = @"TextFieldCellID";
-
 @implementation ContactViewController
 
 - (NSMutableArray *)listArray
@@ -128,7 +126,7 @@ static NSString * const TextFieldCellID = @"TextFieldCellID";
 }
 - (UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath
 {
-    TextFieldViewCell * cell = [TextFieldViewCell cellWithTableView:tableView identifier:TextFieldCellID];
+    TextFieldViewCell * cell = [TextFieldViewCell cellWithTableView:tableView cellType: TextFieldCellDefault];
     cell.title.text = [self.listArray[indexPath.row] firstObject];
     cell.textField.placeholder = [self.listArray[indexPath.row] lastObject];
     cell.selectionStyle = UITableViewCellSelectionStyleNone;

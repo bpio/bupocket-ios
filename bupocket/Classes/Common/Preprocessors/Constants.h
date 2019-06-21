@@ -16,10 +16,10 @@
 #define BUMO_NODE_URL @"https://wallet-node.bumo.io"
 #define BUMO_TOOLS_URL @"https://ws-tools.bumo.io"
 
-#define WEB_SERVER_DOMAIN_TEST @"http://api-bp.bumotest.io/"
-#define BUMO_NODE_URL_TEST @"https://wallet-node.bumotest.io"
-//#define WEB_SERVER_DOMAIN_TEST @"http://192.168.6.97:5648/"
-//#define BUMO_NODE_URL_TEST @"http://192.168.21.35:36002"
+//#define WEB_SERVER_DOMAIN_TEST @"http://api-bp.bumotest.io/"
+//#define BUMO_NODE_URL_TEST @"https://wallet-node.bumotest.io"
+#define WEB_SERVER_DOMAIN_TEST @"http://192.168.6.97:5648/"
+#define BUMO_NODE_URL_TEST @"http://192.168.21.35:36002"
 //#define WEB_SERVER_DOMAIN_TEST @"http://test-bupocket-api.bumocdn.com/"
 //#define BUMO_NODE_URL_TEST @"http://192.168.3.65:36002"
 
@@ -29,6 +29,7 @@
 
 // App type 1-android 2-iOS
 #define Version_Update @"wallet/version?appType=2"
+#define Version_Log @"wallet/version/log"
 #define Assets_List @"wallet/token/list"
 #define Transaction_Record @"wallet/v2/tx/list"
 #define Order_Details @"wallet/v2/tx/detail"
@@ -85,10 +86,11 @@
 #define Account_Center_Contains @"/xDnAs_login/"
 #define Dpos_Contains @"/xDnAs_dpos/"
 #define Dpos_Prefix @"###UDCBU###"
+#define Node_Check @"/getLedger"
 
 
 
-
+#define HDPaths @[@"M/44H/526H/0H/0/0", @"M/44H/526H/1H/0/0"]
 #define LastVersion @"LastVersion"
 // Identity creation
 #define If_Created @"ifCreated"
@@ -104,6 +106,10 @@
 #define EN @"en"
 // Current currency index 0：CNY（¥）, 1：USD（$）, 2：JPY（¥）, 3：KRW（₩）,
 #define Current_Currency @"CurrentCurrency"
+#define Current_Node_URL @"CurrentNodeURL"
+#define Current_Node_URL_Test @"CurrentNodeURLTest"
+#define Node_URL_Array @"NodeUrlArray"
+#define Node_URL_Array_Test @"NodeUrlArrayTest"
 // imported Wallet
 //#define imported_Wallet @"importedWallet"
 // Network request timeout limit time

@@ -9,7 +9,12 @@
 #import "NavigationViewController.h"
 #import "IdentityViewController.h"
 #import "MyViewController.h"
+#import "AboutUsViewController.h"
+#import "VersionLogViewController.h"
 
+#import "CreateViewController.h"
+#import "BackUpWalletViewController.h"
+#import "RestoreIdentityViewController.h"
 #import "AssetsViewController.h"
 #import "AddAssetsViewController.h"
 #import "AssetsDetailViewController.h"
@@ -18,6 +23,9 @@
 #import "RequestTimeoutViewController.h"
 #import "RegisteredResultViewController.h"
 #import "DistributionResultsViewController.h"
+#import "WalletManagementViewController.h"
+#import "WalletDetailsViewController.h"
+#import "ChangePasswordViewController.h"
 #import "ImportWalletViewController.h"
 #import "ExportKeystoreViewController.h"
 #import "ExportPrivateKeyViewController.h"
@@ -70,12 +78,20 @@
 {
     [viewController viewWillAppear:animated];
     BOOL isSetLargeTitles = (
+                             [viewController isKindOfClass:[CreateViewController class]] ||
+                             [viewController isKindOfClass:[BackUpWalletViewController class]] ||
+                             [viewController isKindOfClass:[RestoreIdentityViewController class]] ||
                              [viewController isKindOfClass:[AssetsViewController class]]  ||
-//                             [viewController isKindOfClass:[AddAssetsViewController class]] ||
+                             [viewController isKindOfClass:[MyViewController class]] ||
+                             [viewController isKindOfClass:[AboutUsViewController class]] ||
+                             [viewController isKindOfClass:[VersionLogViewController class]] ||
                              [viewController isKindOfClass:[AssetsDetailViewController class]] ||
                              [viewController isKindOfClass:[TransferResultsViewController class]] ||
                              [viewController isKindOfClass:[RegisteredResultViewController class]] ||
                              [viewController isKindOfClass:[DistributionResultsViewController class]] ||
+                             [viewController isKindOfClass:[WalletManagementViewController class]] ||
+                             [viewController isKindOfClass:[WalletDetailsViewController class]] ||
+                             [viewController isKindOfClass:[ChangePasswordViewController class]] ||
                              [viewController isKindOfClass:[RequestTimeoutViewController class]] ||
                              [viewController isKindOfClass:[NodeTransferSuccessViewController class]] ||
                              [viewController isKindOfClass:[OrderDetailsViewController class]] ||
@@ -96,8 +112,9 @@
     }
     BOOL isHideNav = (
 //                      [viewController isKindOfClass:[AssetsViewController class]] ||
-                      [viewController isKindOfClass:[IdentityViewController class]] ||
-                      [viewController isKindOfClass:[MyViewController class]]);
+                      [viewController isKindOfClass:[IdentityViewController class]]
+//                      || [viewController isKindOfClass:[MyViewController class]]
+                      );
     [self setNavigationBarHidden:isHideNav animated:animated];
 }
 - (void)navigationController:(UINavigationController *)navigationController didShowViewController:(UIViewController *)viewController animated:(BOOL)animated

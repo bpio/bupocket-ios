@@ -17,8 +17,6 @@
 
 @end
 
-static NSString * const ListCellID = @"ListCellID";
-
 @implementation MultilingualViewController
 
 - (void)viewDidLoad {
@@ -67,17 +65,13 @@ static NSString * const ListCellID = @"ListCellID";
 }
 - (UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath
 {
-    ListTableViewCell * cell = [ListTableViewCell cellWithTableView:tableView identifier:ListCellID];
+    ListTableViewCell * cell = [ListTableViewCell cellWithTableView:tableView cellType:CellTypeDefault];
     cell.selectionStyle = UITableViewCellSelectionStyleNone;
     cell.listImage.image = [UIImage imageNamed:[NSString stringWithFormat:@"multilingual_list_%zd", indexPath.row]];
-    cell.detailImage.image = [UIImage imageNamed:@"checked"];
+    [cell.detail setImage:[UIImage imageNamed:@"checked"] forState:UIControlStateNormal];
     cell.title.text = self.listArray[indexPath.row];
     cell.detailTitle.text = nil;
-    if (_index == indexPath.row) {
-        cell.detailImage.hidden = NO;
-    } else {
-        cell.detailImage.hidden = YES;
-    }
+    cell.detail.hidden = (_index != indexPath.row);
     return cell;
 }
 - (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath
@@ -85,9 +79,9 @@ static NSString * const ListCellID = @"ListCellID";
     [tableView deselectRowAtIndexPath:indexPath animated:YES];
     NSIndexPath * lastIndex = [NSIndexPath indexPathForRow:_index inSection:indexPath.section];
     ListTableViewCell * lastcell = [tableView cellForRowAtIndexPath:lastIndex];
-    lastcell.detailImage.hidden = YES;
+    lastcell.detail.hidden = YES;
     ListTableViewCell * cell = [tableView cellForRowAtIndexPath:indexPath];
-    cell.detailImage.hidden = NO;
+    cell.detail.hidden = NO;
     _index = indexPath.row;
     NSUserDefaults * defaults = [NSUserDefaults standardUserDefaults];
     if(indexPath.row == 0){

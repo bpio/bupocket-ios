@@ -100,7 +100,7 @@ static NSString * const NodeRecordsCellID = @"NodeRecordsCellID";
 - (UIButton *)recordType
 {
     if (!_recordType) {
-        _recordType = [UIButton createButtonWithTitle:Localized(@"Throw") TextFont:13 TextNormalColor:[UIColor whiteColor] TextSelectedColor:[UIColor whiteColor] Target:nil Selector:nil];
+        _recordType = [UIButton createButtonWithTitle:Localized(@"Throw") TextFont:FONT_13 TextNormalColor:[UIColor whiteColor] TextSelectedColor:[UIColor whiteColor] Target:nil Selector:nil];
         _recordType.backgroundColor = MAIN_COLOR;
         [_recordType setTitle:Localized(@"withdraw") forState:UIControlStateSelected];
         _recordType.layer.masksToBounds = YES;

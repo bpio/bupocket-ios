@@ -8,7 +8,7 @@
 
 #import "AppDelegate.h"
 #import "IdentityViewController.h"
-#import "BackUpPurseViewController.h"
+#import "BackUpWalletViewController.h"
 #import "VersionUpdateAlertView.h"
 #import "SafetyReinforcementAlertView.h"
 #import "VersionModel.h"
@@ -41,8 +41,7 @@
     [WXApi registerApp:Wechat_APP_ID];
     _tencentOAuth = [[TencentOAuth alloc] initWithAppId:Tencent_App_ID andDelegate:self];
 
-    [UMConfigure initWithAppkey:UM_App_Key channel:@""];
-
+//    [UMConfigure initWithAppkey:UM_App_Key channel:@""];
     return YES;
 }
 - (void)initializationSettings
@@ -68,7 +67,7 @@
         if ([defaults boolForKey:If_Backup] || [defaults boolForKey:If_Skip]) {
             self.window.rootViewController = [[TabBarViewController alloc] init];
         } else {
-            self.window.rootViewController = [[NavigationViewController alloc] initWithRootViewController:[[BackUpPurseViewController alloc] init]];
+            self.window.rootViewController = [[NavigationViewController alloc] initWithRootViewController:[[BackUpWalletViewController alloc] init]];
         }
         [self storageSafetyReinforcement];
     } else {
@@ -103,7 +102,7 @@
 }
 - (void)upDateAccountDataWithRandom:(NSData *)random password:(NSString *)password
 {
-    [[HTTPManager shareManager] setAccountDataWithRandom:random password:password identityName:[[AccountTool shareTool] account].identityName typeTitle:Localized(@"SafetyReinforcementTitle") success:^(id responseObject) {
+    [[HTTPManager shareManager] setAccountDataWithRandom:random password:password name:[[AccountTool shareTool] account].identityName accountDataType:AccountDataSafe success:^(id responseObject) {
         [self.PWAlertView hideView];
         [Encapsulation showAlertControllerWithMessage:Localized(@"SuccessfulReinforcement") handler:^(UIAlertAction *action) {
             NSUserDefaults * defaults = [NSUserDefaults standardUserDefaults];
@@ -119,8 +118,8 @@
 {
     [[HTTPManager shareManager] getVersionDataWithSuccess:^(id responseObject) {
         NSInteger code = [[responseObject objectForKey:@"errCode"] integerValue];
-        VersionModel * versionModel  = [VersionModel mj_objectWithKeyValues:[responseObject objectForKey:@"data"]];
         if (code == Success_Code) {
+            VersionModel * versionModel  = [VersionModel mj_objectWithKeyValues:[responseObject objectForKey:@"data"]];
             BOOL result = [App_Version compare:versionModel.verNumber] == NSOrderedAscending;
             if (result) {
                 NSString * updateContent = nil;
@@ -148,6 +147,7 @@
         
     }];
 }
+
 - (BOOL)application:(UIApplication *)app openURL:(NSURL *)url options:(NSDictionary<UIApplicationOpenURLOptionsKey,id> *)options
 {
     NSString * str = [url absoluteString];

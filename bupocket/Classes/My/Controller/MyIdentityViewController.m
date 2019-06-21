@@ -159,13 +159,13 @@
 - (void)identityIDInfo:(UIButton *)button
 {
     NSString * title = Localized(@"IdentityIDInfo");
-    CGFloat titleHeight = [Encapsulation rectWithText:title font:TITLE_FONT textWidth:DEVICE_WIDTH - ScreenScale(120)].size.height;
+    CGFloat titleHeight = [Encapsulation rectWithText:title font:FONT_TITLE textWidth:DEVICE_WIDTH - ScreenScale(120)].size.height;
     _popupMenu = [YBPopupMenu showRelyOnView:button.imageView titles:@[title] icons:nil menuWidth:DEVICE_WIDTH - ScreenScale(100) otherSettings:^(YBPopupMenu * popupMenu) {
         popupMenu.priorityDirection = YBPopupMenuPriorityDirectionTop;
         popupMenu.itemHeight = titleHeight + Margin_30;
         popupMenu.dismissOnTouchOutside = YES;
         popupMenu.dismissOnSelected = NO;
-        popupMenu.fontSize = TITLE_FONT;
+        popupMenu.fontSize = FONT_TITLE;
         popupMenu.textColor = [UIColor whiteColor];
         popupMenu.backColor = COLOR_POPUPMENU;
         popupMenu.tableView.separatorStyle = UITableViewCellSeparatorStyleNone;

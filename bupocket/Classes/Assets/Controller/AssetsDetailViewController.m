@@ -229,7 +229,7 @@
         _scanBtn = [[CustomButton alloc] init];
         _scanBtn.layoutMode = HorizontalNormal;
         [_scanBtn setTitleColor:[UIColor whiteColor] forState:UIControlStateNormal];
-        _scanBtn.titleLabel.font = TITLE_FONT;
+        _scanBtn.titleLabel.font = FONT_TITLE;
         [_scanBtn setTitle:Localized(@"AssetsDetailScan") forState:UIControlStateNormal];
         [_scanBtn setImage:[UIImage imageNamed:@"assetsDetail_scan"] forState:UIControlStateNormal];
         [_scanBtn addTarget:self action:@selector(scanAction:) forControlEvents:UIControlEventTouchUpInside];
@@ -242,7 +242,7 @@
         _transferAccounts = [[CustomButton alloc] init];
         _transferAccounts.layoutMode = HorizontalNormal;
         [_transferAccounts setTitleColor:[UIColor whiteColor] forState:UIControlStateNormal];
-        _transferAccounts.titleLabel.font = TITLE_FONT;
+        _transferAccounts.titleLabel.font = FONT_TITLE;
         [_transferAccounts setTitle:Localized(@"TransferAccounts") forState:UIControlStateNormal];
         [_transferAccounts setImage:[UIImage imageNamed:@"transferAccounts"] forState:UIControlStateNormal];
         [_transferAccounts addTarget:self action:@selector(transferAccountsAction:) forControlEvents:UIControlEventTouchUpInside];

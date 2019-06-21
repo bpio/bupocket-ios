@@ -21,31 +21,56 @@
 "CreateDigitalIdentity" = "Create a digital identity";
 "ImmediateCreation" = "Create now";
 "RestoreIdentity" = "Restore identity";
-// Terms of use
-"TermsOfUse" = "Terms of service";
+
+// 小布口袋用户服务协议
+"TermsOfUse" = "小布口袋用户服务协议";
+//"TermsOfUse" = "Terms of service";
 "TermsOfUseFileName" = "Terms of use_EN";
 "Continue" = "Continue";
 "ReadAndAgree" = "Agreed";
 // Create an identity
 "CreateIdentity" = "Create an identity";
 "IdentityName" = "Please create your identity name";
-"SetPassword" = "Please set your password";
-"ConfirmPassword" = "Please confirm your password";
-"Create" = "Create";
-"CreatePWPrompt" = "Tips";
-"CreatePWWarn" = "The password must be strong as it is used to encrypt and protect the private key, transfer coins, call contracts, etc. Please bear in mind that BU Pocket does not store passwords, and can't help you retrieve passwords.";
+"IDNamePlaceholder" = "允许输入字母/汉字/数字/下划线，且不能超过20个字符";
+"SetPassword" = "请设置安全密码";
+"PWPlaceholder" = "6-30个字符，大小写字母和数字任意两种组合";
+"PWErrorPrompt" = "密码必须是6-30个字符，大小写字母和数字任意两种的组合";
+"ConfirmPassword" = "请再次确认安全密码";
+"ConfirmPWPlaceholder" = "请再次输入安全密码";
+//"SetPassword" = "Please set your password";
+//"ConfirmPassword" = "Please confirm your password";
+//"Create" = "Create";
+"Create" = "开始创建";
+"PromptTitle" = "Tips";
+//"CreatePWWarn" = "The password must be strong as it is used to encrypt and protect the private key, transfer coins, call contracts, etc. Please bear in mind that BU Pocket does not store passwords, and can't help you retrieve passwords.";
+"PWPrompt" = "• 安全密码用于加密保护私钥、确认交易转账和调用合约等，请您务必牢记\n• 小布口袋不会存储您的密码\n• 安全密码只能修改，无法找回或重置，请务必牢记";
+"PWPrompt1" = "1. 安全密码用于加密保护私钥、确认交易转账和调用合约等，强度非常重要，请您务必牢记";
+"PWPrompt2" = "2. 小布口袋不会存储您的密码";
+"PWPrompt3" = "3. 安全密码只能修改，无法找回或重置，请务必牢记";
 "CryptographicFormat" = "The length is 6~30 characters. It is recommended to mix uppercase and lowercase letters plus numbers.";
 "Confirm" = "Confirm";
 "Cancel" = "Cancel";
 // Restore identity
-"newIdentityName" = "Please enter a new identity name";
-"MnemonicPrompt" = "Enter mnemonics, separated by spaces";
+"MnemonicPrompt" = "请填写您的助记词";
+"MnemonicPlaceholder" = "12个英文单词，请按空格分隔单词";
+"RecoveryIDName" = "请设置新的身份名";
+"Restore" = "恢复身份";
+
+//"newIdentityName" = "Please enter a new identity name";
+//"MnemonicPrompt" = "Enter mnemonics, separated by spaces";
 "ConfirmRecoveryID" = "Are you sure to update your password and import your identity?";
-"Restore" = "Restore";
+//"Restore" = "Restore";
 // Backup
-"BackUpPurse" = "Backup wallet";
-"BackupInformation" = "Token security cannot be guaranteed without proper backup. After deleting the program or wallet, you need to back up the file to restore the wallet.";
-"BackupPrompt" = "Make sure to back up in a safe environment with no people around and no cameras.";
+//"BackUpPurse" = "Backup wallet";
+"BackUpWallet" = "备份助记词";
+"BackUpWalletTitle" = "拥有助记词等于拥有钱包资产的所有权";
+"Note" = "注意事项";
+"BackUpWalletNote1" = "• 禁止截屏，请确保在四周无人、无摄像头的安全环境下进行备份";
+"BackUpWalletNote2" = "• 请用纸和笔正确抄写助记词，并妥善保管至隔离网络的安全地方";
+"BackUpWalletNote3" = "• 禁止以任何形式或方法将助记词透露或公开，比如邮件、相册等";
+"BackUpWalletNote4" = "• 没有妥善备份就无法保障资产安全，删除钱包或卸载程序后，您可以通过助记词来恢复身份/钱包";
+//"BackupInformation" = "Token security cannot be guaranteed without proper backup. After deleting the program or wallet, you need to back up the file to restore the wallet.";
+//"BackupPrompt" = "Make sure to back up in a safe environment with no people around and no cameras.";
 "TemporaryBackup" = "Back up later";
 "BackupMnemonics" = "Back up mnemonics";
 "IdentityCipherConfirm" = "Confirm password";
@@ -62,11 +87,18 @@
 "Skip" = "Skip";
 "Finished" = "Completed";
 // Profile
+"MoneyOfAccount" = "计价货币";
+"DisplayLanguage" = "显示语言";
+"NodeSettings" = "节点设置";
+"UserProtocol" = "用户协议";
+"Feedback" = "意见反馈";
+"AboutUs" = "关于我们";
+
 "Setting" = "Setting";
 "AddressBook" = "Address Book";
-"ModifyPassword" = "Modify password";
+//"ModifyPassword" = "Modify password";
 "ModifyIdentityPassword" = "Change the Identity Password";
-"Feedback" = "Feedback";
+//"Feedback" = "Feedback";
 "MultiLingual" = "Languages";
 "VersionNumber" = "Version";
 "MonetaryUnit" = "Currency unit";
@@ -80,12 +112,21 @@
 "IdentityIDInfo" = "It is used to secure the data that you store on the blockchain, which is stored in a distributed manner. Only those who have the identity can use the data, so as to ensure that your data sovereignty is not violated";
 "ExitCurrentIdentityPrompt" = "The identity will be removed soon. Please ensure that your identity has been backed up";
 // Revise password
-"OldPassword" = "Old password";
-"NewPassword" = "New password";
-"ConfirmedPassword" = "Confirm password";
-"PleaseEnterOldPW" = "Please enter the old password";
-"PleaseEnterNewPW" = "Please enter the new password";
+"ModifyPassword" = "修改安全密码";
+"WalletInformation" = "钱包信息";
+"OldPassword" = "请输入原安全密码";
+"PleaseEnterOldPW" = "请输入当前钱包的安全密码";
+"NewPassword" = "请设置新安全密码";
+"ConfirmedPassword" = "再次确认新安全密码";
+"ConfirmedPWPlaceholder" = "请再次输入新安全密码";
+"ConfirmModify" = "确认修改";
+//"OldPassword" = "Old password";
+//"NewPassword" = "New password";
+//"ConfirmedPassword" = "Confirm password";
+//"PleaseEnterOldPW" = "Please enter the old password";
+//"PleaseEnterNewPW" = "Please enter the new password";
 "ModifyPasswordFailure" = "Old password error";
+"PasswordDuplicate" = "密码重复，请重新设置";
 // Feedback
 "QuestionsOrSuggestions" = "Your questions or suggestions";
 "YourContact" = "Your contacts";
@@ -94,6 +135,24 @@
 // Language
 "SimplifiedChinese" = "Simplified Chinese";
 "English" = "English";
+// 节点设置
+"AddCustomNodes" = "添加自定义节点";
+"Edit" = "编辑";
+"ConfirmDeleteNode" = "确定删除该节点吗？";
+"AddNodePrompt" = "请输入有效的节点地址";
+"EditNodePrompt" = "编辑节点地址";
+"InvalidNodeURL" = "无效的节点地址";
+"NodeDuplication" = "节点重复，请重新设置";
+// 关于我们
+"Current version: %@" = "当前版本: %@";
+"VersionLog" = "版本日志";
+"VersionUpdate" = "版本更新";
+"CustomEnvironment" = "自定义环境";
+
+"NewVersionTitle%@" = "\nV%@新版本上线";
+"NewVersionContent%@" = "\n新版本内容更新：\n%@";
+"UpdateLater" = "稍后更新";
+"UpdateImmediately" = "立即更新";
 // Switch network
 "SwitchToTestNetwork" = "Whether to switch to the test network?";
 "YES" = "Yes";
@@ -249,13 +308,16 @@
 "Signature" = "Signing";
 // SDK
 "CreateIdentityFailure" = "Failed to create an identity";
+"CreateWalletFailure" = "钱包创建失败";
 "IssueNumberIsIncorrect" = "Invalid circulation";
 // Accout
-"IDNameFormatIncorrect" = "The identity name is only allowed to enter letters, characters, numbers, underscores, and it cannot exceed 20 characters in length";
-"WalletNameFormatIncorrect" = "The wallet names is only allowed to enter letters, characters, numbers, underscores, and it cannot exceed 20 characters in length.";
-"PasswordIsDifferent" = "Passwords do not match";
+"IDNameFormatIncorrect" = "The identity name is only allowed to enter letters/characters/numbers/underscores, and it cannot exceed 20 characters in length";
+"WalletNameFormatIncorrect" = "The wallet names is only allowed to enter letters/characters/numbers/underscores, and it cannot exceed 20 characters in length.";
+"PasswordIsDifferent" = "两次密码输入不一致";
+//"PasswordIsDifferent" = "Passwords do not match";
 //"MnemonicIsIncorrect" = "The mnemonics input are incorrect. Please enter again";
-"MnemonicIsIncorrect" = "Mnemonics are illegal. Please revise them";
+"MnemonicIsIncorrect" = "助记词输入有误";
+//"MnemonicIsIncorrect" = "Mnemonics are illegal. Please revise them";
 // Tokens
 "Replicating" = "Copied";
 // registered
@@ -304,19 +366,25 @@
 "Mnemonics" = "Mnemonics";
 "Keystore" = "Keystore";
 "PrivateKey" = "Private Key";
-"ImportMnemonicsPrompt" = "Please input your mnemonics (12 in total ) separated with spaces";
-"PleaseEnterMnemonics" = "Please input your mnemonics";
-"WalletName" = "Wallet Name";
-"EnterWalletName" = "Input your wallet name to distinguish it from other wallets";
-"SetThePW" = "Set Password";
+//"ImportMnemonicsPrompt" = "Please input your mnemonics (12 in total ) separated with spaces";
+//"PleaseEnterMnemonics" = "Please input your mnemonics";
+//"WalletName" = "Wallet Name";
+//"EnterWalletName" = "Input your wallet name to distinguish it from other wallets";
+"EnterWalletName" = "用于区分其他钱包，不能超过20个字符";
+//"SetThePW" = "Set Password";
 "StartImporting" = "Start Importing";
 "UnderstandingMnemonics" = "About Mnemonics";
-"ImportKeystorePrompt" = "Copy the content of the Keystore file of BUMO official wallet and paste it to the input box";
-"PleaseEnterKeystore" = "The content of the Keystore file";
-"KeystorePW" = "Keystore Password";
-"PleaseEnterKeystorePW" = "Please input the password of the original Keystore file";
+"ImportKeystorePrompt" = "请填写Keystore文件内容";
+"PleaseEnterKeystore" = "请填写由BUMO官方钱包生成的Keystore文件";
+//"ImportKeystorePrompt" = "Copy the content of the Keystore file of BUMO official wallet and paste it to the input box";
+//"PleaseEnterKeystore" = "The content of the Keystore file";
+//"KeystorePW" = "Keystore Password";
+"KeystorePW" = "请输入安全密码";
+"PleaseEnterKeystorePW" = "请输入导出Keystore时使用的安全密码";
+//"PleaseEnterKeystorePW" = "Please input the password of the original Keystore file";
 "UnderstandingKeystore" = "About Keystore";
-"ImportPrivateKeyPrompt" = "Paste the private key to the input box";
+"ImportPrivateKeyPrompt" = "请填写您的私钥";
+//"ImportPrivateKeyPrompt" = "Paste the private key to the input box";
 "PleaseEnterPrivateKey" = "Private key";
 "UnderstandingPrivateKey" = "About Private Key";
 "ImportWalletSuccessfully" = "The wallet is imported successfully";
@@ -331,9 +399,14 @@
 "KeystoreExplain" = "The Keystore file is a file in JSON format for the wallet to store the private key. The private key is encrypted with user-defined password for protection.The degree of security depends on the password strength. For example, 123456 is extremely unsafe. The password cannot be retrieved once lost, so you have to keep your Keystore file and your password safe.";
 "PrivateKeyExplainTitle" = "What is a private key string?";
 "PrivateKeyExplain" = "A private key is used to generate signatures for transactions on a blockchain, so that the account identity can be verified. The private key must be kept safe, because once it is stolen, your digital assets are susceptible to loss. ";
+// 创建钱包
+"CreateWallet" = "创建钱包";
+"SetWalletName" = "请设置钱包名称";
+"SetWalletNamePlaceholder" = "用于区分其他钱包，不能超过20个字符";
 // Management
 "ExportKeystore" = "Export Keystore";
 "ExportPrivateKey" = "Export Private Key";
+"ModifyWalletPW" = "修改钱包密码";
 "DeleteWallet" = "Delete Wallet";
 "ModifyWalletName" = "Change wallet name";
 "WalletPWPrompt" = "Please enter the wallet password";
@@ -374,7 +447,10 @@
 "ConfirmDeleteContact" = "Are you sure to delete?";
 "DeleteSuccessful" = "Deleted successfully";
 "DeleteFailed" = "Failed to delete; please try again later";
-
+// 钱包详情
+"WalletDetails" = "钱包详情";
+"ChangeWalletIcon" = "更改钱包头像";
+//"ChangeWalletName" = "更改钱包名称";
 // Login
 "Immediate login %@, please confirm that it is my operation." = "Log in %@ soon, and please make sure that is your personal operation.";
 "LoginPromptInfo" = "Your account address will be made public";
@@ -533,6 +609,7 @@
 "Disclaimer" = "Disclaimer";
 "DisclaimerInfo" = "Service provided and liability covered by third party (YoPin). For any questions,contact the company.";
 
+"ErrorPrompt" = "错误提示";
 // 调用底层合约
 "DposContract" = "Contract call";
 "DestAddressNotNull" = "The target address cannot be empty";

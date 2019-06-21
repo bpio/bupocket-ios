@@ -33,7 +33,7 @@
         NSString * title = Localized(@"BULink");
         
         NSString * linkStr = [NSString stringWithFormat:@"#%@#%@%@%@", title, subStr, nodeName, [NSString stringWithFormat:Localized(@"LinkSuffix%@"), link]];
-        NSMutableAttributedString * attr = [Encapsulation attrWithString:linkStr preFont:FONT(14) preColor:COLOR_6 index:0 sufFont:FONT(14) sufColor:COLOR_6 lineSpacing:5.0];
+        NSMutableAttributedString * attr = [Encapsulation attrWithString:linkStr preFont:FONT(14) preColor:COLOR_6 index:0 sufFont:FONT(14) sufColor:COLOR_6 lineSpacing:Margin_5];
         NSRange titleRange = [linkStr rangeOfString:title];
         NSRange nodeNameRange = [linkStr rangeOfString:nodeName];
         NSRange linkRange = [linkStr rangeOfString:link];
@@ -42,7 +42,7 @@
         [attr addAttribute:NSFontAttributeName value:FONT_Bold(14) range:nodeNameRange];
         [attr addAttribute:NSForegroundColorAttributeName value:MAIN_COLOR range:linkRange];
         [self.linkContent setAttributedTitle:attr forState:UIControlStateNormal];
-        self.contentHeight = [Encapsulation getSizeSpaceLabelWithStr:linkStr font:FONT(14) width:DEVICE_WIDTH - ScreenScale(80) height:CGFLOAT_MAX lineSpacing:5.0].height + Margin_20;
+        self.contentHeight = [Encapsulation getSizeSpaceLabelWithStr:linkStr font:FONT(14) width:DEVICE_WIDTH - ScreenScale(80) height:CGFLOAT_MAX lineSpacing:Margin_5].height + Margin_20;
         self.bounds = CGRectMake(0, 0, DEVICE_WIDTH - Margin_40, self.contentHeight + ScreenScale(170));
     }
     return self;
@@ -111,7 +111,7 @@
     if (!_linkTitle) {
         _linkTitle = [[UILabel alloc] init];
         _linkTitle.textColor = COLOR_6;
-        _linkTitle.font = TITLE_FONT;
+        _linkTitle.font = FONT_TITLE;
         _linkTitle.text = Localized(@"LinkTitle");
     }
     return _linkTitle;
@@ -120,7 +120,7 @@
 - (UIButton *)linkContent
 {
     if (!_linkContent) {
-        _linkContent = [UIButton createButtonWithTitle:@"" TextFont:14 TextNormalColor:COLOR_6 TextSelectedColor:COLOR_6 Target:nil Selector:nil];
+        _linkContent = [UIButton createButtonWithTitle:@"" TextFont:FONT_TITLE TextNormalColor:COLOR_6 TextSelectedColor:COLOR_6 Target:nil Selector:nil];
         _linkContent.titleLabel.numberOfLines = 0;
         _linkContent.backgroundColor = COLOR(@"F8F8F8");
         _linkContent.contentEdgeInsets = UIEdgeInsetsMake(Margin_10, Margin_10, Margin_10, Margin_10);

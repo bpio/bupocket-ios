@@ -73,7 +73,7 @@
         make.top.equalTo(line.mas_bottom).offset(Margin_25);
     }];
     NSString * confirmPrompt = [NSString stringWithFormat:Localized(@"Immediate login %@, please confirm that it is my operation."), self.loginConfirmModel.appName];
-    confirmLoginPrompt.attributedText = [Encapsulation attrWithString:[NSString stringWithFormat:@"%@\n%@", confirmPrompt, Localized(@"LoginPromptInfo")] preFont:FONT(15) preColor:COLOR_6 index:confirmPrompt.length sufFont:FONT(13) sufColor:COLOR_9 lineSpacing:8.5];
+    confirmLoginPrompt.attributedText = [Encapsulation attrWithString:[NSString stringWithFormat:@"%@\n%@", confirmPrompt, Localized(@"LoginPromptInfo")] preFont:FONT(15) preColor:COLOR_6 index:confirmPrompt.length sufFont:FONT(13) sufColor:COLOR_9 lineSpacing:ScreenScale(8.5)];
     
     CGSize btnSize = CGSizeMake(DEVICE_WIDTH - Margin_40, MAIN_HEIGHT);
     UIButton * confirmBtn = [UIButton createButtonWithTitle:Localized(@"ConfirmLogin") isEnabled:YES Target:self Selector:@selector(confirmAction)];

@@ -12,8 +12,15 @@
 #import "RegisteredModel.h"
 #import "TransactionResultModel.h"
 #import "ConfirmTransactionModel.h"
-
+#import "WalletModel.h"
 #import "DposModel.h"
+
+typedef NS_ENUM(NSInteger, AccountDataType) {
+    AccountDataCreateID,
+    AccountDataCreateWallet,
+    AccountDataRecoveryID,
+    AccountDataSafe
+};
 
 @interface HTTPManager : NSObject
 
@@ -25,10 +32,17 @@
 
 // Switched network
 - (void)SwitchedNetworkWithIsTest:(BOOL)isTest;
+// Switched Node url
+- (void)SwitchedNodeWithURL:(NSString *)URL;
 
 // VersionUpdate
 - (void)getVersionDataWithSuccess:(void (^)(id responseObject))success
                           failure:(void (^)(NSError *error))failure;
+
+// Version Log
+- (void)getVersionLogDataWithPageIndex:(NSInteger)pageIndex
+                               success:(void (^)(id responseObject))success
+                               failure:(void (^)(NSError *error))failure;
 
 // Assets
 - (void)getAssetsDataWithAddress:(NSString *)address
@@ -103,6 +117,10 @@
 - (void)getAdsDataWithURL:(NSString *)URL
                   success:(void (^)(id responseObject))success
                   failure:(void (^)(NSError *error))failure;
+// Node URL Check
+- (void)getNodeDataWithURL:(NSString *)URL
+                   success:(void (^)(id responseObject))success
+                   failure:(void (^)(NSError *error))failure;
 // dpos
 - (void)getDposApplyNodeDataWithQRcodeSessionId:(NSString *)QRcodeSessionId
                                         success:(void (^)(id responseObject))success
@@ -173,11 +191,11 @@
 // Query account / Is it activated?
 - (NSString *)getAccountInfoWithAddress:(NSString *)address;
 
-// identity data
+#pragma mark - account data
 - (void)setAccountDataWithRandom:(NSData *)random
                         password:(NSString *)password
-                    identityName:(NSString *)identityName
-                       typeTitle:(NSString *)typeTitle
+                            name:(NSString *)name
+                 accountDataType:(AccountDataType)accountDataType
                          success:(void (^)(id responseObject))success
                          failure:(void (^)(NSError *error))failure;
 // Wallet data
@@ -186,9 +204,14 @@
                         walletName:(NSString *)walletName
                            success:(void (^)(id responseObject))success
                            failure:(void (^)(NSError *error))failure;
-- (BOOL)importWalletDataWalletName:(NSString *)walletName
-                     walletAddress:(NSString *)walletAddress
-                    walletKeyStore:(NSString *)walletKeyStore;
+- (BOOL)setWalletDataWalletName:(NSString *)walletName
+                  walletAddress:(NSString *)walletAddress
+                 walletKeyStore:(NSString *)walletKeyStore
+                   randomNumber:(NSString *)randomNumber;
+- (void)modifyPasswordWithOldPW:(NSString *)oldPW
+                             PW:(NSString *)PW
+                    walletModel:(WalletModel *)walletModel
+                        success:(void (^)(id responseObject))success;
 #pragma mark - 转账
 // Transfer accounts
 - (BOOL)setTransferDataWithTokenType:(NSInteger)tokenType

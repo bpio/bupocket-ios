@@ -8,17 +8,26 @@
 
 #import <UIKit/UIKit.h>
 
+
 NS_ASSUME_NONNULL_BEGIN
 
 @interface ListTableViewCell : UITableViewCell
 
-+ (instancetype)cellWithTableView:(UITableView *)tableView identifier:(NSString *)identifier;
+typedef NS_ENUM(NSInteger, CellType) {
+    CellTypeDefault, // 图片，文字，文字/箭头
+    CellTypeDetail, // 图片，文字，文字，箭头
+    CellTypeNormal, // 图片，文字，箭头 圆角
+    CellTypeChoice, // 文字，图片
+    CellTypeWalletDetail // 文字，图片/文字，箭头 圆角
+};
+
++ (instancetype)cellWithTableView:(UITableView *)tableView cellType:(CellType)cellType;
 
 @property (nonatomic, strong) UIView * listBg;
 @property (nonatomic, strong) UIImageView * listImage;
 @property (nonatomic, strong) UILabel * title;
 @property (nonatomic, strong) UILabel * detailTitle;
-@property (nonatomic, strong) UIImageView * detailImage;
+@property (nonatomic, strong) UIButton * detail;
 @property (nonatomic, strong) UIView * lineView;
 
 @end

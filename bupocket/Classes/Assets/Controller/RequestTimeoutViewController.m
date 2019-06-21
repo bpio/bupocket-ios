@@ -57,7 +57,7 @@
     self.queryLink.textColor = COLOR_9;
     NSString * link = Transaction_Query_Link;
     NSString * transactionQuery = [NSString stringWithFormat:@"%@%@%@", Localized(@"TransactionQueryPrompt"), link, Localized(@"Query")];
-    NSMutableAttributedString * attr = [Encapsulation attrWithString:transactionQuery preFont:FONT(13) preColor:COLOR_9 index:Localized(@"transactionQueryPrompt").length sufFont:FONT(13) sufColor:COLOR_9 lineSpacing:5.0];
+    NSMutableAttributedString * attr = [Encapsulation attrWithString:transactionQuery preFont:FONT(13) preColor:COLOR_9 index:Localized(@"transactionQueryPrompt").length sufFont:FONT(13) sufColor:COLOR_9 lineSpacing:Margin_5];
     [attr addAttribute:NSLinkAttributeName value:link range:[transactionQuery rangeOfString:link]];
     self.queryLink.attributedText = attr;
     self.queryLink.linkTextAttributes = @{NSForegroundColorAttributeName: MAIN_COLOR};
@@ -73,7 +73,7 @@
     
     CustomButton * hash = [[CustomButton alloc] init];
     hash.layoutMode = HorizontalInverted;
-    hash.titleLabel.font = TITLE_FONT;
+    hash.titleLabel.font = FONT_TITLE;
     [hash setTitle:[NSString stringEllipsisWithStr:self.transactionHash subIndex:SubIndex_hash] forState:UIControlStateNormal];
     [hash setTitleColor:COLOR_6 forState:UIControlStateNormal];
     [hash setImage:[UIImage imageNamed:@"copy"] forState:UIControlStateNormal];

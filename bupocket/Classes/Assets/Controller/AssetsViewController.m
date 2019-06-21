@@ -17,7 +17,7 @@
 #import "RegisteredAssetsViewController.h"
 #import "DistributionOfAssetsViewController.h"
 #import "TransferAccountsViewController.h"
-#import "WalletManagementViewController.h"
+#import "WalletListViewController.h"
 #import "LoginConfirmViewController.h"
 #import "ConfirmTransactionAlertView.h"
 #import "ScanCodeFailureViewController.h"
@@ -404,7 +404,7 @@ static UIButton * _noBackup;
 }
 - (void)walletAction
 {
-    WalletManagementViewController * VC = [[WalletManagementViewController alloc] init];
+    WalletListViewController * VC = [[WalletListViewController alloc] init];
     [self.navigationController pushViewController:VC animated:NO];
 }
 #pragma mark - assets operation
@@ -700,7 +700,7 @@ static UIButton * _noBackup;
             } else if (iPhone6plus && [CurrentAppLanguage isEqualToString:ZhHans]) {
                 return 217;
             }
-            return ScreenScale(150) + [Encapsulation rectWithText:Localized(@"SafetyTips") font:TITLE_FONT textWidth:DEVICE_WIDTH - Margin_40].size.height;
+            return ScreenScale(150) + [Encapsulation rectWithText:Localized(@"SafetyTips") font:FONT_TITLE textWidth:DEVICE_WIDTH - Margin_40].size.height;
         } else {
             return Margin_40;
         }
@@ -738,7 +738,7 @@ static UIButton * _noBackup;
             
             UILabel * safetyTips = [[UILabel alloc] init];
             safetyTips.textColor = COLOR_6;
-            safetyTips.font = TITLE_FONT;
+            safetyTips.font = FONT_TITLE;
             safetyTips.text = Localized(@"SafetyTips");
             safetyTips.numberOfLines = 0;
             [backupBg addSubview:safetyTips];
@@ -748,7 +748,7 @@ static UIButton * _noBackup;
             }];
             
             CGFloat btnW = (DEVICE_WIDTH - ScreenScale(65)) / 2;
-            _noBackup = [UIButton createButtonWithTitle:Localized(@"TemporaryBackup") TextFont:16 TextNormalColor:COLOR(@"9298BD") TextSelectedColor:COLOR(@"9298BD") Target:self Selector:@selector(noBackupAction:)];
+            _noBackup = [UIButton createButtonWithTitle:Localized(@"TemporaryBackup") TextFont:FONT_16 TextNormalColor:COLOR(@"9298BD") TextSelectedColor:COLOR(@"9298BD") Target:self Selector:@selector(noBackupAction:)];
             _noBackup.backgroundColor = COLOR(@"DADDF3");
             _noBackup.layer.masksToBounds = YES;
             _noBackup.layer.cornerRadius = MAIN_CORNER;
@@ -759,7 +759,7 @@ static UIButton * _noBackup;
                 make.bottom.equalTo(backupBg.mas_bottom).offset(-Margin_15);
                 make.size.mas_equalTo(CGSizeMake(btnW, Margin_40));
             }];
-            UIButton * backup = [UIButton createButtonWithTitle:Localized(@"ImmediateBackup") TextFont:16 TextNormalColor:[UIColor whiteColor] TextSelectedColor:[UIColor whiteColor] Target:self Selector:@selector(backupAction)];
+            UIButton * backup = [UIButton createButtonWithTitle:Localized(@"ImmediateBackup") TextFont:FONT_16 TextNormalColor:[UIColor whiteColor] TextSelectedColor:[UIColor whiteColor] Target:self Selector:@selector(backupAction)];
             backup.backgroundColor = MAIN_COLOR;
             backup.layer.masksToBounds = YES;
             backup.layer.cornerRadius = MAIN_CORNER;

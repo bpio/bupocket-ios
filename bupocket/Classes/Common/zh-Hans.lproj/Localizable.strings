@@ -19,31 +19,55 @@
 "CreateDigitalIdentity" = "创建数字身份";
 "ImmediateCreation" = "立即创建";
 "RestoreIdentity" = "恢复身份";
-// 使用条款
-"TermsOfUse" = "使用条款";
+// 小布口袋用户服务协议
+"TermsOfUse" = "小布口袋用户服务协议";
 "TermsOfUseFileName" = "Terms of use_CN";
 "Continue" = "继续";
 "ReadAndAgree" = "我已阅读并同意以上条款内容";
 // 创建身份
 "CreateIdentity" = "创建身份";
 "IdentityName" = "请创建身份名";
-"SetPassword" = "请设置密码";
-"ConfirmPassword" = "请再次确认密码";
-"Create" = "创建";
-"CreatePWPrompt" = "温馨提示";
-"CreatePWWarn" = "密码用于加密保护私钥，以及转账、调用合约等，所以强度非常重要。\n小布口袋不存储密码，也无法帮您找回，请务必牢记。";
+"IDNamePlaceholder" = "允许输入字母/汉字/数字/下划线，且不能超过20个字符";
+"SetPassword" = "请设置安全密码";
+"PWPlaceholder" = "6-30个字符，大小写字母和数字任意两种组合";
+"PWErrorPrompt" = "密码必须是6-30个字符，大小写字母和数字任意两种的组合";
+"ConfirmPassword" = "请再次确认安全密码";
+"ConfirmPWPlaceholder" = "请再次输入安全密码";
+//"SetPassword" = "请设置密码";
+//"ConfirmPassword" = "请再次确认密码";
+//"Create" = "创建";
+"Create" = "开始创建";
+"PromptTitle" = "温馨提示";
+//"CreatePWWarn" = "密码用于加密保护私钥，以及转账、调用合约等，所以强度非常重要。\n小布口袋不存储密码，也无法帮您找回，请务必牢记。";
+"PWPrompt" = "• 安全密码用于加密保护私钥、确认交易转账和调用合约等，请您务必牢记\n• 小布口袋不会存储您的密码\n• 安全密码只能修改，无法找回或重置，请务必牢记";
+"PWPrompt1" = "1. 安全密码用于加密保护私钥、确认交易转账和调用合约等，强度非常重要，请您务必牢记";
+"PWPrompt2" = "2. 小布口袋不会存储您的密码";
+"PWPrompt3" = "3. 安全密码只能修改，无法找回或重置，请务必牢记";
 "CryptographicFormat" = "长度为6~30字符，建议混合大小写字母加数字。";
 "Confirm" = "确认";
 "Cancel" = "取消";
 // 恢复身份
-"newIdentityName" = "请输入新身份名";
-"MnemonicPrompt" = "输入助记词，用空格分割";
+"MnemonicPrompt" = "请填写您的助记词";
+"MnemonicPlaceholder" = "12个英文单词，请按空格分隔单词";
+"RecoveryIDName" = "请设置新的身份名";
+"Restore" = "恢复身份";
+
+//"newIdentityName" = "请输入新身份名";
+//"MnemonicPrompt" = "输入助记词，用空格分割";
 "ConfirmRecoveryID" = "是否确认更新密码及导入身份？";
-"Restore" = "恢复";
+//"Restore" = "恢复";
+
 // 备份
-"BackUpPurse" = "备份钱包";
-"BackupInformation" = "没有妥善备份就无法保障资产安全，删除程序或钱包后，你需要备份文件来恢复钱包";
-"BackupPrompt" = "请确保在四周无人，没有摄像头的安全环境下备份。";
+//"BackUpPurse" = "备份钱包";
+"BackUpWallet" = "备份助记词";
+"BackUpWalletTitle" = "拥有助记词等于拥有钱包资产的所有权";
+"Note" = "注意事项";
+"BackUpWalletNote1" = "• 禁止截屏，请确保在四周无人、无摄像头的安全环境下进行备份";
+"BackUpWalletNote2" = "• 请用纸和笔正确抄写助记词，并妥善保管至隔离网络的安全地方";
+"BackUpWalletNote3" = "• 禁止以任何形式或方法将助记词透露或公开，比如邮件、相册等";
+"BackUpWalletNote4" = "• 没有妥善备份就无法保障资产安全，删除钱包或卸载程序后，您可以通过助记词来恢复身份/钱包";
+//"BackupInformation" = "没有妥善备份就无法保障资产安全，删除程序或钱包后，你需要备份文件来恢复钱包";
+//"BackupPrompt" = "请确保在四周无人，没有摄像头的安全环境下备份。";
 "TemporaryBackup" = "暂不备份";
 "BackupMnemonics" = "备份助记词";
 "IdentityCipherConfirm" = "密码确认";
@@ -60,11 +84,18 @@
 "Skip" = "跳过";
 "Finished" = "完成";
 // 我的
+"MoneyOfAccount" = "计价货币";
+"DisplayLanguage" = "显示语言";
+"NodeSettings" = "节点设置";
+"UserProtocol" = "用户协议";
+"Feedback" = "意见反馈";
+"AboutUs" = "关于我们";
+
 "Setting" = "设置";
 "AddressBook" = "地址簿";
-"ModifyPassword" = "修改身份密码";
+//"ModifyPassword" = "修改身份密码";
 "ModifyIdentityPassword" = "修改身份密码";
-"Feedback" = "帮助与反馈";
+//"Feedback" = "帮助与反馈";
 "MultiLingual" = "多语言";
 "VersionNumber" = "版本号";
 "MonetaryUnit" = "货币单位";
@@ -78,12 +109,21 @@
 "ExitCurrentIdentityPrompt" = "即将退出当前身份，请确保身份已备份";
 "IdentityIDInfo" = "用来维护你存储在区块链上的数据，这些信息会以分布式存储的方式进行保存，只有拥有该身份的人可以动用数据，充分确保你的数据主权不受侵犯。";
 // 修改密码
-"OldPassword" = "旧密码";
-"NewPassword" = "新密码";
-"ConfirmedPassword" = "确认密码";
-"PleaseEnterOldPW" = "请输入旧密码";
-"PleaseEnterNewPW" = "请输入新密码";
+"ModifyPassword" = "修改安全密码";
+"WalletInformation" = "钱包信息";
+"OldPassword" = "请输入原安全密码";
+"PleaseEnterOldPW" = "请输入当前钱包的安全密码";
+"NewPassword" = "请设置新安全密码";
+"ConfirmedPassword" = "再次确认新安全密码";
+"ConfirmedPWPlaceholder" = "请再次输入新安全密码";
+"ConfirmModify" = "确认修改";
+//"OldPassword" = "旧密码";
+//"NewPassword" = "新密码";
+//"ConfirmedPassword" = "确认密码";
+//"PleaseEnterOldPW" = "请输入旧密码";
+//"PleaseEnterNewPW" = "请输入新密码";
 "ModifyPasswordFailure" = "旧密码错误";
+"PasswordDuplicate" = "密码重复，请重新设置";
 // 帮助与反馈
 "QuestionsOrSuggestions" = "您遇到的问题或建议";
 "YourContact" = "您的联系方式";
@@ -92,6 +132,24 @@
 // 多语言
 "SimplifiedChinese" = "简体中文";
 "English" = "English";
+// 节点设置
+"AddCustomNodes" = "添加自定义节点";
+"Edit" = "编辑";
+"ConfirmDeleteNode" = "确定删除该节点吗？";
+"AddNodePrompt" = "请输入有效的节点地址";
+"EditNodePrompt" = "编辑节点地址";
+"InvalidNodeURL" = "无效的节点地址";
+"NodeDuplication" = "节点重复，请重新设置";
+// 关于我们
+"Current version: %@" = "当前版本: %@";
+"VersionLog" = "版本日志";
+"VersionUpdate" = "版本更新";
+"CustomEnvironment" = "自定义环境";
+
+"NewVersionTitle%@" = "\nV%@新版本上线";
+"NewVersionContent%@" = "\n新版本内容更新：\n%@";
+"UpdateLater" = "稍后更新";
+"UpdateImmediately" = "立即更新";
 // 切换网络
 "SwitchToTestNetwork" = "是否切换为测试网？";
 "YES" = "是";
@@ -241,13 +299,16 @@
 "Signature" = "签名中";
 // SDK
 "CreateIdentityFailure" = "身份创建失败";
+"CreateWalletFailure" = "钱包创建失败";
 "IssueNumberIsIncorrect" = "无效的发行量";
 // Accout
-"IDNameFormatIncorrect" = "身份名只允许输入字母、汉字、数字、下划线，并且长度不能超过20个字符";
-"WalletNameFormatIncorrect" = "钱包名只允许输入字母、汉字、数字、下划线，并且长度不能超过20个字符";
-"PasswordIsDifferent" = "密码与确认密码不一致";
-//"MnemonicIsIncorrect" = "助记词输入有误，请重新输入";
-"MnemonicIsIncorrect" = "助记词不合法，请进行修改";
+"IDNameFormatIncorrect" = "身份名只允许输入字母/汉字/数字/下划线，并且长度不能超过20个字符";
+"WalletNameFormatIncorrect" = "钱包名称只允许输入字母/汉字/数字/下划线，并且长度不能超过20个字符";
+//"WalletNameFormatIncorrect" = "钱包名只允许输入字母、汉字、数字、下划线，并且长度不能超过20个字符";
+"PasswordIsDifferent" = "两次密码输入不一致";
+//"PasswordIsDifferent" = "密码与确认密码不一致";
+"MnemonicIsIncorrect" = "助记词输入有误";
+//"MnemonicIsIncorrect" = "助记词不合法，请进行修改";
 // Assets
 "Replicating" = "已复制";
 // registered
@@ -285,7 +346,7 @@
 // 钱包管理
 "WalletManagement" = "钱包管理";
 "CurrentIdentity" = "当前身份下的钱包";
-"ImportedWallet" = "导入的钱包";
+"ImportedWallet" = "创建/导入的钱包";
 "ImmediateImport" = "立即导入";
 "CurrentUse" = "当前使用";
 "Manage" = "管理";
@@ -294,20 +355,26 @@
 "Mnemonics" = "助记词";
 "Keystore" = "Keystore";
 "PrivateKey" = "私钥";
-"ImportMnemonicsPrompt" = "请输入钱包助记词（12个英文单词），按空格分离";
-"PleaseEnterMnemonics" = "请输入助记词";
-"WalletName" = "钱包名称";
-"EnterWalletName" = "输入钱包名称，以便区分其它钱包";
-"SetThePW" = "设置密码";
+//"ImportMnemonicsPrompt" = "请输入钱包助记词（12个英文单词），按空格分离";
+//"PleaseEnterMnemonics" = "请输入助记词";
+//"WalletName" = "钱包名称";
+//"EnterWalletName" = "输入钱包名称，以便区分其它钱包";
+"EnterWalletName" = "用于区分其他钱包，不能超过20个字符";
+//"SetThePW" = "设置密码";
 "StartImporting" = "开始导入";
 "UnderstandingMnemonics" = "了解助记词";
-"ImportKeystorePrompt" = "复制粘贴BUMO官方钱包Keystore文件内容至输入框";
-"PleaseEnterKeystore" = "Keystore文件内容";
-"KeystorePW" = "Keystore密码";
-"PleaseEnterKeystorePW" = "请输入原Keystore文件内容的密码";
+"ImportKeystorePrompt" = "请填写Keystore文件内容";
+"PleaseEnterKeystore" = "请填写由BUMO官方钱包生成的Keystore文件";
+//"ImportKeystorePrompt" = "复制粘贴BUMO官方钱包Keystore文件内容至输入框";
+//"PleaseEnterKeystore" = "Keystore文件内容";
+//"KeystorePW" = "Keystore密码";
+"KeystorePW" = "请输入安全密码";
+"PleaseEnterKeystorePW" = "请输入导出Keystore时使用的安全密码";
+//"PleaseEnterKeystorePW" = "请输入原Keystore文件内容的密码";
 "UnderstandingKeystore" = "了解Keystore";
-"ImportPrivateKeyPrompt" = "粘贴私钥（Private Key）至输入框内";
-"PleaseEnterPrivateKey" = "私钥（Private key）";
+"PleaseEnterPrivateKey" = "请填写您的私钥";
+//"ImportPrivateKeyPrompt" = "粘贴私钥（Private Key）至输入框内";
+//"PleaseEnterPrivateKey" = "私钥（Private key）";
 "UnderstandingPrivateKey" = "了解私钥";
 "ImportWalletSuccessfully" = "钱包导入成功";
 "FailureToImportWallet" = "钱包导入失败，请重新导入";
@@ -321,13 +388,22 @@
 "KeystoreExplain" = "Keystore 文件是钱包存储私钥的一种文件格式 (JSON)。它使用用户自定义密码加密，以起到一定程度上的保护作用，而保护的程度取决于用户加密该钱包的密码强度，如果类似于 123456 这样的密码，是极为不安全的。密码忘记是无法找回的，所以一定要保管好Keystore文件及密码。";
 "PrivateKeyExplainTitle" = "什么是私钥？";
 "PrivateKeyExplain" = "私钥是在区块链交易中用于生成交易签名，以证明账户身份。所以私钥必须安全保管，一旦私钥被任何人拿到，就可以拿走您的数字资产。";
+// 创建钱包
+"CreateWallet" = "创建钱包";
+"SetWalletName" = "请设置钱包名称";
+"SetWalletNamePlaceholder" = "用于区分其他钱包，不能超过20个字符";
 // 管理
 "ExportKeystore" = "导出Keystore";
 "ExportPrivateKey" = "导出私钥";
+"ModifyWalletPW" = "修改钱包密码";
 "DeleteWallet" = "删除钱包";
 "ModifyWalletName" = "更改钱包名称";
 "WalletPWPrompt" = "请填写钱包密码";
 "DeleteWalletSuccessfully" = "删除钱包成功";
+// 钱包详情
+"WalletDetails" = "钱包详情";
+"ChangeWalletIcon" = "更改钱包头像";
+//"ChangeWalletName" = "更改钱包名称";
 // 导出Keystore
 "CopyKeystorePrompt" = "请复制keystore文件到安全的地方保存";
 "CopyKeystore" = "复制Keystore";
@@ -523,6 +599,7 @@
 "Disclaimer" = "免责声明";
 "DisclaimerInfo" = "本服务由小布有品提供。相关服务和责任将由该第三方承担。如有问题请咨询该公司客服。";
 
+"ErrorPrompt" = "错误提示";
 // 调用底层合约
 "DposContract" = "调用合约";
 "DestAddressNotNull" = "目标地址不能为空";

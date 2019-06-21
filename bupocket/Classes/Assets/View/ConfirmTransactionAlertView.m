@@ -318,7 +318,7 @@
 - (UIButton *)details
 {
     if (!_details) {
-        _details = [UIButton createButtonWithTitle:Localized(@"Details") TextFont:13 TextNormalColor:MAIN_COLOR TextSelectedColor:MAIN_COLOR Target:self Selector:@selector(detailAction)];
+        _details = [UIButton createButtonWithTitle:Localized(@"Details") TextFont:FONT_13 TextNormalColor:MAIN_COLOR TextSelectedColor:MAIN_COLOR Target:self Selector:@selector(detailAction)];
         _details.contentHorizontalAlignment = UIControlContentHorizontalAlignmentRight;
         _details.backgroundColor = [UIColor whiteColor];
     }
@@ -335,7 +335,7 @@
 - (UIButton *)confirm
 {
     if (!_confirm) {
-        _confirm = [UIButton createButtonWithTitle:Localized(@"Confirm") TextFont:18 TextNormalColor:[UIColor whiteColor] TextSelectedColor:[UIColor whiteColor] Target:self Selector:@selector(sureBtnClick)];
+        _confirm = [UIButton createButtonWithTitle:Localized(@"Confirm") TextFont:FONT_BUTTON TextNormalColor:[UIColor whiteColor] TextSelectedColor:[UIColor whiteColor] Target:self Selector:@selector(sureBtnClick)];
         _confirm.backgroundColor = MAIN_COLOR;
         [_confirm setViewSize:CGSizeMake(DEVICE_WIDTH - Margin_40, MAIN_HEIGHT) borderRadius:MAIN_CORNER corners:UIRectCornerAllCorners];
     }

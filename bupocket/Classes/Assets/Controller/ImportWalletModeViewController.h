@@ -8,9 +8,17 @@
 
 #import "BaseViewController.h"
 
+typedef NS_ENUM(NSInteger, ImportWalletMode) {
+    ImportWalletMnemonics,
+    ImportWalletPrivateKey,
+    ImportWalletKeystore
+};
+
 NS_ASSUME_NONNULL_BEGIN
 
 @interface ImportWalletModeViewController : BaseViewController
+
+@property (assign, nonatomic) ImportWalletMode importWalletMode;
 
 @end
 

@@ -25,8 +25,6 @@
 
 @end
 
-static NSString * const ExportCellID = @"ExportCellID";
-
 @implementation FindViewController
 
 - (void)viewDidLoad {
@@ -64,7 +62,6 @@ static NSString * const ExportCellID = @"ExportCellID";
             [MBProgressHUD showTipMessageInWindow:[ErrorTypeTool getDescriptionWithNodeErrorCode:code]];
         }
         [self.tableView.mj_header endRefreshing];
-        self.tableView.mj_footer.hidden = (self.listArray.count == 0);
     } failure:^(NSError *error) {
         [self.tableView.mj_header endRefreshing];
     }];
@@ -132,25 +129,21 @@ static NSString * const ExportCellID = @"ExportCellID";
 }
 - (UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath
 {
-    ListTableViewCell * cell = [ListTableViewCell cellWithTableView:tableView identifier:ExportCellID];
+    ListTableViewCell * cell = [ListTableViewCell cellWithTableView:tableView cellType:CellTypeNormal];
     cell.selectionStyle = UITableViewCellSelectionStyleNone;
-    cell.detailImage.image = [UIImage imageNamed:@"list_arrow"];
+//    cell.detailImage.image = [UIImage imageNamed:@"list_arrow"];
     cell.title.text = self.listArray[indexPath.section][indexPath.row];
     cell.listImage.image = [UIImage imageNamed:[NSString stringWithFormat:@"find_list_%ld_%ld", indexPath.section + 1, indexPath.row]];
     CGSize cellSize = CGSizeMake(DEVICE_WIDTH - Margin_20, Margin_50);
     if ([self.listArray[indexPath.section] count] - 1 == 0) {
         [cell.listBg setViewSize:cellSize borderRadius:BG_CORNER corners:UIRectCornerAllCorners];
+        cell.lineView.hidden = YES;
     } else {
         if (indexPath.row == 0) {
             [cell.listBg setViewSize:cellSize borderRadius:BG_CORNER corners:UIRectCornerTopLeft | UIRectCornerTopRight];
-            [cell.listBg addSubview:cell.lineView];
-            [cell.lineView mas_makeConstraints:^(MASConstraintMaker *make) {
-                make.left.equalTo(cell.listBg.mas_left).offset(Margin_10);
-                make.right.equalTo(cell.listBg.mas_right).offset(-Margin_10);
-                make.bottom.equalTo(cell.listBg);
-                make.height.mas_equalTo(LINE_WIDTH);
-            }];
+            cell.lineView.hidden = NO;
         } else if (indexPath.row == [self.listArray[indexPath.section] count] - 1) {
+            cell.lineView.hidden = YES;
             [cell.listBg setViewSize:cellSize borderRadius:BG_CORNER corners:UIRectCornerBottomLeft | UIRectCornerBottomRight];
         }
     }

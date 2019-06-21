@@ -43,7 +43,7 @@
     MBProgressHUD *hud = [self createMBProgressHUDviewWithMessage:message isWindiw:isWindow];
     hud.mode = MBProgressHUDModeText;
 //    hud.detailsLabelText= message;
-//    hud.detailsLabelFont = TITLE_FONT;
+//    hud.detailsLabelFont = FONT_TITLE;
     [hud hide:YES afterDelay:aTimer];
 }
 #pragma mark-------------------- show Activity----------------------------

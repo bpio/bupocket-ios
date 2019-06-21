@@ -35,6 +35,7 @@ static int64_t const gasPrice = 1000;
     dispatch_once(&onceToken, ^{
         if (!_shareManager) {
             _shareManager = [[HTTPManager alloc]init];
+            
             [_shareManager initNetWork];
         }
     });
@@ -50,14 +51,34 @@ static int64_t const gasPrice = 1000;
 }
 - (void)initNetWork
 {
-    if ([[NSUserDefaults standardUserDefaults] boolForKey:If_Switch_TestNetwork] == YES) {
+    [self setNodeURL];
+    NSUserDefaults * defaults = [NSUserDefaults standardUserDefaults];
+    if ([defaults boolForKey:If_Switch_TestNetwork] == YES) {
         _webServerDomain = WEB_SERVER_DOMAIN_TEST;
-        _bumoNodeUrl = BUMO_NODE_URL_TEST;
+        // BUMO_NODE_URL_TEST
+        _bumoNodeUrl = [defaults objectForKey:Current_Node_URL_Test];
         _shareManager.pushMessageSocketUrl = BUMO_TOOLS_URL_TEST;
     } else {
         _webServerDomain = WEB_SERVER_DOMAIN;
-        _bumoNodeUrl = BUMO_NODE_URL;
+        // BUMO_NODE_URL
+        _bumoNodeUrl = [defaults objectForKey:Current_Node_URL];
         _shareManager.pushMessageSocketUrl = BUMO_TOOLS_URL;
+    }
+}
+- (void)setNodeURL
+{
+    NSUserDefaults * defaults = [NSUserDefaults standardUserDefaults];
+    NSArray * nodeURLArray = [defaults objectForKey:Node_URL_Array];
+    if (nodeURLArray.count == 0) {
+        [defaults setObject:@[BUMO_NODE_URL] forKey:Node_URL_Array];
+        [defaults setObject:BUMO_NODE_URL forKey:Current_Node_URL];
+        [defaults synchronize];
+    }
+    NSArray * nodeURLTestArray = [defaults objectForKey:Node_URL_Array_Test];
+    if (nodeURLTestArray.count == 0) {
+        [defaults setObject:@[BUMO_NODE_URL_TEST] forKey:Node_URL_Array_Test];
+        [defaults setObject:BUMO_NODE_URL forKey:Current_Node_URL_Test];
+        [defaults synchronize];
     }
 }
 - (id)copyWithZone:(NSZone *)zone
@@ -96,13 +117,45 @@ static int64_t const gasPrice = 1000;
     [defaults synchronize];
     [self initNetWork];
 }
-
+// Switched Node url
+- (void)SwitchedNodeWithURL:(NSString *)URL
+{
+    NSUserDefaults * defaults = [NSUserDefaults standardUserDefaults];
+    if ([defaults boolForKey:If_Switch_TestNetwork]) {
+        [defaults setObject:URL forKey:Current_Node_URL_Test];
+    } else {
+        [defaults setObject:URL forKey:Current_Node_URL];
+    }
+    [defaults synchronize];
+    [self initNetWork];
+}
 // Version Update
 - (void)getVersionDataWithSuccess:(void (^)(id responseObject))success
                           failure:(void (^)(NSError *error))failure
 {
     NSString * url = SERVER_COMBINE_API(_webServerDomain, Version_Update);
     [[HttpTool shareTool] GET:url parameters:nil success:^(id responseObject) {
+        if(success != nil)
+        {
+            success(responseObject);
+        }
+    } failure:^(NSError *error) {
+        if(failure != nil)
+        {
+            failure(error);
+            [MBProgressHUD showTipMessageInWindow:Localized(@"NoNetWork")];
+        }
+    }];
+}
+// Version Log
+- (void)getVersionLogDataWithPageIndex:(NSInteger)pageIndex
+                               success:(void (^)(id responseObject))success
+                               failure:(void (^)(NSError *error))failure
+{
+    NSString * url = SERVER_COMBINE_API(_webServerDomain, Version_Log);
+    NSString * body = [NSString stringWithFormat:@"appType=2&pageStart=%zd&pageSize=%d", pageIndex, PageSize_Max];
+    NSDictionary * parameters = [[HTTPManager shareManager] parametersWithHTTPBody:body];
+    [[HttpTool shareTool] POST:url parameters:parameters success:^(id responseObject) {
         if(success != nil)
         {
             success(responseObject);
@@ -435,6 +488,25 @@ static int64_t const gasPrice = 1000;
 {
     NSString * url = SERVER_COMBINE_API(_webServerDomain, URL);
     [[HttpTool shareTool] GET:url parameters:nil success:^(id responseObject) {
+        if(success != nil)
+        {
+            success(responseObject);
+        }
+    } failure:^(NSError *error) {
+        if(failure != nil)
+        {
+            failure(error);
+            [MBProgressHUD showTipMessageInWindow:Localized(@"NoNetWork")];
+        }
+    }];
+}
+// Node URL Check
+- (void)getNodeDataWithURL:(NSString *)URL
+                  success:(void (^)(id responseObject))success
+                  failure:(void (^)(NSError *error))failure
+{
+    [MBProgressHUD showActivityMessageInWindow:Localized(@"Loading")];
+    [[HttpTool shareTool] GET:URL parameters:nil success:^(id responseObject) {
         if(success != nil)
         {
             success(responseObject);
@@ -831,11 +903,11 @@ static int64_t const gasPrice = 1000;
     }
 }
 
-// identity data
+#pragma mark - account data
 - (void)setAccountDataWithRandom:(NSData *)random
                         password:(NSString *)password
-                    identityName:(NSString *)identityName
-                       typeTitle:(NSString *)typeTitle
+                            name:(NSString *)name
+                 accountDataType:(AccountDataType)accountDataType
                          success:(void (^)(id responseObject))success
                          failure:(void (^)(NSError *error))failure
 {
@@ -844,8 +916,7 @@ static int64_t const gasPrice = 1000;
     [queue addOperationWithBlock:^{
         // Random number -> mnemonic
         NSArray * words = [Mnemonic generateMnemonicCode: [random copy]];
-        NSMutableArray * hdPaths = [NSMutableArray arrayWithObjects:@"M/44H/526H/0H/0/0", @"M/44H/526H/1H/0/0", nil];
-        NSArray *privateKeys = [Mnemonic generatePrivateKeys: words : hdPaths];
+        NSArray * privateKeys = [Mnemonic generatePrivateKeys: words : HDPaths];
         NSString * randomKey = [NSString generateKeyStoreWithPW:password randomKey:random];
         // private key -> address
         NSString * identityAddress = [Keypair getEncAddress : [Keypair getEncPublicKey: [privateKeys firstObject]]];
@@ -855,33 +926,41 @@ static int64_t const gasPrice = 1000;
         [[NSOperationQueue mainQueue] addOperationWithBlock:^{
             if (randomKey == nil || identityKeyStore == nil || walletKeyStore == nil) {
                 [MBProgressHUD hideHUD];
-                if ([typeTitle isEqualToString:Localized(@"CreateIdentity")]) {
-                    [MBProgressHUD showTipMessageInWindow:Localized(@"CreateIdentityFailure")];
-                } else if ([typeTitle isEqualToString:Localized(@"RestoreIdentity")]) {
-                    [MBProgressHUD showTipMessageInWindow:Localized(@"MnemonicIsIncorrect")];
-                } else if ([typeTitle isEqualToString:Localized(@"ModifyPassword")]) {
-                    [MBProgressHUD showTipMessageInWindow:Localized(@"ModifyPasswordFailure")];
-                } else if ([typeTitle isEqualToString:Localized(@"SafetyReinforcementTitle")]) {
-                    [MBProgressHUD showTipMessageInWindow:Localized(@"PasswordIsIncorrect")];
+                if (accountDataType == AccountDataCreateID) {
+//                    [MBProgressHUD showTipMessageInWindow:Localized(@"CreateIdentityFailure")];
+                    [Encapsulation showAlertControllerWithErrorMessage:Localized(@"CreateIdentityFailure") handler:nil];
+                } else if (accountDataType == AccountDataCreateWallet) {
+                    //                    [MBProgressHUD showTipMessageInWindow:Localized(@"MnemonicIsIncorrect")];
+                    [Encapsulation showAlertControllerWithErrorMessage:Localized(@"CreateWalletFailure") handler:nil];
+                } else if (accountDataType == AccountDataRecoveryID) {
+//                    [MBProgressHUD showTipMessageInWindow:Localized(@"MnemonicIsIncorrect")];
+                    [Encapsulation showAlertControllerWithErrorMessage:Localized(@"MnemonicIsIncorrect") handler:nil];
+                } else if (accountDataType == AccountDataSafe) {
+//                    [MBProgressHUD showTipMessageInWindow:Localized(@"PasswordIsIncorrect")];
+                    [Encapsulation showAlertControllerWithErrorMessage:Localized(@"PasswordIsIncorrect") handler:nil];
                 }
             } else {
                 [MBProgressHUD hideHUD];
                 if(success != nil)
                 {
-                    AccountModel * account = [[AccountModel alloc] init];
-                    account.identityName = identityName;
-                    account.randomNumber = randomKey;
-                    account.identityAddress = identityAddress;
-                    account.identityKeyStore = identityKeyStore;
-                    account.walletName = Current_WalletName;
-                    account.walletAddress = walletAddress;
-                    account.walletKeyStore = walletKeyStore;
-                    [[AccountTool shareTool] save:account];
-                    NSUserDefaults * defaults = [NSUserDefaults standardUserDefaults];
-                    [defaults setObject:walletAddress forKey:Current_WalletAddress];
-                    [defaults setObject:walletKeyStore forKey:Current_WalletKeyStore];
-                    [defaults setObject:Current_WalletName forKey:Current_WalletName];
-                    [defaults synchronize];
+                    if (accountDataType == AccountDataCreateWallet) {
+                        [self setWalletDataWalletName:name walletAddress:walletAddress walletKeyStore:walletKeyStore randomNumber:randomKey];
+                    } else {
+                        AccountModel * account = [[AccountModel alloc] init];
+                        account.identityName = name;
+                        account.randomNumber = randomKey;
+                        account.identityAddress = identityAddress;
+                        account.identityKeyStore = identityKeyStore;
+                        account.walletName = Current_WalletName;
+                        account.walletAddress = walletAddress;
+                        account.walletKeyStore = walletKeyStore;
+                        [[AccountTool shareTool] save:account];
+                        NSUserDefaults * defaults = [NSUserDefaults standardUserDefaults];
+                        [defaults setObject:walletAddress forKey:Current_WalletAddress];
+                        [defaults setObject:walletKeyStore forKey:Current_WalletKeyStore];
+                        [defaults setObject:Current_WalletName forKey:Current_WalletName];
+                        [defaults synchronize];
+                    }
                     success(words);
                 }
             }
@@ -900,8 +979,7 @@ static int64_t const gasPrice = 1000;
     NSOperationQueue * queue = [[NSOperationQueue alloc] init];
     [queue addOperationWithBlock:^{
         // Random number -> mnemonic
-        NSMutableArray * hdPaths = [NSMutableArray arrayWithObjects:@"M/44H/526H/0H/0/0", @"M/44H/526H/1H/0/0", nil];
-        NSArray * privateKeys = [Mnemonic generatePrivateKeys: mnemonics : hdPaths];
+        NSArray * privateKeys = [Mnemonic generatePrivateKeys: mnemonics : HDPaths];
         // private key -> address
         NSString * walletAddress = [Keypair getEncAddress : [Keypair getEncPublicKey: [privateKeys lastObject]]];
         NSString * walletKeyStore = [NSString generateKeyStoreWithPW:password key:[privateKeys lastObject]];
@@ -913,7 +991,9 @@ static int64_t const gasPrice = 1000;
                 [MBProgressHUD hideHUD];
                 if(success != nil)
                 {
-                    BOOL ifImportSuccess = [self importWalletDataWalletName:walletName walletAddress:walletAddress walletKeyStore:walletKeyStore];
+                    NSData * random = [Mnemonic randomFromMnemonicCode: mnemonics];
+                    NSString * randomKey = [NSString generateKeyStoreWithPW:password randomKey:random];
+                    BOOL ifImportSuccess = [self setWalletDataWalletName:walletName walletAddress:walletAddress walletKeyStore:walletKeyStore randomNumber:randomKey];
                     if (ifImportSuccess) {
                         success(walletAddress);
                     }
@@ -922,33 +1002,78 @@ static int64_t const gasPrice = 1000;
         }];
     }];
 }
-- (BOOL)importWalletDataWalletName:(NSString *)walletName
-                     walletAddress:(NSString *)walletAddress
-                    walletKeyStore:(NSString *)walletKeyStore
+
+- (BOOL)setWalletDataWalletName:(NSString *)walletName
+                  walletAddress:(NSString *)walletAddress
+                 walletKeyStore:(NSString *)walletKeyStore
+                   randomNumber:(NSString *)randomNumber
 {
-    BOOL imported = NO;
+    BOOL success = YES;
     if ([walletAddress isEqualToString:[[[AccountTool shareTool] account] walletAddress]]) {
         [MBProgressHUD showTipMessageInWindow:Localized(@"WalletDuplicateImport")];
-        imported = YES;
+        success = NO;
     }
     NSArray * importedWalletArray = [[WalletTool shareTool] walletArray];
     for (WalletModel * walletModel in importedWalletArray) {
         if ([walletModel.walletAddress isEqualToString:walletAddress]) {
             [MBProgressHUD showTipMessageInWindow:Localized(@"WalletDuplicateImport")];
-            imported = YES;
+            success = NO;
         }
     }
-    if (imported == NO) {
+    if (success == YES) {
         NSMutableArray * importedWallet = [NSMutableArray array];
         [importedWallet addObjectsFromArray:importedWalletArray];
         WalletModel * walletModel = [[WalletModel alloc] init];
         walletModel.walletName = walletName;
         walletModel.walletAddress = walletAddress;
         walletModel.walletKeyStore = walletKeyStore;
+        walletModel.randomNumber = randomNumber;
         [importedWallet addObject:walletModel];
         [[WalletTool shareTool] save:importedWallet];
     }
-    return !imported;
+    return success;
+}
+- (void)modifyPasswordWithOldPW:(NSString *)oldPW
+                             PW:(NSString *)PW
+                    walletModel:(WalletModel *)walletModel
+                        success:(void (^)(id responseObject))success
+{
+    [MBProgressHUD showActivityMessageInWindow:Localized(@"Loading")];
+    NSString * walletPrivateKey = [NSString decipherKeyStoreWithPW:oldPW keyStoreValueStr:walletModel.walletKeyStore];
+    if ([Tools isEmpty:walletPrivateKey]) {
+        [MBProgressHUD hideHUD];
+        [MBProgressHUD showTipMessageInWindow:Localized(@"OldPasswordIncorrect")];
+        return;
+    }
+    NSString * walletKeyStore = [NSString generateKeyStoreWithPW:PW key:walletPrivateKey];
+    if (walletKeyStore == nil) {
+        [MBProgressHUD hideHUD];
+        [MBProgressHUD showTipMessageInWindow:Localized(@"OldPasswordIncorrect")];
+        return;
+    }
+    NSString * randomKey;
+    if (NotNULLString(walletModel.randomNumber)) {
+        NSData * random = [NSString decipherKeyStoreWithPW:oldPW randomKeyStoreValueStr:walletModel.randomNumber];
+        if (random == nil) {
+            [MBProgressHUD hideHUD];
+            [MBProgressHUD showTipMessageInWindow:Localized(@"OldPasswordIncorrect")];
+            return;
+        }
+        randomKey = [NSString generateKeyStoreWithPW:PW randomKey:random];
+        if (randomKey == nil) {
+            [MBProgressHUD hideHUD];
+            [MBProgressHUD showTipMessageInWindow:Localized(@"ModifyPasswordFailure")];
+            return;
+        }
+    }
+    WalletModel * mode = walletModel;
+    mode.randomNumber = randomKey;
+    mode.walletKeyStore = walletKeyStore;
+    if(success != nil)
+    {
+        [MBProgressHUD hideHUD];
+        success(mode);
+    }
 }
 #pragma mark - 转账
 // Transfer accounts

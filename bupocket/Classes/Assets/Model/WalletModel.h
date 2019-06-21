@@ -19,6 +19,9 @@ NS_ASSUME_NONNULL_BEGIN
 /** 通过钱包私钥和密码生成的keystore */
 @property (nonatomic, strong) NSString * walletKeyStore;
 
+/** 通过keystone存储的随机数 */
+@property (nonatomic, strong) NSString * randomNumber;
+
 @end
 
 NS_ASSUME_NONNULL_END

@@ -12,8 +12,16 @@ NS_ASSUME_NONNULL_BEGIN
 
 @interface TextFieldViewCell : UITableViewCell
 
-+ (instancetype)cellWithTableView:(UITableView *)tableView identifier:(NSString *)identifier;
+typedef NS_ENUM(NSInteger, TextFieldCellType) {
+    TextFieldCellDefault,
+    TextFieldCellPWDefault,
+    TextFieldCellNormal, // 圆角
+    TextFieldCellPWNormal
+};
 
++ (instancetype)cellWithTableView:(UITableView *)tableView cellType:(TextFieldCellType)cellType;
+
+@property (nonatomic, strong) UIView * listBg;
 @property (nonatomic, strong) UILabel * title;
 @property (nonatomic, strong) UITextField * textField;
 @property (nonatomic, strong) UIView * line;

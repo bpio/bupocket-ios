@@ -20,7 +20,7 @@
         self.contentInset = UIEdgeInsetsMake(0, 0, EDGEINSET_WIDTH, 0);
         //Prevent jitter in spelling and typing（防止在拼音打字时抖动）
         self.layoutManager.allowsNonContiguousLayout = NO;
-        self.font = TITLE_FONT;
+        self.font = FONT_TITLE;
         self.textColor = COLOR_6;
         self.placeholderColor = PLACEHOLDER_COLOR;
         [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(textDidChange) name:UITextViewTextDidChangeNotification object:self];

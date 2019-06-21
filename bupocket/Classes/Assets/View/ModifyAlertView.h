@@ -11,6 +11,12 @@
 
 NS_ASSUME_NONNULL_BEGIN
 
+typedef NS_ENUM(NSInteger, ModifyType) {
+    ModifyTypeWalletName,
+    ModifyTypeNodeAdd,
+    ModifyTypeNodeEdit
+};
+
 typedef void (^OnCancleClick)(void);
 typedef void (^OnSureClick)(NSString * text);
 
@@ -19,7 +25,7 @@ typedef void (^OnSureClick)(NSString * text);
 @property (nonatomic, copy) OnCancleClick cancleBlock;
 @property (nonatomic, copy) OnSureClick sureBlock;
 
-- (instancetype)initWithText:(NSString *)text confrimBolck:(void (^)(NSString * text))confrimBlock cancelBlock:(void (^)(void))cancelBlock;
+- (instancetype)initWithTitle:(NSString *)title placeholder:(NSString *)placeholder modifyType:(ModifyType)modifyType confrimBolck:(void (^)(NSString * text))confrimBlock cancelBlock:(void (^)(void))cancelBlock;
 
 @end
 

@@ -183,7 +183,7 @@ static NSInteger const TxInfoNormalCount = 6;
             make.width.mas_lessThanOrEqualTo(DEVICE_WIDTH - Margin_40);
         }];
         _state = [[UILabel alloc] init];
-        _state.font = TITLE_FONT;
+        _state.font = FONT_TITLE;
         _state.textColor = COLOR_6;
         [self.headerViewBg addSubview:_state];
         [_state mas_makeConstraints:^(MASConstraintMaker *make) {

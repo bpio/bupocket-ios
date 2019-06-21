@@ -11,7 +11,9 @@
 @interface CreateTipsAlertView()
 
 @property (nonatomic, strong) CustomButton * promptBtn;
-@property (nonatomic, strong) UILabel * title;
+@property (nonatomic, strong) UIButton * prompt1;
+@property (nonatomic, strong) UIButton * prompt2;
+@property (nonatomic, strong) UIButton * prompt3;
 @property (nonatomic, strong) UIButton * sureBtn;
 
 @end
@@ -24,12 +26,9 @@
     if (self) {
         _sureBlock = confrimBlock;
         [self setupView];
-        
-        NSString * warnStr = Localized(@"CreatePWWarn");
-        NSString * infoStr = Localized(@"CryptographicFormat");
-        NSString * titleStr = [NSString stringWithFormat:@"%@\n%@", warnStr, infoStr];
-        _title.attributedText = [Encapsulation attrWithString:titleStr preFont:FONT(15) preColor:WARNING_COLOR index:warnStr.length sufFont:FONT(15) sufColor:TITLE_COLOR lineSpacing:Margin_5];
-        CGFloat height = [Encapsulation getSizeSpaceLabelWithStr:titleStr font:FONT(15) width:(DEVICE_WIDTH - ScreenScale(80)) height:CGFLOAT_MAX lineSpacing:Margin_5].height + ScreenScale(210);
+//        NSString * prompt = [NSString stringWithFormat:@"%@\n%@\n%@", self.prompt1.titleLabel.attributedText.string, self.prompt2.titleLabel.attributedText.string, self.prompt3.titleLabel.attributedText.string];
+//        CGFloat height = [Encapsulation getSizeSpaceLabelWithStr:prompt font:FONT(13) width:(DEVICE_WIDTH - ScreenScale(80)) height:CGFLOAT_MAX lineSpacing:Margin_5].height + ScreenScale(220);
+        CGFloat height = self.prompt1.size.height + self.prompt2.size.height + self.prompt3.size.height + ScreenScale(210);
         self.bounds = CGRectMake(0, 0, DEVICE_WIDTH - Margin_40, height);
     }
     return self;
@@ -42,7 +41,12 @@
     
     [self addSubview:self.promptBtn];
     
-    [self addSubview:self.title];
+    self.prompt1 = [self setupButtonWithTitle:Localized(@"PWPrompt1")];
+    [self addSubview:self.prompt1];
+    self.prompt2 = [self setupButtonWithTitle:Localized(@"PWPrompt2")];
+    [self addSubview:self.prompt2];
+    self.prompt3 = [self setupButtonWithTitle:Localized(@"PWPrompt3")];
+    [self addSubview:self.prompt3];
     
     [self addSubview:self.sureBtn];
 }
@@ -51,20 +55,32 @@
 {
     [super layoutSubviews];
     [self.promptBtn mas_makeConstraints:^(MASConstraintMaker *make) {
-        make.top.equalTo(self.mas_top).offset(Margin_10);
+        make.top.equalTo(self.mas_top).offset(Margin_15);
         make.centerX.equalTo(self);
-        make.height.mas_equalTo(ScreenScale(120));
+        make.height.mas_equalTo(ScreenScale(100));
     }];
     
-    [self.title mas_makeConstraints:^(MASConstraintMaker *make) {
-        make.top.equalTo(self.promptBtn.mas_bottom);
+    [self.prompt1 mas_makeConstraints:^(MASConstraintMaker *make) {
+        make.top.equalTo(self.promptBtn.mas_bottom).offset(Margin_5);
         make.left.equalTo(self).offset(Margin_20);
         make.right.equalTo(self).offset(-Margin_20);
+        make.height.mas_equalTo(self.prompt1.height);
+    }];
+    
+    [self.prompt2 mas_makeConstraints:^(MASConstraintMaker *make) {
+        make.top.equalTo(self.prompt1.mas_bottom).offset(Margin_10);
+        make.left.right.equalTo(self.prompt1);
+        make.height.mas_equalTo(self.prompt2.height);
+    }];
+    [self.prompt3 mas_makeConstraints:^(MASConstraintMaker *make) {
+        make.top.equalTo(self.prompt2.mas_bottom).offset(Margin_10);
+        make.left.right.equalTo(self.prompt1);
+        make.height.mas_equalTo(self.prompt3.height);
     }];
     
     [self.sureBtn mas_makeConstraints:^(MASConstraintMaker *make) {
-        make.bottom.equalTo(self.mas_bottom).offset(-Margin_20);
-        make.left.right.equalTo(self.title);
+//        make.top.equalTo(self.prompt3.mas_bottom).offset(Margin_15);
+        make.left.right.bottom.equalTo(self);
         make.height.mas_equalTo(MAIN_HEIGHT);
     }];
 }
@@ -73,25 +89,31 @@
     if (!_promptBtn) {
         _promptBtn = [[CustomButton alloc] init];
         _promptBtn.layoutMode = VerticalNormal;
-        _promptBtn.titleLabel.font = FONT(21);
-        [_promptBtn setTitle:Localized(@"CreatePWPrompt") forState:UIControlStateNormal];
+        _promptBtn.titleLabel.font = FONT_Bold(15);
+        [_promptBtn setTitle:Localized(@"PromptTitle") forState:UIControlStateNormal];
         [_promptBtn setTitleColor:TITLE_COLOR forState:UIControlStateNormal];
-        [_promptBtn setImage:[UIImage imageNamed:@"createPrompt"] forState:UIControlStateNormal];
+        [_promptBtn setImage:[UIImage imageNamed:@"PWPrompt"] forState:UIControlStateNormal];
     }
     return _promptBtn;
 }
-- (UILabel *)title
+- (UIButton *)setupButtonWithTitle:(NSString *)title
 {
-    if (!_title) {
-        _title = [[UILabel alloc] init];
-        _title.numberOfLines = 0;
-    }
-    return _title;
+    UIButton * prompt = [UIButton buttonWithType:UIButtonTypeCustom];
+    [prompt setAttributedTitle:[Encapsulation attrWithString:title preFont:FONT(13) preColor:COLOR_6 index:0 sufFont:FONT(13) sufColor:COLOR_6 lineSpacing:Margin_5] forState:UIControlStateNormal];
+    prompt.titleLabel.numberOfLines = 0;
+    prompt.contentHorizontalAlignment = UIControlContentHorizontalAlignmentLeft;
+    CGSize maximumSize = CGSizeMake(DEVICE_WIDTH - ScreenScale(80), CGFLOAT_MAX);
+    CGSize expectSize = [prompt.titleLabel sizeThatFits:maximumSize];
+    prompt.size = expectSize;
+    return prompt;
 }
+
 - (UIButton *)sureBtn
 {
     if (!_sureBtn) {
-        _sureBtn = [UIButton createButtonWithTitle:Localized(@"Confirm") isEnabled:YES Target:self Selector:@selector(sureBtnClick)];
+        _sureBtn = [UIButton createButtonWithTitle:Localized(@"IGotIt") TextFont:FONT_16 TextNormalColor:MAIN_COLOR TextSelectedColor:MAIN_COLOR Target:self Selector:@selector(sureBtnClick)];
+        _sureBtn.size = CGSizeMake(DEVICE_WIDTH - Margin_40, MAIN_HEIGHT);
+        [UIView setViewBorder:_sureBtn color:LINE_COLOR border:LINE_WIDTH type:UIViewBorderLineTypeTop];
     }
     return _sureBtn;
 }

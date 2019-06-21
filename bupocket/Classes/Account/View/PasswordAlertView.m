@@ -66,7 +66,7 @@
     }];
     
     _promptLabel = [UILabel new];
-    _promptLabel.font = TITLE_FONT;
+    _promptLabel.font = FONT_TITLE;
     _promptLabel.numberOfLines = 0;
     _promptLabel.textAlignment = NSTextAlignmentCenter;
     [self addSubview:_promptLabel];
@@ -79,7 +79,7 @@
     UITextField * PWTextField = [[UITextField alloc] init];
     PWTextField.delegate = self;
     PWTextField.textColor = TITLE_COLOR;
-    PWTextField.font = TITLE_FONT;
+    PWTextField.font = FONT_TITLE;
     PWTextField.layer.cornerRadius = ScreenScale(3);
     PWTextField.layer.borderColor = LINE_COLOR.CGColor;
     PWTextField.layer.borderWidth = LINE_WIDTH;
@@ -150,8 +150,11 @@
 - (void)checkPassword:(NSString *)password
 {
     if (self.passwordType == PWTypeBackUpID || self.passwordType == PWTypeDataReinforcement) {
+        if (!NotNULLString(self.randomNumber)) {
+            self.randomNumber = [[AccountTool shareTool] account].randomNumber;
+        }
         // Identity password
-        NSData * random = [NSString decipherKeyStoreWithPW:password randomKeyStoreValueStr:[[AccountTool shareTool] account].randomNumber];
+        NSData * random = [NSString decipherKeyStoreWithPW:password randomKeyStoreValueStr:self.randomNumber];
         if (random) {
             NSArray * words = [Mnemonic generateMnemonicCode: random];
             [MBProgressHUD hideHUD];
