@@ -67,8 +67,11 @@
 }
 - (CGFloat)tableView:(UITableView *)tableView heightForFooterInSection:(NSInteger)section
 {
-    if (section == 2 && ![self.walletModel.walletAddress isEqualToString:[[[AccountTool shareTool] account] walletAddress]]) {
-        return ScreenScale(200);
+    if (section == 2) {
+        if (![self.walletModel.walletAddress isEqualToString:[[[AccountTool shareTool] account] walletAddress]]) {
+             return ScreenScale(150) + SafeAreaBottomH;
+        }
+        return SafeAreaBottomH;
     } else {
         return CGFLOAT_MIN;
     }
@@ -77,14 +80,15 @@
 {
     //    if (section == 0 || [self.walletModel.walletAddress isEqualToString:[[[AccountTool shareTool] account] walletAddress]]) {
     if (section == 2 && ![self.walletModel.walletAddress isEqualToString:[[[AccountTool shareTool] account] walletAddress]]) {
-        UIView * footerView = [[UIView alloc] initWithFrame:CGRectMake(0, 0, DEVICE_WIDTH, ScreenScale(200))];
+        UIView * footerView = [[UIView alloc] initWithFrame:CGRectMake(0, 0, DEVICE_WIDTH, ScreenScale(150))];
         CGSize btnSize = CGSizeMake(DEVICE_WIDTH - Margin_30, MAIN_HEIGHT);
         UIButton * deleteBtn = [UIButton createButtonWithTitle:Localized(@"DeleteWallet") isEnabled:YES Target:self Selector:@selector(deleteAction)];
         [deleteBtn setTitleColor:WARNING_COLOR forState:UIControlStateNormal];
         deleteBtn.backgroundColor = [UIColor whiteColor];
         [footerView addSubview:deleteBtn];
         [deleteBtn mas_makeConstraints:^(MASConstraintMaker *make) {
-            make.bottom.equalTo(footerView);
+            make.top.equalTo(footerView.mas_top).offset(ScreenScale(90));
+//            make.bottom.equalTo(footerView);
             make.centerX.equalTo(footerView);
             make.size.mas_equalTo(btnSize);
         }];
@@ -209,6 +213,9 @@
         [alertView.PWTextField becomeFirstResponder];
     } else if (indexPath.section == 2) {
         ChangePasswordViewController * VC = [[ChangePasswordViewController alloc] init];
+        VC.walletModel = self.walletModel;
+        VC.walletArray = self.walletArray;
+        VC.index = self.index;
         [self.navigationController pushViewController:VC animated:NO];
     }
 }

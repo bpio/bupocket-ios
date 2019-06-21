@@ -129,6 +129,23 @@
     [confirmAction setValue:MAIN_COLOR forKey:@"titleTextColor"];
     [[[UIApplication sharedApplication] keyWindow].rootViewController presentViewController:alertController animated:YES completion:nil];
 }
++ (void)showAlertControllerWithTitle:(NSString *)title messageAttr:(NSAttributedString *)messageAttr cancelHandler:(void(^)(UIAlertAction * action))cancelHandler confirmHandler:(void(^)(UIAlertAction * action))confirmHandler
+{    
+    UIAlertController * alertController = [UIAlertController alertControllerWithTitle:title message:@"" preferredStyle:UIAlertControllerStyleAlert];
+    UIAlertAction * cancelAction = [UIAlertAction actionWithTitle:Localized(@"UpdateLater") style:UIAlertActionStyleCancel handler:cancelHandler];
+    [alertController addAction:cancelAction];
+    UIAlertAction * confirmAction = [UIAlertAction actionWithTitle:Localized(@"UpdateImmediately") style:UIAlertActionStyleDefault handler:confirmHandler];
+    [alertController addAction:confirmAction];
+    UIView * alertBg = alertController.view.subviews[0].subviews[0].subviews[0];
+    alertBg.backgroundColor = [UIColor whiteColor];
+    alertBg.layer.cornerRadius = BG_CORNER;
+    UILabel * messageLabel = alertBg.subviews[0].subviews[0].subviews[2];
+    [alertController setValue:messageAttr forKey:@"attributedMessage"];
+    messageLabel.textAlignment = NSTextAlignmentLeft;
+    [cancelAction setValue:COLOR_9 forKey:@"titleTextColor"];
+    [confirmAction setValue:MAIN_COLOR forKey:@"titleTextColor"];
+    [[[UIApplication sharedApplication] keyWindow].rootViewController presentViewController:alertController animated:YES completion:nil];
+}
 + (void)showAlertControllerWithMessage:(NSString *)message handler:(void(^)(UIAlertAction * action))handle
 {
     UIAlertController * alertController = [UIAlertController alertControllerWithTitle:nil message:message preferredStyle:UIAlertControllerStyleAlert];

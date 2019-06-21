@@ -32,6 +32,7 @@
 "PWPlaceholder" = "6-30个字符，大小写字母和数字任意两种组合";
 "PWErrorPrompt" = "密码必须是6-30个字符，大小写字母和数字任意两种的组合";
 "ConfirmPassword" = "请再次确认安全密码";
+"ConfirmPWPlaceholder" = "请再次输入安全密码";
 //"SetPassword" = "请设置密码";
 //"ConfirmPassword" = "请再次确认密码";
 //"Create" = "创建";
@@ -92,7 +93,7 @@
 
 "Setting" = "设置";
 "AddressBook" = "地址簿";
-"ModifyPassword" = "修改身份密码";
+//"ModifyPassword" = "修改身份密码";
 "ModifyIdentityPassword" = "修改身份密码";
 //"Feedback" = "帮助与反馈";
 "MultiLingual" = "多语言";
@@ -108,12 +109,21 @@
 "ExitCurrentIdentityPrompt" = "即将退出当前身份，请确保身份已备份";
 "IdentityIDInfo" = "用来维护你存储在区块链上的数据，这些信息会以分布式存储的方式进行保存，只有拥有该身份的人可以动用数据，充分确保你的数据主权不受侵犯。";
 // 修改密码
-"OldPassword" = "旧密码";
-"NewPassword" = "新密码";
-"ConfirmedPassword" = "确认密码";
-"PleaseEnterOldPW" = "请输入旧密码";
-"PleaseEnterNewPW" = "请输入新密码";
+"ModifyPassword" = "修改安全密码";
+"WalletInformation" = "钱包信息";
+"OldPassword" = "请输入原安全密码";
+"PleaseEnterOldPW" = "请输入当前钱包的安全密码";
+"NewPassword" = "请设置新安全密码";
+"ConfirmedPassword" = "再次确认新安全密码";
+"ConfirmedPWPlaceholder" = "请再次输入新安全密码";
+"ConfirmModify" = "确认修改";
+//"OldPassword" = "旧密码";
+//"NewPassword" = "新密码";
+//"ConfirmedPassword" = "确认密码";
+//"PleaseEnterOldPW" = "请输入旧密码";
+//"PleaseEnterNewPW" = "请输入新密码";
 "ModifyPasswordFailure" = "旧密码错误";
+"PasswordDuplicate" = "密码重复，请重新设置";
 // 帮助与反馈
 "QuestionsOrSuggestions" = "您遇到的问题或建议";
 "YourContact" = "您的联系方式";
@@ -129,11 +139,17 @@
 "AddNodePrompt" = "请输入有效的节点地址";
 "EditNodePrompt" = "编辑节点地址";
 "InvalidNodeURL" = "无效的节点地址";
+"NodeDuplication" = "节点重复，请重新设置";
 // 关于我们
 "Current version: %@" = "当前版本: %@";
 "VersionLog" = "版本日志";
 "VersionUpdate" = "版本更新";
 "CustomEnvironment" = "自定义环境";
+
+"NewVersionTitle%@" = "\nV%@新版本上线";
+"NewVersionContent%@" = "\n新版本内容更新：\n%@";
+"UpdateLater" = "稍后更新";
+"UpdateImmediately" = "立即更新";
 // 切换网络
 "SwitchToTestNetwork" = "是否切换为测试网？";
 "YES" = "是";

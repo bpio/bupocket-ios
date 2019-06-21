@@ -25,6 +25,7 @@
 #import "DistributionResultsViewController.h"
 #import "WalletManagementViewController.h"
 #import "WalletDetailsViewController.h"
+#import "ChangePasswordViewController.h"
 #import "ImportWalletViewController.h"
 #import "ExportKeystoreViewController.h"
 #import "ExportPrivateKeyViewController.h"
@@ -90,6 +91,7 @@
                              [viewController isKindOfClass:[DistributionResultsViewController class]] ||
                              [viewController isKindOfClass:[WalletManagementViewController class]] ||
                              [viewController isKindOfClass:[WalletDetailsViewController class]] ||
+                             [viewController isKindOfClass:[ChangePasswordViewController class]] ||
                              [viewController isKindOfClass:[RequestTimeoutViewController class]] ||
                              [viewController isKindOfClass:[NodeTransferSuccessViewController class]] ||
                              [viewController isKindOfClass:[OrderDetailsViewController class]] ||

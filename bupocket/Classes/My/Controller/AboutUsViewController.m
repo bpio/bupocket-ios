@@ -134,32 +134,34 @@
 }
 - (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath
 {
-    [tableView deselectRowAtIndexPath:indexPath animated:YES];
+    [tableView deselectRowAtIndexPath:indexPath animated:NO];
     if (indexPath.section == 0) {
         if (indexPath.row == 0) {
             VersionLogViewController * VC = [[VersionLogViewController alloc] init];
             [self.navigationController pushViewController:VC animated:NO];
         } else if (indexPath.row == 1) {
-            BOOL result = [App_Version compare:self.versionModel.verNumber] == NSOrderedAscending;
-            if (result) {
-                NSString * updateContent = nil;
-                if ([CurrentAppLanguage hasPrefix:ZhHans]) {
-                    updateContent = self.versionModel.verContents;
-                } else {
-                    updateContent = self.versionModel.englishVerContents;
-                }
-                [Encapsulation showAlertControllerWithTitle:Localized(@"V1.6.1新版本上线") message:updateContent cancelHandler:^(UIAlertAction *action) {
-                    [[UIApplication sharedApplication] openURL:[NSURL URLWithString:self.versionModel.downloadLink]];
-                } confirmHandler:^(UIAlertAction *action) {
-                    
-                }];
-//                VersionUpdateAlertView * alertView = [[VersionUpdateAlertView alloc] initWithUpdateVersionNumber:self.versionModel.verNumber versionSize:self.versionModel.appSize content:updateContent verType:self.versionModel.verType confrimBolck:^{
-//                    [[UIApplication sharedApplication] openURL:[NSURL URLWithString:self.versionModel.downloadLink]];
-//                } cancelBlock:^{
-//
-//                }];
-//                [alertView showInWindowWithMode:CustomAnimationModeDisabled inView:nil bgAlpha:AlertBgAlpha needEffectView:NO];
-            }
+             BOOL result = [App_Version compare:self.versionModel.verNumber] == NSOrderedAscending;
+             if (result) {
+             NSString * updateContent = nil;
+             if ([CurrentAppLanguage hasPrefix:ZhHans]) {
+             updateContent = self.versionModel.verContents;
+             } else {
+             updateContent = self.versionModel.englishVerContents;
+             }
+             NSAttributedString * attr = [Encapsulation attrWithString:[NSString stringWithFormat:Localized(@"NewVersionContent%@"), updateContent] preFont:FONT_15 preColor:TITLE_COLOR index:8 sufFont:FONT_TITLE sufColor:COLOR_6 lineSpacing:Margin_10];
+             [Encapsulation showAlertControllerWithTitle:[NSString stringWithFormat: Localized(@"NewVersionTitle%@"), self.versionModel.verNumber]  messageAttr:attr cancelHandler:^(UIAlertAction *action) {
+             
+             } confirmHandler:^(UIAlertAction *action) {
+             [[UIApplication sharedApplication] openURL:[NSURL URLWithString:self.versionModel.downloadLink]];
+             
+             }];
+             }
+            //                VersionUpdateAlertView * alertView = [[VersionUpdateAlertView alloc] initWithUpdateVersionNumber:self.versionModel.verNumber versionSize:self.versionModel.appSize content:updateContent verType:self.versionModel.verType confrimBolck:^{
+            //                    [[UIApplication sharedApplication] openURL:[NSURL URLWithString:self.versionModel.downloadLink]];
+            //                } cancelBlock:^{
+            //
+            //                }];
+            //                [alertView showInWindowWithMode:CustomAnimationModeDisabled inView:nil bgAlpha:AlertBgAlpha needEffectView:NO];
         }
     }
 }

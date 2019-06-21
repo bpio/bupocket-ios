@@ -12,14 +12,13 @@
 #import "RegisteredModel.h"
 #import "TransactionResultModel.h"
 #import "ConfirmTransactionModel.h"
-
+#import "WalletModel.h"
 #import "DposModel.h"
 
 typedef NS_ENUM(NSInteger, AccountDataType) {
     AccountDataCreateID,
     AccountDataCreateWallet,
     AccountDataRecoveryID,
-    AccountDataChangePW,
     AccountDataSafe
 };
 
@@ -209,6 +208,10 @@ typedef NS_ENUM(NSInteger, AccountDataType) {
                   walletAddress:(NSString *)walletAddress
                  walletKeyStore:(NSString *)walletKeyStore
                    randomNumber:(NSString *)randomNumber;
+- (void)modifyPasswordWithOldPW:(NSString *)oldPW
+                             PW:(NSString *)PW
+                    walletModel:(WalletModel *)walletModel
+                        success:(void (^)(id responseObject))success;
 #pragma mark - 转账
 // Transfer accounts
 - (BOOL)setTransferDataWithTokenType:(NSInteger)tokenType

@@ -30,9 +30,6 @@
 
 @end
 
-static NSString * const TextFieldCellID = @"TextFieldCellID";
-static NSString * const TextFieldPWCellID = @"TextFieldPWCellID";
-
 @implementation ImportWalletModeViewController
 
 - (NSMutableArray *)listArray
@@ -90,7 +87,7 @@ static NSString * const TextFieldPWCellID = @"TextFieldPWCellID";
     self.import = [UIButton createButtonWithTitle:Localized(@"StartImporting") isEnabled:NO Target:self Selector:@selector(importAction)];
     [footerView addSubview:self.import];
     
-    self.listArray = [NSMutableArray arrayWithObjects:@[Localized(@"SetWalletName"), Localized(@"EnterWalletName")], @[Localized(@"SetPassword"), Localized(@"PWPlaceholder")], @[Localized(@"ConfirmPassword"), Localized(@"ConfirmPassword")], nil];
+    self.listArray = [NSMutableArray arrayWithObjects:@[Localized(@"SetWalletName"), Localized(@"EnterWalletName")], @[Localized(@"SetPassword"), Localized(@"PWPlaceholder")], @[Localized(@"ConfirmPassword"), Localized(@"ConfirmPWPlaceholder")], nil];
     NSArray * textArray = @[@[Localized(@"MnemonicPrompt"), Localized(@"MnemonicPlaceholder"), Localized(@"UnderstandingMnemonics")], @[Localized(@"PleaseEnterPrivateKey"), Localized(@"PleaseEnterPrivateKey"), Localized(@"UnderstandingPrivateKey")], @[Localized(@"ImportKeystorePrompt"), Localized(@"PleaseEnterKeystore"), Localized(@"UnderstandingKeystore")]];
     importPrompt.text = textArray[self.importWalletMode][0];
     self.importText.placeholder = textArray[self.importWalletMode][1];
@@ -152,11 +149,8 @@ static NSString * const TextFieldPWCellID = @"TextFieldPWCellID";
 }
 - (UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath
 {
-    NSString * cellID = TextFieldPWCellID;
-    if (indexPath.row == 0) {
-        cellID = TextFieldCellID;
-    }
-    TextFieldViewCell * cell = [TextFieldViewCell cellWithTableView:tableView identifier:cellID];
+    TextFieldCellType  cellType = (indexPath.row == 0) ? TextFieldCellDefault : TextFieldCellPWDefault;
+    TextFieldViewCell * cell = [TextFieldViewCell cellWithTableView:tableView cellType: cellType];
     cell.title.text = [self.listArray[indexPath.row] firstObject];
     cell.textField.placeholder = [self.listArray[indexPath.row] lastObject];
     cell.selectionStyle = UITableViewCellSelectionStyleNone;

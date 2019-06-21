@@ -30,8 +30,6 @@
 
 @end
 
-static NSString * const TextFieldCellID = @"TextFieldCellID";
-static NSString * const TextFieldPWCellID = @"TextFieldPWCellID";
 
 @implementation RestoreIdentityViewController
 
@@ -47,7 +45,7 @@ static NSString * const TextFieldPWCellID = @"TextFieldPWCellID";
 {
     [super viewDidLoad];
     self.navigationItem.title = Localized(@"RestoreIdentity");
-    self.listArray = [NSMutableArray arrayWithObjects:@[Localized(@"RecoveryIDName"), Localized(@"IDNamePlaceholder")], @[Localized(@"SetPassword"), Localized(@"PWPlaceholder")], @[Localized(@"ConfirmPassword"), Localized(@"ConfirmPassword")], nil];
+    self.listArray = [NSMutableArray arrayWithObjects:@[Localized(@"RecoveryIDName"), Localized(@"IDNamePlaceholder")], @[Localized(@"SetPassword"), Localized(@"PWPlaceholder")], @[Localized(@"ConfirmPassword"), Localized(@"ConfirmPWPlaceholder")], nil];
     [self setupView];
     [self showCreateTips];
 }
@@ -166,11 +164,8 @@ static NSString * const TextFieldPWCellID = @"TextFieldPWCellID";
 }
 - (UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath
 {
-    NSString * cellID = TextFieldPWCellID;
-    if (indexPath.row == 0) {
-        cellID = TextFieldCellID;
-    }
-    TextFieldViewCell * cell = [TextFieldViewCell cellWithTableView:tableView identifier:cellID];
+    TextFieldCellType  cellType = (indexPath.row == 0) ? TextFieldCellDefault : TextFieldCellPWDefault;
+    TextFieldViewCell * cell = [TextFieldViewCell cellWithTableView:tableView cellType: cellType];
     cell.title.text = [self.listArray[indexPath.row] firstObject];
     cell.textField.placeholder = [self.listArray[indexPath.row] lastObject];
     cell.selectionStyle = UITableViewCellSelectionStyleNone;

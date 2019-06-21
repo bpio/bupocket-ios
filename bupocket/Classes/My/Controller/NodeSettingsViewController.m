@@ -87,7 +87,7 @@
     ModifyAlertView * alertView = [[ModifyAlertView alloc] initWithTitle:title placeholder:placeholder modifyType:modifyType confrimBolck:^(NSString * _Nonnull text) {
         if ([self.listArray containsObject:text]) {
             if ([self.listArray indexOfObject:text] != index || modifyType == ModifyTypeNodeAdd) {
-                [Encapsulation showAlertControllerWithErrorMessage:Localized(@"重复添加节点") handler:nil];
+                [Encapsulation showAlertControllerWithErrorMessage:Localized(@"NodeDuplication") handler:nil];
             }
             return;
         }

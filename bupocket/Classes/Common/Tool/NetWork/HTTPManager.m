@@ -935,10 +935,7 @@ static int64_t const gasPrice = 1000;
                 } else if (accountDataType == AccountDataRecoveryID) {
 //                    [MBProgressHUD showTipMessageInWindow:Localized(@"MnemonicIsIncorrect")];
                     [Encapsulation showAlertControllerWithErrorMessage:Localized(@"MnemonicIsIncorrect") handler:nil];
-                } else if (accountDataType == AccountDataChangePW) {
-//                    [MBProgressHUD showTipMessageInWindow:Localized(@"ModifyPasswordFailure")];
-                    [Encapsulation showAlertControllerWithErrorMessage:Localized(@"ModifyPasswordFailure") handler:nil];
-                } else if (accountDataType == AccountDataChangePW) {
+                } else if (accountDataType == AccountDataSafe) {
 //                    [MBProgressHUD showTipMessageInWindow:Localized(@"PasswordIsIncorrect")];
                     [Encapsulation showAlertControllerWithErrorMessage:Localized(@"PasswordIsIncorrect") handler:nil];
                 }
@@ -1005,6 +1002,7 @@ static int64_t const gasPrice = 1000;
         }];
     }];
 }
+
 - (BOOL)setWalletDataWalletName:(NSString *)walletName
                   walletAddress:(NSString *)walletAddress
                  walletKeyStore:(NSString *)walletKeyStore
@@ -1034,6 +1032,48 @@ static int64_t const gasPrice = 1000;
         [[WalletTool shareTool] save:importedWallet];
     }
     return success;
+}
+- (void)modifyPasswordWithOldPW:(NSString *)oldPW
+                             PW:(NSString *)PW
+                    walletModel:(WalletModel *)walletModel
+                        success:(void (^)(id responseObject))success
+{
+    [MBProgressHUD showActivityMessageInWindow:Localized(@"Loading")];
+    NSString * walletPrivateKey = [NSString decipherKeyStoreWithPW:oldPW keyStoreValueStr:walletModel.walletKeyStore];
+    if ([Tools isEmpty:walletPrivateKey]) {
+        [MBProgressHUD hideHUD];
+        [MBProgressHUD showTipMessageInWindow:Localized(@"OldPasswordIncorrect")];
+        return;
+    }
+    NSString * walletKeyStore = [NSString generateKeyStoreWithPW:PW key:walletPrivateKey];
+    if (walletKeyStore == nil) {
+        [MBProgressHUD hideHUD];
+        [MBProgressHUD showTipMessageInWindow:Localized(@"OldPasswordIncorrect")];
+        return;
+    }
+    NSString * randomKey;
+    if (NotNULLString(walletModel.randomNumber)) {
+        NSData * random = [NSString decipherKeyStoreWithPW:oldPW randomKeyStoreValueStr:walletModel.randomNumber];
+        if (random == nil) {
+            [MBProgressHUD hideHUD];
+            [MBProgressHUD showTipMessageInWindow:Localized(@"OldPasswordIncorrect")];
+            return;
+        }
+        randomKey = [NSString generateKeyStoreWithPW:PW randomKey:random];
+        if (randomKey == nil) {
+            [MBProgressHUD hideHUD];
+            [MBProgressHUD showTipMessageInWindow:Localized(@"ModifyPasswordFailure")];
+            return;
+        }
+    }
+    WalletModel * mode = walletModel;
+    mode.randomNumber = randomKey;
+    mode.walletKeyStore = walletKeyStore;
+    if(success != nil)
+    {
+        [MBProgressHUD hideHUD];
+        success(mode);
+    }
 }
 #pragma mark - 转账
 // Transfer accounts

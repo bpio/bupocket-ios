@@ -36,6 +36,7 @@
 "PWPlaceholder" = "6-30个字符，大小写字母和数字任意两种组合";
 "PWErrorPrompt" = "密码必须是6-30个字符，大小写字母和数字任意两种的组合";
 "ConfirmPassword" = "请再次确认安全密码";
+"ConfirmPWPlaceholder" = "请再次输入安全密码";
 //"SetPassword" = "Please set your password";
 //"ConfirmPassword" = "Please confirm your password";
 //"Create" = "Create";
@@ -95,7 +96,7 @@
 
 "Setting" = "Setting";
 "AddressBook" = "Address Book";
-"ModifyPassword" = "Modify password";
+//"ModifyPassword" = "Modify password";
 "ModifyIdentityPassword" = "Change the Identity Password";
 //"Feedback" = "Feedback";
 "MultiLingual" = "Languages";
@@ -111,12 +112,21 @@
 "IdentityIDInfo" = "It is used to secure the data that you store on the blockchain, which is stored in a distributed manner. Only those who have the identity can use the data, so as to ensure that your data sovereignty is not violated";
 "ExitCurrentIdentityPrompt" = "The identity will be removed soon. Please ensure that your identity has been backed up";
 // Revise password
-"OldPassword" = "Old password";
-"NewPassword" = "New password";
-"ConfirmedPassword" = "Confirm password";
-"PleaseEnterOldPW" = "Please enter the old password";
-"PleaseEnterNewPW" = "Please enter the new password";
+"ModifyPassword" = "修改安全密码";
+"WalletInformation" = "钱包信息";
+"OldPassword" = "请输入原安全密码";
+"PleaseEnterOldPW" = "请输入当前钱包的安全密码";
+"NewPassword" = "请设置新安全密码";
+"ConfirmedPassword" = "再次确认新安全密码";
+"ConfirmedPWPlaceholder" = "请再次输入新安全密码";
+"ConfirmModify" = "确认修改";
+//"OldPassword" = "Old password";
+//"NewPassword" = "New password";
+//"ConfirmedPassword" = "Confirm password";
+//"PleaseEnterOldPW" = "Please enter the old password";
+//"PleaseEnterNewPW" = "Please enter the new password";
 "ModifyPasswordFailure" = "Old password error";
+"PasswordDuplicate" = "密码重复，请重新设置";
 // Feedback
 "QuestionsOrSuggestions" = "Your questions or suggestions";
 "YourContact" = "Your contacts";
@@ -132,11 +142,17 @@
 "AddNodePrompt" = "请输入有效的节点地址";
 "EditNodePrompt" = "编辑节点地址";
 "InvalidNodeURL" = "无效的节点地址";
+"NodeDuplication" = "节点重复，请重新设置";
 // 关于我们
 "Current version: %@" = "当前版本: %@";
 "VersionLog" = "版本日志";
 "VersionUpdate" = "版本更新";
 "CustomEnvironment" = "自定义环境";
+
+"NewVersionTitle%@" = "\nV%@新版本上线";
+"NewVersionContent%@" = "\n新版本内容更新：\n%@";
+"UpdateLater" = "稍后更新";
+"UpdateImmediately" = "立即更新";
 // Switch network
 "SwitchToTestNetwork" = "Whether to switch to the test network?";
 "YES" = "Yes";
