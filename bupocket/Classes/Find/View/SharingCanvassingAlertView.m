@@ -210,7 +210,7 @@
 {
     [self hideView];
     dispatch_after(dispatch_time(DISPATCH_TIME_NOW, (int64_t)(Dispatch_After_Time * NSEC_PER_SEC)), dispatch_get_main_queue(), ^{
-        UIImage * shareImage = [self mergedImage];
+        UIImage * shareImage = [Encapsulation mergedImageWithMainImage:self.imageBg];
         if (button.tag == 0) {
             [WechatTool wechatShareWithImage:shareImage];
         } else if (button.tag == 1) {
@@ -246,18 +246,6 @@
         _confrimClick(@"");
     }
 }
-
-#pragma mark 多张图片合成一张
-- (UIImage *)mergedImage
-{
-    UIGraphicsBeginImageContextWithOptions(CGSizeMake(self.imageBg.size.width, self.imageBg.size.height), NO, 0);
-    [self.imageBg.layer renderInContext:UIGraphicsGetCurrentContext()];
-    UIImage * resultImage = UIGraphicsGetImageFromCurrentImageContext();
-    UIGraphicsEndImageContext();
-    return resultImage;
-    
-}
-
 
 
 /*

@@ -16,6 +16,7 @@
 #import "BackUpWalletViewController.h"
 #import "RestoreIdentityViewController.h"
 #import "AssetsViewController.h"
+#import "ReceiveViewController.h"
 #import "AddAssetsViewController.h"
 #import "AssetsDetailViewController.h"
 #import "TransferResultsViewController.h"
@@ -86,6 +87,7 @@
                              [viewController isKindOfClass:[AboutUsViewController class]] ||
                              [viewController isKindOfClass:[VersionLogViewController class]] ||
                              [viewController isKindOfClass:[AssetsDetailViewController class]] ||
+                             [viewController isKindOfClass:[ReceiveViewController class]] ||
                              [viewController isKindOfClass:[TransferResultsViewController class]] ||
                              [viewController isKindOfClass:[RegisteredResultViewController class]] ||
                              [viewController isKindOfClass:[DistributionResultsViewController class]] ||

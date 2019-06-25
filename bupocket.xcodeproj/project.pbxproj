@@ -166,6 +166,9 @@
 		95D92D9222BA27CF00AFC8C2 /* NodeSettingsViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 95D92D9122BA27CF00AFC8C2 /* NodeSettingsViewController.m */; };
 		95D92D9522BB6E1400AFC8C2 /* AboutUsViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 95D92D9422BB6E1400AFC8C2 /* AboutUsViewController.m */; };
 		95D92D9822BB85E600AFC8C2 /* VersionLogViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 95D92D9722BB85E600AFC8C2 /* VersionLogViewController.m */; };
+		95D92DA122BCE6A100AFC8C2 /* ReceiveViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 95D92DA022BCE6A100AFC8C2 /* ReceiveViewController.m */; };
+		95D92DAA22C22D3E00AFC8C2 /* ModifyIconAlertView.m in Sources */ = {isa = PBXBuildFile; fileRef = 95D92DA922C22D3E00AFC8C2 /* ModifyIconAlertView.m */; };
+		95D92DAD22C2347100AFC8C2 /* ModifyIconCollectionViewCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 95D92DAC22C2347100AFC8C2 /* ModifyIconCollectionViewCell.m */; };
 		C78AA58ABD5C4F75C67B6250 /* Pods_bupocketTests.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 248F98B6791F2F7C55E77E0E /* Pods_bupocketTests.framework */; };
 		E0A64C5CAFFFD9486B7713D7 /* Pods_bupocket.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = EB267DD938A42BAD30A164A2 /* Pods_bupocket.framework */; };
 /* End PBXBuildFile section */
@@ -526,6 +529,12 @@
 		95D92D9422BB6E1400AFC8C2 /* AboutUsViewController.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = AboutUsViewController.m; sourceTree = "<group>"; };
 		95D92D9622BB85E600AFC8C2 /* VersionLogViewController.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = VersionLogViewController.h; sourceTree = "<group>"; };
 		95D92D9722BB85E600AFC8C2 /* VersionLogViewController.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = VersionLogViewController.m; sourceTree = "<group>"; };
+		95D92D9F22BCE6A100AFC8C2 /* ReceiveViewController.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = ReceiveViewController.h; sourceTree = "<group>"; };
+		95D92DA022BCE6A100AFC8C2 /* ReceiveViewController.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = ReceiveViewController.m; sourceTree = "<group>"; };
+		95D92DA822C22D3E00AFC8C2 /* ModifyIconAlertView.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = ModifyIconAlertView.h; sourceTree = "<group>"; };
+		95D92DA922C22D3E00AFC8C2 /* ModifyIconAlertView.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = ModifyIconAlertView.m; sourceTree = "<group>"; };
+		95D92DAB22C2347100AFC8C2 /* ModifyIconCollectionViewCell.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = ModifyIconCollectionViewCell.h; sourceTree = "<group>"; };
+		95D92DAC22C2347100AFC8C2 /* ModifyIconCollectionViewCell.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = ModifyIconCollectionViewCell.m; sourceTree = "<group>"; };
 		95ECFF972272E2FF007701B4 /* Constants.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = Constants.h; sourceTree = "<group>"; };
 		9D915F385F1A78B38EC83B6E /* Pods_bupocketUITests.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_bupocketUITests.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		A61F11E76D6541BC859B703E /* Pods-bupocket.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-bupocket.debug.xcconfig"; path = "Pods/Target Support Files/Pods-bupocket/Pods-bupocket.debug.xcconfig"; sourceTree = "<group>"; };
@@ -773,6 +782,8 @@
 			children = (
 				8372C8672174CCA000FF9506 /* AssetsViewController.h */,
 				8372C8682174CCA000FF9506 /* AssetsViewController.m */,
+				95D92D9F22BCE6A100AFC8C2 /* ReceiveViewController.h */,
+				95D92DA022BCE6A100AFC8C2 /* ReceiveViewController.m */,
 				83EE39402181633A0017CDE5 /* AddAssetsViewController.h */,
 				83EE39412181633A0017CDE5 /* AddAssetsViewController.m */,
 				83379A84217D9C8A00C222A5 /* AssetsDetailViewController.h */,
@@ -879,6 +890,10 @@
 				951363A122B9E2B000BF8DF5 /* SubtitleListViewCell.m */,
 				959726C021E44FFB0022CB78 /* ModifyAlertView.h */,
 				959726C121E44FFB0022CB78 /* ModifyAlertView.m */,
+				95D92DA822C22D3E00AFC8C2 /* ModifyIconAlertView.h */,
+				95D92DA922C22D3E00AFC8C2 /* ModifyIconAlertView.m */,
+				95D92DAB22C2347100AFC8C2 /* ModifyIconCollectionViewCell.h */,
+				95D92DAC22C2347100AFC8C2 /* ModifyIconCollectionViewCell.m */,
 				959726D821E6DCA00022CB78 /* TextFieldViewCell.h */,
 				959726D921E6DCA10022CB78 /* TextFieldViewCell.m */,
 				959E2909224F1B9C006FCA30 /* ConfirmTransactionAlertView.h */,
@@ -1511,6 +1526,7 @@
 				959E28F02248B998006FCA30 /* LoginConfirmViewController.m in Sources */,
 				83379AE52180631200C222A5 /* TxInfoModel.m in Sources */,
 				83379A8C217DB25A00C222A5 /* TransferAccountsViewController.m in Sources */,
+				95D92DAD22C2347100AFC8C2 /* ModifyIconCollectionViewCell.m in Sources */,
 				83FB443621904AA400D68569 /* HMScannerViewController.m in Sources */,
 				8337991A2176E80D00C222A5 /* MultilingualViewController.m in Sources */,
 				833799382177427500C222A5 /* AssetsListViewCell.m in Sources */,
@@ -1568,6 +1584,7 @@
 				83379A742179D62300C222A5 /* MyIdentityViewController.m in Sources */,
 				8372C8622174CBF100FF9506 /* NavigationViewController.m in Sources */,
 				8372C8592174CB9800FF9506 /* UITextField+Extension.m in Sources */,
+				95D92DA122BCE6A100AFC8C2 /* ReceiveViewController.m in Sources */,
 				95A8A3BF219D166D008E978E /* Encapsulation.m in Sources */,
 				958AA69821A2A89600BEA50C /* CustomRefreshFooter.m in Sources */,
 				83D5BCCE2182A87B00BF1FF1 /* AccountModel.m in Sources */,
@@ -1590,6 +1607,7 @@
 				83FB443A21904AA400D68569 /* HMScannerController.m in Sources */,
 				83379AE8218066FE00C222A5 /* BlockInfoModel.m in Sources */,
 				95266CD2226F062E002CD915 /* FindViewController.m in Sources */,
+				95D92DAA22C22D3E00AFC8C2 /* ModifyIconAlertView.m in Sources */,
 				958127F2219AC82A0081A02E /* VersionModel.m in Sources */,
 				838DC7682186AFFB002FF276 /* DistributionResultsViewController.m in Sources */,
 				95266CCE226F062E002CD915 /* CooperateViewController.m in Sources */,

@@ -10,6 +10,7 @@
 #import "WalletManagementViewController.h"
 #import "ListTableViewCell.h"
 #import "ModifyAlertView.h"
+#import "ModifyIconAlertView.h"
 
 @interface WalletDetailsViewController ()<UITableViewDelegate, UITableViewDataSource>
 
@@ -97,6 +98,12 @@
 {
     [tableView deselectRowAtIndexPath:indexPath animated:YES];
     if (indexPath.row == 0) {
+        ModifyIconAlertView * alertView = [[ModifyIconAlertView alloc] initWithTitle:@"选择头像" confrimBolck:^(NSString * _Nonnull text) {
+            
+        } cancelBlock:^{
+            
+        }];
+        [alertView showInWindowWithMode:CustomAnimationModeAlert inView:nil bgAlpha:AlertBgAlpha needEffectView:NO];
     } else if (indexPath.row == self.listArray.count - 1) {
         [self modifyWalletNameWithIndexPath:indexPath];
     }

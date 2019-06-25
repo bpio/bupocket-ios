@@ -276,7 +276,7 @@
     self.navigationController.navigationBar.shadowImage = [[UIImage alloc] init];
     
     // 2> 标题
-    self.title = Localized(@"AssetsDetailScan");
+    self.title = Localized(@"Scan");
     
     // 3> 左右按钮
     self.navigationItem.leftBarButtonItem = [[UIBarButtonItem alloc] initWithTitle:Localized(@"Close") style:UIBarButtonItemStylePlain target:self action:@selector(clickCloseButton)];

@@ -33,4 +33,7 @@
 #pragma mark - Connection server failed
 + (UIView *)showNoNetWorkWithSuperView:(UIView *)superView target:(id)target action:(SEL)action;
 
+#pragma mark 多张图片合成一张
++ (UIImage *)mergedImageWithMainImage:(UIView *)mainImage;
+
 @end

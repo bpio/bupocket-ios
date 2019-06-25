@@ -96,6 +96,7 @@
 #define TrimmingCharacters(string) [string stringByTrimmingCharactersInSet:[NSCharacterSet whitespaceAndNewlineCharacterSet]]
 
 // Application Version Number
+#define App_Name ([[[NSBundle mainBundle] infoDictionary] objectForKey:@"CFBundleDisplayName"])
 #define App_Version ([[[NSBundle mainBundle] infoDictionary] objectForKey:@"CFBundleShortVersionString"])
 #define iOS_Name ([[UIDevice currentDevice] systemName])
 // IOS System Version Number

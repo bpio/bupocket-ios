@@ -162,10 +162,15 @@
 "TotalAssets" = "总资产估值";
 "AssetsInfo" = "价格基于第三方交易所平台数据估算，仅供参考。";
 "MyAssets" = "我的资产";
-"PaymentCode" = "收款码";
+"Scan" = "扫一扫";
+"Receive" = "收款码";
 "SafetyTipsTitle" = "安全提示";
 "SafetyTips" = "您的钱包助记词尚未备份，为防止忘记密码、删除App或丢失手机等情况导致资产损失，请务必备份助记词";
 "ImmediateBackup" = "立即备份";
+// 收款
+//"Receive" = "收款";
+"ReceiveAddress" = "收款地址";
+"BUPocket" = "BU Pocket";
 // 钱包地址
 "WalletAddressTitle" = "钱包地址";
 "DuplicateWalletAddress" = "复制钱包地址";
@@ -177,7 +182,6 @@
 "InputAssetName" = "请输入完整的资产代码";
 "NoSearchResults" = "未找到搜索结果";
 // 资产详情
-"AssetsDetailScan" = "扫一扫";
 "TransferAccounts" = "转账";
 "RecentTransactionRecords" = "最近交易记录";
 "NoTransactionRecord" = "暂无交易记录";

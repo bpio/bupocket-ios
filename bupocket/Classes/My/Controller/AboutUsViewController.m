@@ -163,6 +163,8 @@
             //                }];
             //                [alertView showInWindowWithMode:CustomAnimationModeDisabled inView:nil bgAlpha:AlertBgAlpha needEffectView:NO];
         }
+    } else if (indexPath.section == 2) {
+        
     }
 }
 - (UISwitch *)switchControl
