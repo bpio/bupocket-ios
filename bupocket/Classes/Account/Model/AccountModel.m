@@ -19,6 +19,7 @@
         self.identityAddress = [aDecoder decodeObjectForKey:@"identityAddress"];
         self.identityKeyStore = [aDecoder decodeObjectForKey:@"identityKeyStore"];
         self.walletName = [aDecoder decodeObjectForKey:@"walletName"];
+        self.walletIconName = [aDecoder decodeObjectForKey:@"walletIconName"];
         self.walletAddress = [aDecoder decodeObjectForKey:@"walletAddress"];
         self.walletKeyStore = [aDecoder decodeObjectForKey:@"walletKeyStore"];
         self.purseAccount = [aDecoder decodeObjectForKey:@"purseAccount"];
@@ -33,6 +34,7 @@
     [aCoder encodeObject:self.identityAddress forKey:@"identityAddress"];
     [aCoder encodeObject:self.identityKeyStore forKey:@"identityKeyStore"];
     [aCoder encodeObject:self.walletName forKey:@"walletName"];
+    [aCoder encodeObject:self.walletIconName forKey:@"walletIconName"];
     [aCoder encodeObject:self.walletAddress forKey:@"walletAddress"];
     [aCoder encodeObject:self.walletKeyStore forKey:@"walletKeyStore"];
     [aCoder encodeObject:self.purseAccount forKey:@"purseAccount"];

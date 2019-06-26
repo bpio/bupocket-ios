@@ -407,6 +407,7 @@
 // 钱包详情
 "WalletDetails" = "钱包详情";
 "ChangeWalletIcon" = "更改钱包头像";
+"ChooseWalletIcon" = "选择头像";
 //"ChangeWalletName" = "更改钱包名称";
 // 导出Keystore
 "CopyKeystorePrompt" = "请复制keystore文件到安全的地方保存";

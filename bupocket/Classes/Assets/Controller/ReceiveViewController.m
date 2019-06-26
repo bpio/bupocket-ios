@@ -178,7 +178,9 @@
 {
     if (!_walletIcon) {
         _walletIcon = [[UIImageView alloc] init];
-        _walletIcon.image = [UIImage imageNamed:@"wallet_placeholder"];
+        NSString * imageName = CurrentWalletIconName ? CurrentWalletIconName : Current_Wallet_IconName;
+        _walletIcon.image = [UIImage imageNamed:imageName];
+        _walletIcon.contentMode = UIViewContentModeScaleAspectFill;
     }
     return _walletIcon;
 }
@@ -189,7 +191,7 @@
         _walletName.textColor = TITLE_COLOR;
         _walletName.font = FONT_Bold(16);
         _walletName.textAlignment = NSTextAlignmentCenter;
-        _walletName.text = CurrentWalletName;
+        _walletName.text = CurrentWalletName ? CurrentWalletName : Current_WalletName;;
     }
     return _walletName;
 }

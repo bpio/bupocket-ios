@@ -40,7 +40,7 @@
 {
     [super viewWillDisappear:animated];
     if (self.returnValueBlock) {
-        self.returnValueBlock(self.walletIcon, self.walletModel.walletName);
+        self.returnValueBlock(self.walletModel);
     }
 }
 - (void)setupView
@@ -78,7 +78,8 @@
     cell.selectionStyle = UITableViewCellSelectionStyleNone;
     cell.title.text = self.listArray[indexPath.row];
     if (indexPath.row == 0) {
-        cell.listImage.image = self.walletIcon;
+        NSString * walletIconName = self.walletModel.walletIconName == nil ? Current_Wallet_IconName : self.walletModel.walletIconName;
+        cell.listImage.image = [UIImage imageNamed:walletIconName];
     } else if (indexPath.row == 1) {
         cell.detailTitle.text = self.walletModel.walletName;
     }
@@ -97,45 +98,56 @@
 - (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath
 {
     [tableView deselectRowAtIndexPath:indexPath animated:YES];
+    ListTableViewCell * cell = [tableView cellForRowAtIndexPath:indexPath];
     if (indexPath.row == 0) {
-        ModifyIconAlertView * alertView = [[ModifyIconAlertView alloc] initWithTitle:@"选择头像" confrimBolck:^(NSString * _Nonnull text) {
-            
-        } cancelBlock:^{
-            
-        }];
-        [alertView showInWindowWithMode:CustomAnimationModeAlert inView:nil bgAlpha:AlertBgAlpha needEffectView:NO];
+        [self modifyWalletIconNameWithCell:cell];
     } else if (indexPath.row == self.listArray.count - 1) {
-        [self modifyWalletNameWithIndexPath:indexPath];
+        [self modifyWalletNameWithCell:cell];
     }
 }
-- (void)modifyWalletNameWithIndexPath:(NSIndexPath *)indexPath
+- (void)modifyWalletIconNameWithCell:(ListTableViewCell *)cell
 {
-    ListTableViewCell * cell = [self.tableView cellForRowAtIndexPath:indexPath];
+    ModifyIconAlertView * alertView = [[ModifyIconAlertView alloc] initWithTitle:Localized(@"ChooseWalletIcon") confrimBolck:^(NSInteger index) {
+        NSString * walletIconName = (index == 0) ? Current_Wallet_IconName : [NSString stringWithFormat:@"%@_%zd", Current_Wallet_IconName, index];
+        self.walletModel.walletIconName = walletIconName;
+        cell.listImage.image = [UIImage imageNamed:walletIconName];
+        if ([self.walletModel.walletAddress isEqualToString:[[[AccountTool shareTool] account] walletAddress]]) {
+            AccountModel * account = [[AccountTool shareTool] account];
+            account.walletIconName = walletIconName;
+            [[AccountTool shareTool] save:account];
+        } else {
+            self.walletModel.walletIconName = walletIconName;
+            [self.walletArray replaceObjectAtIndex:self.index withObject:self.walletModel];
+            [[WalletTool shareTool] save:self.walletArray];
+        }
+        if ([self.walletModel.walletAddress isEqualToString:CurrentWalletAddress]) {
+            NSUserDefaults * defaults = [NSUserDefaults standardUserDefaults];
+            [defaults setObject:walletIconName forKey:Current_Wallet_IconName];
+            [defaults synchronize];
+        }
+    } cancelBlock:^{
+        
+    }];
+    [alertView showInWindowWithMode:CustomAnimationModeAlert inView:nil bgAlpha:AlertBgAlpha needEffectView:NO];
+}
+- (void)modifyWalletNameWithCell:(ListTableViewCell *)cell
+{
     ModifyAlertView * alertView = [[ModifyAlertView alloc] initWithTitle:Localized(@"ModifyWalletName") placeholder:Localized(@"EnterWalletName") modifyType:ModifyTypeWalletName confrimBolck:^(NSString * _Nonnull text) {
         if ([RegexPatternTool validateUserName:text]) {
+            self.walletModel.walletName = text;
             cell.detailTitle.text = text;
             if ([self.walletModel.walletAddress isEqualToString:[[[AccountTool shareTool] account] walletAddress]]) {
-                self.walletModel.walletName = text;
-                AccountModel * account = [[AccountModel alloc] init];
-                account = [[AccountTool shareTool] account];
+                AccountModel * account = [[AccountTool shareTool] account];
                 account.walletName = text;
                 [[AccountTool shareTool] save:account];
+            } else {
+                [self.walletArray replaceObjectAtIndex:self.index withObject:self.walletModel];
+                [[WalletTool shareTool] save:self.walletArray];
+            }
+            if ([self.walletModel.walletAddress isEqualToString:CurrentWalletAddress]) {
                 NSUserDefaults * defaults = [NSUserDefaults standardUserDefaults];
                 [defaults setObject:text forKey:Current_WalletName];
                 [defaults synchronize];
-            } else {
-                self.walletModel.walletName = text;
-                [self.walletArray replaceObjectAtIndex:self.index withObject:self.walletModel];
-                [[WalletTool shareTool] save:self.walletArray];
-//                for (NSInteger i = 0; i < self.walletArray.count; i++) {
-//                    WalletModel * walletModel = self.walletArray[i];
-//                    if ([walletModel.walletAddress isEqualToString:self.walletModel.walletAddress]) {
-//                        self.walletModel.walletName = text;
-//                        [self.walletArray replaceObjectAtIndex:i withObject:self.walletModel];
-//                        [[WalletTool shareTool] save:self.walletArray];
-//                    }
-//                }
-//                NSInteger index = [[[WalletTool shareTool] walletArray] indexOfObject:self.walletModel];
             }
         } else {
             [MBProgressHUD showTipMessageInWindow:Localized(@"WalletNameFormatIncorrect")];

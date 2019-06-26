@@ -13,7 +13,8 @@
 
 @property (nonatomic, strong) UILabel * titleLabel;
 @property (nonatomic, strong) UIButton * confirm;
-@property (strong, nonatomic) UICollectionView * collectView;
+@property (nonatomic, strong) UICollectionView * collectView;
+@property (nonatomic, assign) NSInteger index;
 
 @end
 
@@ -21,7 +22,7 @@ static NSString * const ModifyIconCellID = @"ModifyIconCellID";
 
 @implementation ModifyIconAlertView
 
-- (instancetype)initWithTitle:(NSString *)title confrimBolck:(void (^)(NSString * text))confrimBlock cancelBlock:(void (^)(void))cancelBlock
+- (instancetype)initWithTitle:(NSString *)title confrimBolck:(void (^)(NSInteger index))confrimBlock cancelBlock:(void (^)(void))cancelBlock
 {
     self = [super init];
     if (self) {
@@ -29,7 +30,7 @@ static NSString * const ModifyIconCellID = @"ModifyIconCellID";
         _cancleBlock = cancelBlock;
         [self setupView];
         self.titleLabel.text = title;
-        
+        self.index = 0;
         self.bounds = CGRectMake(0, 0, DEVICE_WIDTH - Margin_40, ScreenScale(260));
     }
     return self;
@@ -87,17 +88,16 @@ static NSString * const ModifyIconCellID = @"ModifyIconCellID";
 {
     UICollectionViewFlowLayout * layout = [[UICollectionViewFlowLayout alloc] init];
     [layout setScrollDirection:UICollectionViewScrollDirectionVertical];
-    layout.minimumLineSpacing = 0.5;
+    layout.minimumLineSpacing = Margin_5;
     layout.minimumInteritemSpacing = 0.5;
 //    layout.headerReferenceSize = CGSizeMake(DEVICE_WIDTH, MAIN_HEIGHT);
     layout.sectionInset = UIEdgeInsetsMake(Margin_5, Margin_5, 0, 0);
-    CGFloat itemW = (DEVICE_WIDTH - ScreenScale(100)) / 5;
+    CGFloat itemW = (DEVICE_WIDTH - ScreenScale(110)) / 5;
     layout.itemSize = CGSizeMake(itemW, itemW);
     _collectView = [[UICollectionView alloc] initWithFrame:CGRectMake(0, 0, DEVICE_WIDTH - ScreenScale(70), ScreenScale(135)) collectionViewLayout:layout];
     _collectView.delegate = self;
     _collectView.dataSource = self;
-//    _collectView.backgroundColor = [UIColor whiteColor];
-    _collectView.backgroundColor = RandomColor;
+    _collectView.backgroundColor = [UIColor whiteColor];
     [_collectView registerClass:[ModifyIconCollectionViewCell class] forCellWithReuseIdentifier:ModifyIconCellID];
     [self addSubview:_collectView];
 }
@@ -123,17 +123,8 @@ static NSString * const ModifyIconCellID = @"ModifyIconCellID";
 {
     if (!_confirm) {
         _confirm = [UIButton createButtonWithTitle:Localized(@"Confirm") TextFont:FONT_BUTTON TextNormalColor:MAIN_COLOR TextSelectedColor:MAIN_COLOR Target:self Selector:@selector(sureBtnClick)];
-        _confirm.enabled = NO;
     }
     return _confirm;
-}
-- (void)textChange:(UITextField *)textField
-{
-    if (NotNULLString(textField.text)) {
-        self.confirm.enabled = YES;
-    } else {
-        self.confirm.enabled = NO;
-    }
 }
 - (void)cancleBtnClick {
     [self hideView];
@@ -144,7 +135,7 @@ static NSString * const ModifyIconCellID = @"ModifyIconCellID";
 - (void)sureBtnClick {
     [self hideView];
     if (_sureBlock) {
-//        _sureBlock();
+        _sureBlock(self.index);
     }
 }
 
@@ -159,14 +150,16 @@ static NSString * const ModifyIconCellID = @"ModifyIconCellID";
 - (UICollectionViewCell *)collectionView:(UICollectionView *)collectionView cellForItemAtIndexPath:(nonnull NSIndexPath *)indexPath
 {
     ModifyIconCollectionViewCell * cell = [collectionView dequeueReusableCellWithReuseIdentifier:ModifyIconCellID forIndexPath:indexPath];
-    cell.contentView.backgroundColor = RandomColor;
-    cell.icon.image = [UIImage imageNamed:@"wallet_list_placeholder"];
+    NSString * walletIconName = (indexPath.row == 0) ? Current_Wallet_IconName : [NSString stringWithFormat:@"%@_%zd", Current_Wallet_IconName, indexPath.row];
+    cell.icon.image = [UIImage imageNamed:walletIconName];
+    cell.selectBtn.hidden = (indexPath.row != self.index);
     return cell;
 }
 - (void)collectionView:(UICollectionView *)collectionView didSelectItemAtIndexPath:(NSIndexPath *)indexPath
 {
     [collectionView deselectItemAtIndexPath:indexPath animated:YES];
-    DLog(@"点击索引：%zd", indexPath.row);
+    self.index = indexPath.row;
+    [self.collectView reloadData];
 }
 /*
 // Only override drawRect: if you perform custom drawing.

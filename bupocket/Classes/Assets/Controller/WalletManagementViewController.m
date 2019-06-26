@@ -104,6 +104,7 @@
         [defaults setObject:[[[AccountTool shareTool] account] walletAddress] forKey:Current_WalletAddress];
         [defaults setObject:[[[AccountTool shareTool] account] walletKeyStore] forKey:Current_WalletKeyStore];
         [defaults setObject:[[[AccountTool shareTool] account] walletName] forKey:Current_WalletName];
+        [defaults setObject:[[[AccountTool shareTool] account] walletIconName] forKey:Current_Wallet_IconName];
         [defaults synchronize];
     }
     PasswordAlertView * alertView = [[PasswordAlertView alloc] initWithPrompt:Localized(@"WalletPWPrompt") confrimBolck:^(NSString * _Nonnull password, NSArray * _Nonnull words) {
@@ -167,13 +168,16 @@
     if (indexPath.section == 0) {
         SubtitleListViewCell * cell = [tableView cellForRowAtIndexPath:indexPath];
         WalletDetailsViewController * VC = [[WalletDetailsViewController alloc] init];
-        VC.walletIcon = cell.walletImage.image;
         VC.walletModel = self.walletModel;
         VC.walletArray = self.walletArray;
         VC.index = self.index;
-        VC.returnValueBlock = ^(UIImage *walletIcon, NSString *walletName) {
-            cell.walletImage.image = walletIcon;
-            cell.walletName.text = walletName;
+        VC.returnValueBlock = ^(WalletModel *walletModel) {
+            if (NotNULLString(walletModel.walletIconName)) {
+                cell.walletImage.image = [UIImage imageNamed:walletModel.walletIconName];
+            }
+            if (NotNULLString(walletModel.walletName)) {
+                cell.walletName.text = walletModel.walletName;
+            }
         };
         [self.navigationController pushViewController:VC animated:NO];
     } else if (indexPath.section == 1) {

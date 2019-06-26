@@ -455,6 +455,7 @@
 // 钱包详情
 "WalletDetails" = "钱包详情";
 "ChangeWalletIcon" = "更改钱包头像";
+"ChooseWalletIcon" = "选择头像";
 //"ChangeWalletName" = "更改钱包名称";
 // Login
 "Immediate login %@, please confirm that it is my operation." = "Log in %@ soon, and please make sure that is your personal operation.";

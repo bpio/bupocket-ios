@@ -27,6 +27,8 @@ NS_ASSUME_NONNULL_BEGIN
 #pragma mark - Wallet
 /** 钱包名 */
 @property (nonatomic, strong) NSString * walletName;
+/** 钱包icon名 */
+@property (nonatomic, strong) NSString * walletIconName;
 
 /** 钱包账户地址 */
 @property (nonatomic, strong) NSString * walletAddress;

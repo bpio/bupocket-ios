@@ -8,14 +8,14 @@
 
 #import "BaseViewController.h"
 
-typedef void (^ReturnValueBlock) (UIImage * walletIcon, NSString * walletName);
+typedef void (^ReturnValueBlock) (WalletModel * _Nullable walletModel);
 
 NS_ASSUME_NONNULL_BEGIN
 
 @interface WalletDetailsViewController : BaseViewController
 
 @property(nonatomic, copy) ReturnValueBlock returnValueBlock;
-@property (nonatomic, strong) UIImage * walletIcon;
+//@property (nonatomic, strong) UIImage * walletIcon;
 @property (nonatomic, strong) WalletModel * walletModel;
 @property (nonatomic, strong) NSMutableArray * walletArray;
 @property (nonatomic, assign) NSInteger index;

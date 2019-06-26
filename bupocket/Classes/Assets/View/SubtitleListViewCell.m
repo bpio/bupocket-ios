@@ -50,7 +50,7 @@ static NSString * const NormalSubtitleCellID = @"NormalSubtitleCellID";
         } else {
             self.walletImageWH = Margin_30;
             borderRadius = MAIN_CORNER;
-            walletImageName = @"wallet_list_placeholder";
+            walletImageName = CurrentWalletIconName ? CurrentWalletIconName : Current_Wallet_IconName;
             [self.listBg setViewSize:CGSizeMake(DEVICE_WIDTH - Margin_20, ScreenScale(85)) borderRadius:BG_CORNER corners:UIRectCornerAllCorners];
         }
         [self.listBg addSubview:self.walletImage];
@@ -162,6 +162,7 @@ static NSString * const NormalSubtitleCellID = @"NormalSubtitleCellID";
 {
     if (!_walletImage) {
         _walletImage = [[UIImageView alloc] init];
+        _walletImage.contentMode = UIViewContentModeScaleAspectFill;
     }
     return _walletImage;
 }
@@ -227,6 +228,8 @@ static NSString * const NormalSubtitleCellID = @"NormalSubtitleCellID";
 {
     _walletModel = walletModel;
     self.walletName.text = walletModel.walletName;
+    NSString * walletIconName = walletModel.walletIconName == nil ? Current_Wallet_IconName : walletModel.walletIconName;
+    self.walletImage.image = [UIImage imageNamed:walletIconName];
     self.walletAddress.text = [NSString stringEllipsisWithStr:walletModel.walletAddress subIndex:SubIndex_Address];
     if ([self.reuseIdentifier isEqualToString:DefaultSubtitleCellID]) {
         self.currentUse.hidden = ![walletModel.walletAddress isEqualToString:CurrentWalletAddress];
