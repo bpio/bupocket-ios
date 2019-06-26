@@ -259,4 +259,14 @@
     return noNetWork;
 }
 
+#pragma mark 多张图片合成一张
++ (UIImage *)mergedImageWithMainImage:(UIView *)mainImage
+{
+    UIGraphicsBeginImageContextWithOptions(CGSizeMake(mainImage.size.width, mainImage.size.height), NO, 0);
+    [mainImage.layer renderInContext:UIGraphicsGetCurrentContext()];
+    UIImage * resultImage = UIGraphicsGetImageFromCurrentImageContext();
+    UIGraphicsEndImageContext();
+    return resultImage;
+}
+
 @end

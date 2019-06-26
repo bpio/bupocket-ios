@@ -133,7 +133,8 @@
 "PleaseEnterQOrS" = "Please enter your questions or suggestions";
 "PleaseEnterContact" = "Please enter your contacts";
 // Language
-"SimplifiedChinese" = "Simplified Chinese";
+//"SimplifiedChinese" = "Simplified Chinese";
+"SimplifiedChinese" = "简体中文";
 "English" = "English";
 // 节点设置
 "AddCustomNodes" = "添加自定义节点";
@@ -165,10 +166,15 @@
 "TotalAssets" = "Estimated Total Assets";
 "AssetsInfo" = "The price is based on data from the third-party exchanges, only for your reference.";
 "MyAssets" = "My tokens";
-"PaymentCode" = "Receive";
+"Scan" = "Scan";
+"Receive" = "Receive";
 "SafetyTipsTitle" = "Safety tips";
 "SafetyTips" = "Your wallet mnemonics have not been backed up. To prevent loss of tokens due to forgetting passwords, deleting apps, or losing your phone, be sure to back up your mnemonics.";
 "ImmediateBackup" = "Back up now";
+// 收款
+//"Receive" = "收款";
+"ReceiveAddress" = "收款地址";
+"BUPocket" = "BU Pocket";
 // Wallet address
 "WalletAddressTitle" = "Wallet address";
 "DuplicateWalletAddress" = "Copy the wallet address";
@@ -180,7 +186,6 @@
 "InputAssetName" = "Please enter the complete token code";
 "NoSearchResults" = "No search results found";
 // Details of tokens
-"AssetsDetailScan" = "Scan";
 "TransferAccounts" = "Transfer";
 "RecentTransactionRecords" = "Transaction history";
 "NoTransactionRecord" = "No transaction records";
@@ -450,6 +455,7 @@
 // 钱包详情
 "WalletDetails" = "钱包详情";
 "ChangeWalletIcon" = "更改钱包头像";
+"ChooseWalletIcon" = "选择头像";
 //"ChangeWalletName" = "更改钱包名称";
 // Login
 "Immediate login %@, please confirm that it is my operation." = "Log in %@ soon, and please make sure that is your personal operation.";

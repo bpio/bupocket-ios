@@ -70,7 +70,7 @@
 }
 - (void)setupView
 {
-    self.tableView = [[UITableView alloc] initWithFrame:self.view.frame style:UITableViewStyleGrouped];
+    self.tableView = [[UITableView alloc] initWithFrame:CGRectMake(0, 0, DEVICE_WIDTH, DEVICE_HEIGHT - TabBarH) style:UITableViewStyleGrouped];
     self.tableView.delegate = self;
     self.tableView.dataSource = self;
 //    self.tableView.separatorInset = UIEdgeInsetsZero;
@@ -204,7 +204,6 @@
         return ScreenScale(50);
     }
 }
-
 - (NSInteger)numberOfSectionsInTableView:(UITableView *)tableView
 {
     return self.listArray.count;

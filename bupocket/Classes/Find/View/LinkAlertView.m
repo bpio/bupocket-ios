@@ -130,7 +130,7 @@
 - (UIButton *)copyBtn
 {
     if (!_copyBtn) {
-        _copyBtn = [UIButton createButtonWithTitle:Localized(@"CopyLink") isEnabled:YES Target:self Selector:@selector(updateClick)];
+        _copyBtn = [UIButton createButtonWithTitle:Localized(@"CopyLink") isEnabled:YES Target:self Selector:@selector(copyClick)];
     }
     return _copyBtn;
 }
@@ -153,7 +153,7 @@
         _cancleBlock();
     }
 }
-- (void)updateClick {
+- (void)copyClick {
     [self hideView];
     if (_sureBlock) {
         _sureBlock();

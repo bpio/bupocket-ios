@@ -77,6 +77,9 @@
 #define Current_WalletName @"Wallet_1"
 #define CurrentWalletName [[NSUserDefaults standardUserDefaults] objectForKey:Current_WalletName]
 
+#define Current_Wallet_IconName @"wallet_icon"
+#define CurrentWalletIconName [[NSUserDefaults standardUserDefaults] objectForKey:Current_Wallet_IconName]
+
 #define Current_WalletKeyStore @"CurrentWalletKeyStore"
 #define CurrentWalletKeyStore [[NSUserDefaults standardUserDefaults] objectForKey:Current_WalletKeyStore]
 
@@ -96,6 +99,7 @@
 #define TrimmingCharacters(string) [string stringByTrimmingCharactersInSet:[NSCharacterSet whitespaceAndNewlineCharacterSet]]
 
 // Application Version Number
+#define App_Name ([[[NSBundle mainBundle] infoDictionary] objectForKey:@"CFBundleDisplayName"])
 #define App_Version ([[[NSBundle mainBundle] infoDictionary] objectForKey:@"CFBundleShortVersionString"])
 #define iOS_Name ([[UIDevice currentDevice] systemName])
 // IOS System Version Number

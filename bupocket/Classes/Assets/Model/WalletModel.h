@@ -14,6 +14,8 @@ NS_ASSUME_NONNULL_BEGIN
 
 /** 钱包名 */
 @property (nonatomic, strong) NSString * walletName;
+/** 钱包icon名 */
+@property (nonatomic, strong) NSString * walletIconName;
 /** 钱包账户地址 */
 @property (nonatomic, strong) NSString * walletAddress;
 /** 通过钱包私钥和密码生成的keystore */

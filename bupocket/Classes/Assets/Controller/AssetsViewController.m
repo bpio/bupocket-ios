@@ -9,7 +9,7 @@
 #import "AssetsViewController.h"
 #import "AssetsListViewCell.h"
 #import "MyIdentityViewController.h"
-#import "WalletAddressAlertView.h"
+//#import "WalletAddressAlertView.h"
 #import "AssetsDetailViewController.h"
 #import "AssetsListModel.h"
 #import "AddAssetsViewController.h"
@@ -21,7 +21,7 @@
 #import "LoginConfirmViewController.h"
 #import "ConfirmTransactionAlertView.h"
 #import "ScanCodeFailureViewController.h"
-
+#import "ReceiveViewController.h"
 #import "RegisteredModel.h"
 #import "DistributionModel.h"
 
@@ -347,7 +347,7 @@ static UIButton * _noBackup;
             make.height.mas_equalTo(ScreenScale(100));
         }];
         
-        NSArray * operationArray = @[Localized(@"AssetsDetailScan"), Localized(@"PaymentCode"), Localized(@"AddAssets")];
+        NSArray * operationArray = @[Localized(@"Scan"), Localized(@"Receive"), Localized(@"AddAssets")];
         CGFloat operationBtnW = (DEVICE_WIDTH - (Margin_15 + Margin_10) * 2) / operationArray.count;
         for (NSInteger i = 0; i < operationArray.count; i ++) {
             CustomButton * operationBtn = [[CustomButton alloc] init];
@@ -478,6 +478,9 @@ static UIButton * _noBackup;
 #pragma mark - wallet address
 - (void)showWalletAddress
 {
+    ReceiveViewController * VC = [[ReceiveViewController alloc] init];
+    [self.navigationController pushViewController:VC animated:NO];
+    /*
     WalletAddressAlertView * alertView = [[WalletAddressAlertView alloc] initWithWalletAddress:CurrentWalletAddress confrimBolck:^{
         [[UIPasteboard generalPasteboard] setString:CurrentWalletAddress];
         [MBProgressHUD showTipMessageInWindow:Localized(@"Replicating")];
@@ -485,6 +488,7 @@ static UIButton * _noBackup;
         
     }];
     [alertView showInWindowWithMode:CustomAnimationModeShare inView:nil bgAlpha:AlertBgAlpha needEffectView:NO];
+     */
 }
 
 #pragma mark - add Assets

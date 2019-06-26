@@ -12,12 +12,12 @@
 NS_ASSUME_NONNULL_BEGIN
 
 typedef void (^OnCancleButtonClick)(void);
-typedef void (^OnSureUpdateClick)(void);
+typedef void (^OnSureCopyClick)(void);
 
 @interface LinkAlertView : UIView
 
 @property (nonatomic, copy) OnCancleButtonClick cancleBlock;
-@property (nonatomic, copy) OnSureUpdateClick sureBlock;
+@property (nonatomic, copy) OnSureCopyClick sureBlock;
 
 - (instancetype)initWithNodeName:(NSString *)nodeName link:(NSString *)link confrimBolck:(nonnull void (^)(void))confrimBlock cancelBlock:(nonnull void (^)(void))cancelBlock;
 

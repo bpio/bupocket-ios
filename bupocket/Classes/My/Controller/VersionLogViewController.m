@@ -172,14 +172,11 @@ static NSString * const VersionLogCellID = @"VersionLogCellID";
         //    prompt.size = expectSize;
         cell.detailTextLabel.attributedText = [Encapsulation attrWithString:updateContent preFont:FONT_TITLE preColor:COLOR_6 index:0 sufFont:FONT_TITLE sufColor:COLOR_6 lineSpacing:Margin_10];
     }
-    cell.textLabel.backgroundColor = RandomColor;
-    cell.detailTextLabel.backgroundColor = RandomColor;
     return cell;
 }
 - (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath
 {
     [tableView deselectRowAtIndexPath:indexPath animated:YES];
-    
 }
 /*
 #pragma mark - Navigation

@@ -132,7 +132,7 @@ static NSString * const WalletDetailCellID = @"WalletDetailCellID";
 {
     if (!_listImage) {
         _listImage = [[UIImageView alloc] init];
-        _listImage.contentMode = UIViewContentModeScaleAspectFit;
+        _listImage.contentMode = UIViewContentModeScaleAspectFill;
     }
     return _listImage;
 }

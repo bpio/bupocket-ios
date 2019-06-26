@@ -11,7 +11,7 @@
 #import "TransferAccountsViewController.h"
 #import "OrderDetailsViewController.h"
 #import "AssetsDetailModel.h"
-#import "HMScannerController.h"
+#import "ReceiveViewController.h"
 
 @interface AssetsDetailViewController ()<UITableViewDelegate, UITableViewDataSource>
 
@@ -230,8 +230,8 @@
         _scanBtn.layoutMode = HorizontalNormal;
         [_scanBtn setTitleColor:[UIColor whiteColor] forState:UIControlStateNormal];
         _scanBtn.titleLabel.font = FONT_TITLE;
-        [_scanBtn setTitle:Localized(@"AssetsDetailScan") forState:UIControlStateNormal];
-        [_scanBtn setImage:[UIImage imageNamed:@"assetsDetail_scan"] forState:UIControlStateNormal];
+        [_scanBtn setTitle:Localized(@"Receive") forState:UIControlStateNormal];
+        [_scanBtn setImage:[UIImage imageNamed:@"receive_w"] forState:UIControlStateNormal];
         [_scanBtn addTarget:self action:@selector(scanAction:) forControlEvents:UIControlEventTouchUpInside];
         [_headerViewBg addSubview: _scanBtn];
         _scanBtn.layer.masksToBounds = YES;
@@ -271,6 +271,9 @@
 #pragma mark - scanAction
 - (void)scanAction:(UIButton *)button
 {
+    ReceiveViewController * VC = [[ReceiveViewController alloc] init];
+    [self.navigationController pushViewController:VC animated:NO];
+    /*
     __block NSString * result = nil;
     __weak typeof (self) weakself = self;
     HMScannerController *scanner = [HMScannerController scannerWithCardName:nil avatar:nil completion:^(NSString *stringValue) {
@@ -311,6 +314,7 @@
     }];
     [scanner setTitleColor:[UIColor whiteColor] tintColor:MAIN_COLOR];
     [self showDetailViewController:scanner sender:nil];
+    */
 }
 - (void)showAlert
 {

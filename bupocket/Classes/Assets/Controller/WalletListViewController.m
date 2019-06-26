@@ -50,8 +50,10 @@
 {
     [super viewWillAppear:animated];
     NSString * walletName = [[[AccountTool shareTool] account] walletName] == nil ? Current_WalletName : [[[AccountTool shareTool] account] walletName];
+    NSString * walletIconName = [[[AccountTool shareTool] account] walletIconName] == nil ? Current_Wallet_IconName : [[[AccountTool shareTool] account] walletIconName];
     NSDictionary * currentIdentity = @{
                                        @"walletName": walletName,
+                                       @"walletIconName": walletIconName,
                                        @"walletAddress": [[[AccountTool shareTool] account] walletAddress],
                                        @"walletKeyStore": [[[AccountTool shareTool] account] walletKeyStore],
                                        @"randomNumber": [[[AccountTool shareTool] account] randomNumber]
@@ -188,6 +190,7 @@
     [defaults setObject:cell.walletModel.walletAddress forKey:Current_WalletAddress];
     [defaults setObject:cell.walletModel.walletKeyStore forKey:Current_WalletKeyStore];
     [defaults setObject:cell.walletModel.walletName forKey:Current_WalletName];
+    [defaults setObject:cell.walletModel.walletIconName forKey:Current_Wallet_IconName];
     [defaults synchronize];
     
     [self.tableView reloadData];
