@@ -11,6 +11,7 @@
 #import "VersionModel.h"
 #import "VersionLogViewController.h"
 #import "VersionUpdateAlertView.h"
+#import "CustomEnvironmentViewController.h"
 
 @interface AboutUsViewController ()<UITableViewDelegate, UITableViewDataSource>
 
@@ -18,6 +19,12 @@
 @property (nonatomic, strong) NSArray * listArray;
 @property (nonatomic, strong) UISwitch * switchControl;
 @property (nonatomic, strong) VersionModel * versionModel;
+// Repeat click interval
+@property (nonatomic, assign) NSTimeInterval acceptEventInterval;
+// Last click timestamp
+@property (nonatomic, assign) NSTimeInterval acceptEventTime;
+
+@property (nonatomic, assign) NSInteger touchCounter;
 
 @end
 
@@ -26,11 +33,26 @@
 - (void)viewDidLoad {
     [super viewDidLoad];
     self.navigationItem.title = Localized(@"AboutUs");
+    self.touchCounter = 0;
     [self setupView];
-    
-    self.listArray = @[@[Localized(@"VersionLog"), Localized(@"VersionUpdate")], @[Localized(@"SwitchedNetwork")], @[Localized(@"CustomEnvironment")]];
-    [self getVersionData];
+    [self setData];
     // Do any additional setup after loading the view.
+}
+- (void)viewWillAppear:(BOOL)animated
+{
+    [super viewWillAppear:animated];
+    NSUserDefaults * defaults = [NSUserDefaults standardUserDefaults];
+    self.switchControl.enabled = ![defaults boolForKey:If_Custom_Network];
+    [self getVersionData];
+}
+- (void)setData
+{
+    if ([[NSUserDefaults standardUserDefaults] boolForKey:If_Show_Switch_Network]) {
+        self.listArray = @[@[Localized(@"VersionLog"), Localized(@"VersionUpdate")], @[Localized(@"SwitchedNetwork")], @[Localized(@"CustomEnvironment")]];
+    } else {
+        self.listArray = @[@[Localized(@"VersionLog"), Localized(@"VersionUpdate")]];
+    }
+    [self.tableView reloadData];
 }
 - (void)getVersionData
 {
@@ -66,6 +88,7 @@
     currentVersion.titleLabel.font = FONT_15;
     [currentVersion setTitle:[NSString stringWithFormat:Localized(@"Current version: %@"), App_Version] forState:UIControlStateNormal];
     [currentVersion setImage:[UIImage imageNamed:@"about_us_logo"] forState:UIControlStateNormal];
+    [currentVersion addTarget:self action:@selector(SwitchingNetwork) forControlEvents:UIControlEventTouchUpInside];
     headerView.frame = CGRectMake(0, 0, DEVICE_WIDTH, ScreenScale(200));
     self.tableView.tableHeaderView = headerView;
     [headerView addSubview:currentVersion];
@@ -114,6 +137,7 @@
     } else if (indexPath.section == 1 && indexPath.row == 0) {
         cell.detail.hidden = YES;
         [cell.contentView addSubview:self.switchControl];
+        [_switchControl setOn:[[NSUserDefaults standardUserDefaults] boolForKey:If_Switch_TestNetwork] animated:YES];
         [_switchControl mas_makeConstraints:^(MASConstraintMaker *make) {
             make.centerY.equalTo(cell.contentView);
             make.right.equalTo(cell.contentView.mas_right).offset(-Margin_20);
@@ -126,7 +150,8 @@
     if (indexPath.row == 0) {
         [cell.listBg setViewSize:cellSize borderRadius:BG_CORNER corners:UIRectCornerTopLeft | UIRectCornerTopRight];
         cell.lineView.hidden = NO;
-    } else if (indexPath.row == [self.listArray[indexPath.section] count] - 1) {
+    }
+    if (indexPath.row == [self.listArray[indexPath.section] count] - 1) {
         [cell.listBg setViewSize:cellSize borderRadius:BG_CORNER corners:UIRectCornerBottomLeft | UIRectCornerBottomRight];
         cell.lineView.hidden = YES;
     }
@@ -166,7 +191,8 @@
             }
         }
     } else if (indexPath.section == 2) {
-        
+        CustomEnvironmentViewController * VC = [[CustomEnvironmentViewController alloc] init];
+        [self.navigationController pushViewController:VC animated:NO];
     }
 }
 - (UISwitch *)switchControl
@@ -174,7 +200,6 @@
     if (!_switchControl) {
         _switchControl = [[UISwitch alloc] init];
         [_switchControl addTarget:self action:@selector(switchChange:) forControlEvents:UIControlEventValueChanged];
-        [_switchControl setOn:[[NSUserDefaults standardUserDefaults] boolForKey:If_Switch_TestNetwork] animated:YES];
     }
     return _switchControl;
 }
@@ -190,6 +215,56 @@
     }];
 }
 
+- (void)SwitchingNetwork {
+    if ([[NSUserDefaults standardUserDefaults] boolForKey:If_Show_Switch_Network]) return;
+    if (self.acceptEventInterval <= 0) {
+        self.acceptEventInterval = 2;
+    }
+    BOOL needSendAction = (NSDate.date.timeIntervalSince1970 - self.acceptEventTime >= self.acceptEventInterval);
+    if (self.acceptEventInterval > 0) {
+        self.acceptEventTime = NSDate.date.timeIntervalSince1970;
+    }
+    if (!needSendAction) {
+        self.touchCounter += 1;
+    } else {
+        self.touchCounter = 0;
+    }
+    if (self.touchCounter == 4) {
+        self.touchCounter = 0;
+        NSString * message = Localized(@"SwitchToTestNetwork");
+        UIAlertController * alertController = [UIAlertController alertControllerWithTitle:message message:nil preferredStyle:UIAlertControllerStyleAlert];
+        UIAlertAction * cancelAction = [UIAlertAction actionWithTitle:Localized(@"NO") style:UIAlertActionStyleDefault handler:nil];
+        [alertController addAction:cancelAction];
+        UIAlertAction * okAction = [UIAlertAction actionWithTitle:Localized(@"YES") style:UIAlertActionStyleDefault handler:^(UIAlertAction * _Nonnull action) {
+            [[HTTPManager shareManager] SwitchedNetworkWithIsTest:YES];
+            [self setData];
+        }];
+        [alertController addAction:okAction];
+        [self presentViewController:alertController animated:YES completion:nil];
+    }
+}
+- (BOOL)gestureRecognizer:(UIGestureRecognizer*)gestureRecognizer shouldReceiveTouch:(UITouch*)touch {
+    if([NSStringFromClass([touch.view class])isEqual:@"UITableViewCellContentView"]){
+        return YES;
+    }
+    return NO;
+}
+- (NSTimeInterval)acceptEventInterval
+{
+    return [objc_getAssociatedObject(self, "UIControl_acceptEventInterval") doubleValue];
+}
+- (void)setAcceptEventInterval:(NSTimeInterval)acceptEventInterval
+{
+    objc_setAssociatedObject(self, "UIControl_acceptEventInterval", @(acceptEventInterval), OBJC_ASSOCIATION_RETAIN_NONATOMIC);
+}
+- (NSTimeInterval)acceptEventTime
+{
+    return [objc_getAssociatedObject(self, "UIControl_acceptEventTime") doubleValue];
+}
+- (void)setAcceptEventTime:(NSTimeInterval)acceptEventTime
+{
+    objc_setAssociatedObject(self, "UIControl_acceptEventTime", @(acceptEventTime), OBJC_ASSOCIATION_RETAIN_NONATOMIC);
+}
 /*
 #pragma mark - Navigation
 

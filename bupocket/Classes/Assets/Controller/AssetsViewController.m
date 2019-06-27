@@ -81,13 +81,15 @@ static UIButton * _noBackup;
     self.statusBarStyle = UIStatusBarStyleLightContent;
     [self setupNav];
     [self setupView];
-    if ([[NSUserDefaults standardUserDefaults] boolForKey:If_Switch_TestNetwork]) {
+    NSUserDefaults * defaults = [NSUserDefaults standardUserDefaults];
+    if ([defaults boolForKey:If_Custom_Network] == YES) {
+        self.assetsCacheDataKey = Assets_HomePage_CacheData_Custom;
+    } else if ([defaults boolForKey:If_Switch_TestNetwork]) {
         self.assetsCacheDataKey = Assets_HomePage_CacheData_Test;
     } else {
         self.assetsCacheDataKey = Assets_HomePage_CacheData;
     }
     [self setupRefresh];
-    NSUserDefaults * defaults = [NSUserDefaults standardUserDefaults];
     NSDictionary * dic = [defaults objectForKey:self.assetsCacheDataKey];
     if (dic) {
         [self setDataWithResponseObject:dic];
@@ -130,10 +132,14 @@ static UIButton * _noBackup;
 }
 - (void)loadData
 {
+    NSString * addAssetsKey;
     NSUserDefaults * defaults = [NSUserDefaults standardUserDefaults];
-    NSString * addAssetsKey = Add_Assets;
-    if ([defaults boolForKey:If_Switch_TestNetwork]) {
+    if ([defaults boolForKey:If_Custom_Network] == YES) {
+        addAssetsKey = Add_Assets_Custom;
+    } else if ([defaults boolForKey:If_Switch_TestNetwork]) {
         addAssetsKey = Add_Assets_Test;
+    } else {
+        addAssetsKey = Add_Assets;
     }
     NSArray * assetsArray = [defaults objectForKey:addAssetsKey];
     if (!assetsArray) {
@@ -189,7 +195,13 @@ static UIButton * _noBackup;
 #pragma mark - Switching Network Environment
 - (void)setNetworkEnvironment
 {
-    if ([[NSUserDefaults standardUserDefaults] boolForKey:If_Switch_TestNetwork]) {
+    NSUserDefaults * defaults = [NSUserDefaults standardUserDefaults];
+    if ([defaults boolForKey:If_Custom_Network] == YES) {
+        self.networkPrompt = [UIButton createNavButtonWithTitle:Localized(@"CustomEnvironment") Target:nil Selector:nil];
+        
+        self.navigationItem.leftBarButtonItem = [[UIBarButtonItem alloc] initWithCustomView:self.networkPrompt];
+        self.headerImageView.image = [UIImage imageNamed:@"assets_header_custom"];
+    } else if ([[NSUserDefaults standardUserDefaults] boolForKey:If_Switch_TestNetwork]) {
         self.networkPrompt = [UIButton createNavButtonWithTitle:Localized(@"TestNetworkPrompt") Target:nil Selector:nil];
         
         self.navigationItem.leftBarButtonItem = [[UIBarButtonItem alloc] initWithCustomView:self.networkPrompt];

@@ -51,6 +51,9 @@ static NSString * const WalletDetailCellID = @"WalletDetailCellID";
         [self.listBg addSubview:self.detailTitle];
         [self.listBg addSubview:self.detail];
         [self.listBg addSubview:self.lineView];
+        if ([reuseIdentifier isEqualToString:WalletDetailCellID]) {
+            _listImage.contentMode = UIViewContentModeScaleAspectFill;
+        }
     }
     return self;
 }
@@ -132,7 +135,7 @@ static NSString * const WalletDetailCellID = @"WalletDetailCellID";
 {
     if (!_listImage) {
         _listImage = [[UIImageView alloc] init];
-        _listImage.contentMode = UIViewContentModeScaleAspectFill;
+        _listImage.contentMode = UIViewContentModeScaleAspectFit;
     }
     return _listImage;
 }

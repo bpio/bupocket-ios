@@ -119,6 +119,7 @@
 		95266CE1226F062E002CD915 /* SharingCanvassingAlertView.m in Sources */ = {isa = PBXBuildFile; fileRef = 95266CCC226F062E002CD915 /* SharingCanvassingAlertView.m */; };
 		95266CE422703868002CD915 /* CooperateDetailViewCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 95266CE322703868002CD915 /* CooperateDetailViewCell.m */; };
 		952ADD0D21A65B4B00BEE51B /* SocketIOHandler.m in Sources */ = {isa = PBXBuildFile; fileRef = 952ADD0C21A65B4B00BEE51B /* SocketIOHandler.m */; };
+		952EA85B22C3550F00AD1F8D /* CustomEnvironmentViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 952EA85A22C3550F00AD1F8D /* CustomEnvironmentViewController.m */; };
 		952FE9D721C8DF9900634291 /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 952FE9D521C8DF9900634291 /* LaunchScreen.storyboard */; };
 		954371742199234100915BBE /* SettingViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 954371732199234100915BBE /* SettingViewController.m */; };
 		9549EC66219C0CF800307255 /* CreateTipsAlertView.m in Sources */ = {isa = PBXBuildFile; fileRef = 9549EC65219C0CF800307255 /* CreateTipsAlertView.m */; };
@@ -431,6 +432,8 @@
 		95266CE322703868002CD915 /* CooperateDetailViewCell.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = CooperateDetailViewCell.m; sourceTree = "<group>"; };
 		952ADD0B21A65B4B00BEE51B /* SocketIOHandler.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = SocketIOHandler.h; sourceTree = "<group>"; };
 		952ADD0C21A65B4B00BEE51B /* SocketIOHandler.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = SocketIOHandler.m; sourceTree = "<group>"; };
+		952EA85922C3550F00AD1F8D /* CustomEnvironmentViewController.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = CustomEnvironmentViewController.h; sourceTree = "<group>"; };
+		952EA85A22C3550F00AD1F8D /* CustomEnvironmentViewController.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = CustomEnvironmentViewController.m; sourceTree = "<group>"; };
 		952FE9D621C8DF9900634291 /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/LaunchScreen.storyboard; sourceTree = "<group>"; };
 		954371722199234100915BBE /* SettingViewController.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = SettingViewController.h; sourceTree = "<group>"; };
 		954371732199234100915BBE /* SettingViewController.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = SettingViewController.m; sourceTree = "<group>"; };
@@ -752,6 +755,8 @@
 				95D92D9422BB6E1400AFC8C2 /* AboutUsViewController.m */,
 				95D92D9622BB85E600AFC8C2 /* VersionLogViewController.h */,
 				95D92D9722BB85E600AFC8C2 /* VersionLogViewController.m */,
+				952EA85922C3550F00AD1F8D /* CustomEnvironmentViewController.h */,
+				952EA85A22C3550F00AD1F8D /* CustomEnvironmentViewController.m */,
 			);
 			path = Controller;
 			sourceTree = "<group>";
@@ -1595,6 +1600,7 @@
 				9594E5CE222938AF006EFB6D /* AddressBookCache.m in Sources */,
 				95266CD8226F062E002CD915 /* CooperateSupportModel.m in Sources */,
 				8372C8692174CCA000FF9506 /* AssetsViewController.m in Sources */,
+				952EA85B22C3550F00AD1F8D /* CustomEnvironmentViewController.m in Sources */,
 				95266CCD226F062E002CD915 /* NodePlanViewController.m in Sources */,
 				95D92D9822BB85E600AFC8C2 /* VersionLogViewController.m in Sources */,
 				83B594B72175FC8B009F91BA /* BackupMnemonicsViewController.m in Sources */,

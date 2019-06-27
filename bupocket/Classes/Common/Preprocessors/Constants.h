@@ -16,10 +16,10 @@
 #define BUMO_NODE_URL @"https://wallet-node.bumo.io"
 #define BUMO_TOOLS_URL @"https://ws-tools.bumo.io"
 
-//#define WEB_SERVER_DOMAIN_TEST @"http://api-bp.bumotest.io/"
-//#define BUMO_NODE_URL_TEST @"https://wallet-node.bumotest.io"
-#define WEB_SERVER_DOMAIN_TEST @"http://192.168.6.97:5648/"
-#define BUMO_NODE_URL_TEST @"http://192.168.21.35:36002"
+#define WEB_SERVER_DOMAIN_TEST @"http://api-bp.bumotest.io/"
+#define BUMO_NODE_URL_TEST @"https://wallet-node.bumotest.io"
+//#define WEB_SERVER_DOMAIN_TEST @"http://192.168.6.97:5648/"
+//#define BUMO_NODE_URL_TEST @"http://192.168.21.35:36002"
 //#define WEB_SERVER_DOMAIN_TEST @"http://test-bupocket-api.bumocdn.com/"
 //#define BUMO_NODE_URL_TEST @"http://192.168.3.65:36002"
 
@@ -87,7 +87,7 @@
 #define Dpos_Contains @"/xDnAs_dpos/"
 #define Dpos_Prefix @"###UDCBU###"
 #define Node_Check @"/getLedger"
-
+#define Server_Check @"healthcheck"
 
 
 #define HDPaths @[@"M/44H/526H/0H/0/0", @"M/44H/526H/1H/0/0"]
@@ -100,6 +100,7 @@
 #define If_Skip @"ifSkip"
 #define If_Show_Switch_Network @"ifShowSwitchNetwork"
 #define If_Switch_TestNetwork @"ifSwitchTestNetwork"
+#define If_Custom_Network @"ifCustomNetwork"
 // Language key
 #define AppLanguage @"appLanguage"
 #define ZhHans @"zh-Hans"
@@ -110,12 +111,17 @@
 #define Current_Node_URL_Test @"CurrentNodeURLTest"
 #define Node_URL_Array @"NodeUrlArray"
 #define Node_URL_Array_Test @"NodeUrlArrayTest"
+//#define Node_URL_Array_Custom @"NodeUrlArrayCustom"
+#define Current_Node_URL_Custom @"CurrentNodeURLCustom"
+//#define Default_Node_URL_Custom @"DefaultNodeURLCustom"
+
 // imported Wallet
 //#define imported_Wallet @"importedWallet"
 // Network request timeout limit time
 #define Timeout_Interval 60.0
 #define Assets_HomePage_CacheData @"AssetsHomePageCacheData"
 #define Assets_HomePage_CacheData_Test @"AssetsHomePageCacheDataTest"
+#define Assets_HomePage_CacheData_Custom @"AssetsHomePageCacheDataCustom"
 // 0: BU 1：ATP 2：CTP
 #define Token_Type_BU 0
 // 0：Turn out 1：To change into
@@ -123,6 +129,7 @@
 // Add assets
 #define Add_Assets @"AddAssets"
 #define Add_Assets_Test @"AddAssetsTest"
+#define Add_Assets_Custom @"AddAssetsCustom"
 
 #define PageIndex_Default 1
 #define PageSize_Max 10

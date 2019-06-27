@@ -31,7 +31,10 @@ static NSString * const AddAssetsCellID = @"AddAssetsCellID";
 - (instancetype)initWithStyle:(UITableViewCellStyle)style reuseIdentifier:(NSString *)reuseIdentifier
 {
     if (self = [super initWithStyle:style reuseIdentifier:reuseIdentifier]) {
-        if ([[NSUserDefaults standardUserDefaults] boolForKey:If_Switch_TestNetwork]) {
+        NSUserDefaults * defaults = [NSUserDefaults standardUserDefaults];
+        if ([defaults boolForKey:If_Custom_Network] == YES) {
+            self.addAssetsKey = Add_Assets_Custom;
+        } else if ([defaults boolForKey:If_Switch_TestNetwork]) {
             self.addAssetsKey = Add_Assets_Test;
         } else {
             self.addAssetsKey = Add_Assets;

@@ -36,15 +36,14 @@
     self.navigationItem.title = Localized(@"NodeSettings");
     NSUserDefaults * defaults = [NSUserDefaults standardUserDefaults];
     if ([defaults boolForKey:If_Switch_TestNetwork]) {
-        self.nodeURLArrayKey = Node_URL_Array_Test;
-        self.currentNodeURLKey = Current_Node_URL_Test;
+            self.nodeURLArrayKey = Node_URL_Array_Test;
+            self.currentNodeURLKey = Current_Node_URL_Test;
     } else {
         self.nodeURLArrayKey = Node_URL_Array;
         self.currentNodeURLKey = Current_Node_URL;
     }
     self.listArray = [NSMutableArray arrayWithArray:[defaults objectForKey:self.nodeURLArrayKey]];
     self.index = [self.listArray indexOfObject:[defaults objectForKey:self.currentNodeURLKey]];
-    
     if (self.index == NSNotFound) {
         self.index = 0;
     }
@@ -74,6 +73,9 @@
 }
 - (void)addNodesAction
 {
+    if (self.listArray.count >= 10) {
+        return;
+    }
     [self showNodeSettingsAlertWithModifyType:ModifyTypeNodeAdd index:0];
 }
 - (void)showNodeSettingsAlertWithModifyType:(ModifyType)modifyType index:(NSInteger)index
@@ -164,12 +166,14 @@
             if ([btn.titleLabel.text isEqualToString:titleArray[0]]) {
                 [self showNodeSettingsAlertWithModifyType:ModifyTypeNodeEdit index:button.tag];
             } else if ([btn.titleLabel.text isEqualToString:titleArray[1]]) {
-                [Encapsulation showAlertControllerWithTitle:nil message:Localized(@"ConfirmDeleteNode") cancelHandler:^(UIAlertAction *action) {
+                NSString * message = @"";
+                if (self.index == button.tag) {
+                    self.index = 0;
+                    [self setNodeURLWithIndex:self.index];
+                    message = Localized(@"DeleteCurrentNode");
+                }
+                [Encapsulation showAlertControllerWithTitle:Localized(@"ConfirmDeleteNode") message:message cancelHandler:^(UIAlertAction *action) {
                 } confirmHandler:^(UIAlertAction *action) {
-                    if (self.index == button.tag) {
-                        self.index = 0;
-                        [self setNodeURLWithIndex:self.index];
-                    }
                     [self.listArray removeObjectAtIndex:button.tag];
                     [[NSUserDefaults standardUserDefaults] setObject:self.listArray forKey:self.nodeURLArrayKey];
                     [self.tableView reloadData];

@@ -47,7 +47,6 @@
     } else if (self.createType == CreateWallet) {
         self.navigationItem.title = Localized(@"CreateWallet");
         self.listArray = [NSMutableArray arrayWithObjects:@[Localized(@"SetWalletName"), Localized(@"SetWalletNamePlaceholder")], @[Localized(@"SetPassword"), Localized(@"PWPlaceholder")], @[Localized(@"ConfirmPassword"), Localized(@"ConfirmPWPlaceholder")], nil];
-        
     }
     [self setupView];
     [self showCreateTips];

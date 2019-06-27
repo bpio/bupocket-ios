@@ -28,45 +28,52 @@
 @interface MyViewController ()<UITableViewDelegate, UITableViewDataSource>
 
 @property (nonatomic, strong) UITableView * tableView;
-@property (nonatomic, strong) UIImage * headerImage;
-@property (nonatomic, strong) UIImageView * headerBg;
+//@property (nonatomic, strong) UIImage * headerImage;
+//@property (nonatomic, strong) UIImageView * headerBg;
 @property (nonatomic, strong) UIButton * networkPrompt;
-@property (nonatomic, strong) NSArray * listArray;
-// Repeat click interval
-@property (nonatomic, assign) NSTimeInterval acceptEventInterval;
-// Last click timestamp
-@property (nonatomic, assign) NSTimeInterval acceptEventTime;
+@property (nonatomic, strong) NSMutableArray * listArray;
 
-@property (nonatomic, assign) NSInteger touchCounter;
 
 @end
 
 @implementation MyViewController
 
-
+- (NSMutableArray *)listArray
+{
+    if (!_listArray) {
+        _listArray = [NSMutableArray array];
+    }
+    return _listArray;
+}
 - (UIStatusBarStyle)preferredStatusBarStyle {
     return UIStatusBarStyleLightContent;
 }
 
 - (void)viewDidLoad {
     [super viewDidLoad];
-    self.headerImage = [UIImage imageNamed:@"my_header"];
-    self.touchCounter = 0;
+//    self.headerImage = [UIImage imageNamed:@"my_header"];
+    
 //    self.listArray = @[Localized(@"Setting"), Localized(@"AddressBook"), Localized(@"WalletManagement"), Localized(@"ModifyIdentityPassword"), Localized(@"Feedback"), Localized(@"VersionNumber")];
-    self.listArray = @[@[@""], @[Localized(@"MoneyOfAccount"), Localized(@"DisplayLanguage"), Localized(@"NodeSettings")], @[Localized(@"UserProtocol"), Localized(@"Feedback"), Localized(@"AboutUs")]];
     [self setupView];
     // Do any additional setup after loading the view.
 }
 - (void)viewWillAppear:(BOOL)animated {
     [super viewWillAppear:animated];
-    if ([[NSUserDefaults standardUserDefaults] boolForKey:If_Switch_TestNetwork]) {
+    self.listArray = [NSMutableArray arrayWithArray:@[@[@""], @[Localized(@"MoneyOfAccount"), Localized(@"DisplayLanguage"), Localized(@"NodeSettings")], @[Localized(@"UserProtocol"), Localized(@"Feedback"), Localized(@"AboutUs")]]];
+    NSUserDefaults * defaults = [NSUserDefaults standardUserDefaults];
+    if ([defaults boolForKey:If_Custom_Network] == YES) {
+        self.networkPrompt = [UIButton createNavButtonWithTitle:Localized(@"CustomEnvironment") Target:nil Selector:nil];
+        self.navigationItem.leftBarButtonItem = [[UIBarButtonItem alloc] initWithCustomView:self.networkPrompt];
+        self.listArray = [NSMutableArray arrayWithArray:@[@[@""], @[Localized(@"MoneyOfAccount"), Localized(@"DisplayLanguage")], @[Localized(@"UserProtocol"), Localized(@"Feedback"), Localized(@"AboutUs")]]];
+    } else if ([defaults boolForKey:If_Switch_TestNetwork]) {
         self.networkPrompt = [UIButton createNavButtonWithTitle:Localized(@"TestNetworkPrompt") Target:nil Selector:nil];
         self.navigationItem.leftBarButtonItem = [[UIBarButtonItem alloc] initWithCustomView:self.networkPrompt];
-        self.headerBg.image = [UIImage imageNamed:@"my_header_test"];
+//        self.headerBg.image = [UIImage imageNamed:@"my_header_test"];
     } else {
         self.navigationItem.leftBarButtonItem = nil;
-        self.headerBg.image = self.headerImage;
+//        self.headerBg.image = self.headerImage;
     }
+    [self.tableView reloadData];
 }
 - (void)setupView
 {
@@ -77,9 +84,11 @@
     self.tableView.separatorStyle = UITableViewCellSeparatorStyleNone;
     [self.view addSubview:self.tableView];
     self.tableView.bounces = NO;
+    self.tableView.tableHeaderView = [[UIView alloc] initWithFrame:CGRectMake(0, 0, 0, CGFLOAT_MIN)];
 //    self.tableView.backgroundColor = [UIColor whiteColor];
 //    [self setupHeaderView];
 }
+/*
 - (void)setupHeaderView
 {
     self.headerBg = [[UIImageView alloc] initWithImage:self.headerImage];
@@ -136,6 +145,7 @@
     MyIdentityViewController * VC = [[MyIdentityViewController alloc] init];
     [self.navigationController pushViewController:VC animated:NO];
 }
+ */
 - (CGFloat)tableView:(UITableView *)tableView heightForHeaderInSection:(NSInteger)section
 {
     if (section == 0) {
@@ -248,22 +258,6 @@
         return cell;
     }
 }
-- (NSTimeInterval)acceptEventInterval
-{
-    return [objc_getAssociatedObject(self, "UIControl_acceptEventInterval") doubleValue];
-}
-- (void)setAcceptEventInterval:(NSTimeInterval)acceptEventInterval
-{
-    objc_setAssociatedObject(self, "UIControl_acceptEventInterval", @(acceptEventInterval), OBJC_ASSOCIATION_RETAIN_NONATOMIC);
-}
-- (NSTimeInterval)acceptEventTime
-{
-    return [objc_getAssociatedObject(self, "UIControl_acceptEventTime") doubleValue];
-}
-- (void)setAcceptEventTime:(NSTimeInterval)acceptEventTime
-{
-    objc_setAssociatedObject(self, "UIControl_acceptEventTime", @(acceptEventTime), OBJC_ASSOCIATION_RETAIN_NONATOMIC);
-}
 
 - (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath
 {
@@ -313,41 +307,7 @@
     }
      */
 }
-- (void)SwitchingNetwork {
-    if ([[NSUserDefaults standardUserDefaults] boolForKey:If_Show_Switch_Network]) return;
-    if (self.acceptEventInterval <= 0) {
-        self.acceptEventInterval = 2;
-    }
-    BOOL needSendAction = (NSDate.date.timeIntervalSince1970 - self.acceptEventTime >= self.acceptEventInterval);
-    if (self.acceptEventInterval > 0) {
-        self.acceptEventTime = NSDate.date.timeIntervalSince1970;
-    }
-    if (!needSendAction) {
-        self.touchCounter += 1;
-    } else {
-        self.touchCounter = 0;
-    }
-    if (self.touchCounter == 4) {
-        self.touchCounter = 0;
-        NSString * message = Localized(@"SwitchToTestNetwork");
-        UIAlertController * alertController = [UIAlertController alertControllerWithTitle:message message:nil preferredStyle:UIAlertControllerStyleAlert];
-        UIAlertAction * cancelAction = [UIAlertAction actionWithTitle:Localized(@"NO") style:UIAlertActionStyleDefault handler:nil];
-        [alertController addAction:cancelAction];
-        UIAlertAction * okAction = [UIAlertAction actionWithTitle:Localized(@"YES") style:UIAlertActionStyleDefault handler:^(UIAlertAction * _Nonnull action) {
-            SettingViewController * VC = [[SettingViewController alloc] init];
-            [[HTTPManager shareManager] SwitchedNetworkWithIsTest:YES];
-            [self.navigationController pushViewController:VC animated:NO];
-        }];
-        [alertController addAction:okAction];
-        [self presentViewController:alertController animated:YES completion:nil];
-    }
-}
-- (BOOL)gestureRecognizer:(UIGestureRecognizer*)gestureRecognizer shouldReceiveTouch:(UITouch*)touch {
-    if([NSStringFromClass([touch.view class])isEqual:@"UITableViewCellContentView"]){
-        return YES;
-    }
-    return NO;
-}
+
 /*
 #pragma mark - Navigation
 

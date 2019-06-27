@@ -53,7 +53,10 @@ static int64_t const gasPrice = 1000;
 {
     [self setNodeURL];
     NSUserDefaults * defaults = [NSUserDefaults standardUserDefaults];
-    if ([defaults boolForKey:If_Switch_TestNetwork] == YES) {
+    if ([defaults boolForKey:If_Custom_Network] == YES) {
+        _webServerDomain = [defaults objectForKey:Server_Custom];
+        _bumoNodeUrl = [defaults objectForKey:Current_Node_URL_Custom];
+    } else if ([defaults boolForKey:If_Switch_TestNetwork] == YES) {
         _webServerDomain = WEB_SERVER_DOMAIN_TEST;
         // BUMO_NODE_URL_TEST
         _bumoNodeUrl = [defaults objectForKey:Current_Node_URL_Test];
@@ -69,17 +72,26 @@ static int64_t const gasPrice = 1000;
 {
     NSUserDefaults * defaults = [NSUserDefaults standardUserDefaults];
     NSArray * nodeURLArray = [defaults objectForKey:Node_URL_Array];
-    if (nodeURLArray.count == 0) {
+    if (nodeURLArray.count < 2) {
         [defaults setObject:@[BUMO_NODE_URL] forKey:Node_URL_Array];
         [defaults setObject:BUMO_NODE_URL forKey:Current_Node_URL];
         [defaults synchronize];
     }
     NSArray * nodeURLTestArray = [defaults objectForKey:Node_URL_Array_Test];
-    if (nodeURLTestArray.count == 0) {
+    if (nodeURLTestArray.count < 2) {
         [defaults setObject:@[BUMO_NODE_URL_TEST] forKey:Node_URL_Array_Test];
-        [defaults setObject:BUMO_NODE_URL forKey:Current_Node_URL_Test];
+        [defaults setObject:BUMO_NODE_URL_TEST forKey:Current_Node_URL_Test];
         [defaults synchronize];
     }
+    /*
+    NSArray * nodeURLCustomArray = [defaults objectForKey:Node_URL_Array_Custom];
+    NSString * customNodeUrl = [defaults objectForKey:Current_Node_URL_Custom];
+    if (nodeURLCustomArray.count < 2 && NotNULLString(customNodeUrl)) {
+        [defaults setObject:@[customNodeUrl] forKey:Node_URL_Array_Custom];
+        [defaults setObject:customNodeUrl forKey:Current_Node_URL_Custom];
+        [defaults synchronize];
+    }
+     */
 }
 - (id)copyWithZone:(NSZone *)zone
 {
@@ -117,11 +129,21 @@ static int64_t const gasPrice = 1000;
     [defaults synchronize];
     [self initNetWork];
 }
+// Custom network
+- (void)SwitchedNetworkWithIsCustom:(BOOL)isCustom
+{
+    NSUserDefaults * defaults = [NSUserDefaults standardUserDefaults];
+    [defaults setBool:isCustom forKey:If_Custom_Network];
+    [defaults synchronize];
+    [self initNetWork];
+}
 // Switched Node url
 - (void)SwitchedNodeWithURL:(NSString *)URL
 {
     NSUserDefaults * defaults = [NSUserDefaults standardUserDefaults];
-    if ([defaults boolForKey:If_Switch_TestNetwork]) {
+    if ([defaults boolForKey:If_Custom_Network] == YES) {
+        [defaults setObject:URL forKey:Current_Node_URL_Custom];
+    } else if ([defaults boolForKey:If_Switch_TestNetwork]) {
         [defaults setObject:URL forKey:Current_Node_URL_Test];
     } else {
         [defaults setObject:URL forKey:Current_Node_URL];

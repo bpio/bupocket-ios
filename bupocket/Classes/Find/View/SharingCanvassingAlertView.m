@@ -41,7 +41,10 @@
         self.frame = CGRectMake(0, 0, DEVICE_WIDTH, ScreenScale(500));
         
         NSString * url;
-        if ([[NSUserDefaults standardUserDefaults] boolForKey:If_Switch_TestNetwork] == YES) {
+        NSUserDefaults * defaults = [NSUserDefaults standardUserDefaults];
+        if ([defaults boolForKey:If_Custom_Network] == YES) {
+            url = [defaults objectForKey:Server_Custom];
+        } else if ([defaults boolForKey:If_Switch_TestNetwork] == YES) {
             url = WEB_SERVER_DOMAIN_TEST;
         } else {
             url = WEB_SERVER_DOMAIN;

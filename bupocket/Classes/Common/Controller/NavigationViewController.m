@@ -11,6 +11,7 @@
 #import "MyViewController.h"
 #import "AboutUsViewController.h"
 #import "VersionLogViewController.h"
+#import "CustomEnvironmentViewController.h"
 
 #import "CreateViewController.h"
 #import "BackUpWalletViewController.h"
@@ -86,6 +87,7 @@
                              [viewController isKindOfClass:[MyViewController class]] ||
                              [viewController isKindOfClass:[AboutUsViewController class]] ||
                              [viewController isKindOfClass:[VersionLogViewController class]] ||
+                             [viewController isKindOfClass:[CustomEnvironmentViewController class]] ||
                              [viewController isKindOfClass:[AssetsDetailViewController class]] ||
                              [viewController isKindOfClass:[ReceiveViewController class]] ||
                              [viewController isKindOfClass:[TransferResultsViewController class]] ||
