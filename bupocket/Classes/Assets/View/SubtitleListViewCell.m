@@ -69,7 +69,7 @@ static NSString * const NormalSubtitleCellID = @"NormalSubtitleCellID";
     [super layoutSubviews];
     CGFloat walletNameOffsetX = Margin_10;
     CGFloat walletNameOffsetY = 0;
-    
+    CGFloat listBgY = 0;
     if ([self.reuseIdentifier isEqualToString:NormalSubtitleCellID]) {
         [self.listBg mas_makeConstraints:^(MASConstraintMaker *make) {
             make.edges.equalTo(self.contentView);
@@ -77,13 +77,18 @@ static NSString * const NormalSubtitleCellID = @"NormalSubtitleCellID";
         walletNameOffsetX = Margin_20;
         walletNameOffsetY = Margin_10;
     } else {
+        if ([self.reuseIdentifier isEqualToString:DefaultSubtitleCellID]) {
+            listBgY = Margin_5;
+        }
         [self.listBg mas_makeConstraints:^(MASConstraintMaker *make) {
             make.left.equalTo(self.contentView.mas_left).offset(Margin_10);
             make.right.equalTo(self.contentView.mas_right).offset(-Margin_10);
-            make.top.bottom.equalTo(self.contentView);
+            make.top.equalTo(self.contentView.mas_top).offset(listBgY);
+            make.bottom.equalTo(self.contentView.mas_bottom).offset(-listBgY);
         }];
-        self.contentView.backgroundColor = VIEWBG_COLOR;
+         self.contentView.backgroundColor = VIEWBG_COLOR;
     }
+    
     
     [self.walletImage mas_makeConstraints:^(MASConstraintMaker *make) {
         make.top.equalTo(self.listBg.mas_top).offset(Margin_20);

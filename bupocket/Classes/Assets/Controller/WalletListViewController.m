@@ -70,32 +70,38 @@
     _tableView.separatorStyle = UITableViewCellSeparatorStyleNone;
     [self.view addSubview:self.tableView];
 }
-- (UIButton *)setupHeaderTitle:(NSString *)title
+- (UIButton *)setupHeaderTitle:(NSString *)title index:(NSInteger)index
 {
+    CGFloat top = 0;
+    CGFloat height = ScreenScale(35);
+    if (index == 0) {
+        top = Margin_5;
+        height = Margin_40;
+    }
     UIButton * titleBtn = [UIButton createButtonWithTitle:title TextFont:FONT_15 TextNormalColor:COLOR_6 TextSelectedColor:COLOR_6 Target:nil Selector:nil];
     titleBtn.contentHorizontalAlignment = UIControlContentHorizontalAlignmentLeft;
-    titleBtn.contentEdgeInsets = UIEdgeInsetsMake(0, Margin_15, 0, Margin_15);
-    titleBtn.frame = CGRectMake(0, 0, DEVICE_WIDTH, MAIN_HEIGHT);
+    titleBtn.contentEdgeInsets = UIEdgeInsetsMake(top, Margin_15, 0, Margin_15);
+    titleBtn.frame = CGRectMake(0, 0, DEVICE_WIDTH, height);
     return titleBtn;
 }
 - (CGFloat)tableView:(UITableView *)tableView heightForHeaderInSection:(NSInteger)section
 {
     if (section == 0) {
-        return MAIN_HEIGHT;
+        return Margin_40;
     } else {
-        return self.listArray.count > 0 ? MAIN_HEIGHT : ScreenScale(135);
+        return self.listArray.count > 0 ? ScreenScale(35) : ScreenScale(135);
     }
 }
 - (UIView *)tableView:(UITableView *)tableView viewForHeaderInSection:(NSInteger)section
 {
     if (section == 0) {
-        return [self setupHeaderTitle:Localized(@"CurrentIdentity")];
+        return [self setupHeaderTitle:Localized(@"CurrentIdentity") index:section];
     } else if (section == 1) {
         if (self.listArray.count > 0) {
-            return [self setupHeaderTitle:Localized(@"ImportedWallet")];
+            return [self setupHeaderTitle:Localized(@"ImportedWallet") index:section];
         } else {
             UIView * headerView = [[UIView alloc] initWithFrame:CGRectMake(0, 0, DEVICE_WIDTH, ScreenScale(125))];
-            UIButton * titleBtn = [self setupHeaderTitle:Localized(@"ImportedWallet")];
+            UIButton * titleBtn = [self setupHeaderTitle:Localized(@"ImportedWallet") index:section];
             [headerView addSubview:titleBtn];
             CustomButton * importBtn = [[CustomButton alloc] init];
             [importBtn setTitle:Localized(@"ImmediateImport") forState:UIControlStateNormal];
@@ -119,7 +125,7 @@
 }
 - (CGFloat)tableView:(UITableView *)tableView heightForRowAtIndexPath:(NSIndexPath *)indexPath
 {
-    return ScreenScale(85);
+    return ScreenScale(95);
 }
 - (CGFloat)tableView:(UITableView *)tableView heightForFooterInSection:(NSInteger)section
 {
