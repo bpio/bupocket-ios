@@ -26,16 +26,17 @@
 - (void)layoutSubviews
 {
     [super layoutSubviews];
-    CGSize iconSize = CGSizeMake(Margin_50, Margin_50);
+    CGFloat iconW = (DEVICE_WIDTH - ScreenScale(130)) / 5 - Margin_5;
+    CGSize iconSize = CGSizeMake(iconW, iconW);
     [self.icon setViewSize:iconSize borderRadius:MAIN_CORNER corners:UIRectCornerAllCorners];
     [self.icon mas_makeConstraints:^(MASConstraintMaker *make) {
-        make.centerX.bottom.equalTo(self.contentView);
+        make.left.bottom.equalTo(self.contentView);
         make.size.mas_equalTo(iconSize);
     }];
     [_selectBtn setImage:[UIImage imageNamed:@"wallet_icon_s"] forState:UIControlStateNormal];
     [self.selectBtn mas_makeConstraints:^(MASConstraintMaker *make) {
-        make.top.equalTo(self.contentView.mas_top).offset(ScreenScale(2));
-        make.right.equalTo(self.contentView.mas_right).offset(-ScreenScale(2));
+        make.top.equalTo(self.contentView.mas_top);
+        make.right.equalTo(self.contentView.mas_right);
     }];
     //    CGFloat width = self.tz_width / 3.0;
     //    _videoImageView.frame = CGRectMake(width, width, width, width);

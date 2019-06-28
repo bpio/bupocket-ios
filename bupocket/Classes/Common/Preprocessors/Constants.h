@@ -100,7 +100,9 @@
 #define If_Skip @"ifSkip"
 #define If_Show_Switch_Network @"ifShowSwitchNetwork"
 #define If_Switch_TestNetwork @"ifSwitchTestNetwork"
+#define If_Show_Custom_Network @"ifShowCustomNetwork"
 #define If_Custom_Network @"ifCustomNetwork"
+#define Version_Info @"VersionInfo"
 // Language key
 #define AppLanguage @"appLanguage"
 #define ZhHans @"zh-Hans"

@@ -29,7 +29,7 @@
 //        NSString * prompt = [NSString stringWithFormat:@"%@\n%@\n%@", self.prompt1.titleLabel.attributedText.string, self.prompt2.titleLabel.attributedText.string, self.prompt3.titleLabel.attributedText.string];
 //        CGFloat height = [Encapsulation getSizeSpaceLabelWithStr:prompt font:FONT(13) width:(DEVICE_WIDTH - ScreenScale(80)) height:CGFLOAT_MAX lineSpacing:Margin_5].height + ScreenScale(220);
         CGFloat height = self.prompt1.size.height + self.prompt2.size.height + self.prompt3.size.height + ScreenScale(210);
-        self.bounds = CGRectMake(0, 0, DEVICE_WIDTH - Margin_40, height);
+        self.bounds = CGRectMake(0, 0, DEVICE_WIDTH - Margin_60, height);
     }
     return self;
 }
@@ -102,7 +102,7 @@
     [prompt setAttributedTitle:[Encapsulation attrWithString:title preFont:FONT(13) preColor:COLOR_6 index:0 sufFont:FONT(13) sufColor:COLOR_6 lineSpacing:Margin_5] forState:UIControlStateNormal];
     prompt.titleLabel.numberOfLines = 0;
     prompt.contentHorizontalAlignment = UIControlContentHorizontalAlignmentLeft;
-    CGSize maximumSize = CGSizeMake(DEVICE_WIDTH - ScreenScale(80), CGFLOAT_MAX);
+    CGSize maximumSize = CGSizeMake(DEVICE_WIDTH - ScreenScale(100), CGFLOAT_MAX);
     CGSize expectSize = [prompt.titleLabel sizeThatFits:maximumSize];
     prompt.size = expectSize;
     return prompt;
@@ -112,7 +112,7 @@
 {
     if (!_sureBtn) {
         _sureBtn = [UIButton createButtonWithTitle:Localized(@"IGotIt") TextFont:FONT_16 TextNormalColor:MAIN_COLOR TextSelectedColor:MAIN_COLOR Target:self Selector:@selector(sureBtnClick)];
-        _sureBtn.size = CGSizeMake(DEVICE_WIDTH - Margin_40, MAIN_HEIGHT);
+        _sureBtn.size = CGSizeMake(DEVICE_WIDTH - Margin_60, MAIN_HEIGHT);
         [UIView setViewBorder:_sureBtn color:LINE_COLOR border:LINE_WIDTH type:UIViewBorderLineTypeTop];
     }
     return _sureBtn;

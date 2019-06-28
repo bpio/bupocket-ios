@@ -63,7 +63,7 @@
 }
 - (UIView *)tableView:(UITableView *)tableView viewForHeaderInSection:(NSInteger)section
 {
-    NSArray * titleArray = @[Localized(@"WalletInformation"), Localized(@"ModifyPassword")];
+    NSArray * titleArray = @[Localized(@"WalletInformation"), Localized(@"ModifyPW")];
     return [self setupHeaderTitle:titleArray[section]];
 }
 - (UIButton *)setupHeaderTitle:(NSString *)title
@@ -217,7 +217,7 @@
             [self.walletArray replaceObjectAtIndex:self.index withObject:self.walletModel];
             [[WalletTool shareTool] save:self.walletArray];
         }
-        [Encapsulation showAlertControllerWithMessage:Localized(@"PasswordModifiedSuccessfully") handler:^(UIAlertAction *action) {
+        [Encapsulation showAlertControllerWithMessage:[NSString stringWithFormat:Localized(@"%@PWModifiedSuccessfully"), self.walletModel.walletName] handler:^(UIAlertAction *action) {
             [self.navigationController popViewControllerAnimated:NO];
         }];
     }];

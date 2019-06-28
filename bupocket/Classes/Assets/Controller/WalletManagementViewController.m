@@ -99,17 +99,29 @@
 }
 - (void)deleteAction
 {
-    if ([self.walletModel.walletAddress isEqualToString:CurrentWalletAddress]) {
-        NSUserDefaults * defaults = [NSUserDefaults standardUserDefaults];
-        [defaults setObject:[[[AccountTool shareTool] account] walletAddress] forKey:Current_WalletAddress];
-        [defaults setObject:[[[AccountTool shareTool] account] walletKeyStore] forKey:Current_WalletKeyStore];
-        [defaults setObject:[[[AccountTool shareTool] account] walletName] forKey:Current_WalletName];
-        [defaults setObject:[[[AccountTool shareTool] account] walletIconName] forKey:Current_Wallet_IconName];
-        [defaults synchronize];
+    BOOL isCurrentWallet = [self.walletModel.walletAddress isEqualToString:CurrentWalletAddress];
+    if (isCurrentWallet) {
+        [Encapsulation showAlertControllerWithTitle:Localized(@"ConfirmDeleteWallet") message:Localized(@"DeleteCurrentWallet") cancelHandler:^(UIAlertAction *action) {
+        } confirmHandler:^(UIAlertAction *action) {
+            [self deleteDataIsCurrentWallet:isCurrentWallet];
+        }];
+    } else {
+        [self deleteDataIsCurrentWallet:isCurrentWallet];
     }
+}
+- (void)deleteDataIsCurrentWallet:(BOOL)isCurrentWallet
+{
     PasswordAlertView * alertView = [[PasswordAlertView alloc] initWithPrompt:Localized(@"WalletPWPrompt") confrimBolck:^(NSString * _Nonnull password, NSArray * _Nonnull words) {
         [self.walletArray removeObject:self.walletModel];
         [[WalletTool shareTool] save:self.walletArray];
+        if (isCurrentWallet) {
+            NSUserDefaults * defaults = [NSUserDefaults standardUserDefaults];
+            [defaults setObject:[[[AccountTool shareTool] account] walletAddress] forKey:Current_WalletAddress];
+            [defaults setObject:[[[AccountTool shareTool] account] walletKeyStore] forKey:Current_WalletKeyStore];
+            [defaults setObject:[[[AccountTool shareTool] account] walletName] forKey:Current_WalletName];
+            [defaults setObject:[[[AccountTool shareTool] account] walletIconName] forKey:Current_Wallet_IconName];
+            [defaults synchronize];
+        }
         [Encapsulation showAlertControllerWithMessage:Localized(@"DeleteWalletSuccessfully") handler:^(UIAlertAction *action) {
             [self.navigationController popViewControllerAnimated:NO];
         }];
@@ -149,9 +161,11 @@
             if (indexPath.row == 0) {
                 [cell.listBg setViewSize:cellSize borderRadius:BG_CORNER corners:UIRectCornerTopLeft | UIRectCornerTopRight];
                 cell.lineView.hidden = NO;
-            } else if (indexPath.row == self.listArray.count - 1 || indexPath.section == 2) {
+            } else if (indexPath.row == self.listArray.count - 1) {
                 [cell.listBg setViewSize:cellSize borderRadius:BG_CORNER corners:UIRectCornerBottomLeft | UIRectCornerBottomRight];
                 cell.lineView.hidden = YES;
+            } else {
+                cell.lineView.hidden = NO;
             }
         } else if (indexPath.section == 2) {
             cell.title.text = Localized(@"ModifyWalletPW");

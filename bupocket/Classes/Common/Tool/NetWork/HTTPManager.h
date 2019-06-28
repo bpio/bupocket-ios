@@ -32,7 +32,9 @@ typedef NS_ENUM(NSInteger, AccountDataType) {
 
 // Switched network
 - (void)SwitchedNetworkWithIsTest:(BOOL)isTest;
-// Custom network
+// show Custom network
+- (void)ShowCustomNetwork;
+// Switched Custom network
 - (void)SwitchedNetworkWithIsCustom:(BOOL)isCustom;
 // Switched Node url
 - (void)SwitchedNodeWithURL:(NSString *)URL;

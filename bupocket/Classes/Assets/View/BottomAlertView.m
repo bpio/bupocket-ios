@@ -50,8 +50,8 @@
             make.height.mas_equalTo(Margin_50);
         }];
     }
-    CGFloat viewBgH = ((ScreenScale(55) + (Margin_50 + LINE_WIDTH) * self.handlerArray.count));
-    self.frame = CGRectMake(0, DEVICE_HEIGHT - viewBgH - SafeAreaBottomH, DEVICE_WIDTH, viewBgH);
+    CGFloat viewBgH = (ScreenScale(55) + (Margin_50 + LINE_WIDTH) * self.handlerArray.count) + SafeAreaBottomH;
+    self.frame = CGRectMake(0, DEVICE_HEIGHT - viewBgH, DEVICE_WIDTH, viewBgH);
 }
 
 - (void)layoutSubviews

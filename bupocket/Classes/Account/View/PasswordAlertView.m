@@ -38,8 +38,8 @@
         } else {
             _promptLabel.textColor = COLOR_6;
         }
-        self.bgHeight = [Encapsulation rectWithText:self.promptLabel.text font:_promptLabel.font textWidth:DEVICE_WIDTH - ScreenScale(80)].size.height  + ScreenScale(255);
-        self.bounds = CGRectMake(0, 0, DEVICE_WIDTH - Margin_40, self.bgHeight);
+        self.bgHeight = [Encapsulation rectWithText:self.promptLabel.text font:_promptLabel.font textWidth:DEVICE_WIDTH - ScreenScale(100)].size.height  + ScreenScale(255);
+        self.bounds = CGRectMake(0, 0, DEVICE_WIDTH - Margin_60, self.bgHeight);
     }
     return self;
 }

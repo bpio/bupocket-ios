@@ -129,6 +129,13 @@ static int64_t const gasPrice = 1000;
     [defaults synchronize];
     [self initNetWork];
 }
+// show Custom network
+- (void)ShowCustomNetwork
+{
+    NSUserDefaults * defaults = [NSUserDefaults standardUserDefaults];
+    [defaults setBool:YES forKey:If_Show_Custom_Network];
+    [defaults synchronize];
+}
 // Custom network
 - (void)SwitchedNetworkWithIsCustom:(BOOL)isCustom
 {

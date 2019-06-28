@@ -38,7 +38,7 @@
         }
         self.titleLabel.text = title;
         
-        self.bounds = CGRectMake(0, 0, DEVICE_WIDTH - Margin_40, ScreenScale(220));
+        self.bounds = CGRectMake(0, 0, DEVICE_WIDTH - Margin_60, ScreenScale(190));
     }
     return self;
 }
@@ -55,7 +55,7 @@
     [self addSubview:line];
     [line mas_makeConstraints:^(MASConstraintMaker *make) {
         make.top.equalTo(self.textField.mas_bottom).offset(Margin_25);
-        make.left.right.equalTo(self.textField);
+        make.left.right.equalTo(self);
         make.height.mas_equalTo(LINE_WIDTH);
     }];
     
@@ -64,14 +64,13 @@
     [cancel mas_makeConstraints:^(MASConstraintMaker *make) {
         make.top.equalTo(line.mas_bottom);
         make.bottom.equalTo(self);
-        make.left.equalTo(self.textField);
-        make.size.mas_equalTo(CGSizeMake(DEVICE_WIDTH / 2 - Margin_40, ScreenScale(55)));
+        make.left.equalTo(self);
+        make.size.mas_equalTo(CGSizeMake(DEVICE_WIDTH / 2 - Margin_30, ScreenScale(55)));
     }];
-    
     [self addSubview:self.confirm];
     [self.confirm mas_makeConstraints:^(MASConstraintMaker *make) {
         make.size.top.bottom.equalTo(cancel);
-        make.right.equalTo(self.textField);
+        make.right.equalTo(self);
     }];
     UIView * verticalLine = [[UIView alloc] init];
     verticalLine.backgroundColor = LINE_COLOR;
@@ -86,11 +85,11 @@
 {
     [super layoutSubviews];
     [self.titleLabel mas_makeConstraints:^(MASConstraintMaker *make) {
-        make.top.equalTo(self).offset(Margin_30);
+        make.top.equalTo(self).offset(Margin_20);
         make.centerX.equalTo(self);
     }];
     [self.textField mas_makeConstraints:^(MASConstraintMaker *make) {
-        make.top.equalTo(self.titleLabel.mas_bottom).offset(Margin_25);
+        make.top.equalTo(self.titleLabel.mas_bottom).offset(Margin_20);
         make.left.equalTo(self).offset(Margin_20);
         make.right.equalTo(self).offset(-Margin_20);
         make.height.mas_equalTo(MAIN_HEIGHT);
@@ -113,8 +112,9 @@
         _textField.textColor = TITLE_COLOR;
         _textField.font = FONT_TITLE;
         _textField.layer.cornerRadius = ScreenScale(3);
-        _textField.layer.borderColor = LINE_COLOR.CGColor;
-        _textField.layer.borderWidth = LINE_WIDTH;
+//        _textField.layer.borderColor = LINE_COLOR.CGColor;
+//        _textField.layer.borderWidth = LINE_WIDTH;
+        _textField.backgroundColor = COLOR(@"F5F5F5");
         _textField.leftView = [[UIView alloc] initWithFrame:CGRectMake(0, 0, Margin_10, MAIN_HEIGHT)];
         _textField.leftViewMode = UITextFieldViewModeAlways;
         _textField.rightView = [[UIView alloc] initWithFrame:CGRectMake(0, 0, Margin_10, MAIN_HEIGHT)];

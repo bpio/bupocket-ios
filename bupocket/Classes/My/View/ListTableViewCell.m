@@ -162,6 +162,7 @@ static NSString * const WalletDetailCellID = @"WalletDetailCellID";
     if (!_detail) {
         _detail = [UIButton createButtonWithTitle:@"" TextFont:FONT(15) TextNormalColor:COLOR_6 TextSelectedColor:COLOR_6 Target:nil Selector:nil];
         [_detail setImage:[UIImage imageNamed:@"list_arrow"] forState:UIControlStateNormal];
+        _detail.userInteractionEnabled = NO;
         _detail.contentEdgeInsets = UIEdgeInsetsMake(0, Margin_10, 0, Margin_15);
         _detail.contentHorizontalAlignment = UIControlContentHorizontalAlignmentLeft;
     }

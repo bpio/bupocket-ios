@@ -26,6 +26,13 @@
 
 @property (nonatomic, assign) NSInteger touchCounter;
 
+// Repeat click interval
+@property (nonatomic, assign) NSTimeInterval acceptEventIntervalCustom;
+// Last click timestamp
+@property (nonatomic, assign) NSTimeInterval acceptEventTimeCustom;
+
+@property (nonatomic, assign) NSInteger touchCounterCustom;
+
 @end
 
 @implementation AboutUsViewController
@@ -34,6 +41,10 @@
     [super viewDidLoad];
     self.navigationItem.title = Localized(@"AboutUs");
     self.touchCounter = 0;
+    self.touchCounterCustom = 0;
+//    NSUserDefaults * defaults = [NSUserDefaults standardUserDefaults];
+//    [defaults removeObjectForKey:If_Show_Switch_Network];
+//    [defaults removeObjectForKey:If_Show_Custom_Network];
     [self setupView];
     [self setData];
     // Do any additional setup after loading the view.
@@ -47,8 +58,13 @@
 }
 - (void)setData
 {
-    if ([[NSUserDefaults standardUserDefaults] boolForKey:If_Show_Switch_Network]) {
+    NSUserDefaults * defaults = [NSUserDefaults standardUserDefaults];
+    if ([defaults boolForKey:If_Show_Switch_Network] && [defaults boolForKey:If_Show_Custom_Network]) {
         self.listArray = @[@[Localized(@"VersionLog"), Localized(@"VersionUpdate")], @[Localized(@"SwitchedNetwork")], @[Localized(@"CustomEnvironment")]];
+    } else if ([defaults boolForKey:If_Show_Switch_Network]) {
+        self.listArray = @[@[Localized(@"VersionLog"), Localized(@"VersionUpdate")], @[Localized(@"SwitchedNetwork")]];
+    } else if ([defaults boolForKey:If_Show_Custom_Network]) {
+        self.listArray = @[@[Localized(@"VersionLog"), Localized(@"VersionUpdate")],  @[Localized(@"CustomEnvironment")]];
     } else {
         self.listArray = @[@[Localized(@"VersionLog"), Localized(@"VersionUpdate")]];
     }
@@ -56,17 +72,20 @@
 }
 - (void)getVersionData
 {
-    [[HTTPManager shareManager] getVersionDataWithSuccess:^(id responseObject) {
-        NSInteger code = [[responseObject objectForKey:@"errCode"] integerValue];
-        if (code == Success_Code) {
-            self.versionModel  = [VersionModel mj_objectWithKeyValues:[responseObject objectForKey:@"data"]];
-            [self.tableView reloadData];
-        } else {
-//            [MBProgressHUD showTipMessageInWindow:[ErrorTypeTool getDescriptionWithErrorCode:code]];
-        }
-    } failure:^(NSError *error) {
-        
-    }];
+    NSUserDefaults * defaults = [NSUserDefaults standardUserDefaults];
+    self.versionModel  = [VersionModel mj_objectWithKeyValues:[defaults objectForKey:Version_Info]];
+    [self.tableView reloadData];
+//    [[HTTPManager shareManager] getVersionDataWithSuccess:^(id responseObject) {
+//        NSInteger code = [[responseObject objectForKey:@"errCode"] integerValue];
+//        if (code == Success_Code) {
+//            self.versionModel  = [VersionModel mj_objectWithKeyValues:[responseObject objectForKey:@"data"]];
+//            [self.tableView reloadData];
+//        } else {
+////            [MBProgressHUD showTipMessageInWindow:[ErrorTypeTool getDescriptionWithErrorCode:code]];
+//        }
+//    } failure:^(NSError *error) {
+//
+//    }];
 }
 - (void)setupView
 {
@@ -82,22 +101,42 @@
 {
     UIView * headerView = [[UIView alloc] init];
     headerView.backgroundColor = [UIColor whiteColor];
-    CustomButton * currentVersion = [[CustomButton alloc] init];
-    currentVersion.layoutMode = VerticalNormal;
-    [currentVersion setTitleColor:COLOR_6 forState:UIControlStateNormal];
-    currentVersion.titleLabel.font = FONT_15;
-    [currentVersion setTitle:[NSString stringWithFormat:Localized(@"Current version: %@"), App_Version] forState:UIControlStateNormal];
-    [currentVersion setImage:[UIImage imageNamed:@"about_us_logo"] forState:UIControlStateNormal];
-    [currentVersion addTarget:self action:@selector(SwitchingNetwork) forControlEvents:UIControlEventTouchUpInside];
-    headerView.frame = CGRectMake(0, 0, DEVICE_WIDTH, ScreenScale(200));
-    self.tableView.tableHeaderView = headerView;
+    UIButton * icon = [UIButton createButtonWithNormalImage:@"about_us_logo" SelectedImage:@"about_us_logo" Target:self Selector:@selector(SwitchingNetwork)];
+    [headerView addSubview:icon];
+    CGSize iconSize = CGSizeMake(ScreenScale(70), ScreenScale(70));
+    [icon setViewSize:iconSize borderWidth:0 borderColor:nil borderRadius:Margin_15];
+    [icon mas_makeConstraints:^(MASConstraintMaker *make) {
+        make.top.equalTo(headerView.mas_top).offset(Margin_50);
+        make.centerX.equalTo(headerView);
+        make.size.mas_equalTo(iconSize);
+    }];
+    UIButton * currentVersion = [UIButton createButtonWithTitle:[NSString stringWithFormat:Localized(@"Current version: V%@"), App_Version] TextFont:FONT_15 TextNormalColor:COLOR_6 TextSelectedColor:COLOR_6 Target:nil Selector:nil];
     [headerView addSubview:currentVersion];
     [currentVersion mas_makeConstraints:^(MASConstraintMaker *make) {
-        make.centerY.equalTo(headerView);
-        make.left.equalTo(headerView.mas_left).offset(Margin_15);
-        make.right.equalTo(headerView.mas_right).offset(-Margin_15);
-        make.height.mas_equalTo(ScreenScale(130));
+        make.top.equalTo(icon.mas_bottom).offset(Margin_15);
+        make.centerX.equalTo(headerView);
+        make.width.mas_lessThanOrEqualTo(DEVICE_WIDTH - Margin_30);
     }];
+    headerView.frame = CGRectMake(0, 0, DEVICE_WIDTH, ScreenScale(200));
+    self.tableView.tableHeaderView = headerView;
+
+    
+//    CustomButton * currentVersion = [[CustomButton alloc] init];
+//    currentVersion.layoutMode = VerticalNormal;
+//    [currentVersion setTitleColor:COLOR_6 forState:UIControlStateNormal];
+//    currentVersion.titleLabel.font = FONT_15;
+//    [currentVersion setTitle:[NSString stringWithFormat:Localized(@"Current version: %@"), App_Version] forState:UIControlStateNormal];
+//    [currentVersion setImage:[UIImage imageNamed:@"about_us_logo"] forState:UIControlStateNormal];
+//    [currentVersion addTarget:self action:@selector(SwitchingNetwork) forControlEvents:UIControlEventTouchUpInside];
+//    headerView.frame = CGRectMake(0, 0, DEVICE_WIDTH, ScreenScale(200));
+//    self.tableView.tableHeaderView = headerView;
+//    [headerView addSubview:currentVersion];
+//    [currentVersion mas_makeConstraints:^(MASConstraintMaker *make) {
+//        make.centerY.equalTo(headerView);
+//        make.left.equalTo(headerView.mas_left).offset(Margin_15);
+//        make.right.equalTo(headerView.mas_right).offset(-Margin_15);
+//        make.height.mas_equalTo(ScreenScale(130));
+//    }];
 }
 - (CGFloat)tableView:(UITableView *)tableView heightForRowAtIndexPath:(NSIndexPath *)indexPath
 {
@@ -129,12 +168,14 @@
     cell.title.text = self.listArray[indexPath.section][indexPath.row];
     if (indexPath.section == 0 && indexPath.row == 1) {
         cell.detail.hidden = NO;
-        [cell.detail setImage:[UIImage imageNamed:@""] forState:UIControlStateNormal];
-        BOOL result = [App_Version compare:self.versionModel.verNumber] == NSOrderedAscending;
-        NSString * isNewVersion = !result ? @"" : @"• ";
-        NSAttributedString * attr = [Encapsulation attrWithString:[NSString stringWithFormat:@"%@V%@", isNewVersion, self.versionModel.verNumber] preFont:FONT(15) preColor:WARNING_COLOR index:isNewVersion.length sufFont:FONT(15) sufColor:COLOR_6 lineSpacing:0];
-        [cell.detail setAttributedTitle:attr forState:UIControlStateNormal];
-    } else if (indexPath.section == 1 && indexPath.row == 0) {
+        [cell.detail setImage:nil forState:UIControlStateNormal];
+        if (NotNULLString(self.versionModel.verNumber)) {
+            BOOL result = [App_Version compare:self.versionModel.verNumber] == NSOrderedAscending;
+            NSString * isNewVersion = !result ? @"" : @"• ";
+            NSAttributedString * attr = [Encapsulation attrWithString:[NSString stringWithFormat:@"%@V%@", isNewVersion, self.versionModel.verNumber] preFont:FONT(15) preColor:WARNING_COLOR index:isNewVersion.length sufFont:FONT(15) sufColor:COLOR_6 lineSpacing:0];
+            [cell.detail setAttributedTitle:attr forState:UIControlStateNormal];
+        }
+    } else if ([cell.title.text isEqualToString:Localized(@"SwitchedNetwork")]) {
         cell.detail.hidden = YES;
         [cell.contentView addSubview:self.switchControl];
         [_switchControl setOn:[[NSUserDefaults standardUserDefaults] boolForKey:If_Switch_TestNetwork] animated:YES];
@@ -147,19 +188,24 @@
     }
     cell.selectionStyle = UITableViewCellSelectionStyleNone;
     CGSize cellSize = CGSizeMake(DEVICE_WIDTH - Margin_20, Margin_50);
-    if (indexPath.row == 0) {
+    if ([self.listArray[indexPath.section] count] - 1 == 0) {
+        [cell.listBg setViewSize:cellSize borderRadius:BG_CORNER corners:UIRectCornerAllCorners];
+        cell.lineView.hidden = YES;
+    } else if (indexPath.row == 0) {
         [cell.listBg setViewSize:cellSize borderRadius:BG_CORNER corners:UIRectCornerTopLeft | UIRectCornerTopRight];
         cell.lineView.hidden = NO;
-    }
-    if (indexPath.row == [self.listArray[indexPath.section] count] - 1) {
+    } else if (indexPath.row == [self.listArray[indexPath.section] count] - 1) {
         [cell.listBg setViewSize:cellSize borderRadius:BG_CORNER corners:UIRectCornerBottomLeft | UIRectCornerBottomRight];
         cell.lineView.hidden = YES;
+    } else {
+        cell.lineView.hidden = NO;
     }
     return cell;
 }
 - (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath
 {
     [tableView deselectRowAtIndexPath:indexPath animated:NO];
+    ListTableViewCell * cell = [tableView cellForRowAtIndexPath:indexPath];
     if (indexPath.section == 0) {
         if (indexPath.row == 0) {
             VersionLogViewController * VC = [[VersionLogViewController alloc] init];
@@ -190,7 +236,9 @@
                 [alertView showInWindowWithMode:CustomAnimationModeDisabled inView:nil bgAlpha:AlertBgAlpha needEffectView:NO];
             }
         }
-    } else if (indexPath.section == 2) {
+    } else if ([cell.title.text isEqualToString:Localized(@"SwitchedNetwork")]) {
+        [self showCustomEnvironment];
+    } else if ([cell.title.text isEqualToString:Localized(@"CustomEnvironment")]) {
         CustomEnvironmentViewController * VC = [[CustomEnvironmentViewController alloc] init];
         [self.navigationController pushViewController:VC animated:NO];
     }
@@ -241,6 +289,30 @@
         }];
         [alertController addAction:okAction];
         [self presentViewController:alertController animated:YES completion:nil];
+    }
+}
+- (void)showCustomEnvironment
+{
+    NSUserDefaults * defaults = [NSUserDefaults standardUserDefaults];
+    if (![defaults boolForKey:If_Show_Switch_Network]) return;
+    if ([defaults boolForKey:If_Show_Custom_Network]) return;
+    
+    if (self.acceptEventIntervalCustom <= 0) {
+        self.acceptEventIntervalCustom = 2;
+    }
+    BOOL needSendAction = (NSDate.date.timeIntervalSince1970 - self.acceptEventTimeCustom >= self.acceptEventIntervalCustom);
+    if (self.acceptEventIntervalCustom > 0) {
+        self.acceptEventTimeCustom = NSDate.date.timeIntervalSince1970;
+    }
+    if (!needSendAction) {
+        self.touchCounterCustom += 1;
+    } else {
+        self.touchCounterCustom = 0;
+    }
+    if (self.touchCounterCustom == 4) {
+        self.touchCounterCustom = 0;
+        [[HTTPManager shareManager] ShowCustomNetwork];
+        [self setData];
     }
 }
 - (BOOL)gestureRecognizer:(UIGestureRecognizer*)gestureRecognizer shouldReceiveTouch:(UITouch*)touch {

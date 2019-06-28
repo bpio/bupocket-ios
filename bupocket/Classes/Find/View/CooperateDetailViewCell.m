@@ -206,6 +206,9 @@
         _riskStatementBtn.contentEdgeInsets = UIEdgeInsetsMake(Margin_5, Margin_10, Margin_5, Margin_10);
         [_riskStatementBtn setAttributedTitle:[Encapsulation attrWithString:Localized(@"RiskStatementPrompt") preFont:FONT(13) preColor:COLOR_6 index:0 sufFont:FONT(13) sufColor:COLOR_6 lineSpacing:Margin_5] forState:UIControlStateNormal];
         _riskStatementBtn.hidden = YES;
+        CGSize maximumSize = CGSizeMake(DEVICE_WIDTH - Margin_40, CGFLOAT_MAX);
+        CGSize expectSize = [_riskStatementBtn sizeThatFits:maximumSize];
+        _riskStatementBtn.size = expectSize;
     }
     return _riskStatementBtn;
 }

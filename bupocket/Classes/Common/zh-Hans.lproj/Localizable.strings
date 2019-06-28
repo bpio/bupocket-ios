@@ -59,7 +59,7 @@
 
 // 备份
 //"BackUpPurse" = "备份钱包";
-"BackUpWallet" = "备份助记词";
+//"BackUpWallet" = "备份助记词";
 "BackUpWalletTitle" = "拥有助记词等于拥有钱包资产的所有权";
 "Note" = "注意事项";
 "BackUpWalletNote1" = "• 禁止截屏，请确保在四周无人、无摄像头的安全环境下进行备份";
@@ -93,7 +93,7 @@
 
 "Setting" = "设置";
 "AddressBook" = "地址簿";
-//"ModifyPassword" = "修改身份密码";
+//"ModifyIdentityPassword" = "修改身份密码";
 "ModifyIdentityPassword" = "修改身份密码";
 //"Feedback" = "帮助与反馈";
 "MultiLingual" = "多语言";
@@ -106,10 +106,12 @@
 "IdentityIDTitle" = "身份ID";
 "BackupIdentity" = "备份身份";
 "ExitCurrentIdentity" = "退出当前身份";
+"ExitCurrentID" = "退出当前身份";
 "ExitCurrentIdentityPrompt" = "即将退出当前身份，请确保身份已备份";
 "IdentityIDInfo" = "用来维护你存储在区块链上的数据，这些信息会以分布式存储的方式进行保存，只有拥有该身份的人可以动用数据，充分确保你的数据主权不受侵犯。";
 // 修改密码
 "ModifyPassword" = "修改安全密码";
+"ModifyPW" = "修改安全密码";
 "WalletInformation" = "钱包信息";
 "OldPassword" = "请输入原安全密码";
 "PleaseEnterOldPW" = "请输入当前钱包的安全密码";
@@ -142,7 +144,7 @@
 "InvalidNodeURL" = "无效的节点地址";
 "NodeDuplication" = "节点重复，请重新设置";
 // 关于我们
-"Current version: %@" = "当前版本: %@";
+"Current version: V%@" = "当前版本: V%@";
 "VersionLog" = "版本日志";
 "VersionUpdate" = "版本更新";
 "CustomEnvironment" = "自定义环境";
@@ -181,7 +183,6 @@
 "SafetyTips" = "您的钱包助记词尚未备份，为防止忘记密码、删除App或丢失手机等情况导致资产损失，请务必备份助记词";
 "ImmediateBackup" = "立即备份";
 // 收款
-//"Receive" = "收款";
 "ReceiveAddress" = "收款地址";
 "BUPocket" = "BU Pocket";
 // 钱包地址
@@ -344,6 +345,7 @@
 "NewPasswordIsDifferent" = "新密码与确认新密码不一致，请重新输入";
 "OldPasswordIncorrect" = "旧密码不正确，请重新输入";
 "PasswordModifiedSuccessfully" = "密码修改成功";
+"%@PWModifiedSuccessfully" = "%@ 的安全密码已修改成功！";
 
 "PasswordIsIncorrect" = "密码不正确，请重新输入";
 // 转账
@@ -408,7 +410,7 @@
 // 创建钱包
 "CreateWallet" = "创建钱包";
 "SetWalletName" = "请设置钱包名称";
-"SetWalletNamePlaceholder" = "用于区分其他钱包，不能超过20个字符";
+//"SetWalletNamePlaceholder" = "用于区分其他钱包，不能超过20个字符";
 // 管理
 "ExportKeystore" = "导出Keystore";
 "ExportPrivateKey" = "导出私钥";
@@ -417,6 +419,8 @@
 "ModifyWalletName" = "更改钱包名称";
 "WalletPWPrompt" = "请填写钱包密码";
 "DeleteWalletSuccessfully" = "删除钱包成功";
+"ConfirmDeleteWallet" = "确认删除该钱包吗？";
+"DeleteCurrentWallet" = "当前删除钱包为当前使用钱包，删除后将默认设置当前身份下的钱包为当前使用钱包。";
 // 钱包详情
 "WalletDetails" = "钱包详情";
 "ChangeWalletIcon" = "更改钱包头像";

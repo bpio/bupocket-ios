@@ -144,15 +144,19 @@
     cell.selectionStyle = UITableViewCellSelectionStyleNone;
     [cell.detail setImage:[UIImage imageNamed:@"node_settings_more"] forState:UIControlStateNormal];
     [cell.detail addTarget:self action:@selector(moreAcrion:) forControlEvents:UIControlEventTouchUpInside];
+    cell.detail.userInteractionEnabled = YES;
     cell.detail.tag = indexPath.row;
     cell.title.text = self.listArray[indexPath.row];
     cell.listImage.image = [UIImage imageNamed:@"checked"];
     CGSize cellSize = CGSizeMake(DEVICE_WIDTH - Margin_20, ScreenScale(55));
-    if (indexPath.row == 0) {
+    if (self.listArray.count - 1 == 0) {
+        [cell.listBg setViewSize:cellSize borderRadius:BG_CORNER corners:UIRectCornerAllCorners];
+    } else if (indexPath.row == 0) {
         [cell.listBg setViewSize:cellSize borderRadius:BG_CORNER corners:UIRectCornerTopLeft | UIRectCornerTopRight];
     } else if (indexPath.row == self.listArray.count - 1) {
         [cell.listBg setViewSize:cellSize borderRadius:BG_CORNER corners:UIRectCornerBottomLeft | UIRectCornerBottomRight];
     }
+    
     cell.lineView.hidden = (indexPath.row == self.listArray.count - 1);
     cell.detail.hidden = (indexPath.row == 0);
     cell.listImage.hidden = (_index != indexPath.row);
@@ -166,14 +170,13 @@
             if ([btn.titleLabel.text isEqualToString:titleArray[0]]) {
                 [self showNodeSettingsAlertWithModifyType:ModifyTypeNodeEdit index:button.tag];
             } else if ([btn.titleLabel.text isEqualToString:titleArray[1]]) {
-                NSString * message = @"";
-                if (self.index == button.tag) {
-                    self.index = 0;
-                    [self setNodeURLWithIndex:self.index];
-                    message = Localized(@"DeleteCurrentNode");
-                }
+                NSString * message = (self.index == button.tag) ? Localized(@"DeleteCurrentNode") : @"";
                 [Encapsulation showAlertControllerWithTitle:Localized(@"ConfirmDeleteNode") message:message cancelHandler:^(UIAlertAction *action) {
                 } confirmHandler:^(UIAlertAction *action) {
+                    if (self.index == button.tag) {
+                        self.index = 0;
+                        [self setNodeURLWithIndex:self.index];
+                    }
                     [self.listArray removeObjectAtIndex:button.tag];
                     [[NSUserDefaults standardUserDefaults] setObject:self.listArray forKey:self.nodeURLArrayKey];
                     [self.tableView reloadData];
