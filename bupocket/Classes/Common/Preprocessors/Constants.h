@@ -103,6 +103,7 @@
 #define If_Show_Custom_Network @"ifShowCustomNetwork"
 #define If_Custom_Network @"ifCustomNetwork"
 #define Version_Info @"VersionInfo"
+#define If_Hidden_New @"IfHiddenNew"
 // Language key
 #define AppLanguage @"appLanguage"
 #define ZhHans @"zh-Hans"

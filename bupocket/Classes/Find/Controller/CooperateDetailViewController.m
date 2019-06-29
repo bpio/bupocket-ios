@@ -361,7 +361,6 @@ static NSString * const CooperateDetailCellID = @"CooperateDetailCellID";
         CGFloat noDataH = ScreenScale(280);
         _noData = [[UIView alloc] initWithFrame:CGRectMake(0, 0, DEVICE_WIDTH, noDataH)];
         UIButton * noDataBtn = [Encapsulation showNoDataWithTitle:Localized(@"NoRecord") imageName:@"noRecord" superView:_noData frame:CGRectMake(0, (noDataH - ScreenScale(160)) / 2, DEVICE_WIDTH, ScreenScale(160))];
-        noDataBtn.hidden = NO;
         [_noData addSubview:noDataBtn];
         return self.noData;
     } else {

@@ -197,6 +197,8 @@
     }
     NSMutableAttributedString * attr = [[NSMutableAttributedString alloc] initWithString:[NSString stringWithFormat:@"\n%@", message] attributes:@{NSForegroundColorAttributeName: COLOR_6, NSFontAttributeName: FONT(15)}];
     [alertController setValue:attr forKey:@"attributedMessage"];
+    UILabel * messageLabel = alertBg.subviews[0].subviews[0].subviews[2];
+    messageLabel.textAlignment = NSTextAlignmentLeft;
     [confirmAction setValue:MAIN_COLOR forKey:@"titleTextColor"];
     [[[UIApplication sharedApplication] keyWindow].rootViewController presentViewController:alertController animated:YES completion:nil];
 }
@@ -209,7 +211,6 @@
     button.titleLabel.font = FONT(15);
     [button setImage:[UIImage imageNamed:imageName] forState:UIControlStateNormal];
     button.userInteractionEnabled = NO;
-    button.hidden = YES;
     button.frame = frame;
     [superView addSubview:button];
     return button;

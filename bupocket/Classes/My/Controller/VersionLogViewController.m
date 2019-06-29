@@ -113,7 +113,6 @@ static NSString * const VersionLogCellID = @"VersionLogCellID";
         CGFloat noDataH = DEVICE_HEIGHT - NavBarH - SafeAreaBottomH;
         _noData = [[UIView alloc] initWithFrame:CGRectMake(0, 0, DEVICE_WIDTH, noDataH)];
         UIButton * noDataBtn = [Encapsulation showNoDataWithTitle:Localized(@"NoRecord") imageName:@"noRecord" superView:_noData frame:CGRectMake(0, (noDataH - ScreenScale(160)) / 2, DEVICE_WIDTH, ScreenScale(160))];
-        noDataBtn.hidden = NO;
         [_noData addSubview:noDataBtn];
     }
     return _noData;

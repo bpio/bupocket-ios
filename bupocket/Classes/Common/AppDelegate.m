@@ -16,6 +16,7 @@
 #import <WXApi.h>
 #import <TencentOpenAPI/TencentOAuth.h>
 #import <UMCommon/UMCommon.h>
+//#import "UITabBar+Extension.h"
 
 @interface AppDelegate ()<WXApiDelegate, TencentSessionDelegate>
 
@@ -40,7 +41,7 @@
     [[HTTPManager shareManager] getBlockLatestFees];
     [WXApi registerApp:Wechat_APP_ID];
     _tencentOAuth = [[TencentOAuth alloc] initWithAppId:Tencent_App_ID andDelegate:self];
-
+//    [self.window.rootViewController.tabBarController.tabBar showBadgeOnItemIndex:1 tabbarNum:self.window.rootViewController.tabBarController.viewControllers.count];
 //    [UMConfigure initWithAppkey:UM_App_Key channel:@""];
     return YES;
 }

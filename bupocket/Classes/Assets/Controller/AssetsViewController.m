@@ -34,6 +34,7 @@
 #import "NodeTransferSuccessViewController.h"
 #import "TransferResultsViewController.h"
 #import "RequestTimeoutViewController.h"
+#import "UITabBar+Extension.h"
 
 
 @interface AssetsViewController ()<UITableViewDelegate, UITableViewDataSource>
@@ -94,11 +95,16 @@ static UIButton * _noBackup;
     if (dic) {
         [self setDataWithResponseObject:dic];
     }
+    if ([defaults objectForKey:If_Hidden_New]) {
+        [self.navigationController.tabBarController.tabBar hideBadgeOnItemIndex:1];
+    } else {
+        [self.navigationController.tabBarController.tabBar showBadgeOnItemIndex:1 tabbarNum:self.navigationController.tabBarController.viewControllers.count];
+    }
     // Do any additional setup after loading the view.
 }
 - (void)setupNav
 {
-    self.wallet = [UIButton createButtonWithNormalImage:@"nav_wallet_n" SelectedImage:@"nav_wallet_s" Target:self Selector:@selector(walletAction)];
+    self.wallet = [UIButton createButtonWithNormalImage:@"nav_wallet_w" SelectedImage:@"nav_wallet_w" Target:self Selector:@selector(walletAction)];
     self.wallet.frame = CGRectMake(0, 0, ScreenScale(44), ScreenScale(44));
     self.wallet.contentHorizontalAlignment = UIControlContentHorizontalAlignmentRight;
     self.navigationItem.rightBarButtonItem = [[UIBarButtonItem alloc]initWithCustomView:self.wallet];
