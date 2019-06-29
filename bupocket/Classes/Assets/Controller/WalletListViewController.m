@@ -41,10 +41,10 @@
 }
 - (void)setupNav
 {
-    UIButton * imported = [UIButton createButtonWithNormalImage:@"import" SelectedImage:@"import" Target:self Selector:@selector(importedAction)];
-    imported.frame = CGRectMake(0, 0, ScreenScale(60), ScreenScale(44));
-    imported.contentHorizontalAlignment = UIControlContentHorizontalAlignmentRight;
-    self.navigationItem.rightBarButtonItem = [[UIBarButtonItem alloc] initWithCustomView:imported];
+    UIButton * addWallet = [UIButton createButtonWithNormalImage:@"import" SelectedImage:@"import" Target:self Selector:@selector(addAction)];
+    addWallet.frame = CGRectMake(0, 0, ScreenScale(60), ScreenScale(44));
+    addWallet.contentHorizontalAlignment = UIControlContentHorizontalAlignmentRight;
+    self.navigationItem.rightBarButtonItem = [[UIBarButtonItem alloc] initWithCustomView:addWallet];
 }
 - (void)viewWillAppear:(BOOL)animated
 {
@@ -89,7 +89,7 @@
     if (section == 0) {
         return Margin_40;
     } else {
-        return self.listArray.count > 0 ? ScreenScale(35) : ScreenScale(135);
+        return self.listArray.count > 0 ? ScreenScale(35) : ScreenScale(180);
     }
 }
 - (UIView *)tableView:(UITableView *)tableView viewForHeaderInSection:(NSInteger)section
@@ -100,9 +100,12 @@
         if (self.listArray.count > 0) {
             return [self setupHeaderTitle:Localized(@"ImportedWallet") index:section];
         } else {
-            UIView * headerView = [[UIView alloc] initWithFrame:CGRectMake(0, 0, DEVICE_WIDTH, ScreenScale(125))];
+            UIView * headerView = [[UIView alloc] initWithFrame:CGRectMake(0, 0, DEVICE_WIDTH, ScreenScale(180))];
             UIButton * titleBtn = [self setupHeaderTitle:Localized(@"ImportedWallet") index:section];
             [headerView addSubview:titleBtn];
+            UIButton * addBtn = [UIButton createButtonWithTitle:Localized(@"AddWallet") isEnabled:YES Target:self Selector:@selector(addAction)];
+            [headerView addSubview:addBtn];
+            /*
             CustomButton * importBtn = [[CustomButton alloc] init];
             [importBtn setTitle:Localized(@"ImmediateImport") forState:UIControlStateNormal];
             [importBtn setImage:[UIImage imageNamed:@"immediateImport"] forState:UIControlStateNormal];
@@ -112,10 +115,15 @@
             importBtn.clipsToBounds = YES;
             importBtn.layer.cornerRadius = MAIN_CORNER;
             [importBtn addTarget:self action:@selector(importedAction) forControlEvents:UIControlEventTouchUpInside];
-            [importBtn mas_makeConstraints:^(MASConstraintMaker *make) {
+             */
+            [addBtn mas_makeConstraints:^(MASConstraintMaker *make) {
+                make.top.equalTo(titleBtn.mas_bottom).offset(ScreenScale(90));
+                make.left.equalTo(headerView.mas_left).offset(Margin_15);
+                make.right.equalTo(headerView.mas_right).offset(-Margin_15);
+                make.height.mas_equalTo(MAIN_HEIGHT);
 //                make.top.equalTo(titleBtn.mas_bottom).offset(Margin_25);
-                make.bottom.centerX.equalTo(headerView);
-                make.size.mas_equalTo(CGSizeMake(DEVICE_WIDTH - ScreenScale(160), MAIN_HEIGHT));
+//                make.bottom.centerX.equalTo(headerView);
+//                make.size.mas_equalTo(CGSizeMake(DEVICE_WIDTH - ScreenScale(160), MAIN_HEIGHT));
             }];
             return headerView;
         }
@@ -135,7 +143,7 @@
         return ContentSizeBottom;
     }
 }
-- (void)importedAction
+- (void)addAction
 {
     NSArray * titleArray = @[Localized(@"CreateWallet"), Localized(@"ImportWallet")];
     BottomAlertView * alertView = [[BottomAlertView alloc] initWithHandlerArray:titleArray handlerType:HandlerTypeWallet handlerClick:^(UIButton * _Nonnull btn) {

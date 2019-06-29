@@ -48,7 +48,17 @@
     self.layer.cornerRadius = MAIN_CORNER;
     
     [self addSubview:self.titleLabel];
+    [self.titleLabel mas_makeConstraints:^(MASConstraintMaker *make) {
+        make.top.equalTo(self).offset(Margin_20);
+        make.centerX.equalTo(self);
+    }];
     [self addSubview:self.textField];
+    [self.textField mas_makeConstraints:^(MASConstraintMaker *make) {
+        make.top.equalTo(self.titleLabel.mas_bottom).offset(Margin_20);
+        make.left.equalTo(self).offset(Margin_20);
+        make.right.equalTo(self).offset(-Margin_20);
+        make.height.mas_equalTo(MAIN_HEIGHT);
+    }];
     
     UIView * line = [[UIView alloc] init];
     line.backgroundColor = LINE_COLOR;
@@ -76,23 +86,9 @@
     verticalLine.backgroundColor = LINE_COLOR;
     [self addSubview:verticalLine];
     [verticalLine mas_makeConstraints:^(MASConstraintMaker *make) {
-        make.centerX.equalTo(self.textField);
+        make.centerX.equalTo(self);
         make.centerY.equalTo(cancel);
         make.size.mas_equalTo(CGSizeMake(LINE_WIDTH, Margin_20));
-    }];
-}
-- (void)layoutSubviews
-{
-    [super layoutSubviews];
-    [self.titleLabel mas_makeConstraints:^(MASConstraintMaker *make) {
-        make.top.equalTo(self).offset(Margin_20);
-        make.centerX.equalTo(self);
-    }];
-    [self.textField mas_makeConstraints:^(MASConstraintMaker *make) {
-        make.top.equalTo(self.titleLabel.mas_bottom).offset(Margin_20);
-        make.left.equalTo(self).offset(Margin_20);
-        make.right.equalTo(self).offset(-Margin_20);
-        make.height.mas_equalTo(MAIN_HEIGHT);
     }];
 }
 - (UILabel *)titleLabel

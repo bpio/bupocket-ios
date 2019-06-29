@@ -119,7 +119,7 @@
     headerView.frame = CGRectMake(0, 0, DEVICE_WIDTH, promptSize.height + Margin_30);
     self.tableView.tableHeaderView = headerView;
     
-    UIView * footerView = [[UIView alloc] initWithFrame:CGRectMake(0, 0, DEVICE_WIDTH, ScreenScale(150) + SafeAreaBottomH)];
+    UIView * footerView = [[UIView alloc] initWithFrame:CGRectMake(0, 0, DEVICE_WIDTH, ScreenScale(170) + SafeAreaBottomH)];
     self.createBtn = [UIButton createButtonWithTitle:Localized(@"Create") isEnabled:NO Target:self Selector:@selector(createAction)];
     [footerView addSubview:self.createBtn];
     

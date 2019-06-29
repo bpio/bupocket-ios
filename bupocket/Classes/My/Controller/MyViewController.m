@@ -83,7 +83,7 @@
 //    self.tableView.separatorInset = UIEdgeInsetsZero;
     self.tableView.separatorStyle = UITableViewCellSeparatorStyleNone;
     [self.view addSubview:self.tableView];
-    self.tableView.bounces = NO;
+//    self.tableView.bounces = NO;
     self.tableView.tableHeaderView = [[UIView alloc] initWithFrame:CGRectMake(0, 0, 0, CGFLOAT_MIN)];
 //    self.tableView.backgroundColor = [UIColor whiteColor];
 //    [self setupHeaderView];
@@ -250,6 +250,7 @@
                 }
             }
         }
+        cell.lineView.hidden = (indexPath.row == [self.listArray[indexPath.section] count] - 1);
         //    if (indexPath.row == self.listArray.count - 1) {
         //        cell.detailImage.hidden = YES;
         //        cell.detailTitle.text = [NSString stringWithFormat:@"V%@", App_Version];

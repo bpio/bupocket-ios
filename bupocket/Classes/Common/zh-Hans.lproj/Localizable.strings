@@ -315,6 +315,7 @@
 "Loading" = "加载中...";
 "DataChecking" = "校验中";
 "Signature" = "签名中";
+"Recovering" = "恢复中...";
 // SDK
 "CreateIdentityFailure" = "身份创建失败";
 "CreateWalletFailure" = "钱包创建失败";
@@ -366,7 +367,8 @@
 "WalletManagement" = "钱包管理";
 "CurrentIdentity" = "当前身份下的钱包";
 "ImportedWallet" = "创建/导入的钱包";
-"ImmediateImport" = "立即导入";
+"AddWallet" = "创建 / 导入钱包";
+//"ImmediateImport" = "立即导入";
 "CurrentUse" = "当前使用";
 "Manage" = "管理";
 // 导入钱包

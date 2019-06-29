@@ -11,8 +11,12 @@
 #import "BackupMnemonicsViewController.h"
 #import "ClearCacheTool.h"
 #import "YBPopupMenu.h"
+#import "ListTableViewCell.h"
 
-@interface MyIdentityViewController ()
+@interface MyIdentityViewController ()<UITableViewDelegate, UITableViewDataSource>
+
+@property (nonatomic, strong) UITableView * tableView;
+@property (nonatomic, strong) NSArray * listArray;
 
 @property (nonatomic, strong) YBPopupMenu *popupMenu;
 @property (nonatomic, strong) CustomButton * identityIDTitle;
@@ -21,6 +25,98 @@
 
 @implementation MyIdentityViewController
 
+- (void)viewDidLoad {
+    [super viewDidLoad];
+    self.navigationItem.title = Localized(@"MyIdentity");
+    self.listArray = @[@[Localized(@"IdentityNameTitle"), [[AccountTool shareTool] account].identityName], @[Localized(@"IdentityIDTitle"), [NSString stringEllipsisWithStr:[[AccountTool shareTool] account].identityAddress subIndex:SubIndex_Address]]];
+    [self setupView];
+    // Do any additional setup after loading the view.
+}
+
+- (void)setupView
+{
+    self.tableView = [[UITableView alloc] initWithFrame:self.view.frame style:UITableViewStyleGrouped];
+    self.tableView.delegate = self;
+    self.tableView.dataSource = self;
+    self.tableView.separatorStyle = UITableViewCellSeparatorStyleNone;
+    self.tableView.tableHeaderView = [[UIView alloc] initWithFrame:CGRectMake(0, 0, 0, CGFLOAT_MIN)];
+    [self.view addSubview:self.tableView];
+}
+
+- (CGFloat)tableView:(UITableView *)tableView heightForRowAtIndexPath:(NSIndexPath *)indexPath
+{
+    return Margin_50;
+}
+- (CGFloat)tableView:(UITableView *)tableView heightForHeaderInSection:(NSInteger)section
+{
+    return Margin_10;
+}
+- (CGFloat)tableView:(UITableView *)tableView heightForFooterInSection:(NSInteger)section
+{
+    return ContentSizeBottom + ScreenScale(200);
+}
+- (UIView *)tableView:(UITableView *)tableView viewForFooterInSection:(NSInteger)section
+{
+    UIView * footerView = [[UIView alloc] initWithFrame:CGRectMake(0, 0, DEVICE_WIDTH, ScreenScale(200))];
+    
+    CGSize btnSize = CGSizeMake(DEVICE_WIDTH - Margin_30, MAIN_HEIGHT);
+    
+    UIButton * backupIdentity = [UIButton createButtonWithTitle:Localized(@"BackupIdentity") isEnabled:YES Target:self Selector:@selector(backupIdentityAction)];
+    [footerView addSubview:backupIdentity];
+    [backupIdentity mas_makeConstraints:^(MASConstraintMaker *make) {
+        make.top.equalTo(footerView.mas_top).offset(ScreenScale(90));
+        make.centerX.equalTo(footerView);
+        make.size.mas_equalTo(btnSize);
+    }];
+    
+    UIButton * exitID = [UIButton createButtonWithTitle:Localized(@"ExitCurrentIdentity") isEnabled:YES Target:self Selector:@selector(exitIDAction)];
+    [exitID setTitleColor:WARNING_COLOR forState:UIControlStateNormal];
+    exitID.backgroundColor = [UIColor whiteColor];
+    [footerView addSubview:exitID];
+    [exitID mas_makeConstraints:^(MASConstraintMaker *make) {
+        make.top.equalTo(backupIdentity.mas_bottom).offset(Margin_20);
+        make.centerX.equalTo(footerView);
+        make.size.mas_equalTo(btnSize);
+    }];
+    return footerView;
+}
+- (NSInteger)numberOfSectionsInTableView:(UITableView *)tableView
+{
+    return 1;
+}
+- (NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section
+{
+    return self.listArray.count;
+}
+- (UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath
+{
+    ListTableViewCell * cell = [ListTableViewCell cellWithTableView:tableView cellType:CellTypeID];
+    cell.selectionStyle = UITableViewCellSelectionStyleNone;
+    cell.title.text = self.listArray[0][indexPath.row];
+    cell.detailTitle.text = self.listArray[1][indexPath.row];
+    cell.detail.hidden = YES;
+    cell.selectionStyle = UITableViewCellSelectionStyleNone;
+    CGSize cellSize = CGSizeMake(DEVICE_WIDTH - Margin_20, Margin_50);
+    cell.lineView.hidden = (indexPath.row == self.listArray.count - 1 );
+    if (self.listArray.count - 1 == 0) {
+        [cell.listBg setViewSize:cellSize borderRadius:BG_CORNER corners:UIRectCornerAllCorners];
+    } else if (indexPath.row == 0) {
+        [cell.listBg setViewSize:cellSize borderRadius:BG_CORNER corners:UIRectCornerTopLeft | UIRectCornerTopRight];
+    } else if (indexPath.row == self.listArray.count - 1) {
+        [cell.listBg setViewSize:cellSize borderRadius:BG_CORNER corners:UIRectCornerBottomLeft | UIRectCornerBottomRight];
+        cell.listImage.image = [UIImage imageNamed:@"explain_info"];
+    }
+    return cell;
+}
+- (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath
+{
+    [tableView deselectRowAtIndexPath:indexPath animated:NO];
+    ListTableViewCell * cell = [tableView cellForRowAtIndexPath:indexPath];
+    if (indexPath.row == 1) {
+        [self identityIDInfo:cell.listImage];
+    }
+}
+/*
 - (void)viewDidLoad {
     [super viewDidLoad];
     self.navigationItem.title = Localized(@"MyIdentity");
@@ -88,23 +184,10 @@
         make.left.mas_greaterThanOrEqualTo(self.identityIDTitle.mas_right).offset(Margin_10);
     }];
     
-    CGSize btnSize = CGSizeMake(DEVICE_WIDTH - Margin_30, MAIN_HEIGHT);
-    UIButton * exitID = [UIButton createButtonWithTitle:Localized(@"ExitCurrentIdentity") isEnabled:YES Target:self Selector:@selector(exitIDAction)];
-    [exitID setTitleColor:WARNING_COLOR forState:UIControlStateNormal];
-    exitID.backgroundColor = [UIColor whiteColor];
-    [self.view addSubview:exitID];
-    [exitID mas_makeConstraints:^(MASConstraintMaker *make) {
-        make.bottom.equalTo(self.view.mas_bottom).offset(- (SafeAreaBottomH + ScreenScale(180)));
-        make.centerX.equalTo(self.view);
-        make.size.mas_equalTo(btnSize);
-    }];
-    UIButton * backupIdentity = [UIButton createButtonWithTitle:Localized(@"BackupIdentity") isEnabled:YES Target:self Selector:@selector(backupIdentityAction)];
-    [self.view addSubview:backupIdentity];
-    [backupIdentity mas_makeConstraints:^(MASConstraintMaker *make) {
-        make.bottom.equalTo(exitID.mas_top).offset(- Margin_20);
-        make.size.centerX.equalTo(exitID);
-    }];
+ 
 }
+
+ */
 - (void)backupIdentityAction
 {
     PasswordAlertView * alertView = [[PasswordAlertView alloc] initWithPrompt:Localized(@"IdentityCipherPrompt") confrimBolck:^(NSString * _Nonnull password, NSArray * _Nonnull words) {
@@ -113,7 +196,7 @@
             VC.mnemonicArray = words;
             [self.navigationController pushViewController:VC animated:NO];
         }
-//        [UIApplication sharedApplication].keyWindow.rootViewController = [[NavigationViewController alloc] initWithRootViewController:VC];
+        //        [UIApplication sharedApplication].keyWindow.rootViewController = [[NavigationViewController alloc] initWithRootViewController:VC];
     } cancelBlock:^{
         
     }];
@@ -145,7 +228,7 @@
             [ClearCacheTool cleanUserDefaults];
             [[AccountTool shareTool] clearCache];
             [[WalletTool shareTool] clearCache];
-//            [[LanguageManager shareInstance] setDefaultLocale];
+            //            [[LanguageManager shareInstance] setDefaultLocale];
             [[HTTPManager shareManager] initNetWork];
             // Minimum Asset Limitation
             [[HTTPManager shareManager] getBlockLatestFees];
@@ -156,11 +239,11 @@
         }];
     }];
 }
-- (void)identityIDInfo:(UIButton *)button
+- (void)identityIDInfo:(UIView *)view
 {
     NSString * title = Localized(@"IdentityIDInfo");
     CGFloat titleHeight = [Encapsulation rectWithText:title font:FONT_TITLE textWidth:DEVICE_WIDTH - ScreenScale(120)].size.height;
-    _popupMenu = [YBPopupMenu showRelyOnView:button.imageView titles:@[title] icons:nil menuWidth:DEVICE_WIDTH - ScreenScale(100) otherSettings:^(YBPopupMenu * popupMenu) {
+    _popupMenu = [YBPopupMenu showRelyOnView:view titles:@[title] icons:nil menuWidth:DEVICE_WIDTH - ScreenScale(100) otherSettings:^(YBPopupMenu * popupMenu) {
         popupMenu.priorityDirection = YBPopupMenuPriorityDirectionTop;
         popupMenu.itemHeight = titleHeight + Margin_30;
         popupMenu.dismissOnTouchOutside = YES;

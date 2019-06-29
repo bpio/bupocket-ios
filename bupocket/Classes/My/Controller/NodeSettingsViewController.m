@@ -47,8 +47,19 @@
     if (self.index == NSNotFound) {
         self.index = 0;
     }
+    [self setupNav];
     [self setupView];
     // Do any additional setup after loading the view.
+}
+- (void)setupNav
+{
+    UIButton * save = [UIButton createButtonWithTitle:Localized(@"Save") TextFont:FONT_15 TextNormalColor:COLOR_6 TextSelectedColor:COLOR_6 Target:self Selector:@selector(saveAcrion:)];
+    self.navigationItem.rightBarButtonItem = [[UIBarButtonItem alloc]initWithCustomView:save];
+}
+- (void)saveAcrion:(UIButton *)button
+{
+    [[HTTPManager shareManager] SwitchedNodeWithURL:self.listArray[self.index]];
+    [UIApplication sharedApplication].keyWindow.rootViewController = [[TabBarViewController alloc] init];
 }
 - (void)setupView
 {
@@ -192,18 +203,16 @@
 {
     [tableView deselectRowAtIndexPath:indexPath animated:YES];
     [self setNodeURLWithIndex:indexPath.row];
-    [UIApplication sharedApplication].keyWindow.rootViewController = [[TabBarViewController alloc] init];
 }
 - (void)setNodeURLWithIndex:(NSInteger)index
 {
     NSIndexPath * lastIndex = [NSIndexPath indexPathForRow:_index inSection:0];
     ListTableViewCell * lastcell = [self.tableView cellForRowAtIndexPath:lastIndex];
-    lastcell.detail.hidden = YES;
+    lastcell.listImage.hidden = YES;
     NSIndexPath * indexPath = [NSIndexPath indexPathForRow:index inSection:0];
     ListTableViewCell * cell = [self.tableView cellForRowAtIndexPath:indexPath];
-    cell.detail.hidden = NO;
+    cell.listImage.hidden = NO;
     _index = index;
-    [[HTTPManager shareManager] SwitchedNodeWithURL:self.listArray[indexPath.row]];
 }
 /*
 #pragma mark - Navigation

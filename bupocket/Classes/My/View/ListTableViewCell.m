@@ -13,6 +13,7 @@ static NSString * const DetailCellID = @"DetailCellID";
 static NSString * const NormalCellID = @"NormalCellID";
 static NSString * const ChoiceCellID = @"ChoiceCellID";
 static NSString * const WalletDetailCellID = @"WalletDetailCellID";
+static NSString * const IdentifyCellID = @"IdentifyCellID";
 
 @implementation ListTableViewCell
 
@@ -34,6 +35,9 @@ static NSString * const WalletDetailCellID = @"WalletDetailCellID";
     } else if (cellType == CellTypeWalletDetail) {
         // 文字，图片/文字，箭头 圆角
         identifier = WalletDetailCellID;
+    } else if (cellType == CellTypeID) {
+        // 文字，图片 文字 圆角
+        identifier = IdentifyCellID;
     }
     ListTableViewCell * cell = [tableView dequeueReusableCellWithIdentifier:identifier];
     if (cell == nil) {
@@ -60,7 +64,7 @@ static NSString * const WalletDetailCellID = @"WalletDetailCellID";
 - (void)layoutSubviews
 {
     [super layoutSubviews];
-    if ([self.reuseIdentifier isEqualToString:NormalCellID] || [self.reuseIdentifier isEqualToString:WalletDetailCellID]) {
+    if ([self.reuseIdentifier isEqualToString:NormalCellID] || [self.reuseIdentifier isEqualToString:WalletDetailCellID]|| [self.reuseIdentifier isEqualToString:IdentifyCellID]) {
         [self.listBg mas_makeConstraints:^(MASConstraintMaker *make) {
             make.left.equalTo(self.contentView.mas_left).offset(Margin_10);
             make.right.equalTo(self.contentView.mas_right).offset(-Margin_10);
@@ -72,15 +76,17 @@ static NSString * const WalletDetailCellID = @"WalletDetailCellID";
             make.edges.equalTo(self.contentView);
         }];
     }
+    
+    [self.title mas_makeConstraints:^(MASConstraintMaker *make) {
+        make.top.height.equalTo(self.listBg);
+    }];
     if ([self.reuseIdentifier isEqualToString:ChoiceCellID]) {
         [self.title mas_makeConstraints:^(MASConstraintMaker *make) {
             make.left.equalTo(self.listBg.mas_left).offset(Margin_20);
-            make.top.height.equalTo(self.listBg);
         }];
     } else if ([self.reuseIdentifier isEqualToString:WalletDetailCellID]) {
         [self.title mas_makeConstraints:^(MASConstraintMaker *make) {
             make.left.equalTo(self.listBg.mas_left).offset(Margin_15);
-            make.top.height.equalTo(self.listBg);
         }];
         [self.listImage setViewSize:CGSizeMake(Margin_30, Margin_30) borderWidth:0 borderColor:nil borderRadius:MAIN_CORNER];
         [self.listImage mas_makeConstraints:^(MASConstraintMaker *make) {
@@ -88,10 +94,17 @@ static NSString * const WalletDetailCellID = @"WalletDetailCellID";
             make.centerY.equalTo(self.listBg);
             make.width.height.mas_equalTo(Margin_30);
         }];
+    } else if ([self.reuseIdentifier isEqualToString:IdentifyCellID]) {
+        [self.title mas_makeConstraints:^(MASConstraintMaker *make) {
+            make.left.equalTo(self.listBg.mas_left).offset(Margin_10);
+        }];
+        [self.listImage mas_makeConstraints:^(MASConstraintMaker *make) {
+            make.left.equalTo(self.title.mas_right).offset(Margin_10);
+            make.centerY.equalTo(self.listBg);
+        }];
     } else {
         [self.title mas_makeConstraints:^(MASConstraintMaker *make) {
             make.left.equalTo(self.listImage.mas_right).offset(Margin_15);
-            make.top.height.equalTo(self.listBg);
         }];
         [self.listImage mas_makeConstraints:^(MASConstraintMaker *make) {
             make.left.equalTo(self.listBg.mas_left).offset(Margin_15);
@@ -109,8 +122,9 @@ static NSString * const WalletDetailCellID = @"WalletDetailCellID";
             make.right.equalTo(self.detail.mas_left);
         }];
     } else {
+        CGFloat right = ([self.reuseIdentifier isEqualToString:IdentifyCellID]) ? Margin_10 : Margin_20;
         [self.detailTitle mas_makeConstraints:^(MASConstraintMaker *make) {
-            make.right.equalTo(self.listBg.mas_right).offset(-Margin_20);
+            make.right.equalTo(self.listBg.mas_right).offset(-right);
         }];
     }
     [self.detailTitle mas_makeConstraints:^(MASConstraintMaker *make) {
