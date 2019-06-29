@@ -940,8 +940,7 @@ static int64_t const gasPrice = 1000;
                          success:(void (^)(id responseObject))success
                          failure:(void (^)(NSError *error))failure
 {
-    NSString * message = (accountDataType == AccountDataRecoveryID) ? Localized(@"") : Localized(@"Loading");
-    [MBProgressHUD showActivityMessageInWindow:message];
+    [MBProgressHUD showActivityMessageInWindow:Localized(@"Loading")];
     NSOperationQueue * queue = [[NSOperationQueue alloc] init];
     [queue addOperationWithBlock:^{
         // Random number -> mnemonic

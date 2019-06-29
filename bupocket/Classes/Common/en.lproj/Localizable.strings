@@ -324,7 +324,7 @@
 "Loading" = "Loading...";
 "DataChecking" = "Checking";
 "Signature" = "Signing";
-"Recovering" = "恢复中...";
+//"Recovering" = "恢复中...";
 // SDK
 "CreateIdentityFailure" = "Failed to create an identity";
 "CreateWalletFailure" = "Creation failure";
@@ -378,7 +378,7 @@
 "WalletManagement" = "Wallet Manager";
 "CurrentIdentity" = "Wallet in the current identity";
 "ImportedWallet" = "Create/import wallet";
-"AddWallet" = "创建 / 导入钱包";
+"AddWallet" = "Create / Import wallet";
 //"ImmediateImport" = "Import Now";
 "CurrentUse" = "Currently Used";
 "Manage" = "Manage";
