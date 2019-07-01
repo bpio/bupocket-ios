@@ -11,6 +11,7 @@
 #import "ReceiveViewController.h"
 #import "WalletListViewController.h"
 #import "VoucherViewCell.h"
+#import "VoucherDetailViewController.h"
 
 @interface VoucherViewController ()<UITableViewDelegate, UITableViewDataSource>
 
@@ -107,7 +108,7 @@ static NSString * const VoucherCellID = @"VoucherCellID";
 }
 - (void)setupView
 {
-    self.tableView = [[UITableView alloc] initWithFrame:CGRectMake(0, 0, DEVICE_WIDTH, DEVICE_HEIGHT - NavBarH - SafeAreaBottomH - TabBarH) style:UITableViewStyleGrouped];
+    self.tableView = [[UITableView alloc] initWithFrame:CGRectMake(0, 0, DEVICE_WIDTH, DEVICE_HEIGHT - NavBarH - TabBarH) style:UITableViewStyleGrouped];
     self.tableView.delegate = self;
     self.tableView.dataSource = self;
     self.tableView.separatorStyle = UITableViewCellSeparatorStyleNone;
@@ -170,6 +171,8 @@ static NSString * const VoucherCellID = @"VoucherCellID";
 - (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath
 {
     [tableView deselectRowAtIndexPath:indexPath animated:NO];
+    VoucherDetailViewController * VC = [[VoucherDetailViewController alloc] init];
+    [self.navigationController pushViewController:VC animated:NO];
 }
 
 /*

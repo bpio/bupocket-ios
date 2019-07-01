@@ -18,6 +18,7 @@
 #import "RestoreIdentityViewController.h"
 #import "AssetsViewController.h"
 #import "VoucherViewController.h"
+#import "VoucherDetailViewController.h"
 #import "ReceiveViewController.h"
 #import "AddAssetsViewController.h"
 #import "AssetsDetailViewController.h"
@@ -86,6 +87,7 @@
                              [viewController isKindOfClass:[RestoreIdentityViewController class]] ||
                              [viewController isKindOfClass:[AssetsViewController class]]  ||
                              [viewController isKindOfClass:[VoucherViewController class]]  ||
+                             [viewController isKindOfClass:[VoucherDetailViewController class]]  ||
                              [viewController isKindOfClass:[MyViewController class]] ||
                              [viewController isKindOfClass:[AboutUsViewController class]] ||
                              [viewController isKindOfClass:[VersionLogViewController class]] ||

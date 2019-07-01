@@ -100,6 +100,7 @@
 		95162FD622C7548C0024FD22 /* VoucherViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 95162FD522C7548C0024FD22 /* VoucherViewController.m */; };
 		95162FDC22C758170024FD22 /* UITabBar+Extension.m in Sources */ = {isa = PBXBuildFile; fileRef = 95162FDB22C758170024FD22 /* UITabBar+Extension.m */; };
 		95162FDF22C77A070024FD22 /* VoucherViewCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 95162FDE22C77A070024FD22 /* VoucherViewCell.m */; };
+		95162FE222C9A9AA0024FD22 /* VoucherDetailViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 95162FE122C9A9AA0024FD22 /* VoucherDetailViewController.m */; };
 		95266CCD226F062E002CD915 /* NodePlanViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 95266CA1226F062E002CD915 /* NodePlanViewController.m */; };
 		95266CCE226F062E002CD915 /* CooperateViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 95266CA4226F062E002CD915 /* CooperateViewController.m */; };
 		95266CCF226F062E002CD915 /* NodeSharingViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 95266CA7226F062E002CD915 /* NodeSharingViewController.m */; };
@@ -397,6 +398,8 @@
 		95162FDB22C758170024FD22 /* UITabBar+Extension.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = "UITabBar+Extension.m"; sourceTree = "<group>"; };
 		95162FDD22C77A070024FD22 /* VoucherViewCell.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = VoucherViewCell.h; sourceTree = "<group>"; };
 		95162FDE22C77A070024FD22 /* VoucherViewCell.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = VoucherViewCell.m; sourceTree = "<group>"; };
+		95162FE022C9A9AA0024FD22 /* VoucherDetailViewController.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = VoucherDetailViewController.h; sourceTree = "<group>"; };
+		95162FE122C9A9AA0024FD22 /* VoucherDetailViewController.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = VoucherDetailViewController.m; sourceTree = "<group>"; };
 		95266CA1226F062E002CD915 /* NodePlanViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = NodePlanViewController.m; sourceTree = "<group>"; };
 		95266CA2226F062E002CD915 /* VotingRecordsViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = VotingRecordsViewController.h; sourceTree = "<group>"; };
 		95266CA3226F062E002CD915 /* NodeTransferSuccessViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = NodeTransferSuccessViewController.h; sourceTree = "<group>"; };
@@ -1077,6 +1080,8 @@
 			children = (
 				95162FD422C7548C0024FD22 /* VoucherViewController.h */,
 				95162FD522C7548C0024FD22 /* VoucherViewController.m */,
+				95162FE022C9A9AA0024FD22 /* VoucherDetailViewController.h */,
+				95162FE122C9A9AA0024FD22 /* VoucherDetailViewController.m */,
 			);
 			path = Controller;
 			sourceTree = "<group>";
@@ -1680,6 +1685,7 @@
 				8395AF25218725FF0082EA30 /* RegisteredResultViewController.m in Sources */,
 				95266CDB226F062E002CD915 /* CooperateViewCell.m in Sources */,
 				959726C221E44FFB0022CB78 /* ModifyAlertView.m in Sources */,
+				95162FE222C9A9AA0024FD22 /* VoucherDetailViewController.m in Sources */,
 				950E4145219E6ADD002C7900 /* AssetCurrencyModel.m in Sources */,
 				95B066BC2282AABD0005731A /* WechatTool.m in Sources */,
 				959726E521E88C610022CB78 /* UILabel+Extension.m in Sources */,
