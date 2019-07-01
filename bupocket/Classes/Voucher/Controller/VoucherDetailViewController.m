@@ -7,18 +7,22 @@
 //
 
 #import "VoucherDetailViewController.h"
+#import "VoucherViewCell.h"
 #import "DetailListViewCell.h"
+#import "ListTableViewCell.h"
 #import "UINavigationController+Extension.h"
+
 
 @interface VoucherDetailViewController ()<UITableViewDelegate, UITableViewDataSource>
 
 @property (nonatomic, strong) UIScrollView * scrollView;
 @property (nonatomic, strong) UITableView * tableView;
 @property (nonatomic, strong) NSMutableArray * listArray;
+@property (nonatomic, assign) CGFloat infoCellHeight;
 
 @end
 
-static NSString * const DetailListCellID = @"DetailListCellID";
+static NSString * const VoucherDetailCellID = @"VoucherDetailCellID";
 
 @implementation VoucherDetailViewController
 
@@ -37,7 +41,7 @@ static NSString * const DetailListCellID = @"DetailListCellID";
 //    self.navAlpha = 0;
     self.navBackgroundColor = COLOR(@"3C3B6D");
     self.navTitleColor = self.navTintColor = [UIColor whiteColor];
-    self.listArray = [NSMutableArray arrayWithObjects:@[@"有效期", @"2019-07-23至2099-12-12  "], @[@"券编码", @"Q1000000001"], @[@"规格", @"经典酱香味 500ml"], @[@"描述", @"简单的券描述简单的券描述简单的券描述不能超过25个字"], @[@"持有数量", @"999990 "], @[@"承兑方", @"贵州茅台"], @[@"资产发行方", @"达尔蒙食品公司"], nil];
+    self.listArray = [NSMutableArray arrayWithArray:@[@[@""], @[@[@"有效期", @"2019-07-23至2099-12-12  "], @[@"券编码", @"Q1000000001"], @[@"规格", @"经典酱香味 500ml"], @[@"描述", @"简单的券描述简单的券描述简单的券描述不能超过25个字"], @[@"持有数量", @"999990 "]], @[@[@"承兑方", @"贵州茅台"], @[@"资产发行方", @"达尔蒙食品公司"]]]];
     [self setupView];
     // Do any additional setup after loading the view.
 }
@@ -102,39 +106,94 @@ static NSString * const DetailListCellID = @"DetailListCellID";
 }
 - (NSInteger)numberOfSectionsInTableView:(UITableView *)tableView
 {
-    return 1;
+    return self.listArray.count;
 }
 - (NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section
 {
-    return self.listArray.count;
+    return [self.listArray[section] count];
 }
 - (CGFloat)tableView:(UITableView *)tableView heightForHeaderInSection:(NSInteger)section
 {
+    if (section == self.listArray.count - 1) {
+        return ScreenScale(180) - self.infoCellHeight;
+    }
     return CGFLOAT_MIN;
+}
+- (UIView *)tableView:(UITableView *)tableView viewForHeaderInSection:(NSInteger)section
+{
+    if (section == self.listArray.count - 1) {
+        UIView * footerView = [[UIView alloc] initWithFrame:CGRectMake(0, 0, DEVICE_WIDTH - Margin_50, ScreenScale(155) - self.infoCellHeight)];
+        UIButton * giftGiving = [UIButton createButtonWithTitle:@"转赠" isEnabled:YES Target:self Selector:@selector(giftGivingAction)];
+        [footerView addSubview:giftGiving];
+        [giftGiving mas_makeConstraints:^(MASConstraintMaker *make) {
+            make.top.equalTo(footerView.mas_top).offset(Margin_10);
+            make.left.equalTo(footerView.mas_left).offset(Margin_15);
+            make.right.equalTo(footerView.mas_right).offset(-Margin_15);
+            make.height.mas_equalTo(MAIN_HEIGHT);
+        }];
+        return footerView;
+    }
+    return nil;
+}
+- (void)giftGivingAction
+{
 }
 
 - (CGFloat)tableView:(UITableView *)tableView heightForFooterInSection:(NSInteger)section
 {
-    return SafeAreaBottomH;
+    return CGFLOAT_MIN;
 }
 - (CGFloat)tableView:(UITableView *)tableView heightForRowAtIndexPath:(NSIndexPath *)indexPath
 {
-    return ScreenScale(100);
+    if (indexPath.section == 0) {
+        return ScreenScale(143);
+    } else if (indexPath.section == 1 && indexPath.row == 3) {
+        self.infoCellHeight = ([Encapsulation rectWithText:@"简单的券描述简单的券描述简单的券描述不能超过25个字" font:FONT(15) textWidth:Info_Width_Max].size.height + Margin_30);
+       return self.infoCellHeight;
+    } else if (indexPath.section == self.listArray.count - 1) {
+        return MAIN_HEIGHT;
+    }
+    return ScreenScale(40);
 }
 - (UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath
 {
-    NSString * cellID = DetailListCellID;
-    DetailListViewCell * cell = [DetailListViewCell cellWithTableView:tableView identifier:cellID];
-    cell.title.text = self.listArray[indexPath.row][0];
-    cell.infoTitle.text = self.listArray[indexPath.row][1];
-    cell.selectionStyle = UITableViewCellSelectionStyleNone;
+    if (indexPath.section == 0) {
+        VoucherViewCell * cell = [VoucherViewCell cellWithTableView:tableView identifier:VoucherDetailCellID];
+        cell.selectionStyle = UITableViewCellSelectionStyleNone;
+        cell.listBg.image = nil;
+        cell.backgroundColor = cell.contentView.backgroundColor = [UIColor clearColor];
+        return cell;
+    } else if (indexPath.section == self.listArray.count - 1) {
+        ListTableViewCell * cell = [ListTableViewCell cellWithTableView:tableView cellType:CellTypeWalletDetail];
+        cell.selectionStyle = UITableViewCellSelectionStyleNone;
+        cell.title.text = self.listArray[indexPath.row];
+        NSString * walletIconName = Current_Wallet_IconName;
+        cell.listImage.image = [UIImage imageNamed:walletIconName];
+//        cell.detail
+        cell.selectionStyle = UITableViewCellSelectionStyleNone;
+        cell.backgroundColor = cell.contentView.backgroundColor = [UIColor clearColor];
+        return cell;
+    }
+    DetailListViewCell * cell = [DetailListViewCell cellWithTableView:tableView cellType:DetailCellDefault];
+    cell.title.text = self.listArray[indexPath.section][indexPath.row][0];
+    cell.infoTitle.text = self.listArray[indexPath.section][indexPath.row][1];
+    cell.backgroundColor = [UIColor clearColor];
+    cell.selectionStyle = (indexPath.section == self.listArray.count - 1) ?  UITableViewCellSelectionStyleDefault : UITableViewCellSelectionStyleNone;
+    if ([cell.title.text isEqualToString:@"描述"]) {
+        UIView * lineView = [[UIView alloc] init];
+        lineView.bounds = CGRectMake(0, 0, DEVICE_WIDTH - ScreenScale(60), LINE_WIDTH);
+        [lineView drawDashLine];
+        [cell.contentView addSubview:lineView];
+        [lineView mas_makeConstraints:^(MASConstraintMaker *make) {
+            make.left.mas_equalTo(Margin_5);
+            make.bottom.equalTo(cell.contentView);
+        }];
+    }
     return cell;
 }
 - (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath
 {
     [tableView deselectRowAtIndexPath:indexPath animated:NO];
-    VoucherDetailViewController * VC = [[VoucherDetailViewController alloc] init];
-    [self.navigationController pushViewController:VC animated:NO];
 }
 - (void)scrollViewDidScroll:(UIScrollView *)scrollView
 {

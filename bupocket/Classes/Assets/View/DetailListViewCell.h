@@ -10,9 +10,16 @@
 
 NS_ASSUME_NONNULL_BEGIN
 
+typedef NS_ENUM(NSInteger, DetailCellType) {
+    DetailCellDefault, // DefaultDetailCellID 资产详情 左右
+    DetailCellNormal, // NormalDetailCellID 资产详情 上下
+    DetailCellResult, // ResultDetailCellID 登记、发行结果
+    DetailCellSubtitle // SubtitleDetailCellID 上下
+};
+
 @interface DetailListViewCell : UITableViewCell
 
-+ (instancetype)cellWithTableView:(UITableView *)tableView identifier:(NSString *)identifier;
++ (instancetype)cellWithTableView:(UITableView *)tableView cellType:(DetailCellType)cellType;
 
 @property (nonatomic, strong) UIView * detailBg;
 @property (nonatomic, strong) UILabel * title;

@@ -10,13 +10,23 @@
 
 @implementation DetailListViewCell
 
-static NSString * const DetailListCellID = @"DetailListCellID";
-static NSString * const OrderDetailsCellID = @"OrderDetailsCellID";
-static NSString * const DetailListID = @"DetailListID";
-static NSString * const ExportPrivateKeyID = @"ExportPrivateKeyID";
+static NSString * const DefaultDetailCellID = @"DefaultDetailCellID";
+static NSString * const NormalDetailCellID = @"NormalDetailCellID";
+static NSString * const ResultDetailCellID = @"ResultDetailCellID";
+static NSString * const SubtitleDetailCellID = @"SubtitleDetailCellID";
 
-+ (instancetype)cellWithTableView:(UITableView *)tableView identifier:(NSString *)identifier
++ (instancetype)cellWithTableView:(UITableView *)tableView cellType:(DetailCellType)cellType
 {
+    NSString * identifier;
+    if (cellType == DetailCellDefault) {
+        identifier = DefaultDetailCellID;
+    } else if (cellType == DetailCellNormal) {
+        identifier = NormalDetailCellID;
+    } else if (cellType == DetailCellResult) {
+        identifier = ResultDetailCellID;
+    } else if (cellType == DetailCellSubtitle) {
+        identifier = SubtitleDetailCellID;
+    }
     DetailListViewCell * cell = [tableView dequeueReusableCellWithIdentifier:identifier];
     if (cell == nil) {
         cell = [[DetailListViewCell alloc] initWithStyle:UITableViewCellStyleValue1 reuseIdentifier:identifier];
@@ -27,14 +37,14 @@ static NSString * const ExportPrivateKeyID = @"ExportPrivateKeyID";
 - (instancetype)initWithStyle:(UITableViewCellStyle)style reuseIdentifier:(NSString *)reuseIdentifier
 {
     if (self = [super initWithStyle:style reuseIdentifier:reuseIdentifier]) {
-        if ([reuseIdentifier isEqualToString:OrderDetailsCellID] ) {
+        if ([reuseIdentifier isEqualToString:NormalDetailCellID] ) {
             [self.contentView addSubview:self.detailBg];
             [self.detailBg addSubview:self.title];
             [self.detailBg addSubview:self.infoTitle];
         } else {
             [self.contentView addSubview:self.title];
             [self.contentView addSubview:self.infoTitle];
-            if ([reuseIdentifier isEqualToString:ExportPrivateKeyID]) {
+            if ([reuseIdentifier isEqualToString:SubtitleDetailCellID]) {
                 self.title.font = FONT(16);
                 self.title.textColor = COLOR_6;
                 self.infoTitle.font = FONT(14);
@@ -46,7 +56,7 @@ static NSString * const ExportPrivateKeyID = @"ExportPrivateKeyID";
 - (void)layoutSubviews
 {
     [super layoutSubviews];
-    if ([self.reuseIdentifier isEqualToString:OrderDetailsCellID]) {
+    if ([self.reuseIdentifier isEqualToString:NormalDetailCellID]) {
         [self.detailBg mas_makeConstraints:^(MASConstraintMaker *make) {
             make.left.equalTo(self.contentView.mas_left).offset(Margin_10);
             make.right.equalTo(self.contentView.mas_right).offset(-Margin_10);
@@ -70,14 +80,13 @@ static NSString * const ExportPrivateKeyID = @"ExportPrivateKeyID";
         [self.infoTitle mas_makeConstraints:^(MASConstraintMaker *make) {
             make.right.equalTo(self.contentView.mas_right).offset(-Margin_10);
         }];
-        if ([self.reuseIdentifier isEqualToString:DetailListCellID]) {
+        if ([self.reuseIdentifier isEqualToString:DefaultDetailCellID]) {
             self.infoTitle.textAlignment = NSTextAlignmentRight;
             self.infoTitle.preferredMaxLayoutWidth = Info_Width_Max;
             [self.infoTitle mas_makeConstraints:^(MASConstraintMaker *make) {
                 make.top.equalTo(self.title);
             }];
         } else {
-            
             [self.infoTitle mas_makeConstraints:^(MASConstraintMaker *make) {
                 make.top.equalTo(self.title.mas_bottom).offset(Margin_10);
                 make.left.equalTo(self.title);

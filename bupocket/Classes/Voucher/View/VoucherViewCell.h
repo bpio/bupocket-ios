@@ -16,6 +16,7 @@ NS_ASSUME_NONNULL_BEGIN
 
 @property (nonatomic, strong) UIImageView * listBg;
 @property (nonatomic, strong) UIImageView * icon;
+@property (nonatomic, strong) UIView * lineView;
 @property (nonatomic, strong) UILabel * name;
 @property (nonatomic, strong) UIImageView * listImage;
 @property (nonatomic, strong) UILabel * title;

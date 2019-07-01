@@ -19,9 +19,6 @@
 
 @implementation DistributionResultsViewController
 
-static NSString * const DetailListCellID = @"DetailListCellID";
-static NSString * const DetailListID = @"DetailListID";
-
 - (NSMutableArray *)listArray
 {
     if (!_listArray) {
@@ -145,11 +142,11 @@ static NSString * const DetailListID = @"DetailListID";
 }
 - (UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath
 {
-    NSString * cellID = DetailListCellID;
+    DetailCellType cellType = DetailCellDefault;
     if ((self.distributionModel.tokenDescription && indexPath.section == 0 && indexPath.row == [self.listArray[0] count] - 1) || (indexPath.section == 1 && indexPath.row > 0)) {
-        cellID = DetailListID;
+        cellType = DetailCellResult;
     }
-    DetailListViewCell * cell = [DetailListViewCell cellWithTableView:tableView identifier:cellID];
+    DetailListViewCell * cell = [DetailListViewCell cellWithTableView:tableView cellType:cellType];
     cell.title.text = [[self.listArray[indexPath.section][indexPath.row] allKeys] firstObject];
     cell.infoTitle.text = [[self.listArray[indexPath.section][indexPath.row] allValues] firstObject];
     cell.selectionStyle = UITableViewCellSelectionStyleNone;

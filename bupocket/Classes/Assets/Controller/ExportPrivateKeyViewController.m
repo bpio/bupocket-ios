@@ -17,8 +17,6 @@
 
 @end
 
-static NSString * const ExportPrivateKeyID = @"ExportPrivateKeyID";
-
 @implementation ExportPrivateKeyViewController
 
 - (void)viewDidLoad {
@@ -95,7 +93,7 @@ static NSString * const ExportPrivateKeyID = @"ExportPrivateKeyID";
 }
 - (UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath
 {
-    DetailListViewCell * cell = [DetailListViewCell cellWithTableView:tableView identifier:ExportPrivateKeyID];
+    DetailListViewCell * cell = [DetailListViewCell cellWithTableView:tableView cellType:DetailCellSubtitle];
     cell.title.text = [self.listArray firstObject][indexPath.row];
     cell.infoTitle.text = [self.listArray lastObject][indexPath.row];
     cell.selectionStyle = UITableViewCellSelectionStyleNone;

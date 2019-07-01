@@ -35,8 +35,6 @@
 
 @implementation OrderDetailsViewController
 
-static NSString * const DetailListCellID = @"DetailListCellID";
-static NSString * const OrderDetailsCellID = @"OrderDetailsCellID";
 static NSInteger const TxInfoNormalCount = 6;
 
 
@@ -283,11 +281,11 @@ static NSInteger const TxInfoNormalCount = 6;
 }
 - (UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath
 {
-    NSString * cellID = DetailListCellID;
+    DetailCellType cellType = DetailCellDefault;
     if (indexPath.section == 1 && indexPath.row > TxInfoNormalCount) {
-        cellID = OrderDetailsCellID;
+        cellType = DetailCellNormal;
     }
-    DetailListViewCell * cell = [DetailListViewCell cellWithTableView:tableView identifier:cellID];
+    DetailListViewCell * cell = [DetailListViewCell cellWithTableView:tableView cellType:cellType];
     cell.title.text = self.listArray[indexPath.section][indexPath.row];
     if (indexPath.section == 1 && indexPath.row == TxInfoNormalCount) {
         cell.infoTitle.text = @"";

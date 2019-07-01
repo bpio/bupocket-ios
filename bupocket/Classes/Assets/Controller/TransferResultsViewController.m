@@ -18,8 +18,6 @@
 
 @implementation TransferResultsViewController
 
-static NSString * const TransferResultsCellID = @"DetailListCellID";
-
 - (NSMutableArray *)transferInfoArray
 {
     if (!_transferInfoArray) {
@@ -109,7 +107,7 @@ static NSString * const TransferResultsCellID = @"DetailListCellID";
 }
 - (UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath
 {
-    DetailListViewCell * cell = [DetailListViewCell cellWithTableView:tableView identifier:TransferResultsCellID];
+    DetailListViewCell * cell = [DetailListViewCell cellWithTableView:tableView cellType:DetailCellDefault];
     cell.title.text = self.listArray[0][indexPath.row];
     if (indexPath.row == [self.listArray[0] count] - 1) {
         cell.infoTitle.text = !NotNULLString(self.resultModel.remark) ? @"" : self.resultModel.remark;

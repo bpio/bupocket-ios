@@ -20,7 +20,7 @@ static NSString * const NormalSubtitleCellID = @"NormalSubtitleCellID";
 
 @implementation SubtitleListViewCell
 
-+ (instancetype)cellWithTableView:(UITableView *)tableView cellType:(SubtitleCellType)cellType;
++ (instancetype)cellWithTableView:(UITableView *)tableView cellType:(SubtitleCellType)cellType
 {
     NSString * identifier;
     if (cellType == SubtitleCellDefault) {
