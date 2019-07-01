@@ -19,7 +19,8 @@ typedef NS_ENUM(NSInteger, CellType) {
     CellTypeNormal, // 图片，文字，箭头 圆角
     CellTypeChoice, // 文字，图片
     CellTypeWalletDetail, // 文字，图片/文字，箭头 圆角
-    CellTypeID // 文字，图片 文字 圆角
+    CellTypeID, // 文字，图片 文字 圆角
+    CellTypeVoucher // 文字 图片 文字 箭头
 };
 
 + (instancetype)cellWithTableView:(UITableView *)tableView cellType:(CellType)cellType;

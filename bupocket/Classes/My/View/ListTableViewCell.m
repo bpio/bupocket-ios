@@ -14,6 +14,7 @@ static NSString * const NormalCellID = @"NormalCellID";
 static NSString * const ChoiceCellID = @"ChoiceCellID";
 static NSString * const WalletDetailCellID = @"WalletDetailCellID";
 static NSString * const IdentifyCellID = @"IdentifyCellID";
+static NSString * const VoucherCellID = @"VoucherCellID";
 
 @implementation ListTableViewCell
 
@@ -38,6 +39,9 @@ static NSString * const IdentifyCellID = @"IdentifyCellID";
     } else if (cellType == CellTypeID) {
         // 文字，图片 文字 圆角
         identifier = IdentifyCellID;
+    } else if (cellType == CellTypeVoucher) {
+        // 文字 图片 文字 箭头
+        identifier = VoucherCellID;
     }
     ListTableViewCell * cell = [tableView dequeueReusableCellWithIdentifier:identifier];
     if (cell == nil) {
@@ -64,7 +68,7 @@ static NSString * const IdentifyCellID = @"IdentifyCellID";
 - (void)layoutSubviews
 {
     [super layoutSubviews];
-    if ([self.reuseIdentifier isEqualToString:NormalCellID] || [self.reuseIdentifier isEqualToString:WalletDetailCellID]|| [self.reuseIdentifier isEqualToString:IdentifyCellID]) {
+    if ([self.reuseIdentifier isEqualToString:NormalCellID] || [self.reuseIdentifier isEqualToString:WalletDetailCellID] || [self.reuseIdentifier isEqualToString:IdentifyCellID]) {
         [self.listBg mas_makeConstraints:^(MASConstraintMaker *make) {
             make.left.equalTo(self.contentView.mas_left).offset(Margin_10);
             make.right.equalTo(self.contentView.mas_right).offset(-Margin_10);
@@ -94,6 +98,16 @@ static NSString * const IdentifyCellID = @"IdentifyCellID";
             make.centerY.equalTo(self.listBg);
             make.width.height.mas_equalTo(Margin_30);
         }];
+    } else if ([self.reuseIdentifier isEqualToString:VoucherCellID]) {
+        [self.title mas_makeConstraints:^(MASConstraintMaker *make) {
+            make.left.equalTo(self.listBg.mas_left).offset(Margin_15);
+        }];
+        [self.listImage setViewSize:CGSizeMake(ScreenScale(22), ScreenScale(22)) borderWidth:0 borderColor:nil borderRadius:ScreenScale(11)];
+        [self.listImage mas_makeConstraints:^(MASConstraintMaker *make) {
+            make.right.equalTo(self.detailTitle.mas_left).offset(-Margin_10);
+            make.centerY.equalTo(self.listBg);
+            make.width.height.mas_equalTo(ScreenScale(22));
+        }];
     } else if ([self.reuseIdentifier isEqualToString:IdentifyCellID]) {
         [self.title mas_makeConstraints:^(MASConstraintMaker *make) {
             make.left.equalTo(self.listBg.mas_left).offset(Margin_10);
@@ -117,7 +131,7 @@ static NSString * const IdentifyCellID = @"IdentifyCellID";
         make.right.top.bottom.equalTo(self.listBg);
 //        make.width.mas_equalTo(self.detail.imageView.width + ScreenScale(35));
     }];
-    if ([self.reuseIdentifier isEqualToString:DetailCellID] || [self.reuseIdentifier isEqualToString:WalletDetailCellID]) {
+    if ([self.reuseIdentifier isEqualToString:DetailCellID] || [self.reuseIdentifier isEqualToString:WalletDetailCellID] || [self.reuseIdentifier isEqualToString:VoucherCellID]) {
         [self.detailTitle mas_makeConstraints:^(MASConstraintMaker *make) {
             make.right.equalTo(self.detail.mas_left);
         }];

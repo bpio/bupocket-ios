@@ -164,14 +164,15 @@ static NSString * const VoucherDetailCellID = @"VoucherDetailCellID";
         cell.backgroundColor = cell.contentView.backgroundColor = [UIColor clearColor];
         return cell;
     } else if (indexPath.section == self.listArray.count - 1) {
-        ListTableViewCell * cell = [ListTableViewCell cellWithTableView:tableView cellType:CellTypeWalletDetail];
+        ListTableViewCell * cell = [ListTableViewCell cellWithTableView:tableView cellType:CellTypeVoucher];
         cell.selectionStyle = UITableViewCellSelectionStyleNone;
-        cell.title.text = self.listArray[indexPath.row];
+        cell.title.text = self.listArray[indexPath.section][indexPath.row][0];
+        cell.detailTitle.text = self.listArray[indexPath.section][indexPath.row][1];
         NSString * walletIconName = Current_Wallet_IconName;
         cell.listImage.image = [UIImage imageNamed:walletIconName];
 //        cell.detail
         cell.selectionStyle = UITableViewCellSelectionStyleNone;
-        cell.backgroundColor = cell.contentView.backgroundColor = [UIColor clearColor];
+        cell.backgroundColor = cell.contentView.backgroundColor  = [UIColor clearColor];
         return cell;
     }
     DetailListViewCell * cell = [DetailListViewCell cellWithTableView:tableView cellType:DetailCellDefault];
