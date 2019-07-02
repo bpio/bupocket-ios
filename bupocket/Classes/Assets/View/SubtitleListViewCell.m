@@ -17,6 +17,7 @@
 static NSString * const DefaultSubtitleCellID = @"DefaultSubtitleCellID";
 static NSString * const ManageSubtitleCellID = @"ManageSubtitleCellID";
 static NSString * const NormalSubtitleCellID = @"NormalSubtitleCellID";
+static NSString * const DetailSubtitleCellID = @"DetailSubtitleCellID";
 
 @implementation SubtitleListViewCell
 
@@ -29,6 +30,8 @@ static NSString * const NormalSubtitleCellID = @"NormalSubtitleCellID";
         identifier = ManageSubtitleCellID;
     } else if (cellType == SubtitleCellNormal) {
         identifier = NormalSubtitleCellID;
+    } else if (cellType == SubtitleCellDetail) {
+        identifier = DetailSubtitleCellID;
     }
     SubtitleListViewCell * cell = [tableView dequeueReusableCellWithIdentifier:identifier];
     if (cell == nil) {
@@ -46,7 +49,11 @@ static NSString * const NormalSubtitleCellID = @"NormalSubtitleCellID";
         if ([reuseIdentifier isEqualToString:NormalSubtitleCellID]) {
             self.walletImageWH = ScreenScale(70);
             borderRadius = self.walletImageWH * 0.5;
-            walletImageName = @"user_icon_placeholder";
+            walletImageName = Current_Wallet_IconName;
+        } else if ([reuseIdentifier isEqualToString:DetailSubtitleCellID]) {
+            self.walletImageWH = Margin_50;
+            borderRadius = self.walletImageWH * 0.5;
+            walletImageName = Current_Wallet_IconName;
         } else {
             self.walletImageWH = Margin_30;
             borderRadius = MAIN_CORNER;
@@ -70,12 +77,15 @@ static NSString * const NormalSubtitleCellID = @"NormalSubtitleCellID";
     CGFloat walletNameOffsetX = Margin_10;
     CGFloat walletNameOffsetY = 0;
     CGFloat listBgY = 0;
-    if ([self.reuseIdentifier isEqualToString:NormalSubtitleCellID]) {
+    if ([self.reuseIdentifier isEqualToString:NormalSubtitleCellID] || [self.reuseIdentifier isEqualToString:DetailSubtitleCellID]) {
         [self.listBg mas_makeConstraints:^(MASConstraintMaker *make) {
             make.edges.equalTo(self.contentView);
         }];
-        walletNameOffsetX = Margin_20;
-        walletNameOffsetY = Margin_10;
+        walletNameOffsetX = ([self.reuseIdentifier isEqualToString:NormalSubtitleCellID]) ? Margin_20 : Margin_15;
+        walletNameOffsetY = ([self.reuseIdentifier isEqualToString:NormalSubtitleCellID]) ? Margin_10 : 0;
+        [self.walletImage mas_makeConstraints:^(MASConstraintMaker *make) {
+            make.centerY.equalTo(self.listBg);
+        }];
     } else {
         if ([self.reuseIdentifier isEqualToString:DefaultSubtitleCellID]) {
             listBgY = Margin_5;
@@ -87,11 +97,12 @@ static NSString * const NormalSubtitleCellID = @"NormalSubtitleCellID";
             make.bottom.equalTo(self.contentView.mas_bottom).offset(-listBgY);
         }];
          self.contentView.backgroundColor = VIEWBG_COLOR;
+        [self.walletImage mas_makeConstraints:^(MASConstraintMaker *make) {
+            make.top.equalTo(self.listBg.mas_top).offset(Margin_20);
+        }];
     }
     
-    
     [self.walletImage mas_makeConstraints:^(MASConstraintMaker *make) {
-        make.top.equalTo(self.listBg.mas_top).offset(Margin_20);
         make.left.equalTo(self.listBg.mas_left).offset(Margin_15);
         make.size.mas_equalTo(CGSizeMake(self.walletImageWH, self.walletImageWH));
     }];

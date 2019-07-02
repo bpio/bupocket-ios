@@ -50,9 +50,10 @@ static NSString * const VoucherDetailCellID = @"VoucherDetailCellID";
     }
     self.name.text = @"贵州茅台";
     self.title.text = @"贵州茅台酒 53度茅台飞天精品500ml整箱12瓶 ";
-    self.value.text = @"面值：¥3399 ";
-    self.number.text = @"✖️30";
-    self.date.text = @"有效期：2019-07-13至2019-09-20";
+    self.value.text = [NSString stringWithFormat:Localized(@"Value:%@"), @"3399"];
+    self.number.text = [NSString stringWithFormat:@"×  %@", @"30"];
+    NSString * dataStr = [NSString stringWithFormat:Localized(@"%@ to %@"), @"2019-07-13", @"2019-09-20"];
+    self.date.text = [NSString stringWithFormat:@"%@：%@", Localized(@"Validity"), dataStr];
 }
 - (void)layoutSubviews
 {

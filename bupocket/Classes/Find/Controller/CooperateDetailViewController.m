@@ -322,7 +322,7 @@ static NSString * const CooperateDetailCellID = @"CooperateDetailCellID";
     if (section == 1) {
         return Margin_40;
     } else if (section == 2) {
-        return Margin_30;
+        return ScreenScale(35);
     } else {
         return CGFLOAT_MIN;
     }
@@ -333,7 +333,8 @@ static NSString * const CooperateDetailCellID = @"CooperateDetailCellID";
         NSArray * titles = @[Localized(@"RiskStatement"), Localized(@"SupportRecords")];
         UIButton * title = [UIButton createButtonWithTitle:titles[section - 1] TextFont:FONT_13 TextNormalColor:COLOR_9 TextSelectedColor:COLOR_9 Target:nil Selector:nil];
         title.contentHorizontalAlignment = UIControlContentHorizontalAlignmentLeft;
-        title.contentEdgeInsets = UIEdgeInsetsMake(0, Margin_10, 0, Margin_10);
+        CGFloat top = (section == 2) ? Margin_5 : 0;
+        title.contentEdgeInsets = UIEdgeInsetsMake(top, Margin_10, 0, Margin_10);
         return title;
     } else {
         return nil;
@@ -459,6 +460,7 @@ static NSString * const CooperateDetailCellID = @"CooperateDetailCellID";
             }
         } else {
             cell.riskStatementBtn.hidden = NO;
+            [cell.riskStatementBtn setAttributedTitle:[Encapsulation attrWithString:Localized(@"RiskStatementPrompt") preFont:FONT(13) preColor:COLOR_6 index:0 sufFont:FONT(13) sufColor:COLOR_6 lineSpacing:Margin_5] forState:UIControlStateNormal];
             cell.contentView.backgroundColor = self.tableView.backgroundColor;
         }
         cell.selectionStyle = UITableViewCellSelectionStyleNone;

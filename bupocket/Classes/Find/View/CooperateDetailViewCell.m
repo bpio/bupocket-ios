@@ -118,10 +118,10 @@
     }
 
     [self.riskStatementBtn mas_makeConstraints:^(MASConstraintMaker *make) {
-        make.top.equalTo(self.contentView);
+        make.top.bottom.equalTo(self.contentView);
         make.left.equalTo(self.contentView.mas_left).offset(Margin_10);
         make.right.equalTo(self.contentView.mas_right).offset(-Margin_10);
-        make.bottom.equalTo(self.contentView.mas_bottom).offset(-Margin_5);
+//        make.bottom.equalTo(self.contentView.mas_bottom).offset(-Margin_5);
     }];
 }
 - (UILabel *)title
@@ -204,7 +204,6 @@
         _riskStatementBtn.layer.masksToBounds = YES;
         _riskStatementBtn.layer.cornerRadius = BG_CORNER;
         _riskStatementBtn.contentEdgeInsets = UIEdgeInsetsMake(Margin_5, Margin_10, Margin_5, Margin_10);
-        [_riskStatementBtn setAttributedTitle:[Encapsulation attrWithString:Localized(@"RiskStatementPrompt") preFont:FONT(13) preColor:COLOR_6 index:0 sufFont:FONT(13) sufColor:COLOR_6 lineSpacing:Margin_5] forState:UIControlStateNormal];
         _riskStatementBtn.hidden = YES;
         CGSize maximumSize = CGSizeMake(DEVICE_WIDTH - Margin_40, CGFLOAT_MAX);
         CGSize expectSize = [_riskStatementBtn sizeThatFits:maximumSize];

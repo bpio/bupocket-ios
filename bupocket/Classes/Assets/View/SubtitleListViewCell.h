@@ -16,7 +16,8 @@ NS_ASSUME_NONNULL_BEGIN
 typedef NS_ENUM(NSInteger, SubtitleCellType) {
     SubtitleCellDefault,
     SubtitleCellManage,
-    SubtitleCellNormal
+    SubtitleCellNormal,
+    SubtitleCellDetail,
 };
 
 + (instancetype)cellWithTableView:(UITableView *)tableView cellType:(SubtitleCellType)cellType;

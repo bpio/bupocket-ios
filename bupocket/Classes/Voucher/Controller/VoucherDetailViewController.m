@@ -11,6 +11,7 @@
 #import "DetailListViewCell.h"
 #import "ListTableViewCell.h"
 #import "UINavigationController+Extension.h"
+#import "AcceptorViewController.h"
 
 
 @interface VoucherDetailViewController ()<UITableViewDelegate, UITableViewDataSource>
@@ -41,7 +42,7 @@ static NSString * const VoucherDetailCellID = @"VoucherDetailCellID";
 //    self.navAlpha = 0;
     self.navBackgroundColor = COLOR(@"3C3B6D");
     self.navTitleColor = self.navTintColor = [UIColor whiteColor];
-    self.listArray = [NSMutableArray arrayWithArray:@[@[@""], @[@[@"有效期", @"2019-07-23至2099-12-12  "], @[@"券编码", @"Q1000000001"], @[@"规格", @"经典酱香味 500ml"], @[@"描述", @"简单的券描述简单的券描述简单的券描述不能超过25个字"], @[@"持有数量", @"999990 "]], @[@[@"承兑方", @"贵州茅台"], @[@"资产发行方", @"达尔蒙食品公司"]]]];
+    self.listArray = [NSMutableArray arrayWithArray:@[@[@""], @[@[Localized(@"Validity"), [NSString stringWithFormat:Localized(@"%@ to %@"), @"2019-07-13", @"2019-09-20"]], @[Localized(@"VoucherCode"), @"Q1000000001"], @[Localized(@"Specification"), @"经典酱香味 500ml"], @[Localized(@"Describe"), @"简单的券描述简单的券描述简单的券描述不能超过25个字"], @[Localized(@"HoldingQuantity"), @"999990 "]], @[@[Localized(@"Acceptor"), @"贵州茅台"], @[Localized(@"AssetIssuer"), @"达尔蒙食品公司"]]]];
     [self setupView];
     // Do any additional setup after loading the view.
 }
@@ -85,6 +86,7 @@ static NSString * const VoucherDetailCellID = @"VoucherDetailCellID";
     CGFloat imageBgW = DEVICE_WIDTH - Margin_30;
     CGFloat imageBgH = imageBgW * (image.size.height / image.size.width);
     UIImageView * imageBg = [[UIImageView alloc] initWithFrame:CGRectMake(Margin_15, ScreenScale(75), imageBgW, imageBgH)];
+    imageBg.userInteractionEnabled = YES;
     imageBg.image = image;
     [self.scrollView addSubview:imageBg];
     [imageBg mas_makeConstraints:^(MASConstraintMaker *make) {
@@ -92,7 +94,7 @@ static NSString * const VoucherDetailCellID = @"VoucherDetailCellID";
         make.top.mas_equalTo(ScreenScale(75));
         make.width.mas_equalTo(DEVICE_WIDTH - Margin_30);
     }];
-    self.scrollView.contentSize = CGSizeMake(DEVICE_WIDTH, DEVICE_HEIGHT * 2);
+    self.scrollView.contentSize = CGSizeMake(DEVICE_WIDTH, imageBgH + ScreenScale(90));
     self.tableView = [[UITableView alloc] initWithFrame:imageBg.bounds style:UITableViewStyleGrouped];
     self.tableView.delegate = self;
     self.tableView.dataSource = self;
@@ -195,6 +197,12 @@ static NSString * const VoucherDetailCellID = @"VoucherDetailCellID";
 - (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath
 {
     [tableView deselectRowAtIndexPath:indexPath animated:NO];
+    if (indexPath.section == self.listArray.count - 1) {
+        if (indexPath.row == 0) {
+            AcceptorViewController * VC = [[AcceptorViewController alloc] init];
+            [self.navigationController pushViewController:VC animated:NO];
+        }
+    }
 }
 - (void)scrollViewDidScroll:(UIScrollView *)scrollView
 {

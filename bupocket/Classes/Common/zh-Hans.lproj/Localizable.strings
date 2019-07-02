@@ -54,7 +54,7 @@
 
 //"newIdentityName" = "请输入新身份名";
 //"MnemonicPrompt" = "输入助记词，用空格分割";
-"ConfirmRecoveryID" = "是否确认更新密码及导入身份？";
+//"ConfirmRecoveryID" = "是否确认更新密码及导入身份？";
 //"Restore" = "恢复";
 
 // 备份
@@ -630,8 +630,21 @@
 "VoucherPromptInfo" = "明月高挂，月光如水，照着妈妈美丽的脸庞，我的目光也如水，看着妈妈的脸庞，觉得妈妈的脸庞是第二个月亮。妈妈用双手捧起我的脸庞，让月光照在我脸上，然后情不自禁地说：小可爱，你是我的小月亮。明月高挂，月光如水，照着妈妈美丽的脸庞，我的目光也如水。小可爱，你是我的小月亮。小可爱，你是我的小月亮。";
 "VoucherNoData" = "这里一张券都没有";
 "ShareQRCode" = "分享收款码转入券";
+"Value:%@" = "面值：¥%@";
+"Validity" = "有效期";
+"%@ to %@" = "%@至%@";
 // 券详情
 "VoucherDetail" = "券详情";
+"VoucherCode" = "券编码";
+"Specification" = "规格";
+"HoldingQuantity" = "持有数量";
+"Acceptor" = "承兑方";
+"AssetIssuer" = "资产发行方";
+// 承兑方
+"InfoOfAcceptorTitle" = "承兑方介绍";
+//"InfoOfAcceptor" = "";
+"DeliveryInstructionsTitle" = "提货说明";
+//"DeliveryInstructions" = "";
 
 "ErrorPrompt" = "错误提示";
 // 调用底层合约
