@@ -41,7 +41,7 @@
     [WXApi registerApp:Wechat_APP_ID];
     _tencentOAuth = [[TencentOAuth alloc] initWithAppId:Tencent_App_ID andDelegate:self];
 
-//    [UMConfigure initWithAppkey:UM_App_Key channel:@""];
+    [UMConfigure initWithAppkey:UM_App_Key channel:@""];
     return YES;
 }
 - (void)initializationSettings
