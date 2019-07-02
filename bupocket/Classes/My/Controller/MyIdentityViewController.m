@@ -92,8 +92,8 @@
 {
     ListTableViewCell * cell = [ListTableViewCell cellWithTableView:tableView cellType:CellTypeID];
     cell.selectionStyle = UITableViewCellSelectionStyleNone;
-    cell.title.text = self.listArray[0][indexPath.row];
-    cell.detailTitle.text = self.listArray[1][indexPath.row];
+    cell.title.text = self.listArray[indexPath.row][0];
+    cell.detailTitle.text = self.listArray[indexPath.row][1];
     cell.detail.hidden = YES;
     cell.selectionStyle = UITableViewCellSelectionStyleNone;
     CGSize cellSize = CGSizeMake(DEVICE_WIDTH - Margin_20, Margin_50);

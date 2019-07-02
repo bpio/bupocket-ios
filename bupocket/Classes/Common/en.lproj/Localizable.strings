@@ -177,7 +177,8 @@
 "TestNetworkPrompt" = "Test Network";
 
 // Tokens
-"TotalAssets" = "Estimated Total Assets";
+//"TotalAssets" = "Estimated Total Assets";
+"AssetValuation" = "Estimated Assets";
 "AssetsInfo" = "The price is based on data from the third-party exchanges, only for your reference.";
 "MyAssets" = "My tokens";
 "Scan" = "Scan";

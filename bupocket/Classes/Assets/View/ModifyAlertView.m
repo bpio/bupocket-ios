@@ -29,16 +29,17 @@
 //        title.text = Localized(@"ModifyWalletName");
 //        self.textField.placeholder = Localized(@"EnterWalletName");
         if (modifyType == ModifyTypeNodeEdit) {
-            self.textField.text = @"";
-            [self.textField insertText:placeholder];
-//            [self.textField setText:placeholder];
-//            self.textField.text = placeholder;
+//            self.textField.text = @"";
+//            [self.textField insertText:placeholder];
+////            [self.textField setText:placeholder];
+            self.textField.text = placeholder;
+            [self textChange:self.textField];
         } else {
             self.textField.placeholder = placeholder;
         }
         self.titleLabel.text = title;
-        
-        self.bounds = CGRectMake(0, 0, DEVICE_WIDTH - Margin_60, ScreenScale(190));
+        CGFloat titleH = [Encapsulation rectWithText:title font:FONT_Bold(18) textWidth:DEVICE_WIDTH - ScreenScale(100)].size.height;
+        self.bounds = CGRectMake(0, 0, DEVICE_WIDTH - Margin_60, ScreenScale(170) + titleH);
     }
     return self;
 }
@@ -50,7 +51,10 @@
     [self addSubview:self.titleLabel];
     [self.titleLabel mas_makeConstraints:^(MASConstraintMaker *make) {
         make.top.equalTo(self).offset(Margin_20);
-        make.centerX.equalTo(self);
+        make.left.equalTo(self).offset(Margin_20);
+        make.right.equalTo(self).offset(-Margin_20);
+//        make.centerX.equalTo(self);
+//        make.width.mas_lessThanOrEqualTo(DEVICE_WIDTH - ScreenScale(80));
     }];
     [self addSubview:self.textField];
     [self.textField mas_makeConstraints:^(MASConstraintMaker *make) {
@@ -97,6 +101,8 @@
         _titleLabel = [UILabel new];
         _titleLabel.font = FONT_Bold(18);
         _titleLabel.textColor = TITLE_COLOR;
+        _titleLabel.numberOfLines = 0;
+        _titleLabel.textAlignment = NSTextAlignmentCenter;
     }
     return _titleLabel;
 }
