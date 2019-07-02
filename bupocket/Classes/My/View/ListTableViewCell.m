@@ -129,6 +129,7 @@ static NSString * const VoucherCellID = @"VoucherCellID";
     [self.detail mas_makeConstraints:^(MASConstraintMaker *make) {
 //        make.right.equalTo(self.listBg.mas_right).offset(-Margin_20);
         make.right.top.bottom.equalTo(self.listBg);
+//        make.width.mas_equalTo(Margin_40);
 //        make.width.mas_equalTo(self.detail.imageView.width + ScreenScale(35));
     }];
     if ([self.reuseIdentifier isEqualToString:DetailCellID] || [self.reuseIdentifier isEqualToString:WalletDetailCellID] || [self.reuseIdentifier isEqualToString:VoucherCellID]) {
@@ -143,7 +144,10 @@ static NSString * const VoucherCellID = @"VoucherCellID";
     }
     [self.detailTitle mas_makeConstraints:^(MASConstraintMaker *make) {
         make.centerY.equalTo(self.listBg);
+        make.left.mas_greaterThanOrEqualTo(self.title.mas_right).offset(Margin_10);
     }];
+    [self.title setContentCompressionResistancePriority:UILayoutPriorityRequired forAxis:UILayoutConstraintAxisHorizontal];
+    [self.detail setContentCompressionResistancePriority:UILayoutPriorityRequired forAxis:UILayoutConstraintAxisHorizontal];
     [self.lineView mas_makeConstraints:^(MASConstraintMaker *make) {
         make.left.equalTo(self.listBg.mas_left).offset(Margin_10);
         make.right.equalTo(self.listBg.mas_right).offset(-Margin_10);

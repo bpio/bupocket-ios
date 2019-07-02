@@ -342,7 +342,7 @@ static UIButton * _noBackup;
         CustomButton * totalAssetsTitle = [[CustomButton alloc] init];
         totalAssetsTitle.layoutMode = HorizontalInverted;
         totalAssetsTitle.titleLabel.font = FONT(15);
-        [totalAssetsTitle setTitle:Localized(@"TotalAssets") forState:UIControlStateNormal];
+        [totalAssetsTitle setTitle:Localized(@"AssetValuation") forState:UIControlStateNormal];
         [totalAssetsTitle setImage:[UIImage imageNamed:@"estimated_total_assets"] forState:UIControlStateNormal];
         [totalAssetsTitle addTarget:self action:@selector(totalAssetsInfo:) forControlEvents:UIControlEventTouchUpInside];
         [self.headerViewBg addSubview:totalAssetsTitle];
