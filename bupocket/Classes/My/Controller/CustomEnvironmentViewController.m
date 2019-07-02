@@ -119,6 +119,7 @@
     CGFloat notesH = [Encapsulation getSizeSpaceLabelWithStr:notesStr font:FONT_15 width:DEVICE_WIDTH - Margin_30 height:CGFLOAT_MAX lineSpacing:Margin_10].height;
     self.footerView.frame = CGRectMake(0, 0, DEVICE_WIDTH, ScreenScale(105) + notesH);
     self.tableView.tableFooterView = self.footerView;
+    self.navigationItem.rightBarButtonItem = (isCustom) ? nil : [[UIBarButtonItem alloc]initWithCustomView:self.rightBtn];
 }
 - (void)nextAction:(UIButton *)button
 {
