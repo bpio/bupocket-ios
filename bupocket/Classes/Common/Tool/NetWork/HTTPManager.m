@@ -1015,7 +1015,7 @@ static int64_t const gasPrice = 1000;
         NSString * walletAddress = [Keypair getEncAddress : [Keypair getEncPublicKey: [privateKeys lastObject]]];
         NSString * walletKeyStore = [NSString generateKeyStoreWithPW:password key:[privateKeys lastObject]];
         [[NSOperationQueue mainQueue] addOperationWithBlock:^{
-            if (privateKeys == nil) {
+            if (privateKeys == nil || walletKeyStore == nil) {
                 [MBProgressHUD hideHUD];
                 [Encapsulation showAlertControllerWithErrorMessage:Localized(@"MnemonicIsIncorrect") handler:nil];
 //                [MBProgressHUD showTipMessageInWindow:Localized(@"FailureToImportWallet")];
