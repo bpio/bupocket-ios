@@ -126,6 +126,7 @@
     button.selected = !button.selected;
     [self setNotesWithIsCustom:button.selected];
     [[HTTPManager shareManager] SwitchedNetworkWithIsCustom:button.selected];
+    [UIApplication sharedApplication].keyWindow.rootViewController = [[TabBarViewController alloc] init];
 }
 - (void)getData
 {
