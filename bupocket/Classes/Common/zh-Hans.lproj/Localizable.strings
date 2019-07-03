@@ -646,6 +646,9 @@
 //"InfoOfAcceptor" = "";
 "DeliveryInstructionsTitle" = "提货说明";
 //"DeliveryInstructions" = "";
+// 数字资产发行方
+"InfoOfDigitalAssetIssuer" = "数字资产发行方介绍";
+"DataPublicity" = "数据公示";
 
 "ErrorPrompt" = "错误提示";
 // 调用底层合约

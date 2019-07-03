@@ -12,6 +12,7 @@
 #import "ListTableViewCell.h"
 #import "UINavigationController+Extension.h"
 #import "AcceptorViewController.h"
+#import "AssetIssuerViewController.h"
 
 
 @interface VoucherDetailViewController ()<UITableViewDelegate, UITableViewDataSource>
@@ -200,6 +201,9 @@ static NSString * const VoucherDetailCellID = @"VoucherDetailCellID";
     if (indexPath.section == self.listArray.count - 1) {
         if (indexPath.row == 0) {
             AcceptorViewController * VC = [[AcceptorViewController alloc] init];
+            [self.navigationController pushViewController:VC animated:NO];
+        } else if (indexPath.row == 1) {
+            AssetIssuerViewController * VC = [[AssetIssuerViewController alloc] init];
             [self.navigationController pushViewController:VC animated:NO];
         }
     }

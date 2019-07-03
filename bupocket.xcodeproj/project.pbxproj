@@ -126,6 +126,7 @@
 		952ADD0D21A65B4B00BEE51B /* SocketIOHandler.m in Sources */ = {isa = PBXBuildFile; fileRef = 952ADD0C21A65B4B00BEE51B /* SocketIOHandler.m */; };
 		952EA85B22C3550F00AD1F8D /* CustomEnvironmentViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 952EA85A22C3550F00AD1F8D /* CustomEnvironmentViewController.m */; };
 		952FE9D721C8DF9900634291 /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 952FE9D521C8DF9900634291 /* LaunchScreen.storyboard */; };
+		9538307E22CCC04A00607F0C /* AssetIssuerViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 9538307D22CCC04A00607F0C /* AssetIssuerViewController.m */; };
 		954371742199234100915BBE /* SettingViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 954371732199234100915BBE /* SettingViewController.m */; };
 		9549EC66219C0CF800307255 /* CreateTipsAlertView.m in Sources */ = {isa = PBXBuildFile; fileRef = 9549EC65219C0CF800307255 /* CreateTipsAlertView.m */; };
 		9549EC70219D075F00307255 /* ClearCacheTool.m in Sources */ = {isa = PBXBuildFile; fileRef = 9549EC6F219D075E00307255 /* ClearCacheTool.m */; };
@@ -450,6 +451,8 @@
 		952EA85922C3550F00AD1F8D /* CustomEnvironmentViewController.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = CustomEnvironmentViewController.h; sourceTree = "<group>"; };
 		952EA85A22C3550F00AD1F8D /* CustomEnvironmentViewController.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = CustomEnvironmentViewController.m; sourceTree = "<group>"; };
 		952FE9D621C8DF9900634291 /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/LaunchScreen.storyboard; sourceTree = "<group>"; };
+		9538307C22CCC04A00607F0C /* AssetIssuerViewController.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = AssetIssuerViewController.h; sourceTree = "<group>"; };
+		9538307D22CCC04A00607F0C /* AssetIssuerViewController.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = AssetIssuerViewController.m; sourceTree = "<group>"; };
 		954371722199234100915BBE /* SettingViewController.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = SettingViewController.h; sourceTree = "<group>"; };
 		954371732199234100915BBE /* SettingViewController.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = SettingViewController.m; sourceTree = "<group>"; };
 		9549EC64219C0CF800307255 /* CreateTipsAlertView.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = CreateTipsAlertView.h; sourceTree = "<group>"; };
@@ -1087,6 +1090,8 @@
 				95162FE122C9A9AA0024FD22 /* VoucherDetailViewController.m */,
 				95162FE322CB3D9B0024FD22 /* AcceptorViewController.h */,
 				95162FE422CB3D9B0024FD22 /* AcceptorViewController.m */,
+				9538307C22CCC04A00607F0C /* AssetIssuerViewController.h */,
+				9538307D22CCC04A00607F0C /* AssetIssuerViewController.m */,
 			);
 			path = Controller;
 			sourceTree = "<group>";
@@ -1620,6 +1625,7 @@
 				83FB443521904AA400D68569 /* HMScannerMaskView.m in Sources */,
 				83FB443721904AA400D68569 /* HMScanner.m in Sources */,
 				83379A182178682100C222A5 /* UIView+CustomAlertView.m in Sources */,
+				9538307E22CCC04A00607F0C /* AssetIssuerViewController.m in Sources */,
 				95266CE422703868002CD915 /* CooperateDetailViewCell.m in Sources */,
 				95B066C22282CD890005731A /* DposModel.m in Sources */,
 				95D92D9522BB6E1400AFC8C2 /* AboutUsViewController.m in Sources */,

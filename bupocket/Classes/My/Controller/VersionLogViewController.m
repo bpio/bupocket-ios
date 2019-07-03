@@ -167,9 +167,10 @@ static NSString * const VersionLogCellID = @"VersionLogCellID";
     } else {
         updateContent = versionModel.englishVerContents;
     }
-    if (NotNULLString(version)) {
-        cell.title.attributedText = [Encapsulation attrWithString:version preFont:FONT(17) preColor:TITLE_COLOR index:0 sufFont:FONT(17) sufColor:TITLE_COLOR lineSpacing:Margin_10];
-    }
+    cell.title.text = version;
+//    if (NotNULLString(version)) {
+//        cell.title.attributedText = [Encapsulation attrWithString:version preFont:FONT(17) preColor:TITLE_COLOR index:0 sufFont:FONT(17) sufColor:TITLE_COLOR lineSpacing:Margin_10];
+//    }
     if (NotNULLString(updateContent)) {
         //    CGSize maximumSize = CGSizeMake(DEVICE_WIDTH - ScreenScale(80), CGFLOAT_MAX);
         //    CGSize expectSize = [prompt.titleLabel sizeThatFits:maximumSize];
