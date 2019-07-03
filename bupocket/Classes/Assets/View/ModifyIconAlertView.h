@@ -19,6 +19,8 @@ typedef void (^OnConfrimClick)(NSInteger index);
 @property (nonatomic, copy) OnCancleClick cancleBlock;
 @property (nonatomic, copy) OnConfrimClick sureBlock;
 
+@property (nonatomic, assign) NSInteger index;
+
 - (instancetype)initWithTitle:(NSString *)title confrimBolck:(void (^)(NSInteger index))confrimBlock cancelBlock:(void (^)(void))cancelBlock;
 
 @end

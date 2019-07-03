@@ -25,7 +25,7 @@
 // 标题   信息  取消  确认
 + (void)showAlertControllerWithTitle:(NSString *)title message:(NSString*)message cancelHandler:(void(^)(UIAlertAction * action))cancelHandler confirmHandler:(void(^)(UIAlertAction * action))confirmHandler;
 // 标题   属性信息    取消  确认
-+ (void)showAlertControllerWithTitle:(NSString *)title messageAttr:(NSAttributedString *)messageAttr cancelHandler:(void(^)(UIAlertAction * action))cancelHandler confirmHandler:(void(^)(UIAlertAction * action))confirmHandler;
+//+ (void)showAlertControllerWithTitle:(NSString *)title messageAttr:(NSAttributedString *)messageAttr cancelHandler:(void(^)(UIAlertAction * action))cancelHandler confirmHandler:(void(^)(UIAlertAction * action))confirmHandler;
 // 错误信息 我知道了
 + (void)showAlertControllerWithMessage:(NSString *)message handler:(void(^)(UIAlertAction * action))handle;
 // 标题：错误提示 错误信息居左 我知道了

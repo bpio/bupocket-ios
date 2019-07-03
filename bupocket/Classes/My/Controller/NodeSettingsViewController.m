@@ -18,6 +18,7 @@
 @property (nonatomic, assign) NSInteger index;
 @property (nonatomic, strong) NSString * currentNodeURLKey;
 @property (nonatomic, strong) NSString * nodeURLArrayKey;
+@property (nonatomic, assign) BOOL ifSetting;
 
 @end
 
@@ -60,8 +61,10 @@
 }
 - (void)saveAcrion:(UIButton *)button
 {
-    [[HTTPManager shareManager] SwitchedNodeWithURL:self.listArray[self.index]];
-    [UIApplication sharedApplication].keyWindow.rootViewController = [[TabBarViewController alloc] init];
+    if (self.ifSetting == YES) {
+        [[HTTPManager shareManager] SwitchedNodeWithURL:self.listArray[self.index]];
+        [UIApplication sharedApplication].keyWindow.rootViewController = [[TabBarViewController alloc] init];        
+    }
 }
 - (void)setupView
 {
@@ -208,6 +211,8 @@
 }
 - (void)setNodeURLWithIndex:(NSInteger)index
 {
+    if (index == self.index) return;
+    self.ifSetting = (index != self.index);
     NSIndexPath * lastIndex = [NSIndexPath indexPathForRow:_index inSection:0];
     ListTableViewCell * lastcell = [self.tableView cellForRowAtIndexPath:lastIndex];
     lastcell.listImage.hidden = YES;

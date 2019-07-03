@@ -8,7 +8,8 @@
 
 #import "MyIdentityViewController.h"
 #import "IdentityViewController.h"
-#import "BackupMnemonicsViewController.h"
+//#import "BackupMnemonicsViewController.h"
+#import "BackUpWalletViewController.h"
 #import "ClearCacheTool.h"
 #import "YBPopupMenu.h"
 #import "ListTableViewCell.h"
@@ -190,6 +191,10 @@
  */
 - (void)backupIdentityAction
 {
+    BackUpWalletViewController * VC = [[BackUpWalletViewController alloc] init];
+    VC.mnemonicType = MnemonicBackup;
+    [self.navigationController pushViewController:VC animated:NO];
+    /*
     PasswordAlertView * alertView = [[PasswordAlertView alloc] initWithPrompt:Localized(@"IdentityCipherPrompt") confrimBolck:^(NSString * _Nonnull password, NSArray * _Nonnull words) {
         if (words.count > 0) {
             BackupMnemonicsViewController * VC = [[BackupMnemonicsViewController alloc] init];
@@ -203,6 +208,7 @@
     alertView.passwordType = PWTypeBackUpID;
     [alertView showInWindowWithMode:CustomAnimationModeAlert inView:nil bgAlpha:AlertBgAlpha needEffectView:NO];
     [alertView.PWTextField becomeFirstResponder];
+     */
 }
 - (void)exitIDAction
 {

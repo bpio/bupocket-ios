@@ -16,6 +16,7 @@
 
 @property (nonatomic, strong) UITableView * tableView;
 @property (nonatomic, strong) NSArray * listArray;
+@property (nonatomic, assign) NSInteger iconIndex;
 
 @end
 
@@ -33,6 +34,11 @@
     [super viewDidLoad];
     self.navigationItem.title = Localized(@"WalletDetails");
     [self setupView];
+    if (self.walletModel.walletIconName == nil || [self.walletModel.walletIconName isEqualToString:Current_Wallet_IconName]) {
+        self.iconIndex = 0;
+    } else {
+        self.iconIndex = [[self.walletModel.walletIconName substringFromIndex:self.walletModel.walletIconName.length - 1] integerValue];
+    }
     self.listArray = @[Localized(@"ChangeWalletIcon"), Localized(@"ModifyWalletName")];
     // Do any additional setup after loading the view.
 }
@@ -107,6 +113,7 @@
 }
 - (void)modifyWalletIconNameWithCell:(ListTableViewCell *)cell
 {
+    
     ModifyIconAlertView * alertView = [[ModifyIconAlertView alloc] initWithTitle:Localized(@"ChooseWalletIcon") confrimBolck:^(NSInteger index) {
         NSString * walletIconName = (index == 0) ? Current_Wallet_IconName : [NSString stringWithFormat:@"%@_%zd", Current_Wallet_IconName, index];
         self.walletModel.walletIconName = walletIconName;
@@ -128,6 +135,7 @@
     } cancelBlock:^{
         
     }];
+    alertView.index = self.iconIndex;
     [alertView showInWindowWithMode:CustomAnimationModeAlert inView:nil bgAlpha:AlertBgAlpha needEffectView:NO];
 }
 - (void)modifyWalletNameWithCell:(ListTableViewCell *)cell

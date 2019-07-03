@@ -29,7 +29,7 @@
 "IdentityName" = "请创建身份名";
 "IDNamePlaceholder" = "允许输入字母/汉字/数字/下划线，且不能超过20个字符";
 "SetPassword" = "请设置安全密码";
-"PWPlaceholder" = "6-30个字符，大小写字母和数字任意两种组合";
+"PWPlaceholder" = "6-30个字符，大小写字母和数字任意两种的组合";
 "PWErrorPrompt" = "密码必须是6-30个字符，大小写字母和数字任意两种的组合";
 "ConfirmPassword" = "请再次确认安全密码";
 "ConfirmPWPlaceholder" = "请再次输入安全密码";
@@ -124,7 +124,7 @@
 //"ConfirmedPassword" = "确认密码";
 //"PleaseEnterOldPW" = "请输入旧密码";
 //"PleaseEnterNewPW" = "请输入新密码";
-"ModifyPasswordFailure" = "旧密码错误";
+//"ModifyPasswordFailure" = "旧密码错误";
 "PasswordDuplicate" = "密码重复，请重新设置";
 // 帮助与反馈
 "QuestionsOrSuggestions" = "您遇到的问题或建议";
@@ -343,8 +343,9 @@
 
 // My
 //"CryptographicFormat" = "密码长度为8~20个字符，且内容仅限字母和数字";
-"NewPasswordIsDifferent" = "新密码与确认新密码不一致，请重新输入";
-"OldPasswordIncorrect" = "旧密码不正确，请重新输入";
+"OldPWFormat" = "原安全密码输入不正确";
+"NewPasswordIsDifferent" = "新安全密码两次输入不一致";
+//"OldPasswordIncorrect" = "旧密码不正确，请重新输入";
 "PasswordModifiedSuccessfully" = "密码修改成功";
 "%@PWModifiedSuccessfully" = "%@ 的安全密码已修改成功！";
 
@@ -416,7 +417,7 @@
 // 管理
 "ExportKeystore" = "导出Keystore";
 "ExportPrivateKey" = "导出私钥";
-"ModifyWalletPW" = "修改钱包密码";
+//"ModifyWalletPW" = "修改钱包密码";
 "DeleteWallet" = "删除钱包";
 "ModifyWalletName" = "更改钱包名称";
 "WalletPWPrompt" = "请填写钱包密码";

@@ -99,6 +99,8 @@
 // Determine whether a string is empty
 #define NotNULLString(string) (([string isKindOfClass:[NSString class]]) && ![string isEqualToString:@""] && (string != nil) && ![string isEqualToString:@""] && ![string isKindOfClass:[NSNull class]] && [[string stringByTrimmingCharactersInSet:[NSCharacterSet whitespaceCharacterSet]] length] != 0)
 
+#define RandomNumber(From, To) (From + (arc4random() % (To - From + 1)))
+
 #define DposUnVote(role, address) [NSString stringWithFormat:@"{\"method\":\"unVote\",\"params\":{\"role\":\"%@\",\"address\":\"%@\"}}", role, address]
 #define DopsRevoke @"{\"method\":\"revoke\"}"
 #define DopsSubscribe(shares) [NSString stringWithFormat:@"{\"method\":\"subscribe\",\"params\":{\"shares\":%@}}", shares]

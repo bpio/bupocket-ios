@@ -97,7 +97,7 @@
 // Successful backup of memorizing words
 #define If_Backup @"ifBackup"
 // skip the backup
-#define If_Skip @"ifSkip"
+//#define If_Skip @"ifSkip"
 #define If_Show_Switch_Network @"ifShowSwitchNetwork"
 #define If_Switch_TestNetwork @"ifSwitchTestNetwork"
 #define If_Show_Custom_Network @"ifShowCustomNetwork"

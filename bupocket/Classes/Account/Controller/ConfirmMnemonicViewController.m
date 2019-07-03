@@ -47,10 +47,19 @@
 
 - (void)skipAction
 {
-    NSUserDefaults * defaults = [NSUserDefaults standardUserDefaults];
-    [defaults setBool:YES forKey:If_Skip];
-    [defaults synchronize];
-    [UIApplication sharedApplication].keyWindow.rootViewController = [[TabBarViewController alloc] init];
+    NSArray * VCArray = self.navigationController.viewControllers;
+    NSInteger index = 4;
+    if (self.mnemonicType == MnemonicCreateWallet) {
+        index = 5;
+    }
+    if (VCArray.count > index) {
+        [self.navigationController popToViewController:VCArray[VCArray.count - index] animated:NO];
+    }
+//    NSUserDefaults * defaults = [NSUserDefaults standardUserDefaults];
+//    [defaults setBool:YES forKey:If_Skip];
+//    [defaults synchronize];
+//    [UIApplication sharedApplication].keyWindow.rootViewController = [[TabBarViewController alloc] init];
+    
 }
 - (void)setupView
 {

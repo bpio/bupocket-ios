@@ -122,15 +122,16 @@
         [alertController setValue:attrTitle forKey:@"attributedTitle"];
     }
     if (NotNULLString(message)) {
-        UILabel * messageLabel = alertBg.subviews[0].subviews[0].subviews[2];
+//        UILabel * messageLabel = alertBg.subviews[0].subviews[0].subviews[2];
         NSMutableAttributedString * attr = [Encapsulation attrWithString:[NSString stringWithFormat:@"\n%@", message] preFont:FONT_TITLE preColor:COLOR_6 index:0 sufFont:FONT_15 sufColor:COLOR_6 lineSpacing:Margin_5];
         [alertController setValue:attr forKey:@"attributedMessage"];
-        messageLabel.textAlignment = NSTextAlignmentLeft;
+//        messageLabel.textAlignment = NSTextAlignmentLeft;
     }
     [cancelAction setValue:COLOR_9 forKey:@"titleTextColor"];
     [confirmAction setValue:MAIN_COLOR forKey:@"titleTextColor"];
     [[[UIApplication sharedApplication] keyWindow].rootViewController presentViewController:alertController animated:YES completion:nil];
 }
+/*
 + (void)showAlertControllerWithTitle:(NSString *)title messageAttr:(NSAttributedString *)messageAttr cancelHandler:(void(^)(UIAlertAction * action))cancelHandler confirmHandler:(void(^)(UIAlertAction * action))confirmHandler
 {    
     UIAlertController * alertController = [UIAlertController alertControllerWithTitle:title message:@"" preferredStyle:UIAlertControllerStyleAlert];
@@ -148,6 +149,7 @@
     [confirmAction setValue:MAIN_COLOR forKey:@"titleTextColor"];
     [[[UIApplication sharedApplication] keyWindow].rootViewController presentViewController:alertController animated:YES completion:nil];
 }
+ */
 + (void)showAlertControllerWithMessage:(NSString *)message handler:(void(^)(UIAlertAction * action))handle
 {
     UIAlertController * alertController = [UIAlertController alertControllerWithTitle:nil message:message preferredStyle:UIAlertControllerStyleAlert];

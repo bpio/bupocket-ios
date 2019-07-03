@@ -107,6 +107,7 @@ static NSString * const VoucherCellID = @"VoucherCellID";
             make.right.equalTo(self.detailTitle.mas_left).offset(-Margin_10);
             make.centerY.equalTo(self.listBg);
             make.width.height.mas_equalTo(ScreenScale(22));
+//            make.left.mas_greaterThanOrEqualTo(self.title.mas_right).offset(Margin_10);
         }];
     } else if ([self.reuseIdentifier isEqualToString:IdentifyCellID]) {
         [self.title mas_makeConstraints:^(MASConstraintMaker *make) {
@@ -127,10 +128,10 @@ static NSString * const VoucherCellID = @"VoucherCellID";
         }];
     }
     [self.detail mas_makeConstraints:^(MASConstraintMaker *make) {
-//        make.right.equalTo(self.listBg.mas_right).offset(-Margin_20);
+        //        make.right.equalTo(self.listBg.mas_right).offset(-Margin_20);
         make.right.top.bottom.equalTo(self.listBg);
-//        make.width.mas_equalTo(Margin_40);
-//        make.width.mas_equalTo(self.detail.imageView.width + ScreenScale(35));
+        //        make.width.mas_equalTo(Margin_40);
+        //        make.width.mas_equalTo(self.detail.imageView.width + ScreenScale(35));
     }];
     if ([self.reuseIdentifier isEqualToString:DetailCellID] || [self.reuseIdentifier isEqualToString:WalletDetailCellID] || [self.reuseIdentifier isEqualToString:VoucherCellID]) {
         [self.detailTitle mas_makeConstraints:^(MASConstraintMaker *make) {
@@ -142,10 +143,12 @@ static NSString * const VoucherCellID = @"VoucherCellID";
             make.right.equalTo(self.listBg.mas_right).offset(-right);
         }];
     }
+    UIView * detailTitleLeft = ([self.reuseIdentifier isEqualToString:IdentifyCellID]) ? self.listImage : self.title;
     [self.detailTitle mas_makeConstraints:^(MASConstraintMaker *make) {
         make.centerY.equalTo(self.listBg);
-        make.left.mas_greaterThanOrEqualTo(self.title.mas_right).offset(Margin_10);
+        make.left.mas_greaterThanOrEqualTo(detailTitleLeft.mas_right).offset(Margin_10);
     }];
+    [self.listImage setContentCompressionResistancePriority:UILayoutPriorityRequired forAxis:UILayoutConstraintAxisHorizontal];
     [self.title setContentCompressionResistancePriority:UILayoutPriorityRequired forAxis:UILayoutConstraintAxisHorizontal];
     [self.detail setContentCompressionResistancePriority:UILayoutPriorityRequired forAxis:UILayoutConstraintAxisHorizontal];
     [self.lineView mas_makeConstraints:^(MASConstraintMaker *make) {
@@ -216,7 +219,7 @@ static NSString * const VoucherCellID = @"VoucherCellID";
 
 - (void)setSelected:(BOOL)selected animated:(BOOL)animated {
     [super setSelected:selected animated:animated];
-
+    
     // Configure the view for the selected state
 }
 
