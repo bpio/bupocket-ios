@@ -170,7 +170,7 @@
 "InvalidServerURL" = "Invalid wallet service address";
 // Switch network
 //"SwitchToTestNetwork" = "Whether to switch to the test network?";
-"SwitchToTestNetwork" = "确认切换为测试网吗？";
+"SwitchToTestNetwork" = "Are you sure to switch to test network?";
 //"YES" = "Yes";
 //"NO" = "No";
 "ClosedTestNetwork" = "You have stopped the test network";
