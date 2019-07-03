@@ -166,9 +166,10 @@
 "InvalidServerURL" = "无效的钱包服务地址";
 
 // 切换网络
-"SwitchToTestNetwork" = "是否切换为测试网？";
-"YES" = "是";
-"NO" = "否";
+//"SwitchToTestNetwork" = "是否切换为测试网？";
+"SwitchToTestNetwork" = "确认切换为测试网吗？";
+//"YES" = "是";
+//"NO" = "否";
 "ClosedTestNetwork" = "您已关闭测试网";
 "OpenedTestNetwork" = "您已开启测试网";
 "TestNetworkPrompt" = "测试网";
