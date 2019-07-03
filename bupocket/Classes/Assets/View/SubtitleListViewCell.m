@@ -177,8 +177,7 @@ static NSString * const NormalSubtitleCellID = @"NormalSubtitleCellID";
 {
     if (!_walletName) {
         _walletName = [[UILabel alloc] init];
-        _walletName.font = FONT_BUTTON;
-//        _walletName.font = FONT_Bold(16);
+        _walletName.font = FONT_Bold(15);
         _walletName.textColor = TITLE_COLOR;
     }
     return _walletName;
@@ -187,8 +186,7 @@ static NSString * const NormalSubtitleCellID = @"NormalSubtitleCellID";
 {
     if (!_walletAddress) {
         _walletAddress = [[UILabel alloc] init];
-//        _walletAddress.font = FONT_TITLE;
-        _walletAddress.font = FONT_15;
+        _walletAddress.font = FONT_TITLE;
         _walletAddress.textColor = COLOR_9;
         _walletAddress.lineBreakMode = NSLineBreakByTruncatingMiddle;
     }
