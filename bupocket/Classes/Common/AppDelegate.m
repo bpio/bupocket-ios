@@ -122,9 +122,6 @@
         NSInteger code = [[responseObject objectForKey:@"errCode"] integerValue];
         if (code == Success_Code) {
             NSDictionary * dataDic = [responseObject objectForKey:@"data"];
-            NSUserDefaults * defaults = [NSUserDefaults standardUserDefaults];
-            [defaults setObject:dataDic forKey:Version_Info];
-            [defaults synchronize];
             VersionModel * versionModel  = [VersionModel mj_objectWithKeyValues:dataDic];
             BOOL result = [App_Version compare:versionModel.verNumber] == NSOrderedAscending;
             if (result) {

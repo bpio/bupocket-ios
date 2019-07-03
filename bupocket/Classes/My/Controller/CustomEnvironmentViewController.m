@@ -47,7 +47,7 @@
 }
 - (void)setupNav
 {
-    self.rightBtn = [UIButton createButtonWithTitle:Localized(@"Save") TextFont:FONT_15 TextNormalColor:COLOR_6 TextSelectedColor:COLOR_6 Target:self Selector:@selector(rightAcrion:)];
+    self.rightBtn = [UIButton createButtonWithTitle:Localized(@"Save") TextFont:FONT_15 TextNormalColor:MAIN_COLOR TextSelectedColor:MAIN_COLOR Target:self Selector:@selector(rightAcrion:)];
     self.rightBtn.frame = CGRectMake(0, 0, ScreenScale(60), ScreenScale(44));
     self.rightBtn.contentHorizontalAlignment = UIControlContentHorizontalAlignmentRight;
     [self.rightBtn setTitle:Localized(@"Edit") forState:UIControlStateSelected];

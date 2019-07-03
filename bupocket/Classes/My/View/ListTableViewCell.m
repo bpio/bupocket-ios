@@ -107,7 +107,7 @@ static NSString * const VoucherCellID = @"VoucherCellID";
             make.right.equalTo(self.detailTitle.mas_left).offset(-Margin_10);
             make.centerY.equalTo(self.listBg);
             make.width.height.mas_equalTo(ScreenScale(22));
-//            make.left.mas_greaterThanOrEqualTo(self.title.mas_right).offset(Margin_10);
+            make.left.mas_greaterThanOrEqualTo(self.title.mas_right).offset(Margin_10);
         }];
     } else if ([self.reuseIdentifier isEqualToString:IdentifyCellID]) {
         [self.title mas_makeConstraints:^(MASConstraintMaker *make) {

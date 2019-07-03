@@ -226,8 +226,10 @@
     if ([RegexPatternTool validateUserName:_walletName] == NO) {
         [MBProgressHUD showTipMessageInWindow:Localized(@"WalletNameFormatIncorrect")];
         return NO;
-    } else if (_walletPW.length < PW_MIN_LENGTH || _walletPW.length > PW_MAX_LENGTH) {
-//        if ([RegexPatternTool validatePassword:_walletPW] == NO) {
+    } else if (self.importWalletMode == ImportWalletKeystore && (_walletPW.length < PW_MIN_LENGTH || _walletPW.length > PW_MAX_LENGTH)) {
+        [MBProgressHUD showTipMessageInWindow:Localized(@"CryptographicFormat")];
+        return NO;
+    } else if ((self.importWalletMode == ImportWalletMnemonics || self.importWalletMode == ImportWalletPrivateKey) && [RegexPatternTool validatePassword:_walletPW] == NO) {
         [MBProgressHUD showTipMessageInWindow:Localized(@"CryptographicFormat")];
         return NO;
     } else if (ifConfirmPW && ![_walletPW isEqualToString:_confirmPW]) {

@@ -105,7 +105,7 @@
     [self.view addSubview:self.imageViewBg];
     
     [self.imageViewBg addSubview:self.addressBg];
-    CGSize addressBgSize = CGSizeMake(DEVICE_WIDTH - Margin_60, ScreenScale(350));
+    CGSize addressBgSize = CGSizeMake(DEVICE_WIDTH - Margin_60, ScreenScale(390));
     [self.addressBg setViewSize:addressBgSize borderRadius:BG_CORNER corners:UIRectCornerAllCorners];
     [self.addressBg mas_makeConstraints:^(MASConstraintMaker *make) {
         make.center.equalTo(self.imageViewBg);
@@ -123,7 +123,7 @@
     
     [self.addressBg addSubview:self.walletName];
     [self.walletName mas_makeConstraints:^(MASConstraintMaker *make) {
-        make.top.equalTo(self.walletIcon.mas_bottom).offset(Margin_10);
+        make.top.equalTo(self.walletIcon.mas_bottom).offset(Margin_15);
         make.left.equalTo(self.addressBg.mas_left).offset(Margin_15);
         make.right.equalTo(self.addressBg.mas_right).offset(-Margin_15);
     }];
@@ -144,9 +144,9 @@
     
     [self.addressBg addSubview:self.QRCodeImage];
     [self.QRCodeImage mas_makeConstraints:^(MASConstraintMaker *make) {
-        make.bottom.equalTo(self.addressTitle.mas_top).offset(-Margin_15);
+        make.bottom.equalTo(self.addressTitle.mas_top).offset(-Margin_20);
         make.centerX.equalTo(self.walletIcon);
-        make.size.mas_equalTo(CGSizeMake(ScreenScale(170), ScreenScale(170)));
+        make.size.mas_equalTo(CGSizeMake(ScreenScale(180), ScreenScale(180)));
     }];
     
     [self.imageViewBg addSubview:self.icon];
@@ -164,7 +164,7 @@
     
     [self.walletAddress mas_makeConstraints:^(MASConstraintMaker *make) {
         make.top.equalTo(self.walletName.mas_bottom);
-        make.bottom.equalTo(line.mas_top).offset(-Margin_5);
+        make.bottom.equalTo(line.mas_top);
         make.centerX.equalTo(self.walletIcon);
         make.width.mas_lessThanOrEqualTo(walletAddressW);
 //        make.height.mas_equalTo(Margin_40);

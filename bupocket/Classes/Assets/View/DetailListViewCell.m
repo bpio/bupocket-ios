@@ -14,6 +14,7 @@ static NSString * const DefaultDetailCellID = @"DefaultDetailCellID";
 static NSString * const NormalDetailCellID = @"NormalDetailCellID";
 static NSString * const ResultDetailCellID = @"ResultDetailCellID";
 static NSString * const SubtitleDetailCellID = @"SubtitleDetailCellID";
+static NSString * const VersionLogCellID = @"VersionLogCellID";
 
 + (instancetype)cellWithTableView:(UITableView *)tableView cellType:(DetailCellType)cellType
 {
@@ -26,6 +27,8 @@ static NSString * const SubtitleDetailCellID = @"SubtitleDetailCellID";
         identifier = ResultDetailCellID;
     } else if (cellType == DetailCellSubtitle) {
         identifier = SubtitleDetailCellID;
+    } else if (cellType == DetailCellVersionLog) {
+        identifier = VersionLogCellID;
     }
     DetailListViewCell * cell = [tableView dequeueReusableCellWithIdentifier:identifier];
     if (cell == nil) {
@@ -73,12 +76,20 @@ static NSString * const SubtitleDetailCellID = @"SubtitleDetailCellID";
             make.bottom.equalTo(self.detailBg.mas_bottom).offset(-Margin_10);
         }];
     } else {
+        CGFloat titleX = Margin_10;
+        CGFloat titleY = Margin_15;
+        if ([self.reuseIdentifier isEqualToString:VersionLogCellID]) {
+            titleX = Margin_15;
+            titleY = Margin_20;
+        }
         [self.title mas_makeConstraints:^(MASConstraintMaker *make) {
-            make.left.equalTo(self.contentView.mas_left).offset(Margin_10);
-            make.top.equalTo(self.contentView.mas_top).offset(Margin_15);
+            make.left.equalTo(self.contentView.mas_left).offset(titleX);
+            make.top.equalTo(self.contentView.mas_top).offset(titleY);
+            make.right.equalTo(self.contentView.mas_right).offset(-titleX);
         }];
         [self.infoTitle mas_makeConstraints:^(MASConstraintMaker *make) {
-            make.right.equalTo(self.contentView.mas_right).offset(-Margin_10);
+            make.right.equalTo(self.title);
+//            make.right.equalTo(self.contentView.mas_right).offset(-Margin_10);
         }];
         if ([self.reuseIdentifier isEqualToString:DefaultDetailCellID]) {
             self.infoTitle.textAlignment = NSTextAlignmentRight;
@@ -124,8 +135,10 @@ static NSString * const SubtitleDetailCellID = @"SubtitleDetailCellID";
 }
 - (void)setFrame:(CGRect)frame
 {
-    frame.origin.x = Margin_10;
-    frame.size.width -= Margin_20;
+    if (![self.reuseIdentifier isEqualToString:VersionLogCellID]) {
+        frame.origin.x = Margin_10;
+        frame.size.width -= Margin_20;
+    }
     [super setFrame:frame];
 }
 - (void)awakeFromNib {

@@ -52,7 +52,9 @@
     if (self.mnemonicType == MnemonicCreateWallet) {
         index = 5;
     }
-    if (VCArray.count > index) {
+    if (self.mnemonicType == MnemonicSafe || self.mnemonicType == MnemonicCreateID) {
+        [UIApplication sharedApplication].keyWindow.rootViewController = [[TabBarViewController alloc] init];
+    } else if (VCArray.count > index) {
         [self.navigationController popToViewController:VCArray[VCArray.count - index] animated:NO];
     }
 //    NSUserDefaults * defaults = [NSUserDefaults standardUserDefaults];

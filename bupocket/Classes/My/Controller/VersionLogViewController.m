@@ -8,6 +8,7 @@
 
 #import "VersionLogViewController.h"
 #import "VersionModel.h"
+#import "DetailListViewCell.h"
 
 @interface VersionLogViewController ()<UITableViewDelegate, UITableViewDataSource>
 
@@ -126,7 +127,7 @@ static NSString * const VersionLogCellID = @"VersionLogCellID";
     } else {
         updateContent = versionModel.englishVerContents;
     }
-    CGFloat cellHeight = [Encapsulation getSizeSpaceLabelWithStr:updateContent font:FONT_TITLE width:(DEVICE_WIDTH - Margin_30) height:CGFLOAT_MAX lineSpacing:Margin_10].height + ScreenScale(60);
+    CGFloat cellHeight = [Encapsulation getSizeSpaceLabelWithStr:updateContent font:FONT_TITLE width:(DEVICE_WIDTH - Margin_30) height:CGFLOAT_MAX lineSpacing:Margin_10].height + ScreenScale(75);
     return cellHeight == 0 ? ScreenScale(120) : cellHeight;
 }
 - (CGFloat)tableView:(UITableView *)tableView heightForHeaderInSection:(NSInteger)section
@@ -147,11 +148,15 @@ static NSString * const VersionLogCellID = @"VersionLogCellID";
 }
 - (UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath
 {
-    UITableViewCell *cell = [tableView cellForRowAtIndexPath:indexPath];
-//    UITableViewCell * cell = [tableView dequeueReusableCellWithIdentifier:VersionLogCellID];
-    if (cell == nil) {
-        cell = [[UITableViewCell alloc] initWithStyle:UITableViewCellStyleSubtitle reuseIdentifier:VersionLogCellID];
-    }
+//    UITableViewCell *cell = [tableView cellForRowAtIndexPath:indexPath];
+////    UITableViewCell * cell = [tableView dequeueReusableCellWithIdentifier:VersionLogCellID];
+//    if (cell == nil) {
+//        cell = [[UITableViewCell alloc] initWithStyle:UITableViewCellStyleSubtitle reuseIdentifier:VersionLogCellID];
+//    }
+//    cell.selectionStyle = UITableViewCellSelectionStyleNone;
+    DetailListViewCell * cell = [DetailListViewCell cellWithTableView:tableView cellType: DetailCellVersionLog];
+//    cell.title.text = [self.listArray firstObject][indexPath.row];
+//    cell.infoTitle.text = [self.listArray lastObject][indexPath.row];
     cell.selectionStyle = UITableViewCellSelectionStyleNone;
     VersionModel * versionModel = self.listArray[indexPath.row];
     NSString * version = [NSString stringWithFormat:@"V%@ （%@）", versionModel.verNumber, [DateTool getDateStringWithTimeStr:versionModel.createTime]];
@@ -163,13 +168,13 @@ static NSString * const VersionLogCellID = @"VersionLogCellID";
         updateContent = versionModel.englishVerContents;
     }
     if (NotNULLString(version)) {
-        cell.textLabel.attributedText = [Encapsulation attrWithString:version preFont:FONT(17) preColor:TITLE_COLOR index:0 sufFont:FONT(17) sufColor:TITLE_COLOR lineSpacing:Margin_10];
+        cell.title.attributedText = [Encapsulation attrWithString:version preFont:FONT(17) preColor:TITLE_COLOR index:0 sufFont:FONT(17) sufColor:TITLE_COLOR lineSpacing:Margin_10];
     }
     if (NotNULLString(updateContent)) {
         //    CGSize maximumSize = CGSizeMake(DEVICE_WIDTH - ScreenScale(80), CGFLOAT_MAX);
         //    CGSize expectSize = [prompt.titleLabel sizeThatFits:maximumSize];
         //    prompt.size = expectSize;
-        cell.detailTextLabel.attributedText = [Encapsulation attrWithString:updateContent preFont:FONT_TITLE preColor:COLOR_6 index:0 sufFont:FONT_TITLE sufColor:COLOR_6 lineSpacing:Margin_10];
+        cell.infoTitle.attributedText = [Encapsulation attrWithString:updateContent preFont:FONT_TITLE preColor:COLOR_6 index:0 sufFont:FONT_TITLE sufColor:COLOR_6 lineSpacing:Margin_10];
     }
     return cell;
 }

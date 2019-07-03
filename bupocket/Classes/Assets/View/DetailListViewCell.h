@@ -14,7 +14,8 @@ typedef NS_ENUM(NSInteger, DetailCellType) {
     DetailCellDefault, // DefaultDetailCellID 资产详情 左右
     DetailCellNormal, // NormalDetailCellID 资产详情 上下
     DetailCellResult, // ResultDetailCellID 登记、发行结果
-    DetailCellSubtitle // SubtitleDetailCellID 上下
+    DetailCellSubtitle, // SubtitleDetailCellID 上下
+    DetailCellVersionLog // VersionLogCellID
 };
 
 @interface DetailListViewCell : UITableViewCell
