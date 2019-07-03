@@ -127,7 +127,7 @@
 //"ConfirmedPassword" = "Confirm password";
 //"PleaseEnterOldPW" = "Please enter the old password";
 //"PleaseEnterNewPW" = "Please enter the new password";
-"ModifyPasswordFailure" = "Old password error";
+//"ModifyPasswordFailure" = "Old password error";
 "PasswordDuplicate" = "Repeated password, please reset";
 // Feedback
 "QuestionsOrSuggestions" = "Your questions or suggestions";
@@ -354,8 +354,9 @@
 
 // My
 //"CryptographicFormat" = "The password is 8 to 20 characters long composed of letters and numbers.";
-"NewPasswordIsDifferent" = "Passwords do not match. Please enter again";
-"OldPasswordIncorrect" = "The old password is incorrect. Please enter again";
+"OldPWFormat" = "Previous security password is not correct";
+"NewPasswordIsDifferent" = "New security passwords do not match";
+//"OldPasswordIncorrect" = "The old password is incorrect. Please enter again";
 "PasswordModifiedSuccessfully" = "Your password modified successfully";
 "%@PWModifiedSuccessfully" = "%@ security password has been changed！";
 
@@ -428,7 +429,7 @@
 // Management
 "ExportKeystore" = "Export Keystore";
 "ExportPrivateKey" = "Export Private Key";
-"ModifyWalletPW" = "Modify Wallet Password";
+//"ModifyWalletPW" = "Modify Wallet Password";
 "DeleteWallet" = "Delete Wallet";
 "ModifyWalletName" = "Change wallet name";
 "WalletPWPrompt" = "Please enter the wallet password";

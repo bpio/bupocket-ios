@@ -116,6 +116,7 @@
         return NO;
     }
 }
+/*
 - (BOOL)isSetLargeTitles
 {
     return !([self isKindOfClass:[AssetsViewController class]]  ||
@@ -125,6 +126,7 @@
             [self isKindOfClass:[RequestTimeoutViewController class]] ||
             [self isKindOfClass:[OrderDetailsViewController class]]);
 }
+ */
 /*
 #pragma mark - Navigation
 

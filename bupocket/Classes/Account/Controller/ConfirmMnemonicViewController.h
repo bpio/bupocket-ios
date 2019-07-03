@@ -7,12 +7,14 @@
 //
 
 #import "BaseViewController.h"
+#import "BackUpWalletViewController.h"
 
 NS_ASSUME_NONNULL_BEGIN
 
 @interface ConfirmMnemonicViewController : BaseViewController
 
 @property (nonatomic, strong) NSArray * mnemonicArray;
+@property (nonatomic, assign) MnemonicType mnemonicType;
 
 @end
 

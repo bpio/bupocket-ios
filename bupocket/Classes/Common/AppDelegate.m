@@ -64,10 +64,13 @@
 {
     NSUserDefaults * defaults = [NSUserDefaults standardUserDefaults];
     if ([defaults boolForKey:If_Created]) {
-        if ([defaults boolForKey:If_Backup] || [defaults boolForKey:If_Skip]) {
+        if ([defaults boolForKey:If_Backup]) {
+//        if ([defaults boolForKey:If_Backup] || [defaults boolForKey:If_Skip]) {
             self.window.rootViewController = [[TabBarViewController alloc] init];
         } else {
-            self.window.rootViewController = [[NavigationViewController alloc] initWithRootViewController:[[BackUpWalletViewController alloc] init]];
+            BackUpWalletViewController * VC = [[BackUpWalletViewController alloc] init];
+            VC.mnemonicType = MnemonicSafe;
+            self.window.rootViewController = [[NavigationViewController alloc] initWithRootViewController:VC];
         }
         [self storageSafetyReinforcement];
     } else {

@@ -186,9 +186,11 @@
 - (void)confirmAction
 {
     [self updateText];
+//    "OldPWFormat" = "原安全密码输入不正确";
+//    "OldPWFormat" = "Previous security password is not correct";
     if (self.oldPW.length < PW_MIN_LENGTH || self.oldPW.length > PW_MAX_LENGTH) {
         //    if ([RegexPatternTool validatePassword:_PWOld.text] == NO) {
-        [Encapsulation showAlertControllerWithMessage:Localized(@"CryptographicFormat") handler:nil];
+        [Encapsulation showAlertControllerWithMessage:Localized(@"OldPWFormat") handler:nil];
         return;
     }
     if ([self.PW isEqualToString:self.oldPW]) {
@@ -196,7 +198,7 @@
         return;
     }
     if ([RegexPatternTool validatePassword:self.PW] == NO) {
-        [Encapsulation showAlertControllerWithErrorMessage:Localized(@"CryptographicFormat") handler:nil];
+        [Encapsulation showAlertControllerWithErrorMessage:Localized(@"PWPlaceholder") handler:nil];
         return;
     }
     if (![self.PW isEqualToString:self.confirmPW]) {

@@ -22,6 +22,7 @@
     self.navigationItem.title = Localized(@"BackupMnemonics");
     [self setupView];
     self.navigationItem.rightBarButtonItem = [[UIBarButtonItem alloc] initWithCustomView:[UIButton createNavButtonWithTitle:Localized(@"Skip") Target:self Selector:@selector(skipAction)]];
+//    self.navigationItem.leftBarButtonItem = nil;
     // Do any additional setup after loading the view.
 }
 
@@ -97,29 +98,46 @@
 - (void)backupMnemonicsAction
 {
     if (self.mnemonicArray.count > 0) {
-        BackupMnemonicsViewController * VC = [[BackupMnemonicsViewController alloc] init];
-        VC.mnemonicArray = self.mnemonicArray;
-        [self.navigationController pushViewController:VC animated:NO];
+        [self pushBackupMnemonicsWithArray:self.mnemonicArray];
     } else {
         PasswordAlertView * alertView = [[PasswordAlertView alloc] initWithPrompt:Localized(@"IdentityCipherPrompt") confrimBolck:^(NSString * _Nonnull password, NSArray * _Nonnull words) {
             if (words.count > 0) {
-                BackupMnemonicsViewController * VC = [[BackupMnemonicsViewController alloc] init];
-                VC.mnemonicArray = words;
-                [self.navigationController pushViewController:VC animated:NO];
+                [self pushBackupMnemonicsWithArray:words];
             }
         } cancelBlock:^{
         }];
+        if (self.randomNumber) {
+            alertView.randomNumber = self.randomNumber;
+        }
         alertView.passwordType = PWTypeBackUpID;
         [alertView showInWindowWithMode:CustomAnimationModeAlert inView:nil bgAlpha:AlertBgAlpha needEffectView:NO];
         [alertView.PWTextField becomeFirstResponder];
     }
 }
+- (void)pushBackupMnemonicsWithArray:(NSArray *)array
+{
+    BackupMnemonicsViewController * VC = [[BackupMnemonicsViewController alloc] init];
+    VC.mnemonicArray = array;
+    VC.mnemonicType = self.mnemonicType;
+    [self.navigationController pushViewController:VC animated:NO];
+}
 - (void)skipAction
 {
-    NSUserDefaults * defaults = [NSUserDefaults standardUserDefaults];
-    [defaults setBool:YES forKey:If_Skip];
-    [defaults synchronize];
-    [UIApplication sharedApplication].keyWindow.rootViewController = [[TabBarViewController alloc] init];
+//    if (self.mnemonicType != MnemonicCreateWallet && self.mnemonicType != MnemonicCreateWallet) {
+//        NSUserDefaults * defaults = [NSUserDefaults standardUserDefaults];
+//        [defaults setBool:YES forKey:If_Skip];
+//        [defaults synchronize];
+//    }
+    if (self.mnemonicType == MnemonicSafe || self.mnemonicType == MnemonicCreateID) {
+        [UIApplication sharedApplication].keyWindow.rootViewController = [[TabBarViewController alloc] init];
+    } else if (self.mnemonicType == MnemonicCreateWallet) {
+        NSArray * VCArray = self.navigationController.viewControllers;
+        if (VCArray.count > 3) {
+            [self.navigationController popToViewController:VCArray[VCArray.count - 3] animated:NO];
+        }
+    } else {
+        [self.navigationController popViewControllerAnimated:NO];
+    }
 }
 
 /*

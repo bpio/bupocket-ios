@@ -68,6 +68,7 @@
     _tableView.delegate = self;
     _tableView.dataSource = self;
     _tableView.separatorStyle = UITableViewCellSeparatorStyleNone;
+    _tableView.backgroundColor = [UIColor whiteColor];
     [self.view addSubview:self.tableView];
 }
 - (UIButton *)setupHeaderTitle:(NSString *)title index:(NSInteger)index
@@ -82,6 +83,7 @@
     titleBtn.contentHorizontalAlignment = UIControlContentHorizontalAlignmentLeft;
     titleBtn.contentEdgeInsets = UIEdgeInsetsMake(top, Margin_15, 0, Margin_15);
     titleBtn.frame = CGRectMake(0, 0, DEVICE_WIDTH, height);
+    titleBtn.backgroundColor = VIEWBG_COLOR;
     return titleBtn;
 }
 - (CGFloat)tableView:(UITableView *)tableView heightForHeaderInSection:(NSInteger)section
@@ -101,6 +103,7 @@
             return [self setupHeaderTitle:Localized(@"ImportedWallet") index:section];
         } else {
             UIView * headerView = [[UIView alloc] initWithFrame:CGRectMake(0, 0, DEVICE_WIDTH, ScreenScale(180))];
+            headerView.backgroundColor = VIEWBG_COLOR;
             UIButton * titleBtn = [self setupHeaderTitle:Localized(@"ImportedWallet") index:section];
             [headerView addSubview:titleBtn];
             UIButton * addBtn = [UIButton createButtonWithTitle:Localized(@"AddWallet") isEnabled:YES Target:self Selector:@selector(addAction)];
@@ -140,9 +143,15 @@
     if (section == 0) {
         return CGFLOAT_MIN;
     } else {
-        return ContentSizeBottom;
+        return SafeAreaBottomH + NavBarH;
     }
 }
+//- (UIView *)tableView:(UITableView *)tableView viewForFooterInSection:(NSInteger)section
+//{
+//    UIView * footer = [[UIView alloc] init];
+//    footer.backgroundColor = VIEWBG_COLOR;
+//    return footer;
+//}
 - (void)addAction
 {
     NSArray * titleArray = @[Localized(@"CreateWallet"), Localized(@"ImportWallet")];

@@ -981,7 +981,9 @@ static int64_t const gasPrice = 1000;
                         account.identityAddress = identityAddress;
                         account.identityKeyStore = identityKeyStore;
                         account.walletName = Current_WalletName;
-                        account.walletIconName = Current_Wallet_IconName;
+                        NSInteger index = RandomNumber(0, 9);
+                        NSString * walletIconName = (index == 0) ? Current_Wallet_IconName : [NSString stringWithFormat:@"%@_%zd", Current_Wallet_IconName, index];
+                        account.walletIconName = walletIconName;
                         account.walletAddress = walletAddress;
                         account.walletKeyStore = walletKeyStore;
                         [[AccountTool shareTool] save:account];
@@ -989,7 +991,7 @@ static int64_t const gasPrice = 1000;
                         [defaults setObject:walletAddress forKey:Current_WalletAddress];
                         [defaults setObject:walletKeyStore forKey:Current_WalletKeyStore];
                         [defaults setObject:Current_WalletName forKey:Current_WalletName];
-                        [defaults setObject:Current_Wallet_IconName forKey:Current_Wallet_IconName];
+                        [defaults setObject:walletIconName forKey:Current_Wallet_IconName];
                         [defaults synchronize];
                     }
                     success(words);
@@ -1057,7 +1059,9 @@ static int64_t const gasPrice = 1000;
         [importedWallet addObjectsFromArray:importedWalletArray];
         WalletModel * walletModel = [[WalletModel alloc] init];
         walletModel.walletName = walletName;
-        walletModel.walletIconName = Current_Wallet_IconName;
+        NSInteger index = RandomNumber(0, 9);
+        NSString * walletIconName = (index == 0) ? Current_Wallet_IconName : [NSString stringWithFormat:@"%@_%zd", Current_Wallet_IconName, index];
+        walletModel.walletIconName = walletIconName;
         walletModel.walletAddress = walletAddress;
         walletModel.walletKeyStore = walletKeyStore;
         walletModel.randomNumber = randomNumber;
@@ -1075,13 +1079,13 @@ static int64_t const gasPrice = 1000;
     NSString * walletPrivateKey = [NSString decipherKeyStoreWithPW:oldPW keyStoreValueStr:walletModel.walletKeyStore];
     if ([Tools isEmpty:walletPrivateKey]) {
         [MBProgressHUD hideHUD];
-        [MBProgressHUD showTipMessageInWindow:Localized(@"OldPasswordIncorrect")];
+        [Encapsulation showAlertControllerWithMessage:Localized(@"OldPWFormat") handler:nil];
         return;
     }
     NSString * walletKeyStore = [NSString generateKeyStoreWithPW:PW key:walletPrivateKey];
     if (walletKeyStore == nil) {
         [MBProgressHUD hideHUD];
-        [MBProgressHUD showTipMessageInWindow:Localized(@"OldPasswordIncorrect")];
+        [Encapsulation showAlertControllerWithMessage:Localized(@"OldPWFormat") handler:nil];
         return;
     }
     NSString * randomKey;
@@ -1089,13 +1093,13 @@ static int64_t const gasPrice = 1000;
         NSData * random = [NSString decipherKeyStoreWithPW:oldPW randomKeyStoreValueStr:walletModel.randomNumber];
         if (random == nil) {
             [MBProgressHUD hideHUD];
-            [MBProgressHUD showTipMessageInWindow:Localized(@"OldPasswordIncorrect")];
+            [Encapsulation showAlertControllerWithMessage:Localized(@"OldPWFormat") handler:nil];
             return;
         }
         randomKey = [NSString generateKeyStoreWithPW:PW randomKey:random];
         if (randomKey == nil) {
             [MBProgressHUD hideHUD];
-            [MBProgressHUD showTipMessageInWindow:Localized(@"ModifyPasswordFailure")];
+            [Encapsulation showAlertControllerWithMessage:Localized(@"OldPWFormat") handler:nil];
             return;
         }
     }

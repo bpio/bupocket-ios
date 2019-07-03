@@ -807,9 +807,9 @@ static UIButton * _noBackup;
 {
     button.selected = YES;
     [self.tableView reloadData];
-    NSUserDefaults * defaults = [NSUserDefaults standardUserDefaults];
-    [defaults setBool:YES forKey:If_Skip];
-    [defaults synchronize];
+//    NSUserDefaults * defaults = [NSUserDefaults standardUserDefaults];
+//    [defaults setBool:YES forKey:If_Skip];
+//    [defaults synchronize];
 }
 
 - (CGFloat)tableView:(UITableView *)tableView heightForFooterInSection:(NSInteger)section

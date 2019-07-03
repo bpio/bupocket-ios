@@ -64,16 +64,22 @@
     int status = SecRandomCopyBytes(kSecRandomDefault, random.length, random.mutableBytes);
     if (status == 0) {
         AccountDataType accountDataType = AccountDataCreateID;
+        MnemonicType mnemonicType = MnemonicCreateID;
         if (self.createType == CreateWallet) {
             accountDataType = AccountDataCreateWallet;
+            mnemonicType = MnemonicCreateWallet;
         }
         [[HTTPManager shareManager] setAccountDataWithRandom:random password:PW name:identityName accountDataType:accountDataType success:^(id responseObject) {
-            NSUserDefaults * defaults = [NSUserDefaults standardUserDefaults];
-            [defaults setBool:YES forKey:If_Created];
-            [defaults synchronize];
+            if (self.createType == AccountDataCreateID) {
+                NSUserDefaults * defaults = [NSUserDefaults standardUserDefaults];
+                [defaults setBool:YES forKey:If_Created];
+                [defaults synchronize];
+            }
             BackUpWalletViewController * VC = [[BackUpWalletViewController alloc] init];
             VC.mnemonicArray = responseObject;
-            [UIApplication sharedApplication].keyWindow.rootViewController = [[NavigationViewController alloc] initWithRootViewController:VC];
+            VC.mnemonicType = mnemonicType;
+            [self.navigationController pushViewController:VC animated:NO];
+//            [UIApplication sharedApplication].keyWindow.rootViewController = [[NavigationViewController alloc] initWithRootViewController:VC];
         } failure:^(NSError *error) {
             
         }];

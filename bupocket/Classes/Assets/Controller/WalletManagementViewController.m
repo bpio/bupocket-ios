@@ -12,7 +12,8 @@
 #import "WalletDetailsViewController.h"
 #import "ExportKeystoreViewController.h"
 #import "ExportPrivateKeyViewController.h"
-#import "BackupMnemonicsViewController.h"
+//#import "BackupMnemonicsViewController.h"
+#import "BackUpWalletViewController.h"
 #import "ChangePasswordViewController.h"
 
 @interface WalletManagementViewController ()<UITableViewDelegate, UITableViewDataSource>
@@ -168,7 +169,7 @@
                 cell.lineView.hidden = NO;
             }
         } else if (indexPath.section == 2) {
-            cell.title.text = Localized(@"ModifyWalletPW");
+            cell.title.text = Localized(@"ModifyPassword");
             [cell.listBg setViewSize:cellSize borderRadius:BG_CORNER corners:UIRectCornerAllCorners];
             cell.listImage.image = [UIImage imageNamed:@"change_password"];
             cell.lineView.hidden = YES;
@@ -195,6 +196,18 @@
         };
         [self.navigationController pushViewController:VC animated:NO];
     } else if (indexPath.section == 1) {
+        if (indexPath.row == 2) {
+            BackUpWalletViewController * VC = [[BackUpWalletViewController alloc] init];
+            VC.randomNumber = self.walletModel.randomNumber;
+            VC.mnemonicType = MnemonicExport;
+            [self.navigationController pushViewController:VC animated:NO];
+//            if (words.count > 0) {
+//                BackupMnemonicsViewController * VC = [[BackupMnemonicsViewController alloc] init];
+//                VC.mnemonicArray = words;
+//                [self.navigationController pushViewController:VC animated:NO];
+//            }
+            return;
+        }
         PasswordAlertView * alertView = [[PasswordAlertView alloc] initWithPrompt:Localized(@"WalletPWPrompt") confrimBolck:^(NSString * _Nonnull password, NSArray * _Nonnull words) {
             if (indexPath.row == 0) {
                 ExportKeystoreViewController * VC = [[ExportKeystoreViewController alloc] init];
@@ -207,26 +220,27 @@
                     VC.password = password;
                     [self.navigationController pushViewController:VC animated:NO];
                 }
-            } else if (indexPath.row == 2) {
-                if (words.count > 0) {
-                    BackupMnemonicsViewController * VC = [[BackupMnemonicsViewController alloc] init];
-                    VC.mnemonicArray = words;
-                    [self.navigationController pushViewController:VC animated:NO];
-                }
             }
+//            else if (indexPath.row == 2) {
+//                if (words.count > 0) {
+//                    BackupMnemonicsViewController * VC = [[BackupMnemonicsViewController alloc] init];
+//                    VC.mnemonicArray = words;
+//                    [self.navigationController pushViewController:VC animated:NO];
+//                }
+//            }
         } cancelBlock:^{
         }];
-        if (indexPath.row == 2) {
-            alertView.passwordType = PWTypeBackUpID;
-            alertView.randomNumber = self.walletModel.randomNumber;
-        } else {
+//        if (indexPath.row == 2) {
+//            alertView.passwordType = PWTypeBackUpID;
+//            alertView.randomNumber = self.walletModel.randomNumber;
+//        } else {
             alertView.walletKeyStore = self.walletModel.walletKeyStore;
             if (indexPath.row == 0) {
                 alertView.passwordType = PWTypeExportKeystore;
             } else if (indexPath.row == 1) {
                 alertView.passwordType = PWTypeExportPrivateKey;
             }
-        }
+//        }
         [alertView showInWindowWithMode:CustomAnimationModeAlert inView:nil bgAlpha:AlertBgAlpha needEffectView:NO];
         [alertView.PWTextField becomeFirstResponder];
     } else if (indexPath.section == 2) {

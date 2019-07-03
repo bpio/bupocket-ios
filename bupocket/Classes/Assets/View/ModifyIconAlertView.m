@@ -14,7 +14,6 @@
 @property (nonatomic, strong) UILabel * titleLabel;
 @property (nonatomic, strong) UIButton * confirm;
 @property (nonatomic, strong) UICollectionView * collectView;
-@property (nonatomic, assign) NSInteger index;
 
 @end
 
@@ -30,7 +29,6 @@ static NSString * const ModifyIconCellID = @"ModifyIconCellID";
         _cancleBlock = cancelBlock;
         [self setupView];
         self.titleLabel.text = title;
-        self.index = 0;
         self.bounds = CGRectMake(0, 0, DEVICE_WIDTH - Margin_60, ScreenScale(135) + self.collectView.size.height);
     }
     return self;

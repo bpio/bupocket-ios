@@ -48,7 +48,7 @@ static NSString * const NormalSubtitleCellID = @"NormalSubtitleCellID";
             borderRadius = self.walletImageWH * 0.5;
             walletImageName = @"user_icon_placeholder";
         } else {
-            self.walletImageWH = Margin_30;
+            self.walletImageWH = Margin_40;
             borderRadius = MAIN_CORNER;
             walletImageName = CurrentWalletIconName ? CurrentWalletIconName : Current_Wallet_IconName;
             [self.listBg setViewSize:CGSizeMake(DEVICE_WIDTH - Margin_20, ScreenScale(85)) borderRadius:BG_CORNER corners:UIRectCornerAllCorners];
@@ -91,8 +91,10 @@ static NSString * const NormalSubtitleCellID = @"NormalSubtitleCellID";
     
     
     [self.walletImage mas_makeConstraints:^(MASConstraintMaker *make) {
-        make.top.equalTo(self.listBg.mas_top).offset(Margin_20);
-        make.left.equalTo(self.listBg.mas_left).offset(Margin_15);
+//        make.top.equalTo(self.listBg.mas_top).offset(Margin_20);
+//        make.left.equalTo(self.listBg.mas_left).offset(Margin_15);
+        make.centerY.equalTo(self.listBg);
+        make.left.equalTo(self.listBg.mas_left).offset(Margin_10);
         make.size.mas_equalTo(CGSizeMake(self.walletImageWH, self.walletImageWH));
     }];
     [self.walletName mas_makeConstraints:^(MASConstraintMaker *make) {
@@ -102,7 +104,7 @@ static NSString * const NormalSubtitleCellID = @"NormalSubtitleCellID";
     }];
     if ([self.reuseIdentifier isEqualToString:DefaultSubtitleCellID]) {
         [self.manage mas_makeConstraints:^(MASConstraintMaker *make) {
-            make.right.equalTo(self.listBg.mas_right).offset(-Margin_15);
+            make.right.equalTo(self.listBg.mas_right).offset(-Margin_10);
             make.centerY.equalTo(self.listBg);
             make.height.mas_equalTo(Margin_25);
         }];
@@ -175,7 +177,8 @@ static NSString * const NormalSubtitleCellID = @"NormalSubtitleCellID";
 {
     if (!_walletName) {
         _walletName = [[UILabel alloc] init];
-        _walletName.font = FONT_Bold(16);
+        _walletName.font = FONT_BUTTON;
+//        _walletName.font = FONT_Bold(16);
         _walletName.textColor = TITLE_COLOR;
     }
     return _walletName;
@@ -184,7 +187,8 @@ static NSString * const NormalSubtitleCellID = @"NormalSubtitleCellID";
 {
     if (!_walletAddress) {
         _walletAddress = [[UILabel alloc] init];
-        _walletAddress.font = FONT_TITLE;
+//        _walletAddress.font = FONT_TITLE;
+        _walletAddress.font = FONT_15;
         _walletAddress.textColor = COLOR_9;
         _walletAddress.lineBreakMode = NSLineBreakByTruncatingMiddle;
     }
