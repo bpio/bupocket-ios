@@ -14,6 +14,7 @@ static NSString * const DetailListCellID = @"DetailListCellID";
 static NSString * const OrderDetailsCellID = @"OrderDetailsCellID";
 static NSString * const DetailListID = @"DetailListID";
 static NSString * const ExportPrivateKeyID = @"ExportPrivateKeyID";
+static NSString * const VersionLogCellID = @"VersionLogCellID";
 
 + (instancetype)cellWithTableView:(UITableView *)tableView identifier:(NSString *)identifier
 {
@@ -63,12 +64,20 @@ static NSString * const ExportPrivateKeyID = @"ExportPrivateKeyID";
             make.bottom.equalTo(self.detailBg.mas_bottom).offset(-Margin_10);
         }];
     } else {
+        CGFloat titleX = Margin_10;
+        CGFloat titleY = Margin_15;
+        if ([self.reuseIdentifier isEqualToString:VersionLogCellID]) {
+            titleX = Margin_15;
+            titleY = Margin_20;
+        }
         [self.title mas_makeConstraints:^(MASConstraintMaker *make) {
-            make.left.equalTo(self.contentView.mas_left).offset(Margin_10);
-            make.top.equalTo(self.contentView.mas_top).offset(Margin_15);
+            make.left.equalTo(self.contentView.mas_left).offset(titleX);
+            make.top.equalTo(self.contentView.mas_top).offset(titleY);
+            make.right.equalTo(self.contentView.mas_right).offset(-titleX);
         }];
         [self.infoTitle mas_makeConstraints:^(MASConstraintMaker *make) {
-            make.right.equalTo(self.contentView.mas_right).offset(-Margin_10);
+            make.right.equalTo(self.title);
+//            make.right.equalTo(self.contentView.mas_right).offset(-Margin_10);
         }];
         if ([self.reuseIdentifier isEqualToString:DetailListCellID]) {
             self.infoTitle.textAlignment = NSTextAlignmentRight;
@@ -77,7 +86,6 @@ static NSString * const ExportPrivateKeyID = @"ExportPrivateKeyID";
                 make.top.equalTo(self.title);
             }];
         } else {
-            
             [self.infoTitle mas_makeConstraints:^(MASConstraintMaker *make) {
                 make.top.equalTo(self.title.mas_bottom).offset(Margin_10);
                 make.left.equalTo(self.title);
@@ -115,8 +123,10 @@ static NSString * const ExportPrivateKeyID = @"ExportPrivateKeyID";
 }
 - (void)setFrame:(CGRect)frame
 {
-    frame.origin.x = Margin_10;
-    frame.size.width -= Margin_20;
+    if (![self.reuseIdentifier isEqualToString:VersionLogCellID]) {
+        frame.origin.x = Margin_10;
+        frame.size.width -= Margin_20;
+    }
     [super setFrame:frame];
 }
 - (void)awakeFromNib {

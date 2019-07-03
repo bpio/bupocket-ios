@@ -132,6 +132,7 @@
             [defaults setObject:walletIconName forKey:Current_Wallet_IconName];
             [defaults synchronize];
         }
+        self.iconIndex = index;
     } cancelBlock:^{
         
     }];

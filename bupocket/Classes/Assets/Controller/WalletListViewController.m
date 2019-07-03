@@ -68,8 +68,16 @@
     _tableView.delegate = self;
     _tableView.dataSource = self;
     _tableView.separatorStyle = UITableViewCellSeparatorStyleNone;
-    _tableView.backgroundColor = [UIColor whiteColor];
     [self.view addSubview:self.tableView];
+    UIView * viewBg = [[UIView alloc] initWithFrame:self.view.bounds];
+    CGFloat headerH = NavBarH + Margin_40 + ScreenScale(95);
+    UIView * headerBg = [[UIView alloc] initWithFrame:CGRectMake(0, 0, DEVICE_WIDTH, headerH)];
+    headerBg.backgroundColor = [UIColor whiteColor];
+    [viewBg addSubview:headerBg];
+    UIView * footerBg = [[UIView alloc] initWithFrame:CGRectMake(0, headerH, DEVICE_WIDTH, DEVICE_HEIGHT - headerH)];
+    footerBg.backgroundColor = VIEWBG_COLOR;
+    [headerBg addSubview:footerBg];
+    _tableView.backgroundView = viewBg;
 }
 - (UIButton *)setupHeaderTitle:(NSString *)title index:(NSInteger)index
 {
@@ -146,12 +154,6 @@
         return SafeAreaBottomH + NavBarH;
     }
 }
-//- (UIView *)tableView:(UITableView *)tableView viewForFooterInSection:(NSInteger)section
-//{
-//    UIView * footer = [[UIView alloc] init];
-//    footer.backgroundColor = VIEWBG_COLOR;
-//    return footer;
-//}
 - (void)addAction
 {
     NSArray * titleArray = @[Localized(@"CreateWallet"), Localized(@"ImportWallet")];

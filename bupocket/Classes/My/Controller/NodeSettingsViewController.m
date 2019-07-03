@@ -54,7 +54,7 @@
 }
 - (void)setupNav
 {
-    UIButton * save = [UIButton createButtonWithTitle:Localized(@"Save") TextFont:FONT_15 TextNormalColor:COLOR_6 TextSelectedColor:COLOR_6 Target:self Selector:@selector(saveAcrion:)];
+    UIButton * save = [UIButton createButtonWithTitle:Localized(@"Save") TextFont:FONT_15 TextNormalColor:MAIN_COLOR TextSelectedColor:MAIN_COLOR Target:self Selector:@selector(saveAcrion:)];
     save.frame = CGRectMake(0, 0, ScreenScale(60), ScreenScale(44));
     save.contentHorizontalAlignment = UIControlContentHorizontalAlignmentRight;
     self.navigationItem.rightBarButtonItem = [[UIBarButtonItem alloc]initWithCustomView:save];

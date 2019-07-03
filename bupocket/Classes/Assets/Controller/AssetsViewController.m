@@ -190,6 +190,7 @@ static UIButton * _noBackup;
         self.totalAssets.attributedText = attr;
     }
     [self setNetworkEnvironment];
+    [self getVersionData];
     [self.tableView reloadData];
 }
 #pragma mark - Switching Network Environment
@@ -210,6 +211,20 @@ static UIButton * _noBackup;
         self.navigationItem.leftBarButtonItem = nil;
         self.headerImageView.image = self.headerImage;
     }
+}
+- (void)getVersionData
+{
+    [[HTTPManager shareManager] getVersionDataWithSuccess:^(id responseObject) {
+        NSInteger code = [[responseObject objectForKey:@"errCode"] integerValue];
+        if (code == Success_Code) {
+            NSDictionary * dataDic = [responseObject objectForKey:@"data"];
+            NSUserDefaults * defaults = [NSUserDefaults standardUserDefaults];
+            [defaults setObject:dataDic forKey:Version_Info];
+            [defaults synchronize];
+        }
+    } failure:^(NSError *error) {
+        
+    }];
 }
 #pragma mark - Scan code registration / issue
 - (void)getAssetsStateData
