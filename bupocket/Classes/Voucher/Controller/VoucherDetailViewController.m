@@ -13,6 +13,7 @@
 #import "UINavigationController+Extension.h"
 #import "AcceptorViewController.h"
 #import "AssetIssuerViewController.h"
+#import "GiftGivingViewController.h"
 
 
 @interface VoucherDetailViewController ()<UITableViewDelegate, UITableViewDataSource>
@@ -126,7 +127,7 @@ static NSString * const VoucherDetailCellID = @"VoucherDetailCellID";
 {
     if (section == self.listArray.count - 1) {
         UIView * footerView = [[UIView alloc] initWithFrame:CGRectMake(0, 0, DEVICE_WIDTH - Margin_50, ScreenScale(155) - self.infoCellHeight)];
-        UIButton * giftGiving = [UIButton createButtonWithTitle:@"转赠" isEnabled:YES Target:self Selector:@selector(giftGivingAction)];
+        UIButton * giftGiving = [UIButton createButtonWithTitle:Localized(@"GiftGiving") isEnabled:YES Target:self Selector:@selector(giftGivingAction)];
         [footerView addSubview:giftGiving];
         [giftGiving mas_makeConstraints:^(MASConstraintMaker *make) {
             make.top.equalTo(footerView.mas_top).offset(Margin_10);
@@ -140,6 +141,8 @@ static NSString * const VoucherDetailCellID = @"VoucherDetailCellID";
 }
 - (void)giftGivingAction
 {
+    GiftGivingViewController * VC = [[GiftGivingViewController alloc] init];
+    [self.navigationController pushViewController:VC animated:NO];
 }
 
 - (CGFloat)tableView:(UITableView *)tableView heightForFooterInSection:(NSInteger)section
@@ -183,7 +186,7 @@ static NSString * const VoucherDetailCellID = @"VoucherDetailCellID";
     cell.infoTitle.text = self.listArray[indexPath.section][indexPath.row][1];
     cell.backgroundColor = [UIColor clearColor];
     cell.selectionStyle = (indexPath.section == self.listArray.count - 1) ?  UITableViewCellSelectionStyleDefault : UITableViewCellSelectionStyleNone;
-    if ([cell.title.text isEqualToString:@"描述"]) {
+    if ([cell.title.text isEqualToString:Localized(@"Describe")]) {
         UIView * lineView = [[UIView alloc] init];
         lineView.bounds = CGRectMake(0, 0, DEVICE_WIDTH - ScreenScale(60), LINE_WIDTH);
         [lineView drawDashLine];

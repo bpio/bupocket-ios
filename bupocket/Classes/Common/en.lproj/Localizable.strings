@@ -216,7 +216,7 @@
 "AmountOfTransferPlaceholder" = "Please enter the amount to be transferred";
 "Value" = "Value";
 "Remarks" = "Memo ";
-"RemarksPlaceholder" = "Remarks cannot exceed 20 characters";
+//"RemarksPlaceholder" = "Remarks cannot exceed 20 characters";
 "EstimatedMaximum" = "Maximum transaction fee（BU）*";
 "estimatedMaximum" = "Maximum transaction fee";
 "TransactionCostPlaceholder" = "Please enter the transaction fee";
@@ -651,6 +651,7 @@
 "VoucherCode" = "券编码";
 "Specification" = "规格";
 "HoldingQuantity" = "持有数量";
+"GiftGiving" = "转赠";
 "Acceptor" = "承兑方";
 "AssetIssuer" = "资产发行方";
 // 承兑方
@@ -659,8 +660,17 @@
 "DeliveryInstructionsTitle" = "提货说明";
 //"DeliveryInstructions" = "";
 // 数字资产发行方
+"IssuerOfDigitalAssets" = "数字资产发行方";
 "InfoOfDigitalAssetIssuer" = "数字资产发行方介绍";
 "DataPublicity" = "数据公示";
+// 转赠
+"ReceiveAddressPlaceholder" = "请输入接收账户地址";
+"TransferQuantity" = "转赠数量";
+"TransferQuantity*" = "转赠数量 *";
+"AmountOfDonation" = "请输入转赠数量";
+"RemarksPlaceholder" = "不能超过20个字符";
+"Transferable %@" = "可转%@个";
+"ConfirmationOfGifts" = "确认转赠";
 
 "ErrorPrompt" = "Error message";
 // 调用底层合约

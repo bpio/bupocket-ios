@@ -94,6 +94,9 @@
 - (UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath
 {
     DetailListViewCell * cell = [DetailListViewCell cellWithTableView:tableView cellType:DetailCellSubtitle];
+    cell.title.font = FONT(16);
+    cell.title.textColor = COLOR_6;
+    cell.infoTitle.font = FONT(14);
     cell.title.text = [self.listArray firstObject][indexPath.row];
     cell.infoTitle.text = [self.listArray lastObject][indexPath.row];
     cell.selectionStyle = UITableViewCellSelectionStyleNone;

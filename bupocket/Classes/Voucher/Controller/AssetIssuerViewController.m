@@ -24,7 +24,7 @@ static NSString * const CooperateDetailCellID = @"CooperateDetailCellID";
 
 - (void)viewDidLoad {
     [super viewDidLoad];
-    self.navigationItem.title = Localized(@"AssetIssuer");
+    self.navigationItem.title = Localized(@"IssuerOfDigitalAssets");
     [self setupView];
     // 数字资产发行方
     self.listArray = @[@[@""], @[Localized(@"InfoOfDigitalAssetIssuer"), @"NIKE公司总部位于美国俄勒冈州波特兰市。公司生产的体育用品包罗万象，例如服装，鞋类，运动器材等。NIKE是全球著名的体育运动品牌，英文原意指希腊胜利女神，中文译为耐克。耐克商标图案是个小钩子。耐克一直将激励全世界的每一位运动员并为其献上最好的产品视为光荣的任务。耐克首创的气垫技术给体育界带来了一场革命。运用这项技术制造出的运动鞋可以很好地保护运动员的膝盖.在其在作剧烈运动落地时减小对膝盖的影响。"], @[Localized(@"DataPublicity"), @"NIKE公司总部位于美国俄勒冈州波特兰市。公司生产的体育用品包罗万象，例如服装，鞋类，运动器材等。NIKE是全球著名的体育运动品牌，英文原意指希腊胜利女神，中文译为耐克。"]];
@@ -104,6 +104,7 @@ static NSString * const CooperateDetailCellID = @"CooperateDetailCellID";
         DetailListViewCell * cell = [DetailListViewCell cellWithTableView:tableView cellType:DetailCellSubtitle];
         cell.title.text = @"第一次销毁数字资产";
         cell.title.font = FONT_TITLE;
+        cell.title.textColor = COLOR_9;
         NSString * info = [NSString stringWithFormat:@"%@\n%@", @"销毁时间：2019-11-23 12:00:00", @"销毁数量：23456789"];
         // 发行时间：2019-10-23 12:00:00
         // 发行数量：23456789

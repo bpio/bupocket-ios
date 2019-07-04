@@ -14,6 +14,7 @@ static NSString * const DefaultCellID = @"DefaultCellID";
 static NSString * const DefaultPWCellID = @"DefaultPWCellID";
 static NSString * const NormalCellID = @"NormalCellID";
 static NSString * const NormalPWCellID = @"NormalPWCellID";
+static NSString * const NormalPWCellAddress = @"NormalPWCellAddress";
 
 + (instancetype)cellWithTableView:(UITableView *)tableView cellType:(TextFieldCellType)cellType
 {
@@ -26,6 +27,8 @@ static NSString * const NormalPWCellID = @"NormalPWCellID";
         identifier = NormalCellID;
     } else if (cellType == TextFieldCellPWNormal) {
         identifier = NormalPWCellID;
+    } else if (cellType == TextFieldCellAddress) {
+        identifier = NormalPWCellAddress;
     }
     TextFieldViewCell * cell = [tableView dequeueReusableCellWithIdentifier:identifier];
     if (cell == nil) {
@@ -46,8 +49,12 @@ static NSString * const NormalPWCellID = @"NormalPWCellID";
             UIButton * ifSecure = [UIButton createButtonWithNormalImage:@"password_ciphertext" SelectedImage:@"password_visual" Target:self Selector:@selector(secureAction:)];
             ifSecure.frame = CGRectMake(0, 0, Margin_20, TEXTFIELD_HEIGHT);
             self.textField.rightView = ifSecure;
-        } else {
+        } else  {
             self.textField.rightView = [[UIView alloc] init];
+        }
+        if ([reuseIdentifier isEqualToString:NormalPWCellAddress]) {
+            [self.listBg addSubview:self.scan];
+            [self.listBg addSubview:self.rightBtn];
         }
         if (@available(iOS 11.0, *)) {
             self.textField.textContentType = UITextContentTypeName;
@@ -82,10 +89,30 @@ static NSString * const NormalPWCellID = @"NormalPWCellID";
         make.height.mas_equalTo(ScreenScale(40));
     }];
     [self.title mas_makeConstraints:^(MASConstraintMaker *make) {
-        make.left.right.equalTo(self.line);
+        make.left.equalTo(self.line);
         make.bottom.equalTo(self.textField.mas_top);
     }];
-    
+    if ([self.reuseIdentifier isEqualToString:NormalPWCellAddress]) {
+        [self.rightBtn mas_makeConstraints:^(MASConstraintMaker *make) {
+            make.right.equalTo(self.line);
+            make.centerY.equalTo(self.title);
+            make.height.mas_equalTo(Margin_30);
+            make.width.mas_greaterThanOrEqualTo(Margin_30);
+        }];
+        [self.scan mas_makeConstraints:^(MASConstraintMaker *make) {
+            make.right.equalTo(self.rightBtn.mas_left).offset(-Margin_5);
+            make.centerY.height.equalTo(self.rightBtn);
+            make.width.mas_greaterThanOrEqualTo(Margin_30);
+        }];
+        [self.title mas_makeConstraints:^(MASConstraintMaker *make) {
+            make.right.mas_lessThanOrEqualTo(self.rightBtn.mas_left).offset(-ScreenScale(45));
+        }];
+        [self.rightBtn setContentCompressionResistancePriority:UILayoutPriorityRequired forAxis:UILayoutConstraintAxisHorizontal];
+    } else {
+        [self.title mas_makeConstraints:^(MASConstraintMaker *make) {
+            make.right.equalTo(self.line);
+        }];
+    }
 }
 - (UIView *)listBg
 {
@@ -104,6 +131,23 @@ static NSString * const NormalPWCellID = @"NormalPWCellID";
         _title.numberOfLines = 0;
     }
     return _title;
+}
+- (UIButton *)scan
+{
+    if (!_scan) {
+        _scan = [UIButton createButtonWithNormalImage:@"transferAccounts_scan" SelectedImage:@"transferAccounts_scan" Target:self Selector:@selector(scanAction)];
+    }
+    return _scan;
+}
+- (UIButton *)rightBtn
+{
+    if (!_rightBtn) {
+        _rightBtn = [UIButton createButtonWithNormalImage:@"my_list_1" SelectedImage:@"my_list_1" Target:self Selector:@selector(rightAction)];
+        _rightBtn.contentHorizontalAlignment = UIControlContentHorizontalAlignmentRight;
+        _rightBtn.titleLabel.font = FONT(12);
+        _rightBtn.titleLabel.textColor = COLOR_6;
+    }
+    return _rightBtn;
 }
 - (UITextField *)textField
 {
@@ -136,6 +180,18 @@ static NSString * const NormalPWCellID = @"NormalPWCellID";
         _line.backgroundColor = LINE_COLOR;
     }
     return _line;
+}
+- (void)scanAction
+{
+    if (self.scanClick) {
+        self.scanClick();
+    }
+}
+- (void)rightAction
+{
+    if (self.addressListClick) {
+        self.addressListClick();
+    }
 }
 - (void)awakeFromNib {
     [super awakeFromNib];

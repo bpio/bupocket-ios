@@ -127,6 +127,8 @@
 		952EA85B22C3550F00AD1F8D /* CustomEnvironmentViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 952EA85A22C3550F00AD1F8D /* CustomEnvironmentViewController.m */; };
 		952FE9D721C8DF9900634291 /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 952FE9D521C8DF9900634291 /* LaunchScreen.storyboard */; };
 		9538307E22CCC04A00607F0C /* AssetIssuerViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 9538307D22CCC04A00607F0C /* AssetIssuerViewController.m */; };
+		9538308122CDD89000607F0C /* GiftGivingViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 9538308022CDD89000607F0C /* GiftGivingViewController.m */; };
+		9538308422CE001A00607F0C /* BottomConfirmAlertView.m in Sources */ = {isa = PBXBuildFile; fileRef = 9538308322CE001A00607F0C /* BottomConfirmAlertView.m */; };
 		954371742199234100915BBE /* SettingViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 954371732199234100915BBE /* SettingViewController.m */; };
 		9549EC66219C0CF800307255 /* CreateTipsAlertView.m in Sources */ = {isa = PBXBuildFile; fileRef = 9549EC65219C0CF800307255 /* CreateTipsAlertView.m */; };
 		9549EC70219D075F00307255 /* ClearCacheTool.m in Sources */ = {isa = PBXBuildFile; fileRef = 9549EC6F219D075E00307255 /* ClearCacheTool.m */; };
@@ -453,6 +455,10 @@
 		952FE9D621C8DF9900634291 /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/LaunchScreen.storyboard; sourceTree = "<group>"; };
 		9538307C22CCC04A00607F0C /* AssetIssuerViewController.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = AssetIssuerViewController.h; sourceTree = "<group>"; };
 		9538307D22CCC04A00607F0C /* AssetIssuerViewController.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = AssetIssuerViewController.m; sourceTree = "<group>"; };
+		9538307F22CDD89000607F0C /* GiftGivingViewController.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = GiftGivingViewController.h; sourceTree = "<group>"; };
+		9538308022CDD89000607F0C /* GiftGivingViewController.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = GiftGivingViewController.m; sourceTree = "<group>"; };
+		9538308222CE001A00607F0C /* BottomConfirmAlertView.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = BottomConfirmAlertView.h; sourceTree = "<group>"; };
+		9538308322CE001A00607F0C /* BottomConfirmAlertView.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = BottomConfirmAlertView.m; sourceTree = "<group>"; };
 		954371722199234100915BBE /* SettingViewController.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = SettingViewController.h; sourceTree = "<group>"; };
 		954371732199234100915BBE /* SettingViewController.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = SettingViewController.m; sourceTree = "<group>"; };
 		9549EC64219C0CF800307255 /* CreateTipsAlertView.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = CreateTipsAlertView.h; sourceTree = "<group>"; };
@@ -922,6 +928,8 @@
 				959726D921E6DCA10022CB78 /* TextFieldViewCell.m */,
 				959E2909224F1B9C006FCA30 /* ConfirmTransactionAlertView.h */,
 				959E290A224F1B9C006FCA30 /* ConfirmTransactionAlertView.m */,
+				9538308222CE001A00607F0C /* BottomConfirmAlertView.h */,
+				9538308322CE001A00607F0C /* BottomConfirmAlertView.m */,
 				9513638B22B88DE300BF8DF5 /* BottomAlertView.h */,
 				9513638C22B88DE300BF8DF5 /* BottomAlertView.m */,
 			);
@@ -1092,6 +1100,8 @@
 				95162FE422CB3D9B0024FD22 /* AcceptorViewController.m */,
 				9538307C22CCC04A00607F0C /* AssetIssuerViewController.h */,
 				9538307D22CCC04A00607F0C /* AssetIssuerViewController.m */,
+				9538307F22CDD89000607F0C /* GiftGivingViewController.h */,
+				9538308022CDD89000607F0C /* GiftGivingViewController.m */,
 			);
 			path = Controller;
 			sourceTree = "<group>";
@@ -1670,6 +1680,7 @@
 				83B594B72175FC8B009F91BA /* BackupMnemonicsViewController.m in Sources */,
 				95266CD4226F062E002CD915 /* AdsModel.m in Sources */,
 				9513639022B8B83A00BF8DF5 /* CreateViewController.m in Sources */,
+				9538308422CE001A00607F0C /* BottomConfirmAlertView.m in Sources */,
 				959575C121FFF00F0089479C /* AddressBookViewController.m in Sources */,
 				83FB443421904AA400D68569 /* HMScannerBorder.m in Sources */,
 				959E290B224F1B9C006FCA30 /* ConfirmTransactionAlertView.m in Sources */,
@@ -1684,6 +1695,7 @@
 				83379A86217D9C8A00C222A5 /* AssetsDetailViewController.m in Sources */,
 				83379A92217DE12600C222A5 /* TransferResultsViewController.m in Sources */,
 				8372C8632174CBF100FF9506 /* TabBarViewController.m in Sources */,
+				9538308122CDD89000607F0C /* GiftGivingViewController.m in Sources */,
 				9579EB5321BABE6300051EDB /* MBProgressHUD+JDragon.m in Sources */,
 				9513638D22B88DE300BF8DF5 /* BottomAlertView.m in Sources */,
 				83379AC3217F3F3000C222A5 /* BaseModel.m in Sources */,
