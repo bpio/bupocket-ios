@@ -43,15 +43,21 @@ static NSString * const NormalSubtitleCellID = @"NormalSubtitleCellID";
         
         CGFloat borderRadius;
         NSString * walletImageName;
+        UIFont * walletNameFont;
+        UIColor * walletAddressColor;
         if ([reuseIdentifier isEqualToString:NormalSubtitleCellID]) {
             self.walletImageWH = ScreenScale(70);
             borderRadius = self.walletImageWH * 0.5;
             walletImageName = @"user_icon_placeholder";
+            walletNameFont = FONT_Bold(18);
+            walletAddressColor = COLOR_6;
         } else {
             self.walletImageWH = Margin_40;
             borderRadius = MAIN_CORNER;
             walletImageName = CurrentWalletIconName ? CurrentWalletIconName : Current_Wallet_IconName;
             [self.listBg setViewSize:CGSizeMake(DEVICE_WIDTH - Margin_20, ScreenScale(85)) borderRadius:BG_CORNER corners:UIRectCornerAllCorners];
+            walletNameFont = FONT_Bold(15);
+            walletAddressColor = COLOR_9;
         }
         [self.listBg addSubview:self.walletImage];
         [self.listBg addSubview:self.walletName];
@@ -61,6 +67,8 @@ static NSString * const NormalSubtitleCellID = @"NormalSubtitleCellID";
         [self.listBg addSubview:self.detailImage];
         [_walletImage setViewSize:CGSizeMake(self.walletImageWH, self.walletImageWH) borderWidth:0 borderColor:nil borderRadius:borderRadius];
         _walletImage.image = [UIImage imageNamed:walletImageName];
+        self.walletName.font = walletNameFont;
+        self.walletAddress.textColor = walletAddressColor;
     }
     return self;
 }
@@ -177,7 +185,6 @@ static NSString * const NormalSubtitleCellID = @"NormalSubtitleCellID";
 {
     if (!_walletName) {
         _walletName = [[UILabel alloc] init];
-        _walletName.font = FONT_Bold(15);
         _walletName.textColor = TITLE_COLOR;
     }
     return _walletName;
@@ -187,7 +194,6 @@ static NSString * const NormalSubtitleCellID = @"NormalSubtitleCellID";
     if (!_walletAddress) {
         _walletAddress = [[UILabel alloc] init];
         _walletAddress.font = FONT_TITLE;
-        _walletAddress.textColor = COLOR_9;
         _walletAddress.lineBreakMode = NSLineBreakByTruncatingMiddle;
     }
     return _walletAddress;

@@ -24,6 +24,7 @@
 #import "ReceiveViewController.h"
 #import "RegisteredModel.h"
 #import "DistributionModel.h"
+#import "BackUpWalletViewController.h"
 
 #import "LoginConfirmModel.h"
 #import "ConfirmTransactionModel.h"
@@ -65,7 +66,7 @@
 
 @implementation AssetsViewController
 
-static UIButton * _noBackup;
+//static UIButton * _noBackup;
 
 - (NSMutableArray *)listArray
 {
@@ -725,13 +726,16 @@ static UIButton * _noBackup;
 {
     if (section == 0) {
         NSUserDefaults * defaults = [NSUserDefaults standardUserDefaults];
-        if (![defaults boolForKey:If_Backup] && _noBackup.selected == NO) {
+//        if (![defaults boolForKey:If_Backup] && _noBackup.selected == NO) {
+        if (![defaults boolForKey:If_Backup]) {
             if (iPhone6plus && [CurrentAppLanguage isEqualToString:ZhHans]) {
-                return 184;
+//                return 184;
+                return 165;
             } else if (iPhone6plus && [CurrentAppLanguage isEqualToString:ZhHans]) {
-                return 217;
+//                return 217;
+                return 195;
             }
-            return ScreenScale(150) + [Encapsulation rectWithText:Localized(@"SafetyTips") font:FONT_TITLE textWidth:DEVICE_WIDTH - Margin_40].size.height;
+            return ScreenScale(130) + [Encapsulation rectWithText:Localized(@"SafetyTips") font:FONT_TITLE textWidth:DEVICE_WIDTH - Margin_40].size.height;
         } else {
             return Margin_40;
         }
@@ -745,7 +749,7 @@ static UIButton * _noBackup;
     UIView * headerView = [[UIView alloc] init];
     if (section == 0) {
         NSUserDefaults * defaults = [NSUserDefaults standardUserDefaults];
-        if (![defaults boolForKey:If_Backup] && _noBackup.selected == NO) {
+        if (![defaults boolForKey:If_Backup]) {
             UIView * backupBg = [[UIView alloc] init];
             backupBg.backgroundColor = [UIColor whiteColor];
             backupBg.layer.masksToBounds = YES;
@@ -777,7 +781,7 @@ static UIButton * _noBackup;
                 make.top.equalTo(safetyTipsTitle.mas_bottom).offset(Margin_10);
                 make.left.right.equalTo(safetyTipsTitle);
             }];
-            
+            /*
             CGFloat btnW = (DEVICE_WIDTH - ScreenScale(65)) / 2;
             _noBackup = [UIButton createButtonWithTitle:Localized(@"TemporaryBackup") TextFont:FONT_16 TextNormalColor:COLOR(@"9298BD") TextSelectedColor:COLOR(@"9298BD") Target:self Selector:@selector(noBackupAction:)];
             _noBackup.backgroundColor = COLOR(@"DADDF3");
@@ -790,14 +794,23 @@ static UIButton * _noBackup;
                 make.bottom.equalTo(backupBg.mas_bottom).offset(-Margin_15);
                 make.size.mas_equalTo(CGSizeMake(btnW, Margin_40));
             }];
-            UIButton * backup = [UIButton createButtonWithTitle:Localized(@"ImmediateBackup") TextFont:FONT_16 TextNormalColor:[UIColor whiteColor] TextSelectedColor:[UIColor whiteColor] Target:self Selector:@selector(backupAction)];
-            backup.backgroundColor = MAIN_COLOR;
-            backup.layer.masksToBounds = YES;
-            backup.layer.cornerRadius = MAIN_CORNER;
+             */
+            CustomButton * backup = [[CustomButton alloc] init];
+            [backup setTitleColor:MAIN_COLOR forState:UIControlStateNormal];
+            backup.titleLabel.font = FONT_Bold(15);
+            [backup setImage:[UIImage imageNamed:@"backup_arrow"] forState:UIControlStateNormal];
+            [backup setTitle:Localized(@"ImmediateBackup") forState:UIControlStateNormal];
+            [backup addTarget:self action:@selector(backupAction) forControlEvents:UIControlEventTouchUpInside];
+            backup.layoutMode = HorizontalInverted;
+//            [UIButton createButtonWithTitle:Localized(@"ImmediateBackup") TextFont:FONT_16 TextNormalColor:[UIColor whiteColor] TextSelectedColor:[UIColor whiteColor] Target:self Selector:@selector(backupAction)];
             [backupBg addSubview:backup];
             [backup mas_makeConstraints:^(MASConstraintMaker *make) {
+                make.top.equalTo(safetyTips.mas_bottom);
                 make.right.equalTo(safetyTipsTitle);
-                make.size.bottom.equalTo(_noBackup);
+                make.height.mas_equalTo(MAIN_HEIGHT);
+                make.bottom.equalTo(backupBg.mas_bottom);
+//                make.right.equalTo(safetyTipsTitle);
+//                make.size.bottom.equalTo(_noBackup);
             }];
         }
         UILabel * header = [[UILabel alloc] init];
@@ -816,8 +829,12 @@ static UIButton * _noBackup;
 #pragma mark - backup
 - (void)backupAction
 {
-    [self.navigationController pushViewController:[[MyIdentityViewController alloc] init] animated:NO];
+//    [self.navigationController pushViewController:[[MyIdentityViewController alloc] init] animated:NO];
+    BackUpWalletViewController * VC = [[BackUpWalletViewController alloc] init];
+    VC.mnemonicType = MnemonicBackup;
+    [self.navigationController pushViewController:VC animated:NO];
 }
+/*
 - (void)noBackupAction:(UIButton *)button
 {
     button.selected = YES;
@@ -826,6 +843,7 @@ static UIButton * _noBackup;
 //    [defaults setBool:YES forKey:If_Skip];
 //    [defaults synchronize];
 }
+ */
 
 - (CGFloat)tableView:(UITableView *)tableView heightForFooterInSection:(NSInteger)section
 {

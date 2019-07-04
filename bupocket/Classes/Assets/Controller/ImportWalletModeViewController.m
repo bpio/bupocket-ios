@@ -182,7 +182,7 @@
     if ([self.title isEqualToString:Localized(@"Mnemonics")]) {
         NSArray * words = [_importContent componentsSeparatedByString:@" "];
         if (words.count != NumberOf_MnemonicWords) {
-            [MBProgressHUD showTipMessageInWindow:Localized(@"MnemonicIsIncorrect")];
+            [Encapsulation showAlertControllerWithErrorMessage:Localized(@"MnemonicIsIncorrect") handler:nil];
             return;
         }
         if ([self textRegexJudgeIfConfirmPW:YES]) {
@@ -192,7 +192,7 @@
         // walletKeyStore -> walletPrivateKey
         NSString * walletPrivateKey = [NSString decipherKeyStoreWithPW:_walletPW keyStoreValueStr:_importContent];
         if (!walletPrivateKey) {
-            [MBProgressHUD showTipMessageInWindow:Localized(@"KeyStoreIsIncorrect")];
+            [Encapsulation showAlertControllerWithErrorMessage:Localized(@"KeyStoreIsIncorrect") handler:nil];
             return;
         }
         if ([self textRegexJudgeIfConfirmPW:NO]) {
@@ -202,7 +202,7 @@
         // walletPrivateKey -> walletKeyStore
         NSString * walletKeyStore = [NSString generateKeyStoreWithPW:_walletPW key:_importContent];
         if (!walletKeyStore) {
-            [MBProgressHUD showTipMessageInWindow:Localized(@"PrivateKeyIsIncorrect")];
+            [Encapsulation showAlertControllerWithErrorMessage:Localized(@"PrivateKeyIsIncorrect") handler:nil];
             return;
         }
         if ([self textRegexJudgeIfConfirmPW:YES]) {
@@ -224,16 +224,16 @@
 - (BOOL)textRegexJudgeIfConfirmPW:(BOOL)ifConfirmPW
 {
     if ([RegexPatternTool validateUserName:_walletName] == NO) {
-        [MBProgressHUD showTipMessageInWindow:Localized(@"WalletNameFormatIncorrect")];
+        [Encapsulation showAlertControllerWithErrorMessage:Localized(@"WalletNameFormatIncorrect") handler:nil];
         return NO;
     } else if (self.importWalletMode == ImportWalletKeystore && (_walletPW.length < PW_MIN_LENGTH || _walletPW.length > PW_MAX_LENGTH)) {
-        [MBProgressHUD showTipMessageInWindow:Localized(@"CryptographicFormat")];
+        [Encapsulation showAlertControllerWithErrorMessage:Localized(@"PWErrorPrompt") handler:nil];
         return NO;
     } else if ((self.importWalletMode == ImportWalletMnemonics || self.importWalletMode == ImportWalletPrivateKey) && [RegexPatternTool validatePassword:_walletPW] == NO) {
-        [MBProgressHUD showTipMessageInWindow:Localized(@"CryptographicFormat")];
+        [Encapsulation showAlertControllerWithErrorMessage:Localized(@"PWErrorPrompt") handler:nil];
         return NO;
     } else if (ifConfirmPW && ![_walletPW isEqualToString:_confirmPW]) {
-        [MBProgressHUD showTipMessageInWindow:Localized(@"PasswordIsDifferent")];
+        [Encapsulation showAlertControllerWithErrorMessage:Localized(@"PasswordIsDifferent") handler:nil];
         return NO;
     } else {
         return YES;

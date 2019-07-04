@@ -8,7 +8,7 @@
 
 #import "AppDelegate.h"
 #import "IdentityViewController.h"
-#import "BackUpWalletViewController.h"
+//#import "BackUpWalletViewController.h"
 #import "VersionUpdateAlertView.h"
 #import "SafetyReinforcementAlertView.h"
 #import "VersionModel.h"
@@ -64,14 +64,16 @@
 {
     NSUserDefaults * defaults = [NSUserDefaults standardUserDefaults];
     if ([defaults boolForKey:If_Created]) {
-        if ([defaults boolForKey:If_Backup]) {
+//        if ([defaults boolForKey:If_Backup]) {
 //        if ([defaults boolForKey:If_Backup] || [defaults boolForKey:If_Skip]) {
             self.window.rootViewController = [[TabBarViewController alloc] init];
+            /*
         } else {
             BackUpWalletViewController * VC = [[BackUpWalletViewController alloc] init];
             VC.mnemonicType = MnemonicSafe;
             self.window.rootViewController = [[NavigationViewController alloc] initWithRootViewController:VC];
         }
+             */
         [self storageSafetyReinforcement];
     } else {
         self.window.rootViewController = [[NavigationViewController alloc] initWithRootViewController:[[IdentityViewController alloc] init]];
@@ -95,6 +97,7 @@
                 self.PWAlertView.passwordType = PWTypeDataReinforcement;
                 self.PWAlertView.isAutomaticClosing = NO;
                 [self.PWAlertView showInWindowWithMode:CustomAnimationModeDisabled inView:nil bgAlpha:AlertBgAlpha needEffectView:NO];
+                self.PWAlertView.closeBtn.hidden = YES;
                 [self.PWAlertView.PWTextField becomeFirstResponder];
             });
         }];
