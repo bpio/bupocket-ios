@@ -279,6 +279,14 @@
     }
     if (self.touchCounter == 4) {
         self.touchCounter = 0;
+        NSString * title = Localized(@"SwitchToTestNetwork");
+        [Encapsulation showAlertControllerWithTitle:title message:nil cancelHandler:^(UIAlertAction *action) {
+            
+        } confirmHandler:^(UIAlertAction *action) {
+            [[HTTPManager shareManager] SwitchedNetworkWithIsTest:YES];
+            [self setData];
+        }];
+        /*
         NSString * message = Localized(@"SwitchToTestNetwork");
         UIAlertController * alertController = [UIAlertController alertControllerWithTitle:message message:nil preferredStyle:UIAlertControllerStyleAlert];
         UIAlertAction * cancelAction = [UIAlertAction actionWithTitle:Localized(@"NO") style:UIAlertActionStyleDefault handler:nil];
@@ -289,6 +297,7 @@
         }];
         [alertController addAction:okAction];
         [self presentViewController:alertController animated:YES completion:nil];
+         */
     }
 }
 - (void)showCustomEnvironment

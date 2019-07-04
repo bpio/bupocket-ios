@@ -34,6 +34,7 @@ typedef void (^OnSureWalletPWClick)(NSString * password, NSArray * words);
 @property (nonatomic, copy) NSString * walletKeyStore;
 
 @property (nonatomic, strong) UITextField * PWTextField;
+@property (nonatomic, strong) UIButton * closeBtn;
 
 /** 通过keystone存储的随机数 */
 @property (nonatomic, strong) NSString * randomNumber;

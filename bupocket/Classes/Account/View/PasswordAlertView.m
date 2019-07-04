@@ -17,7 +17,6 @@
 
 @property (nonatomic, copy) OnCancleButtonClick cancleBlock;
 @property (nonatomic, copy) OnSureWalletPWClick sureBlock;
-@property (nonatomic, strong) UIButton * closeBtn;
 
 @end
 
@@ -53,7 +52,6 @@
         make.top.right.equalTo(self);
         make.size.mas_equalTo(CGSizeMake(MAIN_HEIGHT, MAIN_HEIGHT));
     }];
-    self.closeBtn.hidden = YES;
     
     UILabel * title = [UILabel new];
     title.font = FONT(25);

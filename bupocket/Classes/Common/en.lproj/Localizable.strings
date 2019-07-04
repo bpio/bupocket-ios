@@ -169,9 +169,10 @@
 "ProhibitNotes" = "After being disabled, BU Pocket APP resumes the state before it is enabled. Please confirm and then operate.";
 "InvalidServerURL" = "Invalid wallet service address";
 // Switch network
-"SwitchToTestNetwork" = "Whether to switch to the test network?";
-"YES" = "Yes";
-"NO" = "No";
+//"SwitchToTestNetwork" = "Whether to switch to the test network?";
+"SwitchToTestNetwork" = "Are you sure to switch to test network?";
+//"YES" = "Yes";
+//"NO" = "No";
 "ClosedTestNetwork" = "You have stopped the test network";
 "OpenedTestNetwork" = "You have started the test network";
 "TestNetworkPrompt" = "Test Network";

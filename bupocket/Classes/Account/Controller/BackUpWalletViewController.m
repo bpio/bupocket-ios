@@ -22,7 +22,9 @@
     self.navigationItem.title = Localized(@"BackupMnemonics");
     [self setupView];
     self.navigationItem.rightBarButtonItem = [[UIBarButtonItem alloc] initWithCustomView:[UIButton createNavButtonWithTitle:Localized(@"Skip") Target:self Selector:@selector(skipAction)]];
-//    self.navigationItem.leftBarButtonItem = nil;
+//    if (self.mnemonicType == MnemonicCreateID || self.mnemonicType == MnemonicCreateWallet) {
+        self.navigationItem.leftBarButtonItem = [[UIBarButtonItem alloc] initWithCustomView:[[UIView alloc] init]];
+//    }
     // Do any additional setup after loading the view.
 }
 
@@ -100,7 +102,11 @@
     if (self.mnemonicArray.count > 0) {
         [self pushBackupMnemonicsWithArray:self.mnemonicArray];
     } else {
-        PasswordAlertView * alertView = [[PasswordAlertView alloc] initWithPrompt:Localized(@"IdentityCipherPrompt") confrimBolck:^(NSString * _Nonnull password, NSArray * _Nonnull words) {
+        NSString * prompt = Localized(@"IdentityCipherPrompt");
+        if (self.mnemonicType == MnemonicExport) {
+            prompt = Localized(@"WalletPWPrompt");
+        }
+        PasswordAlertView * alertView = [[PasswordAlertView alloc] initWithPrompt:prompt confrimBolck:^(NSString * _Nonnull password, NSArray * _Nonnull words) {
             if (words.count > 0) {
                 [self pushBackupMnemonicsWithArray:words];
             }
@@ -128,7 +134,7 @@
 //        [defaults setBool:YES forKey:If_Skip];
 //        [defaults synchronize];
 //    }
-    if (self.mnemonicType == MnemonicSafe || self.mnemonicType == MnemonicCreateID) {
+    if (self.mnemonicType == MnemonicCreateID) {
         [UIApplication sharedApplication].keyWindow.rootViewController = [[TabBarViewController alloc] init];
     } else if (self.mnemonicType == MnemonicCreateWallet) {
         NSArray * VCArray = self.navigationController.viewControllers;

@@ -46,14 +46,17 @@ static NSString * const DetailSubtitleCellID = @"DetailSubtitleCellID";
         
         CGFloat borderRadius;
         NSString * walletImageName;
+        UIFont * walletNameFont = FONT_Bold(15);
+        UIColor * walletAddressColor = COLOR_9;
         if ([reuseIdentifier isEqualToString:NormalSubtitleCellID]) {
             self.walletImageWH = ScreenScale(70);
             borderRadius = self.walletImageWH * 0.5;
-            walletImageName = Current_Wallet_IconName;
         } else if ([reuseIdentifier isEqualToString:DetailSubtitleCellID]) {
             self.walletImageWH = Margin_50;
             borderRadius = self.walletImageWH * 0.5;
-            walletImageName = Current_Wallet_IconName;
+            walletImageName = @"user_icon_placeholder";
+            walletNameFont = FONT_Bold(18);
+            walletAddressColor = COLOR_6;
         } else {
             self.walletImageWH = Margin_40;
             borderRadius = MAIN_CORNER;
@@ -68,6 +71,8 @@ static NSString * const DetailSubtitleCellID = @"DetailSubtitleCellID";
         [self.listBg addSubview:self.detailImage];
         [_walletImage setViewSize:CGSizeMake(self.walletImageWH, self.walletImageWH) borderWidth:0 borderColor:nil borderRadius:borderRadius];
         _walletImage.image = [UIImage imageNamed:walletImageName];
+        self.walletName.font = walletNameFont;
+        self.walletAddress.textColor = walletAddressColor;
     }
     return self;
 }
@@ -189,7 +194,6 @@ static NSString * const DetailSubtitleCellID = @"DetailSubtitleCellID";
 {
     if (!_walletName) {
         _walletName = [[UILabel alloc] init];
-        _walletName.font = FONT_Bold(15);
         _walletName.textColor = TITLE_COLOR;
     }
     return _walletName;
@@ -199,7 +203,6 @@ static NSString * const DetailSubtitleCellID = @"DetailSubtitleCellID";
     if (!_walletAddress) {
         _walletAddress = [[UILabel alloc] init];
         _walletAddress.font = FONT_TITLE;
-        _walletAddress.textColor = COLOR_9;
         _walletAddress.lineBreakMode = NSLineBreakByTruncatingMiddle;
     }
     return _walletAddress;
