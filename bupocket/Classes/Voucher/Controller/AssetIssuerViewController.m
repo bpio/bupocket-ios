@@ -27,7 +27,8 @@ static NSString * const CooperateDetailCellID = @"CooperateDetailCellID";
     self.navigationItem.title = Localized(@"IssuerOfDigitalAssets");
     [self setupView];
     // 数字资产发行方
-    self.listArray = @[@[@""], @[Localized(@"InfoOfDigitalAssetIssuer"), @"NIKE公司总部位于美国俄勒冈州波特兰市。公司生产的体育用品包罗万象，例如服装，鞋类，运动器材等。NIKE是全球著名的体育运动品牌，英文原意指希腊胜利女神，中文译为耐克。耐克商标图案是个小钩子。耐克一直将激励全世界的每一位运动员并为其献上最好的产品视为光荣的任务。耐克首创的气垫技术给体育界带来了一场革命。运用这项技术制造出的运动鞋可以很好地保护运动员的膝盖.在其在作剧烈运动落地时减小对膝盖的影响。"], @[Localized(@"DataPublicity"), @"NIKE公司总部位于美国俄勒冈州波特兰市。公司生产的体育用品包罗万象，例如服装，鞋类，运动器材等。NIKE是全球著名的体育运动品牌，英文原意指希腊胜利女神，中文译为耐克。"]];
+    self.listArray = @[@[@""], @[Localized(@"InfoOfDigitalAssetIssuer"), @"NIKE公司总部位于美国俄勒冈州波特兰市。公司生产的体育用品包罗万象，例如服装，鞋类，运动器材等。NIKE是全球著名的体育运动品牌，英文原意指希腊胜利女神，中文译为耐克。耐克商标图案是个小钩子。耐克一直将激励全世界的每一位运动员并为其献上最好的产品视为光荣的任务。耐克首创的气垫技术给体育界带来了一场革命。运用这项技术制造出的运动鞋可以很好地保护运动员的膝盖.在其在作剧烈运动落地时减小对膝盖的影响。"]];
+//    , @[Localized(@"DataPublicity"), @"NIKE公司总部位于美国俄勒冈州波特兰市。公司生产的体育用品包罗万象，例如服装，鞋类，运动器材等。NIKE是全球著名的体育运动品牌，英文原意指希腊胜利女神，中文译为耐克。"]
     // Do any additional setup after loading the view.
 }
 - (void)setupView
@@ -89,8 +90,15 @@ static NSString * const CooperateDetailCellID = @"CooperateDetailCellID";
     if (indexPath.section == 0) {
         SubtitleListViewCell * cell = [SubtitleListViewCell cellWithTableView:tableView cellType:SubtitleCellDetail];
         cell.selectionStyle = UITableViewCellSelectionStyleNone;
-        cell.walletName.text = @"开心一刻经销商";
-        cell.walletAddress.text = @"简称：开心一刻简称：开心一刻简称：开心一刻简称：开心一刻简称：开心一刻简称：开心一刻";
+        [cell.walletImage sd_setImageWithURL:[NSURL URLWithString:self.voucherModel.voucherIssuer[@"icon"]] placeholderImage:[UIImage imageNamed:@"icon_placehoder"]];
+        cell.walletName.text = self.voucherModel.voucherIssuer[@"name"];
+        [cell.walletName mas_remakeConstraints:^(MASConstraintMaker *make) {
+            make.top.bottom.equalTo(cell.walletImage);
+            make.left.equalTo(cell.walletImage.mas_right).offset(Margin_15);
+            make.right.mas_lessThanOrEqualTo(cell.listBg.mas_right).offset(-Margin_15);
+        }];
+        
+//        cell.walletAddress.text = [NSString stringWithFormat:Localized(@"Abbreviation：%@"), self.voucherModel.voucherIssuer[@"shortName"]];
         cell.detailImage.hidden = YES;
         return cell;
     } else if (indexPath.section == 1) {

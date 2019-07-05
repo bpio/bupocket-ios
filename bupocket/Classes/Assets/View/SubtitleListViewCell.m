@@ -54,7 +54,7 @@ static NSString * const DetailSubtitleCellID = @"DetailSubtitleCellID";
         } else if ([reuseIdentifier isEqualToString:DetailSubtitleCellID]) {
             self.walletImageWH = Margin_50;
             borderRadius = self.walletImageWH * 0.5;
-            walletImageName = @"user_icon_placeholder";
+            walletImageName = @"icon_placehoder";
             walletNameFont = FONT_Bold(18);
             walletAddressColor = COLOR_6;
         } else {
@@ -117,7 +117,7 @@ static NSString * const DetailSubtitleCellID = @"DetailSubtitleCellID";
     [self.walletName mas_makeConstraints:^(MASConstraintMaker *make) {
         make.top.equalTo(self.walletImage.mas_top).offset(walletNameOffsetY);
         make.left.equalTo(self.walletImage.mas_right).offset(walletNameOffsetX);
-        make.height.mas_equalTo(ScreenScale(18));
+//        make.height.mas_equalTo(ScreenScale(18));
     }];
     if ([self.reuseIdentifier isEqualToString:DefaultSubtitleCellID]) {
         [self.manage mas_makeConstraints:^(MASConstraintMaker *make) {

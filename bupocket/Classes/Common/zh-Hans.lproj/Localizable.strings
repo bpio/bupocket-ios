@@ -539,7 +539,7 @@
 "Overdue" = "请求已过期";
 //"Initiator" = "发起方";
 //"CounterAccount" = "对方账户";
-"Details" = "详情";
+"Details" = "详情>>";
 "TransactionCosts（BU）" = "交易费用（BU）";
 "Number（BU）" = "数量（BU）";
 // 节点共建
@@ -634,15 +634,17 @@
 "ShareQRCode" = "分享收款码转入券";
 "Value:%@" = "面值：¥%@";
 "Validity" = "有效期";
-"%@ to %@" = "%@至%@";
+"%@ to %@" = "%@ 至 %@";
 // 券详情
 "VoucherDetail" = "券详情";
+"ProvideAcceptance" = "提供承兑";
 "VoucherCode" = "券编码";
 "Specification" = "规格";
 "HoldingQuantity" = "持有数量";
 "GiftGiving" = "转赠";
 "Acceptor" = "承兑方";
 "AssetIssuer" = "资产发行方";
+
 // 承兑方
 "InfoOfAcceptorTitle" = "承兑方介绍";
 //"InfoOfAcceptor" = "";
@@ -660,7 +662,11 @@
 "RemarksPlaceholder" = "不能超过20个字符";
 "Transferable %@" = "可转%@个";
 "ConfirmationOfGifts" = "确认转赠";
-
+"TradingHash" = "交易哈希";
+"Abbreviation：%@" = "简称：%@";
+"DonationSuccess" = "转赠成功";
+"DonationFailure" = "转赠失败";
+"DonationTimeout" = "转赠超时";
 
 
 "ErrorPrompt" = "错误提示";

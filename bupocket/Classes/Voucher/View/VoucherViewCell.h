@@ -7,12 +7,15 @@
 //
 
 #import <UIKit/UIKit.h>
+#import "VoucherModel.h"
 
 NS_ASSUME_NONNULL_BEGIN
 
 @interface VoucherViewCell : UITableViewCell
 
 + (instancetype)cellWithTableView:(UITableView *)tableView identifier:(NSString *)identifier;
+
+@property (nonatomic, strong) VoucherModel * voucherModel;
 
 @property (nonatomic, strong) UIImageView * listBg;
 @property (nonatomic, strong) UIImageView * icon;

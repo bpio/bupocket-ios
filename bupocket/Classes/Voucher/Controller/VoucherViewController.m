@@ -12,12 +12,15 @@
 #import "WalletListViewController.h"
 #import "VoucherViewCell.h"
 #import "VoucherDetailViewController.h"
+#import "VoucherModel.h"
 
 @interface VoucherViewController ()<UITableViewDelegate, UITableViewDataSource>
 
 @property (nonatomic, strong) UITableView * tableView;
 @property (nonatomic, strong) NSMutableArray * listArray;
 @property (nonatomic, strong) UIView * noData;
+@property (nonatomic, assign) NSInteger pageindex;
+@property (nonatomic, strong) UIView * noNetWork;
 
 @end
 
@@ -45,10 +48,62 @@ static NSString * const VoucherCellID = @"VoucherCellID";
         }];
     }
     [self setupNav];
-    self.listArray = [NSMutableArray arrayWithArray:@[@"", @"", @""]];
     [self setupView];
+    self.noNetWork = [Encapsulation showNoNetWorkWithSuperView:self.view target:self action:@selector(reloadData)];
     [self setupRefresh];
     // Do any additional setup after loading the view.
+}
+- (void)reloadData
+{
+    self.noNetWork.hidden = YES;
+    [self.tableView.mj_header beginRefreshing];
+}
+- (void)setupRefresh
+{
+    self.tableView.mj_header = [CustomRefreshHeader headerWithRefreshingTarget:self refreshingAction:@selector(loadNewData)];
+    self.tableView.mj_header.automaticallyChangeAlpha = YES;
+    self.tableView.mj_footer = [CustomRefreshFooter footerWithRefreshingTarget:self refreshingAction:@selector(loadMoreData)];
+    [self.tableView.mj_header beginRefreshing];
+//    self.tableView.mj_footer.ignoredScrollViewContentInsetBottom = -(SafeAreaBottomH + TabBarH);
+}
+- (void)loadNewData
+{
+    [self getDataWithPageindex: PageIndex_Default];
+}
+- (void)loadMoreData
+{
+    [self getDataWithPageindex:self.pageindex];
+}
+- (void)getDataWithPageindex:(NSInteger)pageindex
+{
+    [[HTTPManager shareManager] getVoucherListDataWithPageIndex:pageindex success:^(id responseObject) {
+        NSInteger code = [[responseObject objectForKey:@"errCode"] integerValue];
+        if (code == Success_Code) {
+            NSArray * listArray = [VoucherModel mj_objectArrayWithKeyValuesArray:responseObject[@"data"] [@"voucherList"]];
+            if (pageindex == PageIndex_Default) {
+                [self.listArray removeAllObjects];
+                self.pageindex = PageIndex_Default;
+            }
+            self.pageindex = self.pageindex + 1;
+            [self.listArray addObjectsFromArray:listArray];
+            if (listArray.count < PageSize_Max) {
+                [self.tableView.mj_footer endRefreshingWithNoMoreData];
+            } else {
+                [self.tableView.mj_footer endRefreshing];
+            }
+            [self.tableView reloadData];
+        } else {
+            [MBProgressHUD showTipMessageInWindow:[ErrorTypeTool getDescriptionWithErrorCode:code]];
+        }
+        [self.tableView.mj_header endRefreshing];
+        (self.listArray.count > 0) ? (self.tableView.tableFooterView = [[UIView alloc] initWithFrame:CGRectMake(0, 0, DEVICE_WIDTH, CGFLOAT_MIN)]) : (self.tableView.tableFooterView = self.noData);
+        self.tableView.mj_footer.hidden = (self.listArray.count == 0);
+        self.noNetWork.hidden = YES;
+    } failure:^(NSError *error) {
+        [self.tableView.mj_header endRefreshing];
+        [self.tableView.mj_footer endRefreshing];
+        self.noNetWork.hidden = NO;
+    }];
 }
 - (void)viewWillAppear:(BOOL)animated {
     [super viewWillAppear:animated];
@@ -72,40 +127,13 @@ static NSString * const VoucherCellID = @"VoucherCellID";
     WalletListViewController * VC = [[WalletListViewController alloc] init];
     [self.navigationController pushViewController:VC animated:NO];
 }
+
 - (void)QRCodeAction
 {
     ReceiveViewController * VC = [[ReceiveViewController alloc] init];
     [self.navigationController pushViewController:VC animated:NO];
 }
-- (void)setupRefresh
-{
-    self.tableView.mj_header = [CustomRefreshHeader headerWithRefreshingTarget:self refreshingAction:@selector(loadNewData)];
-    self.tableView.mj_header.automaticallyChangeAlpha = YES;
-    [self.tableView.mj_header beginRefreshing];
-}
-- (void)loadNewData
-{
-    [self getData];
-}
-- (void)getData
-{
-    [[HTTPManager shareManager] getNodeCooperateListDataSuccess:^(id responseObject) {
-        NSInteger code = [[responseObject objectForKey:@"errCode"] integerValue];
-        if (code == Success_Code) {
-//            self.listArray = [CooperateModel mj_objectArrayWithKeyValuesArray:responseObject[@"data"][@"nodeList"]];
-            [self.tableView reloadData];
-        } else {
-            [MBProgressHUD showTipMessageInWindow:[ErrorTypeTool getDescriptionWithNodeErrorCode:code]];
-        }
-        [self.tableView.mj_header endRefreshing];
-        (self.listArray.count > 0) ? (self.tableView.tableFooterView = [[UIView alloc] initWithFrame:CGRectMake(0, 0, DEVICE_WIDTH, CGFLOAT_MIN)]) : (self.tableView.tableFooterView = self.noData);
-        self.tableView.mj_footer.hidden = (self.listArray.count == 0);
-//        self.noNetWork.hidden = YES;
-    } failure:^(NSError *error) {
-        [self.tableView.mj_header endRefreshing];
-//        self.noNetWork.hidden = NO;
-    }];
-}
+
 - (void)setupView
 {
     self.tableView = [[UITableView alloc] initWithFrame:CGRectMake(0, 0, DEVICE_WIDTH, DEVICE_HEIGHT - NavBarH - TabBarH) style:UITableViewStyleGrouped];
@@ -123,6 +151,7 @@ static NSString * const VoucherCellID = @"VoucherCellID";
         CGFloat noDataH = DEVICE_HEIGHT - NavBarH - SafeAreaBottomH - TabBarH;
         _noData = [[UIView alloc] initWithFrame:CGRectMake(0, 0, DEVICE_WIDTH, noDataH)];
         _noData.backgroundColor = [UIColor whiteColor];
+//        UIButton * noDataBtn = [Encapsulation showNoDataWithTitle:Localized(@"VoucherNoData") imageName:@"no_data_voucher" superView:_noData frame:CGRectMake(0, (noDataH - ScreenScale(220)) / 2, DEVICE_WIDTH, ScreenScale(220))];
         UIButton * noDataBtn = [Encapsulation showNoDataWithTitle:Localized(@"VoucherNoData") imageName:@"no_data_voucher" superView:_noData frame:CGRectMake(0, (noDataH - ScreenScale(220) - MAIN_HEIGHT - Margin_15) / 2 - Margin_50, DEVICE_WIDTH, ScreenScale(220))];
         [_noData addSubview:noDataBtn];
         CGRect shareRect = CGRectMake(ScreenScale(80), CGRectGetMaxY(noDataBtn.frame) + Margin_15, DEVICE_WIDTH - ScreenScale(160), MAIN_HEIGHT);
@@ -130,6 +159,7 @@ static NSString * const VoucherCellID = @"VoucherCellID";
         [shareBtn setViewSize:shareRect.size borderWidth:LINE_WIDTH borderColor:MAIN_COLOR borderRadius:MAIN_CORNER];
         shareBtn.frame = shareRect;
         [_noData addSubview:shareBtn];
+        
     }
     return _noData;
 }
@@ -144,7 +174,7 @@ static NSString * const VoucherCellID = @"VoucherCellID";
 - (CGFloat)tableView:(UITableView *)tableView heightForHeaderInSection:(NSInteger)section
 {
     if (section == 0) {
-        return ScreenScale(7.5);
+        return (self.listArray.count > 0) ? ScreenScale(7.5) : CGFLOAT_MIN;
     } else {
         return CGFLOAT_MIN;
     }
@@ -165,6 +195,8 @@ static NSString * const VoucherCellID = @"VoucherCellID";
 - (UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath
 {
     VoucherViewCell * cell = [VoucherViewCell cellWithTableView:tableView identifier:VoucherCellID];
+    VoucherModel * voucherModel = self.listArray[indexPath.row];
+    cell.voucherModel = voucherModel;
     cell.selectionStyle = UITableViewCellSelectionStyleNone;
     return cell;
 }
@@ -172,6 +204,8 @@ static NSString * const VoucherCellID = @"VoucherCellID";
 {
     [tableView deselectRowAtIndexPath:indexPath animated:NO];
     VoucherDetailViewController * VC = [[VoucherDetailViewController alloc] init];
+    VoucherModel * voucherModel = self.listArray[indexPath.row];
+    VC.voucherModel = voucherModel;
     [self.navigationController pushViewController:VC animated:NO];
 }
 

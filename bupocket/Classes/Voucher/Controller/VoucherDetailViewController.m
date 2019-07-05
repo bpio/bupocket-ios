@@ -22,6 +22,7 @@
 @property (nonatomic, strong) UITableView * tableView;
 @property (nonatomic, strong) NSMutableArray * listArray;
 @property (nonatomic, assign) CGFloat infoCellHeight;
+@property (nonatomic, strong) UIView * noNetWork;
 
 @end
 
@@ -36,6 +37,9 @@ static NSString * const VoucherDetailCellID = @"VoucherDetailCellID";
     }
     return _listArray;
 }
+- (UIStatusBarStyle)preferredStatusBarStyle {
+    return UIStatusBarStyleLightContent;
+}
 - (void)viewDidLoad {
     [super viewDidLoad];
     self.edgesForExtendedLayout = UIRectEdgeAll;
@@ -44,40 +48,52 @@ static NSString * const VoucherDetailCellID = @"VoucherDetailCellID";
 //    self.navAlpha = 0;
     self.navBackgroundColor = COLOR(@"3C3B6D");
     self.navTitleColor = self.navTintColor = [UIColor whiteColor];
-    self.listArray = [NSMutableArray arrayWithArray:@[@[@""], @[@[Localized(@"Validity"), [NSString stringWithFormat:Localized(@"%@ to %@"), @"2019-07-13", @"2019-09-20"]], @[Localized(@"VoucherCode"), @"Q1000000001"], @[Localized(@"Specification"), @"经典酱香味 500ml"], @[Localized(@"Describe"), @"简单的券描述简单的券描述简单的券描述不能超过25个字"], @[Localized(@"HoldingQuantity"), @"999990 "]], @[@[Localized(@"Acceptor"), @"贵州茅台"], @[Localized(@"AssetIssuer"), @"达尔蒙食品公司"]]]];
     [self setupView];
+    [self getData];
     // Do any additional setup after loading the view.
 }
-- (UIStatusBarStyle)preferredStatusBarStyle {
-    return UIStatusBarStyleLightContent;
-}
-- (void)setupRefresh
-{
-    self.tableView.mj_header = [CustomRefreshHeader headerWithRefreshingTarget:self refreshingAction:@selector(loadNewData)];
-    self.tableView.mj_header.automaticallyChangeAlpha = YES;
-    [self.tableView.mj_header beginRefreshing];
-}
-- (void)loadNewData
-{
-    [self getData];
-}
+
+//- (void)setupRefresh
+//{
+//    self.tableView.mj_header = [CustomRefreshHeader headerWithRefreshingTarget:self refreshingAction:@selector(loadNewData)];
+//    self.tableView.mj_header.automaticallyChangeAlpha = YES;
+//    [self.tableView.mj_header beginRefreshing];
+//}
+//- (void)loadNewData
+//{
+//    [self getData];
+//}
 - (void)getData
 {
-    [[HTTPManager shareManager] getNodeCooperateListDataSuccess:^(id responseObject) {
+    NSString * holdingQuantity = self.voucherModel.balance;
+    [[HTTPManager shareManager] getVoucherDetailDataWithVoucherId:self.voucherModel.voucherId trancheId:self.voucherModel.trancheId spuId:self.voucherModel.spuId contractAddress:self.voucherModel.contractAddress success:^(id responseObject) {
         NSInteger code = [[responseObject objectForKey:@"errCode"] integerValue];
         if (code == Success_Code) {
+            self.voucherModel = [VoucherModel mj_objectWithKeyValues:responseObject[@"data"]];
             //            self.listArray = [CooperateModel mj_objectArrayWithKeyValuesArray:responseObject[@"data"][@"nodeList"]];
+            NSString * startTime = ([self.voucherModel.startTime isEqualToString:@"-1"]) ? @"~" : [DateTool getDateStringWithDataStr:self.voucherModel.startTime];
+            NSString * endTime = ([self.voucherModel.endTime isEqualToString:@"-1"]) ? @"~" : [DateTool getDateStringWithDataStr:self.voucherModel.endTime];
+            self.listArray = [NSMutableArray arrayWithArray:@[@[@""], @[@[Localized(@"Validity"), [NSString stringWithFormat:Localized(@"%@ to %@"), startTime, endTime]], @[Localized(@"VoucherCode"), self.voucherModel.voucherId], @[Localized(@"Specification"), self.voucherModel.voucherSpec], @[Localized(@"Describe"), self.voucherModel.desc], @[Localized(@"HoldingQuantity"), holdingQuantity]], @[@[Localized(@"Acceptor"), self.voucherModel.voucherAcceptance[@"name"]], @[Localized(@"AssetIssuer"), self.voucherModel.voucherIssuer[@"name"]]]]];
             [self.tableView reloadData];
         } else {
             [MBProgressHUD showTipMessageInWindow:[ErrorTypeTool getDescriptionWithNodeErrorCode:code]];
         }
         [self.tableView.mj_header endRefreshing];
         self.tableView.mj_footer.hidden = (self.listArray.count == 0);
-        //        self.noNetWork.hidden = YES;
+        self.noNetWork.hidden = YES;
+        self.navBackgroundColor = COLOR(@"3C3B6D");
+        self.navTitleColor = self.navTintColor = [UIColor whiteColor];
     } failure:^(NSError *error) {
         [self.tableView.mj_header endRefreshing];
-        //        self.noNetWork.hidden = NO;
+        self.noNetWork.hidden = NO;
+        self.navBackgroundColor = [UIColor whiteColor];
+        self.navTitleColor = self.navTintColor = [UIColor blackColor];
     }];
+}
+- (void)reloadData
+{
+    self.noNetWork.hidden = YES;
+    [self getData];
 }
 - (void)setupView
 {
@@ -103,10 +119,12 @@ static NSString * const VoucherDetailCellID = @"VoucherDetailCellID";
     self.tableView.separatorStyle = UITableViewCellSeparatorStyleNone;
     self.tableView.scrollEnabled = NO;
     self.tableView.backgroundColor = [UIColor clearColor];
+    self.tableView.tableHeaderView = [[UIView alloc] initWithFrame:CGRectMake(0, 0, 0, CGFLOAT_MIN)];
     [imageBg addSubview:self.tableView];
     [self.tableView mas_makeConstraints:^(MASConstraintMaker *make) {
         make.edges.equalTo(imageBg);
     }];
+    self.noNetWork = [Encapsulation showNoNetWorkWithSuperView:self.view target:self action:@selector(reloadData)];
 }
 - (NSInteger)numberOfSectionsInTableView:(UITableView *)tableView
 {
@@ -119,14 +137,14 @@ static NSString * const VoucherDetailCellID = @"VoucherDetailCellID";
 - (CGFloat)tableView:(UITableView *)tableView heightForHeaderInSection:(NSInteger)section
 {
     if (section == self.listArray.count - 1) {
-        return ScreenScale(180) - self.infoCellHeight;
+        return ScreenScale(120) - self.infoCellHeight;
     }
     return CGFLOAT_MIN;
 }
 - (UIView *)tableView:(UITableView *)tableView viewForHeaderInSection:(NSInteger)section
 {
     if (section == self.listArray.count - 1) {
-        UIView * footerView = [[UIView alloc] initWithFrame:CGRectMake(0, 0, DEVICE_WIDTH - Margin_50, ScreenScale(155) - self.infoCellHeight)];
+        UIView * footerView = [[UIView alloc] initWithFrame:CGRectMake(0, 0, DEVICE_WIDTH - Margin_50, ScreenScale(120) - self.infoCellHeight)];
         UIButton * giftGiving = [UIButton createButtonWithTitle:Localized(@"GiftGiving") isEnabled:YES Target:self Selector:@selector(giftGivingAction)];
         [footerView addSubview:giftGiving];
         [giftGiving mas_makeConstraints:^(MASConstraintMaker *make) {
@@ -154,7 +172,7 @@ static NSString * const VoucherDetailCellID = @"VoucherDetailCellID";
     if (indexPath.section == 0) {
         return ScreenScale(143);
     } else if (indexPath.section == 1 && indexPath.row == 3) {
-        self.infoCellHeight = ([Encapsulation rectWithText:@"简单的券描述简单的券描述简单的券描述不能超过25个字" font:FONT(15) textWidth:Info_Width_Max].size.height + Margin_30);
+        self.infoCellHeight = ([Encapsulation rectWithText:self.voucherModel.description font:FONT(15) textWidth:Info_Width_Max].size.height + Margin_30);
        return self.infoCellHeight;
     } else if (indexPath.section == self.listArray.count - 1) {
         return MAIN_HEIGHT;
@@ -167,6 +185,7 @@ static NSString * const VoucherDetailCellID = @"VoucherDetailCellID";
         VoucherViewCell * cell = [VoucherViewCell cellWithTableView:tableView identifier:VoucherDetailCellID];
         cell.selectionStyle = UITableViewCellSelectionStyleNone;
         cell.listBg.image = nil;
+        cell.voucherModel = self.voucherModel;
         cell.backgroundColor = cell.contentView.backgroundColor = [UIColor clearColor];
         return cell;
     } else if (indexPath.section == self.listArray.count - 1) {
@@ -174,8 +193,8 @@ static NSString * const VoucherDetailCellID = @"VoucherDetailCellID";
         cell.selectionStyle = UITableViewCellSelectionStyleNone;
         cell.title.text = self.listArray[indexPath.section][indexPath.row][0];
         cell.detailTitle.text = self.listArray[indexPath.section][indexPath.row][1];
-        NSString * walletIconName = Current_Wallet_IconName;
-        cell.listImage.image = [UIImage imageNamed:walletIconName];
+        NSString * iconUrl = (indexPath.row == 0) ? self.voucherModel.voucherAcceptance[@"icon"] : self.voucherModel.voucherIssuer[@"icon"];
+        [cell.listImage sd_setImageWithURL:[NSURL URLWithString:iconUrl] placeholderImage:[UIImage imageNamed:@"good_placehoder"]];
 //        cell.detail
         cell.selectionStyle = UITableViewCellSelectionStyleNone;
         cell.backgroundColor = cell.contentView.backgroundColor  = [UIColor clearColor];
@@ -204,9 +223,11 @@ static NSString * const VoucherDetailCellID = @"VoucherDetailCellID";
     if (indexPath.section == self.listArray.count - 1) {
         if (indexPath.row == 0) {
             AcceptorViewController * VC = [[AcceptorViewController alloc] init];
+            VC.voucherModel = self.voucherModel;
             [self.navigationController pushViewController:VC animated:NO];
         } else if (indexPath.row == 1) {
             AssetIssuerViewController * VC = [[AssetIssuerViewController alloc] init];
+            VC.voucherModel = self.voucherModel;
             [self.navigationController pushViewController:VC animated:NO];
         }
     }

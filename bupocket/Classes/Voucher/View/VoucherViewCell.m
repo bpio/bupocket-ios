@@ -48,12 +48,6 @@ static NSString * const VoucherDetailCellID = @"VoucherDetailCellID";
         [self.listBg addSubview:self.lineView];
         self.value.textAlignment = NSTextAlignmentRight;
     }
-    self.name.text = @"贵州茅台";
-    self.title.text = @"贵州茅台酒 53度茅台飞天精品500ml整箱12瓶 ";
-    self.value.text = [NSString stringWithFormat:Localized(@"Value:%@"), @"3399"];
-    self.number.text = [NSString stringWithFormat:@"×  %@", @"30"];
-    NSString * dataStr = [NSString stringWithFormat:Localized(@"%@ to %@"), @"2019-07-13", @"2019-09-20"];
-    self.date.text = [NSString stringWithFormat:@"%@：%@", Localized(@"Validity"), dataStr];
 }
 - (void)layoutSubviews
 {
@@ -124,6 +118,20 @@ static NSString * const VoucherDetailCellID = @"VoucherDetailCellID";
             make.right.equalTo(self.title);
         }];
     }
+}
+- (void)setVoucherModel:(VoucherModel *)voucherModel
+{
+    _voucherModel = voucherModel;
+    [self.icon sd_setImageWithURL:[NSURL URLWithString:voucherModel.voucherAcceptance[@"icon"]] placeholderImage:[UIImage imageNamed:@"icon_placehoder"]];
+    self.name.text = voucherModel.voucherAcceptance[@"name"];
+    [self.listImage sd_setImageWithURL:[NSURL URLWithString:voucherModel.voucherIcon] placeholderImage:[UIImage imageNamed:@"good_placehoder"]];
+    self.title.text = voucherModel.voucherName;
+    self.value.text = [NSString stringWithFormat:Localized(@"Value:%@"), voucherModel.faceValue];
+    self.number.text = [NSString stringWithFormat:@"×  %@", voucherModel.balance];
+    NSString * startTime = ([voucherModel.startTime isEqualToString:@"-1"]) ? @"~" : [DateTool getDateStringWithDataStr:voucherModel.startTime];
+    NSString * endTime = ([voucherModel.endTime isEqualToString:@"-1"]) ? @"~" : [DateTool getDateStringWithDataStr:voucherModel.endTime];
+    NSString * dataStr = [NSString stringWithFormat:Localized(@"%@ to %@"), startTime, endTime];
+    self.date.text = [NSString stringWithFormat:@"%@：%@", Localized(@"Validity"), dataStr];
 }
 - (UIImageView *)listBg
 {

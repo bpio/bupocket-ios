@@ -129,6 +129,8 @@
 		9538307E22CCC04A00607F0C /* AssetIssuerViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 9538307D22CCC04A00607F0C /* AssetIssuerViewController.m */; };
 		9538308122CDD89000607F0C /* GiftGivingViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 9538308022CDD89000607F0C /* GiftGivingViewController.m */; };
 		9538308422CE001A00607F0C /* BottomConfirmAlertView.m in Sources */ = {isa = PBXBuildFile; fileRef = 9538308322CE001A00607F0C /* BottomConfirmAlertView.m */; };
+		9538308722CEE93D00607F0C /* ResultViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 9538308622CEE93D00607F0C /* ResultViewController.m */; };
+		9538308A22CF10E500607F0C /* VoucherModel.m in Sources */ = {isa = PBXBuildFile; fileRef = 9538308922CF10E500607F0C /* VoucherModel.m */; };
 		954371742199234100915BBE /* SettingViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 954371732199234100915BBE /* SettingViewController.m */; };
 		9549EC66219C0CF800307255 /* CreateTipsAlertView.m in Sources */ = {isa = PBXBuildFile; fileRef = 9549EC65219C0CF800307255 /* CreateTipsAlertView.m */; };
 		9549EC70219D075F00307255 /* ClearCacheTool.m in Sources */ = {isa = PBXBuildFile; fileRef = 9549EC6F219D075E00307255 /* ClearCacheTool.m */; };
@@ -459,6 +461,10 @@
 		9538308022CDD89000607F0C /* GiftGivingViewController.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = GiftGivingViewController.m; sourceTree = "<group>"; };
 		9538308222CE001A00607F0C /* BottomConfirmAlertView.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = BottomConfirmAlertView.h; sourceTree = "<group>"; };
 		9538308322CE001A00607F0C /* BottomConfirmAlertView.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = BottomConfirmAlertView.m; sourceTree = "<group>"; };
+		9538308522CEE93D00607F0C /* ResultViewController.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = ResultViewController.h; sourceTree = "<group>"; };
+		9538308622CEE93D00607F0C /* ResultViewController.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = ResultViewController.m; sourceTree = "<group>"; };
+		9538308822CF10E500607F0C /* VoucherModel.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = VoucherModel.h; sourceTree = "<group>"; };
+		9538308922CF10E500607F0C /* VoucherModel.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = VoucherModel.m; sourceTree = "<group>"; };
 		954371722199234100915BBE /* SettingViewController.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = SettingViewController.h; sourceTree = "<group>"; };
 		954371732199234100915BBE /* SettingViewController.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = SettingViewController.m; sourceTree = "<group>"; };
 		9549EC64219C0CF800307255 /* CreateTipsAlertView.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = CreateTipsAlertView.h; sourceTree = "<group>"; };
@@ -1102,6 +1108,8 @@
 				9538307D22CCC04A00607F0C /* AssetIssuerViewController.m */,
 				9538307F22CDD89000607F0C /* GiftGivingViewController.h */,
 				9538308022CDD89000607F0C /* GiftGivingViewController.m */,
+				9538308522CEE93D00607F0C /* ResultViewController.h */,
+				9538308622CEE93D00607F0C /* ResultViewController.m */,
 			);
 			path = Controller;
 			sourceTree = "<group>";
@@ -1109,6 +1117,8 @@
 		95162FD222C754770024FD22 /* Model */ = {
 			isa = PBXGroup;
 			children = (
+				9538308822CF10E500607F0C /* VoucherModel.h */,
+				9538308922CF10E500607F0C /* VoucherModel.m */,
 			);
 			path = Model;
 			sourceTree = "<group>";
@@ -1649,6 +1659,7 @@
 				83379AD921802FA900C222A5 /* AssetsDetailModel.m in Sources */,
 				959E2908224CCA45006FCA30 /* ScanCodeFailureViewController.m in Sources */,
 				959726DA21E6DCA10022CB78 /* TextFieldViewCell.m in Sources */,
+				9538308A22CF10E500607F0C /* VoucherModel.m in Sources */,
 				959726EE21E8C84F0022CB78 /* PasswordAlertView.m in Sources */,
 				83379A89217DA4F900C222A5 /* AssetsDetailListViewCell.m in Sources */,
 				951363A222B9E2B000BF8DF5 /* SubtitleListViewCell.m in Sources */,
@@ -1722,6 +1733,7 @@
 				838DC7652186A114002FF276 /* DistributionOfAssetsViewController.m in Sources */,
 				83379ADC2180509600C222A5 /* NSDate+Extension.m in Sources */,
 				8369BCED218B3DF5002F8903 /* AtpProperty.m in Sources */,
+				9538308722CEE93D00607F0C /* ResultViewController.m in Sources */,
 				9513638A22B7A1A100BF8DF5 /* BackUpWalletViewController.m in Sources */,
 				959726F121E8CAAA0022CB78 /* WalletAddressAlertView.m in Sources */,
 				95162FDF22C77A070024FD22 /* VoucherViewCell.m in Sources */,

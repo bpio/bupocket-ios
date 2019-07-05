@@ -164,6 +164,18 @@ typedef NS_ENUM(NSInteger, AccountDataType) {
 - (void)getNodeCooperateDetailDataWithNodeId:(NSString *)nodeId
                                      success:(void (^)(id responseObject))success
                                      failure:(void (^)(NSError *error))failure;
+#pragma mark - Voucher
+// voucher list
+- (void)getVoucherListDataWithPageIndex:(NSInteger)pageIndex
+                                success:(void (^)(id responseObject))success
+                                failure:(void (^)(NSError *error))failure;
+// voucher detail
+- (void)getVoucherDetailDataWithVoucherId:(NSString *)voucherId
+                                trancheId:(NSString *)trancheId
+                                    spuId:(NSString *)spuId
+                          contractAddress:(NSString *)contractAddress
+                                  success:(void (^)(id responseObject))success
+                                  failure:(void (^)(NSError *error))failure;
 
 #pragma mark - SDK
 // Check the balance

@@ -552,7 +552,7 @@
 "Overdue" = "The request is expired";
 //"Initiator" = "Initiator";
 //"CounterAccount" = "The receiving account";
-"Details" = "Details";
+"Details" = "Details>>";
 "TransactionCosts（BU）" = "Transaction fees（BU）";
 "Parameter" = "Parameter";
 "Number（BU）" = "Number（BU）";
@@ -636,41 +636,49 @@
 "Disclaimer" = "Disclaimer";
 "DisclaimerInfo" = "Service provided and liability covered by third party (YoPin). For any questions,contact the company.";
 
-// 券包
-"Voucher" = "券包";
-"New" = "新";
-"VoucherPromptTitle" = "数字资产券包";
-"VoucherPromptInfo" = "明月高挂，月光如水，照着妈妈美丽的脸庞，我的目光也如水，看着妈妈的脸庞，觉得妈妈的脸庞是第二个月亮。妈妈用双手捧起我的脸庞，让月光照在我脸上，然后情不自禁地说：小可爱，你是我的小月亮。明月高挂，月光如水，照着妈妈美丽的脸庞，我的目光也如水。小可爱，你是我的小月亮。小可爱，你是我的小月亮。";
-"VoucherNoData" = "这里一张券都没有";
-"ShareQRCode" = "分享收款码转入券";
-"Value:%@" = "面值：¥%@";
-"Validity" = "有效期";
-"%@ to %@" = "%@至%@";
-// 券详情
-"VoucherDetail" = "券详情";
-"VoucherCode" = "券编码";
-"Specification" = "规格";
-"HoldingQuantity" = "持有数量";
-"GiftGiving" = "转赠";
-"Acceptor" = "承兑方";
-"AssetIssuer" = "资产发行方";
-// 承兑方
-"InfoOfAcceptorTitle" = "承兑方介绍";
+// Vouchers
+"Voucher" = "Vouchers";
+"New" = "New";
+"VoucherPromptTitle" = "Digital Asset Vouchers";
+"VoucherPromptInfo" = "";
+"VoucherNoData" = "None";
+"ShareQRCode" = "Share QR Code to Receive Vouchers";
+"Value:%@" = "Nominal Value：¥%@";
+"Validity" = "Validity";
+"%@ to %@" = "%@ To %@";
+// Details of Voucher
+"VoucherDetail" = "Details of Voucher";
+"ProvideAcceptance" = "Provides Acceptance";
+"VoucherCode" = "Code of Voucher";
+"Specification" = "Specification";
+"HoldingQuantity" = "Amount Held";
+"GiftGiving" = "Donate";
+"Acceptor" = "Acceptor";
+"AssetIssuer" = "Asset Issuer";
+
+// Acceptor
+"InfoOfAcceptorTitle" = "Introduction to Acceptor";
 //"InfoOfAcceptor" = "";
-"DeliveryInstructionsTitle" = "提货说明";
+"DeliveryInstructionsTitle" = "Instruction for Delivery";
 //"DeliveryInstructions" = "";
-// 数字资产发行方
-"IssuerOfDigitalAssets" = "数字资产发行方";
-"InfoOfDigitalAssetIssuer" = "数字资产发行方介绍";
-"DataPublicity" = "数据公示";
-// 转赠
-"ReceiveAddressPlaceholder" = "请输入接收账户地址";
-"TransferQuantity" = "转赠数量";
-"TransferQuantity*" = "转赠数量 *";
-"AmountOfDonation" = "请输入转赠数量";
-"RemarksPlaceholder" = "不能超过20个字符";
-"Transferable %@" = "可转%@个";
-"ConfirmationOfGifts" = "确认转赠";
+// Issuer of Digital Asset
+"IssuerOfDigitalAssets" = "Issuer of Digital Asset";
+"InfoOfDigitalAssetIssuer" = "About the Issuer of Digital Asset";
+"DataPublicity" = "Data Publicity";
+
+// Donate
+"ReceiveAddressPlaceholder" = "Please input the receiving account address";
+"TransferQuantity" = "Amount to Donate";
+"TransferQuantity*" = "Amount to Donate *";
+"AmountOfDonation" = "Please input the amount to donate";
+"RemarksPlaceholder" = "20 characters at most";
+"Transferable %@" = "%@ available";
+"ConfirmationOfGifts" = "Confirm to Donate";
+"TradingHash" = "Transaction Hash";
+"Abbreviation：%@" = "Abbreviation：%@";
+"DonationSuccess" = "Donation Success";
+"DonationFailure" = "Donation Failure";
+"DonationTimeout" = "Donation Timeout";
 
 "ErrorPrompt" = "Error message";
 // 调用底层合约

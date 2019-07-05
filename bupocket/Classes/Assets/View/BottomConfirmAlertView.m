@@ -15,11 +15,12 @@
 @property (nonatomic, strong) UIButton * closeBtn;
 @property (nonatomic, strong) UILabel * amount;
 @property (nonatomic, strong) UIView * lineView;
+@property (nonatomic, strong) UIView * line;
 @property (nonatomic, strong) UITableView * infoTableView;
 @property (nonatomic, strong) UITableView * detailTableView;
 //@property (nonatomic, strong) UIScrollView * infoScrollView;
 //@property (nonatomic, strong) UIScrollView * transactionScrollView;
-@property (nonatomic, strong) NSArray * infoTitleArray;
+@property (nonatomic, strong) NSArray * titleArray;
 @property (nonatomic, strong) UIButton * details;
 @property (nonatomic, strong) UIButton * back;
 @property (nonatomic, strong) UIButton * confirm;
@@ -60,6 +61,7 @@
     
     [self.bgScrollView addSubview:self.detailTableView];
     
+    
     if (_isShowValue) {
         self.infoTableView.tableHeaderView = self.amount;
     }
@@ -69,7 +71,9 @@
     [self.bgScrollView addSubview:self.back];
     
     [self addSubview:self.confirm];
-    _infoTitleArray = @[Localized(@"TransactionDetail"), Localized(@"ReceivingAccount"), Localized(@"TransferQuantity"), Localized(@"TransactionCosts（BU）"), Localized(@"Remarks"), Localized(@"SendingAccount"), Localized(@"ReceivingAccount"), Localized(@"TransferQuantity"), Localized(@"TransactionCosts（BU）"), Localized(@"Parameter")];
+    
+    [self.bgScrollView addSubview:self.line];
+    _titleArray = @[@[Localized(@"TransactionDetail"), Localized(@"ReceivingAccount"), Localized(@"TransferQuantity"), Localized(@"TransactionCosts（BU）"), Localized(@"Remarks")], @[Localized(@"SendingAccount"), Localized(@"ReceivingAccount"), Localized(@"TransferQuantity"), Localized(@"TransactionCosts（BU）"), Localized(@"Parameter")]];
 }
 - (void)layoutSubviews
 {
@@ -87,7 +91,7 @@
     }];
     
     [self.lineView mas_makeConstraints:^(MASConstraintMaker *make) {
-        make.top.equalTo(self.title.mas_bottom);
+        make.bottom.equalTo(self.title.mas_bottom);
         make.centerX.equalTo(self);
         make.size.mas_equalTo(CGSizeMake(DEVICE_WIDTH - Margin_40, LINE_WIDTH));
     }];
@@ -113,11 +117,14 @@
         make.left.mas_equalTo(DEVICE_WIDTH);
         make.size.top.equalTo(self.infoTableView);
     }];
-    
     [self.confirm mas_makeConstraints:^(MASConstraintMaker *make) {
         make.bottom.equalTo(self.mas_bottom).offset(-Margin_25);
         make.centerX.equalTo(self);
         make.size.mas_equalTo(CGSizeMake(DEVICE_WIDTH - Margin_40, MAIN_HEIGHT));
+    }];
+    [self.line mas_makeConstraints:^(MASConstraintMaker *make) {
+        make.bottom.equalTo(self.confirm.mas_top).offset(-Margin_20);
+        make.size.centerX.equalTo(self.lineView);
     }];
 }
 /*
@@ -323,6 +330,14 @@
     }
     return _lineView;
 }
+- (UIView *)line
+{
+    if (!_line) {
+        _line = [[UIView alloc] init];
+        _line.backgroundColor = LINE_COLOR;
+    }
+    return _line;
+}
 
 - (UILabel *)amount
 {
@@ -396,9 +411,9 @@
 - (CGFloat)tableView:(UITableView *)tableView heightForFooterInSection:(NSInteger)section
 {
     if (tableView == self.infoTableView) {
-        return Margin_30;
+        return MAIN_HEIGHT;
     }
-    return CGFLOAT_MIN;
+    return Margin_15;
 }
 - (NSInteger)numberOfSectionsInTableView:(UITableView *)tableView
 {
@@ -406,12 +421,20 @@
 }
 - (NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section
 {
-    return self.infoTitleArray.count;
+    if (tableView == self.infoTableView) {
+        return [[self.titleArray firstObject] count];
+    } else {
+        return [[self.titleArray lastObject] count];
+    }
 }
 - (UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath
 {
     DetailListViewCell * cell = [DetailListViewCell cellWithTableView:tableView cellType: DetailCellSubtitle];
-    cell.title.text = self.infoTitleArray[indexPath.row];
+    if (tableView == self.infoTableView) {
+        cell.title.text = [self.titleArray firstObject][indexPath.row];
+    } else if (tableView == self.detailTableView) {
+        cell.title.text = [self.titleArray lastObject][indexPath.row];
+    }
     cell.title.font = FONT(13);
     cell.title.textColor = COLOR_9;
     cell.infoTitle.attributedText = [Encapsulation attrWithString:@"哈哈哈哈哈哈哈哈哈哈哈哈哈哈哈哈哈哈哈哈哈哈哈哈哈哈哈哈哈哈哈哈哈哈哈哈哈哈哈哈哈哈哈哈哈哈哈哈" preFont:FONT_TITLE preColor:COLOR_6 index:0 sufFont:FONT_TITLE sufColor:COLOR_6 lineSpacing:Margin_10];

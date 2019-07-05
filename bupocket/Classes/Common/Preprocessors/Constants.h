@@ -88,6 +88,9 @@
 #define Dpos_Prefix @"###UDCBU###"
 #define Node_Check @"/getLedger"
 #define Server_Check @"healthcheck"
+// voucher
+#define Voucher_List @"voucher/v1/my/list"
+#define Voucher_Detail @"voucher/v1/detail"
 
 
 #define HDPaths @[@"M/44H/526H/0H/0/0", @"M/44H/526H/1H/0/0"]

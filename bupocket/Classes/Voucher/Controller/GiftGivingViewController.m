@@ -11,6 +11,7 @@
 #import "BottomConfirmAlertView.h"
 #import "AddressBookViewController.h"
 #import "HMScannerController.h"
+#import "ResultViewController.h"
 
 @interface GiftGivingViewController ()<UITextFieldDelegate, UITableViewDelegate, UITableViewDataSource>
 
@@ -85,6 +86,11 @@
 - (void)nextAction:(UIButton *)button
 {
     BottomConfirmAlertView * confirmAlertView = [[BottomConfirmAlertView alloc] initWithIsShowValue:NO confrimBolck:^(NSString * _Nonnull transactionCost) {
+        ResultViewController * VC = [[ResultViewController alloc] init];
+//        VC.state = YES;
+//        VC.resultModel = resultModel;
+//        VC.confirmTransactionModel = self.confirmTransactionModel;
+        [self.navigationController pushViewController:VC animated:NO];
         /*
         dispatch_after(dispatch_time(DISPATCH_TIME_NOW, (int64_t)(Dispatch_After_Time * NSEC_PER_SEC)), dispatch_get_main_queue(), ^{
             NSDecimalNumber * amount = [NSDecimalNumber decimalNumberWithString:self.valueStr];
@@ -104,6 +110,7 @@
     } cancelBlock:^{
         
     }];
+    confirmAlertView.title.text = Localized(@"ConfirmationOfGifts");
 //    confirmAlertView.dposModel = self.dposModel;
     [confirmAlertView showInWindowWithMode:CustomAnimationModeShare inView:nil bgAlpha:AlertBgAlpha needEffectView:NO];
 }

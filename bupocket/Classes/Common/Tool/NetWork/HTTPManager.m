@@ -824,6 +824,60 @@ static int64_t const gasPrice = 1000;
         }
     }];
 }
+#pragma mark - Voucher
+// voucher list
+- (void)getVoucherListDataWithPageIndex:(NSInteger)pageIndex
+                                success:(void (^)(id responseObject))success
+                                failure:(void (^)(NSError *error))failure
+{
+    NSString * url = SERVER_COMBINE_API(_webServerDomain, Voucher_List);
+    NSMutableDictionary * parameters = [NSMutableDictionary dictionary];
+    [parameters addEntriesFromDictionary:@{@"address" : CurrentWalletAddress,
+                                           @"pageStart" : @(pageIndex),
+                                           @"pageSize" : @(PageSize_Max)
+                                           }];
+    [[HttpTool shareTool] POST:url parameters:parameters success:^(id responseObject) {
+        if(success != nil)
+        {
+            success(responseObject);
+        }
+    } failure:^(NSError *error) {
+        if(failure != nil)
+        {
+            failure(error);
+        }
+    }];
+}
+// voucher detail
+- (void)getVoucherDetailDataWithVoucherId:(NSString *)voucherId
+                                trancheId:(NSString *)trancheId
+                                    spuId:(NSString *)spuId
+                          contractAddress:(NSString *)contractAddress
+                                  success:(void (^)(id responseObject))success
+                                  failure:(void (^)(NSError *error))failure
+{
+    [MBProgressHUD showActivityMessageInWindow:Localized(@"Loading")];
+    NSString * url = SERVER_COMBINE_API(_webServerDomain, Voucher_Detail);
+    NSMutableDictionary * parameters = [NSMutableDictionary dictionary];
+    [parameters addEntriesFromDictionary:@{
+                                           @"address" : CurrentWalletAddress,
+                                           @"voucherId" : voucherId,
+                                           @"trancheId" : trancheId,
+                                           @"spuId": spuId,
+                                           @"contractAddress" : contractAddress
+                                           }];
+    [[HttpTool shareTool] POST:url parameters:parameters success:^(id responseObject) {
+        if(success != nil)
+        {
+            success(responseObject);
+        }
+    } failure:^(NSError *error) {
+        if(failure != nil)
+        {
+            failure(error);
+        }
+    }];
+}
 #pragma mark - SDK
 // Check the balance
 - (int64_t)getAccountBalance {
