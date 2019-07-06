@@ -17,6 +17,7 @@ NS_ASSUME_NONNULL_BEGIN
 
 @property (nonatomic, strong) VoucherModel * voucherModel;
 
+@property (nonatomic, strong) UIImageView * checked;
 @property (nonatomic, strong) UIImageView * listBg;
 @property (nonatomic, strong) UIImageView * icon;
 @property (nonatomic, strong) UIView * lineView;

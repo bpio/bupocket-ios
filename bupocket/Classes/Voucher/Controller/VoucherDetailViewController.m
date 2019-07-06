@@ -13,7 +13,7 @@
 #import "UINavigationController+Extension.h"
 #import "AcceptorViewController.h"
 #import "AssetIssuerViewController.h"
-#import "GiftGivingViewController.h"
+#import "DonateVoucherViewController.h"
 
 
 @interface VoucherDetailViewController ()<UITableViewDelegate, UITableViewDataSource>
@@ -159,7 +159,8 @@ static NSString * const VoucherDetailCellID = @"VoucherDetailCellID";
 }
 - (void)giftGivingAction
 {
-    GiftGivingViewController * VC = [[GiftGivingViewController alloc] init];
+    DonateVoucherViewController * VC = [[DonateVoucherViewController alloc] init];
+    VC.voucherModel = self.voucherModel;
     [self.navigationController pushViewController:VC animated:NO];
 }
 

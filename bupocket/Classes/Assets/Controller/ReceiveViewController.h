@@ -10,7 +10,14 @@
 
 NS_ASSUME_NONNULL_BEGIN
 
+typedef NS_ENUM(NSInteger, ReceiveType) {
+    ReceiveTypeDefault,
+    ReceiveTypeVoucher
+};
+
 @interface ReceiveViewController : BaseViewController
+
+@property (nonatomic, assign) ReceiveType receiveType;
 
 @end
 

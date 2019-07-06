@@ -985,7 +985,49 @@ static int64_t const gasPrice = 1000;
         return TransactionCost_MIN;
     }
 }
-
+// vouther Balace
+- (int64_t)getVoutherBalanceWithDposModel:(DposModel *)dposModel {
+    dispatch_async(dispatch_get_main_queue(), ^{
+        [MBProgressHUD showActivityMessageInWindow:Localized(@"Loading")];
+    });
+    ContractService * service = [[[SDK sharedInstance] setUrl: _bumoNodeUrl] getContractService];
+    int64_t fee = [[[NSDecimalNumber decimalNumberWithString:dposModel.tx_fee] decimalNumberByMultiplyingByPowerOf10: Decimals_BU] longLongValue];
+    ContractCallRequest * request = [ContractCallRequest new];
+    [request setSourceAddress:CurrentWalletAddress];
+    [request setContractAddress:dposModel.dest_address];
+    [request setInput:dposModel.input];
+    [request setOptType:2];
+    [request setFeeLimit:fee];
+    [request setGasPrice:gasPrice];
+    ContractCallResponse * response = [service call:request];
+    if (response.errorCode == Success_Code) {
+        dispatch_async(dispatch_get_main_queue(), ^{
+            [MBProgressHUD hideHUD];
+        });
+        if (response.result.queryRets.count > 0) {
+            NSDictionary * result = [[response.result.queryRets firstObject] objectForKey:@"result"];
+            NSDictionary * error = [[response.result.queryRets firstObject] objectForKey:@"error"];
+            if (result) {
+                NSString * str = [JsonTool dictionaryOrArrayWithJSONSString:result[@"value"]][@"available"];
+                return [str longLongValue];
+            } else if (error) {
+                dispatch_async(dispatch_get_main_queue(), ^{
+                    NSString * message = [JsonTool dictionaryOrArrayWithJSONSString:error[@"data"][@"exception"]][@"msg"];
+                    [MBProgressHUD showTipMessageInWindow:message];
+                });
+                return 0;
+            }
+            return 0;
+        }
+        return 0;
+    } else {
+        dispatch_async(dispatch_get_main_queue(), ^{
+            [MBProgressHUD hideHUD];
+            [MBProgressHUD showTipMessageInWindow:[ErrorTypeTool getDescription:response.errorCode]];
+        });
+        return 0;
+    }
+}
 #pragma mark - account data
 - (void)setAccountDataWithRandom:(NSData *)random
                         password:(NSString *)password
@@ -1419,7 +1461,7 @@ static int64_t const gasPrice = 1000;
         [MBProgressHUD showActivityMessageInWindow:Localized(@"Loading")];
     });
     NSString * sourceAddress = CurrentWalletAddress;
-    NSString * notes = Localized(@"DposContract");
+    NSString * notes = (NotNULLString(dposModel.notes)) ? dposModel.notes : Localized(@"DposContract");
     int64_t fee = [[[NSDecimalNumber decimalNumberWithString:dposModel.tx_fee] decimalNumberByMultiplyingByPowerOf10: Decimals_BU] longLongValue];
     int64_t nonce = [[HTTPManager shareManager] getAccountNonce: sourceAddress] + 1;
     if (nonce == 0) return NO;

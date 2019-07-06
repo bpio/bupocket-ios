@@ -26,7 +26,7 @@
 }
 - (void)setupView
 {
-    self.tableView = [[UITableView alloc] initWithFrame:CGRectMake(0, 0, DEVICE_WIDTH, DEVICE_HEIGHT - ScreenScale(75) - SafeAreaBottomH) style:UITableViewStyleGrouped];
+    self.tableView = [[UITableView alloc] initWithFrame:CGRectMake(0, 0, DEVICE_WIDTH, DEVICE_HEIGHT - ScreenScale(75) - SafeAreaBottomH - NavBarH) style:UITableViewStyleGrouped];
     self.tableView.delegate = self;
     self.tableView.dataSource = self;
     self.tableView.separatorInset = UIEdgeInsetsZero;
@@ -39,17 +39,17 @@
     results.titleLabel.numberOfLines = 0;
     [results setTitleColor:COLOR_6 forState:UIControlStateNormal];
     results.titleLabel.font = FONT(16);
-//    if (self.state == YES) {
-        [results setTitle:Localized(@"Success") forState:UIControlStateNormal];
+    if (self.state == YES) {
+        [results setTitle:Localized(@"DonationSuccess") forState:UIControlStateNormal];
         [results setImage:[UIImage imageNamed:@"transferSuccess"] forState:UIControlStateNormal];
-//    } else {
-//        if (self.resultModel.errorCode == ERRCODE_CONTRACT_EXECUTE_FAIL) {
-//            [transferResults setTitle:[ErrorTypeTool getDescription:ERRCODE_CONTRACT_EXECUTE_FAIL] forState:UIControlStateNormal];
-//        } else {
-//            [transferResults setTitle:Localized(@"Failure") forState:UIControlStateNormal];
-//        }
-//        [transferResults setImage:[UIImage imageNamed:@"transferFailure"] forState:UIControlStateNormal];
-//    }
+    } else {
+        if (self.resultModel.errorCode == ERRCODE_CONTRACT_EXECUTE_FAIL) {
+            [results setTitle:[ErrorTypeTool getDescription:ERRCODE_CONTRACT_EXECUTE_FAIL] forState:UIControlStateNormal];
+        } else {
+            [results setTitle:Localized(@"DonationFailure") forState:UIControlStateNormal];
+        }
+        [results setImage:[UIImage imageNamed:@"transferFailure"] forState:UIControlStateNormal];
+    }
     CGFloat resultsH = [Encapsulation rectWithText:results.titleLabel.text font:results.titleLabel.font textWidth:DEVICE_WIDTH - Margin_30].size.height;
     headerView.frame = CGRectMake(0, 0, DEVICE_WIDTH, ScreenScale(105) + resultsH);
     self.tableView.tableHeaderView = headerView;
@@ -59,8 +59,16 @@
         make.left.equalTo(headerView.mas_left).offset(Margin_15);
         make.right.equalTo(headerView.mas_right).offset(-Margin_15);
     }];
-    UIView * footerView = [[UIView alloc] initWithFrame:CGRectMake(0, 0, DEVICE_WIDTH, ScreenScale(75) + SafeAreaBottomH)];
+    UIView * footerView = [[UIView alloc] init];
+    footerView.backgroundColor = VIEWBG_COLOR;
+    [self.view addSubview:footerView];
+    [footerView mas_makeConstraints:^(MASConstraintMaker *make) {
+        make.left.right.equalTo(self.view);
+        make.bottom.equalTo(self.view.mas_bottom).offset(-SafeAreaBottomH);
+        make.height.mas_equalTo(ScreenScale(75));
+    }];
     UIButton * confirm  = [UIButton createButtonWithTitle:Localized(@"IGotIt") isEnabled:YES Target:self Selector:@selector(confirmAction)];
+    
     [footerView addSubview:confirm];
     
     [confirm mas_makeConstraints:^(MASConstraintMaker *make) {
@@ -72,6 +80,9 @@
 }
 - (void)confirmAction
 {
+    TabBarViewController * tabBar = [[TabBarViewController alloc] init];
+    [tabBar setSelectedIndex:1];
+    [UIApplication sharedApplication].keyWindow.rootViewController = tabBar;
 }
 - (CGFloat)tableView:(UITableView *)tableView heightForHeaderInSection:(NSInteger)section
 {
@@ -83,12 +94,8 @@
 }
 - (CGFloat)tableView:(UITableView *)tableView heightForRowAtIndexPath:(NSIndexPath *)indexPath
 {
-//    if (indexPath.row == [self.listArray[0] count] - 1) {
-//        return (NotNULLString(self.resultModel.remark)) ? ([Encapsulation rectWithText:self.resultModel.remark font:FONT(15) textWidth:Info_Width_Max].size.height + Margin_30) : MAIN_HEIGHT;
-//    } else {
-//        return [Encapsulation rectWithText:self.listArray[1][indexPath.row] font:FONT(15) textWidth:Info_Width_Max].size.height + Margin_30;
-//    }
-    return MAIN_HEIGHT;
+    NSString * info = [self infoStringWithIndexPath:indexPath];
+    return (NotNULLString(info)) ? [Encapsulation rectWithText:info font:FONT(15) textWidth:Info_Width_Max].size.height + Margin_30 : MAIN_HEIGHT;
 }
 - (NSInteger)numberOfSectionsInTableView:(UITableView *)tableView
 {
@@ -103,28 +110,43 @@
     DetailListViewCell * cell = [DetailListViewCell cellWithTableView:tableView cellType:DetailCellDefault];
     cell.title.text = self.listArray[indexPath.section][indexPath.row];
     cell.selectionStyle = UITableViewCellSelectionStyleNone;
-    CGSize cellSize = CGSizeMake(DEVICE_WIDTH - Margin_20, Margin_50);
-    if ([self.listArray[indexPath.section] count] - 1 == 0) {
-        [cell setViewSize:cellSize borderRadius:BG_CORNER corners:UIRectCornerAllCorners];
-    } else {
+    
+    NSString * info = [self infoStringWithIndexPath:indexPath];
+    cell.infoTitle.text = info;
+    CGFloat cellHeight = (NotNULLString(info)) ? [Encapsulation rectWithText:info font:FONT(15) textWidth:Info_Width_Max].size.height + Margin_30 : MAIN_HEIGHT;
+    CGSize cellSize = CGSizeMake(DEVICE_WIDTH - Margin_20, cellHeight);
+    if (indexPath.row == 0) {
+        [cell setViewSize:cellSize borderRadius:BG_CORNER corners:UIRectCornerTopLeft | UIRectCornerTopRight];
+    } else if (indexPath.row == [self.listArray[indexPath.section] count] - 1) {
+        [cell setViewSize:cellSize borderRadius:BG_CORNER corners:UIRectCornerBottomLeft | UIRectCornerBottomRight];
+    }
+    return cell;
+}
+- (NSString *)infoStringWithIndexPath:(NSIndexPath *)indexPath
+{
+    NSString * info;
+    if (indexPath.section == 0) {
         if (indexPath.row == 0) {
-            [cell setViewSize:cellSize borderRadius:BG_CORNER corners:UIRectCornerTopLeft | UIRectCornerTopRight];
-        } else if (indexPath.row == [self.listArray[indexPath.section] count] - 1) {
-            [cell setViewSize:cellSize borderRadius:BG_CORNER corners:UIRectCornerBottomLeft | UIRectCornerBottomRight];
+            info = self.confirmTransactionModel.transactionDetail;
+        } else if (indexPath.row == 1) {
+            info = CurrentWalletAddress;
+        } else if (indexPath.row == 2) {
+            info = self.confirmTransactionModel.destAddress;
+        } else if (indexPath.row == 3) {
+            info = self.confirmTransactionModel.amount;
+        } else if (indexPath.row == 4) {
+            info = self.confirmTransactionModel.transactionCost;
+        } else if (indexPath.row == 5) {
+            info = self.confirmTransactionModel.qrRemark;
+        }
+    } else if (indexPath.section == 1) {
+        if (indexPath.row == 0) {
+            info = [DateTool getDateStringWithTimeStr:[NSString stringWithFormat:@"%lld", self.resultModel.transactionTime]];
+        } else if (indexPath.row == 1) {
+            info = self.resultModel.transactionHash;
         }
     }
-//    if (indexPath.row == [self.listArray[0] count] - 1) {
-//        cell.infoTitle.text = !NotNULLString(self.resultModel.remark) ? @"" : self.resultModel.remark;
-//    } else {
-//        cell.infoTitle.text = self.listArray[1][indexPath.row];
-//    }
-    cell.selectionStyle = UITableViewCellSelectionStyleNone;
-//    if (indexPath.row == 0 || indexPath.row == 1 || indexPath.row == 4) {
-//        cell.infoTitle.copyable = YES;
-//    } else {
-//        cell.infoTitle.copyable = NO;
-//    }
-    return cell;
+    return info;
 }
 - (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath
 {

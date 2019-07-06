@@ -23,7 +23,7 @@
 
 @property (nonatomic, strong) UIImageView * assetsIconBg;
 @property (nonatomic, strong) UIImageView * assetsIcon;
-@property (nonatomic, strong) CustomButton * scanBtn;
+@property (nonatomic, strong) CustomButton * receiveBtn;
 @property (nonatomic, strong) CustomButton * transferAccounts;
 
 @property (nonatomic, strong) UILabel * assets;
@@ -163,14 +163,14 @@
         make.width.mas_lessThanOrEqualTo(DEVICE_WIDTH - Margin_40);
     }];
     CGFloat btnW = (DEVICE_WIDTH - Margin_30) / 2;
-    [_scanBtn mas_makeConstraints:^(MASConstraintMaker *make) {
+    [_receiveBtn mas_makeConstraints:^(MASConstraintMaker *make) {
         make.top.equalTo(self.amount.mas_bottom).offset(Margin_20);
         make.left.equalTo(self.headerViewBg.mas_left).offset(Margin_10);
         make.size.mas_equalTo(CGSizeMake(btnW, MAIN_HEIGHT));
     }];
     [_transferAccounts mas_makeConstraints:^(MASConstraintMaker *make) {
         make.right.equalTo(self.headerViewBg.mas_right).offset(-Margin_10);
-        make.size.top.equalTo(self->_scanBtn);
+        make.size.top.equalTo(self->_receiveBtn);
     }];
 }
 - (void)setupView
@@ -225,18 +225,18 @@
         _amount.text = self.amountStr;
         [_headerViewBg addSubview:_amount];
         
-        _scanBtn = [[CustomButton alloc] init];
-        _scanBtn.layoutMode = HorizontalNormal;
-        [_scanBtn setTitleColor:[UIColor whiteColor] forState:UIControlStateNormal];
-        _scanBtn.titleLabel.font = FONT_TITLE;
-        [_scanBtn setTitle:Localized(@"Receive") forState:UIControlStateNormal];
-        [_scanBtn setImage:[UIImage imageNamed:@"receive_w"] forState:UIControlStateNormal];
-        [_scanBtn addTarget:self action:@selector(scanAction:) forControlEvents:UIControlEventTouchUpInside];
-        [_headerViewBg addSubview: _scanBtn];
-        _scanBtn.layer.masksToBounds = YES;
-        _scanBtn.layer.cornerRadius = ScreenScale(3);
+        _receiveBtn = [[CustomButton alloc] init];
+        _receiveBtn.layoutMode = HorizontalNormal;
+        [_receiveBtn setTitleColor:[UIColor whiteColor] forState:UIControlStateNormal];
+        _receiveBtn.titleLabel.font = FONT_TITLE;
+        [_receiveBtn setTitle:Localized(@"Receive") forState:UIControlStateNormal];
+        [_receiveBtn setImage:[UIImage imageNamed:@"receive_w"] forState:UIControlStateNormal];
+        [_receiveBtn addTarget:self action:@selector(receiveAction:) forControlEvents:UIControlEventTouchUpInside];
+        [_headerViewBg addSubview: _receiveBtn];
+        _receiveBtn.layer.masksToBounds = YES;
+        _receiveBtn.layer.cornerRadius = ScreenScale(3);
 //        [_scanBtn setViewSize:CGSizeMake(btnW, MAIN_HEIGHT) borderWidth:0 borderColor:nil borderRadius:ScreenScale(3)];
-        _scanBtn.backgroundColor = COLOR(@"72AFFF");
+        _receiveBtn.backgroundColor = COLOR(@"72AFFF");
         
         _transferAccounts = [[CustomButton alloc] init];
         _transferAccounts.layoutMode = HorizontalNormal;
@@ -267,10 +267,11 @@
     }
     _headerViewBg.y = _headerBg.height - _headerViewH;
 }
-#pragma mark - scanAction
-- (void)scanAction:(UIButton *)button
+#pragma mark - receiveAction
+- (void)receiveAction:(UIButton *)button
 {
     ReceiveViewController * VC = [[ReceiveViewController alloc] init];
+    VC.receiveType = ReceiveTypeDefault;
     [self.navigationController pushViewController:VC animated:NO];
     /*
     __block NSString * result = nil;

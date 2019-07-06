@@ -12,6 +12,10 @@ NS_ASSUME_NONNULL_BEGIN
 
 @interface ResultViewController : BaseViewController
 
+@property (nonatomic, assign) BOOL state;
+@property (nonatomic, strong) TransactionResultModel * resultModel;
+@property (nonatomic, strong) ConfirmTransactionModel * confirmTransactionModel;
+
 @end
 
 NS_ASSUME_NONNULL_END

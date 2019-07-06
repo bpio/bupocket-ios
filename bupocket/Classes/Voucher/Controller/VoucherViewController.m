@@ -12,7 +12,6 @@
 #import "WalletListViewController.h"
 #import "VoucherViewCell.h"
 #import "VoucherDetailViewController.h"
-#import "VoucherModel.h"
 
 @interface VoucherViewController ()<UITableViewDelegate, UITableViewDataSource>
 
@@ -21,6 +20,8 @@
 @property (nonatomic, strong) UIView * noData;
 @property (nonatomic, assign) NSInteger pageindex;
 @property (nonatomic, strong) UIView * noNetWork;
+//@property (nonatomic, strong) NSString * headerTitle;
+@property (nonatomic, strong) UIButton * titleBtn;
 
 @end
 
@@ -47,11 +48,22 @@ static NSString * const VoucherCellID = @"VoucherCellID";
             [self.navigationController.tabBarController.tabBar hideBadgeOnItemIndex:1];
         }];
     }
-    [self setupNav];
+    if (!_isChoiceVouchers) {
+        [self setupNav];
+    }
     [self setupView];
     self.noNetWork = [Encapsulation showNoNetWorkWithSuperView:self.view target:self action:@selector(reloadData)];
     [self setupRefresh];
     // Do any additional setup after loading the view.
+}
+- (void)viewWillAppear:(BOOL)animated {
+    [super viewWillAppear:animated];
+    if (_isChoiceVouchers) {
+        self.navigationItem.title = Localized(@"ChoiceVouchersTitle");
+    } else {
+        self.navigationItem.title = CurrentWalletName ? CurrentWalletName : Current_WalletName;
+        [self.tableView.mj_header beginRefreshing];
+    }
 }
 - (void)reloadData
 {
@@ -105,10 +117,6 @@ static NSString * const VoucherCellID = @"VoucherCellID";
         self.noNetWork.hidden = NO;
     }];
 }
-- (void)viewWillAppear:(BOOL)animated {
-    [super viewWillAppear:animated];
-    self.navigationItem.title = CurrentWalletName ? CurrentWalletName : Current_WalletName;
-}
 
 - (void)setupNav
 {
@@ -131,12 +139,14 @@ static NSString * const VoucherCellID = @"VoucherCellID";
 - (void)QRCodeAction
 {
     ReceiveViewController * VC = [[ReceiveViewController alloc] init];
+    VC.receiveType = ReceiveTypeVoucher;
     [self.navigationController pushViewController:VC animated:NO];
 }
 
 - (void)setupView
 {
-    self.tableView = [[UITableView alloc] initWithFrame:CGRectMake(0, 0, DEVICE_WIDTH, DEVICE_HEIGHT - NavBarH - TabBarH) style:UITableViewStyleGrouped];
+    CGFloat tableViewH = _isChoiceVouchers ? DEVICE_HEIGHT - NavBarH : DEVICE_HEIGHT - NavBarH - TabBarH;
+    self.tableView = [[UITableView alloc] initWithFrame:CGRectMake(0, 0, DEVICE_WIDTH, tableViewH) style:UITableViewStyleGrouped];
     self.tableView.delegate = self;
     self.tableView.dataSource = self;
     self.tableView.separatorStyle = UITableViewCellSeparatorStyleNone;
@@ -173,13 +183,33 @@ static NSString * const VoucherCellID = @"VoucherCellID";
 }
 - (CGFloat)tableView:(UITableView *)tableView heightForHeaderInSection:(NSInteger)section
 {
-    if (section == 0) {
-        return (self.listArray.count > 0) ? ScreenScale(7.5) : CGFLOAT_MIN;
+    if (section == 0 && self.listArray.count > 0) {
+        if (_isChoiceVouchers) {
+//            return Margin_20 + [Encapsulation getSizeSpaceLabelWithStr:self.headerTitle font:FONT_13 width:DEVICE_WIDTH - Margin_30 height:CGFLOAT_MAX lineSpacing:Margin_5].height;
+            return Margin_20 + self.titleBtn.height;
+        } else {
+            return ScreenScale(7.5);
+        }
     } else {
         return CGFLOAT_MIN;
     }
 }
-
+- (UIView *)tableView:(UITableView *)tableView viewForHeaderInSection:(NSInteger)section
+{
+    if (section == 0 && self.listArray.count > 0 && _isChoiceVouchers) {
+        self.titleBtn = [UIButton buttonWithType:UIButtonTypeCustom];
+        self.titleBtn.contentHorizontalAlignment = UIControlContentHorizontalAlignmentLeft;
+        self.titleBtn.contentEdgeInsets = UIEdgeInsetsMake(0, Margin_15, 0, Margin_15);
+        NSString * title = [NSString stringWithFormat:Localized(@"%@ Vouchers available under"), CurrentWalletName];
+        [self.titleBtn setAttributedTitle:[Encapsulation attrWithString:title preFont:FONT_13 preColor:MAIN_COLOR index:[CurrentWalletName length] sufFont:FONT_13 sufColor:COLOR(@"2A2A2A") lineSpacing:Margin_5] forState:UIControlStateNormal];
+        CGSize maximumSize = CGSizeMake(DEVICE_WIDTH, CGFLOAT_MAX);
+        CGSize expectSize = [self.titleBtn sizeThatFits:maximumSize];
+        self.titleBtn.size = expectSize;
+        return self.titleBtn;
+    } else {
+        return [[UIView alloc] init];
+    }
+}
 - (CGFloat)tableView:(UITableView *)tableView heightForFooterInSection:(NSInteger)section
 {
     if (section == self.listArray.count - 1) {
@@ -190,23 +220,33 @@ static NSString * const VoucherCellID = @"VoucherCellID";
 }
 - (CGFloat)tableView:(UITableView *)tableView heightForRowAtIndexPath:(NSIndexPath *)indexPath
 {
-    return (DEVICE_WIDTH - Margin_20) / 704 * 325;
+//    return (DEVICE_WIDTH - Margin_20) / 704 * 325;
+    VoucherModel * voucherModel = self.listArray[indexPath.row];
+    return voucherModel.cellHeight;
 }
 - (UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath
 {
     VoucherViewCell * cell = [VoucherViewCell cellWithTableView:tableView identifier:VoucherCellID];
     VoucherModel * voucherModel = self.listArray[indexPath.row];
     cell.voucherModel = voucherModel;
+    cell.checked.hidden = !(self.voucherModel == voucherModel);
     cell.selectionStyle = UITableViewCellSelectionStyleNone;
     return cell;
 }
 - (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath
 {
     [tableView deselectRowAtIndexPath:indexPath animated:NO];
-    VoucherDetailViewController * VC = [[VoucherDetailViewController alloc] init];
     VoucherModel * voucherModel = self.listArray[indexPath.row];
-    VC.voucherModel = voucherModel;
-    [self.navigationController pushViewController:VC animated:NO];
+    if (_isChoiceVouchers) {
+        [self.navigationController popViewControllerAnimated:NO];
+        if (self.voucher) {
+            self.voucher(voucherModel);
+        }
+    } else {
+        VoucherDetailViewController * VC = [[VoucherDetailViewController alloc] init];
+        VC.voucherModel = voucherModel;
+        [self.navigationController pushViewController:VC animated:NO];
+    }
 }
 
 /*

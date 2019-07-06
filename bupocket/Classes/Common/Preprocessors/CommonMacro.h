@@ -104,6 +104,9 @@
 #define DposUnVote(role, address) [NSString stringWithFormat:@"{\"method\":\"unVote\",\"params\":{\"role\":\"%@\",\"address\":\"%@\"}}", role, address]
 #define DopsRevoke @"{\"method\":\"revoke\"}"
 #define DopsSubscribe(shares) [NSString stringWithFormat:@"{\"method\":\"subscribe\",\"params\":{\"shares\":%@}}", shares]
+
+#define SKUTokenTranche(skuId, trancheId, to, value) [NSString stringWithFormat:@"{\"method\":\"transfer\",\"params\":{\"skuId\":\"%@\",\"trancheId\":\"%@\",\"to\":\"%@\",\"value\":\"%@\"}}", skuId, trancheId, to, value]
+#define SKUTokenQuery(skuId, address) [NSString stringWithFormat:@"{\"method\":\"balanceOf\",\"params\":{\"skuId\":\"%@\",\"address\":\"%@\"}}", skuId, address]
 // Remove the first and last blanks of the input box
 #define TrimmingCharacters(string) [string stringByTrimmingCharactersInSet:[NSCharacterSet whitespaceAndNewlineCharacterSet]]
 

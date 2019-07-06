@@ -9,6 +9,7 @@
 #import <UIKit/UIKit.h>
 
 typedef NS_ENUM(NSInteger, TransactionType) {
+    TransactionTypeVoucher = 0,
     TransactionTypeApplyNode = 1,
     TransactionTypeVote = 3,
     TransactionTypeCooperate = 4,
@@ -45,6 +46,8 @@ NS_ASSUME_NONNULL_BEGIN
 
 // 区分扫码操作还是共建详情页操作
 @property (nonatomic, assign) BOOL isCooperateDetail;
+
+@property (nonatomic, copy) NSString * transactionDetail;
 
 @end
 

@@ -17,6 +17,8 @@ NS_ASSUME_NONNULL_BEGIN
 @property (nonatomic, copy) NSString * input;
 @property (nonatomic, copy) NSString * tx_fee;
 
+@property (nonatomic, copy) NSString * notes;
+
 @end
 
 NS_ASSUME_NONNULL_END

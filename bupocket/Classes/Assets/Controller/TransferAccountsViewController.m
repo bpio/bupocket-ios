@@ -145,7 +145,7 @@
             NSString * maxCost  = [[maxTransactionCost decimalNumberBySubtracting:cost] stringValue];
             if ([maxCost hasPrefix:@"-"]) {
                 [MBProgressHUD hideHUD];
-                [MBProgressHUD showTipMessageInWindow:Localized(@"TransactionCostMax")];
+                [MBProgressHUD showTipMessageInWindow: [NSString stringWithFormat:Localized(@"TransactionCostMax%@"), maxCost]];
                 return;
             }
             self.isCorrectText = YES;

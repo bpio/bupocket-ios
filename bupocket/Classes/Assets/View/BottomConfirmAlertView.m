@@ -395,13 +395,14 @@
 - (void)sureBtnClick {
     [self hideView];
     if (_sureBlock) {
-        _sureBlock(self.transactionCost);
+        _sureBlock(self.confirmTransactionModel.transactionCost);
     }
 }
 
 - (CGFloat)tableView:(UITableView *)tableView heightForRowAtIndexPath:(NSIndexPath *)indexPath
 {
-    CGFloat cellHeight = [Encapsulation getSizeSpaceLabelWithStr:@"哈哈哈哈哈哈哈哈哈哈哈哈哈哈哈哈哈哈哈哈哈哈哈哈哈哈哈哈哈哈哈哈哈哈哈哈哈哈哈哈哈哈哈哈哈哈哈哈" font:FONT_TITLE width:(DEVICE_WIDTH - Margin_40) height:CGFLOAT_MAX lineSpacing:Margin_10].height + ScreenScale(40);
+    NSString * str = [self infoStringWithTableView:tableView indexPath:indexPath];
+    CGFloat cellHeight = [Encapsulation getSizeSpaceLabelWithStr:str font:FONT_TITLE width:(DEVICE_WIDTH - Margin_40) height:CGFLOAT_MAX lineSpacing:Margin_10].height + ScreenScale(40);
     return cellHeight;
 }
 - (CGFloat)tableView:(UITableView *)tableView heightForHeaderInSection:(NSInteger)section
@@ -437,8 +438,34 @@
     }
     cell.title.font = FONT(13);
     cell.title.textColor = COLOR_9;
-    cell.infoTitle.attributedText = [Encapsulation attrWithString:@"哈哈哈哈哈哈哈哈哈哈哈哈哈哈哈哈哈哈哈哈哈哈哈哈哈哈哈哈哈哈哈哈哈哈哈哈哈哈哈哈哈哈哈哈哈哈哈哈" preFont:FONT_TITLE preColor:COLOR_6 index:0 sufFont:FONT_TITLE sufColor:COLOR_6 lineSpacing:Margin_10];
+    NSString * str = [self infoStringWithTableView:tableView indexPath:indexPath];
+    cell.infoTitle.attributedText = [Encapsulation attrWithString:str preFont:FONT_TITLE preColor:COLOR_6 index:0 sufFont:FONT_TITLE sufColor:COLOR_6 lineSpacing:Margin_10];
     return cell;
+}
+- (NSString *)infoStringWithTableView:(UITableView *)tableView indexPath:(NSIndexPath *)indexPath
+{
+    NSString * str;
+    if (indexPath.row == 1) {
+        str = self.confirmTransactionModel.destAddress;
+    } else if (indexPath.row == 2) {
+        str = self.confirmTransactionModel.amount;
+    } else if (indexPath.row == 3) {
+        str = self.confirmTransactionModel.transactionCost;
+    }
+    if (tableView == self.infoTableView) {
+        if (indexPath.row == 0) {
+            str = self.confirmTransactionModel.transactionDetail;
+        }  else if (indexPath.row == 4) {
+            str = self.confirmTransactionModel.qrRemark;
+        }
+    } else {
+        if (indexPath.row == 0) {
+            str = CurrentWalletAddress;
+        }  else if (indexPath.row == 4) {
+            str = self.confirmTransactionModel.script;
+        }
+    }
+    return str;
 }
 - (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath
 {

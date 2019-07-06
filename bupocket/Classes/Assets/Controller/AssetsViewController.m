@@ -22,6 +22,7 @@
 #import "ConfirmTransactionAlertView.h"
 #import "ScanCodeFailureViewController.h"
 #import "ReceiveViewController.h"
+#import "DonateVoucherViewController.h"
 #import "RegisteredModel.h"
 #import "DistributionModel.h"
 #import "BackUpWalletViewController.h"
@@ -469,6 +470,12 @@
             return;
         }
         result = stringValue;
+        if ([stringValue hasPrefix:Voucher_Prefix]) {
+            DonateVoucherViewController * VC = [[DonateVoucherViewController alloc] init];
+            VC.receiveAddressStr = [stringValue substringFromIndex:[Voucher_Prefix length]];
+            [self.navigationController pushViewController:VC animated:NO];
+            return;
+        }
         if ([stringValue hasPrefix:Dpos_Prefix]) {
             [self getDposTransactionWithStr:stringValue];
             return;
@@ -513,6 +520,7 @@
 - (void)showWalletAddress
 {
     ReceiveViewController * VC = [[ReceiveViewController alloc] init];
+    VC.receiveType = ReceiveTypeDefault;
     [self.navigationController pushViewController:VC animated:NO];
     /*
     WalletAddressAlertView * alertView = [[WalletAddressAlertView alloc] initWithWalletAddress:CurrentWalletAddress confrimBolck:^{

@@ -89,6 +89,7 @@
 #define Node_Check @"/getLedger"
 #define Server_Check @"healthcheck"
 // voucher
+#define Voucher_Prefix @"/xDnAs_rv/"
 #define Voucher_List @"voucher/v1/my/list"
 #define Voucher_Detail @"voucher/v1/detail"
 

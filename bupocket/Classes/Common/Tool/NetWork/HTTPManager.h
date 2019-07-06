@@ -188,6 +188,9 @@ typedef NS_ENUM(NSInteger, AccountDataType) {
 // Balance of assets
 - (int64_t)getAssetInfoWithAddress:(NSString *)address code:(NSString *)code issuer:(NSString *)issuer;
 
+// vouther Balace
+- (int64_t)getVoutherBalanceWithDposModel:(DposModel *)dposModel;
+
 #pragma mark - Nonce
 - (int64_t) getAccountNonce: (NSString *)address;
 #pragma mark - hash

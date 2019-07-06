@@ -643,9 +643,13 @@
 "VoucherPromptInfo" = "";
 "VoucherNoData" = "None";
 "ShareQRCode" = "Share QR Code to Receive Vouchers";
-"Value:%@" = "Nominal Value：¥%@";
+"Value:%@" = "Nominal Value：%@";
 "Validity" = "Validity";
 "%@ to %@" = "%@ To %@";
+// 选择券
+"ChoiceVouchers" = "选择券";
+"ChoiceVouchersTitle" = "选择要转赠的券";
+"%@ Vouchers available under" = "%@ 下可使用的券";
 // Details of Voucher
 "VoucherDetail" = "Details of Voucher";
 "ProvideAcceptance" = "Provides Acceptance";
@@ -667,6 +671,7 @@
 "DataPublicity" = "Data Publicity";
 
 // Donate
+"DonateVoucher" = "转赠券";
 "ReceiveAddressPlaceholder" = "Please input the receiving account address";
 "TransferQuantity" = "Amount to Donate";
 "TransferQuantity*" = "Amount to Donate *";
@@ -679,6 +684,12 @@
 "DonationSuccess" = "Donation Success";
 "DonationFailure" = "Donation Failure";
 "DonationTimeout" = "Donation Timeout";
+"TransferEncryptedDigitalVouchers" = "转赠加密数字券";
+
+"NoVouchers" = "暂无可转卡券";
+"CannotTransferVoucherToOneself" = "不能给自己转赠券";
+"VoucherSendingQuantityIsIncorrect" = "无效的转赠数量";
+"VoucherNotSufficientFunds" = "可用卡券数量不足";
 
 "ErrorPrompt" = "Error message";
 // 调用底层合约

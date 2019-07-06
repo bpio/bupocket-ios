@@ -32,7 +32,7 @@ static NSString * const VoucherDetailCellID = @"VoucherDetailCellID";
 {
     self.contentView.backgroundColor = VIEWBG_COLOR;
     [self.contentView addSubview:self.listBg];
-    
+    [self.listBg addSubview:self.checked];
     [self.listBg addSubview:self.icon];
     [self.listBg addSubview:self.name];
     [self.listBg addSubview:self.listImage];
@@ -72,6 +72,10 @@ static NSString * const VoucherDetailCellID = @"VoucherDetailCellID";
             make.top.equalTo(self.listBg.mas_top).offset(Margin_50);
         }];
     }
+    [self.checked mas_makeConstraints:^(MASConstraintMaker *make) {
+        make.top.equalTo(self.listBg.mas_top).offset(ScreenScale(2));
+        make.right.equalTo(self.listBg.mas_right).offset(-ScreenScale(2));
+    }];
     [self.icon mas_makeConstraints:^(MASConstraintMaker *make) {
         make.left.equalTo(self.listBg.mas_left).offset(left);
         make.top.equalTo(self.listBg.mas_top).offset(Margin_15);
@@ -132,6 +136,9 @@ static NSString * const VoucherDetailCellID = @"VoucherDetailCellID";
     NSString * endTime = ([voucherModel.endTime isEqualToString:@"-1"]) ? @"~" : [DateTool getDateStringWithDataStr:voucherModel.endTime];
     NSString * dataStr = [NSString stringWithFormat:Localized(@"%@ to %@"), startTime, endTime];
     self.date.text = [NSString stringWithFormat:@"%@：%@", Localized(@"Validity"), dataStr];
+    
+    [self.listBg sizeToFit];
+    _voucherModel.cellHeight = self.listBg.height;
 }
 - (UIImageView *)listBg
 {
@@ -139,6 +146,14 @@ static NSString * const VoucherDetailCellID = @"VoucherDetailCellID";
         _listBg = [[UIImageView alloc] init];
     }
     return _listBg;
+}
+- (UIImageView *)checked
+{
+    if (!_checked) {
+        _checked = [[UIImageView alloc] initWithImage:[UIImage imageNamed:@"voucher_checked"]];
+        _checked.hidden = YES;
+    }
+    return _checked;
 }
 - (UIImageView *)icon
 {

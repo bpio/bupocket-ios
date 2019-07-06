@@ -44,6 +44,8 @@ NS_ASSUME_NONNULL_BEGIN
 // 资产详情
 // 规格
 @property (nonatomic, copy) NSString * voucherSpec;
+
+@property (nonatomic, assign) CGFloat cellHeight;
 /*
 {
     balance = 100;

@@ -222,7 +222,8 @@
     if (!_QRCodeImage) {
         _QRCodeImage = [[UIImageView alloc] init];
         _QRCodeImage.image = [UIImage imageNamed:@"placeholderBg"];
-        [HMScannerController cardImageWithCardName:CurrentWalletAddress avatar:nil scale:0.2 completion:^(UIImage *image) {
+        NSString * qrCodeStr = (self.receiveType == ReceiveTypeDefault) ? CurrentWalletAddress : [NSString stringWithFormat:@"%@%@", Voucher_Prefix, CurrentWalletAddress];
+        [HMScannerController cardImageWithCardName:qrCodeStr avatar:nil scale:0.2 completion:^(UIImage *image) {
             self->_QRCodeImage.image = image;
         }];
     }
