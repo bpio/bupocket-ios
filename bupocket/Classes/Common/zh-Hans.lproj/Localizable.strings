@@ -350,7 +350,8 @@
 "PasswordModifiedSuccessfully" = "密码修改成功";
 "%@PWModifiedSuccessfully" = "%@ 的安全密码已修改成功！";
 
-"PasswordIsIncorrect" = "密码不正确，请重新输入";
+//"PasswordIsIncorrect" = "密码不正确，请重新输入";
+"PasswordIsIncorrect" = "安全密码输入有误";
 // 转账
 "BUAddressIsIncorrect" = "BU地址不正确，请重新输入";
 "SendingQuantityIsIncorrect" = "无效的转账数量";

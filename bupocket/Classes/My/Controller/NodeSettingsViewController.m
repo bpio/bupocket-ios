@@ -34,8 +34,9 @@
 
 - (void)viewDidLoad {
     [super viewDidLoad];
-    self.navigationItem.title = Localized(@"NodeSettings");
     NSUserDefaults * defaults = [NSUserDefaults standardUserDefaults];
+    NSString * title = ([defaults boolForKey:If_Switch_TestNetwork]) ? [NSString stringWithFormat:@"%@（%@）", Localized(@"NodeSettings"), Localized(@"TestNetworkPrompt")] : Localized(@"NodeSettings");
+    self.navigationItem.title = title;
     if ([defaults boolForKey:If_Switch_TestNetwork]) {
             self.nodeURLArrayKey = Node_URL_Array_Test;
             self.currentNodeURLKey = Current_Node_URL_Test;

@@ -33,7 +33,8 @@
 "IdentityName" = "Please create your identity name";
 "IDNamePlaceholder" = "Letters, Chinese characters, numbers and underscores are allowed to input, but the length cannot exceed 20 characters";
 "SetPassword" = "Please set the security password";
-"PWPlaceholder" = "The security password must be composed of numbers and uppercase or lowercase letters and the combination must be between 6-30 characters";
+//"PWPlaceholder" = "The security password must be composed of numbers and uppercase or lowercase letters and the combination must be between 6-30 characters";
+"PWPlaceholder" = "6-30 characters in uppercase or lowercase letters and numbers";
 "PWErrorPrompt" = "The password must be composed of numbers and uppercase or lowercase letters and the combination must be between 6-30 characters";
 "ConfirmPassword" = "Please confirm the security password again";
 "ConfirmPWPlaceholder" = "Please enter your security password again";
@@ -361,7 +362,8 @@
 "PasswordModifiedSuccessfully" = "Your password modified successfully";
 "%@PWModifiedSuccessfully" = "%@ security password has been changed！";
 
-"PasswordIsIncorrect" = "The password is incorrect. Please enter again";
+"PasswordIsIncorrect" = "安全密码输入有误";
+//"PasswordIsIncorrect" = "The password is incorrect. Please enter again";
 // Transfer coins
 //"%@AddressIsIncorrect" = "The %@ address is incorrect. Please enter again";
 "BUAddressIsIncorrect" = "The BU address is incorrect. Please enter again";
@@ -394,7 +396,8 @@
 //"PleaseEnterMnemonics" = "Please input your mnemonics";
 //"WalletName" = "Wallet Name";
 //"EnterWalletName" = "Input your wallet name to distinguish it from other wallets";
-"EnterWalletName" = "It is used to distinguish other wallets, which cannot exceed 20 characters";
+//"EnterWalletName" = "It is used to distinguish other wallets, which cannot exceed 20 characters";
+"EnterWalletName" = "20 characters at most";
 //"SetThePW" = "Set Password";
 "StartImporting" = "Start Importing";
 "UnderstandingMnemonics" = "About Mnemonics";

@@ -47,7 +47,7 @@ static NSString * const NormalPWCellID = @"NormalPWCellID";
             ifSecure.frame = CGRectMake(0, 0, Margin_20, TEXTFIELD_HEIGHT);
             self.textField.rightView = ifSecure;
         } else {
-            self.textField.rightView = [[UIView alloc] init];
+            self.textField.rightView = nil;
         }
         if (@available(iOS 11.0, *)) {
             self.textField.textContentType = UITextContentTypeName;
