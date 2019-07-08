@@ -148,6 +148,7 @@
 "EditNodePrompt" = "Edit node address";
 "InvalidNodeURL" = "Invalid node address";
 "NodeDuplication" = "Repeated node, please reset";
+"NodeUrlError" = "当前添加节点的区块落后于其它节点 {区块数偏移量>10} 个区块，您的资产数量可能会不准确，请以区块链浏览器（https://explorer.bumo.io）上的资产数量为准。";
 // About Us
 "Current version: V%@" = "Current version: V%@";
 "VersionLog" = "Version Logs";
@@ -186,7 +187,8 @@
 "Scan" = "Scan";
 "Receive" = "Receive";
 "SafetyTipsTitle" = "Safety tips";
-"SafetyTips" = "Your wallet mnemonics have not been backed up. To prevent loss of tokens due to forgetting passwords, deleting apps, or losing your phone, be sure to back up your mnemonics.";
+//"SafetyTips" = "Your wallet mnemonics have not been backed up. To prevent loss of tokens due to forgetting passwords, deleting apps, or losing your phone, be sure to back up your mnemonics.";
+"SafetyTips" = "您当前身份下的钱包助记词尚未备份，为防止忘记密码、删除/卸载APP或丢失手机等情况导致资产损失，请务必妥善备份助记词。";
 "ImmediateBackup" = "Backup Now";
 // Receive
 "ReceiveAddress" = "Receiving Address";
@@ -417,7 +419,8 @@
 "ImportWalletSuccessfully" = "The wallet is imported successfully";
 "FailureToImportWallet" = "Failed to import the wallet. Please try again";
 "WalletDuplicateImport" = "The wallet has already been imported";
-"KeyStoreIsIncorrect" = "The Keystore file is invalid or your password is incorrect. Please change it.";
+//"KeyStoreIsIncorrect" = "The Keystore file is invalid or your password is incorrect. Please change it.";
+"KeyStoreIsIncorrect" = "无效的Keystore文件";
 //"KeystorePWIsIncorrect" = "The password of your Keystore file is incorrect";
 "PrivateKeyIsIncorrect" = "The private key is invalid. Please change it";
 "MnemonicsExplainTitle" = "About Mnemonics";

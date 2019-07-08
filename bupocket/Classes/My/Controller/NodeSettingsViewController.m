@@ -19,6 +19,8 @@
 @property (nonatomic, strong) NSString * currentNodeURLKey;
 @property (nonatomic, strong) NSString * nodeURLArrayKey;
 @property (nonatomic, assign) BOOL ifSetting;
+@property (nonatomic, strong) NSString * seq;
+@property (nonatomic, strong) NSString * defaultSeq;
 
 @end
 
@@ -35,7 +37,7 @@
 - (void)viewDidLoad {
     [super viewDidLoad];
     NSUserDefaults * defaults = [NSUserDefaults standardUserDefaults];
-    NSString * title = ([defaults boolForKey:If_Switch_TestNetwork]) ? [NSString stringWithFormat:@"%@（%@）", Localized(@"NodeSettings"), Localized(@"TestNetworkPrompt")] : Localized(@"NodeSettings");
+    NSString * title = ([defaults boolForKey:If_Switch_TestNetwork]) ? [NSString stringWithFormat:@"%@(%@)", Localized(@"NodeSettings"), Localized(@"TestNetworkPrompt")] : Localized(@"NodeSettings");
     self.navigationItem.title = title;
     if ([defaults boolForKey:If_Switch_TestNetwork]) {
             self.nodeURLArrayKey = Node_URL_Array_Test;
@@ -55,16 +57,20 @@
 }
 - (void)setupNav
 {
-    UIButton * save = [UIButton createButtonWithTitle:Localized(@"Save") TextFont:FONT_15 TextNormalColor:MAIN_COLOR TextSelectedColor:MAIN_COLOR Target:self Selector:@selector(saveAcrion:)];
+    UIButton * save = [UIButton createButtonWithTitle:Localized(@"Save") TextFont:FONT_15 TextNormalColor:MAIN_COLOR TextSelectedColor:MAIN_COLOR Target:self Selector:@selector(saveAcrion)];
     save.frame = CGRectMake(0, 0, ScreenScale(60), ScreenScale(44));
     save.contentHorizontalAlignment = UIControlContentHorizontalAlignmentRight;
     self.navigationItem.rightBarButtonItem = [[UIBarButtonItem alloc]initWithCustomView:save];
 }
-- (void)saveAcrion:(UIButton *)button
+- (void)saveAcrion
 {
     if (self.ifSetting == YES) {
-        [[HTTPManager shareManager] SwitchedNodeWithURL:self.listArray[self.index]];
-        [UIApplication sharedApplication].keyWindow.rootViewController = [[TabBarViewController alloc] init];        
+        if (self.index == 0) {
+            [[HTTPManager shareManager] SwitchedNodeWithURL:self.listArray[self.index]];
+            [UIApplication sharedApplication].keyWindow.rootViewController = [[TabBarViewController alloc] init];
+            return;
+        }
+        [self CheckDefaultURLWithCustomURL:self.listArray[self.index] modifyType:ModifyTypeNodeEdit index:self.index isChoice:YES];
     }
 }
 - (void)setupView
@@ -110,24 +116,50 @@
             }
             return;
         }
-        [self getDataWithURL:text modifyType:modifyType index:index];
+        [self CheckDefaultURLWithCustomURL:text modifyType:modifyType index:index isChoice:NO];
     } cancelBlock:^{
         
     }];
     [alertView showInWindowWithMode:CustomAnimationModeAlert inView:nil bgAlpha:AlertBgAlpha needEffectView:NO];
 }
-- (void)getDataWithURL:(NSString *)URL modifyType:(ModifyType)modifyType index:(NSInteger)index
+- (void)CheckDefaultURLWithCustomURL:(NSString *)URL modifyType:(ModifyType)modifyType index:(NSInteger)index isChoice:(BOOL)isChoice
+{
+    [[HTTPManager shareManager] getNodeDataWithURL:[NSString stringWithFormat:@"%@%@", [self.listArray firstObject], Node_Check] success:^(id responseObject) {
+        NSInteger code = [[responseObject objectForKey:@"error_code"] integerValue];
+        if (code == Success_Code) {
+            self.seq = responseObject[@"result"][@"header"][@"seq"];
+            [self CheckWithURL:URL modifyType:modifyType index:index isChoice:isChoice];
+        } else {
+            [Encapsulation showAlertControllerWithErrorMessage:Localized(@"InvalidNodeURL") handler:nil];
+        }
+    } failure:^(NSError *error) {
+        [Encapsulation showAlertControllerWithErrorMessage:Localized(@"InvalidNodeURL") handler:nil];
+    }];
+}
+- (void)CheckWithURL:(NSString *)URL modifyType:(ModifyType)modifyType index:(NSInteger)index isChoice:(BOOL)isChoice
 {
     [[HTTPManager shareManager] getNodeDataWithURL:[NSString stringWithFormat:@"%@%@", URL, Node_Check] success:^(id responseObject) {
-        NSInteger code = [[responseObject objectForKey:@"errCode"] integerValue];
+        NSInteger code = [[responseObject objectForKey:@"error_code"] integerValue];
         if (code == Success_Code) {
-            if (modifyType == ModifyTypeNodeAdd) {
-                [self.listArray addObject:URL];
-            } else if (modifyType == ModifyTypeNodeEdit) {
-                [self.listArray replaceObjectAtIndex:index withObject:URL];
+            self.defaultSeq = responseObject[@"result"][@"header"][@"seq"];
+            if (llabs([self.seq longLongValue] - [self.defaultSeq longLongValue]) <= Seq_Subtract_Max) {
+                if (isChoice) {
+                    [[HTTPManager shareManager] SwitchedNodeWithURL:self.listArray[self.index]];
+                    [UIApplication sharedApplication].keyWindow.rootViewController = [[TabBarViewController alloc] init];
+                } else {
+                    if (modifyType == ModifyTypeNodeAdd) {
+                        [self.listArray addObject:URL];
+                    } else if (modifyType == ModifyTypeNodeEdit) {
+                        [self.listArray replaceObjectAtIndex:index withObject:URL];
+                    }
+                    [[NSUserDefaults standardUserDefaults] setObject:self.listArray forKey:self.nodeURLArrayKey];
+                    [self.tableView reloadData];
+                }
+            } else {
+                [Encapsulation showAlertControllerWithTitle:Localized(@"PromptTitle") message:Localized(@"NodeUrlError") confirmHandler:^(UIAlertAction *action) {
+                    
+                }];
             }
-            [[NSUserDefaults standardUserDefaults] setObject:self.listArray forKey:self.nodeURLArrayKey];
-            [self.tableView reloadData];
         } else {
             [Encapsulation showAlertControllerWithErrorMessage:Localized(@"InvalidNodeURL") handler:nil];
         }
@@ -191,8 +223,8 @@
                 [Encapsulation showAlertControllerWithTitle:Localized(@"ConfirmDeleteNode") message:message cancelHandler:^(UIAlertAction *action) {
                 } confirmHandler:^(UIAlertAction *action) {
                     if (self.index == button.tag) {
-                        self.index = 0;
-                        [self setNodeURLWithIndex:self.index];
+                        [self setNodeURLWithIndex:0];
+                        [self saveAcrion];
                     }
                     [self.listArray removeObjectAtIndex:button.tag];
                     [[NSUserDefaults standardUserDefaults] setObject:self.listArray forKey:self.nodeURLArrayKey];
