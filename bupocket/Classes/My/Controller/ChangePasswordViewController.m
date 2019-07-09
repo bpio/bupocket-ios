@@ -190,11 +190,11 @@
 //    "OldPWFormat" = "Previous security password is not correct";
     if (self.oldPW.length < PW_MIN_LENGTH || self.oldPW.length > PW_MAX_LENGTH) {
         //    if ([RegexPatternTool validatePassword:_PWOld.text] == NO) {
-        [Encapsulation showAlertControllerWithMessage:Localized(@"OldPWFormat") handler:nil];
+        [Encapsulation showAlertControllerWithErrorMessage:Localized(@"OldPWFormat") handler:nil];
         return;
     }
     if ([self.PW isEqualToString:self.oldPW]) {
-        [Encapsulation showAlertControllerWithMessage:Localized(@"PasswordDuplicate") handler:nil];
+        [Encapsulation showAlertControllerWithErrorMessage:Localized(@"PasswordDuplicate") handler:nil];
         return;
     }
     if ([RegexPatternTool validatePassword:self.PW] == NO) {
@@ -202,7 +202,7 @@
         return;
     }
     if (![self.PW isEqualToString:self.confirmPW]) {
-        [Encapsulation showAlertControllerWithMessage:Localized(@"NewPasswordIsDifferent") handler:nil];
+        [Encapsulation showAlertControllerWithErrorMessage:Localized(@"NewPasswordIsDifferent") handler:nil];
         return;
     }
     [[HTTPManager shareManager] modifyPasswordWithOldPW:self.oldPW PW:self.PW walletModel:self.walletModel success:^(id responseObject) {

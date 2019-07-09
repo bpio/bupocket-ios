@@ -75,7 +75,7 @@
 "TemporaryBackup" = "Backup Later";
 "BackupMnemonics" = "Backup Mnemonics";
 "IdentityCipherConfirm" = "Confirm password";
-"IdentityCipherPrompt" = "Please fill in the identity password to confirm the backup";
+//"IdentityCipherPrompt" = "Please fill in the identity password to confirm the backup";
 "IdentityCipherWarning" = "Warning: If you do not back up properly, you will not be able to retrieve your identity after you log out. Please handle this operation carefully.";
 //"PWPlaceholder" = "8~20 characters composed of letters and numbers";
 //"PWPlaceholder" = "6~30个字符";
@@ -420,8 +420,9 @@
 "FailureToImportWallet" = "Failed to import the wallet. Please try again";
 "WalletDuplicateImport" = "The wallet has already been imported";
 //"KeyStoreIsIncorrect" = "The Keystore file is invalid or your password is incorrect. Please change it.";
-"KeyStoreIsIncorrect" = "Invalid Keystore file";
+//"KeyStoreIsIncorrect" = "Invalid Keystore file";
 //"KeystorePWIsIncorrect" = "The password of your Keystore file is incorrect";
+"KeyStoreIsIncorrect" = "Invalid Keystore or incorrect security password";
 "PrivateKeyIsIncorrect" = "The private key is invalid. Please change it";
 "MnemonicsExplainTitle" = "About Mnemonics";
 "MnemonicsExplain" = "Mnemonics including 12 English words will be generated after the wallet is created. Mnemonics are 12 words derived from a random string and fetched from the word library of 2048 words by an algorithm. Mnemonics are used to help the users remember the complex private key. Anyone who has your mnemonics can get your digital assets, so you must keep your mnemonics safe.";
@@ -440,6 +441,7 @@
 "DeleteWallet" = "Delete Wallet";
 "ModifyWalletName" = "Change wallet name";
 "WalletPWPrompt" = "Please enter the wallet password";
+"BackupWalletPWPrompt" = "Please input the security password for the wallet to confirm backup";
 "DeleteWalletSuccessfully" = "The wallet is deleted successfully";
 "ConfirmDeleteWallet" = "Are you sure to delete this wallet?";
 "DeleteCurrentWallet" = "The to-be-deleted wallet is in use currently. After this wallet is deleted, the wallet in this identity will be selected by default.";
