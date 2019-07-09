@@ -43,6 +43,7 @@
 #import "AcceptorViewController.h"
 #import "AssetIssuerViewController.h"
 #import "ResultViewController.h"
+#import "NodeSettingsViewController.h"
 
 @interface NavigationViewController ()<UINavigationControllerDelegate>
 
@@ -117,7 +118,8 @@
                              [viewController isKindOfClass:[WKWebViewController class]] ||
                              [viewController isKindOfClass:[AcceptorViewController class]] ||
                              [viewController isKindOfClass:[AssetIssuerViewController class]] ||
-                             [viewController isKindOfClass:[ResultViewController class]]
+                             [viewController isKindOfClass:[ResultViewController class]] ||
+                             [viewController isKindOfClass:[NodeSettingsViewController class]]
                              );
     if (@available(iOS 11.0, *)) {
         [self.navigationBar setPrefersLargeTitles:!isSetLargeTitles];

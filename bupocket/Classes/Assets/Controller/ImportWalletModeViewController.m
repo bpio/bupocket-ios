@@ -227,7 +227,7 @@
         [Encapsulation showAlertControllerWithErrorMessage:Localized(@"WalletNameFormatIncorrect") handler:nil];
         return NO;
     } else if (self.importWalletMode == ImportWalletKeystore && (_walletPW.length < PW_MIN_LENGTH || _walletPW.length > PW_MAX_LENGTH)) {
-        [Encapsulation showAlertControllerWithErrorMessage:Localized(@"PWErrorPrompt") handler:nil];
+        [Encapsulation showAlertControllerWithErrorMessage:Localized(@"PasswordIsIncorrect") handler:nil];
         return NO;
     } else if ((self.importWalletMode == ImportWalletMnemonics || self.importWalletMode == ImportWalletPrivateKey) && [RegexPatternTool validatePassword:_walletPW] == NO) {
         [Encapsulation showAlertControllerWithErrorMessage:Localized(@"PWErrorPrompt") handler:nil];

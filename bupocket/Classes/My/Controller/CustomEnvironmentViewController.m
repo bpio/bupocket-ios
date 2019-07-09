@@ -131,7 +131,7 @@
 - (void)getData
 {
     [[HTTPManager shareManager] getNodeDataWithURL:[NSString stringWithFormat:@"%@%@", self.walletService, Server_Check] success:^(id responseObject) {
-        NSInteger code = [[responseObject objectForKey:@"errCode"] integerValue];
+        NSInteger code = [responseObject[@"meta"][@"code"] integerValue];
         if (code == Success_Code) {
             [self checkNode];
         } else {
@@ -144,7 +144,7 @@
 - (void)checkNode
 {
     [[HTTPManager shareManager] getNodeDataWithURL:[NSString stringWithFormat:@"%@%@", self.nodeService, Node_Check] success:^(id responseObject) {
-        NSInteger code = [[responseObject objectForKey:@"errCode"] integerValue];
+        NSInteger code = [[responseObject objectForKey:@"error_code"] integerValue];
         if (code == Success_Code) {
             [self setCustomData];
             //            [[NSUserDefaults standardUserDefaults] setObject:self.listArray forKey:self.nodeURLArrayKey];

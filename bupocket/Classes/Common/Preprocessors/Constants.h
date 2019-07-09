@@ -205,4 +205,6 @@
 #define SubIndex_Address 5
 #define SubIndex_hash 8
 
+#define Seq_Subtract_Max 10
+
 #endif /* Constants_h */

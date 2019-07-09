@@ -49,8 +49,8 @@ static NSString * const NormalPWCellAddress = @"NormalPWCellAddress";
             UIButton * ifSecure = [UIButton createButtonWithNormalImage:@"password_ciphertext" SelectedImage:@"password_visual" Target:self Selector:@selector(secureAction:)];
             ifSecure.frame = CGRectMake(0, 0, Margin_20, TEXTFIELD_HEIGHT);
             self.textField.rightView = ifSecure;
-        } else  {
-            self.textField.rightView = [[UIView alloc] init];
+        } else {
+            self.textField.rightView = nil;
         }
         if ([reuseIdentifier isEqualToString:NormalPWCellAddress]) {
             [self.listBg addSubview:self.scan];

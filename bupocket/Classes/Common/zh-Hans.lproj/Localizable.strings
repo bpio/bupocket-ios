@@ -143,6 +143,7 @@
 "EditNodePrompt" = "编辑节点地址";
 "InvalidNodeURL" = "无效的节点地址";
 "NodeDuplication" = "节点重复，请重新设置";
+"NodeUrlError" = "当前添加节点的区块落后于其它节点 {区块数偏移量>10} 个区块，您的资产数量可能会不准确，请以区块链浏览器（https://explorer.bumo.io）上的资产数量为准。";
 // 关于我们
 "Current version: V%@" = "当前版本: V%@";
 "VersionLog" = "版本日志";
@@ -181,7 +182,8 @@
 "Scan" = "扫一扫";
 "Receive" = "收款码";
 "SafetyTipsTitle" = "安全提示";
-"SafetyTips" = "您的钱包助记词尚未备份，为防止忘记密码、删除App或丢失手机等情况导致资产损失，请务必备份助记词";
+//"SafetyTips" = "您的钱包助记词尚未备份，为防止忘记密码、删除App或丢失手机等情况导致资产损失，请务必备份助记词";
+"SafetyTips" = "您当前身份下的钱包助记词尚未备份，为防止忘记密码、删除/卸载APP或丢失手机等情况导致资产损失，请务必妥善备份助记词。";
 "ImmediateBackup" = "立即备份";
 // 收款
 "ReceiveAddress" = "收款地址";
@@ -350,7 +352,8 @@
 "PasswordModifiedSuccessfully" = "密码修改成功";
 "%@PWModifiedSuccessfully" = "%@ 的安全密码已修改成功！";
 
-"PasswordIsIncorrect" = "密码不正确，请重新输入";
+//"PasswordIsIncorrect" = "密码不正确，请重新输入";
+"PasswordIsIncorrect" = "安全密码输入有误";
 // 转账
 "BUAddressIsIncorrect" = "BU地址不正确，请重新输入";
 "SendingQuantityIsIncorrect" = "无效的转账数量";
@@ -402,8 +405,9 @@
 "ImportWalletSuccessfully" = "钱包导入成功";
 "FailureToImportWallet" = "钱包导入失败，请重新导入";
 "WalletDuplicateImport" = "该钱包已导入，无需重复导入";
-"KeyStoreIsIncorrect" = "Keystore不合法或密码不正确，请进行修改";
+//"KeyStoreIsIncorrect" = "Keystore不合法或密码不正确，请进行修改";
 //"KeystorePWIsIncorrect" = "Keystore密码不正确";
+"KeyStoreIsIncorrect" = "无效的Keystore文件";
 "PrivateKeyIsIncorrect" = "私钥不合法，请进行修改";
 "MnemonicsExplainTitle" = "什么是助记词？";
 "MnemonicsExplain" = "创建钱包后会出现12个英文单词，这12个单词就是助记词。助记词由一个随机字符串通过算法在2048个单词库中得出的12个单词。助记词算法可以派生出私钥，所以助记词是私钥的另一种表现形式。用助记词是为了帮助用户记忆复杂的私钥。任何人拿到了您的助记词，就可以拿走您的数字资产，因此必须保管好您的助记词。";

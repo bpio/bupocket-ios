@@ -87,6 +87,8 @@
         NSString * walletIconName = self.walletModel.walletIconName == nil ? Current_Wallet_IconName : self.walletModel.walletIconName;
         cell.listImage.image = [UIImage imageNamed:walletIconName];
     } else if (indexPath.row == 1) {
+        cell.detailTitle.numberOfLines = 2;
+        cell.detailTitle.textAlignment = NSTextAlignmentRight;
         cell.detailTitle.text = self.walletModel.walletName;
     }
 //    cell.detailImage.image = [UIImage imageNamed:@"list_arrow"];

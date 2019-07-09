@@ -743,11 +743,11 @@
 //        if (![defaults boolForKey:If_Backup] && _noBackup.selected == NO) {
         if (![defaults boolForKey:If_Backup]) {
             if (iPhone6plus && [CurrentAppLanguage isEqualToString:ZhHans]) {
-//                return 184;
-                return 165;
-            } else if (iPhone6plus && [CurrentAppLanguage isEqualToString:ZhHans]) {
-//                return 217;
-                return 195;
+                return 184;
+//                return 165;
+            } else if (iPhone6plus && [CurrentAppLanguage isEqualToString:EN]) {
+                return 217;
+//                return 195;
             }
             return ScreenScale(130) + [Encapsulation rectWithText:Localized(@"SafetyTips") font:FONT_TITLE textWidth:DEVICE_WIDTH - Margin_40].size.height;
         } else {

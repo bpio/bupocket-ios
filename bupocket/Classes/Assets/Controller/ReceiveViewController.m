@@ -12,6 +12,7 @@
 
 @interface ReceiveViewController ()
 
+@property (nonatomic, strong) UILabel * navTitle;
 @property (nonatomic, strong) UIImageView * imageViewBg;
 @property (nonatomic, strong) UIView * addressBg;
 @property (nonatomic, strong) UIImageView * walletIcon;
@@ -28,7 +29,7 @@
 - (void)viewDidLoad {
     [super viewDidLoad];
     self.edgesForExtendedLayout = UIRectEdgeAll;
-    self.navigationItem.title = Localized(@"Receive");
+//    self.navigationItem.title = Localized(@"Receive");
     self.navAlpha = 0;
     self.navBackgroundColor = [UIColor whiteColor];
     self.navTitleColor = self.navTintColor = [UIColor whiteColor];
@@ -60,8 +61,6 @@
     UIImage * walletImage = [Encapsulation mergedImageWithMainImage:self.imageViewBg];
     NSArray * activityItems = @[walletImage];
     UIActivityViewController *activity = [[UIActivityViewController alloc] initWithActivityItems:activityItems applicationActivities:nil];
-//    activity.navAlpha = 1.0;
-//    activity.navBackgroundColor = [UIColor whiteColor];
     // excludedActivityTypes 用于指定不需要提供的服务
     if (@available(iOS 11.0, *)) {
         activity.excludedActivityTypes = @[UIActivityTypePostToFacebook,
@@ -98,14 +97,29 @@
 }
 - (void)setupView
 {
-    self.imageViewBg = [[UIImageView alloc] initWithFrame:self.view.frame];
+    self.imageViewBg = [[UIImageView alloc] init];
     self.imageViewBg.image = [UIImage imageNamed:@"receive_bg"];
     self.imageViewBg.contentMode = UIViewContentModeScaleAspectFill;
     self.imageViewBg.userInteractionEnabled = YES;
     [self.view addSubview:self.imageViewBg];
+    [self.imageViewBg mas_makeConstraints:^(MASConstraintMaker *make) {
+        make.edges.equalTo(self.view);
+    }];
     
     [self.imageViewBg addSubview:self.addressBg];
-    CGSize addressBgSize = CGSizeMake(DEVICE_WIDTH - Margin_60, ScreenScale(390));
+    
+    self.navTitle = [[UILabel alloc] init];
+    self.navTitle.font = FONT_Bold(21);
+    self.navTitle.textColor = [UIColor whiteColor];
+    self.navTitle.text = Localized(@"Receive");
+    [self.imageViewBg addSubview:self.navTitle];
+    [self.navTitle mas_makeConstraints:^(MASConstraintMaker *make) {
+        make.top.equalTo(self.imageViewBg.mas_top).offset(StatusBarHeight);
+        make.height.mas_equalTo(ScreenScale(NavBarH - StatusBarHeight));
+        make.centerX.equalTo(self.imageViewBg);
+    }];
+    
+    CGSize addressBgSize = CGSizeMake(DEVICE_WIDTH - Margin_60, ScreenScale(370));
     [self.addressBg setViewSize:addressBgSize borderRadius:BG_CORNER corners:UIRectCornerAllCorners];
     [self.addressBg mas_makeConstraints:^(MASConstraintMaker *make) {
         make.center.equalTo(self.imageViewBg);
@@ -124,10 +138,9 @@
     [self.addressBg addSubview:self.walletName];
     [self.walletName mas_makeConstraints:^(MASConstraintMaker *make) {
         make.top.equalTo(self.walletIcon.mas_bottom).offset(Margin_15);
-        make.left.equalTo(self.addressBg.mas_left).offset(Margin_15);
-        make.right.equalTo(self.addressBg.mas_right).offset(-Margin_15);
+        make.centerX.equalTo(self.addressBg);
+        make.width.mas_lessThanOrEqualTo(addressBgSize.width - Margin_30);
     }];
-    
     [self.addressBg addSubview:self.walletAddress];
     CGFloat walletAddressW = addressBgSize.width - Margin_20;
     
@@ -139,7 +152,8 @@
     [self.addressBg addSubview:self.addressTitle];
     [self.addressTitle mas_makeConstraints:^(MASConstraintMaker *make) {
         make.bottom.equalTo(self.addressBg.mas_bottom).offset(-Margin_20);
-        make.left.right.equalTo(self.walletName);
+        make.left.equalTo(self.addressBg.mas_left).offset(Margin_15);
+        make.right.equalTo(self.addressBg.mas_right).offset(-Margin_15);
     }];
     
     [self.addressBg addSubview:self.QRCodeImage];
@@ -194,7 +208,8 @@
         _walletName = [[UILabel alloc] init];
         _walletName.textColor = TITLE_COLOR;
         _walletName.font = FONT_Bold(16);
-        _walletName.textAlignment = NSTextAlignmentCenter;
+//        _walletName.textAlignment = NSTextAlignmentCenter;
+        _walletName.numberOfLines = 0;
         _walletName.text = CurrentWalletName ? CurrentWalletName : Current_WalletName;;
     }
     return _walletName;
