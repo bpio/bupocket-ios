@@ -103,7 +103,7 @@
 "MultiLingual" = "Language";
 "VersionNumber" = "Version";
 "MonetaryUnit" = "Currency Unit";
-"SwitchedNetwork" = "Switch to Test Network";
+"SwitchedNetwork" = "Switch to Testnet";
 // My identity
 "MyIdentity" = "My Identity";
 "IdentityNameTitle" = "Identity name";
@@ -148,7 +148,7 @@
 "EditNodePrompt" = "Edit node address";
 "InvalidNodeURL" = "Invalid node address";
 "NodeDuplication" = "Repeated node, please reset";
-"NodeUrlError" = "当前添加节点的区块落后于其它节点 {区块数偏移量>10} 个区块，您的资产数量可能会不准确，请以区块链浏览器（https://explorer.bumo.io）上的资产数量为准。";
+"NodeUrlError" = "The blocks of the currently added node lag behind other nodes {block number offset > 10}, and your assets may be inaccurate. Please refer to the blockchain browser (https://explorer.bumo.io) for accurate assets.";
 // About Us
 "Current version: V%@" = "Current version: V%@";
 "VersionLog" = "Version Logs";
@@ -172,12 +172,12 @@
 "InvalidServerURL" = "Invalid wallet service address";
 // Switch network
 //"SwitchToTestNetwork" = "Whether to switch to the test network?";
-"SwitchToTestNetwork" = "Are you sure to switch to test network?";
+"SwitchToTestNetwork" = "Are you sure to switch to testnet?";
 //"YES" = "Yes";
 //"NO" = "No";
-"ClosedTestNetwork" = "You have stopped the test network";
-"OpenedTestNetwork" = "You have started the test network";
-"TestNetworkPrompt" = "Test Network";
+"ClosedTestNetwork" = "You have stopped the testnet";
+"OpenedTestNetwork" = "You have started the testnet";
+"TestNetworkPrompt" = "Testnet";
 
 // Tokens
 //"TotalAssets" = "Estimated Total Assets";
@@ -188,7 +188,7 @@
 "Receive" = "Receive";
 "SafetyTipsTitle" = "Safety tips";
 //"SafetyTips" = "Your wallet mnemonics have not been backed up. To prevent loss of tokens due to forgetting passwords, deleting apps, or losing your phone, be sure to back up your mnemonics.";
-"SafetyTips" = "您当前身份下的钱包助记词尚未备份，为防止忘记密码、删除/卸载APP或丢失手机等情况导致资产损失，请务必妥善备份助记词。";
+"SafetyTips" = "The wallet mnemonics in your current identity have not been backed up. To prevent loss of assets caused by forgetting the password, deleting/uninstalling the app, or losing the phone, please be sure to back up the mnemonics.";
 "ImmediateBackup" = "Backup Now";
 // Receive
 "ReceiveAddress" = "Receiving Address";
@@ -364,7 +364,7 @@
 "PasswordModifiedSuccessfully" = "Your password modified successfully";
 "%@PWModifiedSuccessfully" = "%@ security password has been changed！";
 
-"PasswordIsIncorrect" = "安全密码输入有误";
+"PasswordIsIncorrect" = "Incorrect security password";
 //"PasswordIsIncorrect" = "The password is incorrect. Please enter again";
 // Transfer coins
 //"%@AddressIsIncorrect" = "The %@ address is incorrect. Please enter again";
@@ -420,7 +420,7 @@
 "FailureToImportWallet" = "Failed to import the wallet. Please try again";
 "WalletDuplicateImport" = "The wallet has already been imported";
 //"KeyStoreIsIncorrect" = "The Keystore file is invalid or your password is incorrect. Please change it.";
-"KeyStoreIsIncorrect" = "无效的Keystore文件";
+"KeyStoreIsIncorrect" = "Invalid Keystore file";
 //"KeystorePWIsIncorrect" = "The password of your Keystore file is incorrect";
 "PrivateKeyIsIncorrect" = "The private key is invalid. Please change it";
 "MnemonicsExplainTitle" = "About Mnemonics";

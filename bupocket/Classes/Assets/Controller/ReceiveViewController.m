@@ -97,11 +97,14 @@
 }
 - (void)setupView
 {
-    self.imageViewBg = [[UIImageView alloc] initWithFrame:self.view.frame];
+    self.imageViewBg = [[UIImageView alloc] init];
     self.imageViewBg.image = [UIImage imageNamed:@"receive_bg"];
     self.imageViewBg.contentMode = UIViewContentModeScaleAspectFill;
     self.imageViewBg.userInteractionEnabled = YES;
     [self.view addSubview:self.imageViewBg];
+    [self.imageViewBg mas_makeConstraints:^(MASConstraintMaker *make) {
+        make.edges.equalTo(self.view);
+    }];
     
     [self.imageViewBg addSubview:self.addressBg];
     

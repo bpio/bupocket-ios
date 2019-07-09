@@ -37,7 +37,7 @@
 - (void)viewDidLoad {
     [super viewDidLoad];
     NSUserDefaults * defaults = [NSUserDefaults standardUserDefaults];
-    NSString * title = ([defaults boolForKey:If_Switch_TestNetwork]) ? [NSString stringWithFormat:@"%@(%@)", Localized(@"NodeSettings"), Localized(@"TestNetworkPrompt")] : Localized(@"NodeSettings");
+    NSString * title = ([defaults boolForKey:If_Switch_TestNetwork]) ? [NSString stringWithFormat:@"%@（%@）", Localized(@"NodeSettings"), Localized(@"TestNetworkPrompt")] : Localized(@"NodeSettings");
     self.navigationItem.title = title;
     if ([defaults boolForKey:If_Switch_TestNetwork]) {
             self.nodeURLArrayKey = Node_URL_Array_Test;
