@@ -127,11 +127,17 @@ static NSString * const VoucherDetailCellID = @"VoucherDetailCellID";
 {
     _voucherModel = voucherModel;
     [self.icon sd_setImageWithURL:[NSURL URLWithString:voucherModel.voucherAcceptance[@"icon"]] placeholderImage:[UIImage imageNamed:@"icon_placehoder"]];
-    self.name.text = voucherModel.voucherAcceptance[@"name"];
+    NSString * name = voucherModel.voucherAcceptance[@"name"];
+    if ([self.reuseIdentifier isEqualToString:VoucherDetailCellID]) {
+        self.name.attributedText = [Encapsulation attrWithString:[NSString stringWithFormat:@"%@ %@", name, Localized(@"ProvideAcceptance")] preFont:FONT_13 preColor:COLOR_9 index:name.length sufFont:FONT(12) sufColor:COLOR(@"B2B2B2") lineSpacing:0];
+    } else {
+        self.name.text = name;        
+    }
     [self.listImage sd_setImageWithURL:[NSURL URLWithString:voucherModel.voucherIcon] placeholderImage:[UIImage imageNamed:@"good_placehoder"]];
     self.title.text = voucherModel.voucherName;
     self.value.text = [NSString stringWithFormat:Localized(@"Value:%@"), voucherModel.faceValue];
-    self.number.text = [NSString stringWithFormat:@"×  %@", voucherModel.balance];
+//    self.number.text = [NSString stringWithFormat:@"×  %@", voucherModel.balance];
+    self.number.attributedText = [Encapsulation attrWithString:[NSString stringWithFormat:@"× %@", voucherModel.balance] preFont:FONT(18) preColor:TITLE_COLOR index:1 sufFont:FONT_Bold(18) sufColor:TITLE_COLOR lineSpacing:0];
     NSString * startTime = ([voucherModel.startTime isEqualToString:@"-1"]) ? @"~" : [DateTool getDateStringWithDataStr:voucherModel.startTime];
     NSString * endTime = ([voucherModel.endTime isEqualToString:@"-1"]) ? @"~" : [DateTool getDateStringWithDataStr:voucherModel.endTime];
     NSString * dataStr = [NSString stringWithFormat:Localized(@"%@ to %@"), startTime, endTime];
@@ -193,7 +199,8 @@ static NSString * const VoucherDetailCellID = @"VoucherDetailCellID";
 {
     if (!_title) {
         _title = [[UILabel alloc] init];
-        _title.font = FONT(13);
+//        _title.font = FONT(13);
+        _title.font = FONT_Bold(14);
         _title.textColor = TITLE_COLOR;
         _title.numberOfLines = 2;
     }
@@ -204,7 +211,7 @@ static NSString * const VoucherDetailCellID = @"VoucherDetailCellID";
     if (!_value) {
         _value = [[UILabel alloc] init];
         _value.font = FONT(12);
-        _value.textColor = COLOR_9;
+        _value.textColor = COLOR_6;
     }
     return _value;
 }
@@ -212,7 +219,7 @@ static NSString * const VoucherDetailCellID = @"VoucherDetailCellID";
 {
     if (!_number) {
         _number = [[UILabel alloc] init];
-        _number.font = FONT_Bold(20);
+        _number.font = FONT_Bold(18);
         _number.textColor = TITLE_COLOR;
     }
     return _number;

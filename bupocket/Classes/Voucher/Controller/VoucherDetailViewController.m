@@ -106,14 +106,14 @@ static NSString * const VoucherDetailCellID = @"VoucherDetailCellID";
     UIImage * image = [UIImage imageNamed:@"voucher_detail_bg"];
     CGFloat imageBgW = DEVICE_WIDTH - Margin_30;
     CGFloat imageBgH = imageBgW * (image.size.height / image.size.width);
-    UIImageView * imageBg = [[UIImageView alloc] initWithFrame:CGRectMake(Margin_15, ScreenScale(75), imageBgW, imageBgH)];
+    UIImageView * imageBg = [[UIImageView alloc] init];
     imageBg.userInteractionEnabled = YES;
     imageBg.image = image;
     [self.scrollView addSubview:imageBg];
     [imageBg mas_makeConstraints:^(MASConstraintMaker *make) {
         make.left.mas_equalTo(Margin_15);
-        make.top.mas_equalTo(ScreenScale(75));
-        make.width.mas_equalTo(DEVICE_WIDTH - Margin_30);
+        make.top.mas_equalTo(Margin_15 + NavBarH);
+        make.size.mas_equalTo(CGSizeMake(imageBgW, imageBgH));
     }];
     self.loadingBg = [[UIImageView alloc] init];
     self.loadingBg.image = [UIImage imageNamed:@"voucher_detail_loading_bg"];

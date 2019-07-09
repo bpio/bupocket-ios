@@ -159,8 +159,8 @@ static NSString * const VoucherCellID = @"VoucherCellID";
 - (UIView *)noData
 {
     if (!_noData) {
-        CGFloat noDataH = DEVICE_HEIGHT - NavBarH - SafeAreaBottomH - TabBarH;
-        _noData = [[UIView alloc] initWithFrame:CGRectMake(0, 0, DEVICE_WIDTH, noDataH)];
+        CGFloat noDataH = self.tableView.height;
+        _noData = [[UIView alloc] initWithFrame:self.tableView.frame];
         _noData.backgroundColor = [UIColor whiteColor];
 //        UIButton * noDataBtn = [Encapsulation showNoDataWithTitle:Localized(@"VoucherNoData") imageName:@"no_data_voucher" superView:_noData frame:CGRectMake(0, (noDataH - ScreenScale(220)) / 2, DEVICE_WIDTH, ScreenScale(220))];
         UIButton * noDataBtn = [Encapsulation showNoDataWithTitle:Localized(@"VoucherNoData") imageName:@"no_data_voucher" superView:_noData frame:CGRectMake(0, (noDataH - ScreenScale(220) - MAIN_HEIGHT - Margin_15) / 2 - Margin_50, DEVICE_WIDTH, ScreenScale(220))];
