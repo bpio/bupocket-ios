@@ -87,7 +87,7 @@
     if (!lastVersion || [@"1.4.3" compare:lastVersion] == NSOrderedDescending) {
         SafetyReinforcementAlertView * alertView = [[SafetyReinforcementAlertView alloc] initWithTitle:Localized(@"SafetyReinforcementTitle") promptText:Localized(@"SafetyReinforcementPrompt") confrim:Localized(@"StartReinforcement") confrimBolck:^{
             dispatch_after(dispatch_time(DISPATCH_TIME_NOW, (int64_t)(Dispatch_After_Time * NSEC_PER_SEC)), dispatch_get_main_queue(), ^{
-                self.PWAlertView = [[PasswordAlertView alloc] initWithPrompt:Localized(@"IdentityCipherPrompt") confrimBolck:^(NSString * _Nonnull password, NSArray * _Nonnull words) {
+                self.PWAlertView = [[PasswordAlertView alloc] initWithPrompt:Localized(@"BackupWalletPWPrompt") confrimBolck:^(NSString * _Nonnull password, NSArray * _Nonnull words) {
                     if (words.count > 0) {
                         NSData * random = [Mnemonic randomFromMnemonicCode: words];
                         [self upDateAccountDataWithRandom:random password:password];

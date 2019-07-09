@@ -102,11 +102,11 @@
     if (self.mnemonicArray.count > 0) {
         [self pushBackupMnemonicsWithArray:self.mnemonicArray];
     } else {
-        NSString * prompt = Localized(@"IdentityCipherPrompt");
-        if (self.mnemonicType == MnemonicExport) {
-            prompt = Localized(@"WalletPWPrompt");
-        }
-        PasswordAlertView * alertView = [[PasswordAlertView alloc] initWithPrompt:prompt confrimBolck:^(NSString * _Nonnull password, NSArray * _Nonnull words) {
+//        NSString * prompt = Localized(@"IdentityCipherPrompt");
+//        if (self.mnemonicType == MnemonicExport) {
+//            prompt = Localized(@"WalletPWPrompt");
+//        }
+        PasswordAlertView * alertView = [[PasswordAlertView alloc] initWithPrompt:Localized(@"BackupWalletPWPrompt") confrimBolck:^(NSString * _Nonnull password, NSArray * _Nonnull words) {
             if (words.count > 0) {
                 [self pushBackupMnemonicsWithArray:words];
             }
