@@ -43,11 +43,11 @@
         [results setTitle:Localized(@"DonationSuccess") forState:UIControlStateNormal];
         [results setImage:[UIImage imageNamed:@"transferSuccess"] forState:UIControlStateNormal];
     } else {
-        if (self.resultModel.errorCode == ERRCODE_CONTRACT_EXECUTE_FAIL) {
-            [results setTitle:[ErrorTypeTool getDescription:ERRCODE_CONTRACT_EXECUTE_FAIL] forState:UIControlStateNormal];
-        } else {
+//        if (self.resultModel.errorCode == ERRCODE_CONTRACT_EXECUTE_FAIL) {
+//            [results setTitle:[ErrorTypeTool getDescription:ERRCODE_CONTRACT_EXECUTE_FAIL] forState:UIControlStateNormal];
+//        } else {
             [results setTitle:Localized(@"DonationFailure") forState:UIControlStateNormal];
-        }
+//        }
         [results setImage:[UIImage imageNamed:@"transferFailure"] forState:UIControlStateNormal];
     }
     CGFloat resultsH = [Encapsulation rectWithText:results.titleLabel.text font:results.titleLabel.font textWidth:DEVICE_WIDTH - Margin_30].size.height;
@@ -120,6 +120,11 @@
     } else if (indexPath.row == [self.listArray[indexPath.section] count] - 1) {
         [cell setViewSize:cellSize borderRadius:BG_CORNER corners:UIRectCornerBottomLeft | UIRectCornerBottomRight];
     }
+    if (indexPath.section == 0 && indexPath.row == [self.listArray[0] count] - 1) {
+        cell.infoTitle.copyable = YES;
+    } else {
+        cell.infoTitle.copyable = NO;
+    }
     return cell;
 }
 - (NSString *)infoStringWithIndexPath:(NSIndexPath *)indexPath
@@ -135,7 +140,7 @@
         } else if (indexPath.row == 3) {
             info = self.confirmTransactionModel.amount;
         } else if (indexPath.row == 4) {
-            info = self.confirmTransactionModel.transactionCost;
+            info = self.resultModel.actualFee;
         } else if (indexPath.row == 5) {
             info = self.confirmTransactionModel.qrRemark;
         }

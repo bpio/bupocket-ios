@@ -104,7 +104,8 @@ static NSString * const VoucherCellID = @"VoucherCellID";
         }];
         [self.listImage setViewSize:CGSizeMake(ScreenScale(22), ScreenScale(22)) borderWidth:0 borderColor:nil borderRadius:ScreenScale(11)];
         [self.listImage mas_makeConstraints:^(MASConstraintMaker *make) {
-            make.right.equalTo(self.detailTitle.mas_left).offset(-Margin_10);
+            make.right.equalTo(self.detail.mas_left);
+//            make.right.equalTo(self.detailTitle.mas_left).offset(-Margin_10);
             make.centerY.equalTo(self.listBg);
             make.width.height.mas_equalTo(ScreenScale(22));
             make.left.mas_greaterThanOrEqualTo(self.title.mas_right).offset(Margin_10);

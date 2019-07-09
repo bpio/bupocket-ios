@@ -996,7 +996,7 @@ static int64_t const gasPrice = 1000;
     [request setSourceAddress:CurrentWalletAddress];
     [request setContractAddress:dposModel.dest_address];
     [request setInput:dposModel.input];
-    [request setOptType:2];
+    [request setOptType:2]; // query接口
     [request setFeeLimit:fee];
     [request setGasPrice:gasPrice];
     ContractCallResponse * response = [service call:request];
@@ -1240,13 +1240,8 @@ static int64_t const gasPrice = 1000;
         // Other currencies
         int64_t amount = [[[NSDecimalNumber decimalNumberWithString:assets] decimalNumberByMultiplyingByPowerOf10: decimals] longLongValue];
         if ([[self getAccountInfoWithAddress: destAddress] isEqualToString:TransactionCost_NotActive_MIN]) {
-            AccountActivateOperation *activateOperation = [AccountActivateOperation new];
-            [activateOperation setSourceAddress: sourceAddress];
-            [activateOperation setDestAddress: destAddress];
-            int64_t initBalance = [[[NSDecimalNumber decimalNumberWithString:ActivateInitBalance] decimalNumberByMultiplyingByPowerOf10: Decimals_BU] longLongValue];
-            [activateOperation setInitBalance: initBalance];
+            AccountActivateOperation *activateOperation = [self AccountActivateWithAddress:destAddress];
             [operations addObject: activateOperation];
-            
         }
         AssetSendOperation *operation = [AssetSendOperation new];
         [operation setSourceAddress: sourceAddress];
@@ -1258,7 +1253,15 @@ static int64_t const gasPrice = 1000;
     }
     return [[HTTPManager shareManager] getHashWithSourceAddress:sourceAddress nonce:nonce gasPrice:gasPrice feeLimit:fee operations:operations notes:notes];
 }
-
+- (AccountActivateOperation *)AccountActivateWithAddress:(NSString *)address
+{
+    AccountActivateOperation * activateOperation = [AccountActivateOperation new];
+    [activateOperation setSourceAddress: CurrentWalletAddress];
+    [activateOperation setDestAddress: address];
+    int64_t initBalance = [[[NSDecimalNumber decimalNumberWithString:ActivateInitBalance] decimalNumberByMultiplyingByPowerOf10: Decimals_BU] longLongValue];
+    [activateOperation setInitBalance: initBalance];
+    return activateOperation;
+}
 // register
 - (BOOL)getRegisteredDataWithRegisteredModel:(RegisteredModel *)registeredModel
 {
@@ -1454,7 +1457,7 @@ static int64_t const gasPrice = 1000;
 }
 
 #pragma mark - 调用底层合约
-- (BOOL)getTransactionWithDposModel:(DposModel *)dposModel
+- (BOOL)getTransactionWithDposModel:(DposModel *)dposModel isDonateVoucher:(BOOL)isDonateVoucher
 {
     // Build BUSendOperation
     dispatch_async(dispatch_get_main_queue(), ^{
@@ -1468,6 +1471,10 @@ static int64_t const gasPrice = 1000;
     NSMutableArray * operations = [NSMutableArray array];
     int64_t amount = [[[NSDecimalNumber decimalNumberWithString:dposModel.amount] decimalNumberByMultiplyingByPowerOf10: Decimals_BU] longLongValue];
     
+    if (isDonateVoucher && [[self getAccountInfoWithAddress: dposModel.to_address] isEqualToString:TransactionCost_NotActive_MIN]) {
+        AccountActivateOperation *activateOperation = [self AccountActivateWithAddress:dposModel.to_address];
+        [operations addObject: activateOperation];
+    }
     ContractInvokeByBUOperation *operation = [ContractInvokeByBUOperation new];
     [operation setSourceAddress: sourceAddress];
     [operation setContractAddress: dposModel.dest_address];

@@ -63,11 +63,12 @@ static NSString * const ChooseVoucherCellID = @"ChooseVoucherCellID";
 - (void)viewDidLoad
 {
     [super viewDidLoad];
-    self.navigationItem.title = Localized(@"DonateVoucher");
+    self.navigationItem.title = Localized(@"DonateVouchers");
     self.listArray = [NSMutableArray arrayWithObjects:@[[NSString stringWithFormat:@"%@ *", Localized(@"DonateVoucher")]], @[[NSString stringWithFormat:@"%@ *", Localized(@"ReceivingAccount")], Localized(@"ReceiveAddressPlaceholder")], @[Localized(@"TransferQuantity*"), Localized(@"AmountOfDonation")], @[Localized(@"Remarks"), Localized(@"RemarksPlaceholder")], @[Localized(@"EstimatedMaximum"), Localized(@"TransactionCostPlaceholder")], nil];
     [self setupView];
-    
-    [self getAvailableVoucherNumber];
+    if (self.voucherModel) {
+        [self getAvailableVoucherNumber];
+    }
 }
 - (void)getAvailableVoucherNumber
 {
@@ -81,6 +82,7 @@ static NSString * const ChooseVoucherCellID = @"ChooseVoucherCellID";
         int64_t number = [[HTTPManager shareManager] getVoutherBalanceWithDposModel: self.dposModel];
         self.number = [NSString stringWithFormat:@"%lld", number];
         [[NSOperationQueue mainQueue] addOperationWithBlock:^{
+            [self judgeHasText];
             [weakSelf.tableView reloadData];
         }];
     }];
@@ -108,7 +110,7 @@ static NSString * const ChooseVoucherCellID = @"ChooseVoucherCellID";
 }
 - (void)setupFooterView
 {
-    UIView * footerView = [[UIView alloc] initWithFrame:CGRectMake(0, 0, DEVICE_WIDTH, ScreenScale(160) + SafeAreaBottomH)];
+    UIView * footerView = [[UIView alloc] initWithFrame:CGRectMake(0, 0, DEVICE_WIDTH, ScreenScale(200) + SafeAreaBottomH)];
     self.next = [UIButton createButtonWithTitle:Localized(@"Next") isEnabled:NO Target:self Selector:@selector(nextAction:)];
     [footerView addSubview:self.next];
     
@@ -142,11 +144,11 @@ static NSString * const ChooseVoucherCellID = @"ChooseVoucherCellID";
                 [MBProgressHUD showTipMessageInWindow:Localized(@"CannotTransferVoucherToOneself")];
                 return;
             }
-            if ([self.number isEqualToString:@"0"]) {
-                [MBProgressHUD hideHUD];
-                [MBProgressHUD showTipMessageInWindow:Localized(@"NoVouchers")];
-                return;
-            }
+//            if ([self.number isEqualToString:@"0"]) {
+//                [MBProgressHUD hideHUD];
+//                [MBProgressHUD showTipMessageInWindow:Localized(@"NoVouchers")];
+//                return;
+//            }
             RegexPatternTool * regex = [[RegexPatternTool alloc] init];
             BOOL transferVolumeRegx = [regex validateIsPositiveFloatingPoint:self.valueStr];
             
@@ -162,8 +164,8 @@ static NSString * const ChooseVoucherCellID = @"ChooseVoucherCellID";
             }
             
             NSDecimalNumber * amount = [NSDecimalNumber decimalNumberWithString:self.dposModel.tx_fee];
-            NSDecimalNumber * minTransactionCost = [NSDecimalNumber decimalNumberWithString:self.transactionCostsStr];
-            NSDecimalNumber * totleAmount = [amount decimalNumberByAdding:minTransactionCost];
+            NSDecimalNumber * cost = [NSDecimalNumber decimalNumberWithString:self.transactionCostsStr];
+            NSDecimalNumber * totleAmount = [amount decimalNumberByAdding:cost];
             NSDecimalNumber * amountNumber = [[HTTPManager shareManager] getDataWithBalanceJudgmentWithCost:[totleAmount stringValue] ifShowLoading:NO];
             NSString * totleAmountStr = [amountNumber stringValue];
             if (!NotNULLString(totleAmountStr) || [amountNumber isEqualToNumber:NSDecimalNumber.notANumber]) {
@@ -183,16 +185,25 @@ static NSString * const ChooseVoucherCellID = @"ChooseVoucherCellID";
             }
             BOOL transactionCostsRegx = [regex validateIsPositiveFloatingPoint:self.transactionCostsStr] && [regex validateIsPositiveFloatingPoint:self.transactionCostsStr decimals:Decimals_BU];
             NSDecimalNumber * maxTransactionCost = [NSDecimalNumber decimalNumberWithString:TransactionCost_MAX];
+            NSDecimalNumber * minTransactionCost = [NSDecimalNumber decimalNumberWithString:TransactionCost_Voucher_MIN];
             if (transactionCostsRegx == NO || [self.transactionCostsStr isEqualToString:@"0"]) {
                 [MBProgressHUD hideHUD];
                 [MBProgressHUD showTipMessageInWindow:Localized(@"TransactionCostIsIncorrect")];
                 return;
             }
-            NSDecimalNumber * cost = [NSDecimalNumber decimalNumberWithString:self.transactionCostsStr];
+//            TransactionCost_Voucher_MIN "TransactionCostMin%@"
+            
+            NSString * minCost  = [[cost decimalNumberBySubtracting:minTransactionCost] stringValue];
+            if ([minCost hasPrefix:@"-"]) {
+                [MBProgressHUD hideHUD];
+                [MBProgressHUD showTipMessageInWindow:[NSString stringWithFormat:Localized(@"TransactionCostMin%@"), minTransactionCost]];
+                return;
+            }
+            
             NSString * maxCost  = [[maxTransactionCost decimalNumberBySubtracting:cost] stringValue];
             if ([maxCost hasPrefix:@"-"]) {
                 [MBProgressHUD hideHUD];
-                [MBProgressHUD showTipMessageInWindow:[NSString stringWithFormat:Localized(@"TransactionCostMax%@"), maxCost]];
+                [MBProgressHUD showTipMessageInWindow:[NSString stringWithFormat:Localized(@"TransactionCostMax%@"), maxTransactionCost]];
                 return;
             }
             [self showConfirmAlertView];
@@ -203,9 +214,14 @@ static NSString * const ChooseVoucherCellID = @"ChooseVoucherCellID";
 {
     BottomConfirmAlertView * confirmAlertView = [[BottomConfirmAlertView alloc] initWithIsShowValue:NO confrimBolck:^(NSString * _Nonnull transactionCost) {
         dispatch_after(dispatch_time(DISPATCH_TIME_NOW, (int64_t)(Dispatch_After_Time * NSEC_PER_SEC)), dispatch_get_main_queue(), ^{
-            self.dposModel.notes = Localized(@"TransferEncryptedDigitalVouchers");
-            self.dposModel.amount = self.valueStr;
-            if (![[HTTPManager shareManager] getTransactionWithDposModel: self.dposModel]) return;
+            DposModel * dposModel = [[DposModel alloc] init];
+            dposModel.dest_address = self.voucherModel.contractAddress;
+            dposModel.tx_fee = self.transactionCostsStr;
+            dposModel.input = self.confirmModel.script;
+            dposModel.notes = self.remarksStr;
+            dposModel.amount = self.valueStr;
+            dposModel.to_address = self.receiveAddressStr;
+            if (![[HTTPManager shareManager] getTransactionWithDposModel: dposModel isDonateVoucher:YES]) return;
             [self showPWAlert];
         });
     } cancelBlock:^{
@@ -219,7 +235,7 @@ static NSString * const ChooseVoucherCellID = @"ChooseVoucherCellID";
     self.confirmModel.amount = self.valueStr;
     self.confirmModel.transactionCost = self.transactionCostsStr;
     self.confirmModel.qrRemark = self.remarksStr;
-    self.confirmModel.script = SKUTokenTranche(self.voucherModel.voucherId, self.voucherModel.voucherId, self.confirmModel.destAddress, self.confirmModel.amount);
+    self.confirmModel.script = SKUTokenTranche(self.voucherModel.voucherId, self.voucherModel.trancheId, self.confirmModel.destAddress, self.confirmModel.amount);
     confirmAlertView.confirmTransactionModel = self.confirmModel;
     [confirmAlertView showInWindowWithMode:CustomAnimationModeShare inView:nil bgAlpha:AlertBgAlpha needEffectView:NO];
 }
@@ -344,7 +360,7 @@ static NSString * const ChooseVoucherCellID = @"ChooseVoucherCellID";
         self.remarks = cell.textField;
     } else if (indexPath.row == 4) {
         self.transactionCosts = cell.textField;
-        cell.textField.text = TransactionCost_MIN;
+        cell.textField.text = TransactionCost_Voucher_MIN;
         [cell.textField sendActionsForControlEvents:UIControlEventEditingChanged];
     }
     cell.textChange = ^(UITextField * _Nonnull textField) {
@@ -369,9 +385,10 @@ static NSString * const ChooseVoucherCellID = @"ChooseVoucherCellID";
 {
     VoucherViewController * VC = [[VoucherViewController alloc] init];
     VC.isChoiceVouchers = YES;
-    VC.voucherModel = self.voucherModel;
+    VC.voucherId = self.voucherModel.voucherId;
     VC.voucher = ^(VoucherModel * voucherModel) {
         self.voucherModel = voucherModel;
+        [self getAvailableVoucherNumber];
         [self.tableView reloadData];
     };
     [self.navigationController pushViewController:VC animated:NO];    
@@ -396,7 +413,11 @@ static NSString * const ChooseVoucherCellID = @"ChooseVoucherCellID";
         }
         result = stringValue;
         [[NSOperationQueue mainQueue] addOperationWithBlock:^{
-            weakself.receiveAddress.text = [stringValue substringFromIndex:[Voucher_Prefix length]];;
+            NSString * str = stringValue;
+            if ([stringValue hasPrefix:Voucher_Prefix]) {
+                str = [stringValue substringFromIndex:[Voucher_Prefix length]];
+            }
+            weakself.receiveAddress.text = str;
             [weakself.receiveAddress sendActionsForControlEvents:UIControlEventEditingChanged];
             //            [weakself IsActivatedWithAddress:stringValue];
         }];
@@ -415,7 +436,7 @@ static NSString * const ChooseVoucherCellID = @"ChooseVoucherCellID";
 - (void)judgeHasText
 {
     [self updateText];
-    if (self.receiveAddressStr.length > 0 && self.valueStr.length > 0 &&  self.transactionCostsStr.length > 0 && self.voucherModel) {
+    if (self.receiveAddressStr.length > 0 && self.valueStr.length > 0 &&  self.transactionCostsStr.length > 0 && self.voucherModel && [self.number integerValue] > 0) {
         self.next.enabled = YES;
         self.next.backgroundColor = MAIN_COLOR;
     } else {

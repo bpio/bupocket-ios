@@ -412,7 +412,7 @@
 - (CGFloat)tableView:(UITableView *)tableView heightForFooterInSection:(NSInteger)section
 {
     if (tableView == self.infoTableView) {
-        return MAIN_HEIGHT;
+        return Margin_50;
     }
     return Margin_15;
 }

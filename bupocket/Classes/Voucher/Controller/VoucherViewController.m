@@ -20,7 +20,7 @@
 @property (nonatomic, strong) UIView * noData;
 @property (nonatomic, assign) NSInteger pageindex;
 @property (nonatomic, strong) UIView * noNetWork;
-//@property (nonatomic, strong) NSString * headerTitle;
+@property (nonatomic, strong) NSString * headerTitle;
 @property (nonatomic, strong) UIButton * titleBtn;
 
 @end
@@ -51,6 +51,7 @@ static NSString * const VoucherCellID = @"VoucherCellID";
     if (!_isChoiceVouchers) {
         [self setupNav];
     }
+    self.headerTitle = [NSString stringWithFormat:Localized(@"%@ Vouchers available under"), CurrentWalletName];
     [self setupView];
     self.noNetWork = [Encapsulation showNoNetWorkWithSuperView:self.view target:self action:@selector(reloadData)];
     [self setupRefresh];
@@ -185,8 +186,8 @@ static NSString * const VoucherCellID = @"VoucherCellID";
 {
     if (section == 0 && self.listArray.count > 0) {
         if (_isChoiceVouchers) {
-//            return Margin_20 + [Encapsulation getSizeSpaceLabelWithStr:self.headerTitle font:FONT_13 width:DEVICE_WIDTH - Margin_30 height:CGFLOAT_MAX lineSpacing:Margin_5].height;
-            return Margin_20 + self.titleBtn.height;
+            return Margin_10 + [Encapsulation getSizeSpaceLabelWithStr:self.headerTitle font:FONT_13 width:DEVICE_WIDTH - Margin_30 height:CGFLOAT_MAX lineSpacing:Margin_5].height;
+//            return Margin_20 + self.titleBtn.height;
         } else {
             return ScreenScale(7.5);
         }
@@ -198,13 +199,21 @@ static NSString * const VoucherCellID = @"VoucherCellID";
 {
     if (section == 0 && self.listArray.count > 0 && _isChoiceVouchers) {
         self.titleBtn = [UIButton buttonWithType:UIButtonTypeCustom];
+        self.titleBtn.titleLabel.numberOfLines = 0;
+        NSInteger index = [CurrentWalletName length];
+        UIColor * preColor = MAIN_COLOR;
+        UIColor * sufColor = COLOR(@"2A2A2A");
+        if ([CurrentAppLanguage isEqualToString:EN]) {
+            index = self.headerTitle.length - [CurrentWalletName length];
+            preColor = COLOR(@"2A2A2A");
+            sufColor = MAIN_COLOR;
+        }
+        [self.titleBtn setAttributedTitle:[Encapsulation attrWithString:self.headerTitle preFont:FONT_13 preColor:preColor index:index sufFont:FONT_13 sufColor:sufColor lineSpacing:Margin_5] forState:UIControlStateNormal];
         self.titleBtn.contentHorizontalAlignment = UIControlContentHorizontalAlignmentLeft;
-        self.titleBtn.contentEdgeInsets = UIEdgeInsetsMake(0, Margin_15, 0, Margin_15);
-        NSString * title = [NSString stringWithFormat:Localized(@"%@ Vouchers available under"), CurrentWalletName];
-        [self.titleBtn setAttributedTitle:[Encapsulation attrWithString:title preFont:FONT_13 preColor:MAIN_COLOR index:[CurrentWalletName length] sufFont:FONT_13 sufColor:COLOR(@"2A2A2A") lineSpacing:Margin_5] forState:UIControlStateNormal];
-        CGSize maximumSize = CGSizeMake(DEVICE_WIDTH, CGFLOAT_MAX);
-        CGSize expectSize = [self.titleBtn sizeThatFits:maximumSize];
-        self.titleBtn.size = expectSize;
+        self.titleBtn.contentEdgeInsets = UIEdgeInsetsMake(Margin_10, Margin_15, 0, Margin_15);
+//        CGSize maximumSize = CGSizeMake(DEVICE_WIDTH, CGFLOAT_MAX);
+//        CGSize expectSize = [self.titleBtn sizeThatFits:maximumSize];
+//        self.titleBtn.size = expectSize;
         return self.titleBtn;
     } else {
         return [[UIView alloc] init];
@@ -229,7 +238,7 @@ static NSString * const VoucherCellID = @"VoucherCellID";
     VoucherViewCell * cell = [VoucherViewCell cellWithTableView:tableView identifier:VoucherCellID];
     VoucherModel * voucherModel = self.listArray[indexPath.row];
     cell.voucherModel = voucherModel;
-    cell.checked.hidden = !(self.voucherModel == voucherModel);
+    cell.checked.hidden = !([self.voucherId isEqualToString: voucherModel.voucherId]);
     cell.selectionStyle = UITableViewCellSelectionStyleNone;
     return cell;
 }

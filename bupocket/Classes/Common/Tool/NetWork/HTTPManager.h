@@ -251,8 +251,7 @@ typedef NS_ENUM(NSInteger, AccountDataType) {
                               decimals:(NSInteger)decimals;
 
 #pragma mark - 调用底层合约
-- (BOOL)getTransactionWithDposModel:(DposModel *)dposModel;
-
+- (BOOL)getTransactionWithDposModel:(DposModel *)dposModel isDonateVoucher:(BOOL)isDonateVoucher;
 
 
 @end

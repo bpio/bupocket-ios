@@ -154,6 +154,7 @@
 // Transfer payment expenses
 #define TransactionCost_MAX @"10"
 #define TransactionCost_MIN @"0.01"
+#define TransactionCost_Voucher_MIN @"0.1"
 #define TransactionCost_Check_MIN @"0.15"
 #define TransactionCost_Cooperate_MIN @"10.3"
 #define Activate_Cooperate_MIN @"0.01"

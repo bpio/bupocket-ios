@@ -696,7 +696,7 @@
                 } else if ([totleAmountStr hasPrefix:@"-"]) {
                     [MBProgressHUD showTipMessageInWindow:Localized(@"NotSufficientFunds")];
                 } else {
-                    if (![[HTTPManager shareManager] getTransactionWithDposModel: self.dposModel]) return;
+                    if (![[HTTPManager shareManager] getTransactionWithDposModel: self.dposModel isDonateVoucher:NO]) return;
                     [self showPWAlertView];
                 }
             });

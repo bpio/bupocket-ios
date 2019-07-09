@@ -370,7 +370,7 @@
 "SendingQuantityMax%@" = "The transfer amount cannot exceed %@ BU per transaction";
 "NotSufficientFunds" = "Available balance is insufficient";
 "TransactionCostIsIncorrect" = "The format of maximum payment transaction fee is incorrect. Please enter again";
-//"TransactionCostMin" = "The transaction fee cannot be less than 0.01 BU";
+"TransactionCostMin%@" = "The transaction fee cannot be less than %@ BU";
 "TransactionCostMax%@" = "The transaction fee cannot exceed %@ BU";
 "ExtraLongNotes" = "Remarks cannot exceed 20 characters";
 // Feedback
@@ -647,9 +647,9 @@
 "Validity" = "Validity";
 "%@ to %@" = "%@ To %@";
 // 选择券
-"ChoiceVouchers" = "选择券";
-"ChoiceVouchersTitle" = "选择要转赠的券";
-"%@ Vouchers available under" = "%@ 下可使用的券";
+"ChoiceVouchers" = "Select a Voucher";
+"ChoiceVouchersTitle" = "Select a Voucher to Donate";
+"%@ Vouchers available under" = "Available vouchers in %@";
 // Details of Voucher
 "VoucherDetail" = "Details of Voucher";
 "ProvideAcceptance" = "Provides Acceptance";
@@ -661,17 +661,19 @@
 "AssetIssuer" = "Asset Issuer";
 
 // Acceptor
+"NoIntroduction" = "No Introduction";
 "InfoOfAcceptorTitle" = "Introduction to Acceptor";
 //"InfoOfAcceptor" = "";
 "DeliveryInstructionsTitle" = "Instruction for Delivery";
 //"DeliveryInstructions" = "";
 // Issuer of Digital Asset
-"IssuerOfDigitalAssets" = "Issuer of Digital Asset";
+//"IssuerOfDigitalAssets" = "Issuer of Digital Asset";
 "InfoOfDigitalAssetIssuer" = "About the Issuer of Digital Asset";
 "DataPublicity" = "Data Publicity";
 
 // Donate
-"DonateVoucher" = "转赠券";
+"DonateVouchers" = "Transfer Voucher";
+"DonateVoucher" = "Donate Vouchers";
 "ReceiveAddressPlaceholder" = "Please input the receiving account address";
 "TransferQuantity" = "Amount to Donate";
 "TransferQuantity*" = "Amount to Donate *";
@@ -684,12 +686,12 @@
 "DonationSuccess" = "Donation Success";
 "DonationFailure" = "Donation Failure";
 "DonationTimeout" = "Donation Timeout";
-"TransferEncryptedDigitalVouchers" = "转赠加密数字券";
+"TransferEncryptedDigitalVouchers" = "Donate encrypted digital vouchers";
 
-"NoVouchers" = "暂无可转卡券";
-"CannotTransferVoucherToOneself" = "不能给自己转赠券";
-"VoucherSendingQuantityIsIncorrect" = "无效的转赠数量";
-"VoucherNotSufficientFunds" = "可用卡券数量不足";
+//"NoVouchers" = "暂无可转赠的券";
+"CannotTransferVoucherToOneself" = "Voucher donation to yourself is not allowed";
+"VoucherSendingQuantityIsIncorrect" = "Invalid Number";
+"VoucherNotSufficientFunds" = "Insufficient Vouchers";
 
 "ErrorPrompt" = "Error message";
 // 调用底层合约

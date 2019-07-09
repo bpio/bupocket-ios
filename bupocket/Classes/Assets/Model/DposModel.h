@@ -18,6 +18,7 @@ NS_ASSUME_NONNULL_BEGIN
 @property (nonatomic, copy) NSString * tx_fee;
 
 @property (nonatomic, copy) NSString * notes;
+@property (nonatomic, copy) NSString * to_address;
 
 @end
 

@@ -15,6 +15,8 @@
 
 @property (nonatomic, strong) UITableView * tableView;
 @property (nonatomic, strong) NSArray * listArray;
+@property (nonatomic, strong) UIView * noData;
+@property (nonatomic, strong) NSString * info;
 
 @end
 
@@ -24,10 +26,14 @@ static NSString * const CooperateDetailCellID = @"CooperateDetailCellID";
 
 - (void)viewDidLoad {
     [super viewDidLoad];
-    self.navigationItem.title = Localized(@"IssuerOfDigitalAssets");
-    [self setupView];
+    self.navigationItem.title = Localized(@"AssetIssuer");
     // 数字资产发行方
     self.listArray = @[@[@""], @[Localized(@"InfoOfDigitalAssetIssuer"), self.voucherModel.voucherIssuer[@"intro"]]];
+    self.info = [self.listArray lastObject][1];
+    [self setupView];
+    if (!NotNULLString(self.info)) {
+        self.tableView.tableFooterView = self.noData;
+    }
 //    , @[Localized(@"DataPublicity"), @"NIKE公司总部位于美国俄勒冈州波特兰市。公司生产的体育用品包罗万象，例如服装，鞋类，运动器材等。NIKE是全球著名的体育运动品牌，英文原意指希腊胜利女神，中文译为耐克。"]
     // Do any additional setup after loading the view.
 }
@@ -39,14 +45,22 @@ static NSString * const CooperateDetailCellID = @"CooperateDetailCellID";
     self.tableView.separatorStyle = UITableViewCellSeparatorStyleNone;
     [self.view addSubview:self.tableView];
 }
-
+- (UIView *)noData
+{
+    if (!_noData) {
+        CGFloat noDataH = DEVICE_HEIGHT - NavBarH - SafeAreaBottomH - ScreenScale(120);
+        _noData = [[UIView alloc] initWithFrame:CGRectMake(0, 0, DEVICE_WIDTH, noDataH)];
+        UIButton * noDataBtn = [Encapsulation showNoDataWithTitle:Localized(@"NoIntroduction") imageName:@"noRecord" superView:_noData frame:CGRectMake(0, (noDataH - ScreenScale(160)) / 2, DEVICE_WIDTH, ScreenScale(160))];
+        [_noData addSubview:noDataBtn];
+    }
+    return _noData;
+}
 - (CGFloat)tableView:(UITableView *)tableView heightForRowAtIndexPath:(NSIndexPath *)indexPath
 {
     if (indexPath.section == 0) {
         return ScreenScale(80);
     } else {
-        NSString * info = self.listArray[indexPath.section][1];
-        return (NotNULLString(info) ? ceil([Encapsulation getSizeSpaceLabelWithStr:info font:FONT(13) width:DEVICE_WIDTH - Margin_40 height:CGFLOAT_MAX lineSpacing:Margin_5].height) + 1 + Margin_25 : CGFLOAT_MIN);
+        return (NotNULLString(self.info) ? ceil([Encapsulation getSizeSpaceLabelWithStr:self.info font:FONT(13) width:DEVICE_WIDTH - Margin_40 height:CGFLOAT_MAX lineSpacing:Margin_5].height) + 1 + Margin_25 : CGFLOAT_MIN);
     }
 }
 - (CGFloat)tableView:(UITableView *)tableView heightForHeaderInSection:(NSInteger)section
@@ -70,7 +84,7 @@ static NSString * const CooperateDetailCellID = @"CooperateDetailCellID";
 }
 - (CGFloat)tableView:(UITableView *)tableView heightForFooterInSection:(NSInteger)section
 {
-    if (section == self.listArray.count - 1) {
+    if (section == self.listArray.count - 1 && NotNULLString(self.info)) {
         return ContentSizeBottom;
     } else {
         return CGFLOAT_MIN;

@@ -15,7 +15,7 @@ NS_ASSUME_NONNULL_BEGIN
 
 @property (nonatomic, copy) void (^voucher)(VoucherModel *);
 @property (nonatomic, assign) BOOL isChoiceVouchers;
-@property (nonatomic, copy) VoucherModel * voucherModel;
+@property (nonatomic, copy) NSString * voucherId;
 
 @end
 
