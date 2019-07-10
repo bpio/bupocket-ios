@@ -16,7 +16,7 @@
 #import "DonateVoucherViewController.h"
 
 
-@interface VoucherDetailViewController ()<UITableViewDelegate, UITableViewDataSource>
+@interface VoucherDetailViewController ()<UIScrollViewDelegate, UITableViewDelegate, UITableViewDataSource>
 
 @property (nonatomic, strong) UIScrollView * scrollView;
 @property (nonatomic, strong) UITableView * tableView;
@@ -24,6 +24,9 @@
 @property (nonatomic, assign) CGFloat infoCellHeight;
 @property (nonatomic, strong) UIView * noNetWork;
 @property (nonatomic, strong) UIImageView * loadingBg;
+
+@property (nonatomic, assign) CGFloat imageBgH;
+@property (nonatomic, assign) CGFloat proportion;
 
 @end
 
@@ -43,10 +46,11 @@ static NSString * const VoucherDetailCellID = @"VoucherDetailCellID";
 }
 - (void)viewDidLoad {
     [super viewDidLoad];
+    self.proportion = ((DEVICE_WIDTH - Margin_30) / 345);
     self.edgesForExtendedLayout = UIRectEdgeAll;
     self.automaticallyAdjustsScrollViewInsets = NO;
     self.navigationItem.title = Localized(@"VoucherDetail");
-//    self.navAlpha = 0;
+    self.navAlpha = 0;
     self.navBackgroundColor = COLOR(@"3C3B6D");
     self.navTitleColor = self.navTintColor = [UIColor whiteColor];
     [self setupView];
@@ -76,7 +80,8 @@ static NSString * const VoucherDetailCellID = @"VoucherDetailCellID";
             NSString * startTime = ([self.voucherModel.startTime isEqualToString:@"-1"]) ? @"~" : [DateTool getDateStringWithDataStr:self.voucherModel.startTime];
             NSString * endTime = ([self.voucherModel.endTime isEqualToString:@"-1"]) ? @"~" : [DateTool getDateStringWithDataStr:self.voucherModel.endTime];
             self.listArray = [NSMutableArray arrayWithArray:@[@[@""], @[@[Localized(@"Validity"), [NSString stringWithFormat:Localized(@"%@ to %@"), startTime, endTime]], @[Localized(@"VoucherCode"), self.voucherModel.voucherId], @[Localized(@"Specification"), self.voucherModel.voucherSpec], @[Localized(@"Describe"), self.voucherModel.desc], @[Localized(@"HoldingQuantity"), holdingQuantity]], @[@[Localized(@"Acceptor"), self.voucherModel.voucherAcceptance[@"name"]], @[Localized(@"AssetIssuer"), self.voucherModel.voucherIssuer[@"name"]]]]];
-            self.infoCellHeight = ([Encapsulation rectWithText:self.voucherModel.desc font:FONT(15) textWidth:Info_Width_Max].size.height + Margin_30);
+            
+            self.infoCellHeight = MAX(Margin_40, ([Encapsulation getSizeSpaceLabelWithStr:self.voucherModel.desc font:FONT_TITLE width:Info_Width_Max height:CGFLOAT_MAX lineSpacing:Margin_5].height + Margin_30));
             [self.tableView reloadData];
         } else {
             [MBProgressHUD showTipMessageInWindow:[ErrorTypeTool getDescriptionWithNodeErrorCode:code]];
@@ -101,19 +106,21 @@ static NSString * const VoucherDetailCellID = @"VoucherDetailCellID";
 - (void)setupView
 {
     self.scrollView = [[UIScrollView alloc] initWithFrame:self.view.bounds];
+    self.scrollView.delegate = self;
     [self.view addSubview:self.scrollView];
     self.scrollView.backgroundColor = COLOR(@"3C3B6D");
     UIImage * image = [UIImage imageNamed:@"voucher_detail_bg"];
     CGFloat imageBgW = DEVICE_WIDTH - Margin_30;
-    CGFloat imageBgH = imageBgW * (image.size.height / image.size.width);
+    self.imageBgH = imageBgW * (image.size.height / image.size.width);
     UIImageView * imageBg = [[UIImageView alloc] init];
     imageBg.userInteractionEnabled = YES;
     imageBg.image = image;
+    imageBg.contentMode = UIViewContentModeScaleAspectFit;
     [self.scrollView addSubview:imageBg];
     [imageBg mas_makeConstraints:^(MASConstraintMaker *make) {
         make.left.mas_equalTo(Margin_15);
         make.top.mas_equalTo(Margin_15 + NavBarH);
-        make.size.mas_equalTo(CGSizeMake(imageBgW, imageBgH));
+        make.size.mas_equalTo(CGSizeMake(imageBgW, self.imageBgH));
     }];
     self.loadingBg = [[UIImageView alloc] init];
     self.loadingBg.image = [UIImage imageNamed:@"voucher_detail_loading_bg"];
@@ -121,7 +128,7 @@ static NSString * const VoucherDetailCellID = @"VoucherDetailCellID";
     [self.loadingBg mas_makeConstraints:^(MASConstraintMaker *make) {
         make.edges.equalTo(imageBg);
     }];
-    self.scrollView.contentSize = CGSizeMake(DEVICE_WIDTH, imageBgH + ScreenScale(120) + NavBarH + SafeAreaBottomH);
+    self.scrollView.contentSize = CGSizeMake(DEVICE_WIDTH, self.imageBgH + ScreenScale(120) + NavBarH + SafeAreaBottomH);
     self.tableView = [[UITableView alloc] initWithFrame:imageBg.bounds style:UITableViewStyleGrouped];
     self.tableView.delegate = self;
     self.tableView.dataSource = self;
@@ -146,26 +153,53 @@ static NSString * const VoucherDetailCellID = @"VoucherDetailCellID";
 - (CGFloat)tableView:(UITableView *)tableView heightForHeaderInSection:(NSInteger)section
 {
     if (section == self.listArray.count - 1) {
-        return ScreenScale(180) - self.infoCellHeight;
+//        return ScreenScale(180) - self.infoCellHeight;
+        return self.imageBgH - ((ScreenScale(145) * self.proportion) + self.infoCellHeight + Margin_40 * ([self.listArray[1] count] - 1) * self.proportion + (MAIN_HEIGHT * [self.listArray[2] count])) - Margin_10 * self.proportion;
     }
     return CGFLOAT_MIN;
 }
 - (UIView *)tableView:(UITableView *)tableView viewForHeaderInSection:(NSInteger)section
 {
     if (section == self.listArray.count - 1) {
-        UIView * footerView = [[UIView alloc] initWithFrame:CGRectMake(0, 0, DEVICE_WIDTH - Margin_50, ScreenScale(120) - self.infoCellHeight)];
+        UIView * footerView = [[UIView alloc] init];
+//        WithFrame:CGRectMake(0, 0, DEVICE_WIDTH - Margin_50, ScreenScale(140) * self.proportion - self.infoCellHeight)
+        /*
+        CGFloat btnW = (DEVICE_WIDTH - ScreenScale(80)) / 2;
+        UIButton * exchange = [UIButton createButtonWithTitle:@"兑换" isEnabled:YES Target:self Selector:@selector(exchangeAction)];
+        exchange.backgroundColor = COLOR(@"3485FB");
+        [footerView addSubview:exchange];
+        [exchange mas_makeConstraints:^(MASConstraintMaker *make) {
+//            make.top.equalTo(footerView.mas_top).offset(Margin_10);
+            make.centerY.equalTo(footerView.mas_centerY).offset(-Margin_20 * self.proportion);
+            make.left.equalTo(footerView.mas_left).offset(Margin_15);
+            make.width.mas_equalTo(btnW);
+//            make.right.equalTo(footerView.mas_right).offset(-Margin_15);
+            make.height.mas_equalTo(Margin_40);
+        }];
+         */
         UIButton * giftGiving = [UIButton createButtonWithTitle:Localized(@"GiftGiving") isEnabled:YES Target:self Selector:@selector(giftGivingAction)];
         [footerView addSubview:giftGiving];
         [giftGiving mas_makeConstraints:^(MASConstraintMaker *make) {
-            make.top.equalTo(footerView.mas_top).offset(Margin_10);
+//            make.top.equalTo(footerView.mas_top).offset(Margin_10);
             make.left.equalTo(footerView.mas_left).offset(Margin_15);
+            make.centerY.equalTo(footerView.mas_centerY).offset(-Margin_20 * self.proportion);
+//            make.left.equalTo(exchange.mas_right).offset(Margin_20);
             make.right.equalTo(footerView.mas_right).offset(-Margin_15);
-            make.height.mas_equalTo(MAIN_HEIGHT);
+            make.height.mas_equalTo(Margin_40);
         }];
+        
         return footerView;
     }
     return nil;
 }
+/*
+- (void)exchangeAction
+{
+    [Encapsulation showAlertControllerWithTitle:Localized(@"PromptTitle") message:@"兑换功能即将上线" confirmHandler:^(UIAlertAction *action) {
+        
+    }];
+}
+ */
 - (void)giftGivingAction
 {
     DonateVoucherViewController * VC = [[DonateVoucherViewController alloc] init];
@@ -180,13 +214,13 @@ static NSString * const VoucherDetailCellID = @"VoucherDetailCellID";
 - (CGFloat)tableView:(UITableView *)tableView heightForRowAtIndexPath:(NSIndexPath *)indexPath
 {
     if (indexPath.section == 0) {
-        return ScreenScale(143);
+        return ScreenScale(145) * self.proportion;
     } else if (indexPath.section == 1 && indexPath.row == 3) {
        return self.infoCellHeight;
     } else if (indexPath.section == self.listArray.count - 1) {
         return MAIN_HEIGHT;
     }
-    return ScreenScale(40);
+    return ScreenScale(40) * self.proportion;
 }
 - (UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath
 {
@@ -211,8 +245,13 @@ static NSString * const VoucherDetailCellID = @"VoucherDetailCellID";
     }
     DetailListViewCell * cell = [DetailListViewCell cellWithTableView:tableView cellType:DetailCellDefault];
     cell.title.text = self.listArray[indexPath.section][indexPath.row][0];
-    cell.infoTitle.text = self.listArray[indexPath.section][indexPath.row][1];
-    cell.backgroundColor = [UIColor clearColor];
+    NSString * detail = self.listArray[indexPath.section][indexPath.row][1];
+    if (indexPath.section == 1 && indexPath.row == 3 && NotNULLString(detail)) {
+        cell.infoTitle.attributedText = [Encapsulation attrWithString:detail preFont:FONT_TITLE preColor:COLOR_6 index:0 sufFont:FONT_TITLE sufColor:COLOR_6 lineSpacing:Margin_5];
+    } else {
+        cell.infoTitle.text = detail;
+    }
+    cell.backgroundColor = cell.contentView.backgroundColor  = [UIColor clearColor];
     cell.selectionStyle = (indexPath.section == self.listArray.count - 1) ?  UITableViewCellSelectionStyleDefault : UITableViewCellSelectionStyleNone;
     cell.backgroundColor = cell.contentView.backgroundColor = [UIColor clearColor];
     if ([cell.title.text isEqualToString:Localized(@"Describe")]) {
@@ -244,8 +283,8 @@ static NSString * const VoucherDetailCellID = @"VoucherDetailCellID";
 }
 - (void)scrollViewDidScroll:(UIScrollView *)scrollView
 {
-//    CGFloat y = scrollView.contentOffset.y;
-//    self.navAlpha = y / 80;
+    CGFloat y = scrollView.contentOffset.y;
+    self.navAlpha = y / 80;
 //    if (y > 80) {
 //        self.navTitleColor = self.navTintColor = [UIColor whiteColor];
 //    } else {

@@ -30,7 +30,8 @@ static NSString * const VoucherDetailCellID = @"VoucherDetailCellID";
 }
 - (void)setupView
 {
-    self.contentView.backgroundColor = VIEWBG_COLOR;
+//    self.contentView.backgroundColor = VIEWBG_COLOR;
+//    self.contentView.backgroundColor = [UIColor whiteColor];
     [self.contentView addSubview:self.listBg];
     [self.listBg addSubview:self.checked];
     [self.listBg addSubview:self.icon];
@@ -52,39 +53,42 @@ static NSString * const VoucherDetailCellID = @"VoucherDetailCellID";
 - (void)layoutSubviews
 {
     [super layoutSubviews];
-    CGFloat left = Margin_20;
-    CGFloat listImageTop = Margin_10;
+    CGFloat left = Margin_30;
+    CGFloat iconTop = ScreenScale(21);
+    CGFloat listImageTop = Margin_15;
     if ([self.reuseIdentifier isEqualToString:VoucherCellID]) {
         [self.listBg mas_makeConstraints:^(MASConstraintMaker *make) {
-            make.left.equalTo(self.contentView.mas_left).offset(Margin_10);
-            make.right.equalTo(self.contentView.mas_right).offset(-Margin_10);
-            make.top.equalTo(self.contentView.mas_top).offset(Margin_5);
-            make.bottom.equalTo(self.contentView.mas_bottom).offset(-Margin_5);
+            make.left.equalTo(self.contentView.mas_left).offset(Margin_5);
+            make.right.equalTo(self.contentView.mas_right).offset(-Margin_5);
+            make.top.bottom.equalTo(self.contentView);
+//            make.top.equalTo(self.contentView.mas_top).offset(Margin_5);
+//            make.bottom.equalTo(self.contentView.mas_bottom).offset(-Margin_5);
         }];
     } else if ([self.reuseIdentifier isEqualToString:VoucherDetailCellID]) {
         [self.listBg mas_makeConstraints:^(MASConstraintMaker *make) {
             make.edges.equalTo(self.contentView);
         }];
         left = Margin_15;
+        iconTop = Margin_15;
         listImageTop = Margin_30;
         [self.lineView mas_makeConstraints:^(MASConstraintMaker *make) {
-            make.left.equalTo(self.listBg.mas_left).offset(left);
+            make.left.equalTo(self.contentView.mas_left).offset(left);
             make.top.equalTo(self.listBg.mas_top).offset(Margin_50);
         }];
     }
     [self.checked mas_makeConstraints:^(MASConstraintMaker *make) {
-        make.top.equalTo(self.listBg.mas_top).offset(ScreenScale(2));
-        make.right.equalTo(self.listBg.mas_right).offset(-ScreenScale(2));
+        make.top.equalTo(self.listBg.mas_top).offset(ScreenScale(8));
+        make.right.equalTo(self.listBg.mas_right).offset(-Margin_10);
     }];
     [self.icon mas_makeConstraints:^(MASConstraintMaker *make) {
-        make.left.equalTo(self.listBg.mas_left).offset(left);
-        make.top.equalTo(self.listBg.mas_top).offset(Margin_15);
+        make.left.equalTo(self.contentView.mas_left).offset(left);
+        make.top.equalTo(self.contentView.mas_top).offset(iconTop);
         make.width.height.mas_equalTo(ScreenScale(22));
     }];
     [self.name mas_makeConstraints:^(MASConstraintMaker *make) {
         make.centerY.equalTo(self.icon);
         make.left.equalTo(self.icon.mas_right).offset(Margin_10);
-        make.right.mas_lessThanOrEqualTo(self.listBg.mas_right).offset(-Margin_15);
+        make.right.mas_lessThanOrEqualTo(self.contentView.mas_right).offset(-left);
     }];
     [self.listImage mas_makeConstraints:^(MASConstraintMaker *make) {
         make.top.equalTo(self.icon.mas_bottom).offset(listImageTop);
@@ -94,7 +98,7 @@ static NSString * const VoucherDetailCellID = @"VoucherDetailCellID";
     [self.title mas_makeConstraints:^(MASConstraintMaker *make) {
         make.top.equalTo(self.listImage);
         make.left.equalTo(self.listImage.mas_right).offset(Margin_10);
-        make.right.equalTo(self.listBg.mas_right).offset(-Margin_15);
+        make.right.equalTo(self.contentView.mas_right).offset(-left);
     }];
     
     [self.value mas_makeConstraints:^(MASConstraintMaker *make) {
@@ -113,8 +117,8 @@ static NSString * const VoucherDetailCellID = @"VoucherDetailCellID";
         [self.number setContentCompressionResistancePriority:UILayoutPriorityRequired forAxis:UILayoutConstraintAxisHorizontal];
         [self.date mas_makeConstraints:^(MASConstraintMaker *make) {
             make.left.equalTo(self.icon);
-            make.bottom.equalTo(self.listBg);
-            make.height.mas_equalTo(MAIN_HEIGHT);
+            make.bottom.equalTo(self.listBg.mas_bottom).offset(-ScreenScale(18));
+            make.height.mas_equalTo(Margin_30);
             make.right.equalTo(self.title);
         }];
     } else if ([self.reuseIdentifier isEqualToString:VoucherDetailCellID]) {
@@ -134,7 +138,9 @@ static NSString * const VoucherDetailCellID = @"VoucherDetailCellID";
         self.name.text = name;        
     }
     [self.listImage sd_setImageWithURL:[NSURL URLWithString:voucherModel.voucherIcon] placeholderImage:[UIImage imageNamed:@"good_placehoder"]];
-    self.title.text = voucherModel.voucherName;
+//    self.title.text = voucherModel.voucherName;
+    self.title.attributedText = [Encapsulation attrWithString:voucherModel.voucherName preFont:FONT_Bold(14) preColor:TITLE_COLOR index:0 sufFont:FONT_Bold(14) sufColor:TITLE_COLOR lineSpacing:Margin_5];
+//    self.title.attributedText = [Encapsulation attrWithString:@"贵州茅台酒 53度茅台飞天精品500ml整箱12瓶 " preFont:FONT_Bold(14) preColor:TITLE_COLOR index:0 sufFont:FONT_Bold(14) sufColor:TITLE_COLOR lineSpacing:ScreenScale(4)];
     self.value.text = [NSString stringWithFormat:Localized(@"Value:%@"), voucherModel.faceValue];
 //    self.number.text = [NSString stringWithFormat:@"×  %@", voucherModel.balance];
     self.number.attributedText = [Encapsulation attrWithString:[NSString stringWithFormat:@"× %@", voucherModel.balance] preFont:FONT(18) preColor:TITLE_COLOR index:1 sufFont:FONT_Bold(18) sufColor:TITLE_COLOR lineSpacing:0];
@@ -191,6 +197,7 @@ static NSString * const VoucherDetailCellID = @"VoucherDetailCellID";
     if (!_listImage) {
         _listImage = [[UIImageView alloc] init];
         _listImage.image = [UIImage imageNamed:@"good_placehoder"];
+        [_listImage setViewSize:CGSizeMake(ScreenScale(60), ScreenScale(60)) borderRadius:ScreenScale(3) corners:UIRectCornerAllCorners];
     }
     return _listImage;
 }

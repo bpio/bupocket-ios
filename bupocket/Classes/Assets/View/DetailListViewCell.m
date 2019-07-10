@@ -51,6 +51,9 @@ static NSString * const VersionLogCellID = @"VersionLogCellID";
                 self.title.font = FONT(16);
                 self.title.textColor = COLOR_6;
                 self.infoTitle.font = FONT(14);
+            } else if ([reuseIdentifier isEqualToString:VersionLogCellID]) {
+                self.title.font = FONT(17);
+                self.title.textColor = TITLE_COLOR;
             }
         }
     }

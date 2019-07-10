@@ -663,7 +663,7 @@
 //"DeliveryInstructions" = "";
 // 资产发行方
 //"IssuerOfDigitalAssets" = "数字资产发行方";
-"InfoOfDigitalAssetIssuer" = "数字资产发行方介绍";
+"InfoOfDigitalAssetIssuer" = "资产发行方介绍";
 "DataPublicity" = "数据公示";
 // 转赠券
 "DonateVouchers" = "转券";
@@ -681,6 +681,7 @@
 "DonationFailure" = "转赠失败";
 "DonationTimeout" = "转赠超时";
 "TransferEncryptedDigitalVouchers" = "转赠加密数字券";
+"DonationWalletPWPrompt" = "请填写当前钱包的安全以确认转增";
 
 //"NoVouchers" = "暂无可转赠的券";
 "CannotTransferVoucherToOneself" = "不能给自己转赠券";

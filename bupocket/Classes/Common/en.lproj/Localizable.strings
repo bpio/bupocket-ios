@@ -650,7 +650,8 @@
 "VoucherPromptTitle" = "Digital Asset Vouchers";
 "VoucherPromptInfo" = "";
 "VoucherNoData" = "None";
-"ShareQRCode" = "Share QR Code to Receive Vouchers";
+//"ShareQRCode" = "Share QR Code to Receive Vouchers";
+"ShareQRCode" = "Voucher Receiving QR Code";
 "Value:%@" = "Nominal Value：%@";
 "Validity" = "Validity";
 "%@ to %@" = "%@ To %@";
@@ -676,7 +677,8 @@
 //"DeliveryInstructions" = "";
 // Issuer of Digital Asset
 //"IssuerOfDigitalAssets" = "Issuer of Digital Asset";
-"InfoOfDigitalAssetIssuer" = "About the Issuer of Digital Asset";
+//"InfoOfDigitalAssetIssuer" = "About the Issuer of Digital Asset";
+"InfoOfDigitalAssetIssuer" = "About the Issuer of Asset";
 "DataPublicity" = "Data Publicity";
 
 // Donate
@@ -695,6 +697,7 @@
 "DonationFailure" = "Donation Failure";
 "DonationTimeout" = "Donation Timeout";
 "TransferEncryptedDigitalVouchers" = "Donate encrypted digital vouchers";
+"DonationWalletPWPrompt" = "Please input the security password for current wallet to confirm donation";
 
 //"NoVouchers" = "暂无可转赠的券";
 "CannotTransferVoucherToOneself" = "Voucher donation to yourself is not allowed";

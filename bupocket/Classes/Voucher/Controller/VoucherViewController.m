@@ -63,7 +63,7 @@ static NSString * const VoucherCellID = @"VoucherCellID";
         self.navigationItem.title = Localized(@"ChoiceVouchersTitle");
     } else {
         self.navigationItem.title = CurrentWalletName ? CurrentWalletName : Current_WalletName;
-        [self.tableView.mj_header beginRefreshing];
+        [self reloadData];
     }
 }
 - (void)reloadData
@@ -152,6 +152,7 @@ static NSString * const VoucherCellID = @"VoucherCellID";
     self.tableView.dataSource = self;
     self.tableView.separatorStyle = UITableViewCellSeparatorStyleNone;
     [self.view addSubview:self.tableView];
+    self.tableView.backgroundColor = [UIColor whiteColor];
     self.tableView.tableHeaderView = [[UIView alloc] initWithFrame:CGRectMake(0, 0, 0, CGFLOAT_MIN)];
 //    self.tableView.tableFooterView = self.noData;
     

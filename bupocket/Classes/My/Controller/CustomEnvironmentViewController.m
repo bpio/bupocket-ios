@@ -9,7 +9,7 @@
 #import "CustomEnvironmentViewController.h"
 #import "TextFieldViewCell.h"
 
-@interface CustomEnvironmentViewController ()<UITextViewDelegate, UITextFieldDelegate, UITableViewDelegate, UITableViewDataSource>
+@interface CustomEnvironmentViewController ()<UITextFieldDelegate, UITableViewDelegate, UITableViewDataSource>
 
 @property (nonatomic, strong) UIButton * rightBtn;
 @property (nonatomic, strong) UITableView * tableView;
