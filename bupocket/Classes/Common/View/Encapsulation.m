@@ -57,6 +57,31 @@
     [attr addAttributes:paraStyleDic range:NSMakeRange(0, str.length)];
     return attr;
 }
+// Set line spacing and word spacing
++ (NSMutableAttributedString *)attrWithString:(NSString *)str font:(UIFont *)font color:(UIColor *)color lineSpacing:(CGFloat)lineSpacing
+{
+    NSMutableAttributedString * attr = [[NSMutableAttributedString alloc] initWithString:str];
+    NSMutableDictionary * dic = [NSMutableDictionary dictionary];
+    dic[NSFontAttributeName] = font;
+    dic[NSForegroundColorAttributeName] = color;
+    [attr addAttributes:dic range:NSMakeRange(0, str.length)];
+    NSMutableDictionary * paraStyleDic = [NSMutableDictionary dictionary];
+    NSMutableParagraphStyle *paraStyle = [[NSMutableParagraphStyle alloc] init];
+    //    paraStyle.lineBreakMode =NSLineBreakByCharWrapping;
+    paraStyle.alignment = NSTextAlignmentLeft;
+    paraStyle.lineSpacing = lineSpacing; //设置行间距
+    paraStyle.hyphenationFactor = 1.0;
+    paraStyle.firstLineHeadIndent = 0.0;
+    paraStyle.paragraphSpacingBefore = 0.0;
+    paraStyle.headIndent = 0;
+    paraStyle.tailIndent = 0;
+    //    paraStyleDic[NSFontAttributeName] = FONT_TITLE;
+    paraStyleDic[NSParagraphStyleAttributeName] = paraStyle;
+    //word spacing NSKernAttributeName:@1.5f
+    //    paraStyleDic[NSKernAttributeName] = @1.0f;
+    [attr addAttributes:paraStyleDic range:NSMakeRange(0, str.length)];
+    return attr;
+}
 // Setting Title Property text
 + (NSMutableAttributedString *)attrTitle:(NSString *)title ifRequired:(BOOL)ifRequired
 {

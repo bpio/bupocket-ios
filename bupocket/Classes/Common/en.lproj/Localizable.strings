@@ -19,7 +19,7 @@
 "AssetsTitle" = "Tokens";
 // Identity
 "CreateDigitalIdentity" = "Create a digital identity";
-"ImmediateCreation" = "Create Now";
+//"ImmediateCreation" = "Create Now";
 "RestoreIdentity" = "Restore Identity";
 
 // BU Pocket User Services Agreement
@@ -226,7 +226,8 @@
 "Next" = "Next";
 "CannotTransferToOneself" = "You can\'t transfer tokens to yourself";
 //"TransactionIdentityCipherPrompt" = "Please fill in the identity password to confirm the transfer";
-"TransactionWalletPWPrompt" = " Please enter the wallet password to confirm to transfer";
+//"TransactionWalletPWPrompt" = " Please enter the wallet password to confirm to transfer";
+"TransactionWalletPWPrompt" = "Fill in the security code to confirm to transfer";
 "ConfirmationOfTransfer" = "Confirm";
 "TransferPrompt" = "Please confirm whether the transfer information is correct.";
 "Submission" = "Submit";
@@ -248,8 +249,8 @@
 "TransactionDetail" = "Transaction Detail";
 "Success" = "Success";
 "Failure" = "Failure";
-"OriginatorAdress" = "Sending address";
-"RecipientAddress" = "Recipient address";
+//"OriginatorAdress" = "Sending address";
+//"RecipientAddress" = "Recipient address";
 //"SendingTime" = "Sending time";
 // Issue tokens
 // Confirm token registration
@@ -258,7 +259,8 @@
 "ConfirmationOfRegistration" = "Confirm Registration";
 "RegisteredNumberOverflowMax" = "The tokens you have registered have exceeded the maximum limit";
 //"RegistrationWalletPWPrompt" = "Please fill in the identity password to confirm the registration";
-"RegistrationWalletPWPrompt" = " Please enter the wallet password to confirm to register";
+//"RegistrationWalletPWPrompt" = " Please enter the wallet password to confirm to register";
+"RegistrationWalletPWPrompt" = "Fill in the security code to confirm to register";
 "RegistrationSuccess" = "Registration succeeded";
 "RegistrationFailure" = "Registration failed";
 "RegistrationTimeout" = "Registration timeout";
@@ -271,7 +273,8 @@
 "IssueAssetsConfirmation" = "Confirm Token Issuance";
 "ConfirmAssetInformation" = "Please confirm the following token issuance information";
 //"IssueIdentityCipherPrompt" = "Please fill in the identity password to confirm the issuance";
-"DistributionWalletPWPrompt" = "Please enter the wallet password to confirm to issue";
+//"DistributionWalletPWPrompt" = "Please enter the wallet password to confirm to issue";
+"DistributionWalletPWPrompt" = "Fill in the security code to confirm to issue";
 "TokenName" = "Token name";
 "TokenCode" = "Token code";
 "TheIssueVolume" = "The amount issued this time";
@@ -441,7 +444,8 @@
 "DeleteWallet" = "Delete Wallet";
 "ModifyWalletName" = "Change wallet name";
 "WalletPWPrompt" = "Please enter the wallet password";
-"BackupWalletPWPrompt" = "Please input the security password for the wallet to confirm backup";
+//"BackupWalletPWPrompt" = "Please input the security password for the wallet to confirm backup";
+"BackupWalletPWPrompt" = "Fill in the security code to confirm to back up";
 "DeleteWalletSuccessfully" = "The wallet is deleted successfully";
 "ConfirmDeleteWallet" = "Are you sure to delete this wallet?";
 "DeleteCurrentWallet" = "The to-be-deleted wallet is in use currently. After this wallet is deleted, the wallet in this identity will be selected by default.";
@@ -556,10 +560,11 @@
 //"After successful withdrawal, the frozen BU is returned to the original purse\n（%@）" = "撤票成功后，将冻结的BU退回至原钱包\n（%@）";
 // Transaction
 "ConfirmTransaction" = "Confirm transaction";
-"MaximumTransactionCosts" = "Maximum transaction costs（BU）";
+"MaximumTransactionCosts" = "Maximum transaction fee（BU）";
 "Overdue" = "The request is expired";
 //"Initiator" = "Initiator";
 //"CounterAccount" = "The receiving account";
+"Detail" = "Details";
 "Details" = "Details>>";
 "TransactionCosts（BU）" = "Transaction fees（BU）";
 "Parameter" = "Parameter";
@@ -668,6 +673,8 @@
 "GiftGiving" = "Donate";
 "Acceptor" = "Acceptor";
 "AssetIssuer" = "Asset Issuer";
+"LongTerm" = "Long Term";
+"None" = "None";
 
 // Acceptor
 "NoIntroduction" = "No Introduction";
@@ -697,7 +704,8 @@
 "DonationFailure" = "Donation Failure";
 "DonationTimeout" = "Donation Timeout";
 "TransferEncryptedDigitalVouchers" = "Donate encrypted digital vouchers";
-"DonationWalletPWPrompt" = "Please input the security password for current wallet to confirm donation";
+//"DonationWalletPWPrompt" = "Please input the security password for current wallet to confirm donation";
+"DonationWalletPWPrompt" = "Fill in the security code to confirm to donate";
 
 //"NoVouchers" = "暂无可转赠的券";
 "CannotTransferVoucherToOneself" = "Voucher donation to yourself is not allowed";

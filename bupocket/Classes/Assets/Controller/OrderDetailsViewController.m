@@ -140,7 +140,7 @@ static NSInteger const TxInfoNormalCount = 6;
     [blockInfoArray addObject:[DateTool getDateStringWithTimeStr:self.blockInfoModel.closeTimeDate]];
     [self.infoArray addObject:blockInfoArray];
     
-    self.listArray = @[@[Localized(@"OriginatorAdress"), Localized(@"RecipientAddress"), Localized(@"TransactionCost"), Localized(@"TransferTime"), Localized(@"Remarks")], infoTitleArray, @[@"Block Height", @"Block Hash", @"Prev Block Hash", @"TX Count", @"Consensus Time"]];
+    self.listArray = @[@[Localized(@"SendingAccount"), Localized(@"ReceivingAccount"), Localized(@"TransactionCost"), Localized(@"TransferTime"), Localized(@"Remarks")], infoTitleArray, @[@"Block Height", @"Block Hash", @"Prev Block Hash", @"TX Count", @"Consensus Time"]];
 }
 
 - (void)setupView
@@ -293,7 +293,7 @@ static NSInteger const TxInfoNormalCount = 6;
         cell.infoTitle.text = self.infoArray[indexPath.section][indexPath.row];
     }
     cell.selectionStyle = UITableViewCellSelectionStyleNone;
-    if ([cell.title.text isEqualToString:Localized(@"OriginatorAdress")] || [cell.title.text isEqualToString:Localized(@"RecipientAddress")] || [cell.title.text isEqualToString:@"TX Hash"] || [cell.title.text isEqualToString:@"From"] || [cell.title.text isEqualToString:@"To"] || [cell.title.text isEqualToString:@"Block Hash"] || [cell.title.text isEqualToString:@"Prev Block Hash"]) {
+    if ([cell.title.text isEqualToString:Localized(@"SendingAccount")] || [cell.title.text isEqualToString:Localized(@"ReceivingAccount")] || [cell.title.text isEqualToString:@"TX Hash"] || [cell.title.text isEqualToString:@"From"] || [cell.title.text isEqualToString:@"To"] || [cell.title.text isEqualToString:@"Block Hash"] || [cell.title.text isEqualToString:@"Prev Block Hash"]) {
         cell.infoTitle.copyable = YES;
     } else {
         cell.infoTitle.copyable = NO;

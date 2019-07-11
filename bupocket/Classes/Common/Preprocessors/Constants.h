@@ -207,4 +207,7 @@
 
 #define Seq_Subtract_Max 10
 
+// -1:没有有效期开始时间/结束时间
+#define Voucher_Validity_Date @"-1"
+
 #endif /* Constants_h */

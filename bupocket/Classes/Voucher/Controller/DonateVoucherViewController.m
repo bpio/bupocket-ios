@@ -42,7 +42,7 @@
 @property (nonatomic, strong) NSString * transactionCostsStr;
 
 @property (nonatomic, strong) ConfirmTransactionModel * confirmModel;
-@property (nonatomic, strong) DposModel * dposModel;
+//@property (nonatomic, strong) DposModel * dposModel;
 @property (nonatomic, strong) NSString * number;
 
 @end
@@ -66,6 +66,11 @@ static NSString * const ChooseVoucherCellID = @"ChooseVoucherCellID";
     self.navigationItem.title = Localized(@"DonateVouchers");
     self.listArray = [NSMutableArray arrayWithObjects:@[[NSString stringWithFormat:@"%@ *", Localized(@"DonateVoucher")]], @[[NSString stringWithFormat:@"%@ *", Localized(@"ReceivingAccount")], Localized(@"ReceiveAddressPlaceholder")], @[Localized(@"TransferQuantity*"), Localized(@"AmountOfDonation")], @[Localized(@"Remarks"), Localized(@"RemarksPlaceholder")], @[Localized(@"EstimatedMaximum"), Localized(@"TransactionCostPlaceholder")], nil];
     [self setupView];
+    if (@available(iOS 11.0, *)) {
+        self.tableView.contentInsetAdjustmentBehavior = UIScrollViewContentInsetAdjustmentNever;
+    } else {
+        // Fallback on earlier versions
+    }
     if (self.voucherModel) {
         [self getAvailableVoucherNumber];
     }
@@ -73,13 +78,13 @@ static NSString * const ChooseVoucherCellID = @"ChooseVoucherCellID";
 - (void)getAvailableVoucherNumber
 {
     __weak typeof(self) weakSelf = self;
-    self.dposModel = [[DposModel alloc] init];
-    self.dposModel.dest_address = self.voucherModel.contractAddress;
-    self.dposModel.tx_fee = TransactionCost_MIN;
-    self.dposModel.input = SKUTokenQuery(self.voucherModel.voucherId, CurrentWalletAddress);
+    DposModel * dposModel = [[DposModel alloc] init];
+    dposModel.dest_address = self.voucherModel.contractAddress;
+    dposModel.tx_fee = TransactionCost_MIN;
+    dposModel.input = SKUTokenQuery(self.voucherModel.voucherId, CurrentWalletAddress);
     NSOperationQueue * queue = [[NSOperationQueue alloc] init];
     [queue addOperationWithBlock:^{
-        int64_t number = [[HTTPManager shareManager] getVoutherBalanceWithDposModel: self.dposModel];
+        int64_t number = [[HTTPManager shareManager] getVoutherBalanceWithDposModel: dposModel];
         self.number = [NSString stringWithFormat:@"%lld", number];
         [[NSOperationQueue mainQueue] addOperationWithBlock:^{
             [self judgeHasText];
@@ -150,7 +155,7 @@ static NSString * const ChooseVoucherCellID = @"ChooseVoucherCellID";
 //                return;
 //            }
             RegexPatternTool * regex = [[RegexPatternTool alloc] init];
-            BOOL transferVolumeRegx = [regex validateIsPositiveFloatingPoint:self.valueStr];
+            BOOL transferVolumeRegx = [regex validateIsPositiveInteger:self.valueStr];
             
             if (transferVolumeRegx == NO) {
                 [MBProgressHUD hideHUD];
@@ -163,10 +168,10 @@ static NSString * const ChooseVoucherCellID = @"ChooseVoucherCellID";
                 return;
             }
             
-            NSDecimalNumber * amount = [NSDecimalNumber decimalNumberWithString:self.dposModel.tx_fee];
+//            NSDecimalNumber * amount = [NSDecimalNumber decimalNumberWithString:self.dposModel.tx_fee];
             NSDecimalNumber * cost = [NSDecimalNumber decimalNumberWithString:self.transactionCostsStr];
-            NSDecimalNumber * totleAmount = [amount decimalNumberByAdding:cost];
-            NSDecimalNumber * amountNumber = [[HTTPManager shareManager] getDataWithBalanceJudgmentWithCost:[totleAmount stringValue] ifShowLoading:NO];
+//            NSDecimalNumber * totleAmount = [amount decimalNumberByAdding:cost];
+            NSDecimalNumber * amountNumber = [[HTTPManager shareManager] getDataWithBalanceJudgmentWithCost:[cost stringValue] ifShowLoading:NO];
             NSString * totleAmountStr = [amountNumber stringValue];
             if (!NotNULLString(totleAmountStr) || [amountNumber isEqualToNumber:NSDecimalNumber.notANumber]) {
                 [MBProgressHUD hideHUD];
@@ -219,7 +224,7 @@ static NSString * const ChooseVoucherCellID = @"ChooseVoucherCellID";
             dposModel.tx_fee = self.transactionCostsStr;
             dposModel.input = self.confirmModel.script;
             dposModel.notes = self.remarksStr;
-            dposModel.amount = self.valueStr;
+            dposModel.amount = @"0";
             dposModel.to_address = self.receiveAddressStr;
             if (![[HTTPManager shareManager] getTransactionWithDposModel: dposModel isDonateVoucher:YES]) return;
             [self showPWAlert];

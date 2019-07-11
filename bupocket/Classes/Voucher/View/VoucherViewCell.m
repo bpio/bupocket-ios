@@ -54,8 +54,9 @@ static NSString * const VoucherDetailCellID = @"VoucherDetailCellID";
 {
     [super layoutSubviews];
     CGFloat left = Margin_30;
-    CGFloat iconTop = ScreenScale(21);
+    CGFloat iconTop = iPhone5 ? Margin_25 : ScreenScale(21);
     CGFloat listImageTop = Margin_15;
+    CGFloat dateBottom = iPhone5 ? Margin_20 : ScreenScale(18);
     if ([self.reuseIdentifier isEqualToString:VoucherCellID]) {
         [self.listBg mas_makeConstraints:^(MASConstraintMaker *make) {
             make.left.equalTo(self.contentView.mas_left).offset(Margin_5);
@@ -63,6 +64,9 @@ static NSString * const VoucherDetailCellID = @"VoucherDetailCellID";
             make.top.bottom.equalTo(self.contentView);
 //            make.top.equalTo(self.contentView.mas_top).offset(Margin_5);
 //            make.bottom.equalTo(self.contentView.mas_bottom).offset(-Margin_5);
+        }];
+        [self.listImage mas_makeConstraints:^(MASConstraintMaker *make) {
+            make.centerY.equalTo(self.contentView);
         }];
     } else if ([self.reuseIdentifier isEqualToString:VoucherDetailCellID]) {
         [self.listBg mas_makeConstraints:^(MASConstraintMaker *make) {
@@ -74,6 +78,9 @@ static NSString * const VoucherDetailCellID = @"VoucherDetailCellID";
         [self.lineView mas_makeConstraints:^(MASConstraintMaker *make) {
             make.left.equalTo(self.contentView.mas_left).offset(left);
             make.top.equalTo(self.listBg.mas_top).offset(Margin_50);
+        }];
+        [self.listImage mas_makeConstraints:^(MASConstraintMaker *make) {
+            make.top.equalTo(self.icon.mas_bottom).offset(listImageTop);
         }];
     }
     [self.checked mas_makeConstraints:^(MASConstraintMaker *make) {
@@ -91,7 +98,7 @@ static NSString * const VoucherDetailCellID = @"VoucherDetailCellID";
         make.right.mas_lessThanOrEqualTo(self.contentView.mas_right).offset(-left);
     }];
     [self.listImage mas_makeConstraints:^(MASConstraintMaker *make) {
-        make.top.equalTo(self.icon.mas_bottom).offset(listImageTop);
+//        make.top.equalTo(self.icon.mas_bottom).offset(listImageTop);
         make.left.equalTo(self.icon);
         make.width.height.mas_equalTo(ScreenScale(60));
     }];
@@ -117,7 +124,7 @@ static NSString * const VoucherDetailCellID = @"VoucherDetailCellID";
         [self.number setContentCompressionResistancePriority:UILayoutPriorityRequired forAxis:UILayoutConstraintAxisHorizontal];
         [self.date mas_makeConstraints:^(MASConstraintMaker *make) {
             make.left.equalTo(self.icon);
-            make.bottom.equalTo(self.listBg.mas_bottom).offset(-ScreenScale(18));
+            make.bottom.equalTo(self.listBg.mas_bottom).offset(-dateBottom);
             make.height.mas_equalTo(Margin_30);
             make.right.equalTo(self.title);
         }];
@@ -139,16 +146,14 @@ static NSString * const VoucherDetailCellID = @"VoucherDetailCellID";
     }
     [self.listImage sd_setImageWithURL:[NSURL URLWithString:voucherModel.voucherIcon] placeholderImage:[UIImage imageNamed:@"good_placehoder"]];
 //    self.title.text = voucherModel.voucherName;
-    self.title.attributedText = [Encapsulation attrWithString:voucherModel.voucherName preFont:FONT_Bold(14) preColor:TITLE_COLOR index:0 sufFont:FONT_Bold(14) sufColor:TITLE_COLOR lineSpacing:Margin_5];
-//    self.title.attributedText = [Encapsulation attrWithString:@"贵州茅台酒 53度茅台飞天精品500ml整箱12瓶 " preFont:FONT_Bold(14) preColor:TITLE_COLOR index:0 sufFont:FONT_Bold(14) sufColor:TITLE_COLOR lineSpacing:ScreenScale(4)];
+    self.title.attributedText = [Encapsulation attrWithString:voucherModel.voucherName font:FONT_Bold(14) color:TITLE_COLOR lineSpacing:LINE_SPACING];
     self.value.text = [NSString stringWithFormat:Localized(@"Value:%@"), voucherModel.faceValue];
-//    self.number.text = [NSString stringWithFormat:@"×  %@", voucherModel.balance];
-    self.number.attributedText = [Encapsulation attrWithString:[NSString stringWithFormat:@"× %@", voucherModel.balance] preFont:FONT(18) preColor:TITLE_COLOR index:1 sufFont:FONT_Bold(18) sufColor:TITLE_COLOR lineSpacing:0];
-    NSString * startTime = ([voucherModel.startTime isEqualToString:@"-1"]) ? @"~" : [DateTool getDateStringWithDataStr:voucherModel.startTime];
-    NSString * endTime = ([voucherModel.endTime isEqualToString:@"-1"]) ? @"~" : [DateTool getDateStringWithDataStr:voucherModel.endTime];
-    NSString * dataStr = [NSString stringWithFormat:Localized(@"%@ to %@"), startTime, endTime];
-    self.date.text = [NSString stringWithFormat:@"%@：%@", Localized(@"Validity"), dataStr];
-    
+    self.number.text = [NSString stringWithFormat:@"× %@", voucherModel.balance];
+//    self.number.attributedText = [Encapsulation attrWithString:[NSString stringWithFormat:@"×%@", voucherModel.balance] preFont:FONT(18) preColor:TITLE_COLOR index:1 sufFont:FONT(18) sufColor:TITLE_COLOR lineSpacing:0];
+    NSString * startTime = ([voucherModel.startTime isEqualToString:Voucher_Validity_Date]) ? @"~" : [DateTool getDateStringWithDataStr:voucherModel.startTime];
+    NSString * endTime = ([voucherModel.endTime isEqualToString:Voucher_Validity_Date]) ? @"~" : [DateTool getDateStringWithDataStr:voucherModel.endTime];
+    NSString * dateStr = ([self.voucherModel.startTime isEqualToString:Voucher_Validity_Date]) ? Localized(@"LongTerm") : [NSString stringWithFormat:Localized(@"%@ to %@"), startTime, endTime];
+    self.date.text = [NSString stringWithFormat:@"%@：%@", Localized(@"Validity"), dateStr];
     [self.listBg sizeToFit];
     _voucherModel.cellHeight = self.listBg.height;
 }
@@ -173,6 +178,7 @@ static NSString * const VoucherDetailCellID = @"VoucherDetailCellID";
         _icon = [[UIImageView alloc] init];
         _icon.image = [UIImage imageNamed:@"icon_placehoder"];
         [_icon setViewSize:CGSizeMake(ScreenScale(22), ScreenScale(22)) borderWidth:0 borderColor:nil borderRadius:ScreenScale(11)];
+        _icon.contentMode = UIViewContentModeScaleAspectFill;
     }
     return _icon;
 }
@@ -226,7 +232,7 @@ static NSString * const VoucherDetailCellID = @"VoucherDetailCellID";
 {
     if (!_number) {
         _number = [[UILabel alloc] init];
-        _number.font = FONT_Bold(18);
+        _number.font = FONT(18);
         _number.textColor = TITLE_COLOR;
     }
     return _number;

@@ -19,7 +19,7 @@
 @property (nonatomic, strong) UIScrollView * transactionScrollView;
 @property (nonatomic, strong) NSArray * infoTitleArray;
 @property (nonatomic, strong) UIButton * details;
-@property (nonatomic, strong) UIButton * back;
+@property (nonatomic, strong) CustomButton * back;
 @property (nonatomic, strong) UIButton * confirm;
 @property (nonatomic, strong) NSString * transactionCost;
 
@@ -87,7 +87,7 @@
     [self.back mas_makeConstraints:^(MASConstraintMaker *make) {
         make.left.mas_equalTo(DEVICE_WIDTH + Margin_20);
         make.top.height.equalTo(self.title);
-        make.width.mas_equalTo(Margin_50);
+//        make.width.mas_equalTo(Margin_50);
     }];
     
     [self.transactionScrollView mas_makeConstraints:^(MASConstraintMaker *make) {
@@ -324,11 +324,24 @@
     }
     return _details;
 }
-- (UIButton *)back
+//- (UIButton *)back
+//{
+//    if (!_back) {
+//        _back = [UIButton createButtonWithNormalImage:@"nav_goback_n" SelectedImage:@"nav_goback_n" Target:self Selector:@selector(backAction)];
+//        _back.contentHorizontalAlignment = UIControlContentHorizontalAlignmentLeft;
+//    }
+//    return _back;
+//}
+- (CustomButton *)back
 {
     if (!_back) {
-        _back = [UIButton createButtonWithNormalImage:@"nav_goback_n" SelectedImage:@"nav_goback_n" Target:self Selector:@selector(backAction)];
-        _back.contentHorizontalAlignment = UIControlContentHorizontalAlignmentLeft;
+        _back = [[CustomButton alloc] init];
+        [_back setTitleColor:COLOR_6 forState:UIControlStateNormal];
+        _back.titleLabel.font = FONT_16;
+        [_back setTitle:Localized(@"Detail") forState:UIControlStateNormal];
+        [_back setImage:[UIImage imageNamed:@"nav_goback_n"] forState:UIControlStateNormal];
+        [_back addTarget:self action:@selector(backAction) forControlEvents:UIControlEventTouchUpInside];
+        _back.layoutMode = HorizontalNormal;
     }
     return _back;
 }

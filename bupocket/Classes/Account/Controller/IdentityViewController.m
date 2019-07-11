@@ -53,7 +53,7 @@
         make.centerX.equalTo(identityBg);
         make.top.equalTo(logoImage.mas_bottom).offset(Margin_25);
     }];
-    UIButton * createIdentity = [UIButton createButtonWithTitle:Localized(@"ImmediateCreation") isEnabled:YES Target:self Selector:@selector(IDAction:)];
+    UIButton * createIdentity = [UIButton createButtonWithTitle:Localized(@"CreateIdentity") isEnabled:YES Target:self Selector:@selector(IDAction:)];
     [identityBg addSubview:createIdentity];
     [createIdentity mas_makeConstraints:^(MASConstraintMaker *make) {
         make.top.equalTo(titleLabel.mas_bottom).offset(ScreenScale(90));
@@ -76,7 +76,7 @@
 - (void)IDAction:(UIButton *)button
 {
     TermsOfUseViewController * VC = [[TermsOfUseViewController alloc] init];
-    if ([button.titleLabel.text isEqualToString:Localized(@"ImmediateCreation")]) {
+    if ([button.titleLabel.text isEqualToString:Localized(@"CreateIdentity")]) {
         VC.userProtocolType = UserProtocolCreateID;
     } else if ([button.titleLabel.text isEqualToString:Localized(@"RestoreIdentity")]) {
         VC.userProtocolType = UserProtocolRestoreID;

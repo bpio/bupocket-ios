@@ -77,9 +77,11 @@ static NSString * const VoucherDetailCellID = @"VoucherDetailCellID";
             self.loadingBg.hidden = YES;
             self.voucherModel = [VoucherModel mj_objectWithKeyValues:responseObject[@"data"]];
             //            self.listArray = [CooperateModel mj_objectArrayWithKeyValuesArray:responseObject[@"data"][@"nodeList"]];
-            NSString * startTime = ([self.voucherModel.startTime isEqualToString:@"-1"]) ? @"~" : [DateTool getDateStringWithDataStr:self.voucherModel.startTime];
-            NSString * endTime = ([self.voucherModel.endTime isEqualToString:@"-1"]) ? @"~" : [DateTool getDateStringWithDataStr:self.voucherModel.endTime];
-            self.listArray = [NSMutableArray arrayWithArray:@[@[@""], @[@[Localized(@"Validity"), [NSString stringWithFormat:Localized(@"%@ to %@"), startTime, endTime]], @[Localized(@"VoucherCode"), self.voucherModel.voucherId], @[Localized(@"Specification"), self.voucherModel.voucherSpec], @[Localized(@"Describe"), self.voucherModel.desc], @[Localized(@"HoldingQuantity"), holdingQuantity]], @[@[Localized(@"Acceptor"), self.voucherModel.voucherAcceptance[@"name"]], @[Localized(@"AssetIssuer"), self.voucherModel.voucherIssuer[@"name"]]]]];
+            NSString * startTime = ([self.voucherModel.startTime isEqualToString:Voucher_Validity_Date]) ? @"~" : [DateTool getDateStringWithDataStr:self.voucherModel.startTime];
+            NSString * endTime = ([self.voucherModel.endTime isEqualToString:Voucher_Validity_Date]) ? @"~" : [DateTool getDateStringWithDataStr:self.voucherModel.endTime];
+            NSString * date = ([self.voucherModel.startTime isEqualToString:Voucher_Validity_Date]) ? Localized(@"LongTerm") : [NSString stringWithFormat:Localized(@"%@ to %@"), startTime, endTime];
+            NSString * specifications = NotNULLString(self.voucherModel.voucherSpec) ? self.voucherModel.voucherSpec : Localized(@"None");
+            self.listArray = [NSMutableArray arrayWithArray:@[@[@""], @[@[Localized(@"Validity"), date], @[Localized(@"VoucherCode"), self.voucherModel.voucherId], @[Localized(@"Specification"), specifications], @[Localized(@"Describe"), self.voucherModel.desc], @[Localized(@"HoldingQuantity"), holdingQuantity]], @[@[Localized(@"Acceptor"), self.voucherModel.voucherAcceptance[@"name"]], @[Localized(@"AssetIssuer"), self.voucherModel.voucherIssuer[@"name"]]]]];
             
             self.infoCellHeight = MAX(Margin_40, ([Encapsulation getSizeSpaceLabelWithStr:self.voucherModel.desc font:FONT_TITLE width:Info_Width_Max height:CGFLOAT_MAX lineSpacing:Margin_5].height + Margin_30));
             [self.tableView reloadData];
@@ -154,7 +156,7 @@ static NSString * const VoucherDetailCellID = @"VoucherDetailCellID";
 {
     if (section == self.listArray.count - 1) {
 //        return ScreenScale(180) - self.infoCellHeight;
-        return self.imageBgH - ((ScreenScale(145) * self.proportion) + self.infoCellHeight + Margin_40 * ([self.listArray[1] count] - 1) * self.proportion + (MAIN_HEIGHT * [self.listArray[2] count])) - Margin_10 * self.proportion;
+        return self.imageBgH - (ScreenScale(145) + self.infoCellHeight + Margin_40 * ([self.listArray[1] count] - 1) * self.proportion + (MAIN_HEIGHT * [self.listArray[2] count])) - Margin_10 * self.proportion;
     }
     return CGFLOAT_MIN;
 }
@@ -214,7 +216,7 @@ static NSString * const VoucherDetailCellID = @"VoucherDetailCellID";
 - (CGFloat)tableView:(UITableView *)tableView heightForRowAtIndexPath:(NSIndexPath *)indexPath
 {
     if (indexPath.section == 0) {
-        return ScreenScale(145) * self.proportion;
+        return ScreenScale(145);
     } else if (indexPath.section == 1 && indexPath.row == 3) {
        return self.infoCellHeight;
     } else if (indexPath.section == self.listArray.count - 1) {
@@ -238,7 +240,7 @@ static NSString * const VoucherDetailCellID = @"VoucherDetailCellID";
 //        cell.detailTitle.text = self.listArray[indexPath.section][indexPath.row][1];
         NSString * iconUrl = (indexPath.row == 0) ? self.voucherModel.voucherAcceptance[@"icon"] : self.voucherModel.voucherIssuer[@"icon"];
         [cell.listImage sd_setImageWithURL:[NSURL URLWithString:iconUrl] placeholderImage:[UIImage imageNamed:@"good_placehoder"]];
-//        cell.detail
+        cell.lineView.hidden = (indexPath.row == [self.listArray[indexPath.section] count] - 1);
         cell.selectionStyle = UITableViewCellSelectionStyleNone;
         cell.backgroundColor = cell.contentView.backgroundColor  = [UIColor clearColor];
         return cell;

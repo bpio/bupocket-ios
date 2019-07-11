@@ -106,7 +106,7 @@
 }
 - (void)setupNav
 {
-    self.wallet = [UIButton createButtonWithNormalImage:@"nav_wallet_w" SelectedImage:@"nav_wallet_w" Target:self Selector:@selector(walletAction)];
+    self.wallet = [UIButton createButtonWithNormalImage:@"nav_wallet_w" SelectedImage:@"nav_wallet" Target:self Selector:@selector(walletAction)];
     self.wallet.frame = CGRectMake(0, 0, ScreenScale(44), ScreenScale(44));
     self.wallet.contentHorizontalAlignment = UIControlContentHorizontalAlignmentRight;
     self.navigationItem.rightBarButtonItem = [[UIBarButtonItem alloc]initWithCustomView:self.wallet];
@@ -414,10 +414,12 @@
     CGFloat offsetY = scrollView.contentOffset.y;
     self.navAlpha = (offsetY + _headerViewH) / ScreenScale(80);
     if ((offsetY + _headerViewH) > ScreenScale(80)) {
+        self.wallet.selected = YES;
         self.navTitleColor = self.navTintColor = TITLE_COLOR;
         self.wallet.selected = YES;
         _statusBarStyle = UIStatusBarStyleDefault;
     } else {
+        self.wallet.selected = NO;
         self.navTitleColor = self.navTintColor = [UIColor whiteColor];
         self.wallet.selected = NO;
         _statusBarStyle = UIStatusBarStyleLightContent;
@@ -742,14 +744,15 @@
         NSUserDefaults * defaults = [NSUserDefaults standardUserDefaults];
 //        if (![defaults boolForKey:If_Backup] && _noBackup.selected == NO) {
         if (![defaults boolForKey:If_Backup]) {
-            if (iPhone6plus && [CurrentAppLanguage isEqualToString:ZhHans]) {
-                return 184;
-//                return 165;
-            } else if (iPhone6plus && [CurrentAppLanguage isEqualToString:EN]) {
-                return 217;
-//                return 195;
-            }
-            return ScreenScale(130) + [Encapsulation rectWithText:Localized(@"SafetyTips") font:FONT_TITLE textWidth:DEVICE_WIDTH - Margin_40].size.height;
+//            if (iPhone6plus && [CurrentAppLanguage isEqualToString:ZhHans]) {
+//                return 184;
+////                return 165;
+//            } else if (iPhone6plus && [CurrentAppLanguage isEqualToString:EN]) {
+//                return 217;
+////                return 195;
+//            }
+            return ScreenScale(130) + [Encapsulation getSizeSpaceLabelWithStr:Localized(@"SafetyTips") font:FONT_TITLE width:DEVICE_WIDTH - Margin_40 height:CGFLOAT_MAX lineSpacing:LINE_SPACING].height;
+//            [Encapsulation rectWithText:Localized(@"SafetyTips") font:FONT_TITLE textWidth:DEVICE_WIDTH - Margin_40].size.height;
         } else {
             return Margin_40;
         }
@@ -786,9 +789,10 @@
             }];
             
             UILabel * safetyTips = [[UILabel alloc] init];
-            safetyTips.textColor = COLOR_6;
-            safetyTips.font = FONT_TITLE;
-            safetyTips.text = Localized(@"SafetyTips");
+            safetyTips.attributedText = [Encapsulation attrWithString:Localized(@"SafetyTips") font:FONT_TITLE color:COLOR_6 lineSpacing:LINE_SPACING];
+//            safetyTips.textColor = COLOR_6;
+//            safetyTips.font = FONT_TITLE;
+//            safetyTips.text = Localized(@"SafetyTips");
             safetyTips.numberOfLines = 0;
             [backupBg addSubview:safetyTips];
             [safetyTips mas_makeConstraints:^(MASConstraintMaker *make) {

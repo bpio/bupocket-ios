@@ -368,7 +368,7 @@
 - (CGFloat)tableView:(UITableView *)tableView heightForFooterInSection:(NSInteger)section
 {
     if (section == self.listArray.count - 1) {
-        return ContentSizeBottom;
+        return ContentSizeBottom + Margin_30;
     } else {
         return CGFLOAT_MIN;
     }

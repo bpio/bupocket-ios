@@ -13,6 +13,7 @@ static NSString * const DetailCellID = @"DetailCellID";
 static NSString * const NormalCellID = @"NormalCellID";
 static NSString * const ChoiceCellID = @"ChoiceCellID";
 static NSString * const WalletDetailCellID = @"WalletDetailCellID";
+static NSString * const WalletDetailCellID1 = @"WalletDetailCellID1";
 static NSString * const IdentifyCellID = @"IdentifyCellID";
 static NSString * const VoucherCellID = @"VoucherCellID";
 
@@ -36,6 +37,9 @@ static NSString * const VoucherCellID = @"VoucherCellID";
     } else if (cellType == CellTypeWalletDetail) {
         // 文字，图片/文字，箭头 圆角
         identifier = WalletDetailCellID;
+    } else if (cellType == CellTypeWalletDetail1) {
+        // 文字，图片/文字，箭头 圆角
+        identifier = WalletDetailCellID1;
     } else if (cellType == CellTypeID) {
         // 文字，图片 文字 圆角
         identifier = IdentifyCellID;
@@ -59,7 +63,7 @@ static NSString * const VoucherCellID = @"VoucherCellID";
         [self.listBg addSubview:self.detailTitle];
         [self.listBg addSubview:self.detail];
         [self.listBg addSubview:self.lineView];
-        if ([reuseIdentifier isEqualToString:WalletDetailCellID]) {
+        if ([reuseIdentifier isEqualToString:WalletDetailCellID] || [reuseIdentifier isEqualToString:VoucherCellID]) {
             _listImage.contentMode = UIViewContentModeScaleAspectFill;
         }
     }
@@ -68,7 +72,7 @@ static NSString * const VoucherCellID = @"VoucherCellID";
 - (void)layoutSubviews
 {
     [super layoutSubviews];
-    if ([self.reuseIdentifier isEqualToString:NormalCellID] || [self.reuseIdentifier isEqualToString:WalletDetailCellID] || [self.reuseIdentifier isEqualToString:IdentifyCellID]) {
+    if ([self.reuseIdentifier isEqualToString:NormalCellID] || [self.reuseIdentifier isEqualToString:WalletDetailCellID] || [self.reuseIdentifier isEqualToString:WalletDetailCellID1] || [self.reuseIdentifier isEqualToString:IdentifyCellID]) {
         [self.listBg mas_makeConstraints:^(MASConstraintMaker *make) {
             make.left.equalTo(self.contentView.mas_left).offset(Margin_10);
             make.right.equalTo(self.contentView.mas_right).offset(-Margin_10);
@@ -81,15 +85,19 @@ static NSString * const VoucherCellID = @"VoucherCellID";
         }];
     }
     
-    [self.title mas_makeConstraints:^(MASConstraintMaker *make) {
-        make.top.height.equalTo(self.listBg);
-    }];
     if ([self.reuseIdentifier isEqualToString:ChoiceCellID]) {
         [self.title mas_makeConstraints:^(MASConstraintMaker *make) {
+            make.top.height.equalTo(self.listBg);
             make.left.equalTo(self.listBg.mas_left).offset(Margin_20);
+        }];
+    } else if ([self.reuseIdentifier isEqualToString:WalletDetailCellID1]) {
+        [self.title mas_makeConstraints:^(MASConstraintMaker *make) {
+            make.top.equalTo(self.detailTitle);
+            make.left.equalTo(self.listBg.mas_left).offset(Margin_15);
         }];
     } else if ([self.reuseIdentifier isEqualToString:WalletDetailCellID]) {
         [self.title mas_makeConstraints:^(MASConstraintMaker *make) {
+            make.top.height.equalTo(self.listBg);
             make.left.equalTo(self.listBg.mas_left).offset(Margin_15);
         }];
         [self.listImage setViewSize:CGSizeMake(Margin_30, Margin_30) borderWidth:0 borderColor:nil borderRadius:MAIN_CORNER];
@@ -100,6 +108,7 @@ static NSString * const VoucherCellID = @"VoucherCellID";
         }];
     } else if ([self.reuseIdentifier isEqualToString:VoucherCellID]) {
         [self.title mas_makeConstraints:^(MASConstraintMaker *make) {
+            make.top.height.equalTo(self.listBg);
             make.left.equalTo(self.listBg.mas_left).offset(Margin_15);
         }];
         [self.listImage setViewSize:CGSizeMake(ScreenScale(22), ScreenScale(22)) borderWidth:0 borderColor:nil borderRadius:ScreenScale(11)];
@@ -112,6 +121,7 @@ static NSString * const VoucherCellID = @"VoucherCellID";
         }];
     } else if ([self.reuseIdentifier isEqualToString:IdentifyCellID]) {
         [self.title mas_makeConstraints:^(MASConstraintMaker *make) {
+            make.top.height.equalTo(self.listBg);
             make.left.equalTo(self.listBg.mas_left).offset(Margin_10);
         }];
         [self.listImage mas_makeConstraints:^(MASConstraintMaker *make) {
@@ -120,6 +130,7 @@ static NSString * const VoucherCellID = @"VoucherCellID";
         }];
     } else {
         [self.title mas_makeConstraints:^(MASConstraintMaker *make) {
+            make.top.height.equalTo(self.listBg);
             make.left.equalTo(self.listImage.mas_right).offset(Margin_15);
         }];
         [self.listImage mas_makeConstraints:^(MASConstraintMaker *make) {
@@ -134,7 +145,7 @@ static NSString * const VoucherCellID = @"VoucherCellID";
         //        make.width.mas_equalTo(Margin_40);
         //        make.width.mas_equalTo(self.detail.imageView.width + ScreenScale(35));
     }];
-    if ([self.reuseIdentifier isEqualToString:DetailCellID] || [self.reuseIdentifier isEqualToString:WalletDetailCellID] || [self.reuseIdentifier isEqualToString:VoucherCellID]) {
+    if ([self.reuseIdentifier isEqualToString:DetailCellID] || [self.reuseIdentifier isEqualToString:WalletDetailCellID] || [self.reuseIdentifier isEqualToString:WalletDetailCellID1] || [self.reuseIdentifier isEqualToString:VoucherCellID]) {
         [self.detailTitle mas_makeConstraints:^(MASConstraintMaker *make) {
             make.right.equalTo(self.detail.mas_left);
         }];
@@ -147,8 +158,9 @@ static NSString * const VoucherCellID = @"VoucherCellID";
     UIView * detailTitleLeft = ([self.reuseIdentifier isEqualToString:IdentifyCellID]) ? self.listImage : self.title;
     [self.detailTitle mas_makeConstraints:^(MASConstraintMaker *make) {
         make.centerY.equalTo(self.listBg);
+//        make.width.mas_lessThanOrEqualTo(Info_Width_Max);
         make.left.mas_greaterThanOrEqualTo(detailTitleLeft.mas_right).offset(Margin_10);
-    }];
+     }];
     [self.listImage setContentCompressionResistancePriority:UILayoutPriorityRequired forAxis:UILayoutConstraintAxisHorizontal];
     [self.title setContentCompressionResistancePriority:UILayoutPriorityRequired forAxis:UILayoutConstraintAxisHorizontal];
     [self.detail setContentCompressionResistancePriority:UILayoutPriorityRequired forAxis:UILayoutConstraintAxisHorizontal];

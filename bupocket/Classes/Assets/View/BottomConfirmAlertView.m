@@ -22,7 +22,7 @@
 //@property (nonatomic, strong) UIScrollView * transactionScrollView;
 @property (nonatomic, strong) NSArray * titleArray;
 @property (nonatomic, strong) UIButton * details;
-@property (nonatomic, strong) UIButton * back;
+@property (nonatomic, strong) CustomButton * back;
 @property (nonatomic, strong) UIButton * confirm;
 @property (nonatomic, strong) NSString * transactionCost;
 
@@ -99,7 +99,7 @@
     [self.back mas_makeConstraints:^(MASConstraintMaker *make) {
         make.left.mas_equalTo(DEVICE_WIDTH + Margin_20);
         make.top.height.equalTo(self.title);
-        make.width.mas_equalTo(Margin_50);
+//        make.width.mas_equalTo(Margin_50);
     }];
     
     [self.infoTableView mas_makeConstraints:^(MASConstraintMaker *make) {
@@ -361,11 +361,18 @@
     }
     return _details;
 }
-- (UIButton *)back
+- (CustomButton *)back
 {
     if (!_back) {
-        _back = [UIButton createButtonWithNormalImage:@"nav_goback_n" SelectedImage:@"nav_goback_n" Target:self Selector:@selector(backAction)];
-        _back.contentHorizontalAlignment = UIControlContentHorizontalAlignmentLeft;
+        _back = [[CustomButton alloc] init];
+        [_back setTitleColor:COLOR_6 forState:UIControlStateNormal];
+        _back.titleLabel.font = FONT_16;
+        [_back setTitle:Localized(@"Detail") forState:UIControlStateNormal];
+        [_back setImage:[UIImage imageNamed:@"nav_goback_n"] forState:UIControlStateNormal];
+        [_back addTarget:self action:@selector(backAction) forControlEvents:UIControlEventTouchUpInside];
+        _back.layoutMode = HorizontalNormal;
+//        [UIButton createButtonWithNormalImage:@"nav_goback_n" SelectedImage:@"nav_goback_n" Target:self Selector:@selector(backAction)];
+//        _back.contentHorizontalAlignment = UIControlContentHorizontalAlignmentLeft;
     }
     return _back;
 }
@@ -440,6 +447,7 @@
     cell.title.textColor = COLOR_9;
     NSString * str = [self infoStringWithTableView:tableView indexPath:indexPath];
     cell.infoTitle.attributedText = [Encapsulation attrWithString:str preFont:FONT_TITLE preColor:COLOR_6 index:0 sufFont:FONT_TITLE sufColor:COLOR_6 lineSpacing:Margin_10];
+    cell.selectionStyle = UITableViewCellSelectionStyleNone;
     return cell;
 }
 - (NSString *)infoStringWithTableView:(UITableView *)tableView indexPath:(NSIndexPath *)indexPath

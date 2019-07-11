@@ -17,7 +17,7 @@
 "UpdateVersion" = "更新版本";
 // 身份
 "CreateDigitalIdentity" = "创建数字身份";
-"ImmediateCreation" = "立即创建";
+//"ImmediateCreation" = "立即创建";
 "RestoreIdentity" = "恢复身份";
 // 小布口袋用户服务协议
 "TermsOfUse" = "小布口袋用户服务协议";
@@ -220,7 +220,8 @@
 "TransactionCostPlaceholder" = "请输交易费用";
 "Next" = "下一步";
 "CannotTransferToOneself" = "不能给自己转账";
-"TransactionWalletPWPrompt" = "请填写钱包密码以确认转出";
+//"TransactionWalletPWPrompt" = "请填写钱包密码以确认转出";
+"TransactionWalletPWPrompt" = "请填写安全密码以确认转出";
 "ConfirmationOfTransfer" = "确认转账";
 "TransferPrompt" = "请确认转账信息是否有误";
 "Submission" = "提交";
@@ -241,8 +242,8 @@
 "TransactionDetail" = "交易详情";
 "Success" = "成功";
 "Failure" = "失败";
-"OriginatorAdress" = "发送方地址";
-"RecipientAddress" = "接收方地址";
+//"OriginatorAdress" = "发送方地址";
+//"RecipientAddress" = "接收方地址";
 //"SendingTime" = "发送时间";
 // 发行资产
 // 登记资产确认
@@ -250,7 +251,8 @@
 "ConfirmRegistrationInformation" = "请确认以下登记资产信息";
 "ConfirmationOfRegistration" = "确认登记";
 "RegisteredNumberOverflowMax" = "您的资产登记总量超过了最大上限";
-"RegistrationWalletPWPrompt" = "请填写钱包密码以确认登记";
+//"RegistrationWalletPWPrompt" = "请填写钱包密码以确认登记";
+"RegistrationWalletPWPrompt" = "请填写安全密码以确认登记";
 "RegistrationSuccess" = "登记成功";
 "RegistrationFailure" = "登记失败";
 "RegistrationTimeout" = "登记超时";
@@ -262,7 +264,8 @@
 // 发行资产确认
 "IssueAssetsConfirmation" = "发行资产确认";
 "ConfirmAssetInformation" = "请确认以下发行资产信息";
-"DistributionWalletPWPrompt" = "请填写钱包密码以确认发行";
+//"DistributionWalletPWPrompt" = "请填写钱包密码以确认发行";
+"DistributionWalletPWPrompt" = "请填写安全密码以确认发行";
 "TokenName" = "资产名称";
 "TokenCode" = "资产代码";
 "TheIssueVolume" = "本次发行量";
@@ -427,7 +430,8 @@
 "DeleteWallet" = "删除钱包";
 "ModifyWalletName" = "更改钱包名称";
 "WalletPWPrompt" = "请填写钱包密码";
-"BackupWalletPWPrompt" = "请填写钱包的安全密码以确认备份";
+//"BackupWalletPWPrompt" = "请填写钱包的安全密码以确认备份";
+"BackupWalletPWPrompt" = "请填写安全密码以确认备份";
 "DeleteWalletSuccessfully" = "删除钱包成功";
 "ConfirmDeleteWallet" = "确认删除该钱包吗？";
 "DeleteCurrentWallet" = "当前删除钱包为当前使用钱包，删除后将默认设置当前身份下的钱包为当前使用钱包。";
@@ -545,6 +549,7 @@
 "Overdue" = "请求已过期";
 //"Initiator" = "发起方";
 //"CounterAccount" = "对方账户";
+"Detail" = "详情";
 "Details" = "详情>>";
 "TransactionCosts（BU）" = "交易费用（BU）";
 "Number（BU）" = "数量（BU）";
@@ -654,6 +659,8 @@
 "GiftGiving" = "转赠";
 "Acceptor" = "承兑方";
 "AssetIssuer" = "资产发行方";
+"LongTerm" = "长期";
+"None" = "暂无";
 
 // 承兑方
 "NoIntroduction" = "暂无介绍";
@@ -681,7 +688,8 @@
 "DonationFailure" = "转赠失败";
 "DonationTimeout" = "转赠超时";
 "TransferEncryptedDigitalVouchers" = "转赠加密数字券";
-"DonationWalletPWPrompt" = "请填写当前钱包的安全以确认转增";
+//"DonationWalletPWPrompt" = "请填写当前钱包的安全以确认转增";
+"DonationWalletPWPrompt" = "请填写安全密码以确认转赠";
 
 //"NoVouchers" = "暂无可转赠的券";
 "CannotTransferVoucherToOneself" = "不能给自己转赠券";

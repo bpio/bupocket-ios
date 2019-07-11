@@ -29,6 +29,7 @@
 - (void)viewDidLoad {
     [super viewDidLoad];
     self.edgesForExtendedLayout = UIRectEdgeAll;
+    self.automaticallyAdjustsScrollViewInsets = NO;
 //    self.navigationItem.title = Localized(@"Receive");
     self.navAlpha = 0;
     self.navBackgroundColor = [UIColor whiteColor];
@@ -119,7 +120,7 @@
         make.centerX.equalTo(self.imageViewBg);
     }];
     
-    CGSize addressBgSize = CGSizeMake(DEVICE_WIDTH - Margin_60, ScreenScale(370));
+    CGSize addressBgSize = CGSizeMake(DEVICE_WIDTH - Margin_60, ScreenScale(390));
     [self.addressBg setViewSize:addressBgSize borderRadius:BG_CORNER corners:UIRectCornerAllCorners];
     [self.addressBg mas_makeConstraints:^(MASConstraintMaker *make) {
         make.center.equalTo(self.imageViewBg);
@@ -139,7 +140,7 @@
     [self.walletName mas_makeConstraints:^(MASConstraintMaker *make) {
         make.top.equalTo(self.walletIcon.mas_bottom).offset(Margin_15);
         make.centerX.equalTo(self.addressBg);
-        make.width.mas_lessThanOrEqualTo(addressBgSize.width - Margin_30);
+        make.width.mas_lessThanOrEqualTo(addressBgSize.width - Margin_60);
     }];
     [self.addressBg addSubview:self.walletAddress];
     CGFloat walletAddressW = addressBgSize.width - Margin_20;
@@ -208,9 +209,11 @@
         _walletName = [[UILabel alloc] init];
         _walletName.textColor = TITLE_COLOR;
         _walletName.font = FONT_Bold(16);
-//        _walletName.textAlignment = NSTextAlignmentCenter;
         _walletName.numberOfLines = 0;
-        _walletName.text = CurrentWalletName ? CurrentWalletName : Current_WalletName;;
+        NSString * name = (CurrentWalletName) ? CurrentWalletName : Current_WalletName;
+        _walletName.attributedText = [Encapsulation attrWithString:name font:FONT_Bold(16) color:TITLE_COLOR lineSpacing:LINE_SPACING];
+//        _walletName.text = CurrentWalletName ? CurrentWalletName : Current_WalletName;;
+        _walletName.textAlignment = NSTextAlignmentCenter;
     }
     return _walletName;
 }

@@ -110,7 +110,7 @@ static NSString * const DetailSubtitleCellID = @"DetailSubtitleCellID";
     [self.walletImage mas_makeConstraints:^(MASConstraintMaker *make) {
 //        make.top.equalTo(self.listBg.mas_top).offset(Margin_20);
 //        make.left.equalTo(self.listBg.mas_left).offset(Margin_15);
-        make.centerY.equalTo(self.listBg);
+//        make.centerY.equalTo(self.listBg);
         make.left.equalTo(self.listBg.mas_left).offset(Margin_10);
         make.size.mas_equalTo(CGSizeMake(self.walletImageWH, self.walletImageWH));
     }];

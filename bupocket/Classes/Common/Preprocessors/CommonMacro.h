@@ -25,7 +25,8 @@
 #define NavBarH (StatusBarHeight + 44)
 #define SafeAreaBottomH ((IS_IPHONE_5_8 || IS_IPHONE_6_5) ? 34 : 0)
 #define TabBarH ([[UIApplication sharedApplication] statusBarFrame].size.height > 20 ? 83 : 49)
-#define ScreenScale(WH) ((IS_IPHONE_5_8 || IS_IPHONE_6_5) ? (DEVICE_WIDTH / 375) * WH : WH)
+//#define ScreenScale(WH) ((IS_IPHONE_5_8 || IS_IPHONE_6_5) ? (DEVICE_WIDTH / 375) * WH : WH)
+#define ScreenScale(WH) ((DEVICE_WIDTH / 375) * WH)
 #define ContentSizeBottom SafeAreaBottomH + NavBarH + Margin_10
 
 #define MAIN_HEIGHT ScreenScale(45)
@@ -69,6 +70,7 @@
 #define COLOR_6 COLOR(@"666666")
 #define COLOR_9 COLOR(@"999999")
 #define COLOR_POPUPMENU COLOR(@"56526D")
+#define LINE_SPACING ScreenScale(3)
 
 // Current Wallet Address
 #define Current_WalletAddress @"CurrentWalletAddress"

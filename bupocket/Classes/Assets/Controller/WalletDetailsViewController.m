@@ -60,7 +60,11 @@
 }
 - (CGFloat)tableView:(UITableView *)tableView heightForRowAtIndexPath:(NSIndexPath *)indexPath
 {
-    return ScreenScale(55);
+    if (indexPath.row == 0) {
+        return ScreenScale(55);
+    } else {
+        return [self getCellHeight];
+    }
 }
 - (CGFloat)tableView:(UITableView *)tableView heightForHeaderInSection:(NSInteger)section
 {
@@ -80,28 +84,38 @@
 }
 - (UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath
 {
-    ListTableViewCell * cell = [ListTableViewCell cellWithTableView:tableView cellType:CellTypeWalletDetail];
+    CellType cellType = (indexPath.row == 0) ? CellTypeWalletDetail : CellTypeWalletDetail1;
+    ListTableViewCell * cell = [ListTableViewCell cellWithTableView:tableView cellType:cellType];
     cell.selectionStyle = UITableViewCellSelectionStyleNone;
     cell.title.text = self.listArray[indexPath.row];
     if (indexPath.row == 0) {
         NSString * walletIconName = self.walletModel.walletIconName == nil ? Current_Wallet_IconName : self.walletModel.walletIconName;
         cell.listImage.image = [UIImage imageNamed:walletIconName];
     } else if (indexPath.row == 1) {
+        cell.detailTitle.attributedText = [Encapsulation attrWithString:self.walletModel.walletName font:FONT_15 color:COLOR_9 lineSpacing:LINE_SPACING];
         cell.detailTitle.numberOfLines = 2;
         cell.detailTitle.textAlignment = NSTextAlignmentRight;
-        cell.detailTitle.text = self.walletModel.walletName;
     }
 //    cell.detailImage.image = [UIImage imageNamed:@"list_arrow"];
     cell.selectionStyle = UITableViewCellSelectionStyleNone;
-    CGSize cellSize = CGSizeMake(DEVICE_WIDTH - Margin_20, ScreenScale(55));
+    CGFloat cellHeight = ScreenScale(55);
+    CGFloat cellWidth = DEVICE_WIDTH - Margin_20;
     if (indexPath.row == 0) {
+        CGSize cellSize = CGSizeMake(cellWidth, cellHeight);
         [cell.listBg setViewSize:cellSize borderRadius:BG_CORNER corners:UIRectCornerTopLeft | UIRectCornerTopRight];
         cell.lineView.hidden = NO;
     } else if (indexPath.row == self.listArray.count - 1) {
+        cellHeight = [self getCellHeight];
+        CGSize cellSize = CGSizeMake(cellWidth, cellHeight);
         [cell.listBg setViewSize:cellSize borderRadius:BG_CORNER corners:UIRectCornerBottomLeft | UIRectCornerBottomRight];
         cell.lineView.hidden = YES;
     }
     return cell;
+}
+- (CGFloat)getCellHeight
+{
+    CGFloat detailW = DEVICE_WIDTH - ScreenScale(70) - [Encapsulation rectWithText:self.listArray[self.listArray.count - 1] font:FONT_15 textHeight:CGFLOAT_MAX].size.width;
+    return [Encapsulation getSizeSpaceLabelWithStr:self.walletModel.walletName font:FONT_15 width:detailW height:CGFLOAT_MAX lineSpacing:LINE_SPACING].height + Margin_30;
 }
 - (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath
 {
