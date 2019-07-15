@@ -81,9 +81,11 @@ static NSString * const VersionLogCellID = @"VersionLogCellID";
     } else {
         CGFloat titleX = Margin_10;
         CGFloat titleY = Margin_15;
+        CGFloat infoTitleY = Margin_10;
         if ([self.reuseIdentifier isEqualToString:VersionLogCellID]) {
             titleX = Margin_15;
             titleY = Margin_20;
+            infoTitleY = Margin_20;
         }
         [self.title mas_makeConstraints:^(MASConstraintMaker *make) {
             make.left.equalTo(self.contentView.mas_left).offset(titleX);
@@ -101,8 +103,11 @@ static NSString * const VersionLogCellID = @"VersionLogCellID";
                 make.top.equalTo(self.title);
             }];
         } else {
+//            CGSize maximumSize = CGSizeMake(DEVICE_WIDTH - (titleX * 2), CGFLOAT_MAX);
+//            CGSize expectSize = [self.infoTitle sizeThatFits:maximumSize];
+//            self.infoTitle.size = expectSize;
             [self.infoTitle mas_makeConstraints:^(MASConstraintMaker *make) {
-                make.top.equalTo(self.title.mas_bottom).offset(Margin_10);
+                make.top.equalTo(self.title.mas_bottom).offset(infoTitleY);
                 make.left.equalTo(self.title);
             }];
         }

@@ -82,10 +82,12 @@ static NSString * const DetailSubtitleCellID = @"DetailSubtitleCellID";
     CGFloat walletNameOffsetX = Margin_10;
     CGFloat walletNameOffsetY = 0;
     CGFloat listBgY = 0;
+    CGFloat walletImageX = Margin_10;
     if ([self.reuseIdentifier isEqualToString:NormalSubtitleCellID] || [self.reuseIdentifier isEqualToString:DetailSubtitleCellID]) {
         [self.listBg mas_makeConstraints:^(MASConstraintMaker *make) {
             make.edges.equalTo(self.contentView);
         }];
+        walletImageX = Margin_15;
         walletNameOffsetX = ([self.reuseIdentifier isEqualToString:NormalSubtitleCellID]) ? Margin_20 : Margin_15;
         walletNameOffsetY = ([self.reuseIdentifier isEqualToString:NormalSubtitleCellID]) ? Margin_10 : 0;
         [self.walletImage mas_makeConstraints:^(MASConstraintMaker *make) {
@@ -111,7 +113,7 @@ static NSString * const DetailSubtitleCellID = @"DetailSubtitleCellID";
 //        make.top.equalTo(self.listBg.mas_top).offset(Margin_20);
 //        make.left.equalTo(self.listBg.mas_left).offset(Margin_15);
 //        make.centerY.equalTo(self.listBg);
-        make.left.equalTo(self.listBg.mas_left).offset(Margin_10);
+        make.left.equalTo(self.listBg.mas_left).offset(walletImageX);
         make.size.mas_equalTo(CGSizeMake(self.walletImageWH, self.walletImageWH));
     }];
     [self.walletName mas_makeConstraints:^(MASConstraintMaker *make) {

@@ -1,8 +1,8 @@
 //
-//  DonateVoucherViewController.h
+//  TransferVoucherViewController.h
 //  bupocket
 //
-//  Created by huoss on 2019/7/6.
+//  Created by huoss on 2019/7/15.
 //  Copyright © 2019 bupocket. All rights reserved.
 //
 
@@ -11,7 +11,7 @@
 
 NS_ASSUME_NONNULL_BEGIN
 
-@interface DonateVoucherViewController : BaseViewController
+@interface TransferVoucherViewController : BaseViewController
 
 @property (nonatomic, strong) VoucherModel * voucherModel;
 @property (nonatomic, strong) NSString * receiveAddressStr;

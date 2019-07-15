@@ -133,7 +133,6 @@
 		954371742199234100915BBE /* SettingViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 954371732199234100915BBE /* SettingViewController.m */; };
 		9549EC66219C0CF800307255 /* CreateTipsAlertView.m in Sources */ = {isa = PBXBuildFile; fileRef = 9549EC65219C0CF800307255 /* CreateTipsAlertView.m */; };
 		9549EC70219D075F00307255 /* ClearCacheTool.m in Sources */ = {isa = PBXBuildFile; fileRef = 9549EC6F219D075E00307255 /* ClearCacheTool.m */; };
-		9561090022D04BE800A724BA /* DonateVoucherViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 956108FF22D04BE800A724BA /* DonateVoucherViewController.m */; };
 		9569288321D7541400B7721A /* libc++.tbd in Frameworks */ = {isa = PBXBuildFile; fileRef = 9569288221D7541400B7721A /* libc++.tbd */; };
 		956CD42121B016D1004DC1FA /* ListModel.m in Sources */ = {isa = PBXBuildFile; fileRef = 956CD42021B016D1004DC1FA /* ListModel.m */; };
 		9579EB5221BABE6300051EDB /* MBProgressHUD+JDragon.bundle in Resources */ = {isa = PBXBuildFile; fileRef = 9579EB5021BABE6300051EDB /* MBProgressHUD+JDragon.bundle */; };
@@ -163,6 +162,7 @@
 		959E290B224F1B9C006FCA30 /* ConfirmTransactionAlertView.m in Sources */ = {isa = PBXBuildFile; fileRef = 959E290A224F1B9C006FCA30 /* ConfirmTransactionAlertView.m */; };
 		959E290E224F1F25006FCA30 /* ConfirmTransactionModel.m in Sources */ = {isa = PBXBuildFile; fileRef = 959E290D224F1F25006FCA30 /* ConfirmTransactionModel.m */; };
 		959E2933225C9E04006FCA30 /* TencentOpenAPI.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 959E2932225C9E04006FCA30 /* TencentOpenAPI.framework */; };
+		95A5DD6F22DC824800DA12A4 /* TransferVoucherViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 95A5DD6E22DC824800DA12A4 /* TransferVoucherViewController.m */; };
 		95A8A3B1219D1352008E978E /* LanguageManager.m in Sources */ = {isa = PBXBuildFile; fileRef = 95A8A3AF219D1352008E978E /* LanguageManager.m */; };
 		95A8A3B5219D157C008E978E /* DateTool.m in Sources */ = {isa = PBXBuildFile; fileRef = 95A8A3B4219D157C008E978E /* DateTool.m */; };
 		95A8A3B9219D15D8008E978E /* RegexPatternTool.m in Sources */ = {isa = PBXBuildFile; fileRef = 95A8A3B8219D15D8008E978E /* RegexPatternTool.m */; };
@@ -469,8 +469,6 @@
 		9549EC65219C0CF800307255 /* CreateTipsAlertView.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = CreateTipsAlertView.m; sourceTree = "<group>"; };
 		9549EC6E219D075E00307255 /* ClearCacheTool.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ClearCacheTool.h; sourceTree = "<group>"; };
 		9549EC6F219D075E00307255 /* ClearCacheTool.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ClearCacheTool.m; sourceTree = "<group>"; };
-		956108FE22D04BE800A724BA /* DonateVoucherViewController.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = DonateVoucherViewController.h; sourceTree = "<group>"; };
-		956108FF22D04BE800A724BA /* DonateVoucherViewController.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = DonateVoucherViewController.m; sourceTree = "<group>"; };
 		9569288221D7541400B7721A /* libc++.tbd */ = {isa = PBXFileReference; lastKnownFileType = "sourcecode.text-based-dylib-definition"; name = "libc++.tbd"; path = "usr/lib/libc++.tbd"; sourceTree = SDKROOT; };
 		956CD41F21B016D1004DC1FA /* ListModel.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = ListModel.h; sourceTree = "<group>"; };
 		956CD42021B016D1004DC1FA /* ListModel.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = ListModel.m; sourceTree = "<group>"; };
@@ -534,6 +532,8 @@
 		959E290C224F1F25006FCA30 /* ConfirmTransactionModel.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = ConfirmTransactionModel.h; sourceTree = "<group>"; };
 		959E290D224F1F25006FCA30 /* ConfirmTransactionModel.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = ConfirmTransactionModel.m; sourceTree = "<group>"; };
 		959E2932225C9E04006FCA30 /* TencentOpenAPI.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; path = TencentOpenAPI.framework; sourceTree = "<group>"; };
+		95A5DD6D22DC824800DA12A4 /* TransferVoucherViewController.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = TransferVoucherViewController.h; sourceTree = "<group>"; };
+		95A5DD6E22DC824800DA12A4 /* TransferVoucherViewController.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = TransferVoucherViewController.m; sourceTree = "<group>"; };
 		95A8A3AF219D1352008E978E /* LanguageManager.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = LanguageManager.m; sourceTree = "<group>"; };
 		95A8A3B0219D1352008E978E /* LanguageManager.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = LanguageManager.h; sourceTree = "<group>"; };
 		95A8A3B3219D157B008E978E /* DateTool.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = DateTool.h; sourceTree = "<group>"; };
@@ -1106,8 +1106,8 @@
 				95162FE422CB3D9B0024FD22 /* AcceptorViewController.m */,
 				9538307C22CCC04A00607F0C /* AssetIssuerViewController.h */,
 				9538307D22CCC04A00607F0C /* AssetIssuerViewController.m */,
-				956108FE22D04BE800A724BA /* DonateVoucherViewController.h */,
-				956108FF22D04BE800A724BA /* DonateVoucherViewController.m */,
+				95A5DD6D22DC824800DA12A4 /* TransferVoucherViewController.h */,
+				95A5DD6E22DC824800DA12A4 /* TransferVoucherViewController.m */,
 				9538308522CEE93D00607F0C /* ResultViewController.h */,
 				9538308622CEE93D00607F0C /* ResultViewController.m */,
 			);
@@ -1644,7 +1644,6 @@
 				83FB4423219035B700D68569 /* SearchAssetsModel.m in Sources */,
 				83FB443521904AA400D68569 /* HMScannerMaskView.m in Sources */,
 				83FB443721904AA400D68569 /* HMScanner.m in Sources */,
-				9561090022D04BE800A724BA /* DonateVoucherViewController.m in Sources */,
 				83379A182178682100C222A5 /* UIView+CustomAlertView.m in Sources */,
 				9538307E22CCC04A00607F0C /* AssetIssuerViewController.m in Sources */,
 				95266CE422703868002CD915 /* CooperateDetailViewCell.m in Sources */,
@@ -1742,6 +1741,7 @@
 				833799322177305A00C222A5 /* UIView+Extension.m in Sources */,
 				83379A98217EB79B00C222A5 /* RequestTimeoutViewController.m in Sources */,
 				835A45272174C14D005BFCDD /* AppDelegate.m in Sources */,
+				95A5DD6F22DC824800DA12A4 /* TransferVoucherViewController.m in Sources */,
 				95266CE1226F062E002CD915 /* SharingCanvassingAlertView.m in Sources */,
 				959726C821E4893F0022CB78 /* ExportPrivateKeyViewController.m in Sources */,
 				956CD42121B016D1004DC1FA /* ListModel.m in Sources */,

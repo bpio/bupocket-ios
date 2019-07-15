@@ -31,12 +31,19 @@
     self.edgesForExtendedLayout = UIRectEdgeAll;
     self.automaticallyAdjustsScrollViewInsets = NO;
 //    self.navigationItem.title = Localized(@"Receive");
-    self.navAlpha = 0;
-    self.navBackgroundColor = [UIColor whiteColor];
-    self.navTitleColor = self.navTintColor = [UIColor whiteColor];
     [self setupNav];
     [self setupView];
     // Do any additional setup after loading the view.
+}
+- (void)viewDidAppear:(BOOL)animated
+{
+    [super viewDidAppear:animated];
+    [self.navigationController.navigationBar setBackgroundImage:[UIImage new] forBarMetrics:UIBarMetricsDefault];
+    self.navigationController.navigationBar.shadowImage = [UIImage new];
+//    self.navAlpha = 0;
+//    self.navBackgroundColor = [UIColor whiteColor];
+//    //    self.navigationController.navigationBar = [UIColor clearColor];
+//    self.navTitleColor = self.navTintColor = [UIColor whiteColor];
 }
 - (UIStatusBarStyle)preferredStatusBarStyle {
     return UIStatusBarStyleLightContent;

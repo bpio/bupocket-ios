@@ -166,12 +166,16 @@
             return;
         }
         result = stringValue;
+        NSString * address = stringValue;
+        if ([stringValue hasPrefix:Voucher_Prefix]) {
+            address = [stringValue substringFromIndex:[Voucher_Prefix length]];
+        }
         NSOperationQueue * queue = [[NSOperationQueue alloc] init];
         [queue addOperationWithBlock:^{
 //            BOOL isCorrectAddress = [Keypair isAddressValid: stringValue];
             [[NSOperationQueue mainQueue] addOperationWithBlock:^{
 //                if (isCorrectAddress) {
-                    weakself.walletAddressText.text = stringValue;
+                    weakself.walletAddressText.text = address;
                     [weakself.walletAddressText sendActionsForControlEvents:UIControlEventEditingChanged];
 //                } else {
 //                    [MBProgressHUD showTipMessageInWindow:Localized(@"INVALID_ADDRESS_ERROR")];

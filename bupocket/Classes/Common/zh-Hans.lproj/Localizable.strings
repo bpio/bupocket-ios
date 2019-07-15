@@ -94,7 +94,7 @@
 "Setting" = "设置";
 "AddressBook" = "地址簿";
 //"ModifyIdentityPassword" = "修改身份密码";
-"ModifyIdentityPassword" = "修改身份密码";
+//"ModifyIdentityPassword" = "修改身份密码";
 //"Feedback" = "帮助与反馈";
 "MultiLingual" = "多语言";
 "VersionNumber" = "版本号";
@@ -226,8 +226,9 @@
 "TransferPrompt" = "请确认转账信息是否有误";
 "Submission" = "提交";
 "TransactionCost" = "交易费";
+"TxHash" = "交易哈希";
 "TransferTime" = "交易时间";
-"TxHash" = "交易Hash";
+//"TxHash" = "交易Hash";
 //"TransferSuccess" = "转账成功";
 //"TransferFailure" = "转账失败";
 "TransactionStatus" = "交易状态";
@@ -284,7 +285,7 @@
 "ATPVersion" = "ATP版本";
 "TokenDescription" = "资产描述";
 "IssuerAddress" = "发行方地址";
-"Hash" = "哈希";
+//"Hash" = "哈希";
 // scan
 "UnableToAccessAlbum" = "无法访问相册";
 "UnableToAccessCamera" = "无法使用相机";
@@ -639,8 +640,12 @@
 // 券包
 "Voucher" = "券包";
 "New" = "新";
-"VoucherPromptTitle" = "数字资产券包";
-"VoucherPromptInfo" = "明月高挂，月光如水，照着妈妈美丽的脸庞，我的目光也如水，看着妈妈的脸庞，觉得妈妈的脸庞是第二个月亮。妈妈用双手捧起我的脸庞，让月光照在我脸上，然后情不自禁地说：小可爱，你是我的小月亮。明月高挂，月光如水，照着妈妈美丽的脸庞，我的目光也如水。小可爱，你是我的小月亮。小可爱，你是我的小月亮。";
+//"VoucherPromptTitle" = "数字资产券包";
+"VoucherPromptTitle" = "加密数字券";
+"VoucherPrompt1" = "加密数字券是BUMO区块链上的数字权益凭证，它是真实权益在数字世界的映射，可在BUMO区块链网络上自由流通。";
+"VoucherPrompt2" = "小布口袋的券包支持加密数字券的管理、一键转赠、轻松承兑等功能，随时随地转赠给家人朋友，可轻松承兑进行使用。\n（承兑功能正在开发，敬请期待...）";
+"VoucherPrompt3" = "真实权益的未来：数字化、去中心化与自由流通";
+//"VoucherPromptInfo" = "\n\n";
 "VoucherNoData" = "这里一张券都没有";
 "ShareQRCode" = "分享收款码转入券";
 "Value:%@" = "面值：%@";
@@ -666,30 +671,29 @@
 "NoIntroduction" = "暂无介绍";
 "InfoOfAcceptorTitle" = "承兑方介绍";
 //"InfoOfAcceptor" = "";
-"DeliveryInstructionsTitle" = "提货说明";
+//"DeliveryInstructionsTitle" = "提货说明";
 //"DeliveryInstructions" = "";
 // 资产发行方
 //"IssuerOfDigitalAssets" = "数字资产发行方";
 "InfoOfDigitalAssetIssuer" = "资产发行方介绍";
-"DataPublicity" = "数据公示";
+//"DataPublicity" = "数据公示";
 // 转赠券
 "DonateVouchers" = "转券";
 "DonateVoucher" = "转赠券";
 "ReceiveAddressPlaceholder" = "请输入接收账户地址";
 "TransferQuantity" = "转赠数量";
 "TransferQuantity*" = "转赠数量 *";
-"AmountOfDonation" = "请输入转赠数量";
+"AmountOfTransfer" = "请输入转赠数量";
 "RemarksPlaceholder" = "不能超过20个字符";
 "Transferable %@" = "可转%@个";
 "ConfirmationOfGifts" = "确认转赠";
-"TradingHash" = "交易哈希";
 "Abbreviation：%@" = "简称：%@";
 "DonationSuccess" = "转赠成功";
 "DonationFailure" = "转赠失败";
 "DonationTimeout" = "转赠超时";
 "TransferEncryptedDigitalVouchers" = "转赠加密数字券";
-//"DonationWalletPWPrompt" = "请填写当前钱包的安全以确认转增";
-"DonationWalletPWPrompt" = "请填写安全密码以确认转赠";
+//"TransferWalletPWPrompt" = "请填写当前钱包的安全以确认转增";
+"TransferWalletPWPrompt" = "请填写安全密码以确认转赠";
 
 //"NoVouchers" = "暂无可转赠的券";
 "CannotTransferVoucherToOneself" = "不能给自己转赠券";

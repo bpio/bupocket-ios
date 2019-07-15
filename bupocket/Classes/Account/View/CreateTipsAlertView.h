@@ -17,7 +17,7 @@ typedef void (^OnSureButtonClick)(void);
 
 @property (nonatomic, copy) OnSureButtonClick sureBlock;
 
-- (instancetype)initWithConfrimBolck:(nonnull void (^)(void))confrimBlock;
+- (instancetype)initWithTitle:(NSString *)title confrimBolck:(void (^)(void))confrimBlock;
 
 @end
 

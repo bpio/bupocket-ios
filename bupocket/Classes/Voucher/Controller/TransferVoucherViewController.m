@@ -1,12 +1,12 @@
 //
-//  DonateVoucherViewController.m
+//  TransferVoucherViewController.m
 //  bupocket
 //
-//  Created by huoss on 2019/7/6.
+//  Created by huoss on 2019/7/15.
 //  Copyright © 2019 bupocket. All rights reserved.
 //
 
-#import "DonateVoucherViewController.h"
+#import "TransferVoucherViewController.h"
 #import "TextFieldViewCell.h"
 #import "BottomConfirmAlertView.h"
 #import "AddressBookViewController.h"
@@ -17,7 +17,7 @@
 #import "RequestTimeoutViewController.h"
 #import "ResultViewController.h"
 
-@interface DonateVoucherViewController ()<UITextFieldDelegate, UITableViewDelegate, UITableViewDataSource>
+@interface TransferVoucherViewController ()<UITextFieldDelegate, UITableViewDelegate, UITableViewDataSource>
 
 @property (nonatomic, strong) UITableView * tableView;
 @property (nonatomic, strong) NSMutableArray * listArray;
@@ -50,7 +50,7 @@
 static NSString * const VoucherCellID = @"VoucherCellID";
 static NSString * const ChooseVoucherCellID = @"ChooseVoucherCellID";
 
-@implementation DonateVoucherViewController
+@implementation TransferVoucherViewController
 
 - (NSMutableArray *)listArray
 {
@@ -64,7 +64,7 @@ static NSString * const ChooseVoucherCellID = @"ChooseVoucherCellID";
 {
     [super viewDidLoad];
     self.navigationItem.title = Localized(@"DonateVouchers");
-    self.listArray = [NSMutableArray arrayWithObjects:@[[NSString stringWithFormat:@"%@ *", Localized(@"DonateVoucher")]], @[[NSString stringWithFormat:@"%@ *", Localized(@"ReceivingAccount")], Localized(@"ReceiveAddressPlaceholder")], @[Localized(@"TransferQuantity*"), Localized(@"AmountOfDonation")], @[Localized(@"Remarks"), Localized(@"RemarksPlaceholder")], @[Localized(@"EstimatedMaximum"), Localized(@"TransactionCostPlaceholder")], nil];
+    self.listArray = [NSMutableArray arrayWithObjects:@[[NSString stringWithFormat:@"%@ *", Localized(@"DonateVoucher")]], @[[NSString stringWithFormat:@"%@ *", Localized(@"ReceivingAccount")], Localized(@"ReceiveAddressPlaceholder")], @[Localized(@"TransferQuantity*"), Localized(@"AmountOfTransfer")], @[Localized(@"Remarks"), Localized(@"RemarksPlaceholder")], @[Localized(@"EstimatedMaximum"), Localized(@"TransactionCostPlaceholder")], nil];
     [self setupView];
     if (@available(iOS 11.0, *)) {
         self.tableView.contentInsetAdjustmentBehavior = UIScrollViewContentInsetAdjustmentNever;
@@ -103,6 +103,18 @@ static NSString * const ChooseVoucherCellID = @"ChooseVoucherCellID";
     [self.view addSubview:self.tableView];
     [self setupHeaderView];
     [self setupFooterView];
+}
+- (void)viewDidLayoutSubviews
+{
+    [super viewDidLayoutSubviews];
+    [self.tableView mas_makeConstraints:^(MASConstraintMaker *make) {
+        make.top.mas_equalTo(0);
+        make.bottom.left.right.mas_equalTo(0);
+    }];
+}
+- (void)scrollViewDidChangeAdjustedContentInset:(UIScrollView *)scrollView
+{
+    DLog(@"%@", scrollView);
 }
 - (void)setupHeaderView
 {
@@ -149,11 +161,11 @@ static NSString * const ChooseVoucherCellID = @"ChooseVoucherCellID";
                 [MBProgressHUD showTipMessageInWindow:Localized(@"CannotTransferVoucherToOneself")];
                 return;
             }
-//            if ([self.number isEqualToString:@"0"]) {
-//                [MBProgressHUD hideHUD];
-//                [MBProgressHUD showTipMessageInWindow:Localized(@"NoVouchers")];
-//                return;
-//            }
+            //            if ([self.number isEqualToString:@"0"]) {
+            //                [MBProgressHUD hideHUD];
+            //                [MBProgressHUD showTipMessageInWindow:Localized(@"NoVouchers")];
+            //                return;
+            //            }
             RegexPatternTool * regex = [[RegexPatternTool alloc] init];
             BOOL transferVolumeRegx = [regex validateIsPositiveInteger:self.valueStr];
             
@@ -168,10 +180,11 @@ static NSString * const ChooseVoucherCellID = @"ChooseVoucherCellID";
                 return;
             }
             
-//            NSDecimalNumber * amount = [NSDecimalNumber decimalNumberWithString:self.dposModel.tx_fee];
+            //            NSDecimalNumber * amount = [NSDecimalNumber decimalNumberWithString:self.dposModel.tx_fee];
+            NSDecimalNumber * minLimitationNumber = [NSDecimalNumber decimalNumberWithString:[[NSUserDefaults standardUserDefaults] objectForKey:Minimum_Asset_Limitation]];
             NSDecimalNumber * cost = [NSDecimalNumber decimalNumberWithString:self.transactionCostsStr];
-//            NSDecimalNumber * totleAmount = [amount decimalNumberByAdding:cost];
-            NSDecimalNumber * amountNumber = [[HTTPManager shareManager] getDataWithBalanceJudgmentWithCost:[cost stringValue] ifShowLoading:NO];
+            NSDecimalNumber * totleAmount = [minLimitationNumber decimalNumberByAdding:cost];
+            NSDecimalNumber * amountNumber = [[HTTPManager shareManager] getDataWithBalanceJudgmentWithCost:[totleAmount stringValue] ifShowLoading:NO];
             NSString * totleAmountStr = [amountNumber stringValue];
             if (!NotNULLString(totleAmountStr) || [amountNumber isEqualToNumber:NSDecimalNumber.notANumber]) {
                 [MBProgressHUD hideHUD];
@@ -196,7 +209,7 @@ static NSString * const ChooseVoucherCellID = @"ChooseVoucherCellID";
                 [MBProgressHUD showTipMessageInWindow:Localized(@"TransactionCostIsIncorrect")];
                 return;
             }
-//            TransactionCost_Voucher_MIN "TransactionCostMin%@"
+            //            TransactionCost_Voucher_MIN "TransactionCostMin%@"
             
             NSString * minCost  = [[cost decimalNumberBySubtracting:minTransactionCost] stringValue];
             if ([minCost hasPrefix:@"-"]) {
@@ -250,7 +263,7 @@ static NSString * const ChooseVoucherCellID = @"ChooseVoucherCellID";
     NSOperationQueue * queue = [[NSOperationQueue alloc] init];
     [queue addOperationWithBlock:^{
         [[NSOperationQueue mainQueue] addOperationWithBlock:^{
-            PasswordAlertView * alertView = [[PasswordAlertView alloc] initWithPrompt:Localized(@"DonationWalletPWPrompt") confrimBolck:^(NSString * _Nonnull password, NSArray * _Nonnull words) {
+            PasswordAlertView * alertView = [[PasswordAlertView alloc] initWithPrompt:Localized(@"TransferWalletPWPrompt") confrimBolck:^(NSString * _Nonnull password, NSArray * _Nonnull words) {
                 if (NotNULLString(password)) {
                     [weakSelf submitTransaction];
                 }
@@ -396,7 +409,7 @@ static NSString * const ChooseVoucherCellID = @"ChooseVoucherCellID";
         [self getAvailableVoucherNumber];
         [self.tableView reloadData];
     };
-    [self.navigationController pushViewController:VC animated:NO];    
+    [self.navigationController pushViewController:VC animated:NO];
 }
 - (void)chooseAddress
 {
@@ -456,6 +469,7 @@ static NSString * const ChooseVoucherCellID = @"ChooseVoucherCellID";
     self.remarksStr = TrimmingCharacters(self.remarks.text);
     self.transactionCostsStr = TrimmingCharacters(self.transactionCosts.text);
 }
+
 
 /*
 #pragma mark - Navigation

@@ -98,7 +98,7 @@
 "Setting" = "Setting";
 "AddressBook" = "Address List";
 //"ModifyPassword" = "Modify password";
-"ModifyIdentityPassword" = "Change the Identity Password";
+//"ModifyIdentityPassword" = "Change the Identity Password";
 //"Feedback" = "Feedback";
 "MultiLingual" = "Language";
 "VersionNumber" = "Version";
@@ -234,7 +234,8 @@
 //"TransactionCost" = "Transaction fee";
 "TransactionCost" = "Tx Fee";
 "TransferTime" = "Timestamp";
-"TxHash" = "Tx Hash";
+"TxHash" = "TxHash";
+//"TxHash" = "Tx Hash";
 //"TransferSuccess" = "Succeeded";
 //"TransferFailure" = "Failed";
 "TransactionStatus" = "Transaction Status";
@@ -293,7 +294,7 @@
 "ATPVersion" = "ATP version";
 "TokenDescription" = "Token description";
 "IssuerAddress" = "Issuer address";
-"Hash" = "Hash";
+//"Hash" = "Hash";
 // scan
 "UnableToAccessAlbum" = "Album is not accessible";
 "UnableToAccessCamera" = "Camera is not accessible ";
@@ -339,7 +340,8 @@
 "IssueNumberIsIncorrect" = "Invalid circulation";
 // Accout
 "IDNameFormatIncorrect" = "The identity name only allows letters, Chinese characters, numbers and underscores, and the length cannot exceed 20 characters";
-"WalletNameFormatIncorrect" = "The wallet names is only allowed to enter letters, characters, numbers, underscores, and it cannot exceed 20 characters in length.";
+//"WalletNameFormatIncorrect" = "The wallet names is only allowed to enter letters, characters, numbers, underscores, and it cannot exceed 20 characters in length.";
+"WalletNameFormatIncorrect" = "The wallet name only allows letters, Chinese characters, numbers and underscores, and the length cannot exceed 20 characters";
 "PasswordIsDifferent" = "Passwords input do not match";
 //"PasswordIsDifferent" = "Passwords do not match";
 //"MnemonicIsIncorrect" = "The mnemonics input are incorrect. Please enter again";
@@ -652,8 +654,12 @@
 // Vouchers
 "Voucher" = "Vouchers";
 "New" = "New";
-"VoucherPromptTitle" = "Digital Asset Vouchers";
-"VoucherPromptInfo" = "";
+//"VoucherPromptTitle" = "Digital Asset Vouchers";
+"VoucherPromptTitle" = "Encrypted Digital Vouchers";
+"VoucherPrompt1" = "The encrypted digital voucher is a digital equity certificate on the BUMO blockchain. It is a mapping of real equity in the digital world and is freely circulated on the BUMO blockchain network.";
+"VoucherPrompt2" = "The Vouchers of BU Pocket supports the management of encrypted digital vouchers including functions such as one-click transfer, easy acceptance. You can transfer vouchers to your family and friends anytime, anywhere, and they can easily redeem these vouchers.\n(Acceptance function is being developed, so stay tuned...)";
+"VoucherPrompt3" = "The future of equities: digital, decentralized and freely circulated";
+//"VoucherPromptInfo" = "\n\n";
 "VoucherNoData" = "None";
 //"ShareQRCode" = "Share QR Code to Receive Vouchers";
 "ShareQRCode" = "Voucher Receiving QR Code";
@@ -662,7 +668,7 @@
 "%@ to %@" = "%@ To %@";
 // 选择券
 "ChoiceVouchers" = "Select a Voucher";
-"ChoiceVouchersTitle" = "Select a Voucher to Donate";
+"ChoiceVouchersTitle" = "Select a Voucher to Transfer";
 "%@ Vouchers available under" = "Available vouchers in %@";
 // Details of Voucher
 "VoucherDetail" = "Details of Voucher";
@@ -670,7 +676,7 @@
 "VoucherCode" = "Code of Voucher";
 "Specification" = "Specification";
 "HoldingQuantity" = "Amount Held";
-"GiftGiving" = "Donate";
+"GiftGiving" = "Transfer";
 "Acceptor" = "Acceptor";
 "AssetIssuer" = "Asset Issuer";
 "LongTerm" = "Long Term";
@@ -680,35 +686,34 @@
 "NoIntroduction" = "No Introduction";
 "InfoOfAcceptorTitle" = "Introduction to Acceptor";
 //"InfoOfAcceptor" = "";
-"DeliveryInstructionsTitle" = "Instruction for Delivery";
+//"DeliveryInstructionsTitle" = "Instruction for Delivery";
 //"DeliveryInstructions" = "";
 // Issuer of Digital Asset
 //"IssuerOfDigitalAssets" = "Issuer of Digital Asset";
 //"InfoOfDigitalAssetIssuer" = "About the Issuer of Digital Asset";
 "InfoOfDigitalAssetIssuer" = "About the Issuer of Asset";
-"DataPublicity" = "Data Publicity";
+//"DataPublicity" = "Data Publicity";
 
-// Donate
+// Transfer
 "DonateVouchers" = "Transfer Voucher";
-"DonateVoucher" = "Donate Vouchers";
+"DonateVoucher" = "Transfer Vouchers";
 "ReceiveAddressPlaceholder" = "Please input the receiving account address";
-"TransferQuantity" = "Amount to Donate";
-"TransferQuantity*" = "Amount to Donate *";
-"AmountOfDonation" = "Please input the amount to donate";
+"TransferQuantity" = "Amount to Transfer";
+"TransferQuantity*" = "Amount to Transfer *";
+"AmountOfTransfer" = "Please input the amount to transfer";
 "RemarksPlaceholder" = "20 characters at most";
 "Transferable %@" = "%@ available";
-"ConfirmationOfGifts" = "Confirm to Donate";
-"TradingHash" = "Transaction Hash";
+"ConfirmationOfGifts" = "Confirm to Transfer";
 "Abbreviation：%@" = "Abbreviation：%@";
-"DonationSuccess" = "Donation Success";
-"DonationFailure" = "Donation Failure";
-"DonationTimeout" = "Donation Timeout";
-"TransferEncryptedDigitalVouchers" = "Donate encrypted digital vouchers";
-//"DonationWalletPWPrompt" = "Please input the security password for current wallet to confirm donation";
-"DonationWalletPWPrompt" = "Fill in the security code to confirm to donate";
+"DonationSuccess" = "Success";
+"DonationFailure" = "Failure";
+"DonationTimeout" = "Timeout";
+"TransferEncryptedDigitalVouchers" = "Transfer encrypted digital vouchers";
+//"TransferWalletPWPrompt" = "Please input the security password for current wallet to confirm donation";
+"TransferWalletPWPrompt" = "Fill in the security code to confirm to transfer";
 
 //"NoVouchers" = "暂无可转赠的券";
-"CannotTransferVoucherToOneself" = "Voucher donation to yourself is not allowed";
+"CannotTransferVoucherToOneself" = "Voucher transferring to yourself is not allowed";
 "VoucherSendingQuantityIsIncorrect" = "Invalid Number";
 "VoucherNotSufficientFunds" = "Insufficient Vouchers";
 

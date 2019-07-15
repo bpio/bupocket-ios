@@ -48,7 +48,7 @@
     [self.listArray addObject:array];
     
     if (self.registeredResultState != RegisteredResultOvertime) {
-        NSArray * transactionArray = @[@{Localized(@"ActualTransactionCost"): [NSString stringAppendingBUWithStr:self.registeredModel.registeredFee]}, @{Localized(@"RegisteredAddress"): CurrentWalletAddress}, @{Localized(@"Hash"): self.registeredModel.transactionHash}];
+        NSArray * transactionArray = @[@{Localized(@"ActualTransactionCost"): [NSString stringAppendingBUWithStr:self.registeredModel.registeredFee]}, @{Localized(@"RegisteredAddress"): CurrentWalletAddress}, @{Localized(@"TxHash"): self.registeredModel.transactionHash}];
         [self.listArray addObject:transactionArray];
     }
 }
@@ -137,7 +137,7 @@
     cell.title.text = [[self.listArray[indexPath.section][indexPath.row] allKeys] firstObject];
     cell.infoTitle.text = [[self.listArray[indexPath.section][indexPath.row] allValues] firstObject];
     cell.selectionStyle = UITableViewCellSelectionStyleNone;
-    if ([cell.title.text isEqualToString:Localized(@"RegisteredAddress")] || [cell.title.text isEqualToString:Localized(@"Hash")]) {
+    if ([cell.title.text isEqualToString:Localized(@"RegisteredAddress")] || [cell.title.text isEqualToString:Localized(@"TxHash")]) {
         cell.infoTitle.copyable = YES;
     } else {
         cell.infoTitle.copyable = NO;

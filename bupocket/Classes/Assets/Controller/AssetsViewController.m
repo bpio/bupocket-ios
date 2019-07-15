@@ -22,7 +22,7 @@
 #import "ConfirmTransactionAlertView.h"
 #import "ScanCodeFailureViewController.h"
 #import "ReceiveViewController.h"
-#import "DonateVoucherViewController.h"
+#import "TransferVoucherViewController.h"
 #import "RegisteredModel.h"
 #import "DistributionModel.h"
 #import "BackUpWalletViewController.h"
@@ -473,8 +473,9 @@
         }
         result = stringValue;
         if ([stringValue hasPrefix:Voucher_Prefix]) {
-            DonateVoucherViewController * VC = [[DonateVoucherViewController alloc] init];
-            VC.receiveAddressStr = [stringValue substringFromIndex:[Voucher_Prefix length]];
+            NSString * address = [stringValue substringFromIndex:[Voucher_Prefix length]];
+            TransferVoucherViewController * VC = [[TransferVoucherViewController alloc] init];
+            VC.receiveAddressStr = address;
             [self.navigationController pushViewController:VC animated:NO];
             return;
         }

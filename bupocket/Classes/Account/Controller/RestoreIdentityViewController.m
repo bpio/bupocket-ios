@@ -51,7 +51,7 @@
 }
 - (void)showCreateTips
 {
-    CreateTipsAlertView * alertView = [[CreateTipsAlertView alloc] initWithConfrimBolck:^{
+    CreateTipsAlertView * alertView = [[CreateTipsAlertView alloc] initWithTitle:Localized(@"PromptTitle") confrimBolck:^{
         
     }];
     [alertView showInWindowWithMode:CustomAnimationModeDisabled inView:nil bgAlpha:AlertBgAlpha needEffectView:NO];

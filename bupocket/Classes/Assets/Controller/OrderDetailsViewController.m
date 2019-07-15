@@ -101,7 +101,7 @@ static NSInteger const TxInfoNormalCount = 6;
 }
 - (void)setListData
 {
-    NSMutableArray * infoTitleArray = [NSMutableArray arrayWithObjects:@"TX Hash", @"From", @"To", @"Value", @"TX Fee", @"Nonce", nil];
+    NSMutableArray * infoTitleArray = [NSMutableArray arrayWithObjects:@"TxHash", @"From", @"To", @"Value", @"TX Fee", @"Nonce", nil];
     if (self.txInfoModel.signatureStr) {
         [infoTitleArray addObject:@"Transaction Signature"];
     }
@@ -293,7 +293,7 @@ static NSInteger const TxInfoNormalCount = 6;
         cell.infoTitle.text = self.infoArray[indexPath.section][indexPath.row];
     }
     cell.selectionStyle = UITableViewCellSelectionStyleNone;
-    if ([cell.title.text isEqualToString:Localized(@"SendingAccount")] || [cell.title.text isEqualToString:Localized(@"ReceivingAccount")] || [cell.title.text isEqualToString:@"TX Hash"] || [cell.title.text isEqualToString:@"From"] || [cell.title.text isEqualToString:@"To"] || [cell.title.text isEqualToString:@"Block Hash"] || [cell.title.text isEqualToString:@"Prev Block Hash"]) {
+    if ([cell.title.text isEqualToString:Localized(@"SendingAccount")] || [cell.title.text isEqualToString:Localized(@"ReceivingAccount")] || [cell.title.text isEqualToString:@"TxHash"] || [cell.title.text isEqualToString:@"From"] || [cell.title.text isEqualToString:@"To"] || [cell.title.text isEqualToString:@"Block Hash"] || [cell.title.text isEqualToString:@"Prev Block Hash"]) {
         cell.infoTitle.copyable = YES;
     } else {
         cell.infoTitle.copyable = NO;

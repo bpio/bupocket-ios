@@ -20,7 +20,7 @@
 
 - (void)viewDidLoad {
     [super viewDidLoad];
-    self.listArray = @[@[Localized(@"TransactionDetail"), Localized(@"SendingAccount"), Localized(@"ReceivingAccount"), Localized(@"TransferQuantity"), Localized(@"TransactionCosts（BU）"), Localized(@"Remarks")], @[Localized(@"TransferTime"), Localized(@"TradingHash")]];
+    self.listArray = @[@[Localized(@"TransactionDetail"), Localized(@"SendingAccount"), Localized(@"ReceivingAccount"), Localized(@"TransferQuantity"), Localized(@"TransactionCosts（BU）"), Localized(@"Remarks")], @[Localized(@"TransferTime"), Localized(@"TxHash")]];
     [self setupView];
     // Do any additional setup after loading the view.
 }
@@ -96,7 +96,7 @@
 - (CGFloat)tableView:(UITableView *)tableView heightForRowAtIndexPath:(NSIndexPath *)indexPath
 {
     NSString * info = [self infoStringWithIndexPath:indexPath];
-    return (NotNULLString(info)) ? [Encapsulation rectWithText:info font:FONT(15) textWidth:Info_Width_Max].size.height + Margin_30 : MAIN_HEIGHT;
+    return [self getCellHeightWithText:info];
 }
 - (NSInteger)numberOfSectionsInTableView:(UITableView *)tableView
 {
@@ -114,19 +114,23 @@
     
     NSString * info = [self infoStringWithIndexPath:indexPath];
     cell.infoTitle.text = info;
-    CGFloat cellHeight = (NotNULLString(info)) ? [Encapsulation rectWithText:info font:FONT(15) textWidth:Info_Width_Max].size.height + Margin_30 : MAIN_HEIGHT;
+    CGFloat cellHeight = [self getCellHeightWithText:info];
     CGSize cellSize = CGSizeMake(DEVICE_WIDTH - Margin_20, cellHeight);
     if (indexPath.row == 0) {
         [cell setViewSize:cellSize borderRadius:BG_CORNER corners:UIRectCornerTopLeft | UIRectCornerTopRight];
     } else if (indexPath.row == [self.listArray[indexPath.section] count] - 1) {
         [cell setViewSize:cellSize borderRadius:BG_CORNER corners:UIRectCornerBottomLeft | UIRectCornerBottomRight];
     }
-    if (indexPath.section == 0 && indexPath.row == [self.listArray[0] count] - 1) {
+    if (indexPath.section == 1 && indexPath.row == [self.listArray[1] count] - 1) {
         cell.infoTitle.copyable = YES;
     } else {
         cell.infoTitle.copyable = NO;
     }
     return cell;
+}
+- (CGFloat)getCellHeightWithText:(NSString *)text
+{
+    return (NotNULLString(text)) ? [Encapsulation rectWithText:text font:FONT(15) textWidth:Info_Width_Max].size.height + Margin_30 : MAIN_HEIGHT;
 }
 - (NSString *)infoStringWithIndexPath:(NSIndexPath *)indexPath
 {

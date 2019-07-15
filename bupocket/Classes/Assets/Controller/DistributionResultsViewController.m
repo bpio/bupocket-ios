@@ -61,7 +61,7 @@
     }
     [self.listArray addObject:array];
     if (self.distributionResultState != DistributionResultOvertime) {
-        NSArray * transactionArray = @[@{Localized(@"ActualTransactionCost"): [NSString stringAppendingBUWithStr:self.distributionModel.distributionFee]}, @{Localized(@"IssuerAddress"): CurrentWalletAddress}, @{Localized(@"Hash"): self.distributionModel.transactionHash}];
+        NSArray * transactionArray = @[@{Localized(@"ActualTransactionCost"): [NSString stringAppendingBUWithStr:self.distributionModel.distributionFee]}, @{Localized(@"IssuerAddress"): CurrentWalletAddress}, @{Localized(@"TxHash"): self.distributionModel.transactionHash}];
         [self.listArray addObject:transactionArray];
     }
 }
@@ -150,7 +150,7 @@
     cell.title.text = [[self.listArray[indexPath.section][indexPath.row] allKeys] firstObject];
     cell.infoTitle.text = [[self.listArray[indexPath.section][indexPath.row] allValues] firstObject];
     cell.selectionStyle = UITableViewCellSelectionStyleNone;
-    if ([cell.title.text isEqualToString:Localized(@"IssuerAddress")] || [cell.title.text isEqualToString:Localized(@"Hash")]) {
+    if ([cell.title.text isEqualToString:Localized(@"IssuerAddress")] || [cell.title.text isEqualToString:Localized(@"TxHash")]) {
         cell.infoTitle.copyable = YES;
     } else {
         cell.infoTitle.copyable = NO;

@@ -76,7 +76,7 @@ static NSString * const CooperateDetailCellID = @"CooperateDetailCellID";
     if (section == 1 || section == 2) {
         UIButton * title = [UIButton createButtonWithTitle:self.listArray[section][0] TextFont:FONT_13 TextNormalColor:COLOR_9 TextSelectedColor:COLOR_9 Target:nil Selector:nil];
         title.contentHorizontalAlignment = UIControlContentHorizontalAlignmentLeft;
-        title.contentEdgeInsets = UIEdgeInsetsMake(0, Margin_10, 0, Margin_10);
+        title.contentEdgeInsets = UIEdgeInsetsMake(0, Margin_15, 0, Margin_15);
         return title;
     } else {
         return nil;

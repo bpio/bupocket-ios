@@ -12,7 +12,7 @@
 #import "ContactViewController.h"
 #import "MyViewController.h"
 #import "TransferAccountsViewController.h"
-#import "DonateVoucherViewController.h"
+#import "TransferVoucherViewController.h"
 #import "AddressBookCache.h"
 
 @interface AddressBookViewController ()<UITableViewDelegate, UITableViewDataSource>
@@ -202,7 +202,7 @@ static NSString * const AddressBookCellID = @"AddressBookCellID";
     [tableView deselectRowAtIndexPath:indexPath animated:YES];
     AddressBookModel * addressBookModel = self.listArray[indexPath.row];
     NSArray * VCsArray = [self.navigationController viewControllers];
-    if ([VCsArray[VCsArray.count - 2] isKindOfClass:[TransferAccountsViewController class]] || [VCsArray[VCsArray.count - 2] isKindOfClass:[DonateVoucherViewController class]]) {
+    if ([VCsArray[VCsArray.count - 2] isKindOfClass:[TransferAccountsViewController class]] || [VCsArray[VCsArray.count - 2] isKindOfClass:[TransferVoucherViewController class]]) {
         [self.navigationController popViewControllerAnimated:NO];
         if (self.walletAddress != nil) {
             self.walletAddress(addressBookModel.linkmanAddress);

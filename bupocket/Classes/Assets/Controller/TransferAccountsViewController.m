@@ -365,8 +365,12 @@
             return;
         }
         result = stringValue;
+        NSString * address = stringValue;
+        if ([stringValue hasPrefix:Voucher_Prefix]) {
+            address = [stringValue substringFromIndex:[Voucher_Prefix length]];
+        }
         [[NSOperationQueue mainQueue] addOperationWithBlock:^{
-            weakself.destinationAddress.text = stringValue;
+            weakself.destinationAddress.text = address;
             [weakself.destinationAddress sendActionsForControlEvents:UIControlEventEditingChanged];
             [weakself IsActivatedWithAddress:stringValue];
         }];

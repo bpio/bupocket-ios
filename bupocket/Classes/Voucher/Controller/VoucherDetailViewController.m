@@ -13,7 +13,7 @@
 #import "UINavigationController+Extension.h"
 #import "AcceptorViewController.h"
 #import "AssetIssuerViewController.h"
-#import "DonateVoucherViewController.h"
+#import "TransferVoucherViewController.h"
 
 
 @interface VoucherDetailViewController ()<UIScrollViewDelegate, UITableViewDelegate, UITableViewDataSource>
@@ -97,7 +97,7 @@ static NSString * const VoucherDetailCellID = @"VoucherDetailCellID";
         [self.tableView.mj_header endRefreshing];
         self.noNetWork.hidden = NO;
         self.navBackgroundColor = [UIColor whiteColor];
-        self.navTitleColor = self.navTintColor = [UIColor blackColor];
+        self.navTitleColor = self.navTintColor = TITLE_COLOR;
     }];
 }
 - (void)reloadData
@@ -130,7 +130,7 @@ static NSString * const VoucherDetailCellID = @"VoucherDetailCellID";
     [self.loadingBg mas_makeConstraints:^(MASConstraintMaker *make) {
         make.edges.equalTo(imageBg);
     }];
-    self.scrollView.contentSize = CGSizeMake(DEVICE_WIDTH, self.imageBgH + ScreenScale(120) + NavBarH + SafeAreaBottomH);
+    self.scrollView.contentSize = CGSizeMake(DEVICE_WIDTH, self.imageBgH + ScreenScale(100) + NavBarH + SafeAreaBottomH);
     self.tableView = [[UITableView alloc] initWithFrame:imageBg.bounds style:UITableViewStyleGrouped];
     self.tableView.delegate = self;
     self.tableView.dataSource = self;
@@ -204,7 +204,7 @@ static NSString * const VoucherDetailCellID = @"VoucherDetailCellID";
  */
 - (void)giftGivingAction
 {
-    DonateVoucherViewController * VC = [[DonateVoucherViewController alloc] init];
+    TransferVoucherViewController * VC = [[TransferVoucherViewController alloc] init];
     VC.voucherModel = self.voucherModel;
     [self.navigationController pushViewController:VC animated:NO];
 }
@@ -287,6 +287,7 @@ static NSString * const VoucherDetailCellID = @"VoucherDetailCellID";
 {
     CGFloat y = scrollView.contentOffset.y;
     self.navAlpha = y / 80;
+//    self.navTitleColor = self.navTintColor = [UIColor whiteColor];
 //    if (y > 80) {
 //        self.navTitleColor = self.navTintColor = [UIColor whiteColor];
 //    } else {

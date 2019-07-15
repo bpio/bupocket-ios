@@ -12,6 +12,7 @@
 #import "WalletListViewController.h"
 #import "VoucherViewCell.h"
 #import "VoucherDetailViewController.h"
+#import "CreateTipsAlertView.h"
 
 @interface VoucherViewController ()<UITableViewDelegate, UITableViewDataSource>
 
@@ -42,12 +43,16 @@ static NSString * const VoucherCellID = @"VoucherCellID";
     [super viewDidLoad];
     NSUserDefaults * defaults = [NSUserDefaults standardUserDefaults];
 //    [defaults removeObjectForKey:If_Hidden_New];
-    if (![defaults objectForKey:If_Hidden_New]) {
-        [Encapsulation showAlertControllerWithTitle:Localized(@"VoucherPromptTitle") message:Localized(@"VoucherPromptInfo") confirmHandler:^(UIAlertAction *action) {
-            [defaults setBool:YES forKey:If_Hidden_New];
-            [self.navigationController.tabBarController.tabBar hideBadgeOnItemIndex:1];
-        }];
-    }
+//    if (![defaults objectForKey:If_Hidden_New]) {
+    CreateTipsAlertView * alertView = [[CreateTipsAlertView alloc] initWithTitle:Localized(@"VoucherPromptTitle") confrimBolck:^{
+        
+    }];
+    [alertView showInWindowWithMode:CustomAnimationModeDisabled inView:nil bgAlpha:AlertBgAlpha needEffectView:NO];
+//        [Encapsulation showAlertControllerWithTitle:Localized(@"VoucherPromptTitle") message:Localized(@"VoucherPromptInfo") confirmHandler:^(UIAlertAction *action) {
+//            [defaults setBool:YES forKey:If_Hidden_New];
+//            [self.navigationController.tabBarController.tabBar hideBadgeOnItemIndex:1];
+//        }];
+//    }
     if (!_isChoiceVouchers) {
         [self setupNav];
     }
@@ -166,7 +171,7 @@ static NSString * const VoucherCellID = @"VoucherCellID";
 //        UIButton * noDataBtn = [Encapsulation showNoDataWithTitle:Localized(@"VoucherNoData") imageName:@"no_data_voucher" superView:_noData frame:CGRectMake(0, (noDataH - ScreenScale(220)) / 2, DEVICE_WIDTH, ScreenScale(220))];
         UIButton * noDataBtn = [Encapsulation showNoDataWithTitle:Localized(@"VoucherNoData") imageName:@"no_data_voucher" superView:_noData frame:CGRectMake(0, (noDataH - ScreenScale(220) - MAIN_HEIGHT - Margin_15) / 2 - Margin_50, DEVICE_WIDTH, ScreenScale(220))];
         [_noData addSubview:noDataBtn];
-        CGRect shareRect = CGRectMake(ScreenScale(80), CGRectGetMaxY(noDataBtn.frame) + Margin_15, DEVICE_WIDTH - ScreenScale(160), MAIN_HEIGHT);
+        CGRect shareRect = CGRectMake(ScreenScale(80), CGRectGetMaxY(noDataBtn.frame) + Margin_15, DEVICE_WIDTH - ScreenScale(140), MAIN_HEIGHT);
         UIButton * shareBtn = [UIButton createButtonWithTitle:Localized(@"ShareQRCode") TextFont:FONT_16 TextNormalColor:MAIN_COLOR TextSelectedColor:MAIN_COLOR Target:self Selector:@selector(QRCodeAction)];
         [shareBtn setViewSize:shareRect.size borderWidth:LINE_WIDTH borderColor:MAIN_COLOR borderRadius:MAIN_CORNER];
         shareBtn.frame = shareRect;
