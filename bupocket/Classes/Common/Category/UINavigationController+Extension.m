@@ -37,6 +37,7 @@
     if (self.navigationBar.translucent == NO || [self.navigationBar backgroundImageForBarMetrics:UIBarMetricsDefault] != nil) {
         barBackground.alpha = alpha;
     } else {
+        barBackground.alpha = alpha;
         if ([[[UIDevice currentDevice] systemVersion] floatValue] >= 10.0) {
             UIView *effectFilterView = barBackground.subviews.lastObject;
             effectFilterView.alpha = alpha;

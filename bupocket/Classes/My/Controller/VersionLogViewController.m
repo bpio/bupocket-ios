@@ -151,7 +151,6 @@ static NSString * const VersionLogCellID = @"VersionLogCellID";
     if (NotNULLString(updateContent)) {
         cell.infoTitle.attributedText = [Encapsulation attrWithString:updateContent preFont:FONT_TITLE preColor:COLOR_6 index:0 sufFont:FONT_TITLE sufColor:COLOR_6 lineSpacing:Margin_10];
     }
-    cell.infoTitle.backgroundColor = RandomColor;
     return cell;
 }
 - (NSString *)getUpdateContentWithIndexPath:(NSIndexPath *)indexPath

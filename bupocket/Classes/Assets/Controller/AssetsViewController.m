@@ -483,10 +483,12 @@
             [self getDposTransactionWithStr:stringValue];
             return;
         }
+        // 扫码登录
         if ([stringValue hasPrefix:@"http"] && [stringValue containsString:Account_Center_Contains] && ![[[[[stringValue componentsSeparatedByString:Account_Center_Contains] firstObject] componentsSeparatedByString:@"://"] lastObject] containsString:@"/"] && [[[stringValue componentsSeparatedByString:Account_Center_Contains] lastObject] length] == 32) {
             [self getScanCodeLoginDataWithUUid:[[stringValue componentsSeparatedByString:Account_Center_Contains] lastObject]];
             return;
         } else if ([stringValue hasPrefix:@"http"] && [stringValue containsString:Dpos_Contains] && ![[[[[stringValue componentsSeparatedByString:Dpos_Contains] firstObject] componentsSeparatedByString:@"://"] lastObject] containsString:@"/"] && [[[stringValue componentsSeparatedByString:Dpos_Contains] lastObject] length] == 32) {
+            // 扫码调用合约
             [self getApplyNodeDataWithStr:[[stringValue componentsSeparatedByString:Dpos_Contains] lastObject]];
             return;
         }

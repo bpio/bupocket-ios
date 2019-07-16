@@ -65,6 +65,7 @@ static NSString * const ChooseVoucherCellID = @"ChooseVoucherCellID";
     [super viewDidLoad];
     self.navigationItem.title = Localized(@"DonateVouchers");
     self.listArray = [NSMutableArray arrayWithObjects:@[[NSString stringWithFormat:@"%@ *", Localized(@"DonateVoucher")]], @[[NSString stringWithFormat:@"%@ *", Localized(@"ReceivingAccount")], Localized(@"ReceiveAddressPlaceholder")], @[Localized(@"TransferQuantity*"), Localized(@"AmountOfTransfer")], @[Localized(@"Remarks"), Localized(@"RemarksPlaceholder")], @[Localized(@"EstimatedMaximum"), Localized(@"TransactionCostPlaceholder")], nil];
+    self.number = @"0";
     [self setupView];
     if (@available(iOS 11.0, *)) {
         self.tableView.contentInsetAdjustmentBehavior = UIScrollViewContentInsetAdjustmentNever;

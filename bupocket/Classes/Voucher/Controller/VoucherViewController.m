@@ -22,6 +22,7 @@
 @property (nonatomic, assign) NSInteger pageindex;
 @property (nonatomic, strong) UIView * noNetWork;
 @property (nonatomic, strong) NSString * headerTitle;
+@property (nonatomic, assign) CGFloat headerTitleH;
 @property (nonatomic, strong) UIButton * titleBtn;
 
 @end
@@ -43,20 +44,23 @@ static NSString * const VoucherCellID = @"VoucherCellID";
     [super viewDidLoad];
     NSUserDefaults * defaults = [NSUserDefaults standardUserDefaults];
 //    [defaults removeObjectForKey:If_Hidden_New];
-//    if (![defaults objectForKey:If_Hidden_New]) {
-    CreateTipsAlertView * alertView = [[CreateTipsAlertView alloc] initWithTitle:Localized(@"VoucherPromptTitle") confrimBolck:^{
-        
-    }];
-    [alertView showInWindowWithMode:CustomAnimationModeDisabled inView:nil bgAlpha:AlertBgAlpha needEffectView:NO];
+    if (![defaults objectForKey:If_Hidden_New]) {
+        CreateTipsAlertView * alertView = [[CreateTipsAlertView alloc] initWithTitle:Localized(@"VoucherPromptTitle") confrimBolck:^{
+            [defaults setBool:YES forKey:If_Hidden_New];
+            [self.navigationController.tabBarController.tabBar hideBadgeOnItemIndex:1];
+        }];
+        [alertView showInWindowWithMode:CustomAnimationModeDisabled inView:nil bgAlpha:AlertBgAlpha needEffectView:NO];
 //        [Encapsulation showAlertControllerWithTitle:Localized(@"VoucherPromptTitle") message:Localized(@"VoucherPromptInfo") confirmHandler:^(UIAlertAction *action) {
 //            [defaults setBool:YES forKey:If_Hidden_New];
 //            [self.navigationController.tabBarController.tabBar hideBadgeOnItemIndex:1];
 //        }];
-//    }
+    }
     if (!_isChoiceVouchers) {
         [self setupNav];
+    } else {
+        self.headerTitle = [NSString stringWithFormat:Localized(@"%@ Vouchers available under"), CurrentWalletName];
+        self.headerTitleH = Margin_10 + [Encapsulation getSizeSpaceLabelWithStr:self.headerTitle font:FONT_13 width:DEVICE_WIDTH - Margin_30 height:CGFLOAT_MAX lineSpacing:Margin_5].height;
     }
-    self.headerTitle = [NSString stringWithFormat:Localized(@"%@ Vouchers available under"), CurrentWalletName];
     [self setupView];
     self.noNetWork = [Encapsulation showNoNetWorkWithSuperView:self.view target:self action:@selector(reloadData)];
     [self setupRefresh];
@@ -166,7 +170,7 @@ static NSString * const VoucherCellID = @"VoucherCellID";
 {
     if (!_noData) {
         CGFloat noDataH = self.tableView.height;
-        _noData = [[UIView alloc] initWithFrame:self.tableView.frame];
+        _noData = [[UIView alloc] initWithFrame:CGRectMake(0, 0, DEVICE_WIDTH, self.tableView.height - self.headerTitleH)];
         _noData.backgroundColor = [UIColor whiteColor];
 //        UIButton * noDataBtn = [Encapsulation showNoDataWithTitle:Localized(@"VoucherNoData") imageName:@"no_data_voucher" superView:_noData frame:CGRectMake(0, (noDataH - ScreenScale(220)) / 2, DEVICE_WIDTH, ScreenScale(220))];
         UIButton * noDataBtn = [Encapsulation showNoDataWithTitle:Localized(@"VoucherNoData") imageName:@"no_data_voucher" superView:_noData frame:CGRectMake(0, (noDataH - ScreenScale(220) - MAIN_HEIGHT - Margin_15) / 2 - Margin_50, DEVICE_WIDTH, ScreenScale(220))];
@@ -176,7 +180,6 @@ static NSString * const VoucherCellID = @"VoucherCellID";
         [shareBtn setViewSize:shareRect.size borderWidth:LINE_WIDTH borderColor:MAIN_COLOR borderRadius:MAIN_CORNER];
         shareBtn.frame = shareRect;
         [_noData addSubview:shareBtn];
-        
     }
     return _noData;
 }
@@ -190,20 +193,20 @@ static NSString * const VoucherCellID = @"VoucherCellID";
 }
 - (CGFloat)tableView:(UITableView *)tableView heightForHeaderInSection:(NSInteger)section
 {
-    if (section == 0 && self.listArray.count > 0) {
-        if (_isChoiceVouchers) {
-            return Margin_10 + [Encapsulation getSizeSpaceLabelWithStr:self.headerTitle font:FONT_13 width:DEVICE_WIDTH - Margin_30 height:CGFLOAT_MAX lineSpacing:Margin_5].height;
+    if (section == 0 && _isChoiceVouchers) {
+//        if (_isChoiceVouchers) {
+        return self.headerTitleH;
 //            return Margin_20 + self.titleBtn.height;
-        } else {
-            return ScreenScale(7.5);
-        }
+//        } else {
+//            return ScreenScale(7.5);
+//        }
     } else {
         return CGFLOAT_MIN;
     }
 }
 - (UIView *)tableView:(UITableView *)tableView viewForHeaderInSection:(NSInteger)section
 {
-    if (section == 0 && self.listArray.count > 0 && _isChoiceVouchers) {
+    if (section == 0 && _isChoiceVouchers) {
         self.titleBtn = [UIButton buttonWithType:UIButtonTypeCustom];
         self.titleBtn.titleLabel.numberOfLines = 0;
         NSInteger index = [CurrentWalletName length];

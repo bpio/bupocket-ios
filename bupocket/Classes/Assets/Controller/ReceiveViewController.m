@@ -38,9 +38,9 @@
 - (void)viewDidAppear:(BOOL)animated
 {
     [super viewDidAppear:animated];
-    [self.navigationController.navigationBar setBackgroundImage:[UIImage new] forBarMetrics:UIBarMetricsDefault];
-    self.navigationController.navigationBar.shadowImage = [UIImage new];
-//    self.navAlpha = 0;
+//    [self.navigationController.navigationBar setBackgroundImage:[UIImage new] forBarMetrics:UIBarMetricsDefault];
+//    self.navigationController.navigationBar.shadowImage = [UIImage new];
+    
 //    self.navBackgroundColor = [UIColor whiteColor];
 //    //    self.navigationController.navigationBar = [UIColor clearColor];
 //    self.navTitleColor = self.navTintColor = [UIColor whiteColor];
@@ -59,6 +59,7 @@
     share.frame = CGRectMake(0, 0, ScreenScale(60), ScreenScale(44));
     share.contentHorizontalAlignment = UIControlContentHorizontalAlignmentRight;
     self.navigationItem.rightBarButtonItem = [[UIBarButtonItem alloc]initWithCustomView:share];
+    self.navAlpha = 0;
 }
 - (void)cancelAction
 {
@@ -274,6 +275,7 @@
         [_icon setTitle:Localized(@"BUPocket") forState:UIControlStateNormal];
         _icon.titleLabel.font = FONT(12);
         [_icon setTitleColor:[[UIColor whiteColor] colorWithAlphaComponent:0.25] forState:UIControlStateNormal];
+        _icon.userInteractionEnabled = NO;
     }
     return _icon;
 }

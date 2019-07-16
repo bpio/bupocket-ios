@@ -217,7 +217,7 @@ static NSString * const NodePlanCellID = @"NodePlanCellID";
         _interdependentNode = [UIButton createButtonWithTitle:[NSString stringWithFormat:@"  %@", Localized(@"InterdependentNode")] TextFont:FONT_TITLE TextNormalColor:COLOR_6 TextSelectedColor:COLOR_6 NormalImage:@"interdependent_node_n" SelectedImage:@"interdependent_node_s" Target:self Selector:@selector(interdependentNodeAction:)];
         _interdependentNode.contentHorizontalAlignment = UIControlContentHorizontalAlignmentLeft;
         [_headerView addSubview:_interdependentNode];
-        CGFloat interdependentNodeW = [Encapsulation rectWithText:Localized(@"InterdependentNode") font:FONT(13) textHeight:MAIN_HEIGHT].size.width + Margin_30;
+        CGFloat interdependentNodeW = [Encapsulation rectWithText:Localized(@"InterdependentNode") font:FONT(13) textHeight:MAIN_HEIGHT].size.width + ScreenScale(35);
         [_interdependentNode mas_makeConstraints:^(MASConstraintMaker *make) {
             make.left.equalTo(self->_headerView.mas_left).offset(Margin_10);
             make.top.equalTo(self->_headerView.mas_top).offset(Margin_5);

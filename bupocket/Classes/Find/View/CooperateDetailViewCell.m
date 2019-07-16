@@ -205,6 +205,7 @@
         _riskStatementBtn.layer.cornerRadius = BG_CORNER;
         _riskStatementBtn.contentEdgeInsets = UIEdgeInsetsMake(Margin_5, Margin_10, Margin_5, Margin_10);
         _riskStatementBtn.hidden = YES;
+        _riskStatementBtn.contentHorizontalAlignment = UIControlContentHorizontalAlignmentLeft;
         CGSize maximumSize = CGSizeMake(DEVICE_WIDTH - Margin_40, CGFLOAT_MAX);
         CGSize expectSize = [_riskStatementBtn sizeThatFits:maximumSize];
         _riskStatementBtn.size = expectSize;

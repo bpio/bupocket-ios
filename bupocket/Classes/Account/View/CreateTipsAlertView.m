@@ -40,15 +40,14 @@
             [_promptBtn setImage:[UIImage imageNamed:@"PWPrompt"] forState:UIControlStateNormal];
         }
         [_promptBtn setTitle:title forState:UIControlStateNormal];
-//        NSString * prompt = [NSString stringWithFormat:@"%@\n%@\n%@", self.prompt1.titleLabel.attributedText.string, self.prompt2.titleLabel.attributedText.string, self.prompt3.titleLabel.attributedText.string];
-//        CGFloat height = [Encapsulation getSizeSpaceLabelWithStr:prompt font:FONT(13) width:(DEVICE_WIDTH - ScreenScale(80)) height:CGFLOAT_MAX lineSpacing:Margin_5].height + ScreenScale(220);
         CGFloat promptY = 0;
         for (UILabel * prompt in self.scrollView.subviews) {
             promptY += prompt.height + Margin_10;
         }
-        CGFloat height = [self.title isEqualToString:Localized(@"PromptTitle")] ? (promptY + ScreenScale(215)) : (promptY + ScreenScale(115));
+        CGFloat height = [self.title isEqualToString:Localized(@"PromptTitle")] ? (promptY + ScreenScale(180)) : (promptY + ScreenScale(110));
 //        CGFloat height = self.prompt1.size.height + self.prompt2.size.height + self.prompt3.size.height + ScreenScale(210);
-        self.bounds = CGRectMake(0, 0, DEVICE_WIDTH - Margin_60, MIN(height, ScreenScale(360)));
+        CGFloat maxHeight = [self.title isEqualToString:Localized(@"PromptTitle")] ? height : MIN(height, ScreenScale(360));
+        self.bounds = CGRectMake(0, 0, DEVICE_WIDTH - Margin_60, maxHeight);
     }
     return self;
 }
@@ -60,7 +59,6 @@
     
     [self addSubview:self.promptBtn];
     
-    self.scrollView = [[UIScrollView alloc] init];
     [self addSubview:self.scrollView];
     
     for (NSInteger i = 0; i < self.contentArray.count; i ++) {
@@ -81,35 +79,38 @@
 {
     [super layoutSubviews];
     
-    CGFloat promptBtnH = [self.title isEqualToString:Localized(@"PromptTitle")] ? ScreenScale(100) : Margin_25;
-    CGFloat promptW = DEVICE_WIDTH - ScreenScale(90);
+    CGFloat promptBtnH = [self.title isEqualToString:Localized(@"PromptTitle")] ? ScreenScale(100) : ScreenScale(35);
+    CGFloat promptBtnY = [self.title isEqualToString:Localized(@"PromptTitle")] ? Margin_15 : Margin_10;
+    CGFloat promptW = DEVICE_WIDTH - ScreenScale(110);
+    CGFloat scrollViewY = [self.title isEqualToString:Localized(@"PromptTitle")] ? Margin_10 : Margin_15;
     [self.promptBtn mas_makeConstraints:^(MASConstraintMaker *make) {
-        make.top.equalTo(self.mas_top).offset(Margin_20);
+        make.top.equalTo(self.mas_top).offset(promptBtnY);
         make.centerX.equalTo(self);
         make.width.mas_lessThanOrEqualTo(promptW);
         make.height.mas_equalTo(promptBtnH);
     }];
-    
     [self.scrollView mas_makeConstraints:^(MASConstraintMaker *make) {
-        make.top.equalTo(self.promptBtn.mas_bottom).offset(Margin_15);
+        make.top.equalTo(self.promptBtn.mas_bottom).offset(scrollViewY);
         make.left.equalTo(self).offset(Margin_15);
         make.right.equalTo(self).offset(-Margin_15);
         make.bottom.equalTo(self).offset(-MAIN_HEIGHT);
     }];
     
     CGFloat promptY = 0;
-    for (UIButton * prompt in self.scrollView.subviews) {
-        [prompt mas_makeConstraints:^(MASConstraintMaker *make) {
-            make.top.mas_equalTo(promptY);
-            make.centerX.mas_equalTo(0);
-//            make.left.mas_equalTo(Margin_25);
-//            make.right.mas_equalTo(-Margin_25);
-//            make.height.mas_equalTo(prompt.height);
-            make.size.mas_equalTo(CGSizeMake(promptW, prompt.height));
-        }];
-        promptY += prompt.height + Margin_10;
+    for (UIView * prompt in self.scrollView.subviews) {
+        if ([prompt isKindOfClass:[UIButton class]]) {
+            [prompt mas_makeConstraints:^(MASConstraintMaker *make) {
+                make.top.mas_equalTo(promptY);
+                make.centerX.mas_equalTo(0);
+                //            make.left.mas_equalTo(Margin_25);
+                //            make.right.mas_equalTo(-Margin_25);
+                //            make.height.mas_equalTo(prompt.height);
+                make.size.mas_equalTo(CGSizeMake(promptW, prompt.height));
+            }];
+            promptY += prompt.height + Margin_10;
+        }
     }
-    self.scrollView.contentSize = CGSizeMake(DEVICE_WIDTH - ScreenScale(90), promptY);
+    self.scrollView.contentSize = CGSizeMake(promptW, promptY + Margin_5);
 //    [self.prompt1 mas_makeConstraints:^(MASConstraintMaker *make) {
 //        make.top.equalTo(self.promptBtn.mas_bottom).offset(Margin_5);
 //        make.left.equalTo(self).offset(Margin_20);
@@ -144,13 +145,20 @@
     }
     return _promptBtn;
 }
+- (UIScrollView *)scrollView
+{
+    if (!_scrollView) {
+        _scrollView = [[UIScrollView alloc] init];
+    }
+    return _scrollView;
+}
 - (UIButton *)setupButtonWithTitle:(NSString *)title
 {
     UIButton * prompt = [UIButton buttonWithType:UIButtonTypeCustom];
     [prompt setAttributedTitle:[Encapsulation attrWithString:title preFont:FONT(13) preColor:COLOR_6 index:0 sufFont:FONT(13) sufColor:COLOR_6 lineSpacing:LINE_SPACING] forState:UIControlStateNormal];
     prompt.titleLabel.numberOfLines = 0;
     prompt.contentHorizontalAlignment = UIControlContentHorizontalAlignmentLeft;
-    CGSize maximumSize = CGSizeMake(DEVICE_WIDTH - ScreenScale(90), CGFLOAT_MAX);
+    CGSize maximumSize = CGSizeMake(DEVICE_WIDTH - ScreenScale(110), CGFLOAT_MAX);
     CGSize expectSize = [prompt.titleLabel sizeThatFits:maximumSize];
     prompt.size = expectSize;
     return prompt;

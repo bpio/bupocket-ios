@@ -287,6 +287,7 @@ static NSString * const VoucherDetailCellID = @"VoucherDetailCellID";
 {
     CGFloat y = scrollView.contentOffset.y;
     self.navAlpha = y / 80;
+    self.navBackgroundColor = COLOR(@"3C3B6D");
 //    self.navTitleColor = self.navTintColor = [UIColor whiteColor];
 //    if (y > 80) {
 //        self.navTitleColor = self.navTintColor = [UIColor whiteColor];

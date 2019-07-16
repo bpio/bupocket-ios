@@ -306,7 +306,7 @@ static int64_t const gasPrice = 1000;
 {
     [MBProgressHUD showActivityMessageInWindow:Localized(@"Loading")];
     NSString * url = SERVER_COMBINE_API(_webServerDomain, Transaction_Details);
-    NSDictionary * parameters = @{@"Hash" : hash};
+    NSDictionary * parameters = @{@"hash" : hash};
     [[HttpTool shareTool] POST:url parameters:parameters success:^(id responseObject) {
         if(success != nil)
         {
@@ -1323,7 +1323,10 @@ static int64_t const gasPrice = 1000;
     if (response.errorCode == Success_Code) {
         nonce = response.result.nonce;
     } else {
-        [MBProgressHUD showTipMessageInWindow:[ErrorTypeTool getDescription:response.errorCode]];
+        dispatch_async(dispatch_get_main_queue(), ^{
+            [MBProgressHUD hideHUD];
+            [MBProgressHUD showTipMessageInWindow:[ErrorTypeTool getDescription:response.errorCode]];
+        });
     }
     return nonce;
 }
