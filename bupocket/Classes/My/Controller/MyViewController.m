@@ -227,8 +227,6 @@
     if (indexPath.section == 0) {
         SubtitleListViewCell * cell = [SubtitleListViewCell cellWithTableView:tableView cellType:SubtitleCellNormal];
         cell.selectionStyle = UITableViewCellSelectionStyleNone;
-        NSString * walletIconName = [[[AccountTool shareTool] account] walletIconName] == nil ? Current_Wallet_IconName : [[[AccountTool shareTool] account] walletIconName];
-        cell.walletImage.image = [UIImage imageNamed:walletIconName];
         cell.walletName.text = [[AccountTool shareTool] account].identityName;
         cell.walletAddress.text = [NSString stringEllipsisWithStr:[[AccountTool shareTool] account].identityAddress subIndex:SubIndex_Address];
         return cell;

@@ -51,11 +51,10 @@
         if (code == Success_Code) {
             self.bannerArray = responseObject[@"data"][@"slideshow"];
             if (self.bannerArray.count > 0) {
-                self.tableView.tableHeaderView = self.headerView;
                 NSArray * imageArray = [self.bannerArray valueForKeyPath:@"imageUrl"];
                 self.cycleScrollView.imageURLStringsGroup = imageArray;
             } else {
-                self.tableView.tableHeaderView = [[UIView alloc] init];
+                self.tableView.tableHeaderView = [[UIView alloc] initWithFrame:CGRectMake(0, 0, 0, CGFLOAT_MIN)];
             }
             [self.tableView reloadData];
         } else {
@@ -74,6 +73,7 @@
     self.tableView.dataSource = self;
     self.tableView.separatorStyle = UITableViewCellSeparatorStyleNone;
     [self.view addSubview:self.tableView];
+    self.tableView.tableHeaderView = self.headerView;
 }
 - (UIView *)headerView
 {

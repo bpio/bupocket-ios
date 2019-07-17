@@ -56,6 +56,7 @@ static int64_t const gasPrice = 1000;
     if ([defaults boolForKey:If_Custom_Network] == YES) {
         _webServerDomain = [defaults objectForKey:Server_Custom];
         _bumoNodeUrl = [defaults objectForKey:Current_Node_URL_Custom];
+        _shareManager.pushMessageSocketUrl = BUMO_TOOLS_URL_TEST;
     } else if ([defaults boolForKey:If_Switch_TestNetwork] == YES) {
         _webServerDomain = WEB_SERVER_DOMAIN_TEST;
         // BUMO_NODE_URL_TEST

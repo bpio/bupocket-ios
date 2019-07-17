@@ -48,9 +48,12 @@ static NSString * const DetailSubtitleCellID = @"DetailSubtitleCellID";
         NSString * walletImageName;
         UIFont * walletNameFont = FONT_Bold(15);
         UIColor * walletAddressColor = COLOR_9;
+        // 我的界面
         if ([reuseIdentifier isEqualToString:NormalSubtitleCellID]) {
             self.walletImageWH = ScreenScale(70);
             borderRadius = self.walletImageWH * 0.5;
+            walletImageName = [[[AccountTool shareTool] account] walletIconName] == nil ? Current_Wallet_IconName : [[[AccountTool shareTool] account] walletIconName];
+//            cell.walletImage.image = [UIImage imageNamed:walletIconName];
         } else if ([reuseIdentifier isEqualToString:DetailSubtitleCellID]) {
             self.walletImageWH = Margin_50;
             borderRadius = self.walletImageWH * 0.5;

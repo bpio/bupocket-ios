@@ -53,20 +53,23 @@ static NSString * const Issue_Leave = @"leaveRoomForApp";
 
 - (void)connectSocket
 {
-    NSURL* url = [[NSURL alloc] initWithString:[HTTPManager shareManager].pushMessageSocketUrl];
-    self.manager = [[SocketManager alloc] initWithSocketURL:url config:@{@"log": @YES, @"compress": @YES}];
-    self.socket = self.manager.defaultSocket;
-    __weak typeof(self) weakself = self;
-    [self.socket on:@"connect" callback:^(NSArray* data, SocketAckEmitter* ack) {
-        [weakself.socket emit:Issue_Join with:[NSArray arrayWithObjects:weakself.uuid, nil]];
-    }];
-    [self.socket on:Issue_Join callback:^(NSArray* data, SocketAckEmitter* ack) {
-        [weakself.socket emit:Issue_ScanSuccess with:@[]];
-    }];
-    [self.socket on:Issue_ScanSuccess callback:^(NSArray* data, SocketAckEmitter* ack) {
-        
-    }];
-    [self.socket connect];
+    NSString * urlStr = [HTTPManager shareManager].pushMessageSocketUrl;
+    if (NotNULLString(urlStr)) {
+        NSURL* url = [[NSURL alloc] initWithString:urlStr];
+        self.manager = [[SocketManager alloc] initWithSocketURL:url config:@{@"log": @YES, @"compress": @YES}];
+        self.socket = self.manager.defaultSocket;
+        __weak typeof(self) weakself = self;
+        [self.socket on:@"connect" callback:^(NSArray* data, SocketAckEmitter* ack) {
+            [weakself.socket emit:Issue_Join with:[NSArray arrayWithObjects:weakself.uuid, nil]];
+        }];
+        [self.socket on:Issue_Join callback:^(NSArray* data, SocketAckEmitter* ack) {
+            [weakself.socket emit:Issue_ScanSuccess with:@[]];
+        }];
+        [self.socket on:Issue_ScanSuccess callback:^(NSArray* data, SocketAckEmitter* ack) {
+            
+        }];
+        [self.socket connect];
+    }
 }
 - (void)setupView
 {
