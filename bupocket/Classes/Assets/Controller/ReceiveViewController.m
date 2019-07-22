@@ -63,7 +63,7 @@
 }
 - (void)cancelAction
 {
-    [self.navigationController popViewControllerAnimated:NO];
+    [self.navigationController popViewControllerAnimated:YES];
 }
 - (void)shareAction
 {
@@ -118,7 +118,7 @@
     [self.imageViewBg addSubview:self.addressBg];
     
     self.navTitle = [[UILabel alloc] init];
-    self.navTitle.font = FONT_Bold(21);
+    self.navTitle.font = FONT_Bold(17);
     self.navTitle.textColor = [UIColor whiteColor];
     self.navTitle.text = Localized(@"Receive");
     [self.imageViewBg addSubview:self.navTitle];

@@ -205,11 +205,11 @@
         }
         VC.resultModel = resultModel;
         VC.transferInfoArray = [NSMutableArray arrayWithObjects:self.address, [NSString stringWithFormat:@"%@ %@", self.transferVolumeStr, self.listModel.assetCode], nil];
-        [self.navigationController pushViewController:VC animated:NO];
+        [self.navigationController pushViewController:VC animated:YES];
     } failure:^(TransactionResultModel *resultModel) {
         RequestTimeoutViewController * VC = [[RequestTimeoutViewController alloc] init];
         VC.transactionHash = resultModel.transactionHash;
-        [self.navigationController pushViewController:VC animated:NO];
+        [self.navigationController pushViewController:VC animated:YES];
     }];
 }
 
@@ -298,7 +298,7 @@
         [self.destinationAddress sendActionsForControlEvents:UIControlEventEditingChanged];
         [self IsActivatedWithAddress:stringValue];
     };
-    [self.navigationController pushViewController:VC animated:NO];
+    [self.navigationController pushViewController:VC animated:YES];
 }
 - (BOOL)textFieldShouldReturn:(UITextField *)textField
 {

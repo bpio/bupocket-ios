@@ -57,7 +57,7 @@
 }
 - (void)setupNav
 {
-    UIButton * save = [UIButton createButtonWithTitle:Localized(@"Save") TextFont:FONT_15 TextNormalColor:MAIN_COLOR TextSelectedColor:MAIN_COLOR Target:self Selector:@selector(saveAcrion)];
+    UIButton * save = [UIButton createButtonWithTitle:Localized(@"Save") TextFont:FONT_NAV_TITLE TextNormalColor:MAIN_COLOR TextSelectedColor:MAIN_COLOR Target:self Selector:@selector(saveAcrion)];
     save.frame = CGRectMake(0, 0, ScreenScale(60), ScreenScale(44));
     save.contentHorizontalAlignment = UIControlContentHorizontalAlignmentRight;
     self.navigationItem.rightBarButtonItem = [[UIBarButtonItem alloc]initWithCustomView:save];
@@ -196,16 +196,7 @@
     cell.detail.userInteractionEnabled = YES;
     cell.detail.tag = indexPath.row;
     cell.title.text = self.listArray[indexPath.row];
-    cell.listImage.image = [UIImage imageNamed:@"checked"];
-    CGSize cellSize = CGSizeMake(DEVICE_WIDTH - Margin_20, ScreenScale(55));
-    if (self.listArray.count - 1 == 0) {
-        [cell.listBg setViewSize:cellSize borderRadius:BG_CORNER corners:UIRectCornerAllCorners];
-    } else if (indexPath.row == 0) {
-        [cell.listBg setViewSize:cellSize borderRadius:BG_CORNER corners:UIRectCornerTopLeft | UIRectCornerTopRight];
-    } else if (indexPath.row == self.listArray.count - 1) {
-        [cell.listBg setViewSize:cellSize borderRadius:BG_CORNER corners:UIRectCornerBottomLeft | UIRectCornerBottomRight];
-    }
-    
+    [cell.listImage setImage:[UIImage imageNamed:@"checked"] forState:UIControlStateNormal];
     cell.lineView.hidden = (indexPath.row == self.listArray.count - 1);
     cell.detail.hidden = (indexPath.row == 0);
     cell.listImage.hidden = (_index != indexPath.row);

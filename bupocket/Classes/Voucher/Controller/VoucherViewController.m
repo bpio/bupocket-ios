@@ -59,7 +59,6 @@ static NSString * const VoucherCellID = @"VoucherCellID";
         [self setupNav];
     } else {
         self.headerTitle = [NSString stringWithFormat:Localized(@"%@ Vouchers available under"), CurrentWalletName];
-        self.headerTitleH = Margin_10 + [Encapsulation getSizeSpaceLabelWithStr:self.headerTitle font:FONT_13 width:DEVICE_WIDTH - Margin_30 height:CGFLOAT_MAX lineSpacing:Margin_5].height;
     }
     [self setupView];
     self.noNetWork = [Encapsulation showNoNetWorkWithSuperView:self.view target:self action:@selector(reloadData)];
@@ -143,14 +142,14 @@ static NSString * const VoucherCellID = @"VoucherCellID";
 - (void)walletAction
 {
     WalletListViewController * VC = [[WalletListViewController alloc] init];
-    [self.navigationController pushViewController:VC animated:NO];
+    [self.navigationController pushViewController:VC animated:YES];
 }
 
 - (void)QRCodeAction
 {
     ReceiveViewController * VC = [[ReceiveViewController alloc] init];
     VC.receiveType = ReceiveTypeVoucher;
-    [self.navigationController pushViewController:VC animated:NO];
+    [self.navigationController pushViewController:VC animated:YES];
 }
 
 - (void)setupView
@@ -217,9 +216,10 @@ static NSString * const VoucherCellID = @"VoucherCellID";
             preColor = COLOR(@"2A2A2A");
             sufColor = MAIN_COLOR;
         }
-        [self.titleBtn setAttributedTitle:[Encapsulation attrWithString:self.headerTitle preFont:FONT_13 preColor:preColor index:index sufFont:FONT_13 sufColor:sufColor lineSpacing:Margin_5] forState:UIControlStateNormal];
+        [self.titleBtn setAttributedTitle:[Encapsulation attrWithString:self.headerTitle preFont:FONT_13 preColor:preColor index:index sufFont:FONT_13 sufColor:sufColor lineSpacing:LINE_SPACING] forState:UIControlStateNormal];
+        self.headerTitleH = Margin_10 + [Encapsulation getSizeSpaceLabelWithStr:self.headerTitle font:FONT_13 width:View_Width_Main height:CGFLOAT_MAX lineSpacing:LINE_SPACING].height;
         self.titleBtn.contentHorizontalAlignment = UIControlContentHorizontalAlignmentLeft;
-        self.titleBtn.contentEdgeInsets = UIEdgeInsetsMake(Margin_10, Margin_15, 0, Margin_15);
+        self.titleBtn.contentEdgeInsets = UIEdgeInsetsMake(Margin_10, Margin_Main, 0, Margin_Main);
 //        CGSize maximumSize = CGSizeMake(DEVICE_WIDTH, CGFLOAT_MAX);
 //        CGSize expectSize = [self.titleBtn sizeThatFits:maximumSize];
 //        self.titleBtn.size = expectSize;
@@ -256,14 +256,14 @@ static NSString * const VoucherCellID = @"VoucherCellID";
     [tableView deselectRowAtIndexPath:indexPath animated:NO];
     VoucherModel * voucherModel = self.listArray[indexPath.row];
     if (_isChoiceVouchers) {
-        [self.navigationController popViewControllerAnimated:NO];
+        [self.navigationController popViewControllerAnimated:YES];
         if (self.voucher) {
             self.voucher(voucherModel);
         }
     } else {
         VoucherDetailViewController * VC = [[VoucherDetailViewController alloc] init];
         VC.voucherModel = voucherModel;
-        [self.navigationController pushViewController:VC animated:NO];
+        [self.navigationController pushViewController:VC animated:YES];
     }
 }
 

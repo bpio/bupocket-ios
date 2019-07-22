@@ -78,7 +78,7 @@
             BackUpWalletViewController * VC = [[BackUpWalletViewController alloc] init];
             VC.mnemonicArray = responseObject;
             VC.mnemonicType = mnemonicType;
-            [self.navigationController pushViewController:VC animated:NO];
+            [self.navigationController pushViewController:VC animated:YES];
 //            [UIApplication sharedApplication].keyWindow.rootViewController = [[NavigationViewController alloc] initWithRootViewController:VC];
         } failure:^(NSError *error) {
             
@@ -110,7 +110,7 @@
     
     UIButton * prompt = [UIButton buttonWithType:UIButtonTypeCustom];
     prompt.titleLabel.numberOfLines = 0;
-    [prompt setAttributedTitle:[Encapsulation attrWithString:Localized(@"PWPrompt") preFont:FONT_13 preColor:COLOR_6 index:0 sufFont:FONT_13 sufColor:COLOR_6 lineSpacing:Margin_5] forState:UIControlStateNormal];
+    [prompt setAttributedTitle:[Encapsulation attrWithString:Localized(@"PWPrompt") preFont:FONT_13 preColor:COLOR_6 index:0 sufFont:FONT_13 sufColor:COLOR_6 lineSpacing:LINE_SPACING] forState:UIControlStateNormal];
     prompt.backgroundColor = COLOR(@"FFDE92");
     prompt.contentEdgeInsets = UIEdgeInsetsMake(0, Margin_10, 0, Margin_10);
     CGSize maximumSize = CGSizeMake(DEVICE_WIDTH - Margin_60, CGFLOAT_MAX);

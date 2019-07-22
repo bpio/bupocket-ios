@@ -40,7 +40,7 @@
     self.tableView.dataSource = self;
     self.tableView.separatorInset = UIEdgeInsetsZero;
     self.tableView.separatorStyle = UITableViewCellSeparatorStyleNone;
-    self.tableView.backgroundColor = [UIColor whiteColor];
+//    self.tableView.backgroundColor = [UIColor whiteColor];
     [self.view addSubview:self.tableView];
 }
 - (CGFloat)tableView:(UITableView *)tableView heightForRowAtIndexPath:(NSIndexPath *)indexPath
@@ -67,11 +67,12 @@
 {
     ListTableViewCell * cell = [ListTableViewCell cellWithTableView:tableView cellType:CellTypeDefault];
     cell.selectionStyle = UITableViewCellSelectionStyleNone;
-    cell.listImage.image = [UIImage imageNamed:[NSString stringWithFormat:@"multilingual_list_%zd", indexPath.row]];
+    [cell.listImage setImage:[UIImage imageNamed:[NSString stringWithFormat:@"multilingual_list_%zd", indexPath.row]] forState:UIControlStateNormal];
     [cell.detail setImage:[UIImage imageNamed:@"checked"] forState:UIControlStateNormal];
     cell.title.text = self.listArray[indexPath.row];
     cell.detailTitle.text = nil;
     cell.detail.hidden = (_index != indexPath.row);
+    cell.lineView.hidden = (indexPath.row == self.listArray.count - 1 );
     return cell;
 }
 - (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath

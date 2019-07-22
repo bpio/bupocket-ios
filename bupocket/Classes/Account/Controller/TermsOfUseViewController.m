@@ -71,10 +71,10 @@
     if (self.userProtocolType == UserProtocolCreateID) {
         CreateViewController * VC = [[CreateViewController alloc] init];
         VC.createType = CreateIdentity;
-        [self.navigationController pushViewController:VC animated:NO];        
+        [self.navigationController pushViewController:VC animated:YES];        
     } else if (self.userProtocolType == UserProtocolRestoreID) {
         RestoreIdentityViewController * VC = [[RestoreIdentityViewController alloc] init];
-        [self.navigationController pushViewController:VC animated:NO];
+        [self.navigationController pushViewController:VC animated:YES];
     }
 }
 /*

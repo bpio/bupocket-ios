@@ -29,6 +29,7 @@
         [self.listBg addSubview:self.residualPortion];
         [self.listBg addSubview:self.progressView];
         [self.listBg addSubview:self.votingRatio];
+        self.backgroundColor = self.contentView.superview.backgroundColor;
     }
     return self;
 }
@@ -37,12 +38,13 @@
 {
     [super layoutSubviews];
     [self.listBg mas_makeConstraints:^(MASConstraintMaker *make) {
-        make.left.equalTo(self.contentView.mas_left).offset(Margin_10);
-        make.right.equalTo(self.contentView.mas_right).offset(-Margin_10);
+        make.left.equalTo(self.contentView.mas_left).offset(Margin_Main);
+        make.right.equalTo(self.contentView.mas_right).offset(-Margin_Main);
+//        make.left.equalTo(self.contentView.mas_left).offset(Margin_10);
+//        make.right.equalTo(self.contentView.mas_right).offset(-Margin_10);
         make.top.equalTo(self.contentView.mas_top).offset(Margin_5);
         make.bottom.equalTo(self.contentView.mas_bottom).offset(-Margin_5);
     }];
-    self.contentView.backgroundColor = VIEWBG_COLOR;
     
     [self.title mas_makeConstraints:^(MASConstraintMaker *make) {
         make.left.equalTo(self.listBg.mas_left).offset(Margin_10);
@@ -57,7 +59,7 @@
         make.top.equalTo(self.numberOfCopies.mas_bottom).offset(Margin_5);
         make.left.right.equalTo(self.title);
     }];
-    
+
     [self.votingRatio mas_makeConstraints:^(MASConstraintMaker *make) {
         make.right.equalTo(self.title);
         make.centerY.equalTo(self.progressView);
@@ -65,10 +67,10 @@
     }];
     [self.progressView mas_makeConstraints:^(MASConstraintMaker *make) {
         make.top.equalTo(self.purchaseAmount.mas_bottom).offset(Margin_15);
-        make.left.right.equalTo(self.title);
+        make.left.equalTo(self.title);
         make.right.equalTo(self.listBg.mas_right).offset(-ScreenScale(65));
     }];
-    
+
     CGFloat residualPortionW = (DEVICE_WIDTH - Margin_50) / 5;
     [self.supportPortion mas_makeConstraints:^(MASConstraintMaker *make) {
         make.left.equalTo(self.title);
@@ -120,8 +122,7 @@
     if (!_listBg) {
         _listBg = [[UIView alloc] init];
         _listBg.backgroundColor = [UIColor whiteColor];
-        _listBg.layer.masksToBounds = YES;
-        _listBg.layer.cornerRadius = BG_CORNER;
+        [_listBg setViewSize:CGSizeMake(View_Width_Main, ScreenScale(150)) borderRadius:BG_CORNER corners:UIRectCornerAllCorners];
     }
     return _listBg;
 }

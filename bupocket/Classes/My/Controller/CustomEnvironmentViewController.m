@@ -47,7 +47,7 @@
 }
 - (void)setupNav
 {
-    self.rightBtn = [UIButton createButtonWithTitle:Localized(@"Save") TextFont:FONT_15 TextNormalColor:MAIN_COLOR TextSelectedColor:MAIN_COLOR Target:self Selector:@selector(rightAcrion:)];
+    self.rightBtn = [UIButton createButtonWithTitle:Localized(@"Save") TextFont:FONT_NAV_TITLE TextNormalColor:MAIN_COLOR TextSelectedColor:MAIN_COLOR Target:self Selector:@selector(rightAcrion:)];
     self.rightBtn.frame = CGRectMake(0, 0, ScreenScale(60), ScreenScale(44));
     self.rightBtn.contentHorizontalAlignment = UIControlContentHorizontalAlignmentRight;
     [self.rightBtn setTitle:Localized(@"Edit") forState:UIControlStateSelected];
@@ -88,8 +88,8 @@
     [self.footerView addSubview:self.next];
     [self.next mas_makeConstraints:^(MASConstraintMaker *make) {
         make.top.equalTo(self.footerView.mas_top).offset(MAIN_HEIGHT);
-        make.left.equalTo(self.footerView.mas_left).offset(Margin_15);
-        make.right.equalTo(self.footerView.mas_right).offset(-Margin_15);
+        make.left.equalTo(self.footerView.mas_left).offset(Margin_Main);
+        make.right.equalTo(self.footerView.mas_right).offset(-Margin_Main);
         make.height.mas_equalTo(MAIN_HEIGHT);
     }];
     

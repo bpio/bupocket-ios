@@ -128,14 +128,15 @@ static NSString * const AddressBookCellID = @"AddressBookCellID";
 {
     ContactViewController * VC = [[ContactViewController alloc] init];
     VC.navigationItem.title = Localized(@"NewContacts");
-    [self.navigationController pushViewController:VC animated:NO];
+    [self.navigationController pushViewController:VC animated:YES];
 }
 - (void)setupView
 {
     self.tableView = [[UITableView alloc] initWithFrame:CGRectMake(0, 0, DEVICE_WIDTH, DEVICE_HEIGHT - NavBarH - SafeAreaBottomH) style:UITableViewStyleGrouped];
     self.tableView.delegate = self;
     self.tableView.dataSource = self;
-    self.tableView.separatorStyle = UITableViewCellSeparatorStyleNone;
+    self.tableView.separatorInset = UIEdgeInsetsZero;
+//    self.tableView.separatorStyle = UITableViewCellSeparatorStyleNone;
     [self.view addSubview:self.tableView];
     self.tableView.tableHeaderView = [[UIView alloc] initWithFrame:CGRectMake(0, 0, DEVICE_WIDTH, CGFLOAT_MIN)];
 }
@@ -158,14 +159,10 @@ static NSString * const AddressBookCellID = @"AddressBookCellID";
 }
 - (CGFloat)tableView:(UITableView *)tableView heightForHeaderInSection:(NSInteger)section
 {
-    if (section == 0 && self.listArray.count > 0) {
-        return Margin_5;
-    }
+//    if (section == 0 && self.listArray.count > 0) {
+//        return Margin_5;
+//    }
     return CGFLOAT_MIN;
-}
-- (UIView *)tableView:(UITableView *)tableView viewForHeaderInSection:(NSInteger)section
-{
-    return nil;
 }
 - (CGFloat)tableView:(UITableView *)tableView heightForFooterInSection:(NSInteger)section
 {
@@ -203,7 +200,7 @@ static NSString * const AddressBookCellID = @"AddressBookCellID";
     AddressBookModel * addressBookModel = self.listArray[indexPath.row];
     NSArray * VCsArray = [self.navigationController viewControllers];
     if ([VCsArray[VCsArray.count - 2] isKindOfClass:[TransferAccountsViewController class]] || [VCsArray[VCsArray.count - 2] isKindOfClass:[TransferVoucherViewController class]]) {
-        [self.navigationController popViewControllerAnimated:NO];
+        [self.navigationController popViewControllerAnimated:YES];
         if (self.walletAddress != nil) {
             self.walletAddress(addressBookModel.linkmanAddress);
         }
@@ -211,7 +208,7 @@ static NSString * const AddressBookCellID = @"AddressBookCellID";
         ContactViewController * VC = [[ContactViewController alloc] init];
         VC.navigationItem.title = Localized(@"EditContact");
         VC.addressBookModel = self.listArray[indexPath.row];
-        [self.navigationController pushViewController:VC animated:NO];
+        [self.navigationController pushViewController:VC animated:YES];
     }
 //    NSIndexPath * lastIndex = [NSIndexPath indexPathForRow:_index inSection:indexPath.section];
 //    AddressBookListViewCell * lastcell = [tableView cellForRowAtIndexPath:lastIndex];

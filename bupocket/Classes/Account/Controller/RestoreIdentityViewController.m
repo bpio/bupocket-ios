@@ -140,7 +140,7 @@
     VC.navigationItem.title = Localized(@"Mnemonics");
     VC.titleText = Localized(@"MnemonicsExplainTitle");
     VC.explainInfoText = Localized(@"MnemonicsExplain");
-    [self.navigationController pushViewController:VC animated:NO];
+    [self.navigationController pushViewController:VC animated:YES];
 }
 - (CGFloat)tableView:(UITableView *)tableView heightForRowAtIndexPath:(NSIndexPath *)indexPath
 {

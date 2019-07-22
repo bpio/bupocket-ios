@@ -217,7 +217,7 @@
     BOOL ifImportSuccess = [[HTTPManager shareManager] setWalletDataWalletName:_walletName walletAddress:walletAddress walletKeyStore:walletKeyStore randomNumber:nil];
     if (ifImportSuccess) {
         [Encapsulation showAlertControllerWithMessage:Localized(@"ImportWalletSuccessfully") handler:^(UIAlertAction *action) {
-            [self.navigationController popViewControllerAnimated:NO];
+            [self.navigationController popViewControllerAnimated:YES];
         }];
     }
 }
@@ -245,7 +245,7 @@
     [[HTTPManager shareManager] setWalletDataWithMnemonics:words password:_walletPW walletName:_walletName success:^(id responseObject) {
         if (responseObject) {
             [Encapsulation showAlertControllerWithMessage:Localized(@"ImportWalletSuccessfully") handler:^(UIAlertAction *action) {
-                [self.navigationController popViewControllerAnimated:NO];
+                [self.navigationController popViewControllerAnimated:YES];
             }];
         }
     } failure:^(NSError *error) {
@@ -259,7 +259,7 @@
     VC.navigationItem.title = textArray[self.importWalletMode][0];
     VC.titleText = textArray[self.importWalletMode][1];
     VC.explainInfoText = textArray[self.importWalletMode][2];
-    [self.navigationController pushViewController:VC animated:NO];
+    [self.navigationController pushViewController:VC animated:YES];
 }
 - (void)textViewDidChange:(UITextView *)textView
 {

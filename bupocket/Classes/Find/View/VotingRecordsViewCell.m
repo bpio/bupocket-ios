@@ -31,6 +31,7 @@ static NSString * const NodeRecordsCellID = @"NodeRecordsCellID";
         [self.listBg addSubview:self.number];
         [self.listBg addSubview:self.state];
         [self.listBg addSubview:self.date];
+        self.backgroundColor = self.contentView.superview.backgroundColor;
     }
     return self;
 }
@@ -38,14 +39,16 @@ static NSString * const NodeRecordsCellID = @"NodeRecordsCellID";
 - (void)layoutSubviews
 {
     [super layoutSubviews];
-    CGFloat width = (DEVICE_WIDTH - ScreenScale(50)) / 6;
+//    CGFloat width = (DEVICE_WIDTH - ScreenScale(50)) / 6;
+    CGFloat width = (View_Width_Main - Margin_30) / 6;
     [self.listBg mas_makeConstraints:^(MASConstraintMaker *make) {
-        make.left.equalTo(self.contentView.mas_left).offset(Margin_10);
-        make.right.equalTo(self.contentView.mas_right).offset(-Margin_10);
+//        make.left.equalTo(self.contentView.mas_left).offset(Margin_10);
+//        make.right.equalTo(self.contentView.mas_right).offset(-Margin_10);
+        make.left.equalTo(self.contentView.mas_left).offset(Margin_Main);
+        make.right.equalTo(self.contentView.mas_right).offset(-Margin_Main);
         make.top.equalTo(self.contentView.mas_top).offset(Margin_5);
         make.bottom.equalTo(self.contentView.mas_bottom).offset(-Margin_5);
     }];
-    self.contentView.backgroundColor = VIEWBG_COLOR;
     CGFloat recordTypeW = [Encapsulation rectWithText:self.recordType.titleLabel.text font:self.recordType.titleLabel.font textHeight:ScreenScale(18)].size.width + Margin_5;
     [self.recordType mas_makeConstraints:^(MASConstraintMaker *make) {
         make.left.equalTo(self.listBg.mas_left).offset(Margin_10);
@@ -92,8 +95,7 @@ static NSString * const NodeRecordsCellID = @"NodeRecordsCellID";
     if (!_listBg) {
         _listBg = [[UIView alloc] init];
         _listBg.backgroundColor = [UIColor whiteColor];
-        _listBg.layer.masksToBounds = YES;
-        _listBg.layer.cornerRadius = BG_CORNER;
+        [_listBg setViewSize:CGSizeMake(View_Width_Main, ScreenScale(105)) borderRadius:BG_CORNER corners:UIRectCornerAllCorners];
     }
     return _listBg;
 }
@@ -172,7 +174,7 @@ static NSString * const NodeRecordsCellID = @"NodeRecordsCellID";
     } else if ([votingRecordsModel.identityType integerValue] == NodeIdentityEcological) {
         self.nodeType.text = Localized(@"EcologicalNodes");
     }
-    self.number.attributedText = [Encapsulation attrWithString:[NSString stringWithFormat:@"%@\n%@", Localized(@"Value"), votingRecordsModel.amount] preFont:FONT(12) preColor:COLOR_9 index:Localized(@"Value").length sufFont:FONT(13) sufColor:TITLE_COLOR lineSpacing:Margin_5];
+    self.number.attributedText = [Encapsulation attrWithString:[NSString stringWithFormat:@"%@\n%@", Localized(@"Value"), votingRecordsModel.amount] preFont:FONT(12) preColor:COLOR_9 index:Localized(@"Value").length sufFont:FONT(13) sufColor:TITLE_COLOR lineSpacing:LINE_SPACING];
     self.number.textAlignment = NSTextAlignmentLeft;
     NSString * stateStr;
     UIColor * stateColor;
@@ -186,9 +188,9 @@ static NSString * const NodeRecordsCellID = @"NodeRecordsCellID";
         stateStr = Localized(@"Failure");
         stateColor = WARNING_COLOR;
     }
-    self.state.attributedText = [Encapsulation attrWithString:[NSString stringWithFormat:@"%@\n%@", Localized(@"State"),stateStr] preFont:FONT(12) preColor:COLOR_9 index:Localized(@"State").length sufFont:FONT(13) sufColor:stateColor lineSpacing:Margin_5];
+    self.state.attributedText = [Encapsulation attrWithString:[NSString stringWithFormat:@"%@\n%@", Localized(@"State"),stateStr] preFont:FONT(12) preColor:COLOR_9 index:Localized(@"State").length sufFont:FONT(13) sufColor:stateColor lineSpacing:LINE_SPACING];
     self.state.textAlignment = NSTextAlignmentLeft;
-    self.date.attributedText = [Encapsulation attrWithString:[NSString stringWithFormat:@"%@\n%@", Localized(@"Time"), votingRecordsModel.date] preFont:FONT(12) preColor:COLOR_9 index:Localized(@"Time").length sufFont:FONT(13) sufColor:TITLE_COLOR lineSpacing:Margin_5];
+    self.date.attributedText = [Encapsulation attrWithString:[NSString stringWithFormat:@"%@\n%@", Localized(@"Time"), votingRecordsModel.date] preFont:FONT(12) preColor:COLOR_9 index:Localized(@"Time").length sufFont:FONT(13) sufColor:TITLE_COLOR lineSpacing:LINE_SPACING];
     self.date.textAlignment = NSTextAlignmentRight;
 }
 - (void)awakeFromNib {

@@ -172,7 +172,7 @@
         if (NotNULLString(self.versionModel.verNumber)) {
             BOOL result = [App_Version compare:self.versionModel.verNumber] == NSOrderedAscending;
             NSString * isNewVersion = !result ? @"" : @"• ";
-            NSAttributedString * attr = [Encapsulation attrWithString:[NSString stringWithFormat:@"%@V%@", isNewVersion, self.versionModel.verNumber] preFont:FONT(15) preColor:WARNING_COLOR index:isNewVersion.length sufFont:FONT(15) sufColor:COLOR_6 lineSpacing:0];
+            NSAttributedString * attr = [Encapsulation attrWithString:[NSString stringWithFormat:@"%@V%@", isNewVersion, self.versionModel.verNumber] preFont:FONT_TITLE preColor:WARNING_COLOR index:isNewVersion.length sufFont:FONT_TITLE sufColor:COLOR_6 lineSpacing:0];
             [cell.detail setAttributedTitle:attr forState:UIControlStateNormal];
         }
     } else if ([cell.title.text isEqualToString:Localized(@"SwitchedNetwork")]) {
@@ -181,25 +181,13 @@
         [_switchControl setOn:[[NSUserDefaults standardUserDefaults] boolForKey:If_Switch_TestNetwork] animated:YES];
         [_switchControl mas_makeConstraints:^(MASConstraintMaker *make) {
             make.centerY.equalTo(cell.contentView);
-            make.right.equalTo(cell.contentView.mas_right).offset(-Margin_20);
+            make.right.equalTo(cell.contentView.mas_right).offset(-Margin_Main);
         }];
     } else {
         cell.detail.hidden = NO;
     }
     cell.selectionStyle = UITableViewCellSelectionStyleNone;
-    CGSize cellSize = CGSizeMake(DEVICE_WIDTH - Margin_20, Margin_50);
-    if ([self.listArray[indexPath.section] count] - 1 == 0) {
-        [cell.listBg setViewSize:cellSize borderRadius:BG_CORNER corners:UIRectCornerAllCorners];
-        cell.lineView.hidden = YES;
-    } else if (indexPath.row == 0) {
-        [cell.listBg setViewSize:cellSize borderRadius:BG_CORNER corners:UIRectCornerTopLeft | UIRectCornerTopRight];
-        cell.lineView.hidden = NO;
-    } else if (indexPath.row == [self.listArray[indexPath.section] count] - 1) {
-        [cell.listBg setViewSize:cellSize borderRadius:BG_CORNER corners:UIRectCornerBottomLeft | UIRectCornerBottomRight];
-        cell.lineView.hidden = YES;
-    } else {
-        cell.lineView.hidden = NO;
-    }
+    cell.lineView.hidden = indexPath.row == [self.listArray[indexPath.section] count] - 1;
     return cell;
 }
 - (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath
@@ -209,7 +197,7 @@
     if (indexPath.section == 0) {
         if (indexPath.row == 0) {
             VersionLogViewController * VC = [[VersionLogViewController alloc] init];
-            [self.navigationController pushViewController:VC animated:NO];
+            [self.navigationController pushViewController:VC animated:YES];
         } else if (indexPath.row == 1) {
             BOOL result = [App_Version compare:self.versionModel.verNumber] == NSOrderedAscending;
             if (result) {
@@ -240,7 +228,7 @@
         [self showCustomEnvironment];
     } else if ([cell.title.text isEqualToString:Localized(@"CustomEnvironment")]) {
         CustomEnvironmentViewController * VC = [[CustomEnvironmentViewController alloc] init];
-        [self.navigationController pushViewController:VC animated:NO];
+        [self.navigationController pushViewController:VC animated:YES];
     }
 }
 - (UISwitch *)switchControl

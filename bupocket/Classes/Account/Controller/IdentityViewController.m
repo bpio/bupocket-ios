@@ -81,7 +81,7 @@
     } else if ([button.titleLabel.text isEqualToString:Localized(@"RestoreIdentity")]) {
         VC.userProtocolType = UserProtocolRestoreID;
     }
-    [self.navigationController pushViewController:VC animated:NO];
+    [self.navigationController pushViewController:VC animated:YES];
 }
 /*
 #pragma mark - Navigation

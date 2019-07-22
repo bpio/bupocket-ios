@@ -57,7 +57,7 @@
     self.queryLink.textColor = COLOR_9;
     NSString * link = Transaction_Query_Link;
     NSString * transactionQuery = [NSString stringWithFormat:@"%@%@%@", Localized(@"TransactionQueryPrompt"), link, Localized(@"Query")];
-    NSMutableAttributedString * attr = [Encapsulation attrWithString:transactionQuery preFont:FONT(13) preColor:COLOR_9 index:Localized(@"transactionQueryPrompt").length sufFont:FONT(13) sufColor:COLOR_9 lineSpacing:Margin_5];
+    NSMutableAttributedString * attr = [Encapsulation attrWithString:transactionQuery preFont:FONT(13) preColor:COLOR_9 index:Localized(@"transactionQueryPrompt").length sufFont:FONT(13) sufColor:COLOR_9 lineSpacing:LINE_SPACING];
     [attr addAttribute:NSLinkAttributeName value:link range:[transactionQuery rangeOfString:link]];
     self.queryLink.attributedText = attr;
     self.queryLink.linkTextAttributes = @{NSForegroundColorAttributeName: MAIN_COLOR};
@@ -169,7 +169,7 @@
         if (NotNULLString(self.adsModel.url)) {
             WKWebViewController * VC = [[WKWebViewController alloc] init];
             [VC loadWebURLSring: self.adsModel.url];
-            [self.navigationController pushViewController:VC animated:NO];
+            [self.navigationController pushViewController:VC animated:YES];
         }
     }
 }

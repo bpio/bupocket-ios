@@ -201,6 +201,7 @@
 #define UM_App_Key @"5cc7a6020cafb223d0000ae9"
 
 #define Dispatch_After_Time 0.5
+#define Auto_Scroll_TimeInterval 2.5
 
 #define SubIndex_Address 5
 #define SubIndex_hash 8

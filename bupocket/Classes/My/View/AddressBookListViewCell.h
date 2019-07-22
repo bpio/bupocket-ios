@@ -15,7 +15,7 @@ NS_ASSUME_NONNULL_BEGIN
 
 + (instancetype)cellWithTableView:(UITableView *)tableView identifier:(NSString *)identifier;
 
-@property (nonatomic, strong) UIView * listBg;
+//@property (nonatomic, strong) UIView * listBg;
 @property (nonatomic, strong) UILabel * addressName;
 @property (nonatomic, strong) UILabel * address;
 @property (nonatomic, strong) UILabel * describe;

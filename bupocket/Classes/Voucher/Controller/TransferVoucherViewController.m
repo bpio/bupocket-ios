@@ -288,11 +288,11 @@ static NSString * const ChooseVoucherCellID = @"ChooseVoucherCellID";
         }
         VC.resultModel = resultModel;
         VC.confirmTransactionModel = self.confirmModel;
-        [self.navigationController pushViewController:VC animated:NO];
+        [self.navigationController pushViewController:VC animated:YES];
     } failure:^(TransactionResultModel *resultModel) {
         RequestTimeoutViewController * VC = [[RequestTimeoutViewController alloc] init];
         VC.transactionHash = resultModel.transactionHash;
-        [self.navigationController pushViewController:VC animated:NO];
+        [self.navigationController pushViewController:VC animated:YES];
     }];
 }
 - (CGFloat)tableView:(UITableView *)tableView heightForRowAtIndexPath:(NSIndexPath *)indexPath
@@ -410,7 +410,7 @@ static NSString * const ChooseVoucherCellID = @"ChooseVoucherCellID";
         [self getAvailableVoucherNumber];
         [self.tableView reloadData];
     };
-    [self.navigationController pushViewController:VC animated:NO];
+    [self.navigationController pushViewController:VC animated:YES];
 }
 - (void)chooseAddress
 {
@@ -420,7 +420,7 @@ static NSString * const ChooseVoucherCellID = @"ChooseVoucherCellID";
         [self.receiveAddress sendActionsForControlEvents:UIControlEventEditingChanged];
         //        [self IsActivatedWithAddress:stringValue];
     };
-    [self.navigationController pushViewController:VC animated:NO];
+    [self.navigationController pushViewController:VC animated:YES];
 }
 - (void)scanAction
 {

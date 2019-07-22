@@ -59,20 +59,12 @@
 }
 - (CGFloat)tableView:(UITableView *)tableView heightForHeaderInSection:(NSInteger)section
 {
-    return MAIN_HEIGHT;
+    return Margin_Section_Header;
 }
 - (UIView *)tableView:(UITableView *)tableView viewForHeaderInSection:(NSInteger)section
 {
     NSArray * titleArray = @[Localized(@"WalletInformation"), Localized(@"ModifyPW")];
-    return [self setupHeaderTitle:titleArray[section]];
-}
-- (UIButton *)setupHeaderTitle:(NSString *)title
-{
-    UIButton * titleBtn = [UIButton createButtonWithTitle:title TextFont:FONT_15 TextNormalColor:COLOR_6 TextSelectedColor:COLOR_6 Target:nil Selector:nil];
-    titleBtn.contentHorizontalAlignment = UIControlContentHorizontalAlignmentLeft;
-    titleBtn.contentEdgeInsets = UIEdgeInsetsMake(0, Margin_15, 0, Margin_15);
-    titleBtn.frame = CGRectMake(0, 0, DEVICE_WIDTH, MAIN_HEIGHT);
-    return titleBtn;
+    return [UIButton createHeaderButtonWithTitle:titleArray[section]];
 }
 - (CGFloat)tableView:(UITableView *)tableView heightForFooterInSection:(NSInteger)section
 {
@@ -220,7 +212,7 @@
             [[WalletTool shareTool] save:self.walletArray];
         }
         [Encapsulation showAlertControllerWithMessage:[NSString stringWithFormat:Localized(@"%@PWModifiedSuccessfully"), self.walletModel.walletName] handler:^(UIAlertAction *action) {
-            [self.navigationController popViewControllerAnimated:NO];
+            [self.navigationController popViewControllerAnimated:YES];
         }];
     }];
     

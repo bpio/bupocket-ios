@@ -69,37 +69,23 @@
     _tableView.dataSource = self;
     _tableView.separatorStyle = UITableViewCellSeparatorStyleNone;
     [self.view addSubview:self.tableView];
-    UIView * viewBg = [[UIView alloc] initWithFrame:self.view.bounds];
-    CGFloat headerH = NavBarH + Margin_40 + ScreenScale(95);
-    UIView * headerBg = [[UIView alloc] initWithFrame:CGRectMake(0, 0, DEVICE_WIDTH, headerH)];
-    headerBg.backgroundColor = [UIColor whiteColor];
-    [viewBg addSubview:headerBg];
-    UIView * footerBg = [[UIView alloc] initWithFrame:CGRectMake(0, headerH, DEVICE_WIDTH, DEVICE_HEIGHT - headerH)];
-    footerBg.backgroundColor = VIEWBG_COLOR;
-    [headerBg addSubview:footerBg];
-    _tableView.backgroundView = viewBg;
 }
 - (UIButton *)setupHeaderTitle:(NSString *)title index:(NSInteger)index
 {
-    CGFloat top = 0;
-    CGFloat height = ScreenScale(35);
-    if (index == 0) {
-        top = Margin_5;
-        height = Margin_40;
-    }
-    UIButton * titleBtn = [UIButton createButtonWithTitle:title TextFont:FONT_15 TextNormalColor:COLOR_6 TextSelectedColor:COLOR_6 Target:nil Selector:nil];
-    titleBtn.contentHorizontalAlignment = UIControlContentHorizontalAlignmentLeft;
-    titleBtn.contentEdgeInsets = UIEdgeInsetsMake(top, Margin_15, 0, Margin_15);
+    CGFloat top = (index == 0) ? Margin_5 : 0;
+    CGFloat height = Margin_Section_Header - top;
+    UIButton * titleBtn = [UIButton createHeaderButtonWithTitle:title];
+    titleBtn.contentEdgeInsets = UIEdgeInsetsMake(top, Margin_Main, 0, Margin_Main);
     titleBtn.frame = CGRectMake(0, 0, DEVICE_WIDTH, height);
-    titleBtn.backgroundColor = VIEWBG_COLOR;
     return titleBtn;
 }
 - (CGFloat)tableView:(UITableView *)tableView heightForHeaderInSection:(NSInteger)section
 {
     if (section == 0) {
-        return Margin_40;
+        CGFloat top = (section == 0) ? Margin_5 : 0;
+        return Margin_Section_Header - top;
     } else {
-        return self.listArray.count > 0 ? ScreenScale(35) : ScreenScale(180);
+        return self.listArray.count > 0 ? (Margin_Section_Header - Margin_5) : ScreenScale(180);
     }
 }
 - (UIView *)tableView:(UITableView *)tableView viewForHeaderInSection:(NSInteger)section
@@ -111,30 +97,15 @@
             return [self setupHeaderTitle:Localized(@"ImportedWallet") index:section];
         } else {
             UIView * headerView = [[UIView alloc] initWithFrame:CGRectMake(0, 0, DEVICE_WIDTH, ScreenScale(180))];
-            headerView.backgroundColor = VIEWBG_COLOR;
             UIButton * titleBtn = [self setupHeaderTitle:Localized(@"ImportedWallet") index:section];
             [headerView addSubview:titleBtn];
             UIButton * addBtn = [UIButton createButtonWithTitle:Localized(@"AddWallet") isEnabled:YES Target:self Selector:@selector(addAction)];
             [headerView addSubview:addBtn];
-            /*
-            CustomButton * importBtn = [[CustomButton alloc] init];
-            [importBtn setTitle:Localized(@"ImmediateImport") forState:UIControlStateNormal];
-            [importBtn setImage:[UIImage imageNamed:@"immediateImport"] forState:UIControlStateNormal];
-            [headerView addSubview:importBtn];
-            importBtn.backgroundColor = MAIN_COLOR;
-            importBtn.layer.masksToBounds = YES;
-            importBtn.clipsToBounds = YES;
-            importBtn.layer.cornerRadius = MAIN_CORNER;
-            [importBtn addTarget:self action:@selector(importedAction) forControlEvents:UIControlEventTouchUpInside];
-             */
             [addBtn mas_makeConstraints:^(MASConstraintMaker *make) {
                 make.top.equalTo(titleBtn.mas_bottom).offset(ScreenScale(90));
                 make.left.equalTo(headerView.mas_left).offset(Margin_15);
                 make.right.equalTo(headerView.mas_right).offset(-Margin_15);
                 make.height.mas_equalTo(MAIN_HEIGHT);
-//                make.top.equalTo(titleBtn.mas_bottom).offset(Margin_25);
-//                make.bottom.centerX.equalTo(headerView);
-//                make.size.mas_equalTo(CGSizeMake(DEVICE_WIDTH - ScreenScale(160), MAIN_HEIGHT));
             }];
             return headerView;
         }
@@ -162,11 +133,11 @@
             dispatch_after(dispatch_time(DISPATCH_TIME_NOW, (int64_t)(Dispatch_After_Time * NSEC_PER_SEC)), dispatch_get_main_queue(), ^{
                 CreateViewController * VC = [[CreateViewController alloc] init];
                 VC.createType = CreateWallet;
-                [self.navigationController pushViewController:VC animated:NO];    
+                [self.navigationController pushViewController:VC animated:YES];    
             });
         } else if ([btn.titleLabel.text isEqualToString:titleArray[1]]) {
             ImportWalletViewController * VC = [[ImportWalletViewController alloc] init];
-            [self.navigationController pushViewController:VC animated:NO];
+            [self.navigationController pushViewController:VC animated:YES];
         }
     } cancleClick:^{
         
@@ -175,7 +146,6 @@
 }
 - (NSInteger)numberOfSectionsInTableView:(UITableView *)tableView
 {
-//    return self.listArray.count > 0 ? 2 : 1;
     return 2;
 }
 - (NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section
@@ -203,7 +173,7 @@
         VC.walletModel = weakCell.walletModel;
         VC.walletArray = self.listArray;
         VC.index = indexPath.row;
-        [self.navigationController pushViewController:VC animated:NO];
+        [self.navigationController pushViewController:VC animated:YES];
     };
     return cell;
 }
@@ -222,9 +192,9 @@
     for (UIViewController *vc in self.navigationController.viewControllers) {
         if ([vc isKindOfClass:[MyViewController class]]) {
             [self.navigationController.tabBarController setSelectedIndex:0];
-            [self.navigationController popToRootViewControllerAnimated:NO];
+            [self.navigationController popToRootViewControllerAnimated:YES];
         } else {
-            [self.navigationController popToRootViewControllerAnimated:NO];
+            [self.navigationController popToRootViewControllerAnimated:YES];
         }
     }
 }

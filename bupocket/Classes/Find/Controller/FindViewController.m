@@ -78,14 +78,11 @@
 - (UIView *)headerView
 {
     if (!_headerView) {
-         CGFloat headerH = (DEVICE_WIDTH - Margin_20) * 375 / 700;
-        _headerView = [[UIView alloc] initWithFrame:CGRectMake(0, 0, DEVICE_WIDTH, headerH + Margin_10)];
-        _cycleScrollView = [SDCycleScrollView cycleScrollViewWithFrame:CGRectMake(Margin_10, Margin_10, DEVICE_WIDTH - Margin_20, headerH) delegate:self placeholderImage:[UIImage imageNamed:@"banner_placehoder"]];
-        _cycleScrollView.autoScrollTimeInterval = 2.5;
+//         CGFloat headerH = (DEVICE_WIDTH - Margin_20) * 375 / 700;
+        _headerView = [[UIView alloc] initWithFrame:CGRectMake(0, 0, DEVICE_WIDTH, ScreenScale(150))];
+        _cycleScrollView = [SDCycleScrollView cycleScrollViewWithFrame:_headerView.bounds delegate:self placeholderImage:[UIImage imageNamed:@"banner_placehoder"]];
+        _cycleScrollView.autoScrollTimeInterval = Auto_Scroll_TimeInterval;
         _cycleScrollView.hidesForSinglePage = YES;
-        _cycleScrollView.backgroundColor = [UIColor clearColor];
-        _cycleScrollView.layer.cornerRadius = BG_CORNER;
-        _cycleScrollView.clipsToBounds = YES;
         [_headerView addSubview:_cycleScrollView];
     }
     return _headerView;
@@ -100,7 +97,7 @@
     if (NotNULLString(url)) {
         WKWebViewController * VC = [[WKWebViewController alloc] init];
         [VC loadWebURLSring: url];
-        [self.navigationController pushViewController:VC animated:NO];
+        [self.navigationController pushViewController:VC animated:YES];
     }
 }
 - (NSInteger)numberOfSectionsInTableView:(UITableView *)tableView
@@ -129,24 +126,12 @@
 }
 - (UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath
 {
-    ListTableViewCell * cell = [ListTableViewCell cellWithTableView:tableView cellType:CellTypeNormal];
+    ListTableViewCell * cell = [ListTableViewCell cellWithTableView:tableView cellType:CellTypeDetail];
     cell.selectionStyle = UITableViewCellSelectionStyleNone;
 //    cell.detailImage.image = [UIImage imageNamed:@"list_arrow"];
     cell.title.text = self.listArray[indexPath.section][indexPath.row];
-    cell.listImage.image = [UIImage imageNamed:[NSString stringWithFormat:@"find_list_%ld_%ld", indexPath.section + 1, indexPath.row]];
-    CGSize cellSize = CGSizeMake(DEVICE_WIDTH - Margin_20, Margin_50);
-    if ([self.listArray[indexPath.section] count] - 1 == 0) {
-        [cell.listBg setViewSize:cellSize borderRadius:BG_CORNER corners:UIRectCornerAllCorners];
-        cell.lineView.hidden = YES;
-    } else {
-        if (indexPath.row == 0) {
-            [cell.listBg setViewSize:cellSize borderRadius:BG_CORNER corners:UIRectCornerTopLeft | UIRectCornerTopRight];
-            cell.lineView.hidden = NO;
-        } else if (indexPath.row == [self.listArray[indexPath.section] count] - 1) {
-            cell.lineView.hidden = YES;
-            [cell.listBg setViewSize:cellSize borderRadius:BG_CORNER corners:UIRectCornerBottomLeft | UIRectCornerBottomRight];
-        }
-    }
+    [cell.listImage setImage:[UIImage imageNamed:[NSString stringWithFormat:@"find_list_%ld_%ld", indexPath.section + 1, indexPath.row]] forState:UIControlStateNormal];
+    cell.lineView.hidden = (indexPath.row == [self.listArray[indexPath.section] count] - 1);
     return cell;
 }
 - (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath
@@ -155,16 +140,16 @@
         if (indexPath.section == 0) {
         if (indexPath.row == 0) {
             NodePlanViewController * VC = [[NodePlanViewController alloc] init];
-            [self.navigationController pushViewController:VC animated:NO];
+            [self.navigationController pushViewController:VC animated:YES];
         } else {
             CooperateViewController * VC = [[CooperateViewController alloc] init];
-            [self.navigationController pushViewController:VC animated:NO];
+            [self.navigationController pushViewController:VC animated:YES];
         }
     } else if (indexPath.section == 1) {
         WKWebViewController * VC = [[WKWebViewController alloc] init];
         VC.navigationItem.title = self.listArray[indexPath.section][indexPath.row];
         [VC loadWebURLSring:Information_URL];
-        [self.navigationController pushViewController:VC animated:NO];
+        [self.navigationController pushViewController:VC animated:YES];
     } else if (indexPath.section == 2) {
         [Encapsulation showAlertControllerWithTitle:Localized(@"Disclaimer") message:Localized(@"DisclaimerInfo") confirmHandler:^(UIAlertAction *action) {
             [WechatTool enterWechatMiniProgram];

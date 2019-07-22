@@ -8,7 +8,7 @@
 
 #import "AssetIssuerViewController.h"
 #import "SubtitleListViewCell.h"
-#import "CooperateDetailViewCell.h"
+#import "InfoViewCell.h"
 #import "DetailListViewCell.h"
 
 @interface AssetIssuerViewController ()<UITableViewDelegate, UITableViewDataSource>
@@ -60,13 +60,13 @@ static NSString * const CooperateDetailCellID = @"CooperateDetailCellID";
     if (indexPath.section == 0) {
         return ScreenScale(80);
     } else {
-        return (NotNULLString(self.info) ? ceil([Encapsulation getSizeSpaceLabelWithStr:self.info font:FONT(13) width:DEVICE_WIDTH - Margin_40 height:CGFLOAT_MAX lineSpacing:Margin_5].height) + 1 + Margin_25 : CGFLOAT_MIN);
+        return (NotNULLString(self.info) ? ceil([Encapsulation getSizeSpaceLabelWithStr:self.info font:FONT(13) width:Content_Width_Main height:CGFLOAT_MAX lineSpacing:LINE_SPACING].height) + 1 + Margin_25 : CGFLOAT_MIN);
     }
 }
 - (CGFloat)tableView:(UITableView *)tableView heightForHeaderInSection:(NSInteger)section
 {
     if (section == 1 || section == 2) {
-        return Margin_40;
+        return Margin_Section_Header;
     } else {
         return CGFLOAT_MIN;
     }
@@ -74,9 +74,7 @@ static NSString * const CooperateDetailCellID = @"CooperateDetailCellID";
 - (UIView *)tableView:(UITableView *)tableView viewForHeaderInSection:(NSInteger)section
 {
     if (section == 1 || section == 2) {
-        UIButton * title = [UIButton createButtonWithTitle:self.listArray[section][0] TextFont:FONT_13 TextNormalColor:COLOR_9 TextSelectedColor:COLOR_9 Target:nil Selector:nil];
-        title.contentHorizontalAlignment = UIControlContentHorizontalAlignmentLeft;
-        title.contentEdgeInsets = UIEdgeInsetsMake(0, Margin_15, 0, Margin_15);
+        UIButton * title = [UIButton createHeaderButtonWithTitle:self.listArray[section][0]];
         return title;
     } else {
         return nil;
@@ -116,24 +114,15 @@ static NSString * const CooperateDetailCellID = @"CooperateDetailCellID";
 //        cell.walletAddress.text = [NSString stringWithFormat:Localized(@"Abbreviation：%@"), self.voucherModel.voucherIssuer[@"shortName"]];
         cell.detailImage.hidden = YES;
         return cell;
-    } else if (indexPath.section == 1) {
-        CooperateDetailViewCell * cell = [CooperateDetailViewCell cellWithTableView:tableView identifier:CooperateDetailCellID];
-        cell.selectionStyle = UITableViewCellSelectionStyleNone;
-        cell.riskStatementBtn.hidden = NO;
-        [cell.riskStatementBtn setAttributedTitle:[Encapsulation attrWithString:self.listArray[indexPath.section][1] preFont:FONT(13) preColor:COLOR_6 index:0 sufFont:FONT(13) sufColor:COLOR_6 lineSpacing:Margin_5] forState:UIControlStateNormal];
-        cell.contentView.backgroundColor = self.tableView.backgroundColor;
-        return cell;
     } else {
-        DetailListViewCell * cell = [DetailListViewCell cellWithTableView:tableView cellType:DetailCellSubtitle];
-        cell.title.text = @"第一次销毁数字资产";
-        cell.title.font = FONT_TITLE;
-        cell.title.textColor = COLOR_9;
-        NSString * info = [NSString stringWithFormat:@"%@\n%@", @"销毁时间：2019-11-23 12:00:00", @"销毁数量：23456789"];
-        // 发行时间：2019-10-23 12:00:00
-        // 发行数量：23456789
-        cell.infoTitle.attributedText = [Encapsulation attrWithString:info preFont:FONT_13 preColor:COLOR_6 index:0 sufFont:FONT_TITLE sufColor:COLOR_6 lineSpacing:Margin_10];
+        InfoViewCell * cell = [InfoViewCell cellWithTableView:tableView];
+        [cell.info setAttributedTitle:[self getAttrWithInfo] forState:UIControlStateNormal];
         return cell;
     }
+}
+- (NSAttributedString *)getAttrWithInfo
+{
+    return [Encapsulation attrWithString:self.listArray[1][1] preFont:FONT(13) preColor:COLOR_6 index:0 sufFont:FONT(13) sufColor:COLOR_6 lineSpacing:LINE_SPACING];
 }
 - (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath
 {

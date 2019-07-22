@@ -68,7 +68,7 @@
     for (NSInteger i = 0; i < noteArray.count; i++) {
         UILabel * noteLabel = [[UILabel alloc] init];
         noteLabel.numberOfLines = 0;
-        noteLabel.attributedText = [Encapsulation attrWithString:noteArray[i] preFont:FONT_13 preColor:COLOR_6 index:0 sufFont:FONT_13 sufColor:COLOR_6 lineSpacing:Margin_5];
+        noteLabel.attributedText = [Encapsulation attrWithString:noteArray[i] preFont:FONT_13 preColor:COLOR_6 index:0 sufFont:FONT_13 sufColor:COLOR_6 lineSpacing:LINE_SPACING];
         [self.scrollView addSubview:noteLabel];
         if (i > 0) {
             noteLabelH += [self getNoteTextHeightWithText:noteArray[i - 1]] + Margin_10;
@@ -94,7 +94,7 @@
 }
 - (CGFloat)getNoteTextHeightWithText:(NSString *)text
 {
-    return [Encapsulation getSizeSpaceLabelWithStr:text font:FONT_13 width:DEVICE_WIDTH - Margin_40 height:CGFLOAT_MAX lineSpacing:Margin_5].height;
+    return [Encapsulation getSizeSpaceLabelWithStr:text font:FONT_13 width:DEVICE_WIDTH - Margin_40 height:CGFLOAT_MAX lineSpacing:LINE_SPACING].height;
 }
 
 - (void)backupMnemonicsAction
@@ -125,7 +125,7 @@
     BackupMnemonicsViewController * VC = [[BackupMnemonicsViewController alloc] init];
     VC.mnemonicArray = array;
     VC.mnemonicType = self.mnemonicType;
-    [self.navigationController pushViewController:VC animated:NO];
+    [self.navigationController pushViewController:VC animated:YES];
 }
 - (void)skipAction
 {
@@ -142,7 +142,7 @@
             [self.navigationController popToViewController:VCArray[VCArray.count - 3] animated:NO];
         }
     } else {
-        [self.navigationController popViewControllerAnimated:NO];
+        [self.navigationController popViewControllerAnimated:YES];
     }
 }
 

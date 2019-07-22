@@ -121,7 +121,7 @@ static NSString * const CooperateCellID = @"CooperateCellID";
 }
 - (CGFloat)tableView:(UITableView *)tableView heightForRowAtIndexPath:(NSIndexPath *)indexPath
 {
-    return ScreenScale(155);
+    return ScreenScale(160);
 }
 - (UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath
 {
@@ -136,7 +136,7 @@ static NSString * const CooperateCellID = @"CooperateCellID";
     CooperateDetailViewController * VC = [[CooperateDetailViewController alloc] init];
     CooperateModel * cooperateModel = self.listArray[indexPath.section];
     VC.nodeId = cooperateModel.nodeId;
-    [self.navigationController pushViewController:VC animated:NO];
+    [self.navigationController pushViewController:VC animated:YES];
 }
 
 /*

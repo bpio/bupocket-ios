@@ -163,7 +163,7 @@
         _invitationPrompt = [UIButton buttonWithType:UIButtonTypeCustom];
         _invitationPrompt.contentEdgeInsets = UIEdgeInsetsMake(Margin_10, Margin_10, Margin_10, Margin_10);
         _invitationPrompt.titleLabel.numberOfLines = 0;
-        [_invitationPrompt setAttributedTitle:[Encapsulation attrWithString:[NSString stringWithFormat:@"%@\n%@", Localized(@"InvitationPrompt"), Localized(@"LongPressPrompt")] preFont:FONT(13) preColor:COLOR(@"BABCC9") index:[Localized(@"InvitationPrompt") length] sufFont:FONT(12) sufColor:COLOR(@"737791") lineSpacing:Margin_5] forState:UIControlStateNormal];
+        [_invitationPrompt setAttributedTitle:[Encapsulation attrWithString:[NSString stringWithFormat:@"%@\n%@", Localized(@"InvitationPrompt"), Localized(@"LongPressPrompt")] preFont:FONT(13) preColor:COLOR(@"BABCC9") index:[Localized(@"InvitationPrompt") length] sufFont:FONT(12) sufColor:COLOR(@"737791") lineSpacing:LINE_SPACING] forState:UIControlStateNormal];
         _invitationPrompt.contentHorizontalAlignment = UIControlContentVerticalAlignmentCenter;
     }
     return _invitationPrompt;

@@ -109,7 +109,7 @@ static NSString * const NodeTransferSuccessID = @"NodeTransferSuccessID";
         if (NotNULLString(self.adsModel.url)) {
             WKWebViewController * VC = [[WKWebViewController alloc] init];
             [VC loadWebURLSring: self.adsModel.url];
-            [self.navigationController pushViewController:VC animated:NO];
+            [self.navigationController pushViewController:VC animated:YES];
         }
     }
 }

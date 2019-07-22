@@ -14,9 +14,6 @@
 
 @interface TabBarViewController ()
 
-//@property (nonatomic, strong) AssetsViewController * assetsVC;
-//@property (nonatomic, strong) MyViewController * myVC;
-
 @end
 
 @implementation TabBarViewController

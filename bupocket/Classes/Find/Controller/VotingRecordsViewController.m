@@ -119,7 +119,8 @@ static NSString * const VotingRecordsCellID = @"VotingRecordsCellID";
     if (section == 0 && !self.nodePlanModel) {
         return Margin_5;
     } else if (self.nodePlanModel && section == 1) {
-        return MAIN_HEIGHT;
+//        return MAIN_HEIGHT;
+        return Margin_Section_Header - Margin_10;
     } else {
         return CGFLOAT_MIN;
     }
@@ -127,9 +128,8 @@ static NSString * const VotingRecordsCellID = @"VotingRecordsCellID";
 - (UIView *)tableView:(UITableView *)tableView viewForHeaderInSection:(NSInteger)section
 {
     if (self.nodePlanModel && section == 1) {
-        UIButton * title = [UIButton createButtonWithTitle:Localized(@"VotingRecords") TextFont:FONT_13 TextNormalColor:COLOR_9 TextSelectedColor:COLOR_9 Target:nil Selector:nil];
-        title.contentEdgeInsets = UIEdgeInsetsMake(0, Margin_10, 0, 0);
-        title.contentHorizontalAlignment = UIControlContentHorizontalAlignmentLeft;
+        UIButton * title = [UIButton createHeaderButtonWithTitle:Localized(@"VotingRecords")];
+        title.contentEdgeInsets = UIEdgeInsetsMake(Margin_5, Margin_Main, 0, Margin_Main);
         return title;
     } else {
         return nil;

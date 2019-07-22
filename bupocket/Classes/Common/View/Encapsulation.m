@@ -41,19 +41,10 @@
     dic[NSForegroundColorAttributeName] = sufColor;
     [attr addAttributes:dic range:NSMakeRange(index, str.length - index)];
     NSMutableDictionary * paraStyleDic = [NSMutableDictionary dictionary];
-    NSMutableParagraphStyle *paraStyle = [[NSMutableParagraphStyle alloc] init];
-//    paraStyle.lineBreakMode =NSLineBreakByCharWrapping;
-    paraStyle.alignment = NSTextAlignmentLeft;
-    paraStyle.lineSpacing = lineSpacing; //设置行间距
-    paraStyle.hyphenationFactor = 1.0;
-    paraStyle.firstLineHeadIndent = 0.0;
-    paraStyle.paragraphSpacingBefore = 0.0;
-    paraStyle.headIndent = 0;
-    paraStyle.tailIndent = 0;
-//    paraStyleDic[NSFontAttributeName] = FONT_TITLE;
-    paraStyleDic[NSParagraphStyleAttributeName] = paraStyle;
-    //word spacing NSKernAttributeName:@1.5f
-//    paraStyleDic[NSKernAttributeName] = @1.0f;
+    
+    UIFont * font = (MAX(preFont.fontWeight, sufFont.fontWeight) == preFont.fontWeight) ? preFont : sufFont;
+    NSMutableParagraphStyle * paragraphStyle = [Encapsulation setDefaultParagraphStyleWithFont:font lineSpacing:lineSpacing];
+    paraStyleDic[NSParagraphStyleAttributeName] = paragraphStyle;
     [attr addAttributes:paraStyleDic range:NSMakeRange(0, str.length)];
     return attr;
 }
@@ -66,19 +57,8 @@
     dic[NSForegroundColorAttributeName] = color;
     [attr addAttributes:dic range:NSMakeRange(0, str.length)];
     NSMutableDictionary * paraStyleDic = [NSMutableDictionary dictionary];
-    NSMutableParagraphStyle *paraStyle = [[NSMutableParagraphStyle alloc] init];
-    //    paraStyle.lineBreakMode =NSLineBreakByCharWrapping;
-    paraStyle.alignment = NSTextAlignmentLeft;
-    paraStyle.lineSpacing = lineSpacing; //设置行间距
-    paraStyle.hyphenationFactor = 1.0;
-    paraStyle.firstLineHeadIndent = 0.0;
-    paraStyle.paragraphSpacingBefore = 0.0;
-    paraStyle.headIndent = 0;
-    paraStyle.tailIndent = 0;
-    //    paraStyleDic[NSFontAttributeName] = FONT_TITLE;
-    paraStyleDic[NSParagraphStyleAttributeName] = paraStyle;
-    //word spacing NSKernAttributeName:@1.5f
-    //    paraStyleDic[NSKernAttributeName] = @1.0f;
+    NSMutableParagraphStyle * paragraphStyle = [Encapsulation setDefaultParagraphStyleWithFont:font lineSpacing:lineSpacing];
+    paraStyleDic[NSParagraphStyleAttributeName] = paragraphStyle;
     [attr addAttributes:paraStyleDic range:NSMakeRange(0, str.length)];
     return attr;
 }
@@ -115,23 +95,13 @@
 // Calculate the width and height of UILabel (with row spacing)
 + (CGSize)getSizeSpaceLabelWithStr:(NSString *)str font:(UIFont *)font width:(CGFloat)width height:(CGFloat)height lineSpacing:(CGFloat)lineSpacing
 {
-    NSMutableParagraphStyle *paraStyle = [[NSMutableParagraphStyle alloc] init];
-//    paraStyle.lineBreakMode =NSLineBreakByCharWrapping;
-    paraStyle.alignment = NSTextAlignmentLeft;
-    paraStyle.lineSpacing = lineSpacing;
-    paraStyle.hyphenationFactor = 1.0;
-    paraStyle.firstLineHeadIndent = 0.0;
-    paraStyle.paragraphSpacingBefore = 0.0;
-    paraStyle.headIndent = 0;
-    paraStyle.tailIndent = 0;
-    NSDictionary * dic = @{NSFontAttributeName:font,NSParagraphStyleAttributeName:paraStyle,NSKernAttributeName:@1.0f};
+    NSMutableParagraphStyle * paragraphStyle = [Encapsulation setDefaultParagraphStyleWithFont:font lineSpacing:lineSpacing];
+    NSDictionary * dic = @{NSFontAttributeName:font,NSParagraphStyleAttributeName:paragraphStyle, NSKernAttributeName:@1.0f};
     CGSize size = [str boundingRectWithSize:CGSizeMake(width, height) options:NSStringDrawingUsesLineFragmentOrigin attributes:dic context:nil].size;
     return size;
 }
-//+ (NSMutableParagraphStyle *)setDefaultParagraphStyle
-//{
-//
-//}
+
+
 + (void)showAlertControllerWithTitle:(NSString *)title message:(NSString*)message cancelHandler:(void(^)(UIAlertAction * action))cancelHandler confirmHandler:(void(^)(UIAlertAction * action))confirmHandler
 {
     UIAlertController * alertController = [UIAlertController alertControllerWithTitle:title message:message preferredStyle:UIAlertControllerStyleAlert];
@@ -299,6 +269,17 @@
     noNetWork.hidden = YES;
     return noNetWork;
 }
++ (NSAttributedString *)getAttrWithInfoStr:(NSString *)infoStr
+{
+    if (NotNULLString(infoStr)) {
+        return [Encapsulation attrWithString:infoStr preFont:FONT(13) preColor:COLOR_6 index:0 sufFont:FONT(13) sufColor:COLOR_6 lineSpacing:Margin_10];
+    }
+    return nil;
+}
++ (CGFloat)getAttrHeightWithInfoStr:(NSString *)infoStr
+{
+    return NotNULLString(infoStr) ? ceil([Encapsulation getSizeSpaceLabelWithStr:infoStr font:FONT(13) width:Content_Width_Main height:CGFLOAT_MAX lineSpacing:Margin_10].height) + 1 + Margin_25 : CGFLOAT_MIN;
+}
 
 #pragma mark 多张图片合成一张
 + (UIImage *)mergedImageWithMainImage:(UIView *)mainImage
@@ -309,5 +290,56 @@
     UIGraphicsEndImageContext();
     return resultImage;
 }
-
++ (NSMutableParagraphStyle *)setDefaultParagraphStyleWithFont:(UIFont *)font lineSpacing:(CGFloat)lineSpacing
+{
+    //   NSParagraphStyleAttributeName 段落的风格（设置首行，行间距，对齐方式）
+    NSMutableParagraphStyle * paragraphStyle = [[NSMutableParagraphStyle alloc] init];
+    // 省略方式
+    //    paraStyle.lineBreakMode =NSLineBreakByCharWrapping;
+    paragraphStyle.alignment = NSTextAlignmentLeft;
+    // 字体的行间距
+    CGFloat lineH = lineSpacing - (font.lineHeight - font.pointSize);
+    paragraphStyle.lineSpacing = (lineH < 0) ? 0 : lineH;
+    // 连字属性 在iOS，唯一支持的值分别为0和1
+    paragraphStyle.hyphenationFactor = 1.0;
+    // 首行缩进
+    paragraphStyle.firstLineHeadIndent = 0.0;
+    // 段与段之间的间距
+//    paragraphStyle.paragraphSpacing = Margin_10;
+    // 段首行空白空间
+    paragraphStyle.paragraphSpacingBefore = 0.0;
+    // 整体缩进(首行除外)
+    paragraphStyle.headIndent = 0;
+    paragraphStyle.tailIndent = 0;
+    // 最低行高
+//    paragraphStyle.minimumLineHeight = 0;
+//    // 最大行高
+//    paragraphStyle.maximumLineHeight = Margin_20;
+    // 从左到右的书写方向
+    //    paragraphStyle.baseWritingDirection = NSWritingDirectionLeftToRight;
+    return paragraphStyle;
+}
+/*
+ NSFontAttributeName                设置字体属性，默认值：字体：Helvetica(Neue) 字号：12
+ NSForegroundColorAttributeNam      设置字体颜色，取值为 UIColor对象，默认值为黑色
+ NSBackgroundColorAttributeName     设置字体所在区域背景颜色，取值为 UIColor对象，默认值为nil, 透明色
+ NSLigatureAttributeName            设置连体属性，取值为NSNumber 对象(整数)，0 表示没有连体字符，1 表示使用默认的连体字符
+ NSKernAttributeName                设定字符间距，取值为 NSNumber 对象（整数），正值间距加宽，负值间距变窄
+ NSStrikethroughStyleAttributeName  设置删除线，取值为 NSNumber 对象（整数）
+ NSStrikethroughColorAttributeName  设置删除线颜色，取值为 UIColor 对象，默认值为黑色
+ NSUnderlineStyleAttributeName      设置下划线，取值为 NSNumber 对象（整数），枚举常量 NSUnderlineStyle中的值，与删除线类似
+ NSUnderlineColorAttributeName      设置下划线颜色，取值为 UIColor 对象，默认值为黑色
+ NSStrokeWidthAttributeName         设置笔画宽度，取值为 NSNumber 对象（整数），负值填充效果，正值中空效果
+ NSStrokeColorAttributeName         填充部分颜色，不是字体颜色，取值为 UIColor 对象
+ NSShadowAttributeName              设置阴影属性，取值为 NSShadow 对象
+ NSTextEffectAttributeName          设置文本特殊效果，取值为 NSString 对象，目前只有图版印刷效果可用：
+ NSBaselineOffsetAttributeName      设置基线偏移值，取值为 NSNumber （float）,正值上偏，负值下偏
+ NSObliquenessAttributeName         设置字形倾斜度，取值为 NSNumber （float）,正值右倾，负值左倾
+ NSExpansionAttributeName           设置文本横向拉伸属性，取值为 NSNumber （float）,正值横向拉伸文本，负值横向压缩文本
+ NSWritingDirectionAttributeName    设置文字书写方向，从左向右书写或者从右向左书写
+ NSVerticalGlyphFormAttributeName   设置文字排版方向，取值为 NSNumber 对象(整数)，0 表示横排文本，1 表示竖排文本
+ NSLinkAttributeName                设置链接属性，点击后调用浏览器打开指定URL地址
+ NSAttachmentAttributeName          设置文本附件,取值为NSTextAttachment对象,常用于文字图片混排
+ NSParagraphStyleAttributeName      设置文本段落排版格式，取值为 NSParagraphStyle 对象
+*/
 @end

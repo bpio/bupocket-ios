@@ -33,10 +33,10 @@ static NSString * const NodeSharingID = @"NodeSharingID";
         [self.listBg addSubview:self.votesObtained];
         [self.listBg addSubview:self.numberOfVotes];
         if ([reuseIdentifier isEqualToString:NodePlanCellID]) {
-            _listBg.layer.masksToBounds = YES;
-            _listBg.layer.cornerRadius = BG_CORNER;
+            [self.listBg setViewSize:CGSizeMake(DEVICE_WIDTH - Margin_20, ScreenScale(150)) borderWidth:0 borderColor:nil borderRadius:BG_CORNER];
             [self setupMoreOperations];
         }
+        self.backgroundColor = self.contentView.superview.backgroundColor;
     }
     return self;
 }
@@ -105,7 +105,8 @@ static NSString * const NodeSharingID = @"NodeSharingID";
             self.name.numberOfLines = 2;
         }
     }
-    self.contentView.backgroundColor = VIEWBG_COLOR;
+    
+//    self.contentView.backgroundColor = VIEWBG_COLOR;
     [self.listImage mas_makeConstraints:^(MASConstraintMaker *make) {
         make.left.equalTo(self.listBg.mas_left).offset(Margin_10);
         make.top.equalTo(self.listBg.mas_top).offset(Margin_15);
@@ -116,7 +117,8 @@ static NSString * const NodeSharingID = @"NodeSharingID";
         make.width.height.mas_equalTo(ScreenScale(53));
     }];
     [self.name mas_makeConstraints:^(MASConstraintMaker *make) {
-        make.top.equalTo(self.listBg.mas_top).offset(Margin_20);
+//        make.top.equalTo(self.listBg.mas_top).offset(Margin_20);
+        make.top.equalTo(self.listImage.mas_top);
         make.left.equalTo(self.listImage.mas_right).offset(Margin_10);
     }];
     [self.nodeType mas_makeConstraints:^(MASConstraintMaker *make) {

@@ -143,7 +143,7 @@
 - (void)userIconAction
 {
     MyIdentityViewController * VC = [[MyIdentityViewController alloc] init];
-    [self.navigationController pushViewController:VC animated:NO];
+    [self.navigationController pushViewController:VC animated:YES];
 }
  */
 - (CGFloat)tableView:(UITableView *)tableView heightForHeaderInSection:(NSInteger)section
@@ -169,7 +169,7 @@
     if (section == 0) {
         UIView * footerView = [[UIView alloc] initWithFrame:CGRectMake(0, 0, DEVICE_WIDTH, ScreenScale(100))];
         footerView.backgroundColor = [UIColor whiteColor];
-        NSArray * array = @[@[Localized(@"AddressBook"), COLOR(@"6D8BFF"), @"addressBookBg_icon"], @[Localized(@"WalletManagement"), COLOR(@"02CA71"), @"walletManageBg_icon"]];
+        NSArray * array = @[@[Localized(@"AddressBook"), ADDRESS_COLOR, @"addressBookBg_icon"], @[Localized(@"WalletManagement"), MAIN_COLOR, @"walletManageBg_icon"]];
         CGFloat btnW = (DEVICE_WIDTH - Margin_40) / 2;
         CGSize btnSize = CGSizeMake(btnW, ScreenScale(80));
         for (NSInteger i = 0; i < array.count; i ++) {
@@ -185,7 +185,7 @@
                 make.left.equalTo(footerView.mas_left).offset(Margin_15 + (btnW + Margin_10) * i);
                 make.size.mas_equalTo(btnSize);
             }];
-            UIImageView * bgIcon = [[UIImageView alloc] initWithImage:[UIImage imageNamed:array[i][2]]];
+            UIImageView * bgIcon = [[UIImageView alloc]  initWithImage:[UIImage imageNamed:array[i][2]]];
             [btn addSubview:bgIcon];
             [bgIcon mas_makeConstraints:^(MASConstraintMaker *make) {
                 make.right.bottom.equalTo(btn);
@@ -200,10 +200,10 @@
 {
     if (button.tag == 0) {
         AddressBookViewController * VC = [[AddressBookViewController alloc] init];
-        [self.navigationController pushViewController:VC animated:NO];
+        [self.navigationController pushViewController:VC animated:YES];
     } else if (button.tag == 1) {
         WalletListViewController * VC = [[WalletListViewController alloc] init];
-        [self.navigationController pushViewController:VC animated:NO];
+        [self.navigationController pushViewController:VC animated:YES];
     }
 }
 - (CGFloat)tableView:(UITableView *)tableView heightForRowAtIndexPath:(NSIndexPath *)indexPath
@@ -232,7 +232,7 @@
         return cell;
     } else {
         ListTableViewCell * cell = [ListTableViewCell cellWithTableView:tableView cellType:CellTypeDetail];
-        cell.listImage.image = [UIImage imageNamed:[NSString stringWithFormat:@"my_list_%zd_%zd", indexPath.section, indexPath.row]];
+        [cell.listImage setImage:[UIImage imageNamed:[NSString stringWithFormat:@"my_list_%zd_%zd", indexPath.section, indexPath.row]] forState:UIControlStateNormal];
 //        [cell.detail setImage:[UIImage imageNamed:@"list_arrow"] forState:UIControlStateNormal];
         cell.title.text = self.listArray[indexPath.section][indexPath.row];
         cell.selectionStyle = UITableViewCellSelectionStyleNone;
@@ -265,42 +265,42 @@
     [tableView deselectRowAtIndexPath:indexPath animated:YES];
     if (indexPath.section == 0) {
         MyIdentityViewController * VC = [[MyIdentityViewController alloc] init];
-        [self.navigationController pushViewController:VC animated:NO];
+        [self.navigationController pushViewController:VC animated:YES];
     } else if (indexPath.section == 1) {
         if (indexPath.row == 0) {
             MonetaryUnitViewController * VC = [[MonetaryUnitViewController alloc] init];
-            [self.navigationController pushViewController:VC animated:NO];
+            [self.navigationController pushViewController:VC animated:YES];
         } else if (indexPath.row == 1) {
             MultilingualViewController * VC = [[MultilingualViewController alloc] init];
-            [self.navigationController pushViewController:VC animated:NO];
+            [self.navigationController pushViewController:VC animated:YES];
         } else if (indexPath.row == 2) {
             NodeSettingsViewController * VC = [[NodeSettingsViewController alloc] init];
-            [self.navigationController pushViewController:VC animated:NO];
+            [self.navigationController pushViewController:VC animated:YES];
         }
     } else if (indexPath.section == 2) {
         if (indexPath.row == 0) {
             TermsOfUseViewController * VC = [[TermsOfUseViewController alloc] init];
             VC.userProtocolType = UserProtocolDefault;
-            [self.navigationController pushViewController:VC animated:NO];
+            [self.navigationController pushViewController:VC animated:YES];
         } else if (indexPath.row == 1) {
             FeedbackViewController * VC = [[FeedbackViewController alloc] init];
-            [self.navigationController pushViewController:VC animated:NO];
+            [self.navigationController pushViewController:VC animated:YES];
         } else if (indexPath.row == 2) {
             AboutUsViewController * VC = [[AboutUsViewController alloc] init];
-            [self.navigationController pushViewController:VC animated:NO];
+            [self.navigationController pushViewController:VC animated:YES];
         }
     }
     /*
     if (indexPath.row == 0) {
         SettingViewController * VC = [[SettingViewController alloc] init];
-        [self.navigationController pushViewController:VC animated:NO];
+        [self.navigationController pushViewController:VC animated:YES];
     } else if (indexPath.row == 1) {
      
     } else if (indexPath.row == 2) {
      
     } else if (indexPath.row == 3) {
         ChangePasswordViewController * VC = [[ChangePasswordViewController alloc] init];
-        [self.navigationController pushViewController:VC animated:NO];
+        [self.navigationController pushViewController:VC animated:YES];
     } else if (indexPath.row == 4) {
      
     } else if (indexPath.row == self.listArray.count - 1) {

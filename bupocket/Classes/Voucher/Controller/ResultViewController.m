@@ -83,7 +83,7 @@
 //    TabBarViewController * tabBar = [[TabBarViewController alloc] init];
 //    [tabBar setSelectedIndex:1];
 //    [UIApplication sharedApplication].keyWindow.rootViewController = tabBar;
-    [self.navigationController popToRootViewControllerAnimated:NO];
+    [self.navigationController popToRootViewControllerAnimated:YES];
 }
 - (CGFloat)tableView:(UITableView *)tableView heightForHeaderInSection:(NSInteger)section
 {

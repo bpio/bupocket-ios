@@ -66,24 +66,31 @@ static NSString * const VoucherCellID = @"VoucherCellID";
         if ([reuseIdentifier isEqualToString:WalletDetailCellID] || [reuseIdentifier isEqualToString:VoucherCellID]) {
             _listImage.contentMode = UIViewContentModeScaleAspectFill;
         }
+        if ([reuseIdentifier isEqualToString:DetailCellID]) {
+            _title.font = FONT(15);
+            _detailTitle.font = FONT(15);
+        }
     }
     return self;
 }
 - (void)layoutSubviews
 {
     [super layoutSubviews];
-    if ([self.reuseIdentifier isEqualToString:NormalCellID] || [self.reuseIdentifier isEqualToString:WalletDetailCellID] || [self.reuseIdentifier isEqualToString:WalletDetailCellID1] || [self.reuseIdentifier isEqualToString:IdentifyCellID]) {
-        [self.listBg mas_makeConstraints:^(MASConstraintMaker *make) {
-            make.left.equalTo(self.contentView.mas_left).offset(Margin_10);
-            make.right.equalTo(self.contentView.mas_right).offset(-Margin_10);
-            make.top.bottom.equalTo(self.contentView);
-        }];
-        self.contentView.backgroundColor = VIEWBG_COLOR;
-    } else {
+//    if ([self.reuseIdentifier isEqualToString:NormalCellID]
+//        [self.reuseIdentifier isEqualToString:WalletDetailCellID] ||
+//        [self.reuseIdentifier isEqualToString:WalletDetailCellID1] ||
+//        [self.reuseIdentifier isEqualToString:IdentifyCellID]
+//        ) {
+//        [self.listBg mas_makeConstraints:^(MASConstraintMaker *make) {
+//            make.left.equalTo(self.contentView.mas_left).offset(Margin_10);
+//            make.right.equalTo(self.contentView.mas_right).offset(-Margin_10);
+//            make.top.bottom.equalTo(self.contentView);
+//        }];
+//    } else {
         [self.listBg mas_makeConstraints:^(MASConstraintMaker *make) {
             make.edges.equalTo(self.contentView);
         }];
-    }
+//    }
     
     if ([self.reuseIdentifier isEqualToString:ChoiceCellID]) {
         [self.title mas_makeConstraints:^(MASConstraintMaker *make) {
@@ -93,14 +100,14 @@ static NSString * const VoucherCellID = @"VoucherCellID";
     } else if ([self.reuseIdentifier isEqualToString:WalletDetailCellID1]) {
         [self.title mas_makeConstraints:^(MASConstraintMaker *make) {
             make.top.equalTo(self.detailTitle);
-            make.left.equalTo(self.listBg.mas_left).offset(Margin_15);
+            make.left.equalTo(self.listBg.mas_left).offset(Margin_Main);
         }];
     } else if ([self.reuseIdentifier isEqualToString:WalletDetailCellID]) {
         [self.title mas_makeConstraints:^(MASConstraintMaker *make) {
             make.top.height.equalTo(self.listBg);
-            make.left.equalTo(self.listBg.mas_left).offset(Margin_15);
+            make.left.equalTo(self.listBg.mas_left).offset(Margin_Main);
         }];
-        [self.listImage setViewSize:CGSizeMake(Margin_30, Margin_30) borderWidth:0 borderColor:nil borderRadius:MAIN_CORNER];
+//        [self.listImage setViewSize:CGSizeMake(Margin_30, Margin_30) borderWidth:0 borderColor:nil borderRadius:MAIN_CORNER];
         [self.listImage mas_makeConstraints:^(MASConstraintMaker *make) {
             make.right.equalTo(self.detail.mas_left);
             make.centerY.equalTo(self.listBg);
@@ -109,7 +116,7 @@ static NSString * const VoucherCellID = @"VoucherCellID";
     } else if ([self.reuseIdentifier isEqualToString:VoucherCellID]) {
         [self.title mas_makeConstraints:^(MASConstraintMaker *make) {
             make.top.height.equalTo(self.listBg);
-            make.left.equalTo(self.listBg.mas_left).offset(Margin_15);
+            make.left.equalTo(self.listBg.mas_left).offset(Margin_Main);
         }];
         [self.listImage setViewSize:CGSizeMake(ScreenScale(22), ScreenScale(22)) borderWidth:0 borderColor:nil borderRadius:ScreenScale(11)];
         [self.listImage mas_makeConstraints:^(MASConstraintMaker *make) {
@@ -122,7 +129,7 @@ static NSString * const VoucherCellID = @"VoucherCellID";
     } else if ([self.reuseIdentifier isEqualToString:IdentifyCellID]) {
         [self.title mas_makeConstraints:^(MASConstraintMaker *make) {
             make.top.height.equalTo(self.listBg);
-            make.left.equalTo(self.listBg.mas_left).offset(Margin_10);
+            make.left.equalTo(self.listBg.mas_left).offset(Margin_Main);
         }];
         [self.listImage mas_makeConstraints:^(MASConstraintMaker *make) {
             make.left.equalTo(self.title.mas_right).offset(Margin_10);
@@ -131,10 +138,10 @@ static NSString * const VoucherCellID = @"VoucherCellID";
     } else {
         [self.title mas_makeConstraints:^(MASConstraintMaker *make) {
             make.top.height.equalTo(self.listBg);
-            make.left.equalTo(self.listImage.mas_right).offset(Margin_15);
+            make.left.equalTo(self.listImage.mas_right).offset(Margin_10);
         }];
         [self.listImage mas_makeConstraints:^(MASConstraintMaker *make) {
-            make.left.equalTo(self.listBg.mas_left).offset(Margin_15);
+            make.left.equalTo(self.listBg.mas_left).offset(Margin_Main);
             make.centerY.equalTo(self.listBg);
             make.width.height.mas_equalTo(Margin_20);
         }];
@@ -150,11 +157,12 @@ static NSString * const VoucherCellID = @"VoucherCellID";
             make.right.equalTo(self.detail.mas_left);
         }];
     } else {
-        CGFloat right = ([self.reuseIdentifier isEqualToString:IdentifyCellID]) ? Margin_10 : Margin_20;
+//        CGFloat right = ([self.reuseIdentifier isEqualToString:IdentifyCellID]) ? Margin_Main : Margin_20;
         [self.detailTitle mas_makeConstraints:^(MASConstraintMaker *make) {
-            make.right.equalTo(self.listBg.mas_right).offset(-right);
+            make.right.equalTo(self.listBg.mas_right).offset(-Margin_Main);
         }];
     }
+    
     UIView * detailTitleLeft = ([self.reuseIdentifier isEqualToString:IdentifyCellID]) ? self.listImage : self.title;
     [self.detailTitle mas_makeConstraints:^(MASConstraintMaker *make) {
         make.centerY.equalTo(self.listBg);
@@ -165,9 +173,10 @@ static NSString * const VoucherCellID = @"VoucherCellID";
     [self.title setContentCompressionResistancePriority:UILayoutPriorityRequired forAxis:UILayoutConstraintAxisHorizontal];
     [self.detail setContentCompressionResistancePriority:UILayoutPriorityRequired forAxis:UILayoutConstraintAxisHorizontal];
     [self.lineView mas_makeConstraints:^(MASConstraintMaker *make) {
-        make.left.equalTo(self.listBg.mas_left).offset(Margin_10);
-        make.right.equalTo(self.listBg.mas_right).offset(-Margin_10);
-        make.bottom.equalTo(self.listBg);
+//        make.left.equalTo(self.listBg.mas_left).offset(Margin_10);
+//        make.right.equalTo(self.listBg.mas_right).offset(-Margin_10);
+        make.left.equalTo(self.title);
+        make.right.bottom.equalTo(self.listBg);
         make.height.mas_equalTo(LINE_WIDTH);
     }];
 }
@@ -179,11 +188,12 @@ static NSString * const VoucherCellID = @"VoucherCellID";
     }
     return _listBg;
 }
-- (UIImageView *)listImage
+- (UIButton *)listImage
 {
     if (!_listImage) {
-        _listImage = [[UIImageView alloc] init];
-        _listImage.contentMode = UIViewContentModeScaleAspectFit;
+        _listImage = [UIButton buttonWithType:UIButtonTypeCustom];
+        _listImage.userInteractionEnabled = NO;
+//        _listImage.contentMode = UIViewContentModeScaleAspectFit;
     }
     return _listImage;
 }
@@ -191,7 +201,7 @@ static NSString * const VoucherCellID = @"VoucherCellID";
 {
     if (!_title) {
         _title = [[UILabel alloc] init];
-        _title.font = FONT_15;
+        _title.font = FONT_TITLE;
         _title.textColor = COLOR_6;
     }
     return _title;
@@ -200,7 +210,7 @@ static NSString * const VoucherCellID = @"VoucherCellID";
 {
     if (!_detailTitle) {
         _detailTitle = [[UILabel alloc] init];
-        _detailTitle.font = FONT_15;
+        _detailTitle.font = FONT_TITLE;
         _detailTitle.textColor = COLOR_9;
     }
     return _detailTitle;
@@ -208,10 +218,10 @@ static NSString * const VoucherCellID = @"VoucherCellID";
 - (UIButton *)detail
 {
     if (!_detail) {
-        _detail = [UIButton createButtonWithTitle:@"" TextFont:FONT(15) TextNormalColor:COLOR_6 TextSelectedColor:COLOR_6 Target:nil Selector:nil];
+        _detail = [UIButton createButtonWithTitle:@"" TextFont:FONT_TITLE TextNormalColor:COLOR_6 TextSelectedColor:COLOR_6 Target:nil Selector:nil];
         [_detail setImage:[UIImage imageNamed:@"list_arrow"] forState:UIControlStateNormal];
         _detail.userInteractionEnabled = NO;
-        _detail.contentEdgeInsets = UIEdgeInsetsMake(0, Margin_10, 0, Margin_15);
+        _detail.contentEdgeInsets = UIEdgeInsetsMake(0, Margin_10, 0, Margin_Main);
         _detail.contentHorizontalAlignment = UIControlContentHorizontalAlignmentLeft;
     }
     return _detail;

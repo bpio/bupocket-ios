@@ -156,11 +156,11 @@ static void *WkwebBrowserContext = &WkwebBrowserContext;
     if (self.wkWebView.goBack) {
         [self.wkWebView goBack];
     }else{
-        [self.navigationController popViewControllerAnimated:NO];
+        [self.navigationController popViewControllerAnimated:YES];
     }
 }
 -(void)closeItemClicked{
-    [self.navigationController popViewControllerAnimated:NO];
+    [self.navigationController popViewControllerAnimated:YES];
 }
 
 - (void)loadHostPathURL:(NSString *)url

@@ -52,12 +52,14 @@ static NSString * const AssetsCellID = @"AssetsCellID";
     }];
     [self.detailTitle mas_makeConstraints:^(MASConstraintMaker *make) {
         make.right.equalTo(self.contentView.mas_right).offset(-Margin_10);
-        make.top.equalTo(self.contentView.mas_top).offset(Margin_20);
+        make.top.equalTo(self.listImage);
+//        make.top.equalTo(self.contentView.mas_top).offset(Margin_20);
         make.left.mas_greaterThanOrEqualTo(self.title.mas_right).offset(Margin_10);
     }];
     [self.infoTitle mas_makeConstraints:^(MASConstraintMaker *make) {
         make.right.equalTo(self.detailTitle);
-        make.bottom.equalTo(self.contentView.mas_bottom).offset(-Margin_20);
+//        make.bottom.equalTo(self.contentView.mas_bottom).offset(-Margin_20);
+        make.bottom.equalTo(self.listImage);
         make.left.mas_greaterThanOrEqualTo(self.title.mas_right).offset(Margin_10);
     }];
     [self setViewSize:CGSizeMake(DEVICE_WIDTH - Margin_20, ScreenScale(80)) borderWidth:0 borderColor:nil borderRadius:BG_CORNER];

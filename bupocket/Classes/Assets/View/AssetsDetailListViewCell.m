@@ -35,6 +35,7 @@ static NSString * const AssetsDetailCellID = @"AssetsDetailCellID";
 - (void)layoutSubviews
 {
     [super layoutSubviews];
+    CGFloat offsetY = Margin_5;
     [self.listImage mas_makeConstraints:^(MASConstraintMaker *make) {
         make.left.equalTo(self.contentView.mas_left).offset(Margin_10);
         make.centerY.equalTo(self.contentView);
@@ -43,12 +44,14 @@ static NSString * const AssetsDetailCellID = @"AssetsDetailCellID";
     [self.walletAddress setContentCompressionResistancePriority:UILayoutPriorityRequired forAxis:UILayoutConstraintAxisHorizontal];
     [self.walletAddress mas_makeConstraints:^(MASConstraintMaker *make) {
         make.left.equalTo(self.listImage.mas_right).offset(Margin_10);
-        make.top.equalTo(self.listImage);
+//        make.top.equalTo(self.listImage);
+        make.top.equalTo(self.listImage.mas_top).offset(-offsetY);
         make.right.mas_lessThanOrEqualTo(self.assets.mas_left).offset(-Margin_10);
     }];
     [self.date mas_makeConstraints:^(MASConstraintMaker *make) {
         make.left.equalTo(self.walletAddress);
-        make.bottom.equalTo(self.listImage);
+        make.bottom.equalTo(self.listImage.mas_bottom).offset(offsetY);
+//        make.bottom.equalTo(self.listImage);
     }];
     [self.assets mas_makeConstraints:^(MASConstraintMaker *make) {
         make.centerY.equalTo(self.walletAddress);
@@ -59,7 +62,7 @@ static NSString * const AssetsDetailCellID = @"AssetsDetailCellID";
         make.centerY.equalTo(self.date);
         make.right.equalTo(self.assets);
     }];
-    [self setViewSize:CGSizeMake(DEVICE_WIDTH - Margin_20, ScreenScale(75)) borderWidth:0 borderColor:nil borderRadius:BG_CORNER];
+    [self setViewSize:CGSizeMake(View_Width_Main, ScreenScale(75)) borderWidth:0 borderColor:nil borderRadius:BG_CORNER];
 }
 
 - (void)setListModel:(AssetsDetailModel *)listModel
@@ -150,8 +153,10 @@ static NSString * const AssetsDetailCellID = @"AssetsDetailCellID";
 }
 - (void)setFrame:(CGRect)frame
 {
-    frame.origin.x = Margin_10;
-    frame.size.width -= Margin_20;
+//    frame.origin.x = Margin_10;
+//    frame.size.width -= Margin_20;
+    frame.origin.x = Margin_15;
+    frame.size.width -= Margin_30;
     frame.origin.y += Margin_5;
     frame.size.height -= Margin_10;
     [super setFrame:frame];

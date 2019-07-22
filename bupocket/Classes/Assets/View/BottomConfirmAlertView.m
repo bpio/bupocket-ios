@@ -409,7 +409,7 @@
 - (CGFloat)tableView:(UITableView *)tableView heightForRowAtIndexPath:(NSIndexPath *)indexPath
 {
     NSString * str = [self infoStringWithTableView:tableView indexPath:indexPath];
-    CGFloat cellHeight = [Encapsulation getSizeSpaceLabelWithStr:str font:FONT_TITLE width:(DEVICE_WIDTH - Margin_40) height:CGFLOAT_MAX lineSpacing:Margin_10].height + ScreenScale(40);
+    CGFloat cellHeight = [Encapsulation getSizeSpaceLabelWithStr:str font:FONT_TITLE width:(DEVICE_WIDTH - Margin_40) height:CGFLOAT_MAX lineSpacing:LINE_SPACING].height + ScreenScale(40);
     return cellHeight;
 }
 - (CGFloat)tableView:(UITableView *)tableView heightForHeaderInSection:(NSInteger)section
@@ -446,7 +446,7 @@
     cell.title.font = FONT(13);
     cell.title.textColor = COLOR_9;
     NSString * str = [self infoStringWithTableView:tableView indexPath:indexPath];
-    cell.infoTitle.attributedText = [Encapsulation attrWithString:str preFont:FONT_TITLE preColor:COLOR_6 index:0 sufFont:FONT_TITLE sufColor:COLOR_6 lineSpacing:Margin_10];
+    cell.infoTitle.attributedText = [Encapsulation attrWithString:str preFont:FONT_TITLE preColor:COLOR_6 index:0 sufFont:FONT_TITLE sufColor:COLOR_6 lineSpacing:LINE_SPACING];
     cell.selectionStyle = UITableViewCellSelectionStyleNone;
     return cell;
 }

@@ -27,7 +27,7 @@ typedef NS_ENUM(NSInteger, CellType) {
 + (instancetype)cellWithTableView:(UITableView *)tableView cellType:(CellType)cellType;
 
 @property (nonatomic, strong) UIView * listBg;
-@property (nonatomic, strong) UIImageView * listImage;
+@property (nonatomic, strong) UIButton * listImage;
 @property (nonatomic, strong) UILabel * title;
 @property (nonatomic, strong) UILabel * detailTitle;
 @property (nonatomic, strong) UIButton * detail;

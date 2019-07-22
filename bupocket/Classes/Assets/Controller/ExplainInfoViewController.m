@@ -43,7 +43,7 @@
 //    infoLabel.textColor = TITLE_COLOR;
 //    infoLabel.font = FONT_TITLE;
     infoLabel.numberOfLines = 0;
-    infoLabel.attributedText = [Encapsulation attrWithString:self.explainInfoText preFont:FONT_TITLE preColor:TITLE_COLOR index:0 sufFont:FONT_TITLE sufColor:TITLE_COLOR lineSpacing:Margin_5];
+    infoLabel.attributedText = [Encapsulation attrWithString:self.explainInfoText preFont:FONT_TITLE preColor:TITLE_COLOR index:0 sufFont:FONT_TITLE sufColor:TITLE_COLOR lineSpacing:LINE_SPACING];
     [self.scrollView addSubview:infoLabel];
     [infoLabel mas_makeConstraints:^(MASConstraintMaker *make) {
         make.top.equalTo(titleLabel.mas_bottom).offset(Margin_20);

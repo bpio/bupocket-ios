@@ -22,8 +22,6 @@ NS_ASSUME_NONNULL_BEGIN
 @property (nonatomic, strong) UILabel * votingRatio;
 @property (nonatomic, strong) UIView * lineView;
 @property (nonatomic, strong) CustomButton * bondButton;
-@property (nonatomic, strong) UIButton * riskStatementBtn;
-
 @end
 
 NS_ASSUME_NONNULL_END

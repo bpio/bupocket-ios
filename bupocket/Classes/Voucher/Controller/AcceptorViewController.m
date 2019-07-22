@@ -8,7 +8,7 @@
 
 #import "AcceptorViewController.h"
 #import "SubtitleListViewCell.h"
-#import "CooperateDetailViewCell.h"
+#import "InfoViewCell.h"
 
 @interface AcceptorViewController ()<UITableViewDelegate, UITableViewDataSource>
 
@@ -59,13 +59,16 @@ static NSString * const CooperateDetailCellID = @"CooperateDetailCellID";
     if (indexPath.section == 0) {
         return ScreenScale(80);
     } else {
-        return (NotNULLString(self.info) ? ceil([Encapsulation getSizeSpaceLabelWithStr:self.info font:FONT(13) width:DEVICE_WIDTH - Margin_40 height:CGFLOAT_MAX lineSpacing:Margin_5].height) + 1 + Margin_25 : CGFLOAT_MIN);
+        return [Encapsulation getAttrHeightWithInfoStr:self.listArray[indexPath.section][1]];
+//        CooperateDetailViewCell * cell = [tableView cellForRowAtIndexPath:indexPath];
+//        return (NotNULLString(self.info) ? ceil([Encapsulation rectWithAttrText:cell.riskStatementBtn.titleLabel.attributedText width:Content_Width_Main height:CGFLOAT_MIN].height + Margin_25) : CGFLOAT_MIN);
+//        return (NotNULLString(self.info) ? ceil([Encapsulation rectWithAttrText:cell.attrStr width:Content_Width_Main height:CGFLOAT_MIN].height + Margin_25 : CGFLOAT_MIN));
     }
 }
 - (CGFloat)tableView:(UITableView *)tableView heightForHeaderInSection:(NSInteger)section
 {
     if (section == 1 || section == 2) {
-        return Margin_40;
+        return Margin_Section_Header;
     } else {
         return CGFLOAT_MIN;
     }
@@ -73,9 +76,7 @@ static NSString * const CooperateDetailCellID = @"CooperateDetailCellID";
 - (UIView *)tableView:(UITableView *)tableView viewForHeaderInSection:(NSInteger)section
 {
     if (section == 1 || section == 2) {
-        UIButton * title = [UIButton createButtonWithTitle:self.listArray[section][0] TextFont:FONT_13 TextNormalColor:COLOR_9 TextSelectedColor:COLOR_9 Target:nil Selector:nil];
-        title.contentHorizontalAlignment = UIControlContentHorizontalAlignmentLeft;
-        title.contentEdgeInsets = UIEdgeInsetsMake(0, Margin_15, 0, Margin_15);
+        UIButton * title = [UIButton createHeaderButtonWithTitle:self.listArray[section][0]];
         return title;
     } else {
         return nil;
@@ -110,14 +111,8 @@ static NSString * const CooperateDetailCellID = @"CooperateDetailCellID";
         cell.detailImage.hidden = YES;
         return cell;
     } else {
-        CooperateDetailViewCell * cell = [CooperateDetailViewCell cellWithTableView:tableView identifier:CooperateDetailCellID];
-        cell.selectionStyle = UITableViewCellSelectionStyleNone;
-        cell.riskStatementBtn.hidden = NO;
-        NSString * info = self.listArray[indexPath.section][1];
-        if (NotNULLString(info)) {
-            [cell.riskStatementBtn setAttributedTitle:[Encapsulation attrWithString:info preFont:FONT(13) preColor:COLOR_6 index:0 sufFont:FONT(13) sufColor:COLOR_6 lineSpacing:Margin_5] forState:UIControlStateNormal];
-        }
-        cell.contentView.backgroundColor = self.tableView.backgroundColor;
+        InfoViewCell * cell = [InfoViewCell cellWithTableView:tableView];
+        [cell.info setAttributedTitle:[Encapsulation getAttrWithInfoStr:self.listArray[indexPath.section][1]] forState:UIControlStateNormal];
         return cell;
     }
 }

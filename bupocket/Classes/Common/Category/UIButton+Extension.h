@@ -23,6 +23,8 @@
 
 + (UIButton *)createButtonWithTitle:(NSString *)title TextFont:(UIFont *)textFont TextColor:(UIColor *)textColor BackgroundImage:(NSString *)backgroundImage;
 
++ (UIButton *)createHeaderButtonWithTitle:(NSString *)title;
+
 - (void)beginCountDownWithDuration:(NSTimeInterval)duration;
 
 @end

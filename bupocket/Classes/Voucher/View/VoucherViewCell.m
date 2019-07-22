@@ -146,7 +146,7 @@ static NSString * const VoucherDetailCellID = @"VoucherDetailCellID";
     }
     [self.listImage sd_setImageWithURL:[NSURL URLWithString:voucherModel.voucherIcon] placeholderImage:[UIImage imageNamed:@"good_placehoder"]];
 //    self.title.text = voucherModel.voucherName;
-    self.title.attributedText = [Encapsulation attrWithString:voucherModel.voucherName font:FONT_Bold(14) color:TITLE_COLOR lineSpacing:LINE_SPACING];
+    self.title.attributedText = [Encapsulation attrWithString:voucherModel.voucherName font:FONT_Bold(14) color:TITLE_COLOR lineSpacing:ScreenScale(3)];
     self.value.text = [NSString stringWithFormat:Localized(@"Value:%@"), voucherModel.faceValue];
     self.number.text = [NSString stringWithFormat:@"× %@", voucherModel.balance];
 //    self.number.attributedText = [Encapsulation attrWithString:[NSString stringWithFormat:@"×%@", voucherModel.balance] preFont:FONT(18) preColor:TITLE_COLOR index:1 sufFont:FONT(18) sufColor:TITLE_COLOR lineSpacing:0];
@@ -212,7 +212,6 @@ static NSString * const VoucherDetailCellID = @"VoucherDetailCellID";
 {
     if (!_title) {
         _title = [[UILabel alloc] init];
-//        _title.font = FONT(13);
         _title.font = FONT_Bold(14);
         _title.textColor = TITLE_COLOR;
         _title.numberOfLines = 2;

@@ -96,7 +96,7 @@
         NSInteger code = [[responseObject objectForKey:@"errCode"] integerValue];
         if (code == Success_Code) {
             [MBProgressHUD showTipMessageInWindow:Localized(@"DeleteSuccessful")];
-            [self.navigationController popViewControllerAnimated:NO];
+            [self.navigationController popViewControllerAnimated:YES];
         } else {
             [MBProgressHUD showTipMessageInWindow:Localized(@"DeleteFailed")];
         }
@@ -206,7 +206,7 @@
             NSInteger code = [[responseObject objectForKey:@"errCode"] integerValue];
             if (code == Success_Code) {
                 [MBProgressHUD showTipMessageInWindow:Localized(@"SaveSuccessfully")];
-                [self.navigationController popViewControllerAnimated:NO];
+                [self.navigationController popViewControllerAnimated:YES];
             } else if (code == ErrorTypeParams) {
                 [MBProgressHUD showTipMessageInWindow:Localized(@"SaveFailed")];
             } else {
@@ -220,7 +220,7 @@
             NSInteger code = [[responseObject objectForKey:@"errCode"] integerValue];
             if (code == Success_Code) {
                 [MBProgressHUD showTipMessageInWindow:Localized(@"SaveSuccessfully")];
-                [self.navigationController popViewControllerAnimated:NO];
+                [self.navigationController popViewControllerAnimated:YES];
             } else if (code == ErrorTypeParams) {
                 [MBProgressHUD showTipMessageInWindow:Localized(@"SaveFailed")];
             } else {

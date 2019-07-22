@@ -124,7 +124,7 @@
             [defaults synchronize];
         }
         [Encapsulation showAlertControllerWithMessage:Localized(@"DeleteWalletSuccessfully") handler:^(UIAlertAction *action) {
-            [self.navigationController popViewControllerAnimated:NO];
+            [self.navigationController popViewControllerAnimated:YES];
         }];
     } cancelBlock:^{
     }];
@@ -152,26 +152,16 @@
         cell.walletModel = self.walletModel;
         return cell;
     } else {
-        ListTableViewCell * cell = [ListTableViewCell cellWithTableView:tableView cellType:CellTypeNormal];
+        ListTableViewCell * cell = [ListTableViewCell cellWithTableView:tableView cellType:CellTypeDetail];
         cell.selectionStyle = UITableViewCellSelectionStyleNone;
 //        cell.detailImage.image = [UIImage imageNamed:@"list_arrow"];
-        CGSize cellSize = CGSizeMake(DEVICE_WIDTH - Margin_20, ScreenScale(60));
         if (indexPath.section == 1) {
-            cell.listImage.image = [UIImage imageNamed:[NSString stringWithFormat:@"export_list_%zd", indexPath.row]];
+            [cell.listImage setImage:[UIImage imageNamed:[NSString stringWithFormat:@"export_list_%zd", indexPath.row]] forState:UIControlStateNormal];
             cell.title.text = self.listArray[indexPath.row];
-            if (indexPath.row == 0) {
-                [cell.listBg setViewSize:cellSize borderRadius:BG_CORNER corners:UIRectCornerTopLeft | UIRectCornerTopRight];
-                cell.lineView.hidden = NO;
-            } else if (indexPath.row == self.listArray.count - 1) {
-                [cell.listBg setViewSize:cellSize borderRadius:BG_CORNER corners:UIRectCornerBottomLeft | UIRectCornerBottomRight];
-                cell.lineView.hidden = YES;
-            } else {
-                cell.lineView.hidden = NO;
-            }
+            cell.lineView.hidden = indexPath.row == self.listArray.count - 1;
         } else if (indexPath.section == 2) {
             cell.title.text = Localized(@"ModifyPassword");
-            [cell.listBg setViewSize:cellSize borderRadius:BG_CORNER corners:UIRectCornerAllCorners];
-            cell.listImage.image = [UIImage imageNamed:@"change_password"];
+            [cell.listImage setImage:[UIImage imageNamed:@"change_password"] forState:UIControlStateNormal];
             cell.lineView.hidden = YES;
         }
         return cell;
@@ -194,17 +184,17 @@
                 cell.walletName.text = walletModel.walletName;
             }
         };
-        [self.navigationController pushViewController:VC animated:NO];
+        [self.navigationController pushViewController:VC animated:YES];
     } else if (indexPath.section == 1) {
         if (indexPath.row == 2) {
             BackUpWalletViewController * VC = [[BackUpWalletViewController alloc] init];
             VC.randomNumber = self.walletModel.randomNumber;
             VC.mnemonicType = MnemonicExport;
-            [self.navigationController pushViewController:VC animated:NO];
+            [self.navigationController pushViewController:VC animated:YES];
 //            if (words.count > 0) {
 //                BackupMnemonicsViewController * VC = [[BackupMnemonicsViewController alloc] init];
 //                VC.mnemonicArray = words;
-//                [self.navigationController pushViewController:VC animated:NO];
+//                [self.navigationController pushViewController:VC animated:YES];
 //            }
             return;
         }
@@ -212,20 +202,20 @@
             if (indexPath.row == 0) {
                 ExportKeystoreViewController * VC = [[ExportKeystoreViewController alloc] init];
                 VC.walletModel = self.walletModel;
-                [self.navigationController pushViewController:VC animated:NO];
+                [self.navigationController pushViewController:VC animated:YES];
             } else if (indexPath.row == 1) {
                 if (NotNULLString(password)) {
                     ExportPrivateKeyViewController * VC = [[ExportPrivateKeyViewController alloc] init];
                     VC.walletModel = self.walletModel;
                     VC.password = password;
-                    [self.navigationController pushViewController:VC animated:NO];
+                    [self.navigationController pushViewController:VC animated:YES];
                 }
             }
 //            else if (indexPath.row == 2) {
 //                if (words.count > 0) {
 //                    BackupMnemonicsViewController * VC = [[BackupMnemonicsViewController alloc] init];
 //                    VC.mnemonicArray = words;
-//                    [self.navigationController pushViewController:VC animated:NO];
+//                    [self.navigationController pushViewController:VC animated:YES];
 //                }
 //            }
         } cancelBlock:^{
@@ -248,7 +238,7 @@
         VC.walletModel = self.walletModel;
         VC.walletArray = self.walletArray;
         VC.index = self.index;
-        [self.navigationController pushViewController:VC animated:NO];
+        [self.navigationController pushViewController:VC animated:YES];
     }
 }
 /*

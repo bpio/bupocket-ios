@@ -8,42 +8,6 @@
 
 #import "NavigationViewController.h"
 #import "IdentityViewController.h"
-#import "MyViewController.h"
-#import "AboutUsViewController.h"
-#import "VersionLogViewController.h"
-#import "CustomEnvironmentViewController.h"
-
-#import "CreateViewController.h"
-#import "BackUpWalletViewController.h"
-#import "RestoreIdentityViewController.h"
-#import "AssetsViewController.h"
-#import "VoucherViewController.h"
-#import "VoucherDetailViewController.h"
-#import "ReceiveViewController.h"
-#import "AddAssetsViewController.h"
-#import "AssetsDetailViewController.h"
-#import "TransferResultsViewController.h"
-#import "OrderDetailsViewController.h"
-#import "RequestTimeoutViewController.h"
-#import "RegisteredResultViewController.h"
-#import "DistributionResultsViewController.h"
-#import "WalletManagementViewController.h"
-#import "WalletDetailsViewController.h"
-#import "ChangePasswordViewController.h"
-#import "ImportWalletViewController.h"
-#import "ExportKeystoreViewController.h"
-#import "ExportPrivateKeyViewController.h"
-#import "ContactViewController.h"
-#import "FindViewController.h"
-#import "VotingRecordsViewController.h"
-#import "CooperateDetailViewController.h"
-#import "NodeSharingViewController.h"
-#import "NodeTransferSuccessViewController.h"
-#import "WKWebViewController.h"
-#import "AcceptorViewController.h"
-#import "AssetIssuerViewController.h"
-#import "ResultViewController.h"
-#import "NodeSettingsViewController.h"
 
 @interface NavigationViewController ()<UINavigationControllerDelegate>
 
@@ -85,52 +49,7 @@
 - (void)navigationController:(UINavigationController *)navigationController willShowViewController:(UIViewController *)viewController animated:(BOOL)animated
 {
     [viewController viewWillAppear:animated];
-    BOOL isSetLargeTitles = (
-                             [viewController isKindOfClass:[CreateViewController class]] ||
-                             [viewController isKindOfClass:[BackUpWalletViewController class]] ||
-                             [viewController isKindOfClass:[RestoreIdentityViewController class]] ||
-                             [viewController isKindOfClass:[AssetsViewController class]]  ||
-                             [viewController isKindOfClass:[VoucherViewController class]]  ||
-                             [viewController isKindOfClass:[VoucherDetailViewController class]]  ||
-                             [viewController isKindOfClass:[MyViewController class]] ||
-                             [viewController isKindOfClass:[AboutUsViewController class]] ||
-                             [viewController isKindOfClass:[VersionLogViewController class]] ||
-                             [viewController isKindOfClass:[CustomEnvironmentViewController class]] ||
-                             [viewController isKindOfClass:[AssetsDetailViewController class]] ||
-                             [viewController isKindOfClass:[ReceiveViewController class]] ||
-                             [viewController isKindOfClass:[TransferResultsViewController class]] ||
-                             [viewController isKindOfClass:[RegisteredResultViewController class]] ||
-                             [viewController isKindOfClass:[DistributionResultsViewController class]] ||
-                             [viewController isKindOfClass:[WalletManagementViewController class]] ||
-                             [viewController isKindOfClass:[WalletDetailsViewController class]] ||
-                             [viewController isKindOfClass:[ChangePasswordViewController class]] ||
-                             [viewController isKindOfClass:[RequestTimeoutViewController class]] ||
-                             [viewController isKindOfClass:[NodeTransferSuccessViewController class]] ||
-                             [viewController isKindOfClass:[OrderDetailsViewController class]] ||
-                             [viewController isKindOfClass:[ImportWalletViewController class]] ||
-                             [viewController isKindOfClass:[ExportKeystoreViewController class]] ||
-                             [viewController isKindOfClass:[ExportPrivateKeyViewController class]] ||
-                             [viewController isKindOfClass:[ContactViewController class]] ||
-                             [viewController isKindOfClass:[FindViewController class]] ||
-                             [viewController isKindOfClass:[VotingRecordsViewController class]] ||
-                             [viewController isKindOfClass:[CooperateDetailViewController class]] ||
-                             [viewController isKindOfClass:[NodeSharingViewController class]] ||
-                             [viewController isKindOfClass:[WKWebViewController class]] ||
-                             [viewController isKindOfClass:[AcceptorViewController class]] ||
-                             [viewController isKindOfClass:[AssetIssuerViewController class]] ||
-                             [viewController isKindOfClass:[ResultViewController class]] ||
-                             [viewController isKindOfClass:[NodeSettingsViewController class]]
-                             );
-    if (@available(iOS 11.0, *)) {
-        [self.navigationBar setPrefersLargeTitles:!isSetLargeTitles];
-    } else {
-        // Fallback on earlier versions
-    }
-    BOOL isHideNav = (
-//                      [viewController isKindOfClass:[AssetsViewController class]] ||
-                      [viewController isKindOfClass:[IdentityViewController class]]
-//                      || [viewController isKindOfClass:[MyViewController class]]
-                      );
+    BOOL isHideNav = ([viewController isKindOfClass:[IdentityViewController class]]);
     [self setNavigationBarHidden:isHideNav animated:animated];
 }
 - (void)navigationController:(UINavigationController *)navigationController didShowViewController:(UIViewController *)viewController animated:(BOOL)animated

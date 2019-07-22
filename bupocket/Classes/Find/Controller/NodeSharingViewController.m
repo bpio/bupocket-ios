@@ -149,21 +149,31 @@ static NSString * const NodeSharingID = @"NodeSharingID";
 }
 - (WKWebView *)wkWebView {
     if (!_wkWebView) {
-        NSString *jScript = @"var meta = document.createElement('meta'); meta.setAttribute('name', 'viewport'); meta.setAttribute('content', 'width=device-width'); document.getElementsByTagName('head')[0].appendChild(meta);";
+        // 图片自适应
+//        NSString * jsString = @"var objs = document.getElementsByTagName('img');for(var i=0;i++){var img = objs[i];img.style.maxWidth = '20%';img.style.height='auto';}";
+//        WKUserScript * wkUserScript = [[WKUserScript alloc] initWithSource:jsString injectionTime:WKUserScriptInjectionTimeAtDocumentEnd forMainFrameOnly:YES];
+//        NSString *jScript = @"var meta = document.createElement('meta'); meta.setAttribute('name', 'viewport'); meta.setAttribute('content', 'width=device-width'); document.getElementsByTagName('head')[0].appendChild(meta);";
+        NSString *jScript = [NSString stringWithFormat:@"var meta = document.createElement('meta'); meta.setAttribute('name', 'viewport'); meta.setAttribute('content', 'width=%f'); document.getElementsByTagName('head')[0].appendChild(meta);", View_Width_Main];
         WKUserScript *wkUScript = [[WKUserScript alloc] initWithSource:jScript injectionTime:WKUserScriptInjectionTimeAtDocumentEnd forMainFrameOnly:YES];
         WKUserContentController *wkUController = [[WKUserContentController alloc] init];
+//        [wkUController addUserScript:wkUserScript];
         [wkUController addUserScript:wkUScript];
         
         WKWebViewConfiguration *wkWebConfig = [[WKWebViewConfiguration alloc] init];
         wkWebConfig.userContentController = wkUController;
         WKPreferences *preference = [[WKPreferences alloc]init];
-        preference.minimumFontSize = ScreenScale(14);
+        preference.minimumFontSize = ScreenScale(12);
         wkWebConfig.preferences = preference;
-        _wkWebView = [[WKWebView alloc] initWithFrame:CGRectMake(Margin_10, Margin_40, DEVICE_WIDTH - Margin_20, CGFLOAT_MIN) configuration:wkWebConfig];
+        _wkWebView = [[WKWebView alloc] initWithFrame:CGRectMake(Margin_Main, Margin_40, View_Width_Main, CGFLOAT_MIN) configuration:wkWebConfig];
         _wkWebView.navigationDelegate = self;
         _wkWebView.UIDelegate = self;
         _wkWebView.layer.masksToBounds = YES;
-        _wkWebView.layer.cornerRadius = MAIN_CORNER;
+        _wkWebView.layer.cornerRadius = BG_CORNER;
+        if (@available(iOS 11.0, *)) {
+            _wkWebView.scrollView.contentInsetAdjustmentBehavior = UIScrollViewContentInsetAdjustmentNever;
+            _wkWebView.scrollView.contentInset = UIEdgeInsetsMake(0, 0, 0, 0);
+            _wkWebView.scrollView.scrollIndicatorInsets = _wkWebView.scrollView.contentInset;
+        }
     }
     return _wkWebView;
 }
@@ -173,7 +183,7 @@ static NSString * const NodeSharingID = @"NodeSharingID";
     if (!navigationAction.targetFrame.isMainFrame) {
         WKWebViewController * VC = [[WKWebViewController alloc] init];
         [VC loadWebURLSring:[navigationAction.request.URL absoluteString]];
-        [self.navigationController pushViewController:VC animated:NO];
+        [self.navigationController pushViewController:VC animated:YES];
     }
     return nil;
 }
@@ -203,15 +213,48 @@ static NSString * const NodeSharingID = @"NodeSharingID";
     }
 }
 - (void)webView:(WKWebView *)webView didFinishNavigation:(WKNavigation *)navigation {
-    
-    [webView evaluateJavaScript:@"document.body.offsetHeight" completionHandler:^(id _Nullable result, NSError * _Nullable error) {
-        CGRect webFrame = webView.frame;
-        webFrame.size.height = webView.scrollView.contentSize.height;
-        webView.frame = webFrame;
-        [self.tableView reloadData];
+    [self setImageFit];
+    // 设置字体
+//    NSString *fontFamilyStr = @"document.getElementsByTagName('body')[0].style.fontFamily='Arial';";
+//    [webView evaluateJavaScript:fontFamilyStr completionHandler:nil];
+//    //设置颜色
+//    [ webView evaluateJavaScript:@"document.getElementsByTagName('body')[0].style.webkitTextFillColor= '#9098b8'" completionHandler:nil];
+//    //修改字体大小
+//    [ webView evaluateJavaScript:@"document.getElementsByTagName('body')[0].style.webkitTextSizeAdjust= '200%'"completionHandler:nil];
+    //修改字体大小
+    [ webView evaluateJavaScript:@"document.getElementsByTagName('body')[0].style.webkitTextSizeAdjust= '85%'" completionHandler:^(id _Nullable result, NSError * _Nullable error) {
+        [webView evaluateJavaScript:@"document.body.offsetHeight" completionHandler:^(id _Nullable result, NSError * _Nullable error) {
+            CGRect webFrame = webView.frame;
+            webFrame.size.height = webView.scrollView.contentSize.height;
+            webView.frame = webFrame;
+            [self.tableView reloadData];
+        }];
+        
     }];
 }
-
+- (void)setImageFit
+{
+    NSString *js = @"var script = document.createElement('script');"
+    "script.type = 'text/javascript';"
+    "script.text = \"function ResizeImages() { "
+    "var myimg,oldwidth;"
+    "var maxwidth = %f;"
+    "for(i=0;i <document.images.length;i++){"
+    "myimg = document.images[i];"
+    "if(myimg.width > maxwidth){"
+    "oldwidth = myimg.width;"
+    "myimg.width = %f;"
+    "}"
+    "}"
+    "}\";"
+    "document.getElementsByTagName('head')[0].appendChild(script);";
+    
+    js = [NSString stringWithFormat:js,View_Width_Main,Content_Width_Main];
+    
+    [self.wkWebView evaluateJavaScript:js completionHandler:nil];
+    
+    [self.wkWebView evaluateJavaScript:@"ResizeImages();"completionHandler:nil];
+}
 - (CGFloat)tableView:(UITableView *)tableView heightForRowAtIndexPath:(NSIndexPath *)indexPath
 {
     NodePlanModel * nodePlanModel = self.nodePlanModel;

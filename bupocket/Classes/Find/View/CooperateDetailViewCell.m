@@ -30,7 +30,7 @@
         [self.contentView addSubview:self.progressView];
         [self.contentView addSubview:self.votingRatio];
         [self.contentView addSubview:self.bondButton];
-        [self.contentView addSubview:self.riskStatementBtn];
+//        self.backgroundColor = self.contentView.superview.backgroundColor;
     }
     return self;
 }
@@ -58,11 +58,11 @@
         [self.bondButton setContentCompressionResistancePriority:UILayoutPriorityRequired forAxis:UILayoutConstraintAxisHorizontal];
     }
     [self.title mas_makeConstraints:^(MASConstraintMaker *make) {
-        make.left.equalTo(self.contentView.mas_left).offset(Margin_10);
+        make.left.equalTo(self.contentView.mas_left).offset(Margin_Main);
         make.top.bottom.equalTo(self.contentView);
     }];
     [self.infoTitle mas_makeConstraints:^(MASConstraintMaker *make) {
-        make.right.equalTo(self.contentView.mas_right).offset(-Margin_10);
+        make.right.equalTo(self.contentView.mas_right).offset(-Margin_Main);
     }];
     if (rightView) {
         [self.title mas_makeConstraints:^(MASConstraintMaker *make) {
@@ -70,7 +70,7 @@
         }];
     } else {
         [self.title mas_makeConstraints:^(MASConstraintMaker *make) {
-            make.right.mas_lessThanOrEqualTo(self.contentView.mas_right).offset(-Margin_10);
+            make.right.mas_lessThanOrEqualTo(self.contentView.mas_right).offset(-Margin_Main);
         }];
     }
     if (leftView) {
@@ -79,7 +79,7 @@
         }];
     } else {
         [self.infoTitle mas_makeConstraints:^(MASConstraintMaker *make) {
-            make.left.mas_greaterThanOrEqualTo(self.contentView.mas_left).offset(Margin_10);
+            make.left.mas_greaterThanOrEqualTo(self.contentView.mas_left).offset(Margin_Main);
         }];
     }
     
@@ -100,7 +100,7 @@
     [self.progressView mas_makeConstraints:^(MASConstraintMaker *make) {
         make.top.equalTo(self.contentView.mas_top).offset(Margin_15);
         make.left.equalTo(self.lineView);
-        make.right.equalTo(self.contentView.mas_right).offset(-ScreenScale(65));
+        make.right.equalTo(self.contentView.mas_right).offset(-ScreenScale(70));
     }];
     [self.bondButton mas_makeConstraints:^(MASConstraintMaker *make) {
         make.centerY.equalTo(self.contentView.mas_centerY).offset(-Margin_5);
@@ -116,13 +116,6 @@
             make.centerY.equalTo(self.title);
         }];
     }
-
-    [self.riskStatementBtn mas_makeConstraints:^(MASConstraintMaker *make) {
-        make.top.bottom.equalTo(self.contentView);
-        make.left.equalTo(self.contentView.mas_left).offset(Margin_10);
-        make.right.equalTo(self.contentView.mas_right).offset(-Margin_10);
-//        make.bottom.equalTo(self.contentView.mas_bottom).offset(-Margin_5);
-    }];
 }
 - (UILabel *)title
 {
@@ -195,23 +188,7 @@
     }
     return _bondButton;
 }
-- (UIButton *)riskStatementBtn
-{
-    if (!_riskStatementBtn) {
-        _riskStatementBtn = [UIButton buttonWithType:UIButtonTypeCustom];
-        _riskStatementBtn.titleLabel.numberOfLines = 0;
-        _riskStatementBtn.backgroundColor = [UIColor whiteColor];
-        _riskStatementBtn.layer.masksToBounds = YES;
-        _riskStatementBtn.layer.cornerRadius = BG_CORNER;
-        _riskStatementBtn.contentEdgeInsets = UIEdgeInsetsMake(Margin_5, Margin_10, Margin_5, Margin_10);
-        _riskStatementBtn.hidden = YES;
-        _riskStatementBtn.contentHorizontalAlignment = UIControlContentHorizontalAlignmentLeft;
-        CGSize maximumSize = CGSizeMake(DEVICE_WIDTH - Margin_40, CGFLOAT_MAX);
-        CGSize expectSize = [_riskStatementBtn sizeThatFits:maximumSize];
-        _riskStatementBtn.size = expectSize;
-    }
-    return _riskStatementBtn;
-}
+
 - (void)awakeFromNib {
     [super awakeFromNib];
     // Initialization code

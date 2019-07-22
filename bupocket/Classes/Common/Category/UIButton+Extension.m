@@ -88,7 +88,7 @@ static NSString *_title;
 {
     UIButton * button = [UIButton buttonWithType:UIButtonTypeCustom];
     [button setTitle:title forState:UIControlStateNormal];
-    button.titleLabel.font = FONT(16);
+    button.titleLabel.font = FONT_NAV_TITLE;
     button.contentHorizontalAlignment = UIControlContentHorizontalAlignmentRight;
     CGFloat buttonW = [Encapsulation rectWithText:title font:button.titleLabel.font textHeight:ScreenScale(44)].size.width;
     button.bounds = CGRectMake(0, 0, buttonW, ScreenScale(44));
@@ -106,6 +106,17 @@ static NSString *_title;
     //    button.titleEdgeInsets = UIEdgeInsetsMake(0, 10, 0, 0);
     [button setTitleColor:textColor forState:UIControlStateNormal];
     [button setBackgroundImage:[UIImage imageNamed:backgroundImage] forState:UIControlStateNormal];
+    return button;
+}
+
++ (UIButton *)createHeaderButtonWithTitle:(NSString *)title
+{
+    UIButton * button = [UIButton buttonWithType:UIButtonTypeCustom];
+    [button setTitle:title forState:UIControlStateNormal];
+    button.titleLabel.font = FONT_TITLE;
+    [button setTitleColor:COLOR_9 forState:UIControlStateNormal];
+    button.contentEdgeInsets = UIEdgeInsetsMake(0, Margin_Main, 0, Margin_Main);
+    button.contentHorizontalAlignment = UIControlContentHorizontalAlignmentLeft;
     return button;
 }
 

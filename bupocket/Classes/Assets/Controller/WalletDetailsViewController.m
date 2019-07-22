@@ -90,7 +90,7 @@
     cell.title.text = self.listArray[indexPath.row];
     if (indexPath.row == 0) {
         NSString * walletIconName = self.walletModel.walletIconName == nil ? Current_Wallet_IconName : self.walletModel.walletIconName;
-        cell.listImage.image = [UIImage imageNamed:walletIconName];
+        [cell.listImage setImage:[UIImage imageNamed:walletIconName] forState:UIControlStateNormal];
     } else if (indexPath.row == 1) {
         cell.detailTitle.attributedText = [Encapsulation attrWithString:self.walletModel.walletName font:FONT_15 color:COLOR_9 lineSpacing:LINE_SPACING];
         cell.detailTitle.numberOfLines = 2;
@@ -98,18 +98,7 @@
     }
 //    cell.detailImage.image = [UIImage imageNamed:@"list_arrow"];
     cell.selectionStyle = UITableViewCellSelectionStyleNone;
-    CGFloat cellHeight = ScreenScale(55);
-    CGFloat cellWidth = DEVICE_WIDTH - Margin_20;
-    if (indexPath.row == 0) {
-        CGSize cellSize = CGSizeMake(cellWidth, cellHeight);
-        [cell.listBg setViewSize:cellSize borderRadius:BG_CORNER corners:UIRectCornerTopLeft | UIRectCornerTopRight];
-        cell.lineView.hidden = NO;
-    } else if (indexPath.row == self.listArray.count - 1) {
-        cellHeight = [self getCellHeight];
-        CGSize cellSize = CGSizeMake(cellWidth, cellHeight);
-        [cell.listBg setViewSize:cellSize borderRadius:BG_CORNER corners:UIRectCornerBottomLeft | UIRectCornerBottomRight];
-        cell.lineView.hidden = YES;
-    }
+    cell.lineView.hidden = (indexPath.row == self.listArray.count - 1);
     return cell;
 }
 - (CGFloat)getCellHeight
@@ -133,7 +122,7 @@
     ModifyIconAlertView * alertView = [[ModifyIconAlertView alloc] initWithTitle:Localized(@"ChooseWalletIcon") confrimBolck:^(NSInteger index) {
         NSString * walletIconName = (index == 0) ? Current_Wallet_IconName : [NSString stringWithFormat:@"%@_%zd", Current_Wallet_IconName, index];
         self.walletModel.walletIconName = walletIconName;
-        cell.listImage.image = [UIImage imageNamed:walletIconName];
+        [cell.listImage setImage:[UIImage imageNamed:walletIconName] forState:UIControlStateNormal];
         if ([self.walletModel.walletAddress isEqualToString:[[[AccountTool shareTool] account] walletAddress]]) {
             AccountModel * account = [[AccountTool shareTool] account];
             account.walletIconName = walletIconName;

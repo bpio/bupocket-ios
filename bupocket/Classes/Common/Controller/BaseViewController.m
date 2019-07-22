@@ -22,22 +22,12 @@
 
 #import "MyIdentityViewController.h"
 
-@interface BaseViewController ()
-//UIGestureRecognizerDelegate
+@interface BaseViewController ()<UIGestureRecognizerDelegate>
 
 @end
 
 @implementation BaseViewController
 
-//- (void)loadView
-//{
-//    [super loadView];
-//    if (@available(iOS 11.0, *)) {
-//        [self.navigationController.navigationBar setPrefersLargeTitles:![self isSetLargeTitles]];
-//    } else {
-//        // Fallback on earlier versions
-//    }
-//}
 
 - (void)viewDidLoad {
     [super viewDidLoad];
@@ -46,24 +36,9 @@
     if (![self isRootViewController]) {
         [self setupLeftItem];
     }
-//    [self setupPopGestureRecognizer];
+    [self setupPopGestureRecognizer];
     // Do any additional setup after loading the view.
 }
-//- (void)viewWillDisappear:(BOOL)animated
-//{
-//    [super viewWillDisappear:animated];
-//    BOOL isSetLargeTitles = ([self isKindOfClass:[AssetsViewController class]]  ||
-//                             [self isKindOfClass:[AddAssetsViewController class]] ||
-//                             [self isKindOfClass:[AssetsDetailViewController class]] ||
-//                             [self isKindOfClass:[TransferResultsViewController class]] ||
-//                             [self isKindOfClass:[RequestTimeoutViewController class]] ||
-//                             [self isKindOfClass:[OrderDetailsViewController class]]);
-//    if (@available(iOS 11.0, *)) {
-//        [self.navigationController.navigationBar setPrefersLargeTitles:!isSetLargeTitles];
-//    } else {
-//        // Fallback on earlier versions
-//    }
-//}
 - (void)setupLeftItem
 {
     UIButton * backButton = [UIButton createButtonWithNormalImage:@"nav_goback_n" SelectedImage:@"nav_goback_n" Target:self Selector:@selector(back)];
@@ -77,12 +52,11 @@
         [self isKindOfClass:[RequestTimeoutViewController class]] ||
         [self isKindOfClass:[RegisteredResultViewController class]] ||
         [self isKindOfClass:[DistributionResultsViewController class]]) {
-        [self.navigationController popToRootViewControllerAnimated:NO];
+        [self.navigationController popToRootViewControllerAnimated:YES];
     } else {
-        [self.navigationController popViewControllerAnimated:NO];
+        [self.navigationController popViewControllerAnimated:YES];
     }
 }
-/*
 - (void)setupPopGestureRecognizer
 {
     id target = self.navigationController.interactivePopGestureRecognizer.delegate;
@@ -95,9 +69,10 @@
 }
 - (BOOL)gestureRecognizerShouldBegin:(UIGestureRecognizer *)gestureRecognizer
 {
-    if ([self isKindOfClass:[AddAssetsViewController class]] ||
-        [self isKindOfClass:[AssetsDetailViewController class]] ||
-        [self isKindOfClass:[MyIdentityViewController class]]) {
+    if ([self isKindOfClass:[AddAssetsViewController class]]
+        || [self isKindOfClass:[AssetsDetailViewController class]]
+//       || [self isKindOfClass:[MyIdentityViewController class]]
+        ) {
         return NO;
     } else {
         return ![self isRootViewController];
@@ -107,7 +82,6 @@
 {
     [self back];
 }
- */
 - (BOOL)isRootViewController
 {
     if (self.navigationController.childViewControllers.count == 1) {
@@ -116,17 +90,6 @@
         return NO;
     }
 }
-/*
-- (BOOL)isSetLargeTitles
-{
-    return !([self isKindOfClass:[AssetsViewController class]]  ||
-//            [self isKindOfClass:[AddAssetsViewController class]] ||
-            [self isKindOfClass:[AssetsDetailViewController class]] ||
-            [self isKindOfClass:[TransferResultsViewController class]] ||
-            [self isKindOfClass:[RequestTimeoutViewController class]] ||
-            [self isKindOfClass:[OrderDetailsViewController class]]);
-}
- */
 /*
 #pragma mark - Navigation
 

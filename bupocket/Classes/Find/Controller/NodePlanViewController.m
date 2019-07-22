@@ -17,7 +17,7 @@
 #import "NodeTransferSuccessViewController.h"
 #import "TransferResultsViewController.h"
 #import "RequestTimeoutViewController.h"
-#import <IQKeyboardManager/IQKeyboardManager.h>
+//#import <IQKeyboardManager/IQKeyboardManager.h>
 
 @interface NodePlanViewController ()<UITableViewDelegate, UITableViewDataSource, UITextFieldDelegate, YBPopupMenuDelegate>
 
@@ -74,7 +74,7 @@ static NSString * const NodePlanCellID = @"NodePlanCellID";
 - (void)votingRecordsAction
 {
     VotingRecordsViewController * VC = [[VotingRecordsViewController alloc] init];
-    [self.navigationController pushViewController:VC animated:NO];
+    [self.navigationController pushViewController:VC animated:YES];
 }
 - (void)setupRefresh
 {
@@ -152,14 +152,15 @@ static NSString * const NodePlanCellID = @"NodePlanCellID";
 }
 - (void)setupView
 {
-    self.tableView = [[UITableView alloc] initWithFrame:self.view.frame style:UITableViewStylePlain];
+    self.tableView = [[UITableView alloc] initWithFrame:self.view.frame style:UITableViewStyleGrouped];
     self.tableView.delegate = self;
     self.tableView.dataSource = self;
     self.tableView.separatorStyle = UITableViewCellSeparatorStyleNone;
     self.tableView.keyboardDismissMode = UIScrollViewKeyboardDismissModeOnDrag;
-    self.tableView.backgroundColor = VIEWBG_COLOR;
     [self.view addSubview:self.tableView];
     self.noNetWork = [Encapsulation showNoNetWorkWithSuperView:self.view target:self action:@selector(reloadData)];
+    self.tableView.contentInset = UIEdgeInsetsMake(Margin_Section_Header - Margin_5, 0, 0, 0);
+    [self.view addSubview:self.headerView];
 }
 - (UIView *)noData
 {
@@ -204,24 +205,20 @@ static NSString * const NodePlanCellID = @"NodePlanCellID";
 }
 - (CGFloat)tableView:(UITableView *)tableView heightForHeaderInSection:(NSInteger)section
 {
-    return Margin_40;
-}
-- (UIView *)tableView:(UITableView *)tableView viewForHeaderInSection:(NSInteger)section
-{
-    return self.headerView;
+    return CGFLOAT_MIN;
 }
 - (UIView *)headerView
 {
     if (!_headerView) {
-        _headerView = [[UIView alloc] initWithFrame:CGRectMake(0, 0, DEVICE_WIDTH, Margin_40)];
+        _headerView = [[UIView alloc] initWithFrame:CGRectMake(0, 0, DEVICE_WIDTH, Margin_Section_Header)];
         _interdependentNode = [UIButton createButtonWithTitle:[NSString stringWithFormat:@"  %@", Localized(@"InterdependentNode")] TextFont:FONT_TITLE TextNormalColor:COLOR_6 TextSelectedColor:COLOR_6 NormalImage:@"interdependent_node_n" SelectedImage:@"interdependent_node_s" Target:self Selector:@selector(interdependentNodeAction:)];
         _interdependentNode.contentHorizontalAlignment = UIControlContentHorizontalAlignmentLeft;
         [_headerView addSubview:_interdependentNode];
-        CGFloat interdependentNodeW = [Encapsulation rectWithText:Localized(@"InterdependentNode") font:FONT(13) textHeight:MAIN_HEIGHT].size.width + ScreenScale(35);
+        CGFloat interdependentNodeW = [Encapsulation rectWithText:Localized(@"InterdependentNode") font:FONT_TITLE textHeight:MAIN_HEIGHT].size.width + Margin_30;
         [_interdependentNode mas_makeConstraints:^(MASConstraintMaker *make) {
             make.left.equalTo(self->_headerView.mas_left).offset(Margin_10);
-            make.top.equalTo(self->_headerView.mas_top).offset(Margin_5);
-            make.bottom.equalTo(self->_headerView);
+//            make.top.equalTo(self->_headerView.mas_top).offset(Margin_5);
+            make.top.bottom.equalTo(self->_headerView);
             make.width.mas_equalTo(interdependentNodeW);
         }];
         UIButton * infoBtn = [UIButton createButtonWithNormalImage:@"interdependent_node_explain" SelectedImage:@"interdependent_node_explain" Target:self Selector:@selector(infoAction:)];
@@ -253,11 +250,12 @@ static NSString * const NodePlanCellID = @"NodePlanCellID";
             make.centerY.equalTo(self->_interdependentNode);
             make.size.mas_equalTo(CGSizeMake(ScreenScale(73), Margin_20));
         }];
-        [_searchTextField addDoneOnKeyboardWithTarget:self action:@selector(searchAction)];
+//        [_searchTextField addDoneOnKeyboardWithTarget:self action:@selector(searchAction)];
         UIButton * searchBtn = [UIButton createButtonWithNormalImage:@"node_search" SelectedImage:@"node_search" Target:self Selector:@selector(searchAction)];
         _searchTextField.leftViewMode = UITextFieldViewModeAlways;
         _searchTextField.leftView = searchBtn;
         searchBtn.size = CGSizeMake(Margin_20, Margin_20);
+        searchBtn.contentEdgeInsets = UIEdgeInsetsMake(0, Margin_5, 0, 0);
         _headerView.backgroundColor = _tableView.backgroundColor;
     }
     return _headerView;
@@ -318,7 +316,7 @@ static NSString * const NodePlanCellID = @"NodePlanCellID";
     if ([nodePlanModel.status integerValue] == NodeStatusSuccess) {
         NodeSharingViewController * VC = [[NodeSharingViewController alloc] init];
         VC.nodeID = nodePlanModel.nodeId;
-        [self.navigationController pushViewController:VC animated:NO];
+        [self.navigationController pushViewController:VC animated:YES];
     } else {
         NSString * status;
         if ([nodePlanModel.status integerValue] == NodeStatusExit) {
@@ -333,7 +331,7 @@ static NSString * const NodePlanCellID = @"NodePlanCellID";
 {
     VotingRecordsViewController * VC = [[VotingRecordsViewController alloc] init];
     VC.nodePlanModel = self.listArray[index];
-    [self.navigationController pushViewController:VC animated:NO];
+    [self.navigationController pushViewController:VC animated:YES];
 }
 - (void)cancellationVotesWithIndex:(NSInteger)index
 {
@@ -422,18 +420,18 @@ static NSString * const NodePlanCellID = @"NodePlanCellID";
     [[HTTPManager shareManager] submitTransactionWithSuccess:^(TransactionResultModel *resultModel) {
         if (resultModel.errorCode == Success_Code) {
             NodeTransferSuccessViewController * VC = [[NodeTransferSuccessViewController alloc] init];
-            [self.navigationController pushViewController:VC animated:NO];
+            [self.navigationController pushViewController:VC animated:YES];
         } else {
             TransferResultsViewController * VC = [[TransferResultsViewController alloc] init];
             VC.state = NO;
             VC.resultModel = resultModel;
             VC.confirmTransactionModel = confirmTransactionModel;
-            [self.navigationController pushViewController:VC animated:NO];
+            [self.navigationController pushViewController:VC animated:YES];
         }
     } failure:^(TransactionResultModel *resultModel) {
         RequestTimeoutViewController * VC = [[RequestTimeoutViewController alloc] init];
         VC.transactionHash = resultModel.transactionHash;
-        [self.navigationController pushViewController:VC animated:NO];
+        [self.navigationController pushViewController:VC animated:YES];
     }];
 }
 - (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath

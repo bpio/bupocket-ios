@@ -28,7 +28,7 @@
 
 @property (nonatomic, strong) UILabel * assets;
 @property (nonatomic, strong) UILabel * amount;
-@property (nonatomic, strong) UILabel * header;
+//@property (nonatomic, strong) UILabel * header;
 @property (nonatomic, strong) UIView * noData;
 @property (nonatomic, assign) NSInteger pageindex;
 @property (nonatomic, strong) UIView * noNetWork;
@@ -236,7 +236,7 @@
         _receiveBtn.layer.masksToBounds = YES;
         _receiveBtn.layer.cornerRadius = ScreenScale(3);
 //        [_scanBtn setViewSize:CGSizeMake(btnW, MAIN_HEIGHT) borderWidth:0 borderColor:nil borderRadius:ScreenScale(3)];
-        _receiveBtn.backgroundColor = COLOR(@"72AFFF");
+        _receiveBtn.backgroundColor = RECEIVE_COLOR;
         
         _transferAccounts = [[CustomButton alloc] init];
         _transferAccounts.layoutMode = HorizontalNormal;
@@ -272,7 +272,7 @@
 {
     ReceiveViewController * VC = [[ReceiveViewController alloc] init];
     VC.receiveType = ReceiveTypeDefault;
-    [self.navigationController pushViewController:VC animated:NO];
+    [self.navigationController pushViewController:VC animated:YES];
     /*
     __block NSString * result = nil;
     __weak typeof (self) weakself = self;
@@ -327,7 +327,7 @@
 {
     TransferAccountsViewController * VC = [[TransferAccountsViewController alloc] init];
     VC.listModel = self.listModel;
-    [self.navigationController pushViewController:VC animated:NO];
+    [self.navigationController pushViewController:VC animated:YES];
 }
 
 - (CGFloat)tableView:(UITableView *)tableView heightForRowAtIndexPath:(NSIndexPath *)indexPath
@@ -341,7 +341,7 @@
 - (CGFloat)tableView:(UITableView *)tableView heightForHeaderInSection:(NSInteger)section
 {
     if (section == 0) {
-        return MAIN_HEIGHT;
+        return Margin_Section_Header - Margin_5;
     } else {
         return CGFLOAT_MIN;
     }
@@ -351,16 +351,9 @@
  {
      UIView * headerView = [[UIView alloc] init];
      if (section == 0) {
-         self.header = [[UILabel alloc] init];
-         self.header.font = FONT(15);
-         self.header.textColor = COLOR_6;
-         self.header.text = Localized(@"RecentTransactionRecords");
-         [headerView addSubview:self.header];
-         [self.header mas_makeConstraints:^(MASConstraintMaker *make) {
-             make.left.equalTo(headerView.mas_left).offset(Margin_10);
-             make.bottom.equalTo(headerView);
-             make.top.equalTo(headerView.mas_top).offset(Margin_5);
-         }];
+         UIButton * header = [UIButton createHeaderButtonWithTitle:Localized(@"RecentTransactionRecords")];
+         header.contentEdgeInsets = UIEdgeInsetsMake(Margin_5, Margin_Main, 0, Margin_Main);
+         return header;
      }
      return headerView;
  }
@@ -391,7 +384,7 @@
     OrderDetailsViewController * VC = [[OrderDetailsViewController alloc] init];
     VC.assetCode = self.listModel.assetCode;
     VC.listModel = self.listArray[indexPath.section];
-    [self.navigationController pushViewController:VC animated:NO];
+    [self.navigationController pushViewController:VC animated:YES];
 }
 
 

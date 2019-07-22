@@ -33,7 +33,7 @@
         NSString * title = Localized(@"BULink");
         
         NSString * linkStr = [NSString stringWithFormat:@"#%@#%@%@%@", title, subStr, nodeName, [NSString stringWithFormat:Localized(@"LinkSuffix%@"), link]];
-        NSMutableAttributedString * attr = [Encapsulation attrWithString:linkStr preFont:FONT(14) preColor:COLOR_6 index:0 sufFont:FONT(14) sufColor:COLOR_6 lineSpacing:Margin_5];
+        NSMutableAttributedString * attr = [Encapsulation attrWithString:linkStr preFont:FONT(14) preColor:COLOR_6 index:0 sufFont:FONT(14) sufColor:COLOR_6 lineSpacing:LINE_SPACING];
         NSRange titleRange = [linkStr rangeOfString:title];
         NSRange nodeNameRange = [linkStr rangeOfString:nodeName];
         NSRange linkRange = [linkStr rangeOfString:link];
@@ -42,7 +42,7 @@
         [attr addAttribute:NSFontAttributeName value:FONT_Bold(14) range:nodeNameRange];
         [attr addAttribute:NSForegroundColorAttributeName value:MAIN_COLOR range:linkRange];
         [self.linkContent setAttributedTitle:attr forState:UIControlStateNormal];
-        self.contentHeight = [Encapsulation getSizeSpaceLabelWithStr:linkStr font:FONT(14) width:DEVICE_WIDTH - ScreenScale(80) height:CGFLOAT_MAX lineSpacing:Margin_5].height + Margin_20;
+        self.contentHeight = [Encapsulation getSizeSpaceLabelWithStr:linkStr font:FONT(14) width:DEVICE_WIDTH - ScreenScale(80) height:CGFLOAT_MAX lineSpacing:LINE_SPACING].height + Margin_20;
         self.bounds = CGRectMake(0, 0, DEVICE_WIDTH - Margin_40, self.contentHeight + ScreenScale(170));
     }
     return self;

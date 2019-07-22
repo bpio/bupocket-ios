@@ -253,7 +253,7 @@
                 RegisteredAssetsViewController * VC = [[RegisteredAssetsViewController alloc] init];
                 VC.uuid = self.scanDic[@"uuID"];
                 VC.registeredModel = self.registeredModel;
-                [self.navigationController pushViewController:VC animated:NO];
+                [self.navigationController pushViewController:VC animated:YES];
             }
         } else if ([self.scanDic[@"action"] isEqualToString:@"token.issue"]) {
             if (code == Success_Code) {
@@ -283,18 +283,18 @@
         if (code == Success_Code) {
             LoginConfirmViewController * VC = [[LoginConfirmViewController alloc] init];
             VC.loginConfirmModel = [LoginConfirmModel mj_objectWithKeyValues:[responseObject objectForKey:@"data"]];
-            [self.navigationController pushViewController:VC animated:NO];
+            [self.navigationController pushViewController:VC animated:YES];
         } else if (code == ErrorAccountUnbound) {
             NSDictionary * dic = responseObject[@"data"];
             ScanCodeFailureViewController * VC = [[ScanCodeFailureViewController alloc] init];
             VC.exceptionPromptStr = dic[@"errorMsg"];
             VC.promptStr = dic[@"errorDescription"];
-            [self.navigationController pushViewController:VC animated:NO];
+            [self.navigationController pushViewController:VC animated:YES];
         } else if (code == ErrorQRCodeExpired || code == ErrorAccountQRCodeExpired) {
             ScanCodeFailureViewController * VC = [[ScanCodeFailureViewController alloc] init];
             VC.exceptionPromptStr = Localized(@"Overdue");
             VC.promptStr = Localized(@"RefreshQRCode");
-            [self.navigationController pushViewController:VC animated:NO];
+            [self.navigationController pushViewController:VC animated:YES];
         } else {
             [Encapsulation showAlertControllerWithMessage:[ErrorTypeTool getDescriptionWithNodeErrorCode:code] handler:nil];
         }
@@ -308,7 +308,7 @@
     VC.uuid = self.scanDic[@"uuID"];
     VC.distributionModel = self.distributionModel;
     VC.registeredModel = self.registeredModel;
-    [self.navigationController pushViewController:VC animated:NO];
+    [self.navigationController pushViewController:VC animated:YES];
 }
 - (void)setupView
 {
@@ -351,7 +351,8 @@
         _totalAssets.textColor = [UIColor whiteColor];
         [_headerViewBg addSubview:_totalAssets];
         [self.totalAssets mas_makeConstraints:^(MASConstraintMaker *make) {
-            make.top.equalTo(self.headerViewBg.mas_top).offset(StatusBarHeight + MAIN_HEIGHT);
+//            make.top.equalTo(self.headerViewBg.mas_top).offset(StatusBarHeight + MAIN_HEIGHT);
+            make.top.equalTo(self.headerViewBg.mas_top).offset(NavBarH + Margin_10);
             make.centerX.equalTo(self.headerViewBg);
             make.width.mas_lessThanOrEqualTo(DEVICE_WIDTH - Margin_40);
         }];
@@ -442,7 +443,7 @@
 - (void)walletAction
 {
     WalletListViewController * VC = [[WalletListViewController alloc] init];
-    [self.navigationController pushViewController:VC animated:NO];
+    [self.navigationController pushViewController:VC animated:YES];
 }
 #pragma mark - assets operation
 - (void)operationAction:(UIButton *)button
@@ -476,7 +477,7 @@
             NSString * address = [stringValue substringFromIndex:[Voucher_Prefix length]];
             TransferVoucherViewController * VC = [[TransferVoucherViewController alloc] init];
             VC.receiveAddressStr = address;
-            [self.navigationController pushViewController:VC animated:NO];
+            [self.navigationController pushViewController:VC animated:YES];
             return;
         }
         if ([stringValue hasPrefix:Dpos_Prefix]) {
@@ -526,7 +527,7 @@
 {
     ReceiveViewController * VC = [[ReceiveViewController alloc] init];
     VC.receiveType = ReceiveTypeDefault;
-    [self.navigationController pushViewController:VC animated:NO];
+    [self.navigationController pushViewController:VC animated:YES];
     /*
     WalletAddressAlertView * alertView = [[WalletAddressAlertView alloc] initWithWalletAddress:CurrentWalletAddress confrimBolck:^{
         [[UIPasteboard generalPasteboard] setString:CurrentWalletAddress];
@@ -542,7 +543,7 @@
 - (void)addAssetsAcrion
 {
     AddAssetsViewController * VC = [[AddAssetsViewController alloc] init];
-    [self.navigationController pushViewController:VC animated:NO];
+    [self.navigationController pushViewController:VC animated:YES];
 }
 #pragma mark - Dpos
 - (void)getApplyNodeDataWithStr:(NSString *)str
@@ -557,7 +558,7 @@
             ScanCodeFailureViewController * VC = [[ScanCodeFailureViewController alloc] init];
             VC.exceptionPromptStr = Localized(@"Overdue");
             VC.promptStr = Localized(@"RefreshQRCode");
-            [self.navigationController pushViewController:VC animated:NO];
+            [self.navigationController pushViewController:VC animated:YES];
         } else {
             [Encapsulation showAlertControllerWithMessage:[ErrorTypeTool getDescriptionWithNodeErrorCode:code] handler:nil];
         }
@@ -636,18 +637,18 @@
     [[HTTPManager shareManager] submitTransactionWithSuccess:^(TransactionResultModel *resultModel) {
         if (resultModel.errorCode == Success_Code) {
             NodeTransferSuccessViewController * VC = [[NodeTransferSuccessViewController alloc] init];
-            [self.navigationController pushViewController:VC animated:NO];
+            [self.navigationController pushViewController:VC animated:YES];
         } else {
             TransferResultsViewController * VC = [[TransferResultsViewController alloc] init];
             VC.state = NO;
             VC.resultModel = resultModel;
             VC.confirmTransactionModel = self.confirmTransactionModel;
-            [self.navigationController pushViewController:VC animated:NO];
+            [self.navigationController pushViewController:VC animated:YES];
         }
     } failure:^(TransactionResultModel *resultModel) {
         RequestTimeoutViewController * VC = [[RequestTimeoutViewController alloc] init];
         VC.transactionHash = resultModel.transactionHash;
-        [self.navigationController pushViewController:VC animated:NO];
+        [self.navigationController pushViewController:VC animated:YES];
     }];
 }
 #pragma mark 扫描调用底层合约操作
@@ -726,11 +727,11 @@
         }
         VC.resultModel = resultModel;
         VC.transferInfoArray = [NSMutableArray arrayWithObjects:self.dposModel.dest_address, [NSString stringAppendingBUWithStr:self.dposModel.amount], nil];
-        [self.navigationController pushViewController:VC animated:NO];
+        [self.navigationController pushViewController:VC animated:YES];
     } failure:^(TransactionResultModel *resultModel) {
         RequestTimeoutViewController * VC = [[RequestTimeoutViewController alloc] init];
         VC.transactionHash = resultModel.transactionHash;
-        [self.navigationController pushViewController:VC animated:NO];
+        [self.navigationController pushViewController:VC animated:YES];
     }];
 }
 - (CGFloat)tableView:(UITableView *)tableView heightForRowAtIndexPath:(NSIndexPath *)indexPath
@@ -834,14 +835,10 @@
 //                make.size.bottom.equalTo(_noBackup);
             }];
         }
-        UILabel * header = [[UILabel alloc] init];
-        header.font = FONT(15);
-        header.textColor = COLOR_6;
-        header.text = Localized(@"MyAssets");
+        UIButton * header = [UIButton createHeaderButtonWithTitle:Localized(@"MyAssets")];
         [headerView addSubview:header];
         [header mas_makeConstraints:^(MASConstraintMaker *make) {
-            make.left.equalTo(headerView.mas_left).offset(Margin_10);
-            make.bottom.equalTo(headerView);
+            make.left.right.bottom.equalTo(headerView);
             make.height.mas_equalTo(Margin_30);
         }];
     }
@@ -853,7 +850,7 @@
 //    [self.navigationController pushViewController:[[MyIdentityViewController alloc] init] animated:NO];
     BackUpWalletViewController * VC = [[BackUpWalletViewController alloc] init];
     VC.mnemonicType = MnemonicBackup;
-    [self.navigationController pushViewController:VC animated:NO];
+    [self.navigationController pushViewController:VC animated:YES];
 }
 /*
 - (void)noBackupAction:(UIButton *)button
@@ -890,7 +887,7 @@
     [tableView deselectRowAtIndexPath:indexPath animated:YES];
     AssetsDetailViewController * VC = [[AssetsDetailViewController alloc] init];
     VC.listModel = self.listArray[indexPath.section];
-    [self.navigationController pushViewController:VC animated:NO];
+    [self.navigationController pushViewController:VC animated:YES];
 }
 
 /*

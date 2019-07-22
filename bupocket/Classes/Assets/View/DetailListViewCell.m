@@ -52,10 +52,13 @@ static NSString * const VersionLogCellID = @"VersionLogCellID";
                 self.title.textColor = COLOR_6;
                 self.infoTitle.font = FONT(14);
             } else if ([reuseIdentifier isEqualToString:VersionLogCellID]) {
-                self.title.font = FONT(17);
+                self.title.font = FONT(18);
                 self.title.textColor = TITLE_COLOR;
             }
         }
+        self.title.backgroundColor = RandomColor;
+        self.infoTitle.backgroundColor = RandomColor;
+        self.backgroundColor = RandomColor;
     }
     return self;
 }
@@ -80,12 +83,13 @@ static NSString * const VersionLogCellID = @"VersionLogCellID";
         }];
     } else {
         CGFloat titleX = Margin_10;
-        CGFloat titleY = Margin_15;
+        CGFloat titleY = Margin_Main;
         CGFloat infoTitleY = Margin_10;
         if ([self.reuseIdentifier isEqualToString:VersionLogCellID]) {
-            titleX = Margin_15;
-            titleY = Margin_20;
-            infoTitleY = Margin_20;
+            titleX = Margin_Main;
+            infoTitleY = Margin_Main;
+//            titleY = Margin_20;
+//            infoTitleY = Margin_20;
         }
         [self.title mas_makeConstraints:^(MASConstraintMaker *make) {
             make.left.equalTo(self.contentView.mas_left).offset(titleX);

@@ -69,7 +69,7 @@
 - (UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath
 {
     ListTableViewCell * cell = [ListTableViewCell cellWithTableView:tableView cellType:CellTypeDetail];
-    cell.listImage.image = [UIImage imageNamed:[NSString stringWithFormat:@"setting_list_%zd", indexPath.row]];
+    [cell.listImage setImage:[UIImage imageNamed:[NSString stringWithFormat:@"setting_list_%zd", indexPath.row]] forState:UIControlStateNormal];
 //    cell.detailImage.image = [UIImage imageNamed:@"list_arrow"];
     cell.title.text = self.listArray[indexPath.row];
     cell.selectionStyle = UITableViewCellSelectionStyleNone;
@@ -102,10 +102,10 @@
     [tableView deselectRowAtIndexPath:indexPath animated:YES];
     if (indexPath.row == 0) {
         MonetaryUnitViewController * VC = [[MonetaryUnitViewController alloc] init];
-        [self.navigationController pushViewController:VC animated:NO];
+        [self.navigationController pushViewController:VC animated:YES];
     } else if (indexPath.row == 1) {
         MultilingualViewController * VC = [[MultilingualViewController alloc] init];
-        [self.navigationController pushViewController:VC animated:NO];
+        [self.navigationController pushViewController:VC animated:YES];
     }
 }
 - (UISwitch *)switchControl

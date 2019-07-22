@@ -83,7 +83,7 @@ static NSString * const VoucherDetailCellID = @"VoucherDetailCellID";
             NSString * specifications = NotNULLString(self.voucherModel.voucherSpec) ? self.voucherModel.voucherSpec : Localized(@"None");
             self.listArray = [NSMutableArray arrayWithArray:@[@[@""], @[@[Localized(@"Validity"), date], @[Localized(@"VoucherCode"), self.voucherModel.voucherId], @[Localized(@"Specification"), specifications], @[Localized(@"Describe"), self.voucherModel.desc], @[Localized(@"HoldingQuantity"), holdingQuantity]], @[@[Localized(@"Acceptor"), self.voucherModel.voucherAcceptance[@"name"]], @[Localized(@"AssetIssuer"), self.voucherModel.voucherIssuer[@"name"]]]]];
             
-            self.infoCellHeight = MAX(Margin_40, ([Encapsulation getSizeSpaceLabelWithStr:self.voucherModel.desc font:FONT_TITLE width:Info_Width_Max height:CGFLOAT_MAX lineSpacing:Margin_5].height + Margin_30));
+            self.infoCellHeight = MAX(Margin_40, ([Encapsulation getSizeSpaceLabelWithStr:self.voucherModel.desc font:FONT_TITLE width:Info_Width_Max height:CGFLOAT_MAX lineSpacing:LINE_SPACING].height + Margin_30));
             [self.tableView reloadData];
         } else {
             [MBProgressHUD showTipMessageInWindow:[ErrorTypeTool getDescriptionWithNodeErrorCode:code]];
@@ -206,7 +206,7 @@ static NSString * const VoucherDetailCellID = @"VoucherDetailCellID";
 {
     TransferVoucherViewController * VC = [[TransferVoucherViewController alloc] init];
     VC.voucherModel = self.voucherModel;
-    [self.navigationController pushViewController:VC animated:NO];
+    [self.navigationController pushViewController:VC animated:YES];
 }
 
 - (CGFloat)tableView:(UITableView *)tableView heightForFooterInSection:(NSInteger)section
@@ -239,7 +239,7 @@ static NSString * const VoucherDetailCellID = @"VoucherDetailCellID";
         cell.title.text = self.listArray[indexPath.section][indexPath.row][0];
 //        cell.detailTitle.text = self.listArray[indexPath.section][indexPath.row][1];
         NSString * iconUrl = (indexPath.row == 0) ? self.voucherModel.voucherAcceptance[@"icon"] : self.voucherModel.voucherIssuer[@"icon"];
-        [cell.listImage sd_setImageWithURL:[NSURL URLWithString:iconUrl] placeholderImage:[UIImage imageNamed:@"good_placehoder"]];
+        [cell.listImage sd_setImageWithURL:[NSURL URLWithString:iconUrl] forState:UIControlStateNormal placeholderImage:[UIImage imageNamed:@"good_placehoder"]];
         cell.lineView.hidden = (indexPath.row == [self.listArray[indexPath.section] count] - 1);
         cell.selectionStyle = UITableViewCellSelectionStyleNone;
         cell.backgroundColor = cell.contentView.backgroundColor  = [UIColor clearColor];
@@ -249,7 +249,7 @@ static NSString * const VoucherDetailCellID = @"VoucherDetailCellID";
     cell.title.text = self.listArray[indexPath.section][indexPath.row][0];
     NSString * detail = self.listArray[indexPath.section][indexPath.row][1];
     if (indexPath.section == 1 && indexPath.row == 3 && NotNULLString(detail)) {
-        cell.infoTitle.attributedText = [Encapsulation attrWithString:detail preFont:FONT_TITLE preColor:COLOR_6 index:0 sufFont:FONT_TITLE sufColor:COLOR_6 lineSpacing:Margin_5];
+        cell.infoTitle.attributedText = [Encapsulation attrWithString:detail preFont:FONT_TITLE preColor:COLOR_6 index:0 sufFont:FONT_TITLE sufColor:COLOR_6 lineSpacing:LINE_SPACING];
     } else {
         cell.infoTitle.text = detail;
     }
@@ -275,11 +275,11 @@ static NSString * const VoucherDetailCellID = @"VoucherDetailCellID";
         if (indexPath.row == 0) {
             AcceptorViewController * VC = [[AcceptorViewController alloc] init];
             VC.voucherModel = self.voucherModel;
-            [self.navigationController pushViewController:VC animated:NO];
+            [self.navigationController pushViewController:VC animated:YES];
         } else if (indexPath.row == 1) {
             AssetIssuerViewController * VC = [[AssetIssuerViewController alloc] init];
             VC.voucherModel = self.voucherModel;
-            [self.navigationController pushViewController:VC animated:NO];
+            [self.navigationController pushViewController:VC animated:YES];
         }
     }
 }

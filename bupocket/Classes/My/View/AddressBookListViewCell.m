@@ -23,10 +23,10 @@ static NSString * const WalletCellID = @"WalletCellID";
 - (instancetype)initWithStyle:(UITableViewCellStyle)style reuseIdentifier:(NSString *)reuseIdentifier
 {
     if (self = [super initWithStyle:style reuseIdentifier:reuseIdentifier]) {
-        [self.contentView addSubview:self.listBg];
-        [self.listBg addSubview:self.addressName];
-        [self.listBg addSubview:self.address];
-        [self.listBg addSubview:self.describe];
+//        [self.contentView addSubview:self.listBg];
+        [self.contentView addSubview:self.addressName];
+        [self.contentView addSubview:self.address];
+        [self.contentView addSubview:self.describe];
 //        [self setViewSize:CGSizeMake(DEVICE_WIDTH - Margin_20, _addressBookModel.cellHeight) borderWidth:0 borderColor:nil borderRadius:BG_CORNER];
     }
     return self;
@@ -34,24 +34,23 @@ static NSString * const WalletCellID = @"WalletCellID";
 - (void)layoutSubviews
 {
     [super layoutSubviews];
-    [self.listBg mas_makeConstraints:^(MASConstraintMaker *make) {
-        make.left.equalTo(self.contentView.mas_left).offset(Margin_10);
-        make.right.equalTo(self.contentView.mas_right).offset(-Margin_10);
-        make.top.equalTo(self.contentView.mas_top).offset(Margin_5);
-        make.bottom.equalTo(self.contentView.mas_bottom).offset(-Margin_5);
-    }];
-    self.contentView.backgroundColor = VIEWBG_COLOR;
+//    [self.listBg mas_makeConstraints:^(MASConstraintMaker *make) {
+//        make.left.equalTo(self.contentView.mas_left).offset(Margin_10);
+//        make.right.equalTo(self.contentView.mas_right).offset(-Margin_10);
+//        make.top.equalTo(self.contentView.mas_top).offset(Margin_5);
+//        make.bottom.equalTo(self.contentView.mas_bottom).offset(-Margin_5);
+//    }];
     [self.addressName mas_makeConstraints:^(MASConstraintMaker *make) {
-        make.top.equalTo(self.listBg.mas_top).offset(Margin_20);
-        make.left.equalTo(self.listBg.mas_left).offset(Margin_15);
+        make.top.equalTo(self.contentView.mas_top).offset(Margin_20);
+        make.left.equalTo(self.contentView.mas_left).offset(Margin_Main);
 //        make.height.mas_equalTo(ScreenScale(16));
-        make.right.equalTo(self.listBg.mas_right).offset(-Margin_15);
+        make.right.equalTo(self.contentView.mas_right).offset(-Margin_Main);
 //        make.right.mas_lessThanOrEqualTo(self.detailImage.mas_left).offset(-Margin_15);
     }];
     [self.address mas_makeConstraints:^(MASConstraintMaker *make) {
         make.left.right.equalTo(self.addressName);
-        make.height.mas_equalTo(ScreenScale(17));
-        make.top.equalTo(self.addressName.mas_bottom).offset(Margin_15);
+        make.height.mas_equalTo(Margin_15);
+        make.top.equalTo(self.addressName.mas_bottom).offset(Margin_10);
     }];
     [self.describe mas_makeConstraints:^(MASConstraintMaker *make) {
         make.left.right.equalTo(self.addressName);
@@ -60,6 +59,7 @@ static NSString * const WalletCellID = @"WalletCellID";
     }];
     
 }
+/*
 - (UIView *)listBg
 {
     if (!_listBg) {
@@ -70,11 +70,12 @@ static NSString * const WalletCellID = @"WalletCellID";
     }
     return _listBg;
 }
+ */
 - (UILabel *)addressName
 {
     if (!_addressName) {
         _addressName = [[UILabel alloc] init];
-        _addressName.font = FONT(16);
+        _addressName.font = FONT_Bold(15);
         _addressName.textColor = TITLE_COLOR;
         _addressName.numberOfLines = 0;
     }
@@ -84,8 +85,8 @@ static NSString * const WalletCellID = @"WalletCellID";
 {
     if (!_address) {
         _address = [[UILabel alloc] init];
-        _address.font = FONT(15);
-        _address.textColor = TITLE_COLOR;
+        _address.font = FONT_TITLE;
+        _address.textColor = COLOR_6;
     }
     return _address;
 }
@@ -93,8 +94,8 @@ static NSString * const WalletCellID = @"WalletCellID";
 {
     if (!_describe) {
         _describe = [[UILabel alloc] init];
-        _describe.font = FONT(14);
-        _describe.textColor = COLOR_9;
+        _describe.font = FONT(13);
+        _describe.textColor = COLOR_B2;
         _describe.numberOfLines = 0;
     }
     return _describe;
@@ -112,12 +113,12 @@ static NSString * const WalletCellID = @"WalletCellID";
     self.addressName.text = addressBookModel.nickName;
     self.address.text = [NSString stringEllipsisWithStr:addressBookModel.linkmanAddress subIndex:SubIndex_Address];
     self.describe.text = addressBookModel.remark;
-    CGFloat addressNameH = [Encapsulation rectWithText:self.addressName.text font:self.addressName.font textWidth:DEVICE_WIDTH - Margin_50].size.height;
+    CGFloat addressNameH = [Encapsulation rectWithText:self.addressName.text font:self.addressName.font textWidth:View_Width_Main].size.height;
     CGFloat describeH = 0;
     if (NotNULLString(self.describe.text)) {
-        describeH = (Margin_5 + [Encapsulation rectWithText:self.describe.text font:self.describe.font textWidth:DEVICE_WIDTH - Margin_50].size.height);
+        describeH = (Margin_5 + [Encapsulation rectWithText:self.describe.text font:self.describe.font textWidth:View_Width_Main].size.height);
     }
-    addressBookModel.cellHeight = ScreenScale(72) + addressNameH + describeH + Margin_10;
+    addressBookModel.cellHeight = ScreenScale(70) + addressNameH + describeH;
 }
 
 - (void)awakeFromNib {

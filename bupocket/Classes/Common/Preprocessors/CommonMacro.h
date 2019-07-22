@@ -46,31 +46,49 @@
 #define Margin_40 ScreenScale(40)
 #define Margin_50 ScreenScale(50)
 #define Margin_60 ScreenScale(60)
+
+#define Margin_Section_Header Margin_40
+#define Margin_Main Margin_15
+#define View_Width_Main DEVICE_WIDTH - Margin_30
+#define Content_Width_Main DEVICE_WIDTH - Margin_50
+#define LINE_SPACING Margin_5
+
 #define Info_Width_Max DEVICE_WIDTH - ScreenScale(165)
 // font
-#define FONT(F) [UIFont systemFontOfSize:ScreenScale(F)]
-#define FONT_Bold(F) [UIFont boldSystemFontOfSize:ScreenScale(F)]
+#define FONT(F) [UIFont fontWithName:@"PingFangSC-Regular" size:ScreenScale(F)]
+#define FONT_Bold(F) [UIFont fontWithName:@"PingFangSC-Medium" size:ScreenScale(F)]
+//#define FONT(F) [UIFont systemFontOfSize:ScreenScale(F)]
+//#define FONT_Bold(F) [UIFont boldSystemFontOfSize:ScreenScale(F)]
 #define FONT_TITLE FONT(14)
 #define FONT_BUTTON FONT(18)
 #define FONT_13 FONT(13)
 #define FONT_15 FONT(15)
 #define FONT_16 FONT(16)
+#define FONT_NAV_TITLE FONT_16
 // Color
 #define COLOR(HexString)  [UIColor colorWithHexString:HexString]
 
 #define RandomColor [UIColor colorWithRed:arc4random_uniform(255) / 255.0 green:arc4random_uniform(255) / 255.0 blue:arc4random_uniform(255) / 255.0 alpha:1.0]
+
+#define MAIN_COLOR COLOR(@"02CA71")
+//#define WARNING_COLOR COLOR(@"FF5824")
+#define WARNING_COLOR COLOR(@"FF6464")
+#define DISABLED_COLOR COLOR(@"8CD7B5")
+//#define VIEWBG_COLOR COLOR(@"EFEFF4")
+#define VIEWBG_COLOR COLOR(@"F5F5F5")
 #define LINE_COLOR COLOR(@"E3E3E3")
 #define TITLE_COLOR COLOR(@"333333")
-#define MAIN_COLOR COLOR(@"02CA71")
-#define WARNING_COLOR COLOR(@"FF5824")
-#define DISABLED_COLOR COLOR(@"8CD7B5")
-#define TAGBG_COLOR COLOR(@"3FD592")
-#define VIEWBG_COLOR COLOR(@"EFEFF4")
-#define PLACEHOLDER_COLOR COLOR(@"B2B2B2")
 #define COLOR_6 COLOR(@"666666")
 #define COLOR_9 COLOR(@"999999")
+#define COLOR_B2 COLOR(@"B2B2B2")
+#define RECEIVE_COLOR COLOR(@"72AFFF")
+#define ADDRESS_COLOR COLOR(@"6D8BFF")
+// ******
+#define TAGBG_COLOR COLOR(@"3FD592")
+#define PLACEHOLDER_COLOR COLOR(@"B2B2B2")
 #define COLOR_POPUPMENU COLOR(@"56526D")
-#define LINE_SPACING ScreenScale(3)
+
+
 
 // Current Wallet Address
 #define Current_WalletAddress @"CurrentWalletAddress"

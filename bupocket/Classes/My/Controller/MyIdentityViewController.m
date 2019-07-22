@@ -60,7 +60,7 @@
 {
     UIView * footerView = [[UIView alloc] initWithFrame:CGRectMake(0, 0, DEVICE_WIDTH, ScreenScale(200))];
     
-    CGSize btnSize = CGSizeMake(DEVICE_WIDTH - Margin_30, MAIN_HEIGHT);
+    CGSize btnSize = CGSizeMake(View_Width_Main, MAIN_HEIGHT);
     
     UIButton * backupIdentity = [UIButton createButtonWithTitle:Localized(@"BackupIdentity") isEnabled:YES Target:self Selector:@selector(backupIdentityAction)];
     [footerView addSubview:backupIdentity];
@@ -97,15 +97,9 @@
     cell.detailTitle.text = self.listArray[indexPath.row][1];
     cell.detail.hidden = YES;
     cell.selectionStyle = UITableViewCellSelectionStyleNone;
-    CGSize cellSize = CGSizeMake(DEVICE_WIDTH - Margin_20, Margin_50);
     cell.lineView.hidden = (indexPath.row == self.listArray.count - 1 );
-    if (self.listArray.count - 1 == 0) {
-        [cell.listBg setViewSize:cellSize borderRadius:BG_CORNER corners:UIRectCornerAllCorners];
-    } else if (indexPath.row == 0) {
-        [cell.listBg setViewSize:cellSize borderRadius:BG_CORNER corners:UIRectCornerTopLeft | UIRectCornerTopRight];
-    } else if (indexPath.row == self.listArray.count - 1) {
-        [cell.listBg setViewSize:cellSize borderRadius:BG_CORNER corners:UIRectCornerBottomLeft | UIRectCornerBottomRight];
-        cell.listImage.image = [UIImage imageNamed:@"explain_info"];
+    if (indexPath.row == self.listArray.count - 1) {
+        [cell.listImage setImage:[UIImage imageNamed:@"explain_info"] forState:UIControlStateNormal];
     }
     return cell;
 }
@@ -193,13 +187,13 @@
 {
     BackUpWalletViewController * VC = [[BackUpWalletViewController alloc] init];
     VC.mnemonicType = MnemonicBackup;
-    [self.navigationController pushViewController:VC animated:NO];
+    [self.navigationController pushViewController:VC animated:YES];
     /*
     PasswordAlertView * alertView = [[PasswordAlertView alloc] initWithPrompt:Localized(@"IdentityCipherPrompt") confrimBolck:^(NSString * _Nonnull password, NSArray * _Nonnull words) {
         if (words.count > 0) {
             BackupMnemonicsViewController * VC = [[BackupMnemonicsViewController alloc] init];
             VC.mnemonicArray = words;
-            [self.navigationController pushViewController:VC animated:NO];
+            [self.navigationController pushViewController:VC animated:YES];
         }
         //        [UIApplication sharedApplication].keyWindow.rootViewController = [[NavigationViewController alloc] initWithRootViewController:VC];
     } cancelBlock:^{

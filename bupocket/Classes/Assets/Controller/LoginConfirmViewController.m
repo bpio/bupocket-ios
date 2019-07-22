@@ -8,7 +8,6 @@
 
 #import "LoginConfirmViewController.h"
 #import "ScanCodeFailureViewController.h"
-#import <SDWebImage/UIButton+WebCache.h>
 
 @interface LoginConfirmViewController ()
 @property (nonatomic, strong) UIScrollView * scrollView;
@@ -73,7 +72,7 @@
         make.top.equalTo(line.mas_bottom).offset(Margin_25);
     }];
     NSString * confirmPrompt = [NSString stringWithFormat:Localized(@"Immediate login %@, please confirm that it is my operation."), self.loginConfirmModel.appName];
-    confirmLoginPrompt.attributedText = [Encapsulation attrWithString:[NSString stringWithFormat:@"%@\n%@", confirmPrompt, Localized(@"LoginPromptInfo")] preFont:FONT(15) preColor:COLOR_6 index:confirmPrompt.length sufFont:FONT(13) sufColor:COLOR_9 lineSpacing:ScreenScale(8.5)];
+    confirmLoginPrompt.attributedText = [Encapsulation attrWithString:[NSString stringWithFormat:@"%@\n%@", confirmPrompt, Localized(@"LoginPromptInfo")] preFont:FONT(15) preColor:COLOR_6 index:confirmPrompt.length sufFont:FONT(13) sufColor:COLOR_9 lineSpacing:LINE_SPACING];
     
     CGSize btnSize = CGSizeMake(DEVICE_WIDTH - Margin_40, MAIN_HEIGHT);
     UIButton * confirmBtn = [UIButton createButtonWithTitle:Localized(@"ConfirmLogin") isEnabled:YES Target:self Selector:@selector(confirmAction)];
@@ -99,12 +98,12 @@
     [[HTTPManager shareManager] getAccountCenterDataWithAppId:self.loginConfirmModel.appId uuid:self.loginConfirmModel.uuid success:^(id responseObject) {
         NSInteger code = [[responseObject objectForKey:@"errCode"] integerValue];
         if (code == Success_Code) {
-            [self.navigationController popViewControllerAnimated:NO];
+            [self.navigationController popViewControllerAnimated:YES];
         } else {
             ScanCodeFailureViewController * VC = [[ScanCodeFailureViewController alloc] init];
             VC.exceptionPromptStr = Localized(@"Overdue");
             VC.promptStr = Localized(@"RefreshQRCode");
-            [self.navigationController pushViewController:VC animated:NO];
+            [self.navigationController pushViewController:VC animated:YES];
         }
     } failure:^(NSError *error) {
         
@@ -113,7 +112,7 @@
 
 - (void)cancelAction
 {
-    [self.navigationController popViewControllerAnimated:NO];
+    [self.navigationController popViewControllerAnimated:YES];
 }
 
 

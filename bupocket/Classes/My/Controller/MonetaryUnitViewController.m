@@ -36,7 +36,7 @@
     self.tableView.dataSource = self;
     self.tableView.separatorInset = UIEdgeInsetsZero;
     self.tableView.separatorStyle = UITableViewCellSeparatorStyleNone;
-    self.tableView.backgroundColor = [UIColor whiteColor];
+//    self.tableView.backgroundColor = [UIColor whiteColor];
     [self.view addSubview:self.tableView];
 }
 - (CGFloat)tableView:(UITableView *)tableView heightForRowAtIndexPath:(NSIndexPath *)indexPath
@@ -67,6 +67,7 @@
     cell.title.text = self.listArray[indexPath.row];
     cell.detailTitle.text = nil;
     cell.detail.hidden = (_index != indexPath.row);
+    cell.lineView.hidden = (indexPath.row == self.listArray.count - 1 );
     return cell;
 }
 - (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath
