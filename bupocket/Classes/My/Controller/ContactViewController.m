@@ -40,6 +40,7 @@
 
 - (void)viewDidLoad {
     [super viewDidLoad];
+    self.listArray = [NSMutableArray arrayWithObjects:@[Localized(@"NickName"), Localized(@"NickNamePlaceholder")], @[@"", Localized(@"DescribePlaceholder")], @[Localized(@"Address"), Localized(@"AddressPlaceholder")], nil];
     [self setupView];
     
     // Do any additional setup after loading the view.
@@ -52,27 +53,24 @@
     self.tableView.separatorStyle = UITableViewCellSeparatorStyleNone;
     self.tableView.backgroundColor = [UIColor whiteColor];
     [self.view addSubview:self.tableView];
-//    [self.tableView mas_makeConstraints:^(MASConstraintMaker *make) {
-//        make.edges.equalTo(self.view);
-//    }];
     
     self.tableView.tableHeaderView = [[UIView alloc] initWithFrame:CGRectMake(0, 0, DEVICE_WIDTH, CGFLOAT_MIN)];
     
-    UIView * footerView = [[UIView alloc] initWithFrame:CGRectMake(0, 0, DEVICE_WIDTH, ScreenScale(200))];
-    self.tableView.tableFooterView = footerView;
-    
-    self.save = [UIButton createButtonWithTitle:Localized(@"Save") isEnabled:NO Target:self Selector:@selector(saveAction)];
-    [footerView addSubview:self.save];
-    
-    self.listArray = [NSMutableArray arrayWithObjects:@[Localized(@"NickName"), Localized(@"NickNamePlaceholder")], @[@"", Localized(@"DescribePlaceholder")], @[Localized(@"Address"), Localized(@"AddressPlaceholder")], nil];
-    
-    [self.save mas_makeConstraints:^(MASConstraintMaker *make) {
-        make.top.equalTo(footerView.mas_top).offset(ScreenScale(65));
-        make.left.equalTo(footerView.mas_left).offset(Margin_15);
-        make.right.equalTo(footerView.mas_right).offset(-Margin_15);
-        make.height.mas_equalTo(MAIN_HEIGHT);
-    }];
-    if ([self.navigationItem.title isEqualToString:Localized(@"EditContact")]) {
+    if ([self.navigationItem.title isEqualToString:Localized(@"NewContacts")]) {
+        self.tableView.contentInset = UIEdgeInsetsMake(0, 0, ContentInset_Bottom + NavBarH, 0);
+        self.save = [UIButton createFooterViewWithTitle:Localized(@"Save") isEnabled:NO Target:self Selector:@selector(saveAction)];
+        
+    } else {
+        self.save = [UIButton createButtonWithTitle:Localized(@"Save") isEnabled:NO Target:self Selector:@selector(saveAction)];
+        UIView * footerView = [[UIView alloc] initWithFrame:CGRectMake(0, 0, DEVICE_WIDTH, ScreenScale(200))];
+        self.tableView.tableFooterView = footerView;
+        [footerView addSubview:self.save];
+        [self.save mas_makeConstraints:^(MASConstraintMaker *make) {
+            make.top.equalTo(footerView.mas_top).offset(ScreenScale(65));
+            make.centerX.mas_equalTo(0);
+            make.width.mas_equalTo(View_Width_Main);
+            make.height.mas_equalTo(MAIN_HEIGHT);
+        }];
         UIButton * deleteBtn = [UIButton createButtonWithTitle:Localized(@"DeleteContact") isEnabled:YES Target:self Selector:@selector(deleteAction)];
         [deleteBtn setTitleColor:WARNING_COLOR forState:UIControlStateNormal];
         deleteBtn.backgroundColor = [UIColor whiteColor];
@@ -106,7 +104,7 @@
 }
 - (CGFloat)tableView:(UITableView *)tableView heightForRowAtIndexPath:(NSIndexPath *)indexPath
 {
-    return ScreenScale(85);
+    return ScreenScale(90);
 }
 - (CGFloat)tableView:(UITableView *)tableView heightForHeaderInSection:(NSInteger)section
 {

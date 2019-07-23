@@ -53,4 +53,12 @@
     }
     [MBProgressHUD showTipMessageInWindow:Localized(@"Replicating")];
 }
++ (UILabel *)createTitleLabel
+{
+    UILabel * label = [[UILabel alloc] init];
+    label.textColor = COLOR_6;
+    label.font = FONT_15;
+    label.numberOfLines = 0;
+    return label;
+}
 @end

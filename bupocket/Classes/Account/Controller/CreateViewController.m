@@ -96,7 +96,7 @@
 
 - (void)setupView
 {
-    self.tableView = [[UITableView alloc] initWithFrame:self.view.bounds style:UITableViewStylePlain];
+    self.tableView = [[UITableView alloc] initWithFrame:self.view.bounds style:UITableViewStyleGrouped];
     self.tableView.delegate = self;
     self.tableView.dataSource = self;
     self.tableView.separatorStyle = UITableViewCellSeparatorStyleNone;
@@ -110,37 +110,39 @@
     
     UIButton * prompt = [UIButton buttonWithType:UIButtonTypeCustom];
     prompt.titleLabel.numberOfLines = 0;
-    [prompt setAttributedTitle:[Encapsulation attrWithString:Localized(@"PWPrompt") preFont:FONT_13 preColor:COLOR_6 index:0 sufFont:FONT_13 sufColor:COLOR_6 lineSpacing:LINE_SPACING] forState:UIControlStateNormal];
-    prompt.backgroundColor = COLOR(@"FFDE92");
+    [prompt setAttributedTitle:[Encapsulation attrWithString:Localized(@"PWPrompt") preFont:FONT_13 preColor:WARNING_COLOR index:0 sufFont:FONT_13 sufColor:WARNING_COLOR lineSpacing:LINE_SPACING] forState:UIControlStateNormal];
+    prompt.backgroundColor = VIEWBG_COLOR;
     prompt.contentEdgeInsets = UIEdgeInsetsMake(0, Margin_10, 0, Margin_10);
-    CGSize maximumSize = CGSizeMake(DEVICE_WIDTH - Margin_60, CGFLOAT_MAX);
+    CGSize maximumSize = CGSizeMake(View_Width_Main - Margin_20, CGFLOAT_MAX);
     CGSize expectSize = [prompt.titleLabel sizeThatFits:maximumSize];
-    CGSize promptSize = CGSizeMake(DEVICE_WIDTH - Margin_30, expectSize.height + Margin_30);
-    [prompt setViewSize:promptSize borderRadius:BG_CORNER corners:UIRectCornerAllCorners];
+    CGSize promptSize = CGSizeMake(View_Width_Main, expectSize.height + Margin_30);
+    [prompt setViewSize:promptSize borderRadius:MAIN_CORNER corners:UIRectCornerAllCorners];
     [headerView addSubview:prompt];
     [prompt mas_makeConstraints:^(MASConstraintMaker *make) {
-        make.centerX.centerY.equalTo(headerView);
+        make.top.equalTo(headerView.mas_top).offset(Margin_Main);
+        make.centerX.mas_equalTo(0);
         make.size.mas_equalTo(promptSize);
     }];
-    headerView.frame = CGRectMake(0, 0, DEVICE_WIDTH, promptSize.height + Margin_30);
+    headerView.frame = CGRectMake(0, 0, DEVICE_WIDTH, promptSize.height + Margin_Main);
     self.tableView.tableHeaderView = headerView;
     
-    UIView * footerView = [[UIView alloc] initWithFrame:CGRectMake(0, 0, DEVICE_WIDTH, ScreenScale(170) + SafeAreaBottomH)];
-    self.createBtn = [UIButton createButtonWithTitle:Localized(@"Create") isEnabled:NO Target:self Selector:@selector(createAction)];
-    [footerView addSubview:self.createBtn];
-    
-    [self.createBtn mas_makeConstraints:^(MASConstraintMaker *make) {
-        make.top.equalTo(footerView.mas_top).offset(ScreenScale(90));
-        make.left.equalTo(footerView.mas_left).offset(Margin_15);
-        make.right.equalTo(footerView.mas_right).offset(-Margin_15);
-        make.height.mas_equalTo(MAIN_HEIGHT);
-    }];
-    self.tableView.tableFooterView = footerView;
+//    UIView * footerView = [[UIView alloc] initWithFrame:CGRectMake(0, 0, DEVICE_WIDTH, ScreenScale(170) + SafeAreaBottomH)];
+    self.createBtn = [UIButton createFooterViewWithTitle:Localized(@"Create") isEnabled:NO Target:self Selector:@selector(createAction)];
+//    [UIButton createButtonWithTitle:Localized(@"Create") isEnabled:NO Target:self Selector:@selector(createAction)];
+//    [footerView addSubview:self.createBtn];
+//
+//    [self.createBtn mas_makeConstraints:^(MASConstraintMaker *make) {
+//        make.top.equalTo(footerView.mas_top).offset(ScreenScale(90));
+//        make.left.equalTo(footerView.mas_left).offset(Margin_15);
+//        make.right.equalTo(footerView.mas_right).offset(-Margin_15);
+//        make.height.mas_equalTo(MAIN_HEIGHT);
+//    }];
+//    self.tableView.tableFooterView = footerView;
     
 }
 - (CGFloat)tableView:(UITableView *)tableView heightForRowAtIndexPath:(NSIndexPath *)indexPath
 {
-    return ScreenScale(85);
+    return ScreenScale(90);
 }
 - (CGFloat)tableView:(UITableView *)tableView heightForHeaderInSection:(NSInteger)section
 {
@@ -148,7 +150,7 @@
 }
 - (CGFloat)tableView:(UITableView *)tableView heightForFooterInSection:(NSInteger)section
 {
-    return CGFLOAT_MIN;
+    return ContentInset_Bottom;
 }
 - (NSInteger)numberOfSectionsInTableView:(UITableView *)tableView
 {

@@ -20,7 +20,6 @@
 		83379A5E21796BFC00C222A5 /* Terms of use_EN.html in Resources */ = {isa = PBXBuildFile; fileRef = 83379A5C21796BFC00C222A5 /* Terms of use_EN.html */; };
 		83379A5F21796BFC00C222A5 /* Terms of use_CN.html in Resources */ = {isa = PBXBuildFile; fileRef = 83379A5D21796BFC00C222A5 /* Terms of use_CN.html */; };
 		83379A6221797BDD00C222A5 /* ConfirmMnemonicViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 83379A6121797BDD00C222A5 /* ConfirmMnemonicViewController.m */; };
-		83379A6B2179C1D500C222A5 /* ChangePasswordViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 83379A6A2179C1D500C222A5 /* ChangePasswordViewController.m */; };
 		83379A6E2179CB9E00C222A5 /* FeedbackViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 83379A6D2179CB9E00C222A5 /* FeedbackViewController.m */; };
 		83379A742179D62300C222A5 /* MyIdentityViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 83379A732179D62300C222A5 /* MyIdentityViewController.m */; };
 		83379A80217B524D00C222A5 /* UIApplication+Extension.m in Sources */ = {isa = PBXBuildFile; fileRef = 83379A7F217B524D00C222A5 /* UIApplication+Extension.m */; };
@@ -103,6 +102,7 @@
 		95162FE222C9A9AA0024FD22 /* VoucherDetailViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 95162FE122C9A9AA0024FD22 /* VoucherDetailViewController.m */; };
 		95162FE522CB3D9B0024FD22 /* AcceptorViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 95162FE422CB3D9B0024FD22 /* AcceptorViewController.m */; };
 		9519ED6D22E5883200A4AAC1 /* InfoViewCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 9519ED6C22E5883200A4AAC1 /* InfoViewCell.m */; };
+		9519ED7022E6A67E00A4AAC1 /* ChangePasswordViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 9519ED6F22E6A67E00A4AAC1 /* ChangePasswordViewController.m */; };
 		95266CCD226F062E002CD915 /* NodePlanViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 95266CA1226F062E002CD915 /* NodePlanViewController.m */; };
 		95266CCE226F062E002CD915 /* CooperateViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 95266CA4226F062E002CD915 /* CooperateViewController.m */; };
 		95266CCF226F062E002CD915 /* NodeSharingViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 95266CA7226F062E002CD915 /* NodeSharingViewController.m */; };
@@ -244,8 +244,6 @@
 		83379A5D21796BFC00C222A5 /* Terms of use_CN.html */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.html; path = "Terms of use_CN.html"; sourceTree = "<group>"; };
 		83379A6021797BDD00C222A5 /* ConfirmMnemonicViewController.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = ConfirmMnemonicViewController.h; sourceTree = "<group>"; };
 		83379A6121797BDD00C222A5 /* ConfirmMnemonicViewController.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = ConfirmMnemonicViewController.m; sourceTree = "<group>"; };
-		83379A692179C1D500C222A5 /* ChangePasswordViewController.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = ChangePasswordViewController.h; sourceTree = "<group>"; };
-		83379A6A2179C1D500C222A5 /* ChangePasswordViewController.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = ChangePasswordViewController.m; sourceTree = "<group>"; };
 		83379A6C2179CB9E00C222A5 /* FeedbackViewController.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = FeedbackViewController.h; sourceTree = "<group>"; };
 		83379A6D2179CB9E00C222A5 /* FeedbackViewController.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = FeedbackViewController.m; sourceTree = "<group>"; };
 		83379A722179D62300C222A5 /* MyIdentityViewController.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = MyIdentityViewController.h; sourceTree = "<group>"; };
@@ -411,6 +409,8 @@
 		95162FE422CB3D9B0024FD22 /* AcceptorViewController.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = AcceptorViewController.m; sourceTree = "<group>"; };
 		9519ED6B22E5883200A4AAC1 /* InfoViewCell.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = InfoViewCell.h; sourceTree = "<group>"; };
 		9519ED6C22E5883200A4AAC1 /* InfoViewCell.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = InfoViewCell.m; sourceTree = "<group>"; };
+		9519ED6E22E6A67E00A4AAC1 /* ChangePasswordViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ChangePasswordViewController.h; sourceTree = "<group>"; };
+		9519ED6F22E6A67E00A4AAC1 /* ChangePasswordViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ChangePasswordViewController.m; sourceTree = "<group>"; };
 		95266CA1226F062E002CD915 /* NodePlanViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = NodePlanViewController.m; sourceTree = "<group>"; };
 		95266CA2226F062E002CD915 /* VotingRecordsViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = VotingRecordsViewController.h; sourceTree = "<group>"; };
 		95266CA3226F062E002CD915 /* NodeTransferSuccessViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = NodeTransferSuccessViewController.h; sourceTree = "<group>"; };
@@ -781,8 +781,6 @@
 				959575C021FFF00F0089479C /* AddressBookViewController.m */,
 				959575C921FFFD040089479C /* ContactViewController.h */,
 				959575CA21FFFD040089479C /* ContactViewController.m */,
-				83379A692179C1D500C222A5 /* ChangePasswordViewController.h */,
-				83379A6A2179C1D500C222A5 /* ChangePasswordViewController.m */,
 				83379A6C2179CB9E00C222A5 /* FeedbackViewController.h */,
 				83379A6D2179CB9E00C222A5 /* FeedbackViewController.m */,
 				95D92D9322BB6E1400AFC8C2 /* AboutUsViewController.h */,
@@ -853,6 +851,8 @@
 				959726C421E487F10022CB78 /* ExportKeystoreViewController.m */,
 				959726C621E4893F0022CB78 /* ExportPrivateKeyViewController.h */,
 				959726C721E4893F0022CB78 /* ExportPrivateKeyViewController.m */,
+				9519ED6E22E6A67E00A4AAC1 /* ChangePasswordViewController.h */,
+				9519ED6F22E6A67E00A4AAC1 /* ChangePasswordViewController.m */,
 				959726C921E5A8640022CB78 /* ImportWalletViewController.h */,
 				959726CA21E5A8640022CB78 /* ImportWalletViewController.m */,
 				959726D521E5E76F0022CB78 /* ImportWalletModeViewController.h */,
@@ -1610,7 +1610,6 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				83379A6B2179C1D500C222A5 /* ChangePasswordViewController.m in Sources */,
 				95266CD1226F062E002CD915 /* NodeTransferSuccessViewController.m in Sources */,
 				8372C86C2174CCB000FF9506 /* MyViewController.m in Sources */,
 				83379A80217B524D00C222A5 /* UIApplication+Extension.m in Sources */,
@@ -1765,6 +1764,7 @@
 				959E290E224F1F25006FCA30 /* ConfirmTransactionModel.m in Sources */,
 				959575C421FFF6EB0089479C /* AddressBookListViewCell.m in Sources */,
 				83379A092178509300C222A5 /* WKWebViewController.m in Sources */,
+				9519ED7022E6A67E00A4AAC1 /* ChangePasswordViewController.m in Sources */,
 				83379A6221797BDD00C222A5 /* ConfirmMnemonicViewController.m in Sources */,
 				95266CD3226F062E002CD915 /* CooperateDetailViewController.m in Sources */,
 				95266CDA226F062E002CD915 /* NodeTransferSuccessViewCell.m in Sources */,

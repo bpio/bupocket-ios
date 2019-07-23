@@ -120,6 +120,44 @@ static NSString *_title;
     return button;
 }
 
++ (UIButton *)createFooterViewWithTitle:(NSString *)title  isEnabled:(BOOL)isEnabled Target:(id)target Selector:(SEL)selector
+{
+    UIView * footerView = [[UIView alloc] init];
+//                           WithFrame:CGRectMake(0, DEVICE_HEIGHT - ContentInset_Bottom - NavBarH, DEVICE_WIDTH, ContentInset_Bottom)];
+    footerView.backgroundColor = [UIColor whiteColor];
+    UIButton * button = [UIButton createButtonWithTitle:title isEnabled:isEnabled Target:target Selector:selector];
+    [footerView addSubview:button];
+    [button mas_makeConstraints:^(MASConstraintMaker *make) {
+        make.bottom.equalTo(footerView.mas_bottom).offset(- Margin_30 - SafeAreaBottomH);
+        make.left.equalTo(footerView.mas_left).offset(Margin_Main);
+        make.right.equalTo(footerView.mas_right).offset(-Margin_Main);
+        make.height.mas_equalTo(MAIN_HEIGHT);
+    }];
+    UIView * superView = [UIApplication currentViewController].view;
+    [superView addSubview:footerView];
+    [footerView mas_makeConstraints:^(MASConstraintMaker *make) {
+        make.left.bottom.right.equalTo(superView);
+        make.height.mas_equalTo(ContentInset_Bottom);
+    }];
+    return button;
+}
+
++ (UIButton *)createExplainWithSuperView:(UIView *)superView title:(NSString *)title Target:(id)target Selector:(SEL)selector
+{
+    CustomButton * explain = [[CustomButton alloc] init];
+    explain.layoutMode = HorizontalInverted;
+    explain.titleLabel.font = FONT_13;
+    [explain setTitleColor:MAIN_COLOR forState:UIControlStateNormal];
+    [explain setImage:[UIImage imageNamed:@"explain"] forState:UIControlStateNormal];
+    [explain setTitle:title forState:UIControlStateNormal];
+    [explain addTarget:target action:selector forControlEvents:UIControlEventTouchUpInside];
+    [superView addSubview:explain];
+    [explain mas_makeConstraints:^(MASConstraintMaker *make) {
+        make.top.equalTo(superView);
+        make.right.equalTo(superView.mas_right).offset(-Margin_Main);
+    }];
+    return explain;
+}
 - (void)beginCountDownWithDuration:(NSTimeInterval)duration {
     _title = self.titleLabel.text;
     _count = duration;

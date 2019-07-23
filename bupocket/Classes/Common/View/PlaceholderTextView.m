@@ -20,8 +20,8 @@
         self.contentInset = UIEdgeInsetsMake(0, 0, EDGEINSET_WIDTH, 0);
         //Prevent jitter in spelling and typing（防止在拼音打字时抖动）
         self.layoutManager.allowsNonContiguousLayout = NO;
-        self.font = FONT_TITLE;
-        self.textColor = COLOR_6;
+        self.font = FONT_13;
+        self.textColor = TITLE_COLOR;
         self.placeholderColor = PLACEHOLDER_COLOR;
         [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(textDidChange) name:UITextViewTextDidChangeNotification object:self];
     }
@@ -32,7 +32,22 @@
 {
     [self setNeedsDisplay];
 }
-
++ (PlaceholderTextView *)createPlaceholderTextView:(UIView *)superView Target:(id)target placeholder:(NSString *)placeholder
+{
+    PlaceholderTextView * textView = [[PlaceholderTextView alloc] initWithFrame:CGRectMake(Margin_Main, 0, View_Width_Main, TextViewH)];
+    textView.backgroundColor = VIEWBG_COLOR;
+    textView.layer.masksToBounds = YES;
+    textView.layer.cornerRadius = MAIN_CORNER;
+    textView.delegate = target;
+    textView.placeholder = placeholder;
+    [superView addSubview:textView];
+    [textView mas_makeConstraints:^(MASConstraintMaker *make) {
+        make.centerX.mas_equalTo(0);
+        make.width.mas_equalTo(View_Width_Main);
+        make.height.mas_equalTo(TextViewH);
+    }];
+    return textView;
+}
 
 - (void)drawRect:(CGRect)rect {
     if (self.hasText) return;

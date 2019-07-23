@@ -132,15 +132,15 @@ static NSString * const CooperateDetailCellID = @"CooperateDetailCellID";
     if (!_footerView) {
         _footerView = [[UIView alloc] init];
         _footerView.backgroundColor = _tableView.backgroundColor;
-        CGFloat signOutW = (DEVICE_WIDTH - Margin_30) / 5;
+        CGFloat signOutW = (DEVICE_WIDTH - Margin_40) / 5;
         _signOut = [UIButton createButtonWithTitle:Localized(@"WithdrawalOfSupport") TextFont:FONT_BUTTON TextNormalColor:[UIColor whiteColor] TextSelectedColor:[UIColor whiteColor] Target:self Selector:@selector(signOutAction:)];
         _signOut.backgroundColor = COLOR(@"A1A7C7");
         _signOut.layer.masksToBounds = YES;
         _signOut.layer.cornerRadius = MAIN_CORNER;
         [_footerView addSubview:_signOut];
         [_signOut mas_makeConstraints:^(MASConstraintMaker *make) {
-            make.top.equalTo(self->_footerView.mas_top).offset(Margin_15);
-            make.left.equalTo(self->_footerView.mas_left).offset(Margin_10);
+            make.top.equalTo(self->_footerView.mas_top).offset(Margin_Main);
+            make.left.equalTo(self->_footerView.mas_left).offset(Margin_Main);
             make.size.mas_equalTo(CGSizeMake(signOutW * 2, MAIN_HEIGHT));
         }];
         _support = [UIButton createButtonWithTitle:Localized(@"IWantToSupport") TextFont:FONT_BUTTON TextNormalColor:[UIColor whiteColor] TextSelectedColor:[UIColor whiteColor] Target:self Selector:@selector(supportAction)];
@@ -150,7 +150,7 @@ static NSString * const CooperateDetailCellID = @"CooperateDetailCellID";
         [_footerView addSubview:_support];
         [_support mas_makeConstraints:^(MASConstraintMaker *make) {
             make.top.equalTo(self->_signOut);
-            make.right.equalTo(self->_footerView.mas_right).offset(-Margin_10);
+            make.right.equalTo(self->_footerView.mas_right).offset(-Margin_Main);
             make.size.mas_equalTo(CGSizeMake(signOutW * 3, MAIN_HEIGHT));
         }];
         _redemptionAllSupport = [UIButton createButtonWithTitle:Localized(@"RedemptionAllSupport") TextFont:FONT_BUTTON TextNormalColor:[UIColor whiteColor] TextSelectedColor:[UIColor whiteColor] Target:self Selector:@selector(signOutAction:)];
@@ -159,9 +159,9 @@ static NSString * const CooperateDetailCellID = @"CooperateDetailCellID";
         _redemptionAllSupport.layer.cornerRadius = MAIN_CORNER;
         [_footerView addSubview:_redemptionAllSupport];
         [_redemptionAllSupport mas_makeConstraints:^(MASConstraintMaker *make) {
-            make.top.equalTo(self->_footerView.mas_top).offset(Margin_15);
-            make.left.equalTo(self->_footerView.mas_left).offset(Margin_10);
-            make.size.mas_equalTo(CGSizeMake(DEVICE_WIDTH - Margin_20, MAIN_HEIGHT));
+            make.top.equalTo(self->_footerView.mas_top).offset(Margin_Main);
+            make.left.equalTo(self->_footerView.mas_left).offset(Margin_Main);
+            make.size.mas_equalTo(CGSizeMake(DEVICE_WIDTH - Margin_30, MAIN_HEIGHT));
         }];
     }
     return _footerView;

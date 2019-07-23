@@ -12,6 +12,7 @@
 @interface BackUpWalletViewController ()
 
 @property (nonatomic, strong) UIScrollView * scrollView;
+@property (nonatomic, strong) UIButton * backupMnemonics;
 
 @end
 
@@ -44,7 +45,7 @@
     [title mas_makeConstraints:^(MASConstraintMaker *make) {
         make.centerX.mas_equalTo(0);
         make.top.mas_equalTo(ScreenScale(Margin_30));
-        make.width.mas_lessThanOrEqualTo(DEVICE_WIDTH - Margin_40);
+        make.width.mas_equalTo(View_Width_Main);
     }];
     UIImageView * wallet = [[UIImageView alloc] initWithImage:[UIImage imageNamed:@"wallet"]];
     [self.scrollView addSubview:wallet];
@@ -60,9 +61,20 @@
     [self.scrollView addSubview:note];
     [note mas_makeConstraints:^(MASConstraintMaker *make) {
         make.top.equalTo(wallet.mas_bottom).offset(Margin_40);
-        make.left.mas_equalTo(Margin_20);
-        make.width.mas_equalTo(DEVICE_WIDTH - Margin_40);
+        make.centerX.width.equalTo(title);
     }];
+    UILabel * noteLabel = [[UILabel alloc] init];
+    noteLabel.numberOfLines = 0;
+    noteLabel.attributedText = [Encapsulation attrWithString:Localized(@"BackUpWalletNote") preFont:FONT_13 preColor:COLOR_6 index:0 sufFont:FONT_13 sufColor:COLOR_6 lineSpacing:LINE_SPACING];
+    CGSize maximumSize = CGSizeMake(View_Width_Main, CGFLOAT_MAX);
+    CGSize expectSize = [noteLabel sizeThatFits:maximumSize];
+    [self.scrollView addSubview:noteLabel];
+    [noteLabel mas_makeConstraints:^(MASConstraintMaker *make) {
+        make.top.equalTo(note.mas_bottom).offset(Margin_15);
+        make.centerX.width.equalTo(note);
+        make.height.mas_equalTo(expectSize.height);
+    }];
+    /*
     NSArray * noteArray = @[Localized(@"BackUpWalletNote1"), Localized(@"BackUpWalletNote2"), Localized(@"BackUpWalletNote3"), Localized(@"BackUpWalletNote4")];
     CGFloat noteLabelH = 0;
     for (NSInteger i = 0; i < noteArray.count; i++) {
@@ -73,28 +85,30 @@
         if (i > 0) {
             noteLabelH += [self getNoteTextHeightWithText:noteArray[i - 1]] + Margin_10;
         }
-        CGSize maximumSize = CGSizeMake(DEVICE_WIDTH - Margin_40, CGFLOAT_MAX);
+        CGSize maximumSize = CGSizeMake(View_Width_Main, CGFLOAT_MAX);
         CGSize expectSize = [noteLabel sizeThatFits:maximumSize];
         [noteLabel mas_makeConstraints:^(MASConstraintMaker *make) {
             make.top.equalTo(note.mas_bottom).offset(Margin_15 + noteLabelH);
-            make.left.width.equalTo(note);
+            make.centerX.width.equalTo(note);
             make.height.mas_equalTo(expectSize.height);
         }];
     }
     noteLabelH += [self getNoteTextHeightWithText:noteArray[noteArray.count - 1]];
-    UIButton * backupMnemonics = [UIButton createButtonWithTitle:Localized(@"BackupMnemonics") isEnabled:YES Target:self Selector:@selector(backupMnemonicsAction)];
-    [self.scrollView addSubview:backupMnemonics];
-    [backupMnemonics mas_makeConstraints:^(MASConstraintMaker *make) {
-        make.top.equalTo(note.mas_bottom).offset(Margin_15 + noteLabelH + Margin_60);
-        make.left.width.equalTo(note);
-        make.height.mas_equalTo(MAIN_HEIGHT);
-    }];
+     */
+   self.backupMnemonics = [UIButton createFooterViewWithTitle:Localized(@"BackupMnemonics") isEnabled:YES Target:self Selector:@selector(backupMnemonicsAction)];
+//    [UIButton createButtonWithTitle:Localized(@"BackupMnemonics") isEnabled:YES Target:self Selector:@selector(backupMnemonicsAction)];
+//    [self.scrollView addSubview:backupMnemonics];
+//    [backupMnemonics mas_makeConstraints:^(MASConstraintMaker *make) {
+//        make.top.equalTo(note.mas_bottom).offset(Margin_15 + noteLabelH + Margin_60);
+//        make.left.width.equalTo(note);
+//        make.height.mas_equalTo(MAIN_HEIGHT);
+//    }];
     [self.view layoutIfNeeded];
-    self.scrollView.contentSize = CGSizeMake(0, CGRectGetMaxY(backupMnemonics.frame) + ContentSizeBottom + ScreenScale(100));
+    self.scrollView.contentSize = CGSizeMake(0, CGRectGetMaxY(noteLabel.frame) + ContentInset_Bottom);
 }
 - (CGFloat)getNoteTextHeightWithText:(NSString *)text
 {
-    return [Encapsulation getSizeSpaceLabelWithStr:text font:FONT_13 width:DEVICE_WIDTH - Margin_40 height:CGFLOAT_MAX lineSpacing:LINE_SPACING].height;
+    return [Encapsulation getSizeSpaceLabelWithStr:text font:FONT_13 width:View_Width_Main height:CGFLOAT_MAX lineSpacing:LINE_SPACING].height;
 }
 
 - (void)backupMnemonicsAction

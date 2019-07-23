@@ -12,5 +12,6 @@
 
 @property (nonatomic, strong) NSString * placeholder;
 @property (nonatomic, strong) UIColor * placeholderColor;
++ (PlaceholderTextView *)createPlaceholderTextView:(UIView *)superView Target:(id)target placeholder:(NSString *)placeholder;
 
 @end

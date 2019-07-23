@@ -51,33 +51,51 @@
     self.tableView.dataSource = self;
     self.tableView.separatorStyle = UITableViewCellSeparatorStyleNone;
     [self.view addSubview:self.tableView];
+    self.tableView.backgroundColor = [UIColor whiteColor];
+    self.confirm = [UIButton createFooterViewWithTitle:Localized(@"ConfirmModify") isEnabled:NO Target:self Selector:@selector(confirmAction)];
 }
 
 - (CGFloat)tableView:(UITableView *)tableView heightForRowAtIndexPath:(NSIndexPath *)indexPath
 {
-    return ScreenScale(85);
+    if (indexPath.section == 0) {
+        return ScreenScale(85);
+    } else {
+        return (indexPath.row == 0) ? ScreenScale(75) : ScreenScale(90);
+    }
 }
 - (CGFloat)tableView:(UITableView *)tableView heightForHeaderInSection:(NSInteger)section
 {
-    return Margin_Section_Header;
+    if (section == 0) {
+        return CGFLOAT_MIN;
+    } else {
+        return Margin_10;
+    }
+//    return Margin_Section_Header;
 }
 - (UIView *)tableView:(UITableView *)tableView viewForHeaderInSection:(NSInteger)section
 {
+    UIView * headerView = [[UIView alloc] init];
+    headerView.backgroundColor = (section == 1) ? VIEWBG_COLOR : [UIColor whiteColor];
+    return headerView;
+    /*
     NSArray * titleArray = @[Localized(@"WalletInformation"), Localized(@"ModifyPW")];
     return [UIButton createHeaderButtonWithTitle:titleArray[section]];
+     */
 }
 - (CGFloat)tableView:(UITableView *)tableView heightForFooterInSection:(NSInteger)section
 {
     if (section == 1) {
-        return ScreenScale(150) + SafeAreaBottomH;
+        return ContentInset_Bottom + NavBarH;
     }
     return CGFLOAT_MIN;
 }
+/*
 - (UIView *)tableView:(UITableView *)tableView viewForFooterInSection:(NSInteger)section
 {
     //    if (section == 0 || [self.walletModel.walletAddress isEqualToString:[[[AccountTool shareTool] account] walletAddress]]) {
     if (section == 1) {
         UIView * footerView = [[UIView alloc] initWithFrame:CGRectMake(0, 0, DEVICE_WIDTH, ScreenScale(150))];
+ 
         UIView * bottomBg = [[UIView alloc] init];
         bottomBg.backgroundColor = [UIColor whiteColor];
         [footerView addSubview:bottomBg];
@@ -88,6 +106,7 @@
         }];
         
         [bottomBg setViewSize:bottomBgSize borderRadius:BG_CORNER corners:UIRectCornerBottomLeft | UIRectCornerBottomRight];
+ 
 //        CGSize btnSize = CGSizeMake(DEVICE_WIDTH - Margin_30, MAIN_HEIGHT);
         self.confirm = [UIButton createButtonWithTitle:Localized(@"ConfirmModify") isEnabled:NO Target:self Selector:@selector(confirmAction)];
         [footerView addSubview:self.confirm];
@@ -102,6 +121,7 @@
         return [[UIView alloc] init];
     }
 }
+ */
 
 - (NSInteger)numberOfSectionsInTableView:(UITableView *)tableView
 {
@@ -123,25 +143,17 @@
         cell.detailImage.hidden = YES;
         return cell;
     } else {
-        TextFieldCellType  cellType = TextFieldCellPWNormal;
+        TextFieldCellType  cellType = TextFieldCellPWDefault;
         TextFieldViewCell * cell = [TextFieldViewCell cellWithTableView:tableView cellType: cellType];
         cell.title.text = [self.listArray[indexPath.row] firstObject];
         cell.textField.placeholder = [self.listArray[indexPath.row] lastObject];
         cell.selectionStyle = UITableViewCellSelectionStyleNone;
-        switch (indexPath.row) {
-            case 0:
-                self.PWOld = cell.textField;
-                CGSize cellSize = CGSizeMake(DEVICE_WIDTH - Margin_20, ScreenScale(85));
-                [cell.listBg setViewSize:cellSize borderRadius:BG_CORNER corners:UIRectCornerTopLeft | UIRectCornerTopRight];
-                break;
-            case 1:
-                self.PWNew = cell.textField;
-                break;
-            case 2:
-                self.PWConfirm = cell.textField;
-                break;
-            default:
-                break;
+        if (indexPath.row == 0) {
+            self.PWOld = cell.textField;
+        } else if (indexPath.row == 1) {
+            self.PWNew = cell.textField;
+        } else if (indexPath.row == 2) {
+            self.PWConfirm = cell.textField;
         }
         cell.textChange = ^(UITextField * _Nonnull textField) {
             [self judgeHasText];

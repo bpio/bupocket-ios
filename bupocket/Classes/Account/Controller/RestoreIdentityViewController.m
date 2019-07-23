@@ -58,7 +58,7 @@
 }
 - (void)setupView
 {
-    self.tableView = [[UITableView alloc] initWithFrame:self.view.bounds style:UITableViewStylePlain];
+    self.tableView = [[UITableView alloc] initWithFrame:self.view.bounds style:UITableViewStyleGrouped];
     self.tableView.delegate = self;
     self.tableView.dataSource = self;
     self.tableView.separatorStyle = UITableViewCellSeparatorStyleNone;
@@ -70,57 +70,48 @@
     
     UIView * headerView = [[UIView alloc] init];
     
-    CustomButton * explain = [[CustomButton alloc] init];
-    explain.layoutMode = HorizontalInverted;
-    explain.titleLabel.font = FONT_13;
-    [explain setTitleColor:MAIN_COLOR forState:UIControlStateNormal];
-    [explain setImage:[UIImage imageNamed:@"explain"] forState:UIControlStateNormal];
-    [explain addTarget:self action:@selector(explainInfo:) forControlEvents:UIControlEventTouchUpInside];
-    [explain setTitle:Localized(@"UnderstandingMnemonics") forState:UIControlStateNormal];
-    [headerView addSubview:explain];
-    [explain mas_makeConstraints:^(MASConstraintMaker *make) {
-        make.top.equalTo(headerView);
-        make.right.equalTo(headerView.mas_right).offset(-Margin_20);
-        make.height.mas_equalTo(Margin_50);
-    }];
-    
-    UILabel * memorizingWordsTitle = [[UILabel alloc] init];
-    memorizingWordsTitle.textColor = COLOR_6;
-    memorizingWordsTitle.font = FONT_15;
+    CGFloat explainW = ScreenScale(100);
+    CGFloat memorizingWordsW = View_Width_Main - explainW - Margin_10;
+    UILabel * memorizingWordsTitle = [UILabel createTitleLabel];
     memorizingWordsTitle.text = Localized(@"MnemonicPrompt");
     [headerView addSubview:memorizingWordsTitle];
+    CGFloat memorizingWordsH = [Encapsulation rectWithText:memorizingWordsTitle.text font:memorizingWordsTitle.font textWidth:memorizingWordsW].size.height;
+    UIButton * explain = [UIButton createExplainWithSuperView:headerView title:Localized(@"UnderstandingMnemonics") Target:self Selector:@selector(explainInfo:)];
+    [explain mas_makeConstraints:^(MASConstraintMaker *make) {
+        make.height.mas_equalTo(memorizingWordsH + Margin_30);
+    }];
     [memorizingWordsTitle mas_makeConstraints:^(MASConstraintMaker *make) {
-        make.top.equalTo(headerView);
-        make.left.equalTo(headerView.mas_left).offset(Margin_20);
-        make.height.mas_equalTo(Margin_50);
-        make.right.mas_lessThanOrEqualTo(explain.mas_left).offset(-Margin_10);
+        make.centerY.equalTo(explain);
+        make.left.equalTo(headerView.mas_left).offset(Margin_Main);
+        make.width.mas_lessThanOrEqualTo(memorizingWordsW);
+        //        make.height.mas_equalTo(Margin_50);
+        //        make.right.mas_lessThanOrEqualTo(explain.mas_left).offset(-Margin_10);
     }];
+//    [explain setContentCompressionResistancePriority:UILayoutPriorityRequired forAxis:UILayoutConstraintAxisHorizontal];
     
-    [explain setContentCompressionResistancePriority:UILayoutPriorityRequired forAxis:UILayoutConstraintAxisHorizontal];
-    
-    [headerView addSubview:self.memorizingWords];
+    self.memorizingWords = [PlaceholderTextView createPlaceholderTextView:headerView Target:self placeholder:Localized(@"MnemonicPlaceholder")];
     [self.memorizingWords mas_makeConstraints:^(MASConstraintMaker *make) {
-        make.top.equalTo(headerView.mas_top).offset(Margin_50);
-        make.left.equalTo(headerView.mas_left).offset(Margin_20);
-        make.right.equalTo(headerView.mas_right).offset(-Margin_20);
-        make.height.mas_equalTo(ScreenScale(100));
+        make.top.equalTo(memorizingWordsTitle.mas_bottom).offset(Margin_Main);
     }];
-    headerView.frame = CGRectMake(0, 0, DEVICE_WIDTH, ScreenScale(150));
+    
+    headerView.frame = CGRectMake(0, 0, DEVICE_WIDTH, memorizingWordsH + Margin_30 + TextViewH);
     self.tableView.tableHeaderView = headerView;
     
-    UIView * footerView = [[UIView alloc] initWithFrame:CGRectMake(0, 0, DEVICE_WIDTH, ScreenScale(150) + SafeAreaBottomH)];
-    _restoreIdentity = [UIButton createButtonWithTitle:Localized(@"Restore") isEnabled:NO Target:self Selector:@selector(restoreAction)];
-    [footerView addSubview:_restoreIdentity];
-    
-    [self.restoreIdentity mas_makeConstraints:^(MASConstraintMaker *make) {
-        make.top.equalTo(footerView.mas_top).offset(ScreenScale(90));
-        make.left.equalTo(footerView.mas_left).offset(Margin_15);
-        make.right.equalTo(footerView.mas_right).offset(-Margin_15);
-        make.height.mas_equalTo(MAIN_HEIGHT);
-    }];
-    self.tableView.tableFooterView = footerView;
+//    UIView * footerView = [[UIView alloc] initWithFrame:CGRectMake(0, 0, DEVICE_WIDTH, ScreenScale(150) + SafeAreaBottomH)];
+    _restoreIdentity = [UIButton createFooterViewWithTitle:Localized(@"Restore") isEnabled:NO Target:self Selector:@selector(restoreAction)];
+//    [UIButton createButtonWithTitle:Localized(@"Restore") isEnabled:NO Target:self Selector:@selector(restoreAction)];
+//    [footerView addSubview:_restoreIdentity];
+//
+//    [self.restoreIdentity mas_makeConstraints:^(MASConstraintMaker *make) {
+//        make.top.equalTo(footerView.mas_top).offset(ScreenScale(90));
+//        make.left.equalTo(footerView.mas_left).offset(Margin_15);
+//        make.right.equalTo(footerView.mas_right).offset(-Margin_15);
+//        make.height.mas_equalTo(MAIN_HEIGHT);
+//    }];
+//    self.tableView.tableFooterView = footerView;
     
 }
+/*
 - (PlaceholderTextView *)memorizingWords
 {
     if (!_memorizingWords) {
@@ -134,6 +125,7 @@
     }
     return _memorizingWords;
 }
+ */
 - (void)explainInfo:(UIButton *)button
 {
     ExplainInfoViewController * VC = [[ExplainInfoViewController alloc] init];
@@ -144,7 +136,7 @@
 }
 - (CGFloat)tableView:(UITableView *)tableView heightForRowAtIndexPath:(NSIndexPath *)indexPath
 {
-    return ScreenScale(85);
+    return ScreenScale(90);
 }
 - (CGFloat)tableView:(UITableView *)tableView heightForHeaderInSection:(NSInteger)section
 {
@@ -152,7 +144,7 @@
 }
 - (CGFloat)tableView:(UITableView *)tableView heightForFooterInSection:(NSInteger)section
 {
-    return CGFLOAT_MIN;
+    return ContentInset_Bottom;
 }
 - (NSInteger)numberOfSectionsInTableView:(UITableView *)tableView
 {

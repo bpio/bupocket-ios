@@ -187,7 +187,7 @@ static NSString * const NodePlanCellID = @"NodePlanCellID";
 }
 - (void)textChange:(UITextField *)textField
 {
-    self.searchText = [self.searchTextField.text stringByTrimmingCharactersInSet:[NSCharacterSet whitespaceAndNewlineCharacterSet]];
+    self.searchText = TrimmingCharacters(self.searchTextField.text);
 }
 - (BOOL)textFieldShouldReturn:(UITextField *)textField
 {

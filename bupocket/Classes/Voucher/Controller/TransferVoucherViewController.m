@@ -305,7 +305,7 @@ static NSString * const ChooseVoucherCellID = @"ChooseVoucherCellID";
             return self.chooseVoucher.height;
         }
     }
-    return ScreenScale(85);
+    return ScreenScale(90);
 }
 - (CGFloat)tableView:(UITableView *)tableView heightForHeaderInSection:(NSInteger)section
 {

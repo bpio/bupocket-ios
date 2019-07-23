@@ -24,6 +24,9 @@
 + (UIButton *)createButtonWithTitle:(NSString *)title TextFont:(UIFont *)textFont TextColor:(UIColor *)textColor BackgroundImage:(NSString *)backgroundImage;
 
 + (UIButton *)createHeaderButtonWithTitle:(NSString *)title;
++ (UIButton *)createFooterViewWithTitle:(NSString *)title  isEnabled:(BOOL)isEnabled Target:(id)target Selector:(SEL)selector;
+
++ (UIButton *)createExplainWithSuperView:(UIView *)superView title:(NSString *)title Target:(id)target Selector:(SEL)selector;
 
 - (void)beginCountDownWithDuration:(NSTimeInterval)duration;
 

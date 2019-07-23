@@ -47,7 +47,10 @@
 }
 - (void)setupView
 {
-    self.tableView = [[UITableView alloc] initWithFrame:self.view.bounds style:UITableViewStylePlain];
+    self.listArray = [NSMutableArray arrayWithObjects:@[Localized(@"SetWalletName"), Localized(@"EnterWalletName")], @[Localized(@"SetPassword"), Localized(@"PWPlaceholder")], @[Localized(@"ConfirmPassword"), Localized(@"ConfirmPWPlaceholder")], nil];
+    NSArray * textArray = @[@[Localized(@"MnemonicPrompt"), Localized(@"MnemonicPlaceholder"), Localized(@"UnderstandingMnemonics")], @[Localized(@"PleaseEnterPrivateKey"), Localized(@"PleaseEnterPrivateKey"), Localized(@"UnderstandingPrivateKey")], @[Localized(@"ImportKeystorePrompt"), Localized(@"PleaseEnterKeystore"), Localized(@"UnderstandingKeystore")]];
+    
+    self.tableView = [[UITableView alloc] initWithFrame:self.view.bounds style:UITableViewStyleGrouped];
     self.tableView.delegate = self;
     self.tableView.dataSource = self;
     self.tableView.separatorStyle = UITableViewCellSeparatorStyleNone;
@@ -59,77 +62,64 @@
     
     UIView * headerView = [[UIView alloc] init];
     
-    UILabel * importPrompt = [[UILabel alloc] init];
-    importPrompt.textColor = COLOR_6;
-    importPrompt.font = FONT_15;
-    importPrompt.numberOfLines = 0;
+    UILabel * importPrompt = [UILabel createTitleLabel];
+    importPrompt.text = textArray[self.importWalletMode][0];
     [headerView addSubview:importPrompt];
     
-    CustomButton * explain = [[CustomButton alloc] init];
-    explain.layoutMode = HorizontalInverted;
-    explain.titleLabel.font = FONT_13;
-    [explain setTitleColor:MAIN_COLOR forState:UIControlStateNormal];
-    [explain setImage:[UIImage imageNamed:@"explain"] forState:UIControlStateNormal];
-    [explain addTarget:self action:@selector(explainInfo:) forControlEvents:UIControlEventTouchUpInside];
-    [headerView addSubview:explain];
+    UIButton * explain = [UIButton createExplainWithSuperView:headerView title:textArray[self.importWalletMode][2] Target:self Selector:@selector(explainInfo:)];
+    
+    self.importText = [PlaceholderTextView createPlaceholderTextView:headerView Target:self placeholder:textArray[self.importWalletMode][1]];
+    
+//    UIView * footerView = [[UIView alloc] initWithFrame:CGRectMake(0, 0, DEVICE_WIDTH, ScreenScale(150) + SafeAreaBottomH)];
+//    self.tableView.tableFooterView = footerView;
+    
+    self.import = [UIButton createFooterViewWithTitle:Localized(@"StartImporting") isEnabled:NO Target:self Selector:@selector(importAction)];
+//    [UIButton createButtonWithTitle:Localized(@"StartImporting") isEnabled:NO Target:self Selector:@selector(importAction)];
+//    [footerView addSubview:self.import];
     
     
-    self.importText = [[PlaceholderTextView alloc] init];
-    self.importText.delegate = self;
-    self.importText.backgroundColor = VIEWBG_COLOR;
-    self.importText.layer.masksToBounds = YES;
-    self.importText.layer.cornerRadius = BG_CORNER;
-    [headerView addSubview:self.importText];
-    
-    UIView * footerView = [[UIView alloc] initWithFrame:CGRectMake(0, 0, DEVICE_WIDTH, ScreenScale(150) + SafeAreaBottomH)];
-    self.tableView.tableFooterView = footerView;
-    
-    self.import = [UIButton createButtonWithTitle:Localized(@"StartImporting") isEnabled:NO Target:self Selector:@selector(importAction)];
-    [footerView addSubview:self.import];
-    
-    self.listArray = [NSMutableArray arrayWithObjects:@[Localized(@"SetWalletName"), Localized(@"EnterWalletName")], @[Localized(@"SetPassword"), Localized(@"PWPlaceholder")], @[Localized(@"ConfirmPassword"), Localized(@"ConfirmPWPlaceholder")], nil];
-    NSArray * textArray = @[@[Localized(@"MnemonicPrompt"), Localized(@"MnemonicPlaceholder"), Localized(@"UnderstandingMnemonics")], @[Localized(@"PleaseEnterPrivateKey"), Localized(@"PleaseEnterPrivateKey"), Localized(@"UnderstandingPrivateKey")], @[Localized(@"ImportKeystorePrompt"), Localized(@"PleaseEnterKeystore"), Localized(@"UnderstandingKeystore")]];
-    importPrompt.text = textArray[self.importWalletMode][0];
-    self.importText.placeholder = textArray[self.importWalletMode][1];
-    [explain setTitle:textArray[self.importWalletMode][2] forState:UIControlStateNormal];
     if (self.importWalletMode == ImportWalletKeystore) {
         self.listArray = [NSMutableArray arrayWithObjects:@[Localized(@"SetWalletName"), Localized(@"EnterWalletName")], @[Localized(@"KeystorePW"), Localized(@"PleaseEnterKeystorePW")], nil];
     }
-    CGFloat explainW = ceil([Encapsulation rectWithText:explain.titleLabel.text font:explain.titleLabel.font textHeight:Margin_15].size.width + Margin_15) + 1;
-    CGFloat headerViewH = Margin_30 + ceil([Encapsulation rectWithText:importPrompt.text font:importPrompt.font textWidth:DEVICE_WIDTH - Margin_30 - explainW].size.height) + 1 + ScreenScale(120);
+    CGFloat explainW = ScreenScale(100);
+    CGFloat importPromptW = View_Width_Main - explainW - Margin_10;
+    CGFloat importPromptH = [Encapsulation rectWithText:importPrompt.text font:importPrompt.font textWidth:importPromptW].size.height;
+    CGFloat headerViewH = importPromptH + Margin_30 + TextViewH;
+//    CGFloat explainW = ceil([Encapsulation rectWithText:explain.titleLabel.text font:explain.titleLabel.font textHeight:Margin_15].size.width + Margin_15) + 1;
+//    CGFloat headerViewH = Margin_30 + ceil([Encapsulation rectWithText:importPrompt.text font:importPrompt.font textWidth:DEVICE_WIDTH - Margin_30 - explainW].size.height) + 1 + TextViewH;
     headerView.frame = CGRectMake(0, 0, DEVICE_WIDTH, headerViewH);
     self.tableView.tableHeaderView = headerView;
     
-    [importPrompt mas_makeConstraints:^(MASConstraintMaker *make) {
-        make.top.equalTo(headerView.mas_top).offset(Margin_15);
-        make.left.equalTo(headerView.mas_left).offset(Margin_15);
-        make.right.mas_lessThanOrEqualTo(explain.mas_left).offset(-Margin_10);
-    }];
     [explain mas_makeConstraints:^(MASConstraintMaker *make) {
-        make.top.equalTo(headerView);
-        make.height.mas_equalTo(headerViewH - ScreenScale(120));
-        make.right.equalTo(headerView.mas_right).offset(-Margin_15);
-//        make.width.mas_equalTo(explainW);
+        make.height.mas_equalTo(importPromptH + Margin_30);
+        //        make.width.mas_equalTo(explainW);
+    }];
+    [importPrompt mas_makeConstraints:^(MASConstraintMaker *make) {
+        make.centerY.equalTo(explain);
+//        make.top.equalTo(headerView.mas_top).offset(Margin_Main);
+        make.left.equalTo(headerView.mas_left).offset(Margin_Main);
+        make.width.mas_lessThanOrEqualTo(importPromptW);
+//        make.right.mas_lessThanOrEqualTo(explain.mas_left).offset(-Margin_10);
     }];
     [explain setContentCompressionResistancePriority:UILayoutPriorityRequired forAxis:UILayoutConstraintAxisHorizontal];
     [self.importText mas_makeConstraints:^(MASConstraintMaker *make) {
         make.top.equalTo(importPrompt.mas_bottom).offset(Margin_15);
-        make.left.equalTo(importPrompt);
-        make.right.equalTo(explain);
-        make.height.mas_equalTo(ScreenScale(120));
-        make.bottom.equalTo(headerView);
+//        make.left.equalTo(importPrompt);
+//        make.right.equalTo(explain);
+//        make.height.mas_equalTo(ScreenScale(120));
+//        make.bottom.equalTo(headerView);
     }];
     
-    [self.import mas_makeConstraints:^(MASConstraintMaker *make) {
-        make.top.equalTo(footerView.mas_top).offset(MAIN_HEIGHT);
-        make.left.equalTo(footerView.mas_left).offset(Margin_15);
-        make.right.equalTo(footerView.mas_right).offset(-Margin_15);
-        make.height.mas_equalTo(MAIN_HEIGHT);
-    }];
+//    [self.import mas_makeConstraints:^(MASConstraintMaker *make) {
+//        make.top.equalTo(footerView.mas_top).offset(MAIN_HEIGHT);
+//        make.left.equalTo(footerView.mas_left).offset(Margin_15);
+//        make.right.equalTo(footerView.mas_right).offset(-Margin_15);
+//        make.height.mas_equalTo(MAIN_HEIGHT);
+//    }];
 }
 - (CGFloat)tableView:(UITableView *)tableView heightForRowAtIndexPath:(NSIndexPath *)indexPath
 {
-    return ScreenScale(85);
+    return ScreenScale(90);
 }
 - (CGFloat)tableView:(UITableView *)tableView heightForHeaderInSection:(NSInteger)section
 {
@@ -137,7 +127,7 @@
 }
 - (CGFloat)tableView:(UITableView *)tableView heightForFooterInSection:(NSInteger)section
 {
-    return CGFLOAT_MIN;
+    return ContentInset_Bottom;
 }
 - (NSInteger)numberOfSectionsInTableView:(UITableView *)tableView
 {

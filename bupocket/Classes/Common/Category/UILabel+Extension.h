@@ -14,6 +14,9 @@ NS_ASSUME_NONNULL_BEGIN
 
 @property (nonatomic, assign) BOOL copyable;
 
+// COLOR_6  FONT_15
++ (UILabel *)createTitleLabel;
+
 @end
 
 NS_ASSUME_NONNULL_END

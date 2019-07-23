@@ -12,8 +12,8 @@
 
 static NSString * const DefaultCellID = @"DefaultCellID";
 static NSString * const DefaultPWCellID = @"DefaultPWCellID";
-static NSString * const NormalCellID = @"NormalCellID";
-static NSString * const NormalPWCellID = @"NormalPWCellID";
+//static NSString * const NormalCellID = @"NormalCellID";
+//static NSString * const NormalPWCellID = @"NormalPWCellID";
 static NSString * const NormalPWCellAddress = @"NormalPWCellAddress";
 
 + (instancetype)cellWithTableView:(UITableView *)tableView cellType:(TextFieldCellType)cellType
@@ -23,11 +23,13 @@ static NSString * const NormalPWCellAddress = @"NormalPWCellAddress";
         identifier = DefaultCellID;
     } else if (cellType == TextFieldCellPWDefault) {
         identifier = DefaultPWCellID;
-    } else if (cellType == TextFieldCellNormal) {
-        identifier = NormalCellID;
-    } else if (cellType == TextFieldCellPWNormal) {
-        identifier = NormalPWCellID;
-    } else if (cellType == TextFieldCellAddress) {
+    }
+//    else if (cellType == TextFieldCellNormal) {
+//        identifier = NormalCellID;
+//    } else if (cellType == TextFieldCellPWNormal) {
+//        identifier = NormalPWCellID;
+//    }
+    else if (cellType == TextFieldCellAddress) {
         identifier = NormalPWCellAddress;
     }
     TextFieldViewCell * cell = [tableView dequeueReusableCellWithIdentifier:identifier];
@@ -44,7 +46,9 @@ static NSString * const NormalPWCellAddress = @"NormalPWCellAddress";
         [self.listBg addSubview:self.title];
         [self.listBg addSubview:self.textField];
         [self.listBg addSubview:self.line];
-        if ([reuseIdentifier isEqualToString:DefaultPWCellID] || [reuseIdentifier isEqualToString:NormalPWCellID]) {
+        if ([reuseIdentifier isEqualToString:DefaultPWCellID]
+//            || [reuseIdentifier isEqualToString:NormalPWCellID]
+            ) {
             self.textField.secureTextEntry = YES;
             UIButton * ifSecure = [UIButton createButtonWithNormalImage:@"password_ciphertext" SelectedImage:@"password_visual" Target:self Selector:@selector(secureAction:)];
             ifSecure.frame = CGRectMake(0, 0, Margin_20, TEXTFIELD_HEIGHT);
@@ -59,38 +63,38 @@ static NSString * const NormalPWCellAddress = @"NormalPWCellAddress";
         if (@available(iOS 11.0, *)) {
             self.textField.textContentType = UITextContentTypeName;
         }
+        self.backgroundColor = self.contentView.superview.backgroundColor;
     }
     return self;
 }
 - (void)layoutSubviews
 {
     [super layoutSubviews];
-    if ([self.reuseIdentifier isEqualToString:NormalCellID] || [self.reuseIdentifier isEqualToString:NormalPWCellID]) {
-        [self.listBg mas_makeConstraints:^(MASConstraintMaker *make) {
-            make.left.equalTo(self.contentView.mas_left).offset(Margin_10);
-            make.right.equalTo(self.contentView.mas_right).offset(-Margin_10);
-            make.top.bottom.equalTo(self.contentView);
-        }];
-        self.contentView.backgroundColor = VIEWBG_COLOR;
-    } else {
+//    if ([self.reuseIdentifier isEqualToString:NormalCellID] || [self.reuseIdentifier isEqualToString:NormalPWCellID]) {
+//        [self.listBg mas_makeConstraints:^(MASConstraintMaker *make) {
+//            make.left.equalTo(self.contentView.mas_left).offset(Margin_Main);
+//            make.right.equalTo(self.contentView.mas_right).offset(-Margin_Main);
+//            make.top.bottom.equalTo(self.contentView);
+//        }];
+//    } else {
         [self.listBg mas_makeConstraints:^(MASConstraintMaker *make) {
             make.edges.equalTo(self.contentView);
         }];
-    }
+//    }
     [self.line mas_makeConstraints:^(MASConstraintMaker *make) {
-        make.left.equalTo(self.listBg.mas_left).offset(Margin_15);
-        make.right.equalTo(self.listBg.mas_right).offset(-Margin_15);
+        make.left.equalTo(self.listBg.mas_left).offset(Margin_Main);
+        make.right.equalTo(self.listBg.mas_right).offset(-Margin_Main);
         make.bottom.equalTo(self.listBg);
         make.height.mas_equalTo(LINE_WIDTH);
     }];
     [self.textField mas_makeConstraints:^(MASConstraintMaker *make) {
         make.left.right.equalTo(self.line);
         make.bottom.equalTo(self.listBg);
-        make.height.mas_equalTo(ScreenScale(40));
+        make.height.mas_equalTo(ScreenScale(35));
     }];
     [self.title mas_makeConstraints:^(MASConstraintMaker *make) {
         make.left.equalTo(self.line);
-        make.bottom.equalTo(self.textField.mas_top);
+        make.bottom.equalTo(self.textField.mas_top).offset(-Margin_5);
     }];
     if ([self.reuseIdentifier isEqualToString:NormalPWCellAddress]) {
         [self.rightBtn mas_makeConstraints:^(MASConstraintMaker *make) {
@@ -125,10 +129,7 @@ static NSString * const NormalPWCellAddress = @"NormalPWCellAddress";
 - (UILabel *)title
 {
     if (!_title) {
-        _title = [[UILabel alloc] init];
-        _title.font = FONT(15);
-        _title.textColor = COLOR_6;
-        _title.numberOfLines = 0;
+        _title = [UILabel createTitleLabel];
     }
     return _title;
 }

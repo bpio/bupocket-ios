@@ -52,6 +52,8 @@
 #define View_Width_Main DEVICE_WIDTH - Margin_30
 #define Content_Width_Main DEVICE_WIDTH - Margin_50
 #define LINE_SPACING Margin_5
+#define ContentInset_Bottom (SafeAreaBottomH + ScreenScale(85))
+#define TextViewH ScreenScale(100)
 
 #define Info_Width_Max DEVICE_WIDTH - ScreenScale(165)
 // font

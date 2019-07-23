@@ -220,7 +220,7 @@
 }
 - (void)textChange:(UITextField *)textField
 {
-    self.numberStr = [self.numberText.text stringByTrimmingCharactersInSet:[NSCharacterSet whitespaceAndNewlineCharacterSet]];
+    self.numberStr = TrimmingCharacters(self.numberText.text);
     if (NotNULLString(self.numberStr)) {
         if ([self.numberStr integerValue] < 1) {
             textField.text = @"1";

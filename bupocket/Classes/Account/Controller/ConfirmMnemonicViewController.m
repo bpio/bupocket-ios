@@ -83,14 +83,14 @@
     self.mnemonicBg = [[UIView alloc] init];
     self.mnemonicBg.clipsToBounds = YES;
     self.mnemonicBg.layer.masksToBounds = YES;
-    self.mnemonicBg.layer.cornerRadius = BG_CORNER;
+    self.mnemonicBg.layer.cornerRadius = MAIN_CORNER;
     self.mnemonicBg.backgroundColor = VIEWBG_COLOR;
     [self.scrollView addSubview:self.mnemonicBg];
     [self.mnemonicBg mas_makeConstraints:^(MASConstraintMaker *make) {
         make.top.equalTo(confirmPrompt.mas_bottom).offset(Margin_40);
         make.left.equalTo(confirmPrompt);
-        make.width.mas_equalTo(DEVICE_WIDTH - Margin_40);
-        make.height.mas_equalTo(ScreenScale(145));
+        make.width.mas_equalTo(View_Width_Main);
+        make.height.mas_equalTo(TextViewH);
     }];
     
     UIView * lineView = [[UIView alloc] init];
