@@ -68,10 +68,10 @@
 "BackUpWalletTitle" = "If you have mnemonics, it means that you have the ownership of the assets in the wallet";
 "Note" = "Attention";
 "BackUpWalletNote" = "• It is forbidden to take screenshots. Please make sure to back up in a safe environment with no one at presence and no camera around\n• Please copy the mnemonic correctly with paper and pen, and keep it in a safe place where the network is isolated\n• It is forbidden to reveal or disclose mnemonics in any form or method, such as mail, photo albums, etc\n• Asset security cannot be guaranteed without proper backup. After deleting the wallet or uninstalling the program, you can restore your identity/wallet with mnemonics";
-"BackUpWalletNote1" = "• It is forbidden to take screenshots. Please make sure to back up in a safe environment with no one at presence and no camera around";
-"BackUpWalletNote2" = "• Please copy the mnemonic correctly with paper and pen, and keep it in a safe place where the network is isolated";
-"BackUpWalletNote3" = "• It is forbidden to reveal or disclose mnemonics in any form or method, such as mail, photo albums, etc";
-"BackUpWalletNote4" = "• Asset security cannot be guaranteed without proper backup. After deleting the wallet or uninstalling the program, you can restore your identity/wallet with mnemonics";
+//"BackUpWalletNote1" = "• It is forbidden to take screenshots. Please make sure to back up in a safe environment with no one at presence and no camera around";
+//"BackUpWalletNote2" = "• Please copy the mnemonic correctly with paper and pen, and keep it in a safe place where the network is isolated";
+//"BackUpWalletNote3" = "• It is forbidden to reveal or disclose mnemonics in any form or method, such as mail, photo albums, etc";
+//"BackUpWalletNote4" = "• Asset security cannot be guaranteed without proper backup. After deleting the wallet or uninstalling the program, you can restore your identity/wallet with mnemonics";
 //"BackupInformation" = "Token security cannot be guaranteed without proper backup. After deleting the program or wallet, you need to back up the file to restore the wallet.";
 //"BackupPrompt" = "Make sure to back up in a safe environment with no people around and no cameras.";
 "TemporaryBackup" = "Backup Later";

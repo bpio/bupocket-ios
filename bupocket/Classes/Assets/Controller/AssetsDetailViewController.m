@@ -9,7 +9,7 @@
 #import "AssetsDetailViewController.h"
 #import "AssetsDetailListViewCell.h"
 #import "TransferAccountsViewController.h"
-#import "OrderDetailsViewController.h"
+#import "TransactionDetailsViewController.h"
 #import "AssetsDetailModel.h"
 #import "ReceiveViewController.h"
 
@@ -155,21 +155,21 @@
     [self.assets mas_makeConstraints:^(MASConstraintMaker *make) {
         make.top.equalTo(self.assetsIcon.mas_bottom).offset(Margin_15);
         make.centerX.equalTo(self.headerViewBg);
-        make.width.mas_lessThanOrEqualTo(DEVICE_WIDTH - Margin_40);
+        make.width.mas_lessThanOrEqualTo(View_Width_Main);
     }];
     [self.amount mas_makeConstraints:^(MASConstraintMaker *make) {
         make.top.equalTo(self.assets.mas_bottom).offset(Margin_15);
         make.centerX.equalTo(self.headerViewBg);
-        make.width.mas_lessThanOrEqualTo(DEVICE_WIDTH - Margin_40);
+        make.width.mas_lessThanOrEqualTo(View_Width_Main);
     }];
-    CGFloat btnW = (DEVICE_WIDTH - Margin_30) / 2;
+    CGFloat btnW = (View_Width_Main - Margin_10) / 2;
     [_receiveBtn mas_makeConstraints:^(MASConstraintMaker *make) {
         make.top.equalTo(self.amount.mas_bottom).offset(Margin_20);
-        make.left.equalTo(self.headerViewBg.mas_left).offset(Margin_10);
+        make.left.equalTo(self.headerViewBg.mas_left).offset(Margin_Main);
         make.size.mas_equalTo(CGSizeMake(btnW, MAIN_HEIGHT));
     }];
     [_transferAccounts mas_makeConstraints:^(MASConstraintMaker *make) {
-        make.right.equalTo(self.headerViewBg.mas_right).offset(-Margin_10);
+        make.right.equalTo(self.headerViewBg.mas_right).offset(-Margin_Main);
         make.size.top.equalTo(self->_receiveBtn);
     }];
 }
@@ -381,7 +381,7 @@
 - (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath
 {
     [tableView deselectRowAtIndexPath:indexPath animated:YES];
-    OrderDetailsViewController * VC = [[OrderDetailsViewController alloc] init];
+    TransactionDetailsViewController * VC = [[TransactionDetailsViewController alloc] init];
     VC.assetCode = self.listModel.assetCode;
     VC.listModel = self.listArray[indexPath.section];
     [self.navigationController pushViewController:VC animated:YES];

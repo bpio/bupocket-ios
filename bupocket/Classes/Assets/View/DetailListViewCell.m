@@ -56,9 +56,9 @@ static NSString * const VersionLogCellID = @"VersionLogCellID";
                 self.title.textColor = TITLE_COLOR;
             }
         }
-        self.title.backgroundColor = RandomColor;
-        self.infoTitle.backgroundColor = RandomColor;
-        self.backgroundColor = RandomColor;
+//        self.title.backgroundColor = RandomColor;
+//        self.infoTitle.backgroundColor = RandomColor;
+//        self.backgroundColor = RandomColor;
     }
     return self;
 }
@@ -67,8 +67,8 @@ static NSString * const VersionLogCellID = @"VersionLogCellID";
     [super layoutSubviews];
     if ([self.reuseIdentifier isEqualToString:NormalDetailCellID]) {
         [self.detailBg mas_makeConstraints:^(MASConstraintMaker *make) {
-            make.left.equalTo(self.contentView.mas_left).offset(Margin_10);
-            make.right.equalTo(self.contentView.mas_right).offset(-Margin_10);
+            make.left.equalTo(self.contentView.mas_left).offset(Margin_Main);
+            make.right.equalTo(self.contentView.mas_right).offset(-Margin_Main);
             make.top.equalTo(self.contentView);
         }];
         [self.title mas_makeConstraints:^(MASConstraintMaker *make) {
@@ -82,11 +82,11 @@ static NSString * const VersionLogCellID = @"VersionLogCellID";
             make.bottom.equalTo(self.detailBg.mas_bottom).offset(-Margin_10);
         }];
     } else {
-        CGFloat titleX = Margin_10;
+        CGFloat titleX = Margin_Main;
         CGFloat titleY = Margin_Main;
         CGFloat infoTitleY = Margin_10;
         if ([self.reuseIdentifier isEqualToString:VersionLogCellID]) {
-            titleX = Margin_Main;
+//            titleX = Margin_Main;
             infoTitleY = Margin_Main;
 //            titleY = Margin_20;
 //            infoTitleY = Margin_20;
@@ -121,7 +121,7 @@ static NSString * const VersionLogCellID = @"VersionLogCellID";
 {
     if (!_detailBg) {
         _detailBg = [[UIView alloc] init];
-        _detailBg.backgroundColor = COLOR(@"F8F8F8");
+        _detailBg.backgroundColor = VIEWBG_COLOR;
     }
     return _detailBg;
 }
@@ -147,10 +147,10 @@ static NSString * const VersionLogCellID = @"VersionLogCellID";
 }
 - (void)setFrame:(CGRect)frame
 {
-    if (![self.reuseIdentifier isEqualToString:VersionLogCellID]) {
-        frame.origin.x = Margin_10;
-        frame.size.width -= Margin_20;
-    }
+//    if (![self.reuseIdentifier isEqualToString:VersionLogCellID]) {
+//        frame.origin.x = Margin_10;
+//        frame.size.width -= Margin_20;
+//    }
     [super setFrame:frame];
 }
 - (void)awakeFromNib {

@@ -52,7 +52,7 @@ static NSString * const SearchID = @"SearchID";
     self.tableView.mj_header.automaticallyChangeAlpha = YES;
     self.tableView.mj_footer = [CustomRefreshFooter footerWithRefreshingTarget:self refreshingAction:@selector(loadMoreData)];
     [self.tableView.mj_header beginRefreshing];
-    self.tableView.mj_footer.ignoredScrollViewContentInsetBottom = -(ContentSizeBottom);
+//    self.tableView.mj_footer.ignoredScrollViewContentInsetBottom = -(ContentSizeBottom);
 }
 - (void)loadNewData
 {
@@ -113,20 +113,22 @@ static NSString * const SearchID = @"SearchID";
 }
 - (void)setupView
 {
-    self.tableView = [[UITableView alloc] initWithFrame:self.view.frame style:UITableViewStyleGrouped];
+    [self setupHeaderView];
+    self.tableView = [[UITableView alloc] initWithFrame:CGRectMake(0, MAIN_HEIGHT, DEVICE_WIDTH, DEVICE_HEIGHT - SafeAreaBottomH - NavBarH - MAIN_HEIGHT) style:UITableViewStyleGrouped];
     self.tableView.delegate = self;
     self.tableView.dataSource = self;
     self.tableView.backgroundColor = [UIColor whiteColor];
     self.tableView.separatorStyle = UITableViewCellSeparatorStyleNone;
     [self.view addSubview:self.tableView];
-    [self setupHeaderView];
+//    self.tableView.contentInset = UIEdgeInsetsMake(MAIN_HEIGHT, 0, 0, 0);
 }
 
 - (void)setupHeaderView
 {
     UIView * headerView = [[UIView alloc] initWithFrame:CGRectMake(0, 0, DEVICE_WIDTH, MAIN_HEIGHT)];
     headerView.backgroundColor = [UIColor whiteColor];
-    self.tableView.tableHeaderView = headerView;
+    [self.view addSubview:headerView];
+//    self.tableView.tableHeaderView = headerView;
     _searchTextField = [[UITextField alloc] init];
     _searchTextField.placeholder = Localized(@"InputAssetName");
     _searchTextField.font = FONT(16);
@@ -142,12 +144,12 @@ static NSString * const SearchID = @"SearchID";
     [headerView addSubview:searchBtn];
     [searchBtn mas_makeConstraints:^(MASConstraintMaker *make) {
         make.top.bottom.equalTo(headerView);
-        make.right.equalTo(headerView.mas_right).offset(-Margin_20);
+        make.right.equalTo(headerView.mas_right).offset(-Margin_Main);
         make.width.mas_equalTo(ScreenScale(22));
     }];
     
     [_searchTextField mas_makeConstraints:^(MASConstraintMaker *make) {
-        make.left.equalTo(headerView.mas_left).offset(Margin_20);
+        make.left.equalTo(headerView.mas_left).offset(Margin_Main);
         make.top.bottom.equalTo(headerView);
         make.right.equalTo(searchBtn.mas_left).offset(-Margin_10);
     }];
@@ -185,6 +187,11 @@ static NSString * const SearchID = @"SearchID";
 {
     return CGFLOAT_MIN;
 }
+- (CGFloat)tableView:(UITableView *)tableView heightForFooterInSection:(NSInteger)section
+{
+//    return ContentSizeBottom;
+    return CGFLOAT_MIN;
+}
 - (void)searchAction
 {
     [self.searchTextField resignFirstResponder];
@@ -199,16 +206,14 @@ static NSString * const SearchID = @"SearchID";
 - (void)textChange:(UITextField *)textField
 {
     self.searchText = TrimmingCharacters(self.searchTextField.text);
+    [self.searchTextField.text stringByTrimmingCharactersInSet:[NSCharacterSet whitespaceAndNewlineCharacterSet]];
 }
 - (BOOL)textFieldShouldReturn:(UITextField *)textField
 {
     [self searchAction];
     return YES;
 }
-- (CGFloat)tableView:(UITableView *)tableView heightForFooterInSection:(NSInteger)section
-{
-    return ContentSizeBottom;
-}
+
 - (CGFloat)tableView:(UITableView *)tableView estimatedHeightForRowAtIndexPath:(NSIndexPath *)indexPath
 {
     return ScreenScale(130);

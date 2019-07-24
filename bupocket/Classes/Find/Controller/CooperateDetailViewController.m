@@ -119,8 +119,8 @@ static NSString * const CooperateDetailCellID = @"CooperateDetailCellID";
     [self.view addSubview:self.footerView];
     [self.footerView mas_makeConstraints:^(MASConstraintMaker *make) {
         make.left.right.equalTo(self.view);
-        make.bottom.equalTo(self.view.mas_bottom).offset(-SafeAreaBottomH);
-        make.height.mas_equalTo(ScreenScale(75));
+        make.bottom.equalTo(self.view.mas_bottom);
+        make.height.mas_equalTo(ScreenScale(75) + SafeAreaBottomH);
     }];
     self.footerView.hidden = YES;
     self.signOut.hidden = YES;

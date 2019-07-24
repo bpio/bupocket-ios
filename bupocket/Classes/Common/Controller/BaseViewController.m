@@ -8,19 +8,18 @@
 
 #import "BaseViewController.h"
 
-#import "AssetsViewController.h"
+//#import "AssetsViewController.h"
 #import "AddAssetsViewController.h"
 #import "AssetsDetailViewController.h"
 #import "TransferResultsViewController.h"
-#import "OrderDetailsViewController.h"
-#import "RequestTimeoutViewController.h"
-#import "TransferResultsViewController.h"
+#import "ResultViewController.h"
+//#import "TransactionDetailsViewController.h"
 #import "RequestTimeoutViewController.h"
 
 #import "RegisteredResultViewController.h"
 #import "DistributionResultsViewController.h"
 
-#import "MyIdentityViewController.h"
+//#import "MyIdentityViewController.h"
 
 @interface BaseViewController ()<UIGestureRecognizerDelegate>
 
@@ -51,7 +50,8 @@
     if ([self isKindOfClass:[TransferResultsViewController class]] ||
         [self isKindOfClass:[RequestTimeoutViewController class]] ||
         [self isKindOfClass:[RegisteredResultViewController class]] ||
-        [self isKindOfClass:[DistributionResultsViewController class]]) {
+        [self isKindOfClass:[DistributionResultsViewController class]]  ||
+        [self isKindOfClass:[ResultViewController class]]) {
         [self.navigationController popToRootViewControllerAnimated:YES];
     } else {
         [self.navigationController popViewControllerAnimated:YES];

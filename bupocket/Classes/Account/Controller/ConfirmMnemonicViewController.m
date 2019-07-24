@@ -68,16 +68,13 @@
     self.scrollView = [[UIScrollView alloc] initWithFrame:CGRectMake(0, 0, DEVICE_WIDTH, DEVICE_HEIGHT)];
     self.scrollView.keyboardDismissMode = UIScrollViewKeyboardDismissModeOnDrag;
     [self.view addSubview:self.scrollView];
-    UILabel * confirmPrompt = [[UILabel alloc] init];
-    confirmPrompt.font = FONT_TITLE;
-    confirmPrompt.textColor = COLOR_9;
-    confirmPrompt.numberOfLines = 0;
+    UILabel * confirmPrompt = [UILabel createTitleLabel];
     confirmPrompt.text = Localized(@"ConfirmMnemonicPrompt");
     [self.scrollView addSubview:confirmPrompt];
     [confirmPrompt mas_makeConstraints:^(MASConstraintMaker *make) {
-        make.top.mas_equalTo(Margin_10);
-        make.left.mas_equalTo(Margin_20);
-        make.width.mas_equalTo(DEVICE_WIDTH - Margin_40);
+        make.top.mas_equalTo(Margin_Main);
+        make.left.mas_equalTo(Margin_Main);
+        make.width.mas_equalTo(View_Width_Main);
     }];
     
     self.mnemonicBg = [[UIView alloc] init];
@@ -87,19 +84,18 @@
     self.mnemonicBg.backgroundColor = VIEWBG_COLOR;
     [self.scrollView addSubview:self.mnemonicBg];
     [self.mnemonicBg mas_makeConstraints:^(MASConstraintMaker *make) {
-        make.top.equalTo(confirmPrompt.mas_bottom).offset(Margin_40);
-        make.left.equalTo(confirmPrompt);
-        make.width.mas_equalTo(View_Width_Main);
-        make.height.mas_equalTo(TextViewH);
+        make.top.equalTo(confirmPrompt.mas_bottom).offset(Margin_Main);
+        make.left.width.equalTo(confirmPrompt);
+        make.height.mas_equalTo(ScreenScale(115));
     }];
     
     UIView * lineView = [[UIView alloc] init];
-    lineView.bounds = CGRectMake(0, 0, DEVICE_WIDTH - Margin_40, LINE_WIDTH);
+    lineView.bounds = CGRectMake(0, 0, View_Width_Main, LINE_WIDTH);
     [lineView drawDashLine];
     [self.scrollView addSubview:lineView];
     [lineView mas_makeConstraints:^(MASConstraintMaker *make) {
         make.left.width.equalTo(self.mnemonicBg);
-        make.top.equalTo(self.mnemonicBg.mas_bottom).offset(Margin_15);
+        make.top.equalTo(self.mnemonicBg.mas_bottom).offset(Margin_Main);
     }];
     self.randomArray = [self.mnemonicArray sortedArrayUsingComparator:^NSComparisonResult(NSString *str1, NSString *str2) {
         int seed = arc4random_uniform(2);
@@ -109,11 +105,11 @@
             return [str2 compare:str1];
         }
     }];
-    CGFloat tagW = (DEVICE_WIDTH - ScreenScale(70)) / 4;
+    CGFloat tagW = (View_Width_Main - Margin_30) / 4;
     CGFloat tagH = Margin_40;
-    CGFloat tagBgH = Margin_20 + (tagH + Margin_10) * (self.randomArray.count / 4) +  MAIN_HEIGHT;
+//    CGFloat tagBgH = Margin_30 + (tagH + Margin_Main) * (self.randomArray.count / 4);
     for (NSInteger i = 0; i < self.randomArray.count; i ++) {
-        UIButton * tagBtn = [UIButton createButtonWithTitle:self.randomArray[i] TextFont:FONT_TITLE TextNormalColor:MAIN_COLOR TextSelectedColor:MAIN_COLOR Target:self Selector:@selector(tagAction:)];
+        UIButton * tagBtn = [UIButton createButtonWithTitle:self.randomArray[i] TextFont:FONT_15 TextNormalColor:MAIN_COLOR TextSelectedColor:MAIN_COLOR Target:self Selector:@selector(tagAction:)];
         [tagBtn setTitleColor:[UIColor whiteColor] forState:UIControlStateSelected];
         tagBtn.backgroundColor = VIEWBG_COLOR;
         tagBtn.layer.cornerRadius = TAG_CORNER;
@@ -121,10 +117,12 @@
         [self.scrollView addSubview:tagBtn];
         [tagBtn mas_makeConstraints:^(MASConstraintMaker *make) {
             make.left.equalTo(confirmPrompt.mas_left).offset((tagW + Margin_10) * (i % 4));
-            make.top.equalTo(lineView.mas_bottom).offset(Margin_20 + (tagH + Margin_10) * (i / 4));
+            make.top.equalTo(lineView.mas_bottom).offset(Margin_Main + (tagH + Margin_Main) * (i / 4));
             make.size.mas_equalTo(CGSizeMake(tagW, tagH));
         }];
     }
+    self.finish = [UIButton createFooterViewWithTitle:Localized(@"Finished") isEnabled:NO Target:self Selector:@selector(finishedAction)];
+    /*
     UIButton * finish = [UIButton createButtonWithTitle:Localized(@"Finished") isEnabled:NO Target:self Selector:@selector(finishedAction)];
     [self.scrollView addSubview:finish];
     [finish mas_makeConstraints:^(MASConstraintMaker *make) {
@@ -133,8 +131,9 @@
         make.height.mas_equalTo(MAIN_HEIGHT);
     }];
     self.finish = finish;
+     */
     [self.view layoutIfNeeded];
-    self.scrollView.contentSize = CGSizeMake(0, CGRectGetMaxY(finish.frame) + ContentSizeBottom + ScreenScale(100));
+    self.scrollView.contentSize = CGSizeMake(0, CGRectGetMaxY(lineView.frame) + tagH + ContentSizeBottom + ScreenScale(100));
 }
 - (void)tagAction:(UIButton *)button
 {
@@ -177,13 +176,13 @@
         } else {
             UIButton *lastTagButton = self.tagButtons[i - 1];
             CGFloat leftWidth = CGRectGetMaxX(lastTagButton.frame) + Margin_10;
-            CGFloat rightWidth = DEVICE_WIDTH - ScreenScale(70) - leftWidth;
+            CGFloat rightWidth = DEVICE_WIDTH - ScreenScale(50) - leftWidth;
             if (rightWidth >= tagButton.width) {
                 tagButton.y = lastTagButton.y;
                 tagButton.x = leftWidth;
             } else {
                 tagButton.x = Margin_10;
-                tagButton.y = CGRectGetMaxY(lastTagButton.frame) + Margin_10;
+                tagButton.y = CGRectGetMaxY(lastTagButton.frame);
             }
         }
     }

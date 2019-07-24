@@ -73,7 +73,7 @@
     [self addSubview:self.confirm];
     
     [self.bgScrollView addSubview:self.line];
-    _titleArray = @[@[Localized(@"TransactionDetail"), Localized(@"ReceivingAccount"), Localized(@"TransferQuantity"), Localized(@"TransactionCosts（BU）"), Localized(@"Remarks")], @[Localized(@"SendingAccount"), Localized(@"ReceivingAccount"), Localized(@"TransferQuantity"), Localized(@"TransactionCosts（BU）"), Localized(@"Parameter")]];
+    _titleArray = @[@[Localized(@"TransactionDetail"), Localized(@"ReceivingAccount"), Localized(@"Value"), Localized(@"MaximumTransactionCosts"), Localized(@"Remarks")], @[Localized(@"SendingAccount"), Localized(@"ReceivingAccount"), Localized(@"Value"), Localized(@"MaximumTransactionCosts"), Localized(@"Parameter")]];
 }
 - (void)layoutSubviews
 {
@@ -86,18 +86,19 @@
     
     [self.title mas_makeConstraints:^(MASConstraintMaker *make) {
         make.top.mas_equalTo(0);
-        make.left.mas_equalTo(Margin_20);
-        make.size.mas_equalTo(CGSizeMake(DEVICE_WIDTH - ScreenScale(70), Margin_50));
+        make.left.mas_equalTo(Margin_Main);
+        make.right.mas_lessThanOrEqualTo(self.closeBtn.mas_left).offset(-Margin_Main);
+        make.height.mas_equalTo(Margin_50);
     }];
     
     [self.lineView mas_makeConstraints:^(MASConstraintMaker *make) {
         make.bottom.equalTo(self.title.mas_bottom);
         make.centerX.equalTo(self);
-        make.size.mas_equalTo(CGSizeMake(DEVICE_WIDTH - Margin_40, LINE_WIDTH));
+        make.size.mas_equalTo(CGSizeMake(View_Width_Main, LINE_WIDTH));
     }];
     
     [self.back mas_makeConstraints:^(MASConstraintMaker *make) {
-        make.left.mas_equalTo(DEVICE_WIDTH + Margin_20);
+        make.left.mas_equalTo(DEVICE_WIDTH + Margin_Main);
         make.top.height.equalTo(self.title);
 //        make.width.mas_equalTo(Margin_50);
     }];
@@ -110,7 +111,7 @@
     [self.details mas_makeConstraints:^(MASConstraintMaker *make) {
         make.left.equalTo(self.title);
         make.bottom.equalTo(self.infoTableView);
-        make.width.mas_equalTo(DEVICE_WIDTH - Margin_40);
+        make.width.mas_equalTo(View_Width_Main);
         make.height.mas_equalTo(Margin_30);
     }];
     [self.detailTableView mas_makeConstraints:^(MASConstraintMaker *make) {
@@ -120,7 +121,7 @@
     [self.confirm mas_makeConstraints:^(MASConstraintMaker *make) {
         make.bottom.equalTo(self.mas_bottom).offset(-Margin_25);
         make.centerX.equalTo(self);
-        make.size.mas_equalTo(CGSizeMake(DEVICE_WIDTH - Margin_40, MAIN_HEIGHT));
+        make.size.mas_equalTo(CGSizeMake(View_Width_Main, MAIN_HEIGHT));
     }];
     [self.line mas_makeConstraints:^(MASConstraintMaker *make) {
         make.bottom.equalTo(self.confirm.mas_top).offset(-Margin_20);
@@ -342,7 +343,7 @@
 - (UILabel *)amount
 {
     if (!_amount) {
-        _amount = [[UILabel alloc] initWithFrame:CGRectMake(Margin_20, Margin_50, DEVICE_WIDTH - Margin_40, ScreenScale(70))];
+        _amount = [[UILabel alloc] initWithFrame:CGRectMake(Margin_Main, Margin_50, View_Width_Main, ScreenScale(70))];
         if ([_confirmTransactionModel.type integerValue] == TransactionTypeApplyNode) {
             NSString * str = [NSString stringAppendingBUWithStr:_confirmTransactionModel.amount];
             _amount.attributedText = [Encapsulation attrWithString:str preFont:FONT_Bold(32) preColor:TITLE_COLOR index:self.confirmTransactionModel.amount.length sufFont:FONT(16) sufColor:COLOR(@"151515") lineSpacing:0];
@@ -379,9 +380,7 @@
 - (UIButton *)confirm
 {
     if (!_confirm) {
-        _confirm = [UIButton createButtonWithTitle:Localized(@"Confirm") TextFont:FONT_BUTTON TextNormalColor:[UIColor whiteColor] TextSelectedColor:[UIColor whiteColor] Target:self Selector:@selector(sureBtnClick)];
-        _confirm.backgroundColor = MAIN_COLOR;
-        [_confirm setViewSize:CGSizeMake(DEVICE_WIDTH - Margin_40, MAIN_HEIGHT) borderRadius:MAIN_CORNER corners:UIRectCornerAllCorners];
+        _confirm = [UIButton createButtonWithTitle:Localized(@"Confirm") isEnabled:YES Target:self Selector:@selector(sureBtnClick)];
     }
     return _confirm;
 }
@@ -409,7 +408,7 @@
 - (CGFloat)tableView:(UITableView *)tableView heightForRowAtIndexPath:(NSIndexPath *)indexPath
 {
     NSString * str = [self infoStringWithTableView:tableView indexPath:indexPath];
-    CGFloat cellHeight = [Encapsulation getSizeSpaceLabelWithStr:str font:FONT_TITLE width:(DEVICE_WIDTH - Margin_40) height:CGFLOAT_MAX lineSpacing:LINE_SPACING].height + ScreenScale(40);
+    CGFloat cellHeight = [Encapsulation getSizeSpaceLabelWithStr:str font:FONT_TITLE width:View_Width_Main height:CGFLOAT_MAX lineSpacing:LINE_SPACING].height + ScreenScale(40);
     return cellHeight;
 }
 - (CGFloat)tableView:(UITableView *)tableView heightForHeaderInSection:(NSInteger)section

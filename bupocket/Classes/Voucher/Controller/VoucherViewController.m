@@ -74,6 +74,10 @@ static NSString * const VoucherCellID = @"VoucherCellID";
         [self reloadData];
     }
 }
+- (void)viewWillDisappear:(BOOL)animated {
+    [super viewWillDisappear:animated];
+    [self.tableView.mj_header endRefreshing];
+}
 - (void)reloadData
 {
     self.noNetWork.hidden = YES;

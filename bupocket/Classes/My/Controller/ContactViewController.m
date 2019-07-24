@@ -66,13 +66,14 @@
         self.tableView.tableFooterView = footerView;
         [footerView addSubview:self.save];
         [self.save mas_makeConstraints:^(MASConstraintMaker *make) {
-            make.top.equalTo(footerView.mas_top).offset(ScreenScale(65));
+            make.top.equalTo(footerView.mas_top).offset(Margin_30);
             make.centerX.mas_equalTo(0);
             make.width.mas_equalTo(View_Width_Main);
             make.height.mas_equalTo(MAIN_HEIGHT);
         }];
         UIButton * deleteBtn = [UIButton createButtonWithTitle:Localized(@"DeleteContact") isEnabled:YES Target:self Selector:@selector(deleteAction)];
         [deleteBtn setTitleColor:WARNING_COLOR forState:UIControlStateNormal];
+        deleteBtn.titleLabel.font = FONT(16);
         deleteBtn.backgroundColor = [UIColor whiteColor];
         [footerView addSubview:deleteBtn];
         [deleteBtn mas_makeConstraints:^(MASConstraintMaker *make) {

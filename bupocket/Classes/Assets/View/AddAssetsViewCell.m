@@ -60,7 +60,7 @@ static NSString * const AddAssetsCellID = @"AddAssetsCellID";
 {
     [super layoutSubviews];
     [self.listImage mas_makeConstraints:^(MASConstraintMaker *make) {
-        make.left.equalTo(self.contentView.mas_left).offset(Margin_20);
+        make.left.equalTo(self.contentView.mas_left).offset(Margin_Main);
         make.top.equalTo(self.contentView.mas_top).offset(Margin_20);
         make.width.height.mas_equalTo(Margin_50);
     }];
@@ -81,16 +81,16 @@ static NSString * const AddAssetsCellID = @"AddAssetsCellID";
     [self.infoTitle mas_makeConstraints:^(MASConstraintMaker *make) {
         make.top.equalTo(self.detailTitle.mas_bottom).offset(Margin_10);
         make.left.equalTo(self.title);
-        make.right.equalTo(self.contentView.mas_right).offset(-Margin_20);
+        make.right.equalTo(self.contentView.mas_right).offset(-Margin_Main);
     }];
     [self.lineView mas_makeConstraints:^(MASConstraintMaker *make) {
         make.left.equalTo(self.listImage);
         make.top.equalTo(self.infoTitle.mas_bottom).offset(Margin_15);
-        make.size.mas_equalTo(CGSizeMake(DEVICE_WIDTH - Margin_40, LINE_WIDTH));
+        make.size.mas_equalTo(CGSizeMake(View_Width_Main, LINE_WIDTH));
     }];
     [self.switchControl mas_makeConstraints:^(MASConstraintMaker *make) {
         make.centerY.equalTo(self.listImage);
-        make.right.equalTo(self.contentView.mas_right).offset(-Margin_20);
+        make.right.equalTo(self.contentView.mas_right).offset(-Margin_Main);
         make.left.mas_greaterThanOrEqualTo(self.detailTitle.mas_right).offset(Margin_10);
     }];
 }

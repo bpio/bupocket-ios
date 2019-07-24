@@ -92,7 +92,7 @@
         NSString * walletIconName = self.walletModel.walletIconName == nil ? Current_Wallet_IconName : self.walletModel.walletIconName;
         [cell.listImage setImage:[UIImage imageNamed:walletIconName] forState:UIControlStateNormal];
     } else if (indexPath.row == 1) {
-        cell.detailTitle.attributedText = [Encapsulation attrWithString:self.walletModel.walletName font:FONT_15 color:COLOR_9 lineSpacing:LINE_SPACING];
+        cell.detailTitle.attributedText = [Encapsulation attrWithString:self.walletModel.walletName font:FONT_TITLE color:COLOR_9 lineSpacing:LINE_SPACING];
         cell.detailTitle.numberOfLines = 2;
         cell.detailTitle.textAlignment = NSTextAlignmentRight;
     }
@@ -103,8 +103,8 @@
 }
 - (CGFloat)getCellHeight
 {
-    CGFloat detailW = DEVICE_WIDTH - ScreenScale(70) - [Encapsulation rectWithText:self.listArray[self.listArray.count - 1] font:FONT_15 textHeight:CGFLOAT_MAX].size.width;
-    return [Encapsulation getSizeSpaceLabelWithStr:self.walletModel.walletName font:FONT_15 width:detailW height:CGFLOAT_MAX lineSpacing:LINE_SPACING].height + Margin_30;
+    CGFloat detailW = DEVICE_WIDTH - ScreenScale(70) - [Encapsulation rectWithText:self.listArray[self.listArray.count - 1] font:FONT_TITLE textHeight:CGFLOAT_MAX].size.width;
+    return [Encapsulation getSizeSpaceLabelWithStr:self.walletModel.walletName font:FONT_TITLE width:detailW height:CGFLOAT_MAX lineSpacing:LINE_SPACING].height + Margin_30;
 }
 - (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath
 {

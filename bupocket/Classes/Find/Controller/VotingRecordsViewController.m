@@ -154,7 +154,7 @@ static NSString * const VotingRecordsCellID = @"VotingRecordsCellID";
     if (self.nodePlanModel && indexPath.section == 0) {
         return ScreenScale(80);
     } else {
-        return ScreenScale(105);
+        return ScreenScale(115);
     }
 }
 - (UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath

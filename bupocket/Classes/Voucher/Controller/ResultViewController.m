@@ -59,6 +59,7 @@
         make.left.equalTo(headerView.mas_left).offset(Margin_15);
         make.right.equalTo(headerView.mas_right).offset(-Margin_15);
     }];
+    /*
     UIView * footerView = [[UIView alloc] init];
     footerView.backgroundColor = VIEWBG_COLOR;
     [self.view addSubview:footerView];
@@ -77,14 +78,15 @@
         make.right.equalTo(footerView.mas_right).offset(-Margin_15);
         make.height.mas_equalTo(MAIN_HEIGHT);
     }];
+     */
 }
-- (void)confirmAction
-{
+//- (void)confirmAction
+//{
 //    TabBarViewController * tabBar = [[TabBarViewController alloc] init];
 //    [tabBar setSelectedIndex:1];
 //    [UIApplication sharedApplication].keyWindow.rootViewController = tabBar;
-    [self.navigationController popToRootViewControllerAnimated:YES];
-}
+//    [self.navigationController popToRootViewControllerAnimated:YES];
+//}
 - (CGFloat)tableView:(UITableView *)tableView heightForHeaderInSection:(NSInteger)section
 {
     return Margin_10;

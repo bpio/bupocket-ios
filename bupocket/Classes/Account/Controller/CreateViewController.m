@@ -113,7 +113,7 @@
     [prompt setAttributedTitle:[Encapsulation attrWithString:Localized(@"PWPrompt") preFont:FONT_13 preColor:WARNING_COLOR index:0 sufFont:FONT_13 sufColor:WARNING_COLOR lineSpacing:LINE_SPACING] forState:UIControlStateNormal];
     prompt.backgroundColor = VIEWBG_COLOR;
     prompt.contentEdgeInsets = UIEdgeInsetsMake(0, Margin_10, 0, Margin_10);
-    CGSize maximumSize = CGSizeMake(View_Width_Main - Margin_20, CGFLOAT_MAX);
+    CGSize maximumSize = CGSizeMake(Content_Width_Main, CGFLOAT_MAX);
     CGSize expectSize = [prompt.titleLabel sizeThatFits:maximumSize];
     CGSize promptSize = CGSizeMake(View_Width_Main, expectSize.height + Margin_30);
     [prompt setViewSize:promptSize borderRadius:MAIN_CORNER corners:UIRectCornerAllCorners];

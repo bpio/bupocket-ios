@@ -57,8 +57,8 @@
     [identityBg addSubview:createIdentity];
     [createIdentity mas_makeConstraints:^(MASConstraintMaker *make) {
         make.top.equalTo(titleLabel.mas_bottom).offset(ScreenScale(90));
-        make.left.equalTo(identityBg.mas_left).offset(Margin_20);
-        make.right.equalTo(identityBg.mas_right).offset(-Margin_20);
+        make.left.equalTo(identityBg.mas_left).offset(Margin_Main);
+        make.right.equalTo(identityBg.mas_right).offset(-Margin_Main);
         make.height.mas_equalTo(MAIN_HEIGHT);
     }];
     

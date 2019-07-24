@@ -52,6 +52,23 @@
     self.tableView.dataSource = self;
     self.tableView.separatorStyle = UITableViewCellSeparatorStyleNone;
     [self.view addSubview:self.tableView];
+    if (![self.walletModel.walletAddress isEqualToString:[[[AccountTool shareTool] account] walletAddress]]) {
+        UIButton * deleteBtn = [UIButton createFooterViewWithTitle:Localized(@"DeleteWallet") isEnabled:YES Target:self Selector:@selector(deleteAction)];
+        [deleteBtn setTitleColor:WARNING_COLOR forState:UIControlStateNormal];
+        deleteBtn.backgroundColor = [UIColor whiteColor];
+        deleteBtn.superview.backgroundColor = self.tableView.backgroundColor;
+//        [UIButton createButtonWithTitle:Localized(@"DeleteWallet") isEnabled:YES Target:self Selector:@selector(deleteAction)];
+//        [deleteBtn setTitleColor:WARNING_COLOR forState:UIControlStateNormal];
+//        deleteBtn.backgroundColor = [UIColor whiteColor];
+//        [footerView addSubview:deleteBtn];
+//        [deleteBtn mas_makeConstraints:^(MASConstraintMaker *make) {
+//            make.top.equalTo(footerView.mas_top).offset(ScreenScale(90));
+//            //            make.bottom.equalTo(footerView);
+//            make.centerX.equalTo(footerView);
+//            make.size.mas_equalTo(btnSize);
+//        }];
+//        return footerView;
+    }
 }
 
 - (CGFloat)tableView:(UITableView *)tableView heightForRowAtIndexPath:(NSIndexPath *)indexPath
@@ -70,13 +87,15 @@
 {
     if (section == 2) {
         if (![self.walletModel.walletAddress isEqualToString:[[[AccountTool shareTool] account] walletAddress]]) {
-             return ScreenScale(150) + SafeAreaBottomH;
+//             return ScreenScale(150) + SafeAreaBottomH;
+            return ContentInset_Bottom;
         }
         return SafeAreaBottomH;
     } else {
         return CGFLOAT_MIN;
     }
 }
+/*
 - (UIView *)tableView:(UITableView *)tableView viewForFooterInSection:(NSInteger)section
 {
     //    if (section == 0 || [self.walletModel.walletAddress isEqualToString:[[[AccountTool shareTool] account] walletAddress]]) {
@@ -98,6 +117,7 @@
         return [[UIView alloc] init];
     }
 }
+ */
 - (void)deleteAction
 {
     BOOL isCurrentWallet = [self.walletModel.walletAddress isEqualToString:CurrentWalletAddress];

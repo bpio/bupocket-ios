@@ -43,7 +43,7 @@
     NSMutableDictionary * paraStyleDic = [NSMutableDictionary dictionary];
     
     UIFont * font = (MAX(preFont.fontWeight, sufFont.fontWeight) == preFont.fontWeight) ? preFont : sufFont;
-    NSMutableParagraphStyle * paragraphStyle = [Encapsulation setDefaultParagraphStyleWithFont:font lineSpacing:lineSpacing];
+    NSMutableParagraphStyle * paragraphStyle = [Encapsulation setDefaultParagraphStyleWithStr:str font:font lineSpacing:lineSpacing];
     paraStyleDic[NSParagraphStyleAttributeName] = paragraphStyle;
     [attr addAttributes:paraStyleDic range:NSMakeRange(0, str.length)];
     return attr;
@@ -57,7 +57,7 @@
     dic[NSForegroundColorAttributeName] = color;
     [attr addAttributes:dic range:NSMakeRange(0, str.length)];
     NSMutableDictionary * paraStyleDic = [NSMutableDictionary dictionary];
-    NSMutableParagraphStyle * paragraphStyle = [Encapsulation setDefaultParagraphStyleWithFont:font lineSpacing:lineSpacing];
+    NSMutableParagraphStyle * paragraphStyle = [Encapsulation setDefaultParagraphStyleWithStr:str font:font lineSpacing:lineSpacing];
     paraStyleDic[NSParagraphStyleAttributeName] = paragraphStyle;
     [attr addAttributes:paraStyleDic range:NSMakeRange(0, str.length)];
     return attr;
@@ -95,7 +95,7 @@
 // Calculate the width and height of UILabel (with row spacing)
 + (CGSize)getSizeSpaceLabelWithStr:(NSString *)str font:(UIFont *)font width:(CGFloat)width height:(CGFloat)height lineSpacing:(CGFloat)lineSpacing
 {
-    NSMutableParagraphStyle * paragraphStyle = [Encapsulation setDefaultParagraphStyleWithFont:font lineSpacing:lineSpacing];
+    NSMutableParagraphStyle * paragraphStyle = [Encapsulation setDefaultParagraphStyleWithStr:str font:font lineSpacing:lineSpacing];
     NSDictionary * dic = @{NSFontAttributeName:font,NSParagraphStyleAttributeName:paragraphStyle, NSKernAttributeName:@1.0f};
     CGSize size = [str boundingRectWithSize:CGSizeMake(width, height) options:NSStringDrawingUsesLineFragmentOrigin attributes:dic context:nil].size;
     return size;
@@ -290,7 +290,7 @@
     UIGraphicsEndImageContext();
     return resultImage;
 }
-+ (NSMutableParagraphStyle *)setDefaultParagraphStyleWithFont:(UIFont *)font lineSpacing:(CGFloat)lineSpacing
++ (NSMutableParagraphStyle *)setDefaultParagraphStyleWithStr:(NSString *)str font:(UIFont *)font lineSpacing:(CGFloat)lineSpacing
 {
     //   NSParagraphStyleAttributeName 段落的风格（设置首行，行间距，对齐方式）
     NSMutableParagraphStyle * paragraphStyle = [[NSMutableParagraphStyle alloc] init];
@@ -305,7 +305,9 @@
     // 首行缩进
     paragraphStyle.firstLineHeadIndent = 0.0;
     // 段与段之间的间距
-//    paragraphStyle.paragraphSpacing = Margin_10;
+    if ([str containsString:@"\n"]) {
+        paragraphStyle.paragraphSpacing = Margin_10;
+    }
     // 段首行空白空间
     paragraphStyle.paragraphSpacingBefore = 0.0;
     // 整体缩进(首行除外)

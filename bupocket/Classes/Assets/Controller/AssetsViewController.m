@@ -119,8 +119,8 @@
     [self.tableView.mj_header beginRefreshing];
     self.navigationItem.title = CurrentWalletName ? CurrentWalletName : Current_WalletName;
 }
-- (void)viewDidDisappear:(BOOL)animated {
-    [super viewDidDisappear:animated];
+- (void)viewWillDisappear:(BOOL)animated {
+    [super viewWillDisappear:animated];
     [self.tableView.mj_header endRefreshing];
 }
 - (UIStatusBarStyle)preferredStatusBarStyle {
@@ -350,12 +350,7 @@
         _totalAssets.font = FONT(36);
         _totalAssets.textColor = [UIColor whiteColor];
         [_headerViewBg addSubview:_totalAssets];
-        [self.totalAssets mas_makeConstraints:^(MASConstraintMaker *make) {
-//            make.top.equalTo(self.headerViewBg.mas_top).offset(StatusBarHeight + MAIN_HEIGHT);
-            make.top.equalTo(self.headerViewBg.mas_top).offset(NavBarH + Margin_10);
-            make.centerX.equalTo(self.headerViewBg);
-            make.width.mas_lessThanOrEqualTo(DEVICE_WIDTH - Margin_40);
-        }];
+        
         
         CustomButton * totalAssetsTitle = [[CustomButton alloc] init];
         totalAssetsTitle.layoutMode = HorizontalInverted;
@@ -364,27 +359,37 @@
         [totalAssetsTitle setImage:[UIImage imageNamed:@"estimated_total_assets"] forState:UIControlStateNormal];
         [totalAssetsTitle addTarget:self action:@selector(totalAssetsInfo:) forControlEvents:UIControlEventTouchUpInside];
         [self.headerViewBg addSubview:totalAssetsTitle];
-        CGFloat btnW = [Encapsulation rectWithText:totalAssetsTitle.titleLabel.text font:totalAssetsTitle.titleLabel.font textHeight:Margin_20].size.width + Margin_20;
-        [totalAssetsTitle mas_makeConstraints:^(MASConstraintMaker *make) {
-            make.top.equalTo(self.totalAssets.mas_bottom).offset(Margin_10);
-            make.size.mas_equalTo(CGSizeMake(btnW, Margin_20));
-            make.centerX.equalTo(self.headerViewBg);
-        }];
+        
         
         UIView * operationBtnBg = [[UIView alloc] init];
         operationBtnBg.backgroundColor = [UIColor whiteColor];
         operationBtnBg.layer.masksToBounds = YES;
-        operationBtnBg.layer.cornerRadius = MAIN_CORNER;
+        operationBtnBg.layer.cornerRadius = BG_CORNER;
         [self.headerViewBg addSubview:operationBtnBg];
         [operationBtnBg mas_makeConstraints:^(MASConstraintMaker *make) {
-            make.left.equalTo(self.headerViewBg.mas_left).offset(Margin_10);
-            make.right.equalTo(self.headerViewBg.mas_right).offset(- Margin_10);
+            make.left.equalTo(self.headerViewBg.mas_left).offset(Margin_Main);
+            make.right.equalTo(self.headerViewBg.mas_right).offset(- Margin_Main);
             make.bottom.equalTo(self.headerViewBg);
-            make.height.mas_equalTo(ScreenScale(100));
+            make.height.mas_equalTo(TextViewH);
         }];
         
+        CGFloat btnW = [Encapsulation rectWithText:totalAssetsTitle.titleLabel.text font:totalAssetsTitle.titleLabel.font textHeight:Margin_20].size.width + Margin_20;
+        [totalAssetsTitle mas_makeConstraints:^(MASConstraintMaker *make) {
+//            make.top.equalTo(self.totalAssets.mas_bottom).offset(Margin_10);
+            make.bottom.equalTo(operationBtnBg.mas_top).offset(-Margin_20);
+            make.size.mas_equalTo(CGSizeMake(btnW, Margin_20));
+            make.centerX.equalTo(self.headerViewBg);
+        }];
+        
+        [self.totalAssets mas_makeConstraints:^(MASConstraintMaker *make) {
+            //            make.top.equalTo(self.headerViewBg.mas_top).offset(StatusBarHeight + MAIN_HEIGHT);
+//            make.top.equalTo(self.headerViewBg.mas_top).offset(NavBarH + Margin_10);
+            make.bottom.equalTo(totalAssetsTitle.mas_top).offset(-Margin_5);
+            make.centerX.equalTo(self.headerViewBg);
+            make.width.mas_lessThanOrEqualTo(View_Width_Main);
+        }];
         NSArray * operationArray = @[Localized(@"Scan"), Localized(@"Receive"), Localized(@"AddAssets")];
-        CGFloat operationBtnW = (DEVICE_WIDTH - (Margin_15 + Margin_10) * 2) / operationArray.count;
+        CGFloat operationBtnW = (Content_Width_Main) / operationArray.count;
         for (NSInteger i = 0; i < operationArray.count; i ++) {
             CustomButton * operationBtn = [[CustomButton alloc] init];
             operationBtn.layoutMode = VerticalNormal;
@@ -397,9 +402,9 @@
             [operationBtn addTarget:self action:@selector(operationAction:) forControlEvents:UIControlEventTouchUpInside];
             [operationBtnBg addSubview:operationBtn];
             [operationBtn mas_makeConstraints:^(MASConstraintMaker *make) {
-                make.left.equalTo(operationBtnBg.mas_left).offset(Margin_15 + operationBtnW * i);
+                make.left.equalTo(operationBtnBg.mas_left).offset(Margin_10 + operationBtnW * i);
                 make.centerY.equalTo(operationBtnBg);
-                make.size.mas_equalTo(CGSizeMake(operationBtnW, ScreenScale(80)));
+                make.size.mas_equalTo(CGSizeMake(operationBtnW, TextViewH - Margin_20));
             }];
         }
         _headerBg = headerBg;
@@ -755,10 +760,10 @@
 //                return 217;
 ////                return 195;
 //            }
-            return ScreenScale(130) + [Encapsulation getSizeSpaceLabelWithStr:Localized(@"SafetyTips") font:FONT_TITLE width:DEVICE_WIDTH - Margin_40 height:CGFLOAT_MAX lineSpacing:LINE_SPACING].height;
+            return ScreenScale(130) + [Encapsulation getSizeSpaceLabelWithStr:Localized(@"SafetyTips") font:FONT_TITLE width:Content_Width_Main height:CGFLOAT_MAX lineSpacing:LINE_SPACING].height;
 //            [Encapsulation rectWithText:Localized(@"SafetyTips") font:FONT_TITLE textWidth:DEVICE_WIDTH - Margin_40].size.height;
         } else {
-            return Margin_40;
+            return Margin_Section_Header - Margin_5;
         }
     } else {
         return CGFLOAT_MIN;
@@ -769,6 +774,13 @@
 {
     UIView * headerView = [[UIView alloc] init];
     if (section == 0) {
+        UIButton * header = [UIButton createHeaderButtonWithTitle:Localized(@"MyAssets")];
+        header.contentEdgeInsets = UIEdgeInsetsMake(Margin_5, Margin_Main, 0, Margin_Main);
+        [headerView addSubview:header];
+        [header mas_makeConstraints:^(MASConstraintMaker *make) {
+            make.left.right.bottom.equalTo(headerView);
+            make.height.mas_equalTo(Margin_Section_Header - Margin_5);
+        }];
         NSUserDefaults * defaults = [NSUserDefaults standardUserDefaults];
         if (![defaults boolForKey:If_Backup]) {
             UIView * backupBg = [[UIView alloc] init];
@@ -778,8 +790,9 @@
             [headerView addSubview:backupBg];
             [backupBg mas_makeConstraints:^(MASConstraintMaker *make) {
                 make.top.equalTo(headerView.mas_top).offset(Margin_10);
-                make.left.equalTo(headerView.mas_left).offset(Margin_10);
-                make.right.equalTo(headerView.mas_right).offset(- Margin_10);
+                make.left.equalTo(headerView.mas_left).offset(Margin_Main);
+                make.right.equalTo(headerView.mas_right).offset(- Margin_Main);
+                make.bottom.equalTo(header.mas_top);
             }];
             UILabel * safetyTipsTitle = [[UILabel alloc] init];
             safetyTipsTitle.textColor = COLOR_6;
@@ -790,6 +803,7 @@
                 make.top.equalTo(backupBg.mas_top).offset(Margin_15);
                 make.left.equalTo(backupBg.mas_left).offset(Margin_10);
                 make.right.equalTo(backupBg.mas_right).offset(- Margin_10);
+//                make.height.mas_equalTo(Margin_20);
             }];
             
             UILabel * safetyTips = [[UILabel alloc] init];
@@ -798,10 +812,15 @@
 //            safetyTips.font = FONT_TITLE;
 //            safetyTips.text = Localized(@"SafetyTips");
             safetyTips.numberOfLines = 0;
+            CGSize maximumSize = CGSizeMake(Content_Width_Main, CGFLOAT_MAX);
+            CGSize expectSize = [safetyTips sizeThatFits:maximumSize];
+            CGSize promptSize = CGSizeMake(Content_Width_Main, expectSize.height);
             [backupBg addSubview:safetyTips];
             [safetyTips mas_makeConstraints:^(MASConstraintMaker *make) {
                 make.top.equalTo(safetyTipsTitle.mas_bottom).offset(Margin_10);
-                make.left.right.equalTo(safetyTipsTitle);
+                make.centerX.mas_equalTo(0);
+                make.size.mas_equalTo(promptSize);
+//                make.left.right.equalTo(safetyTipsTitle);
             }];
             /*
             CGFloat btnW = (DEVICE_WIDTH - ScreenScale(65)) / 2;
@@ -835,12 +854,6 @@
 //                make.size.bottom.equalTo(_noBackup);
             }];
         }
-        UIButton * header = [UIButton createHeaderButtonWithTitle:Localized(@"MyAssets")];
-        [headerView addSubview:header];
-        [header mas_makeConstraints:^(MASConstraintMaker *make) {
-            make.left.right.bottom.equalTo(headerView);
-            make.height.mas_equalTo(Margin_30);
-        }];
     }
     return headerView;
 }

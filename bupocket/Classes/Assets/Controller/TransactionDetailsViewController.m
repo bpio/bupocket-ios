@@ -1,18 +1,18 @@
 //
-//  OrderDetailsViewController.m
+//  TransactionDetailsViewController.m
 //  bupocket
 //
-//  Created by bupocket on 2018/10/23.
-//  Copyright © 2018年 bupocket. All rights reserved.
+//  Created by huoss on 2019/7/24.
+//  Copyright © 2019 bupocket. All rights reserved.
 //
 
-#import "OrderDetailsViewController.h"
+#import "TransactionDetailsViewController.h"
 #import "DetailListViewCell.h"
 #import "BlockInfoModel.h"
 #import "TxDetailModel.h"
 #import "TxInfoModel.h"
 
-@interface OrderDetailsViewController ()<UITableViewDelegate, UITableViewDataSource>
+@interface TransactionDetailsViewController ()<UITableViewDelegate, UITableViewDataSource>
 
 @property (nonatomic, strong) UITableView * tableView;
 @property (nonatomic, strong) UIView * headerView;
@@ -33,7 +33,7 @@
 
 @end
 
-@implementation OrderDetailsViewController
+@implementation TransactionDetailsViewController
 
 static NSInteger const TxInfoNormalCount = 6;
 
@@ -50,7 +50,7 @@ static NSInteger const TxInfoNormalCount = 6;
         outOrIn = @"+";
     }
     self.assets = [NSString stringWithFormat:@"%@%@ %@", outOrIn, self.listModel.amount, self.assetCode];
-    _headerViewH = ScreenScale(170) + [Encapsulation rectWithText:self.assets font:FONT_Bold(27) textWidth:DEVICE_WIDTH - Margin_40].size.height;
+    _headerViewH = ScreenScale(170) + [Encapsulation rectWithText:self.assets font:FONT_Bold(27) textWidth:View_Width_Main].size.height;
     [self setupView];
     [self setupRefresh];
     self.noNetWork = [Encapsulation showNoNetWorkWithSuperView:self.view target:self action:@selector(reloadData)];
@@ -227,6 +227,17 @@ static NSInteger const TxInfoNormalCount = 6;
         return [[UIView alloc] init];
     } else {
         UIView * headerView = [[UIView alloc] init];
+        NSArray * titleArray = @[@"TX Info", @"Block Info"];
+        UIButton * header = [UIButton createHeaderButtonWithTitle:titleArray[section - 1]];
+        header.titleLabel.font = FONT(16);
+        [header setTitleColor:TITLE_COLOR forState:UIControlStateNormal];
+        header.backgroundColor = [UIColor whiteColor];
+        [headerView addSubview:header];
+        [header mas_makeConstraints:^(MASConstraintMaker *make) {
+            make.top.equalTo(headerView.mas_top).offset(Margin_10);
+            make.left.right.bottom.equalTo(headerView);
+        }];
+        /*
         UIView * headerBg = [[UIView alloc] init];
         headerBg.backgroundColor = [UIColor whiteColor];
         [headerView addSubview:headerBg];
@@ -236,7 +247,6 @@ static NSInteger const TxInfoNormalCount = 6;
             make.right.equalTo(headerView.mas_right).offset(-Margin_10);
             make.bottom.equalTo(headerView);
         }];
-        NSArray * titleArray = @[@"TX Info", @"Block Info"];
         UILabel * headerTitle = [[UILabel alloc] init];
         headerTitle.font = FONT(16);
         headerTitle.textColor = TITLE_COLOR;
@@ -246,14 +256,15 @@ static NSInteger const TxInfoNormalCount = 6;
             make.left.equalTo(headerBg.mas_left).offset(Margin_10);
             make.centerY.equalTo(headerBg);
         }];
+        */
         UIView * lineView = [[UIView alloc] init];
-        lineView.bounds = CGRectMake(0, 0, DEVICE_WIDTH - ScreenScale(44), LINE_WIDTH);
+        lineView.bounds = CGRectMake(0, 0, View_Width_Main, LINE_WIDTH);
         [lineView drawDashLine];
-        [headerBg addSubview:lineView];
+        [headerView addSubview:lineView];
         [lineView mas_makeConstraints:^(MASConstraintMaker *make) {
-            make.left.equalTo(headerBg.mas_left).offset(Margin_10);
-            make.right.equalTo(headerBg.mas_right).offset(-Margin_10);
-            make.bottom.equalTo(headerBg);
+            make.left.equalTo(headerView.mas_left).offset(Margin_Main);
+            make.right.equalTo(headerView.mas_right).offset(-Margin_Main);
+            make.bottom.equalTo(headerView);
         }];
         return headerView;
     }
@@ -264,7 +275,7 @@ static NSInteger const TxInfoNormalCount = 6;
         return MAIN_HEIGHT;
     } else if (indexPath.section == 1 && indexPath.row > TxInfoNormalCount) {
         CGFloat bottomH = indexPath.row % 2 ? 0 : Margin_15;
-        CGFloat rowHeight = [Encapsulation rectWithText:self.infoArray[indexPath.section][indexPath.row] font:FONT(15) textWidth: DEVICE_WIDTH - Margin_60].size.height + ScreenScale(50) + bottomH;
+        CGFloat rowHeight = [Encapsulation rectWithText:self.infoArray[indexPath.section][indexPath.row] font:FONT(15) textWidth: Content_Width_Main].size.height + ScreenScale(50) + bottomH;
         return rowHeight;
     } else {
         CGFloat rowHeight = [Encapsulation rectWithText:self.infoArray[indexPath.section][indexPath.row] font:FONT(15) textWidth: Info_Width_Max].size.height + Margin_30;
@@ -304,7 +315,6 @@ static NSInteger const TxInfoNormalCount = 6;
 {
     [tableView deselectRowAtIndexPath:indexPath animated:YES];
 }
-
 /*
 #pragma mark - Navigation
 

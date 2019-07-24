@@ -70,41 +70,48 @@
     _tableView.separatorStyle = UITableViewCellSeparatorStyleNone;
     [self.view addSubview:self.tableView];
 }
-- (UIButton *)setupHeaderTitle:(NSString *)title index:(NSInteger)index
-{
-    CGFloat top = (index == 0) ? Margin_5 : 0;
-    CGFloat height = Margin_Section_Header - top;
-    UIButton * titleBtn = [UIButton createHeaderButtonWithTitle:title];
-    titleBtn.contentEdgeInsets = UIEdgeInsetsMake(top, Margin_Main, 0, Margin_Main);
-    titleBtn.frame = CGRectMake(0, 0, DEVICE_WIDTH, height);
-    return titleBtn;
-}
+//- (UIButton *)setupHeaderTitle:(NSString *)title index:(NSInteger)index
+//{
+//    CGFloat top = (index == 0) ? Margin_5 : 0;
+//    CGFloat height = Margin_Section_Header - top;
+//    UIButton * titleBtn = [UIButton createHeaderButtonWithTitle:title];
+//    titleBtn.contentEdgeInsets = UIEdgeInsetsMake(top, Margin_Main, 0, Margin_Main);
+//    titleBtn.frame = CGRectMake(0, 0, DEVICE_WIDTH, height);
+//    return titleBtn;
+//}
 - (CGFloat)tableView:(UITableView *)tableView heightForHeaderInSection:(NSInteger)section
 {
     if (section == 0) {
-        CGFloat top = (section == 0) ? Margin_5 : 0;
-        return Margin_Section_Header - top;
+        return Margin_Section_Header - Margin_5;
     } else {
-        return self.listArray.count > 0 ? (Margin_Section_Header - Margin_5) : ScreenScale(180);
+        return self.listArray.count > 0 ? (Margin_Section_Header - Margin_10) : ScreenScale(180);
     }
 }
 - (UIView *)tableView:(UITableView *)tableView viewForHeaderInSection:(NSInteger)section
 {
+    UIButton * titleBtn;
     if (section == 0) {
-        return [self setupHeaderTitle:Localized(@"CurrentIdentity") index:section];
+//        return [self setupHeaderTitle:Localized(@"CurrentIdentity") index:section];
+        titleBtn = [UIButton createHeaderButtonWithTitle:Localized(@"CurrentIdentity")];
+        titleBtn.contentEdgeInsets = UIEdgeInsetsMake(Margin_5, Margin_Main, 0, Margin_Main);
+        return titleBtn;
     } else if (section == 1) {
         if (self.listArray.count > 0) {
-            return [self setupHeaderTitle:Localized(@"ImportedWallet") index:section];
+//            return [self setupHeaderTitle:Localized(@"ImportedWallet") index:section];
+            titleBtn = [UIButton createHeaderButtonWithTitle:Localized(@"ImportedWallet")];
+            return titleBtn;
         } else {
             UIView * headerView = [[UIView alloc] initWithFrame:CGRectMake(0, 0, DEVICE_WIDTH, ScreenScale(180))];
-            UIButton * titleBtn = [self setupHeaderTitle:Localized(@"ImportedWallet") index:section];
+            titleBtn = [UIButton createHeaderButtonWithTitle:Localized(@"ImportedWallet")];
+            titleBtn.frame = CGRectMake(0, 0, DEVICE_WIDTH, Margin_Section_Header - Margin_10);
+//            UIButton * titleBtn = [self setupHeaderTitle:Localized(@"ImportedWallet") index:section];
             [headerView addSubview:titleBtn];
             UIButton * addBtn = [UIButton createButtonWithTitle:Localized(@"AddWallet") isEnabled:YES Target:self Selector:@selector(addAction)];
             [headerView addSubview:addBtn];
             [addBtn mas_makeConstraints:^(MASConstraintMaker *make) {
                 make.top.equalTo(titleBtn.mas_bottom).offset(ScreenScale(90));
-                make.left.equalTo(headerView.mas_left).offset(Margin_15);
-                make.right.equalTo(headerView.mas_right).offset(-Margin_15);
+                make.left.equalTo(headerView.mas_left).offset(Margin_Main);
+                make.right.equalTo(headerView.mas_right).offset(-Margin_Main);
                 make.height.mas_equalTo(MAIN_HEIGHT);
             }];
             return headerView;

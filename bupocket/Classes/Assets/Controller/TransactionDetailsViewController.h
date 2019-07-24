@@ -1,9 +1,9 @@
 //
-//  OrderDetailsViewController.h
+//  TransactionDetailsViewController.h
 //  bupocket
 //
-//  Created by bupocket on 2018/10/23.
-//  Copyright © 2018年 bupocket. All rights reserved.
+//  Created by huoss on 2019/7/24.
+//  Copyright © 2019 bupocket. All rights reserved.
 //
 
 #import "BaseViewController.h"
@@ -11,7 +11,7 @@
 
 NS_ASSUME_NONNULL_BEGIN
 
-@interface OrderDetailsViewController : BaseViewController
+@interface TransactionDetailsViewController : BaseViewController
 
 @property (nonatomic, strong) AssetsDetailModel * listModel;
 @property (nonatomic, copy) NSString * assetCode;

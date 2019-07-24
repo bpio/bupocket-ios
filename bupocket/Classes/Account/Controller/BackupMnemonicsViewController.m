@@ -76,7 +76,7 @@
     for (NSInteger i = 0; i < self.mnemonicArray.count; i ++) {
         UIButton * tagBtn = [UIButton createButtonWithTitle:self.mnemonicArray[i] TextFont:FONT_15 TextNormalColor:COLOR_9 TextSelectedColor:COLOR_9 Target:nil Selector:nil];
         tagBtn.backgroundColor = VIEWBG_COLOR;
-        tagBtn.layer.cornerRadius = MAIN_CORNER;
+        tagBtn.layer.cornerRadius = TAG_CORNER;
         [self.scrollView addSubview:tagBtn];
         [tagBtn mas_makeConstraints:^(MASConstraintMaker *make) {
             make.left.equalTo(promptBg.mas_left).offset((tagW + Margin_10) * (i % 4));

@@ -128,7 +128,7 @@
         make.centerX.equalTo(self.imageViewBg);
     }];
     
-    CGSize addressBgSize = CGSizeMake(DEVICE_WIDTH - Margin_60, ScreenScale(390));
+    CGSize addressBgSize = CGSizeMake(Alert_Width, ScreenScale(390));
     [self.addressBg setViewSize:addressBgSize borderRadius:BG_CORNER corners:UIRectCornerAllCorners];
     [self.addressBg mas_makeConstraints:^(MASConstraintMaker *make) {
         make.center.equalTo(self.imageViewBg);
