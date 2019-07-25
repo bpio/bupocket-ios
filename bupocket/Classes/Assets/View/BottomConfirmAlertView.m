@@ -26,20 +26,36 @@
 @property (nonatomic, strong) UIButton * confirm;
 @property (nonatomic, strong) NSString * transactionCost;
 
+@property (nonatomic, strong) ConfirmTransactionModel * confirmTransactionModel;
+
 @property (nonatomic, assign) BOOL isShowValue;
+@property (assign, nonatomic) HandlerType handlerType;
 
 @end
 
 @implementation BottomConfirmAlertView
 
-- (instancetype)initWithIsShowValue:(BOOL)isShowValue confrimBolck:(void (^)(NSString * transactionCost))confrimBlock cancelBlock:(void (^)(void))cancelBlock
+- (instancetype)initWithIsShowValue:(BOOL)isShowValue handlerType:(HandlerType)handlerType confirmModel:(ConfirmTransactionModel *)confirmModel confrimBolck:(void (^)(NSString * transactionCost))confrimBlock cancelBlock:(void (^)(void))cancelBlock
 {
     self = [super init];
     if (self) {
         _sureBlock = confrimBlock;
         _cancleBlock = cancelBlock;
         _isShowValue = isShowValue;
+        _handlerType = handlerType;
+        _confirmTransactionModel = confirmModel;
         [self setupView];
+        if (self.handlerType == HandlerTypeTransferAssets) {
+            _titleArray = @[@[Localized(@"SendingAccount"), Localized(@"ReceivingAccount"), Localized(@"Value（%@）"), Localized(@"MaximumTransactionCosts"), Localized(@"Remarks")]];
+            self.title.text = Localized(@"ConfirmationOfTransfer");
+        } else if (self.handlerType == HandlerTypeTransferVoucher) {
+            _titleArray = @[@[Localized(@"TransactionDetail"), Localized(@"ReceivingAccount"), Localized(@"Value"), Localized(@"MaximumTransactionCosts"), Localized(@"Remarks")], @[Localized(@"SendingAccount"), Localized(@"ReceivingAccount"), Localized(@"Value"), Localized(@"MaximumTransactionCosts"), Localized(@"Parameter")]];
+            self.title.text = Localized(@"ConfirmationOfGifts");
+        } else {
+            self.title.text = Localized(@"ConfirmTransaction");
+        }
+        
+        
     }
     return self;
 }
@@ -58,22 +74,20 @@
     [self.bgScrollView addSubview:self.lineView];
     
     [self.bgScrollView addSubview:self.infoTableView];
-    
-    [self.bgScrollView addSubview:self.detailTableView];
-    
-    
     if (_isShowValue) {
         self.infoTableView.tableHeaderView = self.amount;
     }
-    
-    [self.bgScrollView addSubview:self.details];
+    if (self.handlerType != HandlerTypeTransferAssets) {
+        [self.bgScrollView addSubview:self.detailTableView];
+        [self.bgScrollView addSubview:self.details];
+    }
     
     [self.bgScrollView addSubview:self.back];
     
     [self addSubview:self.confirm];
     
     [self.bgScrollView addSubview:self.line];
-    _titleArray = @[@[Localized(@"TransactionDetail"), Localized(@"ReceivingAccount"), Localized(@"Value"), Localized(@"MaximumTransactionCosts"), Localized(@"Remarks")], @[Localized(@"SendingAccount"), Localized(@"ReceivingAccount"), Localized(@"Value"), Localized(@"MaximumTransactionCosts"), Localized(@"Parameter")]];
+    
 }
 - (void)layoutSubviews
 {
@@ -108,16 +122,18 @@
         make.top.equalTo(self.title.mas_bottom);
         make.size.mas_equalTo(CGSizeMake(DEVICE_WIDTH, self.height - ScreenScale(140)));
     }];
-    [self.details mas_makeConstraints:^(MASConstraintMaker *make) {
-        make.left.equalTo(self.title);
-        make.bottom.equalTo(self.infoTableView);
-        make.width.mas_equalTo(View_Width_Main);
-        make.height.mas_equalTo(Margin_30);
-    }];
-    [self.detailTableView mas_makeConstraints:^(MASConstraintMaker *make) {
-        make.left.mas_equalTo(DEVICE_WIDTH);
-        make.size.top.equalTo(self.infoTableView);
-    }];
+    if (self.handlerType != HandlerTypeTransferAssets) {
+        [self.details mas_makeConstraints:^(MASConstraintMaker *make) {
+            make.left.equalTo(self.title);
+            make.bottom.equalTo(self.infoTableView);
+            make.width.mas_equalTo(View_Width_Main);
+            make.height.mas_equalTo(Margin_30);
+        }];
+        [self.detailTableView mas_makeConstraints:^(MASConstraintMaker *make) {
+            make.left.mas_equalTo(DEVICE_WIDTH);
+            make.size.top.equalTo(self.infoTableView);
+        }];
+    }
     [self.confirm mas_makeConstraints:^(MASConstraintMaker *make) {
         make.bottom.equalTo(self.mas_bottom).offset(-Margin_25);
         make.centerX.equalTo(self);
@@ -310,7 +326,6 @@
 {
     if (!_title) {
         _title = [[UILabel alloc] init];
-        _title.text = Localized(@"ConfirmTransaction");
         _title.textColor = COLOR_6;
         _title.font = FONT(16);
     }
@@ -407,7 +422,8 @@
 
 - (CGFloat)tableView:(UITableView *)tableView heightForRowAtIndexPath:(NSIndexPath *)indexPath
 {
-    NSString * str = [self infoStringWithTableView:tableView indexPath:indexPath];
+    NSString * title = (tableView == self.infoTableView) ? [self.titleArray firstObject][indexPath.row] : [self.titleArray lastObject][indexPath.row];
+    NSString * str = [self infoStringWithTitle:title];
     CGFloat cellHeight = [Encapsulation getSizeSpaceLabelWithStr:str font:FONT_TITLE width:View_Width_Main height:CGFLOAT_MAX lineSpacing:LINE_SPACING].height + ScreenScale(40);
     return cellHeight;
 }
@@ -417,7 +433,7 @@
 }
 - (CGFloat)tableView:(UITableView *)tableView heightForFooterInSection:(NSInteger)section
 {
-    if (tableView == self.infoTableView) {
+    if (tableView == self.infoTableView && _titleArray.count > 1) {
         return Margin_50;
     }
     return Margin_15;
@@ -444,33 +460,29 @@
     }
     cell.title.font = FONT(13);
     cell.title.textColor = COLOR_9;
-    NSString * str = [self infoStringWithTableView:tableView indexPath:indexPath];
+    NSString * str = [self infoStringWithTitle:cell.title.text];
     cell.infoTitle.attributedText = [Encapsulation attrWithString:str preFont:FONT_TITLE preColor:COLOR_6 index:0 sufFont:FONT_TITLE sufColor:COLOR_6 lineSpacing:LINE_SPACING];
     cell.selectionStyle = UITableViewCellSelectionStyleNone;
     return cell;
 }
-- (NSString *)infoStringWithTableView:(UITableView *)tableView indexPath:(NSIndexPath *)indexPath
+- (NSString *)infoStringWithTitle:(NSString *)title
 {
+//    _titleArray = @[@[Localized(@"TransactionDetail"), Localized(@"ReceivingAccount"), Localized(@"Value"), Localized(@"MaximumTransactionCosts"), Localized(@"Remarks")], @[Localized(@"SendingAccount"), Localized(@"ReceivingAccount"), Localized(@"Value"), Localized(@"MaximumTransactionCosts"), Localized(@"Parameter")]];
     NSString * str;
-    if (indexPath.row == 1) {
+    if ([title isEqualToString:Localized(@"TransactionDetail")]) {
+        str = self.confirmTransactionModel.transactionDetail;
+    } else if ([title isEqualToString:Localized(@"SendingAccount")]) {
+        str = CurrentWalletAddress;
+    } else if ([title isEqualToString:Localized(@"ReceivingAccount")]) {
         str = self.confirmTransactionModel.destAddress;
-    } else if (indexPath.row == 2) {
+    } else if ([title isEqualToString:Localized(@"Value")] || [title isEqualToString:Localized(@"Number（BU）")]) {
         str = self.confirmTransactionModel.amount;
-    } else if (indexPath.row == 3) {
+    } else if ([title isEqualToString:Localized(@"MaximumTransactionCosts")]) {
         str = self.confirmTransactionModel.transactionCost;
-    }
-    if (tableView == self.infoTableView) {
-        if (indexPath.row == 0) {
-            str = self.confirmTransactionModel.transactionDetail;
-        }  else if (indexPath.row == 4) {
-            str = self.confirmTransactionModel.qrRemark;
-        }
-    } else {
-        if (indexPath.row == 0) {
-            str = CurrentWalletAddress;
-        }  else if (indexPath.row == 4) {
-            str = self.confirmTransactionModel.script;
-        }
+    } else if ([title isEqualToString:Localized(@"Remarks")]) {
+        str = self.confirmTransactionModel.qrRemark;
+    } else if ([title isEqualToString:Localized(@"Parameter")]) {
+        str = self.confirmTransactionModel.script;
     }
     return str;
 }

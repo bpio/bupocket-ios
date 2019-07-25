@@ -36,19 +36,20 @@
     [titleLabel mas_makeConstraints:^(MASConstraintMaker *make) {
         make.centerX.mas_equalTo(0);
         make.top.mas_equalTo(Margin_20);
-        make.width.mas_lessThanOrEqualTo(DEVICE_WIDTH - Margin_40);
+        make.width.mas_lessThanOrEqualTo(View_Width_Main);
     }];
     
     UILabel * infoLabel = [[UILabel alloc] init];
 //    infoLabel.textColor = TITLE_COLOR;
 //    infoLabel.font = FONT_TITLE;
+//    infoLabel.text = self.explainInfoText;
     infoLabel.numberOfLines = 0;
     infoLabel.attributedText = [Encapsulation attrWithString:self.explainInfoText preFont:FONT_TITLE preColor:TITLE_COLOR index:0 sufFont:FONT_TITLE sufColor:TITLE_COLOR lineSpacing:LINE_SPACING];
     [self.scrollView addSubview:infoLabel];
     [infoLabel mas_makeConstraints:^(MASConstraintMaker *make) {
         make.top.equalTo(titleLabel.mas_bottom).offset(Margin_20);
-        make.left.mas_equalTo(Margin_20);
-        make.width.mas_equalTo(DEVICE_WIDTH - Margin_40);
+        make.centerX.mas_equalTo(0);
+        make.width.mas_equalTo(View_Width_Main);
     }];
     
     [self.view layoutIfNeeded];

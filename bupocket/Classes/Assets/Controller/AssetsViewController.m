@@ -482,6 +482,7 @@
             NSString * address = [stringValue substringFromIndex:[Voucher_Prefix length]];
             TransferVoucherViewController * VC = [[TransferVoucherViewController alloc] init];
             VC.receiveAddressStr = address;
+            VC.transferType = TransferTypeVoucher;
             [self.navigationController pushViewController:VC animated:YES];
             return;
         }

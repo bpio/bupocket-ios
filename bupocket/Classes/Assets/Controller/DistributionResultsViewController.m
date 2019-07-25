@@ -83,7 +83,7 @@
         headerView.backgroundColor = [UIColor whiteColor];
         NSString * imageName;
         NSString * result;
-        CGFloat headerViewH = ScreenScale(110);
+        CGFloat headerViewH = 60 + ScreenScale(50);
         if (self.distributionResultState == DistributionResultSuccess) {
             imageName = @"assetsSuccess";
             result = Localized(@"DistributionSuccess");
@@ -104,7 +104,8 @@
         [headerView addSubview:state];
         [state mas_makeConstraints:^(MASConstraintMaker *make) {
             make.top.centerX.equalTo(headerView);
-            make.height.mas_equalTo(ScreenScale(110));
+            make.height.mas_equalTo(headerViewH);
+            make.width.mas_lessThanOrEqualTo(View_Width_Main);
         }];
         _headerView = headerView;
     }
@@ -125,12 +126,17 @@
 
 - (CGFloat)tableView:(UITableView *)tableView heightForRowAtIndexPath:(NSIndexPath *)indexPath
 {
+    CGFloat textWidth;
+    CGFloat marginH;
     if ((self.distributionModel.tokenDescription && indexPath.section == 0 && indexPath.row == [self.listArray[0] count] - 1) || (indexPath.section == 1 && indexPath.row > 0)) {
-        CGFloat rowHeight = [Encapsulation rectWithText:[[self.listArray[indexPath.section][indexPath.row] allValues] firstObject] font:FONT(15) textWidth: DEVICE_WIDTH - Margin_40].size.height + ScreenScale(55);
-        return rowHeight;
+        textWidth = View_Width_Main;
+        marginH = ScreenScale(55);
     } else {
-        return MAIN_HEIGHT;
+        textWidth = Info_Width_Max;
+        marginH = Margin_30;
     }
+    CGFloat rowHeight = [Encapsulation rectWithText:[[self.listArray[indexPath.section][indexPath.row] allValues] firstObject] font:FONT(15) textWidth: textWidth].size.height + marginH;
+    return rowHeight;
 }
 - (NSInteger)numberOfSectionsInTableView:(UITableView *)tableView
 {

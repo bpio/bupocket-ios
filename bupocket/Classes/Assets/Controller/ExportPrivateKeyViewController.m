@@ -14,6 +14,7 @@
 @property (nonatomic, strong) UITableView * tableView;
 @property (nonatomic, strong) NSArray * listArray;
 @property (nonatomic, strong) NSString * walletPrivateKeys;
+@property (nonatomic, strong) UIButton * bottomBtn;
 
 @end
 
@@ -48,22 +49,22 @@
     privateKeysPrompt.titleLabel.font = FONT_TITLE;
     privateKeysPrompt.titleLabel.numberOfLines = 0;
     [headerView addSubview:privateKeysPrompt];
-    CGFloat promptH = [Encapsulation rectWithText:Localized(@"CopyPrivateKeyPrompt") font:FONT_TITLE textWidth:DEVICE_WIDTH - Margin_40].size.height;
+    CGFloat promptH = [Encapsulation rectWithText:Localized(@"CopyPrivateKeyPrompt") font:FONT_TITLE textWidth:View_Width_Main].size.height;
     [privateKeysPrompt mas_makeConstraints:^(MASConstraintMaker *make) {
         make.centerX.centerY.equalTo(headerView);
         make.height.mas_equalTo(ScreenScale(130) + promptH);
-        make.width.mas_lessThanOrEqualTo(DEVICE_WIDTH - Margin_40);
+        make.width.mas_lessThanOrEqualTo(View_Width_Main);
     }];
-    
-    UIView * footerView = [[UIView alloc] initWithFrame:CGRectMake(0, 0, DEVICE_WIDTH, ScreenScale(200) + SafeAreaBottomH + NavBarH)];
-    UIButton * copy = [UIButton createButtonWithTitle:Localized(@"CopyPrivateKeys") isEnabled:YES Target:self Selector:@selector(copyAction)];
-    [footerView addSubview:copy];
-    [copy mas_makeConstraints:^(MASConstraintMaker *make) {
-        make.top.mas_equalTo(ScreenScale(120));
-        make.left.mas_equalTo(Margin_20);
-        make.size.mas_equalTo(CGSizeMake(DEVICE_WIDTH - Margin_40, MAIN_HEIGHT));
-    }];
-    self.tableView.tableFooterView = footerView;
+    self.bottomBtn = [UIButton createFooterViewWithTitle:Localized(@"CopyPrivateKeys") isEnabled:YES Target:self Selector:@selector(copyAction)];
+//    UIView * footerView = [[UIView alloc] initWithFrame:CGRectMake(0, 0, DEVICE_WIDTH, ScreenScale(200) + SafeAreaBottomH + NavBarH)];
+//    UIButton * copy = [UIButton createButtonWithTitle:Localized(@"CopyPrivateKeys") isEnabled:YES Target:self Selector:@selector(copyAction)];
+//    [footerView addSubview:copy];
+//    [copy mas_makeConstraints:^(MASConstraintMaker *make) {
+//        make.top.mas_equalTo(ScreenScale(120));
+//        make.left.mas_equalTo(Margin_20);
+//        make.size.mas_equalTo(CGSizeMake(DEVICE_WIDTH - Margin_40, MAIN_HEIGHT));
+//    }];
+//    self.tableView.tableFooterView = footerView;
 }
 - (void)copyAction
 {
@@ -72,7 +73,7 @@
 }
 - (CGFloat)tableView:(UITableView *)tableView heightForRowAtIndexPath:(NSIndexPath *)indexPath
 {
-    CGFloat rowHeight = [Encapsulation rectWithText:[self.listArray lastObject][indexPath.row]  font:FONT(14) textWidth: DEVICE_WIDTH - Margin_40].size.height + ScreenScale(55);
+    CGFloat rowHeight = [Encapsulation rectWithText:[self.listArray lastObject][indexPath.row]  font:FONT(14) textWidth: View_Width_Main].size.height + ScreenScale(55);
     return rowHeight;
 }
 - (CGFloat)tableView:(UITableView *)tableView heightForHeaderInSection:(NSInteger)section
@@ -81,7 +82,7 @@
 }
 - (CGFloat)tableView:(UITableView *)tableView heightForFooterInSection:(NSInteger)section
 {
-    return CGFLOAT_MIN;
+    return ContentInset_Bottom + NavBarH;
 }
 - (NSInteger)numberOfSectionsInTableView:(UITableView *)tableView
 {

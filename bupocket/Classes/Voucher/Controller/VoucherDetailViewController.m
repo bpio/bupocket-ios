@@ -206,6 +206,7 @@ static NSString * const VoucherDetailCellID = @"VoucherDetailCellID";
 {
     TransferVoucherViewController * VC = [[TransferVoucherViewController alloc] init];
     VC.voucherModel = self.voucherModel;
+    VC.transferType = TransferTypeVoucher;
     [self.navigationController pushViewController:VC animated:YES];
 }
 

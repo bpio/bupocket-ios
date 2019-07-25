@@ -13,6 +13,11 @@
 
 NS_ASSUME_NONNULL_BEGIN
 
+typedef NS_ENUM(NSInteger, HandlerType) {
+    HandlerTypeTransferAssets,
+    HandlerTypeTransferVoucher
+};
+
 typedef void (^OnCancleClick)(void);
 typedef void (^OnSureClick)(NSString * transactionCost);
 
@@ -22,10 +27,9 @@ typedef void (^OnSureClick)(NSString * transactionCost);
 
 @property (nonatomic, copy) OnCancleClick cancleBlock;
 @property (nonatomic, copy) OnSureClick sureBlock;
-@property (nonatomic, strong) ConfirmTransactionModel * confirmTransactionModel;
 @property (nonatomic, strong) DposModel * dposModel;
 
-- (instancetype)initWithIsShowValue:(BOOL)isShowValue confrimBolck:(void (^)(NSString * transactionCost))confrimBlock cancelBlock:(void (^)(void))cancelBlock;
+- (instancetype)initWithIsShowValue:(BOOL)isShowValue handlerType:(HandlerType)handlerType confirmModel:(ConfirmTransactionModel *)confirmModel confrimBolck:(void (^)(NSString * transactionCost))confrimBlock cancelBlock:(void (^)(void))cancelBlock;
 
 @end
 

@@ -43,8 +43,8 @@
     [exceptionPrompt mas_makeConstraints:^(MASConstraintMaker *make) {
         make.top.mas_equalTo(Margin_20);
         make.centerX.mas_equalTo(0);
-        make.height.mas_equalTo(ScreenScale(120) + [Encapsulation rectWithText:self.exceptionPromptStr font:exceptionPrompt.titleLabel.font textWidth:DEVICE_WIDTH - Margin_40].size.height);
-        make.width.mas_lessThanOrEqualTo(DEVICE_WIDTH - Margin_40);
+        make.height.mas_equalTo(ScreenScale(120) + [Encapsulation rectWithText:self.exceptionPromptStr font:exceptionPrompt.titleLabel.font textWidth:View_Width_Main].size.height);
+        make.width.mas_equalTo(View_Width_Main);
     }];
     
     UILabel * prompt = [[UILabel alloc] init];
@@ -60,7 +60,7 @@
     }];
     
     
-    CGSize btnSize = CGSizeMake(DEVICE_WIDTH - Margin_40, MAIN_HEIGHT);
+    CGSize btnSize = CGSizeMake(View_Width_Main, MAIN_HEIGHT);
     UIButton * confirmBtn = [UIButton createButtonWithTitle:Localized(@"Confirm") isEnabled:YES Target:self Selector:@selector(confirmAction)];
     [self.scrollView addSubview:confirmBtn];
     [confirmBtn mas_makeConstraints:^(MASConstraintMaker *make) {

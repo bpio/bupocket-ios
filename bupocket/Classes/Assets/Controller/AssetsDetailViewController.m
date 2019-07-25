@@ -8,7 +8,8 @@
 
 #import "AssetsDetailViewController.h"
 #import "AssetsDetailListViewCell.h"
-#import "TransferAccountsViewController.h"
+//#import "TransferAccountsViewController.h"
+#import "TransferVoucherViewController.h"
 #import "TransactionDetailsViewController.h"
 #import "AssetsDetailModel.h"
 #import "ReceiveViewController.h"
@@ -325,7 +326,10 @@
 #pragma mark - transferAccountsAction
 - (void)transferAccountsAction:(UIButton *)button
 {
-    TransferAccountsViewController * VC = [[TransferAccountsViewController alloc] init];
+//    TransferAccountsViewController * VC = [[TransferAccountsViewController alloc] init];
+//    VC.listModel = self.listModel;
+    TransferVoucherViewController * VC = [[TransferVoucherViewController alloc] init];
+    VC.transferType = TransferTypeAssets;
     VC.listModel = self.listModel;
     [self.navigationController pushViewController:VC animated:YES];
 }

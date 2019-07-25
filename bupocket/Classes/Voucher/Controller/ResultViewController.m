@@ -40,13 +40,13 @@
     [results setTitleColor:COLOR_6 forState:UIControlStateNormal];
     results.titleLabel.font = FONT(16);
     if (self.state == YES) {
-        [results setTitle:Localized(@"DonationSuccess") forState:UIControlStateNormal];
+        [results setTitle:Localized(@"Success") forState:UIControlStateNormal];
         [results setImage:[UIImage imageNamed:@"transferSuccess"] forState:UIControlStateNormal];
     } else {
 //        if (self.resultModel.errorCode == ERRCODE_CONTRACT_EXECUTE_FAIL) {
 //            [results setTitle:[ErrorTypeTool getDescription:ERRCODE_CONTRACT_EXECUTE_FAIL] forState:UIControlStateNormal];
 //        } else {
-            [results setTitle:Localized(@"DonationFailure") forState:UIControlStateNormal];
+            [results setTitle:Localized(@"Failure") forState:UIControlStateNormal];
 //        }
         [results setImage:[UIImage imageNamed:@"transferFailure"] forState:UIControlStateNormal];
     }

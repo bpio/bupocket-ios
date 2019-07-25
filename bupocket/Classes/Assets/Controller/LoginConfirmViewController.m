@@ -52,14 +52,14 @@
     [title mas_makeConstraints:^(MASConstraintMaker *make) {
         make.top.equalTo(icon.mas_bottom).offset(Margin_15);
         make.centerX.mas_equalTo(0);
-        make.width.mas_lessThanOrEqualTo(DEVICE_WIDTH - Margin_40);
+        make.width.mas_equalTo(View_Width_Main);
     }];
     
     UIView * line = [[UIView alloc] init];
     line.backgroundColor = LINE_COLOR;
     [self.scrollView addSubview:line];
     [line mas_makeConstraints:^(MASConstraintMaker *make) {
-        make.left.right.equalTo(title);
+        make.centerX.width.equalTo(title);
         make.top.equalTo(title.mas_bottom).offset(Margin_40);
         make.height.mas_equalTo(LINE_WIDTH);
     }];
@@ -68,13 +68,13 @@
     confirmLoginPrompt.numberOfLines = 0;
     [self.scrollView addSubview:confirmLoginPrompt];
     [confirmLoginPrompt mas_makeConstraints:^(MASConstraintMaker *make) {
-        make.left.right.equalTo(title);
+        make.centerX.width.equalTo(title);
         make.top.equalTo(line.mas_bottom).offset(Margin_25);
     }];
     NSString * confirmPrompt = [NSString stringWithFormat:Localized(@"Immediate login %@, please confirm that it is my operation."), self.loginConfirmModel.appName];
     confirmLoginPrompt.attributedText = [Encapsulation attrWithString:[NSString stringWithFormat:@"%@\n%@", confirmPrompt, Localized(@"LoginPromptInfo")] preFont:FONT(15) preColor:COLOR_6 index:confirmPrompt.length sufFont:FONT(13) sufColor:COLOR_9 lineSpacing:LINE_SPACING];
     
-    CGSize btnSize = CGSizeMake(DEVICE_WIDTH - Margin_40, MAIN_HEIGHT);
+    CGSize btnSize = CGSizeMake(View_Width_Main, MAIN_HEIGHT);
     UIButton * confirmBtn = [UIButton createButtonWithTitle:Localized(@"ConfirmLogin") isEnabled:YES Target:self Selector:@selector(confirmAction)];
     [self.scrollView addSubview:confirmBtn];
     [confirmBtn mas_makeConstraints:^(MASConstraintMaker *make) {

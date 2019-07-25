@@ -49,6 +49,9 @@ NS_ASSUME_NONNULL_BEGIN
 
 @property (nonatomic, copy) NSString * transactionDetail;
 
+// 添加转账资产
+@property (nonatomic, copy) NSString * assetCode;
+
 @end
 
 NS_ASSUME_NONNULL_END

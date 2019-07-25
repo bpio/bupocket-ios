@@ -100,7 +100,8 @@ static NSString * const NormalPWCellAddress = @"NormalPWCellAddress";
         [self.rightBtn mas_makeConstraints:^(MASConstraintMaker *make) {
             make.right.equalTo(self.line);
             make.centerY.equalTo(self.title);
-            make.height.mas_equalTo(Margin_30);
+            make.height.mas_greaterThanOrEqualTo(Margin_30);
+            make.height.mas_lessThanOrEqualTo(Margin_40);
             make.width.mas_greaterThanOrEqualTo(Margin_30);
         }];
         [self.scan mas_makeConstraints:^(MASConstraintMaker *make) {
@@ -147,6 +148,7 @@ static NSString * const NormalPWCellAddress = @"NormalPWCellAddress";
         _rightBtn.contentHorizontalAlignment = UIControlContentHorizontalAlignmentRight;
         _rightBtn.titleLabel.font = FONT(12);
         _rightBtn.titleLabel.textColor = COLOR_6;
+        _rightBtn.titleLabel.numberOfLines = 0;
     }
     return _rightBtn;
 }

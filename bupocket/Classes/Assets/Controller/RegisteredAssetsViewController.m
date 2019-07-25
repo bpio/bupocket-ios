@@ -86,12 +86,13 @@ static NSString * const Register_Leave = @"leaveRoomForApp";
     [confirmationPrompt setImage:[UIImage imageNamed:@"assetsConfirmation"] forState:UIControlStateNormal];
     confirmationPrompt.titleLabel.numberOfLines = 0;
     confirmationPrompt.titleLabel.textAlignment = NSTextAlignmentCenter;
+    confirmationPrompt.userInteractionEnabled = NO;
     [self.scrollView addSubview:confirmationPrompt];
     [confirmationPrompt mas_makeConstraints:^(MASConstraintMaker *make) {
         make.top.mas_equalTo(Margin_20);
         make.centerX.mas_equalTo(0);
-        make.height.mas_equalTo(ScreenScale(150));
-        make.width.mas_lessThanOrEqualTo(DEVICE_WIDTH - Margin_40);
+        make.height.mas_equalTo(90 + ScreenScale(60));
+        make.width.mas_lessThanOrEqualTo(View_Width_Main);
     }];
     
     self.registeredArray = [NSMutableArray arrayWithArray:@[@{Localized(@"TokenName"): self.registeredModel.name}, @{Localized(@"TokenCode"): self.registeredModel.code}, @{Localized(@"DistributionCost"): [NSString stringAppendingBUWithStr:Registered_Cost]}]];
@@ -105,7 +106,7 @@ static NSString * const Register_Leave = @"leaveRoomForApp";
     
     UIView * assetInfoBg = [[UIView alloc] init];
     [self.scrollView addSubview:assetInfoBg];
-    CGSize size = CGSizeMake(DEVICE_WIDTH - Margin_20, assetInfoBgH);
+    CGSize size = CGSizeMake(View_Width_Main, assetInfoBgH);
     [assetInfoBg setViewSize:size borderWidth:LINE_WIDTH borderColor:LINE_COLOR borderRadius:BG_CORNER];
     [assetInfoBg mas_makeConstraints:^(MASConstraintMaker *make) {
         make.top.equalTo(confirmationPrompt.mas_bottom).offset(Margin_20);
@@ -123,7 +124,7 @@ static NSString * const Register_Leave = @"leaveRoomForApp";
         }];
     }
     
-    CGSize btnSize = CGSizeMake(DEVICE_WIDTH - Margin_20, MAIN_HEIGHT);
+    CGSize btnSize = CGSizeMake(View_Width_Main, MAIN_HEIGHT);
     UIButton * confirmation = [UIButton createButtonWithTitle:Localized(@"ConfirmationOfRegistration") isEnabled:YES Target:self Selector:@selector(confirmationAction)];
     [self.scrollView addSubview:confirmation];
     [confirmation mas_makeConstraints:^(MASConstraintMaker *make) {
@@ -278,12 +279,13 @@ static NSString * const Register_Leave = @"leaveRoomForApp";
     UILabel * detailLabel = [[UILabel alloc] init];
     detailLabel.textColor = COLOR_6;
     detailLabel.font = FONT(15);
+    detailLabel.numberOfLines = 2;
     detailLabel.text = info;
     [assetInfo addSubview:detailLabel];
     [detailLabel mas_makeConstraints:^(MASConstraintMaker *make) {
         make.right.mas_equalTo(-Margin_10);
         make.centerY.equalTo(titleLabel);
-        make.width.mas_lessThanOrEqualTo(DEVICE_WIDTH - ScreenScale(140));
+        make.width.mas_lessThanOrEqualTo(Content_Width_Main - ScreenScale(90));
     }];
     return assetInfo;
 }

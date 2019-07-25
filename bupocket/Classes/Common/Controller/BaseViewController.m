@@ -8,16 +8,18 @@
 
 #import "BaseViewController.h"
 
-//#import "AssetsViewController.h"
-#import "AddAssetsViewController.h"
-#import "AssetsDetailViewController.h"
+#import "AssetsViewController.h"
+//#import "AddAssetsViewController.h"
+//#import "AssetsDetailViewController.h"
 #import "TransferResultsViewController.h"
 #import "ResultViewController.h"
-//#import "TransactionDetailsViewController.h"
+#import "TransactionDetailsViewController.h"
 #import "RequestTimeoutViewController.h"
 
 #import "RegisteredResultViewController.h"
 #import "DistributionResultsViewController.h"
+//#import "LoginConfirmViewController.h"
+//#import "ScanCodeFailureViewController.h"
 
 //#import "MyIdentityViewController.h"
 
@@ -69,10 +71,8 @@
 }
 - (BOOL)gestureRecognizerShouldBegin:(UIGestureRecognizer *)gestureRecognizer
 {
-    if ([self isKindOfClass:[AddAssetsViewController class]]
-        || [self isKindOfClass:[AssetsDetailViewController class]]
-//       || [self isKindOfClass:[MyIdentityViewController class]]
-        ) {
+    NSArray * VCs = self.navigationController.viewControllers;
+    if (VCs.count > 1 && [[VCs firstObject] isKindOfClass:[AssetsViewController class]]) {
         return NO;
     } else {
         return ![self isRootViewController];

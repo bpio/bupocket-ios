@@ -138,10 +138,7 @@ static NSString * const VersionLogCellID = @"VersionLogCellID";
 - (UILabel *)infoTitle
 {
     if (!_infoTitle) {
-        _infoTitle = [[UILabel alloc] init];
-        _infoTitle.font = FONT(15);
-        _infoTitle.textColor = COLOR_6;
-        _infoTitle.numberOfLines = 0;
+        _infoTitle = [UILabel createTitleLabel];
     }
     return _infoTitle;
 }

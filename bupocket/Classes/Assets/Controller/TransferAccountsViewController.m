@@ -7,7 +7,8 @@
 //
 
 #import "TransferAccountsViewController.h"
-#import "TransferDetailsAlertView.h"
+//#import "TransferDetailsAlertView.h"
+#import "BottomConfirmAlertView.h"
 #import "TransferResultsViewController.h"
 #import "RequestTimeoutViewController.h"
 #import "HMScannerController.h"
@@ -154,11 +155,30 @@
                 if (NotNULLString(self.remarksStr)) {
                     [self.transferInfoArray addObject:self.remarksStr];
                 }
-                [self showTransferInfo];
+//                [self showTransferInfo];
+                [self showConfirmAlertView];
             }
         }];
     }];
 }
+- (void)showConfirmAlertView
+{
+    ConfirmTransactionModel * confirmModel = [[ConfirmTransactionModel alloc] init];
+    confirmModel.destAddress = self.address;
+    confirmModel.amount = self.transferVolumeStr;
+    confirmModel.transactionCost = self.transactionCostsStr;
+    confirmModel.qrRemark = self.remarksStr;
+    confirmModel.assetCode = self.listModel.assetCode;
+    BottomConfirmAlertView * confirmAlertView = [[BottomConfirmAlertView alloc] initWithIsShowValue:NO handlerType:HandlerTypeTransferAssets confirmModel:confirmModel confrimBolck:^(NSString * _Nonnull transactionCost) {
+        dispatch_after(dispatch_time(DISPATCH_TIME_NOW, (int64_t)(Dispatch_After_Time * NSEC_PER_SEC)), dispatch_get_main_queue(), ^{
+            [self showPWAlert];
+        });
+    } cancelBlock:^{
+        
+    }];
+    [confirmAlertView showInWindowWithMode:CustomAnimationModeShare inView:nil bgAlpha:AlertBgAlpha needEffectView:NO];
+}
+/*
 - (void)showTransferInfo
 {
     __weak typeof(self) weakSelf = self;
@@ -171,7 +191,7 @@
     }];
     [transferDetailsAlertView showInWindowWithMode:CustomAnimationModeShare inView:nil bgAlpha:AlertBgAlpha needEffectView:NO];
 }
-
+*/
 - (void)showPWAlert
 {
     __weak typeof(self) weakSelf = self;
