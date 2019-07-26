@@ -9,7 +9,6 @@
 #import "AssetIssuerViewController.h"
 #import "SubtitleListViewCell.h"
 #import "InfoViewCell.h"
-#import "DetailListViewCell.h"
 
 @interface AssetIssuerViewController ()<UITableViewDelegate, UITableViewDataSource>
 
@@ -60,7 +59,7 @@ static NSString * const CooperateDetailCellID = @"CooperateDetailCellID";
     if (indexPath.section == 0) {
         return ScreenScale(80);
     } else {
-        return (NotNULLString(self.info) ? ceil([Encapsulation getSizeSpaceLabelWithStr:self.info font:FONT(13) width:Content_Width_Main height:CGFLOAT_MAX lineSpacing:LINE_SPACING].height) + 1 + Margin_25 : CGFLOAT_MIN);
+        return (NotNULLString(self.info) ? ceil([Encapsulation getSizeSpaceLabelWithStr:self.info font:FONT(13) width:View_Width_Main height:CGFLOAT_MAX lineSpacing:LINE_SPACING].height) + 1 + Margin_20 : CGFLOAT_MIN);
     }
 }
 - (CGFloat)tableView:(UITableView *)tableView heightForHeaderInSection:(NSInteger)section
@@ -102,6 +101,7 @@ static NSString * const CooperateDetailCellID = @"CooperateDetailCellID";
 {
     if (indexPath.section == 0) {
         SubtitleListViewCell * cell = [SubtitleListViewCell cellWithTableView:tableView cellType:SubtitleCellDetail];
+        cell.walletName.font = FONT_Bold(18);
         cell.selectionStyle = UITableViewCellSelectionStyleNone;
         [cell.walletImage sd_setImageWithURL:[NSURL URLWithString:self.voucherModel.voucherIssuer[@"icon"]] placeholderImage:[UIImage imageNamed:@"icon_placehoder"]];
         cell.walletName.text = self.voucherModel.voucherIssuer[@"name"];
@@ -115,7 +115,7 @@ static NSString * const CooperateDetailCellID = @"CooperateDetailCellID";
         cell.detailImage.hidden = YES;
         return cell;
     } else {
-        InfoViewCell * cell = [InfoViewCell cellWithTableView:tableView];
+        InfoViewCell * cell = [InfoViewCell cellWithTableView:tableView cellType:CellTypeDefault];
         [cell.info setAttributedTitle:[self getAttrWithInfo] forState:UIControlStateNormal];
         return cell;
     }

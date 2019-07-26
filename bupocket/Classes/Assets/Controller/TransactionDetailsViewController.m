@@ -50,7 +50,7 @@ static NSInteger const TxInfoNormalCount = 6;
         outOrIn = @"+";
     }
     self.assets = [NSString stringWithFormat:@"%@%@ %@", outOrIn, self.listModel.amount, self.assetCode];
-    _headerViewH = ScreenScale(170) + [Encapsulation rectWithText:self.assets font:FONT_Bold(27) textWidth:View_Width_Main].size.height;
+    _headerViewH = 75 + ScreenScale(100) + [Encapsulation rectWithText:self.assets font:FONT_Bold(27) textWidth:View_Width_Main].size.height;
     [self setupView];
     [self setupRefresh];
     self.noNetWork = [Encapsulation showNoNetWorkWithSuperView:self.view target:self action:@selector(reloadData)];
@@ -275,10 +275,10 @@ static NSInteger const TxInfoNormalCount = 6;
         return MAIN_HEIGHT;
     } else if (indexPath.section == 1 && indexPath.row > TxInfoNormalCount) {
         CGFloat bottomH = indexPath.row % 2 ? 0 : Margin_15;
-        CGFloat rowHeight = [Encapsulation rectWithText:self.infoArray[indexPath.section][indexPath.row] font:FONT(15) textWidth: Content_Width_Main].size.height + ScreenScale(50) + bottomH;
+        CGFloat rowHeight = [Encapsulation rectWithText:self.infoArray[indexPath.section][indexPath.row] font:FONT_TITLE textWidth: Content_Width_Main].size.height + ScreenScale(50) + bottomH;
         return rowHeight;
     } else {
-        CGFloat rowHeight = [Encapsulation rectWithText:self.infoArray[indexPath.section][indexPath.row] font:FONT(15) textWidth: Info_Width_Max].size.height + Margin_30;
+        CGFloat rowHeight = [Encapsulation rectWithText:self.infoArray[indexPath.section][indexPath.row] font:FONT_TITLE textWidth: Info_Width_Max].size.height + Margin_30;
         return rowHeight;
     }
 }

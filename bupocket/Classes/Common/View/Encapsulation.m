@@ -15,7 +15,7 @@
 {
     NSMutableParagraphStyle * style = [[NSParagraphStyle defaultParagraphStyle] mutableCopy];
     style.lineBreakMode = NSLineBreakByWordWrapping;
-    style.alignment = NSTextAlignmentLeft;
+//    style.alignment = NSTextAlignmentLeft;
 
     NSDictionary *dic = @{NSFontAttributeName:font, NSParagraphStyleAttributeName:style};
     CGSize size = CGSizeMake(textWidth, CGFLOAT_MAX);
@@ -278,7 +278,7 @@
 }
 + (CGFloat)getAttrHeightWithInfoStr:(NSString *)infoStr
 {
-    return NotNULLString(infoStr) ? ceil([Encapsulation getSizeSpaceLabelWithStr:infoStr font:FONT(13) width:Content_Width_Main height:CGFLOAT_MAX lineSpacing:Margin_10].height) + 1 + Margin_25 : CGFLOAT_MIN;
+    return NotNULLString(infoStr) ? ceil([Encapsulation getSizeSpaceLabelWithStr:infoStr font:FONT_TITLE width:View_Width_Main height:CGFLOAT_MAX lineSpacing:Margin_10].height) + 1 + Margin_20 : CGFLOAT_MIN;
 }
 
 #pragma mark 多张图片合成一张
@@ -296,7 +296,7 @@
     NSMutableParagraphStyle * paragraphStyle = [[NSMutableParagraphStyle alloc] init];
     // 省略方式
     //    paraStyle.lineBreakMode =NSLineBreakByCharWrapping;
-    paragraphStyle.alignment = NSTextAlignmentLeft;
+//    paragraphStyle.alignment = NSTextAlignmentLeft;
     // 字体的行间距
     CGFloat lineH = lineSpacing - (font.lineHeight - font.pointSize);
     paragraphStyle.lineSpacing = (lineH < 0) ? 0 : lineH;

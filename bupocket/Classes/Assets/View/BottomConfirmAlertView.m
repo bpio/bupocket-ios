@@ -8,6 +8,9 @@
 
 #import "BottomConfirmAlertView.h"
 #import "DetailListViewCell.h"
+#import "ResultViewController.h"
+#import "RequestTimeoutViewController.h"
+#import "NodeTransferSuccessViewController.h"
 
 @interface BottomConfirmAlertView()<UITableViewDelegate, UITableViewDataSource>
 
@@ -35,7 +38,7 @@
 
 @implementation BottomConfirmAlertView
 
-- (instancetype)initWithIsShowValue:(BOOL)isShowValue handlerType:(HandlerType)handlerType confirmModel:(ConfirmTransactionModel *)confirmModel confrimBolck:(void (^)(NSString * transactionCost))confrimBlock cancelBlock:(void (^)(void))cancelBlock
+- (instancetype)initWithIsShowValue:(BOOL)isShowValue handlerType:(HandlerType)handlerType confirmModel:(ConfirmTransactionModel *)confirmModel confrimBolck:(void (^)(void))confrimBlock cancelBlock:(void (^)(void))cancelBlock
 {
     self = [super init];
     if (self) {
@@ -44,18 +47,23 @@
         _isShowValue = isShowValue;
         _handlerType = handlerType;
         _confirmTransactionModel = confirmModel;
-        [self setupView];
+        NSString * title;
         if (self.handlerType == HandlerTypeTransferAssets) {
-            _titleArray = @[@[Localized(@"SendingAccount"), Localized(@"ReceivingAccount"), Localized(@"Value（%@）"), Localized(@"MaximumTransactionCosts"), Localized(@"Remarks")]];
-            self.title.text = Localized(@"ConfirmationOfTransfer");
+            _titleArray = @[@[Localized(@"SendingAccount"), Localized(@"ReceivingAccount"), [NSString stringWithFormat:Localized(@"Value（%@）"), confirmModel.assetCode], Localized(@"MaximumTransactionCosts"), Localized(@"Remarks")]];
+            title = Localized(@"ConfirmationOfTransfer");
         } else if (self.handlerType == HandlerTypeTransferVoucher) {
             _titleArray = @[@[Localized(@"TransactionDetail"), Localized(@"ReceivingAccount"), Localized(@"Value"), Localized(@"MaximumTransactionCosts"), Localized(@"Remarks")], @[Localized(@"SendingAccount"), Localized(@"ReceivingAccount"), Localized(@"Value"), Localized(@"MaximumTransactionCosts"), Localized(@"Parameter")]];
-            self.title.text = Localized(@"ConfirmationOfGifts");
+            title = Localized(@"ConfirmationOfGifts");
         } else {
-            self.title.text = Localized(@"ConfirmTransaction");
+            if (NotNULLString(self.confirmTransactionModel.destAddress)) {
+               _titleArray = @[@[Localized(@"TransactionDetail"), Localized(@"ReceivingAccount"), Localized(@"Value（BU）"), Localized(@"MaximumTransactionCosts")], @[Localized(@"SendingAccount"), Localized(@"ReceivingAccount"), Localized(@"Value（BU）"), Localized(@"MaximumTransactionCosts"), Localized(@"Parameter")]];
+            } else {
+                _titleArray = @[@[Localized(@"TransactionDetail"), Localized(@"Value（BU）"), Localized(@"MaximumTransactionCosts")], @[Localized(@"SendingAccount"), Localized(@"Value（BU）"), Localized(@"MaximumTransactionCosts"), Localized(@"Parameter")]];
+            }
+            title = Localized(@"ConfirmTransaction");
         }
-        
-        
+        [self setupView];
+        self.title.text = title;
     }
     return self;
 }
@@ -416,16 +424,98 @@
 - (void)sureBtnClick {
     [self hideView];
     if (_sureBlock) {
-        _sureBlock(self.confirmTransactionModel.transactionCost);
+        if (self.handlerType == HandlerTypeTransferDpos) {
+            [self getDposData];
+        }
     }
 }
-
+- (void)getDposData
+{
+    dispatch_after(dispatch_time(DISPATCH_TIME_NOW, (int64_t)(Dispatch_After_Time * NSEC_PER_SEC)), dispatch_get_main_queue(), ^{
+        NSDecimalNumber * amount = [NSDecimalNumber decimalNumberWithString:self.confirmTransactionModel.amount];
+        NSDecimalNumber * minTransactionCost = [NSDecimalNumber decimalNumberWithString:self.confirmTransactionModel.transactionCost];
+        NSDecimalNumber * totleAmount = [amount decimalNumberByAdding:minTransactionCost];
+        NSDecimalNumber * amountNumber = [[HTTPManager shareManager] getDataWithBalanceJudgmentWithCost:[totleAmount stringValue] ifShowLoading:NO];
+        NSString * totleAmountStr = [amountNumber stringValue];
+        if (!NotNULLString(totleAmountStr) || [amountNumber isEqualToNumber:NSDecimalNumber.notANumber]) {
+        } else if ([totleAmountStr hasPrefix:@"-"]) {
+            [MBProgressHUD showTipMessageInWindow:Localized(@"NotSufficientFunds")];
+        } else {
+            if (![[HTTPManager shareManager] getTransactionHashWithModel: self.confirmTransactionModel]) return;
+            [self showPWAlertView:self.confirmTransactionModel];
+        }
+    });
+}
+- (void)showPWAlertView:(ConfirmTransactionModel *)confirmTransactionModel
+{
+    PasswordAlertView * PWAlertView = [[PasswordAlertView alloc] initWithPrompt:Localized(@"DposWalletPWPrompt") confrimBolck:^(NSString * _Nonnull password, NSArray * _Nonnull words) {
+        if (NotNULLString(password)) {
+            if (self.handlerType == HandlerTypeTransferDposCommand) {
+                [self submitDposTransaction];
+            } else {
+                [self getContractTransactionData];
+            }
+        }
+    } cancelBlock:^{
+        
+    }];
+    [PWAlertView showInWindowWithMode:CustomAnimationModeAlert inView:nil bgAlpha:AlertBgAlpha needEffectView:NO];
+    [PWAlertView.PWTextField becomeFirstResponder];
+}
+// Transaction confirmation and submission
+- (void)getContractTransactionData
+{
+    [[HTTPManager shareManager] getContractTransactionWithModel:self.confirmTransactionModel  success:^(id responseObject) {
+        NSInteger code = [[responseObject objectForKey:@"errCode"] integerValue];
+        if (code == Success_Code || code == ErrorNotSubmitted) {
+            NSString * dateStr = [NSString stringWithFormat:@"%@", [[responseObject objectForKey:@"data"] objectForKey:@"expiryTime"]];
+            if (code == Success_Code) {
+                NSDate * date = [NSDate dateWithTimeIntervalSince1970:[dateStr longLongValue] / 1000];
+                NSTimeInterval time = [date timeIntervalSinceNow];
+                if (time < 0) {
+                    [Encapsulation showAlertControllerWithMessage:Localized(@"Overtime") handler:nil];
+                } else {
+                    [self submitDposTransaction];
+                }
+            } else {
+                [Encapsulation showAlertControllerWithMessage:[NSString stringWithFormat:Localized(@"NotSubmitted%@"), [DateTool getTimeIntervalWithStr:dateStr]] handler:nil];
+            }
+        } else {
+            [Encapsulation showAlertControllerWithMessage:[ErrorTypeTool getDescriptionWithNodeErrorCode:code] handler:nil];
+        }
+        
+    } failure:^(NSError *error) {
+        
+    }];
+}
+- (void)submitDposTransaction
+{
+    [[HTTPManager shareManager] submitTransactionWithSuccess:^(TransactionResultModel *resultModel) {
+        if (resultModel.errorCode == Success_Code) {
+            NodeTransferSuccessViewController * VC = [[NodeTransferSuccessViewController alloc] init];
+            [[UIApplication currentViewController].navigationController pushViewController:VC animated:YES];
+        } else {
+            ResultViewController * VC = [[ResultViewController alloc] init];
+            VC.state = NO;
+            VC.resultModel = resultModel;
+            VC.confirmModel = self.confirmTransactionModel;
+            [[UIApplication currentViewController].navigationController pushViewController:VC animated:YES];
+        }
+    } failure:^(TransactionResultModel *resultModel) {
+        RequestTimeoutViewController * VC = [[RequestTimeoutViewController alloc] init];
+        VC.transactionHash = resultModel.transactionHash;
+        [[UIApplication currentViewController].navigationController pushViewController:VC animated:YES];
+    }];
+}
 - (CGFloat)tableView:(UITableView *)tableView heightForRowAtIndexPath:(NSIndexPath *)indexPath
 {
     NSString * title = (tableView == self.infoTableView) ? [self.titleArray firstObject][indexPath.row] : [self.titleArray lastObject][indexPath.row];
     NSString * str = [self infoStringWithTitle:title];
-    CGFloat cellHeight = [Encapsulation getSizeSpaceLabelWithStr:str font:FONT_TITLE width:View_Width_Main height:CGFLOAT_MAX lineSpacing:LINE_SPACING].height + ScreenScale(40);
-    return cellHeight;
+    if (NotNULLString(str)) {
+        return [Encapsulation getSizeSpaceLabelWithStr:str font:FONT_TITLE width:View_Width_Main height:CGFLOAT_MAX lineSpacing:LINE_SPACING].height + ScreenScale(40);
+    } else {
+        return Margin_40;
+    }
 }
 - (CGFloat)tableView:(UITableView *)tableView heightForHeaderInSection:(NSInteger)section
 {
@@ -461,24 +551,58 @@
     cell.title.font = FONT(13);
     cell.title.textColor = COLOR_9;
     NSString * str = [self infoStringWithTitle:cell.title.text];
-    cell.infoTitle.attributedText = [Encapsulation attrWithString:str preFont:FONT_TITLE preColor:COLOR_6 index:0 sufFont:FONT_TITLE sufColor:COLOR_6 lineSpacing:LINE_SPACING];
+    if (NotNULLString(str)) {
+        cell.infoTitle.attributedText = [Encapsulation attrWithString:str preFont:FONT_TITLE preColor:COLOR_6 index:0 sufFont:FONT_TITLE sufColor:COLOR_6 lineSpacing:LINE_SPACING];
+    }
     cell.selectionStyle = UITableViewCellSelectionStyleNone;
     return cell;
 }
 - (NSString *)infoStringWithTitle:(NSString *)title
 {
 //    _titleArray = @[@[Localized(@"TransactionDetail"), Localized(@"ReceivingAccount"), Localized(@"Value"), Localized(@"MaximumTransactionCosts"), Localized(@"Remarks")], @[Localized(@"SendingAccount"), Localized(@"ReceivingAccount"), Localized(@"Value"), Localized(@"MaximumTransactionCosts"), Localized(@"Parameter")]];
+    NSString * transactionDetail = self.confirmTransactionModel.transactionDetail;
+    NSString * destAddress = self.confirmTransactionModel.destAddress;
+    self.transactionCost = self.confirmTransactionModel.transactionCost;
+    if (self.handlerType == HandlerTypeTransferDpos) {
+        if (!NotNULLString(self.transactionCost)) {
+            self.transactionCost = TransactionCost_Check_MIN;
+            if ([self.confirmTransactionModel.type integerValue] == TransactionTypeCooperate) {
+                self.transactionCost = TransactionCost_Cooperate_MIN;
+            }
+            self.confirmTransactionModel.transactionCost = self.transactionCost;
+        }
+        transactionDetail = self.confirmTransactionModel.qrRemarkEn;
+        NSString * accountTag = self.confirmTransactionModel.accountTagEn;
+        if ([CurrentAppLanguage isEqualToString:ZhHans]) {
+            if (NotNULLString(self.confirmTransactionModel.qrRemark)) {
+                transactionDetail = self.confirmTransactionModel.qrRemark;
+            }
+            if (NotNULLString(self.confirmTransactionModel.accountTag)) {
+                accountTag = self.confirmTransactionModel.accountTag;
+            }
+        }
+        if (NotNULLString(self.confirmTransactionModel.destAddress)) {
+            if (NotNULLString(accountTag)) {
+                destAddress = [NSString stringWithFormat:@"%@%@", self.confirmTransactionModel.destAddress, accountTag];
+            } else {
+                destAddress = self.confirmTransactionModel.destAddress;
+            }
+            
+        }
+    }
     NSString * str;
     if ([title isEqualToString:Localized(@"TransactionDetail")]) {
-        str = self.confirmTransactionModel.transactionDetail;
+        str = transactionDetail;
     } else if ([title isEqualToString:Localized(@"SendingAccount")]) {
         str = CurrentWalletAddress;
     } else if ([title isEqualToString:Localized(@"ReceivingAccount")]) {
-        str = self.confirmTransactionModel.destAddress;
-    } else if ([title isEqualToString:Localized(@"Value")] || [title isEqualToString:Localized(@"Number（BU）")]) {
+        str = destAddress;
+    } else if ([title hasPrefix:Localized(@"Value")])
+//    else if ([title isEqualToString:Localized(@"Value")] || [title isEqualToString:Localized(@"Value（BU）")])
+    {
         str = self.confirmTransactionModel.amount;
     } else if ([title isEqualToString:Localized(@"MaximumTransactionCosts")]) {
-        str = self.confirmTransactionModel.transactionCost;
+        str = self.transactionCost;
     } else if ([title isEqualToString:Localized(@"Remarks")]) {
         str = self.confirmTransactionModel.qrRemark;
     } else if ([title isEqualToString:Localized(@"Parameter")]) {

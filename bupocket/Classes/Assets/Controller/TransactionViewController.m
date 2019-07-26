@@ -1,24 +1,22 @@
 //
-//  TransferVoucherViewController.m
+//  TransactionViewController.m
 //  bupocket
 //
-//  Created by huoss on 2019/7/15.
+//  Created by huoss on 2019/7/26.
 //  Copyright © 2019 bupocket. All rights reserved.
 //
 
-#import "TransferVoucherViewController.h"
+#import "TransactionViewController.h"
 #import "TextFieldViewCell.h"
 #import "BottomConfirmAlertView.h"
 #import "AddressBookViewController.h"
 #import "HMScannerController.h"
-#import "TransferResultsViewController.h"
 #import "ResultViewController.h"
 #import "VoucherViewCell.h"
 #import "VoucherViewController.h"
 #import "RequestTimeoutViewController.h"
-#import "ResultViewController.h"
 
-@interface TransferVoucherViewController ()<UITextFieldDelegate, UITableViewDelegate, UITableViewDataSource>
+@interface TransactionViewController ()<UITextFieldDelegate, UITableViewDelegate, UITableViewDataSource>
 
 @property (nonatomic, strong) UITableView * tableView;
 @property (nonatomic, strong) NSMutableArray * listArray;
@@ -55,7 +53,7 @@
 static NSString * const VoucherCellID = @"VoucherCellID";
 static NSString * const ChooseVoucherCellID = @"ChooseVoucherCellID";
 
-@implementation TransferVoucherViewController
+@implementation TransactionViewController
 
 - (NSMutableArray *)listArray
 {
@@ -134,7 +132,7 @@ static NSString * const ChooseVoucherCellID = @"ChooseVoucherCellID";
         [self setupHeaderView];
     }
     self.next = [UIButton createFooterViewWithTitle:Localized(@"Next") isEnabled:NO Target:self Selector:@selector(nextAction:)];
-//    [self setupFooterView];
+    //    [self setupFooterView];
 }
 //- (void)viewDidLayoutSubviews
 //{
@@ -158,21 +156,21 @@ static NSString * const ChooseVoucherCellID = @"ChooseVoucherCellID";
     self.tableView.tableHeaderView = titleBtn;
 }
 /*
-- (void)setupFooterView
-{
-    UIView * footerView = [[UIView alloc] initWithFrame:CGRectMake(0, 0, DEVICE_WIDTH, ScreenScale(200) + SafeAreaBottomH)];
-    self.next = [UIButton createButtonWithTitle:Localized(@"Next") isEnabled:NO Target:self Selector:@selector(nextAction:)];
-    [footerView addSubview:self.next];
-
-    [self.next mas_makeConstraints:^(MASConstraintMaker *make) {
-        make.top.equalTo(footerView.mas_top).offset(ScreenScale(50));
-        make.left.equalTo(footerView.mas_left).offset(Margin_15);
-        make.right.equalTo(footerView.mas_right).offset(-Margin_15);
-        make.height.mas_equalTo(MAIN_HEIGHT);
-    }];
-    self.tableView.tableFooterView = footerView;
-}
-*/
+ - (void)setupFooterView
+ {
+ UIView * footerView = [[UIView alloc] initWithFrame:CGRectMake(0, 0, DEVICE_WIDTH, ScreenScale(200) + SafeAreaBottomH)];
+ self.next = [UIButton createButtonWithTitle:Localized(@"Next") isEnabled:NO Target:self Selector:@selector(nextAction:)];
+ [footerView addSubview:self.next];
+ 
+ [self.next mas_makeConstraints:^(MASConstraintMaker *make) {
+ make.top.equalTo(footerView.mas_top).offset(ScreenScale(50));
+ make.left.equalTo(footerView.mas_left).offset(Margin_15);
+ make.right.equalTo(footerView.mas_right).offset(-Margin_15);
+ make.height.mas_equalTo(MAIN_HEIGHT);
+ }];
+ self.tableView.tableFooterView = footerView;
+ }
+ */
 - (void)nextAction:(UIButton *)button
 {
     [self DataJudgment];
@@ -290,7 +288,11 @@ static NSString * const ChooseVoucherCellID = @"ChooseVoucherCellID";
 {
     self.confirmModel = [[ConfirmTransactionModel alloc] init];
     HandlerType handlerType = HandlerTypeTransferAssets;
-    NSString * transactionDetail = @"转账交易";
+    NSString * transactionDetail;
+    if (self.transferType == TransferTypeAssets) {
+        transactionDetail = Localized(@"TransferTransaction");
+        self.confirmModel.assetCode = self.listModel.assetCode;
+    }
     if (self.transferType == TransferTypeVoucher) {
         handlerType = HandlerTypeTransferVoucher;
         transactionDetail = Localized(@"TransferEncryptedDigitalVouchers");
@@ -302,7 +304,7 @@ static NSString * const ChooseVoucherCellID = @"ChooseVoucherCellID";
     self.confirmModel.destAddress = self.receiveAddressStr;
     self.confirmModel.transactionCost = self.transactionCostsStr;
     self.confirmModel.qrRemark = self.remarksStr;
-    BottomConfirmAlertView * confirmAlertView = [[BottomConfirmAlertView alloc] initWithIsShowValue:NO handlerType:handlerType confirmModel:self.confirmModel confrimBolck:^(NSString * _Nonnull transactionCost) {
+    BottomConfirmAlertView * confirmAlertView = [[BottomConfirmAlertView alloc] initWithIsShowValue:NO handlerType:handlerType confirmModel:self.confirmModel confrimBolck:^{
         dispatch_after(dispatch_time(DISPATCH_TIME_NOW, (int64_t)(Dispatch_After_Time * NSEC_PER_SEC)), dispatch_get_main_queue(), ^{
             [self showPWAlert];
         });
@@ -355,7 +357,7 @@ static NSString * const ChooseVoucherCellID = @"ChooseVoucherCellID";
             VC.state = NO;
         }
         VC.resultModel = resultModel;
-        VC.confirmTransactionModel = self.confirmModel;
+        VC.confirmModel = self.confirmModel;
         [self.navigationController pushViewController:VC animated:YES];
     } failure:^(TransactionResultModel *resultModel) {
         RequestTimeoutViewController * VC = [[RequestTimeoutViewController alloc] init];
@@ -393,29 +395,29 @@ static NSString * const ChooseVoucherCellID = @"ChooseVoucherCellID";
 }
 - (UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath
 {
-        if (self.transferType == TransferTypeVoucher && indexPath.row == 0) {
-            if (self.voucherModel) {
-                VoucherViewCell * cell = [VoucherViewCell cellWithTableView:tableView identifier:VoucherCellID];
-                cell.voucherModel = self.voucherModel;
-                cell.number.hidden = YES;
-                cell.contentView.backgroundColor = [UIColor whiteColor];
-                cell.selectionStyle = UITableViewCellSelectionStyleNone;
-                return cell;
-            } else {
-                UITableViewCell * cell = [tableView dequeueReusableCellWithIdentifier:ChooseVoucherCellID];
-                if (cell == nil) {
-                    cell = [[UITableViewCell alloc] initWithStyle:UITableViewCellStyleSubtitle reuseIdentifier:ChooseVoucherCellID];
-                }
-                cell.selectionStyle = UITableViewCellSelectionStyleNone;
-                [cell.contentView addSubview:self.chooseVoucher];
-                [self.chooseVoucher mas_makeConstraints:^(MASConstraintMaker *make) {
-                    make.bottom.equalTo(cell.contentView.mas_bottom);
-                    make.left.equalTo(cell.contentView.mas_left).offset(Margin_15);
-                    make.right.equalTo(cell.contentView.mas_right).offset(-Margin_15);
-                    //            make.height.mas_equalTo(ScreenScale(130));
-                }];
-                return cell;
+    if (self.transferType == TransferTypeVoucher && indexPath.row == 0) {
+        if (self.voucherModel) {
+            VoucherViewCell * cell = [VoucherViewCell cellWithTableView:tableView identifier:VoucherCellID];
+            cell.voucherModel = self.voucherModel;
+            cell.number.hidden = YES;
+            cell.contentView.backgroundColor = [UIColor whiteColor];
+            cell.selectionStyle = UITableViewCellSelectionStyleNone;
+            return cell;
+        } else {
+            UITableViewCell * cell = [tableView dequeueReusableCellWithIdentifier:ChooseVoucherCellID];
+            if (cell == nil) {
+                cell = [[UITableViewCell alloc] initWithStyle:UITableViewCellStyleSubtitle reuseIdentifier:ChooseVoucherCellID];
             }
+            cell.selectionStyle = UITableViewCellSelectionStyleNone;
+            [cell.contentView addSubview:self.chooseVoucher];
+            [self.chooseVoucher mas_makeConstraints:^(MASConstraintMaker *make) {
+                make.bottom.equalTo(cell.contentView.mas_bottom);
+                make.left.equalTo(cell.contentView.mas_left).offset(Margin_15);
+                make.right.equalTo(cell.contentView.mas_right).offset(-Margin_15);
+                //            make.height.mas_equalTo(ScreenScale(130));
+            }];
+            return cell;
+        }
     }
     NSString * title = [self.listArray[indexPath.row] firstObject];
     TextFieldCellType cellType = ([title isEqualToString:[NSString stringWithFormat:@"%@ *", Localized(@"ReceivingAccount")]] || [title isEqualToString:Localized(@"AmountOfTransfer*")] || [title isEqualToString:Localized(@"TransferQuantity*")]) ? TextFieldCellAddress : TextFieldCellDefault;
@@ -431,13 +433,13 @@ static NSString * const ChooseVoucherCellID = @"ChooseVoucherCellID";
 }
 - (void)setTextFieldWithCell:(TextFieldViewCell *)cell title:(NSString *)title
 {
-//    if (self.transferType == TransferTypeAssets) {
-//        title = Localized(@"TransferAccounts");
-//        self.listArray = [NSMutableArray arrayWithObjects:@[[NSString stringWithFormat:@"%@ *", Localized(@"ReceivingAccount")], Localized(@"ReceiveAddressPlaceholder")], @[Localized(@"AmountOfTransfer*"), Localized(@"AmountOfTransferPlaceholder")], @[Localized(@"Remarks"), Localized(@"RemarksPlaceholder")], @[Localized(@"EstimatedMaximum"), Localized(@"TransactionCostPlaceholder")], nil];
-//    } else if (self.transferType == TransferTypeVoucher) {
-//        title = Localized(@"DonateVouchers");
-//        self.listArray = [NSMutableArray arrayWithObjects:@[[NSString stringWithFormat:@"%@ *", Localized(@"DonateVoucher")]], @[[NSString stringWithFormat:@"%@ *", Localized(@"ReceivingAccount")], Localized(@"ReceiveAddressPlaceholder")], @[Localized(@"TransferQuantity*"), Localized(@"TransferQuantityPlaceholder")], @[Localized(@"Remarks"), Localized(@"RemarksPlaceholder")], @[Localized(@"EstimatedMaximum"), Localized(@"TransactionCostPlaceholder")], nil];
-//    }
+    //    if (self.transferType == TransferTypeAssets) {
+    //        title = Localized(@"TransferAccounts");
+    //        self.listArray = [NSMutableArray arrayWithObjects:@[[NSString stringWithFormat:@"%@ *", Localized(@"ReceivingAccount")], Localized(@"ReceiveAddressPlaceholder")], @[Localized(@"AmountOfTransfer*"), Localized(@"AmountOfTransferPlaceholder")], @[Localized(@"Remarks"), Localized(@"RemarksPlaceholder")], @[Localized(@"EstimatedMaximum"), Localized(@"TransactionCostPlaceholder")], nil];
+    //    } else if (self.transferType == TransferTypeVoucher) {
+    //        title = Localized(@"DonateVouchers");
+    //        self.listArray = [NSMutableArray arrayWithObjects:@[[NSString stringWithFormat:@"%@ *", Localized(@"DonateVoucher")]], @[[NSString stringWithFormat:@"%@ *", Localized(@"ReceivingAccount")], Localized(@"ReceiveAddressPlaceholder")], @[Localized(@"TransferQuantity*"), Localized(@"TransferQuantityPlaceholder")], @[Localized(@"Remarks"), Localized(@"RemarksPlaceholder")], @[Localized(@"EstimatedMaximum"), Localized(@"TransactionCostPlaceholder")], nil];
+    //    }
     if ([title isEqualToString:[NSString stringWithFormat:@"%@ *", Localized(@"ReceivingAccount")]]) {
         self.receiveAddress = cell.textField;
         if (NotNULLString(self.receiveAddressStr)) {
@@ -459,8 +461,11 @@ static NSString * const ChooseVoucherCellID = @"ChooseVoucherCellID";
             availableStr = [NSString stringWithFormat:Localized(@"Transferable %@"), self.number];
             index = availableStr.length - self.number.length;
         }
-        [cell.rightBtn setAttributedTitle:[Encapsulation attrWithString:availableStr preFont:FONT(12) preColor:COLOR_6 index:index sufFont:FONT(12) sufColor:MAIN_COLOR lineSpacing:0] forState:UIControlStateNormal];
-        cell.rightBtn.contentHorizontalAlignment = UIControlContentHorizontalAlignmentRight;
+        NSMutableAttributedString * attr = [Encapsulation attrWithString:availableStr preFont:FONT(12) preColor:COLOR_6 index:index sufFont:FONT(12) sufColor:MAIN_COLOR lineSpacing:0];
+        attr.alignment = NSTextAlignmentRight;
+        [cell.rightBtn setAttributedTitle:attr forState:UIControlStateNormal];
+        //        cell.rightBtn.titleLabel.textAlignment = NSTextAlignmentRight;
+        //        cell.rightBtn.contentHorizontalAlignment = UIControlContentHorizontalAlignmentRight;
     } else if ([title isEqualToString:Localized(@"Remarks")]) {
         self.remarks = cell.textField;
     } else if ([title isEqualToString:Localized(@"EstimatedMaximum")]) {
@@ -529,7 +534,7 @@ static NSString * const ChooseVoucherCellID = @"ChooseVoucherCellID";
 - (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath
 {
     [tableView deselectRowAtIndexPath:indexPath animated:YES];
-    if (indexPath.row == 0) {
+    if (self.transferType == TransferTypeVoucher && indexPath.row == 0) {
         [self chooseVoucherAction];
     }
 }
@@ -552,8 +557,6 @@ static NSString * const ChooseVoucherCellID = @"ChooseVoucherCellID";
     self.remarksStr = TrimmingCharacters(self.remarks.text);
     self.transactionCostsStr = TrimmingCharacters(self.transactionCosts.text);
 }
-
-
 /*
 #pragma mark - Navigation
 

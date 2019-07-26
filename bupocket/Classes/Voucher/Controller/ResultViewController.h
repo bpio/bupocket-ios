@@ -14,7 +14,7 @@ NS_ASSUME_NONNULL_BEGIN
 
 @property (nonatomic, assign) BOOL state;
 @property (nonatomic, strong) TransactionResultModel * resultModel;
-@property (nonatomic, strong) ConfirmTransactionModel * confirmTransactionModel;
+@property (nonatomic, strong) ConfirmTransactionModel * confirmModel;
 
 @end
 

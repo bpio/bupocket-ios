@@ -46,8 +46,9 @@ static NSString * const DetailSubtitleCellID = @"DetailSubtitleCellID";
         
         CGFloat borderRadius;
         NSString * walletImageName;
-        UIFont * walletNameFont = FONT_Bold(15);
-        UIColor * walletAddressColor = COLOR_9;
+        UIFont * walletNameFont = self.walletName.font;
+        UIColor * walletAddressColor = self.walletAddress.textColor;
+        UIFont * walletAddressFont = self.walletAddress.font;
         // 我的界面
         if ([reuseIdentifier isEqualToString:NormalSubtitleCellID]) {
             self.walletImageWH = ScreenScale(70);
@@ -58,8 +59,8 @@ static NSString * const DetailSubtitleCellID = @"DetailSubtitleCellID";
             self.walletImageWH = Margin_50;
             borderRadius = self.walletImageWH * 0.5;
             walletImageName = @"icon_placehoder";
-            walletNameFont = FONT_Bold(18);
-            walletAddressColor = COLOR_6;
+            walletNameFont = FONT_Bold(15);
+            walletAddressFont = FONT(12);
         } else {
             self.walletImageWH = Margin_40;
             borderRadius = MAIN_CORNER;
@@ -78,6 +79,7 @@ static NSString * const DetailSubtitleCellID = @"DetailSubtitleCellID";
         _walletImage.image = [UIImage imageNamed:walletImageName];
         self.walletName.font = walletNameFont;
         self.walletAddress.textColor = walletAddressColor;
+        self.walletAddress.font = walletAddressFont;
         self.backgroundColor = self.contentView.superview.backgroundColor;
     }
     return self;
@@ -86,7 +88,7 @@ static NSString * const DetailSubtitleCellID = @"DetailSubtitleCellID";
 {
     [super layoutSubviews];
     CGFloat walletNameOffsetX = Margin_10;
-    CGFloat walletNameOffsetY = Margin_5;
+    CGFloat walletNameOffsetY = Subtitle_EdgeInsets_Y;
     CGFloat listBgY = 0;
     CGFloat walletImageX = Margin_10;
     if ([self.reuseIdentifier isEqualToString:NormalSubtitleCellID] || [self.reuseIdentifier isEqualToString:DetailSubtitleCellID] ||
@@ -206,6 +208,7 @@ static NSString * const DetailSubtitleCellID = @"DetailSubtitleCellID";
     if (!_walletName) {
         _walletName = [[UILabel alloc] init];
         _walletName.textColor = TITLE_COLOR;
+        _walletName.font = FONT_Bold(15);
     }
     return _walletName;
 }
@@ -214,6 +217,7 @@ static NSString * const DetailSubtitleCellID = @"DetailSubtitleCellID";
     if (!_walletAddress) {
         _walletAddress = [[UILabel alloc] init];
         _walletAddress.font = FONT_TITLE;
+        _walletAddress.textColor = COLOR_9;
         _walletAddress.lineBreakMode = NSLineBreakByTruncatingMiddle;
     }
     return _walletAddress;

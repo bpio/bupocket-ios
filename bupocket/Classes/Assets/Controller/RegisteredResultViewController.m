@@ -122,7 +122,7 @@
         textWidth = Info_Width_Max;
         marginH = Margin_30;
     }
-    CGFloat rowHeight = [Encapsulation rectWithText:[[self.listArray[indexPath.section][indexPath.row] allValues] firstObject] font:FONT(15) textWidth: textWidth].size.height + marginH;
+    CGFloat rowHeight = [Encapsulation rectWithText:[[self.listArray[indexPath.section][indexPath.row] allValues] firstObject] font:FONT_TITLE textWidth: textWidth].size.height + marginH;
     return rowHeight;
 }
 - (NSInteger)numberOfSectionsInTableView:(UITableView *)tableView

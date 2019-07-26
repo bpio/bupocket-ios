@@ -92,9 +92,9 @@
 - (CGFloat)tableView:(UITableView *)tableView heightForRowAtIndexPath:(NSIndexPath *)indexPath
 {
     if (indexPath.row == [self.listArray[0] count] - 1) {
-        return (NotNULLString(self.resultModel.remark)) ? ([Encapsulation rectWithText:self.resultModel.remark font:FONT(15) textWidth:Info_Width_Max].size.height + Margin_30) : MAIN_HEIGHT;
+        return (NotNULLString(self.resultModel.remark)) ? ([Encapsulation rectWithText:self.resultModel.remark font:FONT_TITLE textWidth:Info_Width_Max].size.height + Margin_30) : MAIN_HEIGHT;
     } else {
-        return [Encapsulation rectWithText:self.listArray[1][indexPath.row] font:FONT(15) textWidth:Info_Width_Max].size.height + Margin_30;
+        return [Encapsulation rectWithText:self.listArray[1][indexPath.row] font:FONT_TITLE textWidth:Info_Width_Max].size.height + Margin_30;
     }
 }
 - (NSInteger)numberOfSectionsInTableView:(UITableView *)tableView

@@ -47,7 +47,7 @@ static NSString * const NodeTransferSuccessID = @"NodeTransferSuccessID";
     [self.title mas_makeConstraints:^(MASConstraintMaker *make) {
         make.left.equalTo(self.icon.mas_right).offset(Margin_10);
         make.centerY.equalTo(self.icon);
-        make.right.equalTo(self.contentView.mas_right).offset(-Margin_15);
+        make.right.equalTo(self.contentView.mas_right).offset(-Margin_Main);
     }];
     
     [self.detail mas_makeConstraints:^(MASConstraintMaker *make) {

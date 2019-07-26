@@ -77,7 +77,8 @@
 #define Node_Cooperate_Exit @"nodeServer/node/v1/cooperate/exit"
 
 // 交易状态查询链接
-#define Transaction_Query_Link @"http://explorer.bumo.io"
+#define Transaction_Query_Link @"https://explorer.bumo.io/"
+#define Transaction_Query_Link_Test @"https://explorer.bumotest.io/"
 // 交易成功或超时广告图
 #define AD_URL @"nodeServer/ad/v1/6aa3838c760b4e2abf37910f75394834"
 // 扫码字符串

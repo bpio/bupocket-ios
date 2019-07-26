@@ -103,6 +103,7 @@
 		9519ED6D22E5883200A4AAC1 /* InfoViewCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 9519ED6C22E5883200A4AAC1 /* InfoViewCell.m */; };
 		9519ED7022E6A67E00A4AAC1 /* ChangePasswordViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 9519ED6F22E6A67E00A4AAC1 /* ChangePasswordViewController.m */; };
 		9519ED7622E8338F00A4AAC1 /* TransactionDetailsViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 9519ED7522E8338F00A4AAC1 /* TransactionDetailsViewController.m */; };
+		9519ED7922EAFA3800A4AAC1 /* TransactionViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 9519ED7822EAFA3800A4AAC1 /* TransactionViewController.m */; };
 		95266CCD226F062E002CD915 /* NodePlanViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 95266CA1226F062E002CD915 /* NodePlanViewController.m */; };
 		95266CCE226F062E002CD915 /* CooperateViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 95266CA4226F062E002CD915 /* CooperateViewController.m */; };
 		95266CCF226F062E002CD915 /* NodeSharingViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 95266CA7226F062E002CD915 /* NodeSharingViewController.m */; };
@@ -163,7 +164,6 @@
 		959E290B224F1B9C006FCA30 /* ConfirmTransactionAlertView.m in Sources */ = {isa = PBXBuildFile; fileRef = 959E290A224F1B9C006FCA30 /* ConfirmTransactionAlertView.m */; };
 		959E290E224F1F25006FCA30 /* ConfirmTransactionModel.m in Sources */ = {isa = PBXBuildFile; fileRef = 959E290D224F1F25006FCA30 /* ConfirmTransactionModel.m */; };
 		959E2933225C9E04006FCA30 /* TencentOpenAPI.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 959E2932225C9E04006FCA30 /* TencentOpenAPI.framework */; };
-		95A5DD6F22DC824800DA12A4 /* TransferVoucherViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 95A5DD6E22DC824800DA12A4 /* TransferVoucherViewController.m */; };
 		95A8A3B1219D1352008E978E /* LanguageManager.m in Sources */ = {isa = PBXBuildFile; fileRef = 95A8A3AF219D1352008E978E /* LanguageManager.m */; };
 		95A8A3B5219D157C008E978E /* DateTool.m in Sources */ = {isa = PBXBuildFile; fileRef = 95A8A3B4219D157C008E978E /* DateTool.m */; };
 		95A8A3B9219D15D8008E978E /* RegexPatternTool.m in Sources */ = {isa = PBXBuildFile; fileRef = 95A8A3B8219D15D8008E978E /* RegexPatternTool.m */; };
@@ -411,6 +411,8 @@
 		9519ED6F22E6A67E00A4AAC1 /* ChangePasswordViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ChangePasswordViewController.m; sourceTree = "<group>"; };
 		9519ED7422E8338F00A4AAC1 /* TransactionDetailsViewController.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = TransactionDetailsViewController.h; sourceTree = "<group>"; };
 		9519ED7522E8338F00A4AAC1 /* TransactionDetailsViewController.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = TransactionDetailsViewController.m; sourceTree = "<group>"; };
+		9519ED7722EAFA3800A4AAC1 /* TransactionViewController.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = TransactionViewController.h; sourceTree = "<group>"; };
+		9519ED7822EAFA3800A4AAC1 /* TransactionViewController.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = TransactionViewController.m; sourceTree = "<group>"; };
 		95266CA1226F062E002CD915 /* NodePlanViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = NodePlanViewController.m; sourceTree = "<group>"; };
 		95266CA2226F062E002CD915 /* VotingRecordsViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = VotingRecordsViewController.h; sourceTree = "<group>"; };
 		95266CA3226F062E002CD915 /* NodeTransferSuccessViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = NodeTransferSuccessViewController.h; sourceTree = "<group>"; };
@@ -535,8 +537,6 @@
 		959E290C224F1F25006FCA30 /* ConfirmTransactionModel.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = ConfirmTransactionModel.h; sourceTree = "<group>"; };
 		959E290D224F1F25006FCA30 /* ConfirmTransactionModel.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = ConfirmTransactionModel.m; sourceTree = "<group>"; };
 		959E2932225C9E04006FCA30 /* TencentOpenAPI.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; path = TencentOpenAPI.framework; sourceTree = "<group>"; };
-		95A5DD6D22DC824800DA12A4 /* TransferVoucherViewController.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = TransferVoucherViewController.h; sourceTree = "<group>"; };
-		95A5DD6E22DC824800DA12A4 /* TransferVoucherViewController.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = TransferVoucherViewController.m; sourceTree = "<group>"; };
 		95A8A3AF219D1352008E978E /* LanguageManager.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = LanguageManager.m; sourceTree = "<group>"; };
 		95A8A3B0219D1352008E978E /* LanguageManager.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = LanguageManager.h; sourceTree = "<group>"; };
 		95A8A3B3219D157B008E978E /* DateTool.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = DateTool.h; sourceTree = "<group>"; };
@@ -827,6 +827,8 @@
 				83379A85217D9C8A00C222A5 /* AssetsDetailViewController.m */,
 				9519ED7422E8338F00A4AAC1 /* TransactionDetailsViewController.h */,
 				9519ED7522E8338F00A4AAC1 /* TransactionDetailsViewController.m */,
+				9519ED7722EAFA3800A4AAC1 /* TransactionViewController.h */,
+				9519ED7822EAFA3800A4AAC1 /* TransactionViewController.m */,
 				83379A8A217DB25A00C222A5 /* TransferAccountsViewController.h */,
 				83379A8B217DB25A00C222A5 /* TransferAccountsViewController.m */,
 				83379A90217DE12600C222A5 /* TransferResultsViewController.h */,
@@ -1109,8 +1111,6 @@
 				95162FE422CB3D9B0024FD22 /* AcceptorViewController.m */,
 				9538307C22CCC04A00607F0C /* AssetIssuerViewController.h */,
 				9538307D22CCC04A00607F0C /* AssetIssuerViewController.m */,
-				95A5DD6D22DC824800DA12A4 /* TransferVoucherViewController.h */,
-				95A5DD6E22DC824800DA12A4 /* TransferVoucherViewController.m */,
 				9538308522CEE93D00607F0C /* ResultViewController.h */,
 				9538308622CEE93D00607F0C /* ResultViewController.m */,
 			);
@@ -1733,6 +1733,7 @@
 				9510A3CC219A91D4007A49A4 /* ErrorTypeTool.m in Sources */,
 				95266CD5226F062E002CD915 /* CooperateModel.m in Sources */,
 				954371742199234100915BBE /* SettingViewController.m in Sources */,
+				9519ED7922EAFA3800A4AAC1 /* TransactionViewController.m in Sources */,
 				838DC7652186A114002FF276 /* DistributionOfAssetsViewController.m in Sources */,
 				83379ADC2180509600C222A5 /* NSDate+Extension.m in Sources */,
 				8369BCED218B3DF5002F8903 /* AtpProperty.m in Sources */,
@@ -1745,7 +1746,6 @@
 				833799322177305A00C222A5 /* UIView+Extension.m in Sources */,
 				83379A98217EB79B00C222A5 /* RequestTimeoutViewController.m in Sources */,
 				835A45272174C14D005BFCDD /* AppDelegate.m in Sources */,
-				95A5DD6F22DC824800DA12A4 /* TransferVoucherViewController.m in Sources */,
 				95266CE1226F062E002CD915 /* SharingCanvassingAlertView.m in Sources */,
 				959726C821E4893F0022CB78 /* ExportPrivateKeyViewController.m in Sources */,
 				956CD42121B016D1004DC1FA /* ListModel.m in Sources */,

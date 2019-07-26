@@ -371,6 +371,7 @@
 "TransactionCostMin%@" = "最多支付交易费用不可少于 %@ BU";
 "TransactionCostMax%@" = "最多支付交易费用不可超过 %@ BU";
 "ExtraLongNotes" = "备注信息不能超过20个字";
+"TransferTransaction" = "转账交易";
 // 帮助反馈
 "SuggestionsContentOverlength" = "问题或建议内容过长，不能超过100个字";
 "ContactOverlength" = "联系方式内容过长，不能超过20个字";
@@ -554,9 +555,10 @@
 //"Initiator" = "发起方";
 //"CounterAccount" = "对方账户";
 "Detail" = "详情";
-"Details" = "详情>>";
-"TransactionCosts（BU）" = "交易费用（BU）";
-"Number（BU）" = "数量（BU）";
+"Details" = "详情 >>";
+//"TransactionCosts（BU）" = "交易费用（BU）";
+"TxFee（BU）" = "交易费（BU）";
+"Value（BU）" = "数量（BU）";
 // 节点共建
 "PurchaseAmount" = "起购金额";
 "AwardSharingRatio" = "奖励分享比例";
@@ -601,6 +603,7 @@
 
 // 退出节点共建计划
 // 交易确认
+"DposWalletPWPrompt" = "请填写安全密码以确认交易";
 "Overtime" = "请求已超时，请重新操作";
 // 交易成功
 "TransferSuccess" = "交易成功";

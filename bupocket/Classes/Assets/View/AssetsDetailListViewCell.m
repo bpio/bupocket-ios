@@ -35,7 +35,7 @@ static NSString * const AssetsDetailCellID = @"AssetsDetailCellID";
 - (void)layoutSubviews
 {
     [super layoutSubviews];
-    CGFloat offsetY = Margin_5;
+    CGFloat offsetY = Subtitle_EdgeInsets_Y;
     [self.listImage mas_makeConstraints:^(MASConstraintMaker *make) {
         make.left.equalTo(self.contentView.mas_left).offset(Margin_10);
         make.centerY.equalTo(self.contentView);

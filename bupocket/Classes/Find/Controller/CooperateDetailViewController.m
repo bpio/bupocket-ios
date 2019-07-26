@@ -11,11 +11,13 @@
 #import "SupportAlertView.h"
 #import "CooperateDetailModel.h"
 #import "CooperateSupportModel.h"
-#import "ConfirmTransactionAlertView.h"
+#import "BottomConfirmAlertView.h"
+//#import "ConfirmTransactionAlertView.h"
 
-#import "NodeTransferSuccessViewController.h"
-#import "TransferResultsViewController.h"
-#import "RequestTimeoutViewController.h"
+//#import "NodeTransferSuccessViewController.h"
+//#import "TransferResultsViewController.h"
+//#import "ResultViewController.h"
+//#import "RequestTimeoutViewController.h"
 #import "YBPopupMenu.h"
 
 #import "CooperateDetailViewCell.h"
@@ -219,6 +221,12 @@ static NSString * const CooperateDetailCellID = @"CooperateDetailCellID";
 - (void)showConfirmAlertView:(ConfirmTransactionModel *)confirmTransactionModel
 {
     confirmTransactionModel.accountTag = @"";
+    BottomConfirmAlertView * confirmAlertView = [[BottomConfirmAlertView alloc] initWithIsShowValue:NO handlerType:HandlerTypeTransferDpos confirmModel:confirmTransactionModel confrimBolck:^{
+    } cancelBlock:^{
+        
+    }];
+    [confirmAlertView showInWindowWithMode:CustomAnimationModeShare inView:nil bgAlpha:AlertBgAlpha needEffectView:NO];
+    /*
     ConfirmTransactionAlertView * alertView = [[ConfirmTransactionAlertView alloc] initWithDposConfrimBolck:^(NSString * _Nonnull transactionCost) {
         dispatch_after(dispatch_time(DISPATCH_TIME_NOW, (int64_t)(Dispatch_After_Time * NSEC_PER_SEC)), dispatch_get_main_queue(), ^{
             NSDecimalNumber * amount = [NSDecimalNumber decimalNumberWithString:confirmTransactionModel.amount];
@@ -239,8 +247,9 @@ static NSString * const CooperateDetailCellID = @"CooperateDetailCellID";
     }];
     alertView.confirmTransactionModel = confirmTransactionModel;
     [alertView showInWindowWithMode:CustomAnimationModeShare inView:nil bgAlpha:AlertBgAlpha needEffectView:NO];
+     */
 }
-
+/*
 // Transaction confirmation and submission
 - (void)getContractTransactionData:(ConfirmTransactionModel *)confirmTransactionModel
 {
@@ -285,10 +294,10 @@ static NSString * const CooperateDetailCellID = @"CooperateDetailCellID";
             NodeTransferSuccessViewController * VC = [[NodeTransferSuccessViewController alloc] init];
             [self.navigationController pushViewController:VC animated:YES];
         } else {
-            TransferResultsViewController * VC = [[TransferResultsViewController alloc] init];
+            ResultViewController * VC = [[ResultViewController alloc] init];
             VC.state = NO;
             VC.resultModel = resultModel;
-            VC.confirmTransactionModel = confirmTransactionModel;
+            VC.confirmModel = confirmTransactionModel;
             [self.navigationController pushViewController:VC animated:YES];
         }
     } failure:^(TransactionResultModel *resultModel) {
@@ -297,6 +306,7 @@ static NSString * const CooperateDetailCellID = @"CooperateDetailCellID";
         [self.navigationController pushViewController:VC animated:YES];
     }];
 }
+ */
 - (NSInteger)numberOfSectionsInTableView:(UITableView *)tableView
 {
     if (self.cooperateDetailModel) {
@@ -462,7 +472,7 @@ static NSString * const CooperateDetailCellID = @"CooperateDetailCellID";
         cell.selectionStyle = UITableViewCellSelectionStyleNone;
         return cell;
     } else if (indexPath.section == 1) {
-        InfoViewCell * cell = [InfoViewCell cellWithTableView:tableView];
+        InfoViewCell * cell = [InfoViewCell cellWithTableView:tableView cellType:CellTypeNormal];
         [cell.info setAttributedTitle:[Encapsulation getAttrWithInfoStr:Localized(@"RiskStatementPrompt")] forState:UIControlStateNormal];
         return cell;
     } else {

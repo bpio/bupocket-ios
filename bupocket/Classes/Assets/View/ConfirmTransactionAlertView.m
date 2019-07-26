@@ -133,7 +133,7 @@
         }
     }
     if (NotNULLString(self.confirmTransactionModel.destAddress)) {
-        _infoTitleArray = @[Localized(@"TransactionDetail"), Localized(@"ReceivingAccount"), Localized(@"MaximumTransactionCosts"), Localized(@"SendingAccount"), Localized(@"ReceivingAccount"), Localized(@"Number（BU）"), Localized(@"TransactionCosts（BU）"), Localized(@"Parameter")];
+        _infoTitleArray = @[Localized(@"TransactionDetail"), Localized(@"ReceivingAccount"), Localized(@"MaximumTransactionCosts"), Localized(@"SendingAccount"), Localized(@"ReceivingAccount"), Localized(@"Value（BU）"), Localized(@"TxFee（BU）"), Localized(@"Parameter")];
         NSString * destAddress;
         if (NotNULLString(accountTag)) {
             destAddress = [NSString stringWithFormat:@"%@%@", self.confirmTransactionModel.destAddress, accountTag];
@@ -143,7 +143,7 @@
         infoArray = @[qrRemark, destAddress, self.transactionCost, CurrentWalletAddress, destAddress, self.confirmTransactionModel.amount, self.transactionCost, self.confirmTransactionModel.script];
         
     } else {
-        _infoTitleArray = @[Localized(@"TransactionDetail"), Localized(@"MaximumTransactionCosts"), Localized(@"SendingAccount"), Localized(@"Number（BU）"), Localized(@"TransactionCosts（BU）"), Localized(@"Parameter")];
+        _infoTitleArray = @[Localized(@"TransactionDetail"), Localized(@"MaximumTransactionCosts"), Localized(@"SendingAccount"), Localized(@"Value（BU）"), Localized(@"TxFee（BU）"), Localized(@"Parameter")];
         transactionInfoCount = 4;
         infoArray = @[qrRemark, self.transactionCost, CurrentWalletAddress, self.confirmTransactionModel.amount, self.transactionCost, self.confirmTransactionModel.script];
     }
@@ -202,7 +202,7 @@
     NSArray * infoArray;
     self.transactionCost = dposModel.tx_fee;
     NSString * destAddress = dposModel.dest_address;
-    _infoTitleArray = @[Localized(@"TransactionDetail"), Localized(@"ReceivingAccount"), Localized(@"MaximumTransactionCosts"), Localized(@"SendingAccount"), Localized(@"ReceivingAccount"), Localized(@"Number（BU）"), Localized(@"TransactionCosts（BU）"), Localized(@"Parameter")];
+    _infoTitleArray = @[Localized(@"TransactionDetail"), Localized(@"ReceivingAccount"), Localized(@"MaximumTransactionCosts"), Localized(@"SendingAccount"), Localized(@"ReceivingAccount"), Localized(@"Value（BU）"), Localized(@"TxFee（BU）"), Localized(@"Parameter")];
     infoArray = @[Localized(@"DposContract"), destAddress, self.transactionCost, CurrentWalletAddress, destAddress, dposModel.amount, self.transactionCost, dposModel.input];
    
     CGFloat infoLabelTotalH = 0;

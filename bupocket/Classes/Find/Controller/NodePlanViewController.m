@@ -10,13 +10,15 @@
 #import "NodePlanViewCell.h"
 #import "YBPopupMenu.h"
 #import "VotingRecordsViewController.h"
-#import "ConfirmTransactionAlertView.h"
+#import "BottomConfirmAlertView.h"
+//#import "ConfirmTransactionAlertView.h"
 #import "NodePlanModel.h"
 #import "NodeSharingViewController.h"
 
-#import "NodeTransferSuccessViewController.h"
-#import "TransferResultsViewController.h"
-#import "RequestTimeoutViewController.h"
+//#import "NodeTransferSuccessViewController.h"
+//#import "TransferResultsViewController.h"
+//#import "ResultViewController.h"
+//#import "RequestTimeoutViewController.h"
 //#import <IQKeyboardManager/IQKeyboardManager.h>
 
 @interface NodePlanViewController ()<UITableViewDelegate, UITableViewDataSource, UITextFieldDelegate, YBPopupMenuDelegate>
@@ -356,6 +358,12 @@ static NSString * const NodePlanCellID = @"NodePlanCellID";
     confirmTransactionModel.script = DposUnVote(role, nodePlanModel.nodeCapitalAddress);
     confirmTransactionModel.nodeId = nodePlanModel.nodeId;
     confirmTransactionModel.type = [NSString stringWithFormat:@"%zd", TransactionTypeNodeWithdrawal];
+    BottomConfirmAlertView * confirmAlertView = [[BottomConfirmAlertView alloc] initWithIsShowValue:NO handlerType:HandlerTypeTransferDpos confirmModel:confirmTransactionModel confrimBolck:^{
+    } cancelBlock:^{
+        
+    }];
+    [confirmAlertView showInWindowWithMode:CustomAnimationModeShare inView:nil bgAlpha:AlertBgAlpha needEffectView:NO];
+    /*
     ConfirmTransactionAlertView * alertView = [[ConfirmTransactionAlertView alloc] initWithDposConfrimBolck:^(NSString * _Nonnull transactionCost) {
         dispatch_after(dispatch_time(DISPATCH_TIME_NOW, (int64_t)(Dispatch_After_Time * NSEC_PER_SEC)), dispatch_get_main_queue(), ^{
             NSDecimalNumber * amount = [NSDecimalNumber decimalNumberWithString:confirmTransactionModel.amount];
@@ -376,7 +384,9 @@ static NSString * const NodePlanCellID = @"NodePlanCellID";
     }];
     alertView.confirmTransactionModel = confirmTransactionModel;
     [alertView showInWindowWithMode:CustomAnimationModeShare inView:nil bgAlpha:AlertBgAlpha needEffectView:NO];
+    */
 }
+/*
 // Transaction confirmation and submission
 - (void)getContractTransactionData:(ConfirmTransactionModel *)confirmTransactionModel
 {
@@ -403,6 +413,8 @@ static NSString * const NodePlanCellID = @"NodePlanCellID";
         
     }];
 }
+ */
+/*
 - (void)showPWAlertView:(ConfirmTransactionModel *)confirmTransactionModel
 {
     PasswordAlertView * PWAlertView = [[PasswordAlertView alloc] initWithPrompt:Localized(@"TransactionWalletPWPrompt") confrimBolck:^(NSString * _Nonnull password, NSArray * _Nonnull words) {
@@ -422,10 +434,10 @@ static NSString * const NodePlanCellID = @"NodePlanCellID";
             NodeTransferSuccessViewController * VC = [[NodeTransferSuccessViewController alloc] init];
             [self.navigationController pushViewController:VC animated:YES];
         } else {
-            TransferResultsViewController * VC = [[TransferResultsViewController alloc] init];
+            ResultViewController * VC = [[ResultViewController alloc] init];
             VC.state = NO;
             VC.resultModel = resultModel;
-            VC.confirmTransactionModel = confirmTransactionModel;
+            VC.confirmModel = confirmTransactionModel;
             [self.navigationController pushViewController:VC animated:YES];
         }
     } failure:^(TransactionResultModel *resultModel) {
@@ -434,6 +446,7 @@ static NSString * const NodePlanCellID = @"NodePlanCellID";
         [self.navigationController pushViewController:VC animated:YES];
     }];
 }
+ */
 - (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath
 {
     [tableView deselectRowAtIndexPath:indexPath animated:YES];

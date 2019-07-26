@@ -75,17 +75,17 @@ static NSString * const NodeTransferSuccessID = @"NodeTransferSuccessID";
     prompt.backgroundColor = COLOR(@"F8F8F8");
     [prompt setAttributedTitle:[Encapsulation attrWithString:Localized(@"NodeTransferPrompt") preFont:FONT(13) preColor:COLOR_9 index:0 sufFont:FONT(13) sufColor:COLOR_9 lineSpacing:Margin_5] forState:UIControlStateNormal];
     prompt.titleLabel.numberOfLines = 0;
-    CGFloat promptH = [Encapsulation getSizeSpaceLabelWithStr:Localized(@"NodeTransferPrompt") font:FONT(13) width:DEVICE_WIDTH - Margin_40 height:CGFLOAT_MAX lineSpacing:Margin_5].height + Margin_30;
+    CGFloat promptH = [Encapsulation getSizeSpaceLabelWithStr:Localized(@"NodeTransferPrompt") font:FONT(13) width:Content_Width_Main height:CGFLOAT_MAX lineSpacing:Margin_5].height + Margin_30;
     [footerView addSubview:prompt];
     prompt.contentEdgeInsets = UIEdgeInsetsMake(Margin_15, Margin_10, Margin_10, Margin_15);
     [prompt mas_makeConstraints:^(MASConstraintMaker *make) {
         make.top.equalTo(footerView.mas_top);
-        make.left.equalTo(footerView.mas_left).offset(Margin_10);
-        make.right.equalTo(footerView.mas_right).offset(-Margin_10);
+        make.left.equalTo(footerView.mas_left).offset(Margin_Main);
+        make.right.equalTo(footerView.mas_right).offset(-Margin_Main);
         make.height.mas_equalTo(promptH);
     }];
     prompt.layer.masksToBounds = YES;
-    prompt.layer.cornerRadius = MAIN_CORNER;
+    prompt.layer.cornerRadius = BG_CORNER;
     
     self.adImage = [[UIImageView alloc] initWithImage:[UIImage imageNamed:@"ad_placehoder"]];
     self.adImage.userInteractionEnabled = YES;

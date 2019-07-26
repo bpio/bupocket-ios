@@ -169,7 +169,7 @@
     confirmModel.transactionCost = self.transactionCostsStr;
     confirmModel.qrRemark = self.remarksStr;
     confirmModel.assetCode = self.listModel.assetCode;
-    BottomConfirmAlertView * confirmAlertView = [[BottomConfirmAlertView alloc] initWithIsShowValue:NO handlerType:HandlerTypeTransferAssets confirmModel:confirmModel confrimBolck:^(NSString * _Nonnull transactionCost) {
+    BottomConfirmAlertView * confirmAlertView = [[BottomConfirmAlertView alloc] initWithIsShowValue:NO handlerType:HandlerTypeTransferAssets confirmModel:confirmModel confrimBolck:^{
         dispatch_after(dispatch_time(DISPATCH_TIME_NOW, (int64_t)(Dispatch_After_Time * NSEC_PER_SEC)), dispatch_get_main_queue(), ^{
             [self showPWAlert];
         });

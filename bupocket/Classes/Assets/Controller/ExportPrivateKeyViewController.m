@@ -73,7 +73,7 @@
 }
 - (CGFloat)tableView:(UITableView *)tableView heightForRowAtIndexPath:(NSIndexPath *)indexPath
 {
-    CGFloat rowHeight = [Encapsulation rectWithText:[self.listArray lastObject][indexPath.row]  font:FONT(14) textWidth: View_Width_Main].size.height + ScreenScale(55);
+    CGFloat rowHeight = [Encapsulation rectWithText:[self.listArray lastObject][indexPath.row]  font:FONT_TITLE textWidth: View_Width_Main].size.height + ScreenScale(55);
     return rowHeight;
 }
 - (CGFloat)tableView:(UITableView *)tableView heightForHeaderInSection:(NSInteger)section

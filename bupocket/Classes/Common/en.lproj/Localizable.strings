@@ -386,6 +386,7 @@
 "TransactionCostMin%@" = "The transaction fee cannot be less than %@ BU";
 "TransactionCostMax%@" = "The transaction fee cannot exceed %@ BU";
 "ExtraLongNotes" = "Remarks cannot exceed 20 characters";
+"TransferTransaction" = "Transfer Transaction";
 // Feedback
 "SuggestionsContentOverlength" = "Your question or suggestion cannot exceed 100 words";
 "ContactOverlength" = "Your contact information cannot exceed 20 words";
@@ -396,7 +397,7 @@
 "ImportedWallet" = "Create/import wallet";
 "AddWallet" = "Create / Import wallet";
 //"ImmediateImport" = "Import Now";
-"CurrentUse" = "Currently Used";
+"CurrentUse" = "In Use";
 "Manage" = "Manage";
 // Import Wallet
 "ImportWallet" = "Import Wallet";
@@ -571,10 +572,11 @@
 //"Initiator" = "Initiator";
 //"CounterAccount" = "The receiving account";
 "Detail" = "Details";
-"Details" = "Details>>";
-"TransactionCosts（BU）" = "Transaction fees（BU）";
+"Details" = "Details >>";
+//"TransactionCosts（BU）" = "Transaction fees（BU）";
+"TxFee（BU）" = "Tx Fee（BU）";
 "Parameter" = "Parameter";
-"Number（BU）" = "Number（BU）";
+"Value（BU）" = "Value（BU）";
 // Node co-funding
 "PurchaseAmount" = "Minimum purchase";
 "AwardSharingRatio" = "Award ratio";
@@ -616,6 +618,7 @@
 "Exit '%@' Project" = "Withdraw sponsor \"%@\"";
 "Supporting '%@' Projects" = "Sponsor \"%@\" project";
 // Confirm transaction
+"DposWalletPWPrompt" = "Fill in the security password to confirm the transaction";
 "Overtime" = "The request has timed out; please do it again";
 // Transaction success
 "TransferSuccess" = "Transaction Success";
@@ -707,7 +710,7 @@
 "TransferQuantityPlaceholder" = "Please input the amount to transfer";
 "RemarksPlaceholder" = "20 characters at most";
 //"Transferable %@" = "%@ available";
-"Transferable %@" = "可转数量\n%@";
+"Transferable %@" = "Available\n%@";
 "ConfirmationOfGifts" = "Confirm to Transfer";
 "Abbreviation：%@" = "Abbreviation：%@";
 //"DonationSuccess" = "Success";

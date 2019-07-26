@@ -111,7 +111,7 @@ static NSString * const CooperateDetailCellID = @"CooperateDetailCellID";
         cell.detailImage.hidden = YES;
         return cell;
     } else {
-        InfoViewCell * cell = [InfoViewCell cellWithTableView:tableView];
+        InfoViewCell * cell = [InfoViewCell cellWithTableView:tableView cellType:CellTypeDefault];
         [cell.info setAttributedTitle:[Encapsulation getAttrWithInfoStr:self.listArray[indexPath.section][1]] forState:UIControlStateNormal];
         return cell;
     }

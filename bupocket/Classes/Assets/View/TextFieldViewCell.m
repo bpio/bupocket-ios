@@ -110,7 +110,7 @@ static NSString * const NormalPWCellAddress = @"NormalPWCellAddress";
             make.width.mas_greaterThanOrEqualTo(Margin_30);
         }];
         [self.title mas_makeConstraints:^(MASConstraintMaker *make) {
-            make.right.mas_lessThanOrEqualTo(self.rightBtn.mas_left).offset(-ScreenScale(45));
+            make.right.mas_lessThanOrEqualTo(self.rightBtn.mas_left).offset(-ScreenScale(40));
         }];
         [self.rightBtn setContentCompressionResistancePriority:UILayoutPriorityRequired forAxis:UILayoutConstraintAxisHorizontal];
     } else {
@@ -145,10 +145,10 @@ static NSString * const NormalPWCellAddress = @"NormalPWCellAddress";
 {
     if (!_rightBtn) {
         _rightBtn = [UIButton createButtonWithNormalImage:@"my_list_1" SelectedImage:@"my_list_1" Target:self Selector:@selector(rightAction)];
-        _rightBtn.contentHorizontalAlignment = UIControlContentHorizontalAlignmentRight;
         _rightBtn.titleLabel.font = FONT(12);
         _rightBtn.titleLabel.textColor = COLOR_6;
         _rightBtn.titleLabel.numberOfLines = 0;
+        _rightBtn.contentHorizontalAlignment = UIControlContentHorizontalAlignmentRight;
     }
     return _rightBtn;
 }

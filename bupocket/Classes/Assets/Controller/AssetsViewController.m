@@ -16,13 +16,14 @@
 #import "HMScannerController.h"
 #import "RegisteredAssetsViewController.h"
 #import "DistributionOfAssetsViewController.h"
-#import "TransferAccountsViewController.h"
+//#import "TransferAccountsViewController.h"
+#import "TransactionViewController.h"
 #import "WalletListViewController.h"
 #import "LoginConfirmViewController.h"
-#import "ConfirmTransactionAlertView.h"
+#import "BottomConfirmAlertView.h"
+//#import "ConfirmTransactionAlertView.h"
 #import "ScanCodeFailureViewController.h"
 #import "ReceiveViewController.h"
-#import "TransferVoucherViewController.h"
 #import "RegisteredModel.h"
 #import "DistributionModel.h"
 #import "BackUpWalletViewController.h"
@@ -33,9 +34,10 @@
 
 #import "UINavigationController+Extension.h"
 
-#import "NodeTransferSuccessViewController.h"
-#import "TransferResultsViewController.h"
-#import "RequestTimeoutViewController.h"
+//#import "NodeTransferSuccessViewController.h"
+//#import "TransferResultsViewController.h"
+//#import "ResultViewController.h"
+//#import "RequestTimeoutViewController.h"
 #import "UITabBar+Extension.h"
 
 
@@ -480,7 +482,7 @@
         result = stringValue;
         if ([stringValue hasPrefix:Voucher_Prefix]) {
             NSString * address = [stringValue substringFromIndex:[Voucher_Prefix length]];
-            TransferVoucherViewController * VC = [[TransferVoucherViewController alloc] init];
+            TransactionViewController * VC = [[TransactionViewController alloc] init];
             VC.receiveAddressStr = address;
             VC.transferType = TransferTypeVoucher;
             [self.navigationController pushViewController:VC animated:YES];
@@ -504,13 +506,13 @@
             BOOL isCorrectAddress = [Keypair isAddressValid: stringValue];
             [[NSOperationQueue mainQueue] addOperationWithBlock:^{
                 if (isCorrectAddress) {
-                    TransferAccountsViewController * VC = [[TransferAccountsViewController alloc] init];
+                    TransactionViewController * VC = [[TransactionViewController alloc] init];
                     for (AssetsListModel * listModel in self.listArray) {
                         if (listModel.type == Token_Type_BU) {
                             VC.listModel = listModel;
                         }
                     }
-                    VC.address = stringValue;
+                    VC.receiveAddressStr = stringValue;
                     [weakself.navigationController pushViewController:VC animated:NO];
                 } else {
                     weakself.scanDic = [JsonTool dictionaryOrArrayWithJSONSString:[NSString dencode:stringValue]];
@@ -574,6 +576,12 @@
 }
 - (void)getDposData
 {
+    BottomConfirmAlertView * confirmAlertView = [[BottomConfirmAlertView alloc] initWithIsShowValue:NO handlerType:HandlerTypeTransferDpos confirmModel:self.confirmTransactionModel confrimBolck:^{
+    } cancelBlock:^{
+        
+    }];
+    [confirmAlertView showInWindowWithMode:CustomAnimationModeShare inView:nil bgAlpha:AlertBgAlpha needEffectView:NO];
+    /*
     ConfirmTransactionAlertView * confirmAlertView = [[ConfirmTransactionAlertView alloc] initWithDposConfrimBolck:^(NSString * _Nonnull transactionCost) {
         dispatch_after(dispatch_time(DISPATCH_TIME_NOW, (int64_t)(Dispatch_After_Time * NSEC_PER_SEC)), dispatch_get_main_queue(), ^{
             NSDecimalNumber * amount = [NSDecimalNumber decimalNumberWithString:self.confirmTransactionModel.amount];
@@ -594,8 +602,9 @@
     }];
     confirmAlertView.confirmTransactionModel = self.confirmTransactionModel;
     [confirmAlertView showInWindowWithMode:CustomAnimationModeShare inView:nil bgAlpha:AlertBgAlpha needEffectView:NO];
+     */
 }
-
+/*
 // Transaction confirmation and submission
 - (void)getConfirmTransactionData
 {
@@ -621,7 +630,6 @@
         
     }];
 }
-
 - (void)showPWAlertView
 {
     PasswordAlertView * PWAlertView = [[PasswordAlertView alloc] initWithPrompt:Localized(@"TransactionWalletPWPrompt") confrimBolck:^(NSString * _Nonnull password, NSArray * _Nonnull words) {
@@ -638,6 +646,7 @@
     [PWAlertView showInWindowWithMode:CustomAnimationModeAlert inView:nil bgAlpha:AlertBgAlpha needEffectView:NO];
     [PWAlertView.PWTextField becomeFirstResponder];
 }
+
 - (void)submitTransaction
 {
     [[HTTPManager shareManager] submitTransactionWithSuccess:^(TransactionResultModel *resultModel) {
@@ -645,10 +654,10 @@
             NodeTransferSuccessViewController * VC = [[NodeTransferSuccessViewController alloc] init];
             [self.navigationController pushViewController:VC animated:YES];
         } else {
-            TransferResultsViewController * VC = [[TransferResultsViewController alloc] init];
+            ResultViewController * VC = [[ResultViewController alloc] init];
             VC.state = NO;
             VC.resultModel = resultModel;
-            VC.confirmTransactionModel = self.confirmTransactionModel;
+            VC.confirmModel = self.confirmTransactionModel;
             [self.navigationController pushViewController:VC animated:YES];
         }
     } failure:^(TransactionResultModel *resultModel) {
@@ -657,6 +666,7 @@
         [self.navigationController pushViewController:VC animated:YES];
     }];
 }
+  */
 #pragma mark 扫描调用底层合约操作
 - (void)getDposTransactionWithStr:(NSString *)str
 {
@@ -697,6 +707,18 @@
             [MBProgressHUD showTipMessageInWindow:Localized(@"AmountIsIncorrect")];
             return;
         }
+        self.confirmTransactionModel = [[ConfirmTransactionModel alloc] init];
+        self.confirmTransactionModel.transactionCost = self.dposModel.tx_fee;
+        self.confirmTransactionModel.destAddress = self.dposModel.dest_address;
+        self.confirmTransactionModel.amount = self.dposModel.amount;
+        self.confirmTransactionModel.script = self.dposModel.input;
+        self.confirmTransactionModel.qrRemarkEn = Localized(@"DposContract");
+        BottomConfirmAlertView * confirmAlertView = [[BottomConfirmAlertView alloc] initWithIsShowValue:NO handlerType:HandlerTypeTransferDposCommand confirmModel:self.confirmTransactionModel confrimBolck:^{
+        } cancelBlock:^{
+            
+        }];
+        [confirmAlertView showInWindowWithMode:CustomAnimationModeShare inView:nil bgAlpha:AlertBgAlpha needEffectView:NO];
+        /*
         ConfirmTransactionAlertView * confirmAlertView = [[ConfirmTransactionAlertView alloc] initWithDposConfrimBolck:^(NSString * _Nonnull transactionCost) {
             dispatch_after(dispatch_time(DISPATCH_TIME_NOW, (int64_t)(Dispatch_After_Time * NSEC_PER_SEC)), dispatch_get_main_queue(), ^{
                 NSDecimalNumber * amount = [NSDecimalNumber decimalNumberWithString:self.dposModel.amount];
@@ -717,22 +739,25 @@
         }];
         confirmAlertView.dposModel = self.dposModel;
         [confirmAlertView showInWindowWithMode:CustomAnimationModeShare inView:nil bgAlpha:AlertBgAlpha needEffectView:NO];
+        */
     } else {
         [MBProgressHUD showTipMessageInWindow:Localized(@"ScanFailure")];
     }
 }
+/*
 - (void)submitDposTransaction
 {
     [[HTTPManager shareManager] submitTransactionWithSuccess:^(TransactionResultModel *resultModel) {
         resultModel.remark = Localized(@"DposContract");
-        TransferResultsViewController * VC = [[TransferResultsViewController alloc] init];
+        ResultViewController * VC = [[ResultViewController alloc] init];
         if (resultModel.errorCode == Success_Code) {
             VC.state = YES;
         } else {
             VC.state = NO;
         }
         VC.resultModel = resultModel;
-        VC.transferInfoArray = [NSMutableArray arrayWithObjects:self.dposModel.dest_address, [NSString stringAppendingBUWithStr:self.dposModel.amount], nil];
+        VC.confirmModel = self.confirmTransactionModel;
+//        VC.transferInfoArray = [NSMutableArray arrayWithObjects:self.dposModel.dest_address, [NSString stringAppendingBUWithStr:self.dposModel.amount], nil];
         [self.navigationController pushViewController:VC animated:YES];
     } failure:^(TransactionResultModel *resultModel) {
         RequestTimeoutViewController * VC = [[RequestTimeoutViewController alloc] init];
@@ -740,6 +765,7 @@
         [self.navigationController pushViewController:VC animated:YES];
     }];
 }
+ */
 - (CGFloat)tableView:(UITableView *)tableView heightForRowAtIndexPath:(NSIndexPath *)indexPath
 {
     return ScreenScale(90);

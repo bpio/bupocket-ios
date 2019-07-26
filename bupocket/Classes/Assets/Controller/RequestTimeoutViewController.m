@@ -48,15 +48,19 @@
     [transactionStatus mas_makeConstraints:^(MASConstraintMaker *make) {
         make.top.mas_equalTo(Margin_20);
         make.centerX.mas_equalTo(0);
-        make.height.mas_equalTo(ScreenScale(100) + [Encapsulation rectWithText:transactionStatus.titleLabel.text font:transactionStatus.titleLabel.font textWidth:DEVICE_WIDTH - Margin_60].size.height);
-        make.width.mas_lessThanOrEqualTo(DEVICE_WIDTH - Margin_60);
+        make.height.mas_equalTo(60 + Margin_40 + [Encapsulation rectWithText:transactionStatus.titleLabel.text font:transactionStatus.titleLabel.font textWidth:DEVICE_WIDTH - Margin_60].size.height);
+        make.width.mas_equalTo(View_Width_Main);
     }];
     
     self.queryLink = [[UITextView alloc] init];
     self.queryLink.font = FONT(13);
     self.queryLink.textColor = COLOR_9;
-    NSString * link = Transaction_Query_Link;
-    NSString * transactionQuery = [NSString stringWithFormat:@"%@%@%@", Localized(@"TransactionQueryPrompt"), link, Localized(@"Query")];
+    NSString * link = Transaction_Query_Link_Test;
+    NSUserDefaults * defaults = [NSUserDefaults standardUserDefaults];
+    if ([defaults boolForKey:If_Custom_Network] == NO && ![defaults boolForKey:If_Switch_TestNetwork]) {
+        link = Transaction_Query_Link;
+    }
+    NSString * transactionQuery = [NSString stringWithFormat:@"%@ %@ %@", Localized(@"TransactionQueryPrompt"), link, Localized(@"Query")];
     NSMutableAttributedString * attr = [Encapsulation attrWithString:transactionQuery preFont:FONT(13) preColor:COLOR_9 index:Localized(@"transactionQueryPrompt").length sufFont:FONT(13) sufColor:COLOR_9 lineSpacing:LINE_SPACING];
     [attr addAttribute:NSLinkAttributeName value:link range:[transactionQuery rangeOfString:link]];
     self.queryLink.attributedText = attr;
@@ -81,7 +85,7 @@
     [self.scrollView addSubview:hash];
     [hash mas_makeConstraints:^(MASConstraintMaker *make) {
         make.top.equalTo(self.queryLink.mas_bottom).offset(Margin_10);
-        make.right.mas_equalTo(DEVICE_WIDTH - Margin_15);
+        make.right.mas_equalTo(DEVICE_WIDTH - Margin_Main);
         make.height.mas_equalTo(Margin_40);
     }];
     
@@ -92,7 +96,7 @@
     [self.scrollView addSubview:transactionSummary];
     [transactionSummary mas_makeConstraints:^(MASConstraintMaker *make) {
         make.centerY.equalTo(hash);
-        make.left.mas_equalTo(Margin_15);
+        make.left.mas_equalTo(Margin_Main);
         make.right.mas_lessThanOrEqualTo(hash.mas_left).offset(-Margin_10);
     }];
     
@@ -113,7 +117,7 @@
     [self.adImage mas_makeConstraints:^(MASConstraintMaker *make) {
         make.top.equalTo(lineView.mas_bottom).offset(Margin_15);
         make.left.mas_equalTo(Margin_10);
-        make.size.mas_equalTo(CGSizeMake(DEVICE_WIDTH - Margin_20, self.adImage.height));
+        make.size.mas_equalTo(CGSizeMake(View_Width_Main, self.adImage.height));
     }];
     [self.view layoutIfNeeded];
     self.scrollView.contentSize = CGSizeMake(0, CGRectGetMaxY(self.adImage.frame) + ContentSizeBottom + Margin_10);

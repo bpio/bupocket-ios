@@ -8,15 +8,22 @@
 
 #import "InfoViewCell.h"
 
-static NSString * const InfoCellID = @"InfoCellID";
+static NSString * const DefaultCellID = @"DefaultCellID";
+static NSString * const NormalCellID = @"NormalCellID";
 
 @implementation InfoViewCell
 
-+ (instancetype)cellWithTableView:(UITableView *)tableView
++ (instancetype)cellWithTableView:(UITableView *)tableView cellType:(CellType)cellType
 {
-    InfoViewCell * cell = [tableView dequeueReusableCellWithIdentifier:InfoCellID];
+    NSString * identifier;
+    if (cellType == CellTypeDefault) {
+        identifier = DefaultCellID;
+    } else if (cellType == CellTypeNormal) {
+        identifier = NormalCellID;
+    }
+    InfoViewCell * cell = [tableView dequeueReusableCellWithIdentifier:identifier];
     if (cell == nil) {
-        cell = [[InfoViewCell alloc] initWithStyle:UITableViewCellStyleValue1 reuseIdentifier:InfoCellID];
+        cell = [[InfoViewCell alloc] initWithStyle:UITableViewCellStyleValue1 reuseIdentifier:identifier];
     }
     return cell;
 }
@@ -32,11 +39,23 @@ static NSString * const InfoCellID = @"InfoCellID";
 - (void)layoutSubviews
 {
     [super layoutSubviews];
-    [self.info mas_makeConstraints:^(MASConstraintMaker *make) {
-        make.top.bottom.equalTo(self.contentView);
-        make.centerX.equalTo(self.contentView);
-        make.width.mas_equalTo(View_Width_Main);
-    }];
+    if ([self.reuseIdentifier isEqualToString:DefaultCellID]) {
+        [self.info mas_makeConstraints:^(MASConstraintMaker *make) {
+            make.edges.equalTo(self.contentView);
+        }];
+        _info.contentEdgeInsets = UIEdgeInsetsMake(Margin_10, Margin_Main, Margin_10, Margin_Main);
+    } else if ([self.reuseIdentifier isEqualToString:NormalCellID]) {
+        [self.info mas_makeConstraints:^(MASConstraintMaker *make) {
+            make.top.bottom.equalTo(self.contentView);
+            make.centerX.equalTo(self.contentView);
+            make.width.mas_equalTo(View_Width_Main);
+        }];
+        _info.contentEdgeInsets = UIEdgeInsetsMake(Margin_5, Margin_10, Margin_5, Margin_10);
+        CGSize maximumSize = CGSizeMake(View_Width_Main, CGFLOAT_MAX);
+        CGSize expectSize = [_info sizeThatFits:maximumSize];
+        _info.size = expectSize;
+        [self.info setViewSize:_info.size borderWidth:0 borderColor:nil borderRadius:BG_CORNER];
+    }
 }
 - (UIButton *)info
 {
@@ -44,13 +63,7 @@ static NSString * const InfoCellID = @"InfoCellID";
         _info = [UIButton buttonWithType:UIButtonTypeCustom];
         _info.titleLabel.numberOfLines = 0;
         _info.backgroundColor = [UIColor whiteColor];
-        _info.layer.masksToBounds = YES;
-        _info.layer.cornerRadius = BG_CORNER;
-        _info.contentEdgeInsets = UIEdgeInsetsMake(Margin_5, Margin_10, Margin_5, Margin_10);
         _info.contentHorizontalAlignment = UIControlContentHorizontalAlignmentLeft;
-        CGSize maximumSize = CGSizeMake(View_Width_Main, CGFLOAT_MAX);
-        CGSize expectSize = [_info sizeThatFits:maximumSize];
-        _info.size = expectSize;
     }
     return _info;
 }

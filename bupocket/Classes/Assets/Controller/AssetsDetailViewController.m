@@ -9,7 +9,7 @@
 #import "AssetsDetailViewController.h"
 #import "AssetsDetailListViewCell.h"
 //#import "TransferAccountsViewController.h"
-#import "TransferVoucherViewController.h"
+#import "TransactionViewController.h"
 #import "TransactionDetailsViewController.h"
 #import "AssetsDetailModel.h"
 #import "ReceiveViewController.h"
@@ -328,7 +328,7 @@
 {
 //    TransferAccountsViewController * VC = [[TransferAccountsViewController alloc] init];
 //    VC.listModel = self.listModel;
-    TransferVoucherViewController * VC = [[TransferVoucherViewController alloc] init];
+    TransactionViewController * VC = [[TransactionViewController alloc] init];
     VC.transferType = TransferTypeAssets;
     VC.listModel = self.listModel;
     [self.navigationController pushViewController:VC animated:YES];

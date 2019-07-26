@@ -13,7 +13,7 @@
 #import "UINavigationController+Extension.h"
 #import "AcceptorViewController.h"
 #import "AssetIssuerViewController.h"
-#import "TransferVoucherViewController.h"
+#import "TransactionViewController.h"
 
 
 @interface VoucherDetailViewController ()<UIScrollViewDelegate, UITableViewDelegate, UITableViewDataSource>
@@ -204,7 +204,7 @@ static NSString * const VoucherDetailCellID = @"VoucherDetailCellID";
  */
 - (void)giftGivingAction
 {
-    TransferVoucherViewController * VC = [[TransferVoucherViewController alloc] init];
+    TransactionViewController * VC = [[TransactionViewController alloc] init];
     VC.voucherModel = self.voucherModel;
     VC.transferType = TransferTypeVoucher;
     [self.navigationController pushViewController:VC animated:YES];
@@ -237,6 +237,7 @@ static NSString * const VoucherDetailCellID = @"VoucherDetailCellID";
     } else if (indexPath.section == self.listArray.count - 1) {
         ListTableViewCell * cell = [ListTableViewCell cellWithTableView:tableView cellType:CellTypeVoucher];
         cell.selectionStyle = UITableViewCellSelectionStyleNone;
+        cell.title.textColor = COLOR_9;
         cell.title.text = self.listArray[indexPath.section][indexPath.row][0];
 //        cell.detailTitle.text = self.listArray[indexPath.section][indexPath.row][1];
         NSString * iconUrl = (indexPath.row == 0) ? self.voucherModel.voucherAcceptance[@"icon"] : self.voucherModel.voucherIssuer[@"icon"];
@@ -247,6 +248,8 @@ static NSString * const VoucherDetailCellID = @"VoucherDetailCellID";
         return cell;
     }
     DetailListViewCell * cell = [DetailListViewCell cellWithTableView:tableView cellType:DetailCellDefault];
+    cell.title.font = FONT_TITLE;
+    cell.infoTitle.font = FONT_TITLE;
     cell.title.text = self.listArray[indexPath.section][indexPath.row][0];
     NSString * detail = self.listArray[indexPath.section][indexPath.row][1];
     if (indexPath.section == 1 && indexPath.row == 3 && NotNULLString(detail)) {

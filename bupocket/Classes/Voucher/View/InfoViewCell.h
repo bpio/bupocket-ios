@@ -12,7 +12,12 @@ NS_ASSUME_NONNULL_BEGIN
 
 @interface InfoViewCell : UITableViewCell
 
-+ (instancetype)cellWithTableView:(UITableView *)tableView;
+typedef NS_ENUM(NSInteger, CellType) {
+    CellTypeDefault,
+    CellTypeNormal // 卡牌
+};
+
++ (instancetype)cellWithTableView:(UITableView *)tableView cellType:(CellType)cellType;
 
 @property (nonatomic, strong) UIButton * info;
 

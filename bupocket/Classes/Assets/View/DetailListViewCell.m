@@ -47,15 +47,29 @@ static NSString * const VersionLogCellID = @"VersionLogCellID";
         } else {
             [self.contentView addSubview:self.title];
             [self.contentView addSubview:self.infoTitle];
-            if ([reuseIdentifier isEqualToString:SubtitleDetailCellID]) {
-                self.title.font = FONT(16);
-                self.title.textColor = COLOR_6;
-                self.infoTitle.font = FONT(14);
-            } else if ([reuseIdentifier isEqualToString:VersionLogCellID]) {
-                self.title.font = FONT(18);
-                self.title.textColor = TITLE_COLOR;
-            }
         }
+        UIFont * titleFont = self.title.font;
+        UIColor * titleColor = self.title.textColor;
+        UIFont * infoTitleFont = self.infoTitle.font;
+//        UIColor * infoTitleColor = self.infoTitle.textColor;
+//        _title.font = FONT(15);
+//        _title.textColor = COLOR_9;
+        if ([reuseIdentifier isEqualToString:SubtitleDetailCellID]) {
+            titleFont = FONT(16);
+            titleColor = COLOR_6;
+            infoTitleFont = FONT_TITLE;
+        } else if ([reuseIdentifier isEqualToString:VersionLogCellID]) {
+            titleFont = FONT(18);
+            titleColor = TITLE_COLOR;
+        }
+//        else if ([reuseIdentifier isEqualToString:DefaultDetailCellID]) {
+//            titleFont = FONT_TITLE;
+//            infoTitleFont = FONT_TITLE;
+//        }
+        self.title.font = titleFont;
+        self.title.textColor = titleColor;
+        self.infoTitle.font = infoTitleFont;
+        
 //        self.title.backgroundColor = RandomColor;
 //        self.infoTitle.backgroundColor = RandomColor;
 //        self.backgroundColor = RandomColor;
@@ -129,7 +143,7 @@ static NSString * const VersionLogCellID = @"VersionLogCellID";
 {
     if (!_title) {
         _title = [[UILabel alloc] init];
-        _title.font = FONT(15);
+        _title.font = FONT_TITLE;
         _title.textColor = COLOR_9;
         _title.numberOfLines = 0;
     }
@@ -138,7 +152,10 @@ static NSString * const VersionLogCellID = @"VersionLogCellID";
 - (UILabel *)infoTitle
 {
     if (!_infoTitle) {
-        _infoTitle = [UILabel createTitleLabel];
+        _infoTitle = [[UILabel alloc] init];
+        _infoTitle.textColor = COLOR_6;
+        _infoTitle.font = FONT_TITLE;
+        _infoTitle.numberOfLines = 0;
     }
     return _infoTitle;
 }
