@@ -59,7 +59,7 @@ static NSString * const CooperateDetailCellID = @"CooperateDetailCellID";
     if (indexPath.section == 0) {
         return ScreenScale(80);
     } else {
-        return [Encapsulation getAttrHeightWithInfoStr:self.listArray[indexPath.section][1]];
+        return [Encapsulation getAttrHeightWithInfoStr:self.listArray[indexPath.section][1] width:View_Width_Main];
 //        CooperateDetailViewCell * cell = [tableView cellForRowAtIndexPath:indexPath];
 //        return (NotNULLString(self.info) ? ceil([Encapsulation rectWithAttrText:cell.riskStatementBtn.titleLabel.attributedText width:Content_Width_Main height:CGFLOAT_MIN].height + Margin_25) : CGFLOAT_MIN);
 //        return (NotNULLString(self.info) ? ceil([Encapsulation rectWithAttrText:cell.attrStr width:Content_Width_Main height:CGFLOAT_MIN].height + Margin_25 : CGFLOAT_MIN));
@@ -76,7 +76,7 @@ static NSString * const CooperateDetailCellID = @"CooperateDetailCellID";
 - (UIView *)tableView:(UITableView *)tableView viewForHeaderInSection:(NSInteger)section
 {
     if (section == 1 || section == 2) {
-        UIButton * title = [UIButton createHeaderButtonWithTitle:self.listArray[section][0]];
+        UIButton * title = [UIButton createAttrHeaderTitle:self.listArray[section][0]];
         return title;
     } else {
         return nil;
@@ -87,7 +87,7 @@ static NSString * const CooperateDetailCellID = @"CooperateDetailCellID";
     if (section == self.listArray.count - 1 && NotNULLString(self.info)) {
         return ContentSizeBottom;
     } else {
-        return CGFLOAT_MIN;
+        return Margin_10;
     }
 }
 
@@ -112,7 +112,7 @@ static NSString * const CooperateDetailCellID = @"CooperateDetailCellID";
         return cell;
     } else {
         InfoViewCell * cell = [InfoViewCell cellWithTableView:tableView cellType:CellTypeDefault];
-        [cell.info setAttributedTitle:[Encapsulation getAttrWithInfoStr:self.listArray[indexPath.section][1]] forState:UIControlStateNormal];
+        cell.infoStr = self.info;
         return cell;
     }
 }

@@ -122,8 +122,7 @@
 {
     BOOL isCurrentWallet = [self.walletModel.walletAddress isEqualToString:CurrentWalletAddress];
     if (isCurrentWallet) {
-        [Encapsulation showAlertControllerWithTitle:Localized(@"ConfirmDeleteWallet") message:Localized(@"DeleteCurrentWallet") cancelHandler:^(UIAlertAction *action) {
-        } confirmHandler:^(UIAlertAction *action) {
+        [Encapsulation showAlertControllerWithTitle:Localized(@"ConfirmDeleteWallet") message:Localized(@"DeleteCurrentWallet") confirmHandler:^{
             [self deleteDataIsCurrentWallet:isCurrentWallet];
         }];
     } else {
@@ -143,7 +142,7 @@
             [defaults setObject:[[[AccountTool shareTool] account] walletIconName] forKey:Current_Wallet_IconName];
             [defaults synchronize];
         }
-        [Encapsulation showAlertControllerWithMessage:Localized(@"DeleteWalletSuccessfully") handler:^(UIAlertAction *action) {
+        [Encapsulation showAlertControllerWithMessage:Localized(@"DeleteWalletSuccessfully") handler:^ {
             [self.navigationController popViewControllerAnimated:YES];
         }];
     } cancelBlock:^{

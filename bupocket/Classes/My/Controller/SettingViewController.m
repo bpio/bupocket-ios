@@ -123,7 +123,7 @@
     if (sender.on == NO) {
         message = Localized(@"ClosedTestNetwork");
     }
-    [Encapsulation showAlertControllerWithMessage:message handler:^(UIAlertAction *action) {
+    [Encapsulation showAlertControllerWithMessage:message handler:^ {
         [[HTTPManager shareManager] SwitchedNetworkWithIsTest:sender.on];
         [UIApplication sharedApplication].keyWindow.rootViewController = [[TabBarViewController alloc] init];
     }];

@@ -20,6 +20,7 @@ typedef NS_ENUM(NSInteger, CellType) {
 + (instancetype)cellWithTableView:(UITableView *)tableView cellType:(CellType)cellType;
 
 @property (nonatomic, strong) UIButton * info;
+@property (nonatomic, strong) NSString * infoStr;
 
 @end
 

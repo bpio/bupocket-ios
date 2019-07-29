@@ -33,6 +33,7 @@
 #define LINE_WIDTH ScreenScale(0.5)
 #define MAIN_CORNER ScreenScale(4)
 #define BG_CORNER ScreenScale(5)
+#define TEXT_CORNER ScreenScale(3)
 #define TAG_CORNER ScreenScale(2)
 #define TEXTFIELD_HEIGHT ScreenScale(35)
 #define EDGEINSET_WIDTH ScreenScale(8)
@@ -49,15 +50,16 @@
 
 #define Margin_Section_Header Margin_40
 #define Margin_Main Margin_15
-#define View_Width_Main DEVICE_WIDTH - Margin_30
-#define Content_Width_Main DEVICE_WIDTH - Margin_50
-#define Alert_Width DEVICE_WIDTH - Margin_60
+#define View_Width_Main (DEVICE_WIDTH - Margin_30)
+#define Content_Width_Main (DEVICE_WIDTH - Margin_50)
+#define Alert_Width (DEVICE_WIDTH - Margin_60)
+#define Alert_Button_Height ScreenScale(53)
 #define LINE_SPACING Margin_5
 #define ContentInset_Bottom (SafeAreaBottomH + ScreenScale(85))
 #define TextViewH ScreenScale(100)
 #define Subtitle_EdgeInsets_Y ScreenScale(3)
 
-#define Info_Width_Max DEVICE_WIDTH - ScreenScale(165)
+#define Info_Width_Max (DEVICE_WIDTH - ScreenScale(165))
 // font
 #define FONT(F) [UIFont fontWithName:@"PingFangSC-Regular" size:ScreenScale(F)]
 #define FONT_Bold(F) [UIFont fontWithName:@"PingFangSC-Medium" size:ScreenScale(F)]
@@ -69,6 +71,8 @@
 #define FONT_15 FONT(15)
 #define FONT_16 FONT(16)
 #define FONT_NAV_TITLE FONT_16
+#define Alert_Title_Font FONT_Bold(18)
+#define Alert_Button_Font FONT(16)
 // Color
 #define COLOR(HexString)  [UIColor colorWithHexString:HexString]
 
@@ -87,6 +91,8 @@
 #define COLOR_B2 COLOR(@"B2B2B2")
 #define RECEIVE_COLOR COLOR(@"72AFFF")
 #define ADDRESS_COLOR COLOR(@"6D8BFF")
+
+#define Alert_Button_Color COLOR_9
 // ******
 #define TAGBG_COLOR COLOR(@"3FD592")
 #define PLACEHOLDER_COLOR COLOR(@"B2B2B2")

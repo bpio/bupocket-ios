@@ -223,7 +223,7 @@
             [self.walletArray replaceObjectAtIndex:self.index withObject:self.walletModel];
             [[WalletTool shareTool] save:self.walletArray];
         }
-        [Encapsulation showAlertControllerWithMessage:[NSString stringWithFormat:Localized(@"%@PWModifiedSuccessfully"), self.walletModel.walletName] handler:^(UIAlertAction *action) {
+        [Encapsulation showAlertControllerWithMessage:[NSString stringWithFormat:Localized(@"%@PWModifiedSuccessfully"), self.walletModel.walletName] handler:^ {
             [self.navigationController popViewControllerAnimated:YES];
         }];
     }];

@@ -30,6 +30,7 @@
 #import "MBProgressHUD+JDragon.h"
 //#import "HUDHelper.h"
 #import "ErrorTypeTool.h"
+#import "TipsAlertView.h"
 
 #import "JsonTool.h"
 #import "DateTool.h"

@@ -26,19 +26,19 @@
 + (CGSize)getSizeSpaceLabelWithStr:(NSString *)str font:(UIFont *)font width:(CGFloat)width height:(CGFloat)height lineSpacing:(CGFloat)lineSpacing;
 //+ (CGSize)getSizeSpaceLabelWithStr:(NSString *)str font:(UIFont *)font width:(CGFloat)width height:(CGFloat)height lineSpacing:(CGFloat)lineSpacing;
 // 标题   信息  取消  确认
-+ (void)showAlertControllerWithTitle:(NSString *)title message:(NSString*)message cancelHandler:(void(^)(UIAlertAction * action))cancelHandler confirmHandler:(void(^)(UIAlertAction * action))confirmHandler;
+//+ (void)showAlertControllerWithTitle:(NSString *)title message:(NSString*)message cancelHandler:(void(^)(UIAlertAction * action))cancelHandler confirmHandler:(void(^)(UIAlertAction * action))confirmHandler;
 // 标题   属性信息    取消  确认
 //+ (void)showAlertControllerWithTitle:(NSString *)title messageAttr:(NSAttributedString *)messageAttr cancelHandler:(void(^)(UIAlertAction * action))cancelHandler confirmHandler:(void(^)(UIAlertAction * action))confirmHandler;
 // 错误信息 我知道了
-+ (void)showAlertControllerWithMessage:(NSString *)message handler:(void(^)(UIAlertAction * action))handle;
++ (void)showAlertControllerWithMessage:(NSString *)message handler:(void (^)(void))handle;
 // 标题：错误提示 错误信息居左 我知道了
-+ (void)showAlertControllerWithErrorMessage:(NSString *)message handler:(void(^)(UIAlertAction * action))handle;
-// 标题   错误信息居左 我知道了
-+ (void)showAlertControllerWithTitle:(NSString *)title message:(NSString*)message confirmHandler:(void(^)(UIAlertAction * action))confirmHandler;
++ (void)showAlertControllerWithErrorMessage:(NSString *)message handler:(void (^)(void))handle;
+// (标题) (信息)  取消  确认
++ (void)showAlertControllerWithTitle:(NSString *)title message:(NSString*)message confirmHandler:(void (^)(void))confirmHandler;
 + (UIButton *)showNoDataWithTitle:(NSString *)title imageName:(NSString *)imageName superView:(UIView *)superView frame:(CGRect)frame;
 
 + (NSAttributedString *)getAttrWithInfoStr:(NSString *)infoStr;
-+ (CGFloat)getAttrHeightWithInfoStr:(NSString *)infoStr;
++ (CGFloat)getAttrHeightWithInfoStr:(NSString *)infoStr width:(CGFloat)width;
 
 #pragma mark - Connection server failed
 + (UIView *)showNoNetWorkWithSuperView:(UIView *)superView target:(id)target action:(SEL)action;

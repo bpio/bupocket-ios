@@ -235,7 +235,7 @@
         [_receiveBtn addTarget:self action:@selector(receiveAction:) forControlEvents:UIControlEventTouchUpInside];
         [_headerViewBg addSubview: _receiveBtn];
         _receiveBtn.layer.masksToBounds = YES;
-        _receiveBtn.layer.cornerRadius = ScreenScale(3);
+        _receiveBtn.layer.cornerRadius = MAIN_CORNER;
 //        [_scanBtn setViewSize:CGSizeMake(btnW, MAIN_HEIGHT) borderWidth:0 borderColor:nil borderRadius:ScreenScale(3)];
         _receiveBtn.backgroundColor = RECEIVE_COLOR;
         
@@ -248,7 +248,7 @@
         [_transferAccounts addTarget:self action:@selector(transferAccountsAction:) forControlEvents:UIControlEventTouchUpInside];
         [_headerViewBg addSubview: _transferAccounts];
         _transferAccounts.layer.masksToBounds = YES;
-        _transferAccounts.layer.cornerRadius = ScreenScale(3);
+        _transferAccounts.layer.cornerRadius = MAIN_CORNER;
 //        [_transferAccounts setViewSize:CGSizeMake(btnW, MAIN_HEIGHT) borderWidth:0 borderColor:nil borderRadius:MAIN_CORNER];
         _transferAccounts.backgroundColor = MAIN_COLOR;
         

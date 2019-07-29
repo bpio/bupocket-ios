@@ -12,7 +12,7 @@
 #import "WalletListViewController.h"
 #import "VoucherViewCell.h"
 #import "VoucherDetailViewController.h"
-#import "CreateTipsAlertView.h"
+#import "TipsAlertView.h"
 
 @interface VoucherViewController ()<UITableViewDelegate, UITableViewDataSource>
 
@@ -45,7 +45,7 @@ static NSString * const VoucherCellID = @"VoucherCellID";
     NSUserDefaults * defaults = [NSUserDefaults standardUserDefaults];
 //    [defaults removeObjectForKey:If_Hidden_New];
     if (![defaults objectForKey:If_Hidden_New]) {
-        CreateTipsAlertView * alertView = [[CreateTipsAlertView alloc] initWithTitle:Localized(@"VoucherPromptTitle") confrimBolck:^{
+        TipsAlertView * alertView = [[TipsAlertView alloc] initWithTipsType:TipsTypeDefault title:Localized(@"VoucherPromptTitle") message:Localized(@"VoucherPrompt") confrimBolck:^{
             [defaults setBool:YES forKey:If_Hidden_New];
             [self.navigationController.tabBarController.tabBar hideBadgeOnItemIndex:1];
         }];

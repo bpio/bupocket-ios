@@ -245,7 +245,7 @@
     if (sender.on == NO) {
         message = Localized(@"ClosedTestNetwork");
     }
-    [Encapsulation showAlertControllerWithMessage:message handler:^(UIAlertAction *action) {
+    [Encapsulation showAlertControllerWithMessage:message handler:^ {
         [[HTTPManager shareManager] SwitchedNetworkWithIsTest:sender.on];
         [UIApplication sharedApplication].keyWindow.rootViewController = [[TabBarViewController alloc] init];
     }];
@@ -268,9 +268,7 @@
     if (self.touchCounter == 4) {
         self.touchCounter = 0;
         NSString * title = Localized(@"SwitchToTestNetwork");
-        [Encapsulation showAlertControllerWithTitle:title message:nil cancelHandler:^(UIAlertAction *action) {
-            
-        } confirmHandler:^(UIAlertAction *action) {
+        [Encapsulation showAlertControllerWithTitle:title message:nil confirmHandler:^{
             [[HTTPManager shareManager] SwitchedNetworkWithIsTest:YES];
             [self setData];
         }];

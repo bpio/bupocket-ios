@@ -84,8 +84,7 @@
 }
 - (void)deleteAction
 {
-    [Encapsulation showAlertControllerWithTitle:nil message:Localized(@"ConfirmDeleteContact") cancelHandler:^(UIAlertAction *action) {
-    } confirmHandler:^(UIAlertAction *action) {
+    [Encapsulation showAlertControllerWithTitle:Localized(@"ConfirmDeleteContact") message:nil confirmHandler:^{
         [self getDeleteData];
     }];
 }

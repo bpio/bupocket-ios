@@ -38,15 +38,15 @@
             self.textField.placeholder = placeholder;
         }
         self.titleLabel.text = title;
-        CGFloat titleH = [Encapsulation rectWithText:title font:FONT_Bold(18) textWidth:DEVICE_WIDTH - ScreenScale(100)].size.height;
-        self.bounds = CGRectMake(0, 0, DEVICE_WIDTH - Margin_60, ScreenScale(170) + titleH);
+        CGFloat titleH = [Encapsulation rectWithText:title font:FONT_Bold(18) textWidth:Alert_Width - Margin_40].size.height;
+        self.bounds = CGRectMake(0, 0, Alert_Width, ScreenScale(115) + titleH + Alert_Button_Height);
     }
     return self;
 }
 
 - (void)setupView {
     self.backgroundColor = [UIColor whiteColor];
-    self.layer.cornerRadius = MAIN_CORNER;
+    self.layer.cornerRadius = BG_CORNER;
     
     [self addSubview:self.titleLabel];
     [self.titleLabel mas_makeConstraints:^(MASConstraintMaker *make) {
@@ -73,13 +73,14 @@
         make.height.mas_equalTo(LINE_WIDTH);
     }];
     
-    UIButton * cancel = [UIButton createButtonWithTitle:Localized(@"Cancel") TextFont:FONT_BUTTON TextNormalColor:COLOR_9 TextSelectedColor:COLOR_9 Target:self Selector:@selector(cancleBtnClick)];
+    CGFloat btnW = Alert_Width / 2;
+    UIButton * cancel = [UIButton createButtonWithTitle:Localized(@"Cancel") TextFont:Alert_Button_Font TextNormalColor:Alert_Button_Color TextSelectedColor:Alert_Button_Color Target:self Selector:@selector(cancleBtnClick)];
     [self addSubview:cancel];
     [cancel mas_makeConstraints:^(MASConstraintMaker *make) {
         make.top.equalTo(line.mas_bottom);
         make.bottom.equalTo(self);
         make.left.equalTo(self);
-        make.size.mas_equalTo(CGSizeMake(DEVICE_WIDTH / 2 - Margin_30, ScreenScale(55)));
+        make.size.mas_equalTo(CGSizeMake(btnW, Alert_Button_Height));
     }];
     [self addSubview:self.confirm];
     [self.confirm mas_makeConstraints:^(MASConstraintMaker *make) {
@@ -99,7 +100,7 @@
 {
     if (!_titleLabel) {
         _titleLabel = [UILabel new];
-        _titleLabel.font = FONT_Bold(18);
+        _titleLabel.font = Alert_Title_Font;
         _titleLabel.textColor = TITLE_COLOR;
         _titleLabel.numberOfLines = 0;
         _titleLabel.textAlignment = NSTextAlignmentCenter;
@@ -112,11 +113,11 @@
         _textField = [[UITextField alloc] init];
         _textField.delegate = self;
         _textField.textColor = TITLE_COLOR;
-        _textField.font = FONT_TITLE;
-        _textField.layer.cornerRadius = ScreenScale(3);
+        _textField.font = FONT_13;
+        _textField.layer.cornerRadius = TEXT_CORNER;
 //        _textField.layer.borderColor = LINE_COLOR.CGColor;
 //        _textField.layer.borderWidth = LINE_WIDTH;
-        _textField.backgroundColor = COLOR(@"F5F5F5");
+        _textField.backgroundColor = VIEWBG_COLOR;
         _textField.leftView = [[UIView alloc] initWithFrame:CGRectMake(0, 0, Margin_10, MAIN_HEIGHT)];
         _textField.leftViewMode = UITextFieldViewModeAlways;
         _textField.rightView = [[UIView alloc] initWithFrame:CGRectMake(0, 0, Margin_10, MAIN_HEIGHT)];
@@ -128,7 +129,7 @@
 - (UIButton *)confirm
 {
     if (!_confirm) {
-        _confirm = [UIButton createButtonWithTitle:Localized(@"Confirm") TextFont:FONT_BUTTON TextNormalColor:MAIN_COLOR TextSelectedColor:MAIN_COLOR Target:self Selector:@selector(sureBtnClick)];
+        _confirm = [UIButton createButtonWithTitle:Localized(@"Confirm") TextFont:Alert_Button_Font TextNormalColor:MAIN_COLOR TextSelectedColor:MAIN_COLOR Target:self Selector:@selector(sureBtnClick)];
         _confirm.enabled = NO;
     }
     return _confirm;

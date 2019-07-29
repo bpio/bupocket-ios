@@ -78,7 +78,7 @@
     PWTextField.delegate = self;
     PWTextField.textColor = TITLE_COLOR;
     PWTextField.font = FONT_TITLE;
-    PWTextField.layer.cornerRadius = ScreenScale(3);
+    PWTextField.layer.cornerRadius = TEXT_CORNER;
     PWTextField.layer.borderColor = LINE_COLOR.CGColor;
     PWTextField.layer.borderWidth = LINE_WIDTH;
     PWTextField.secureTextEntry = YES;

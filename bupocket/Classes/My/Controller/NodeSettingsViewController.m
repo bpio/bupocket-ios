@@ -156,7 +156,7 @@
                     [self.tableView reloadData];
                 }
             } else {
-                [Encapsulation showAlertControllerWithTitle:Localized(@"PromptTitle") message:Localized(@"NodeUrlError") confirmHandler:^(UIAlertAction *action) {
+                [Encapsulation showAlertControllerWithTitle:Localized(@"PromptTitle") message:Localized(@"NodeUrlError") confirmHandler:^ {
                     
                 }];
             }
@@ -211,8 +211,7 @@
                 [self showNodeSettingsAlertWithModifyType:ModifyTypeNodeEdit index:button.tag];
             } else if ([btn.titleLabel.text isEqualToString:titleArray[1]]) {
                 NSString * message = (self.index == button.tag) ? Localized(@"DeleteCurrentNode") : @"";
-                [Encapsulation showAlertControllerWithTitle:Localized(@"ConfirmDeleteNode") message:message cancelHandler:^(UIAlertAction *action) {
-                } confirmHandler:^(UIAlertAction *action) {
+                [Encapsulation showAlertControllerWithTitle:Localized(@"ConfirmDeleteNode") message:message confirmHandler:^{
                     if (self.index == button.tag) {
                         [self setNodeURLWithIndex:0];
                         [self saveAcrion];
@@ -220,6 +219,7 @@
                     [self.listArray removeObjectAtIndex:button.tag];
                     [[NSUserDefaults standardUserDefaults] setObject:self.listArray forKey:self.nodeURLArrayKey];
                     [self.tableView reloadData];
+                    
                 }];
             }
         });

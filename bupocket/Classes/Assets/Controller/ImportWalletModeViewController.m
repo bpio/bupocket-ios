@@ -206,7 +206,7 @@
     NSString * walletAddress = [Keypair getEncAddress : [Keypair getEncPublicKey: walletPrivateKey]];
     BOOL ifImportSuccess = [[HTTPManager shareManager] setWalletDataWalletName:_walletName walletAddress:walletAddress walletKeyStore:walletKeyStore randomNumber:nil];
     if (ifImportSuccess) {
-        [Encapsulation showAlertControllerWithMessage:Localized(@"ImportWalletSuccessfully") handler:^(UIAlertAction *action) {
+        [Encapsulation showAlertControllerWithMessage:Localized(@"ImportWalletSuccessfully") handler:^ {
             [self.navigationController popViewControllerAnimated:YES];
         }];
     }
@@ -234,7 +234,7 @@
     NSArray * words = [_importContent componentsSeparatedByString:@" "];
     [[HTTPManager shareManager] setWalletDataWithMnemonics:words password:_walletPW walletName:_walletName success:^(id responseObject) {
         if (responseObject) {
-            [Encapsulation showAlertControllerWithMessage:Localized(@"ImportWalletSuccessfully") handler:^(UIAlertAction *action) {
+            [Encapsulation showAlertControllerWithMessage:Localized(@"ImportWalletSuccessfully") handler:^ {
                 [self.navigationController popViewControllerAnimated:YES];
             }];
         }

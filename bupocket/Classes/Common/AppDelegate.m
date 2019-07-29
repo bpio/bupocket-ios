@@ -109,7 +109,7 @@
 {
     [[HTTPManager shareManager] setAccountDataWithRandom:random password:password name:[[AccountTool shareTool] account].identityName accountDataType:AccountDataSafe success:^(id responseObject) {
         [self.PWAlertView hideView];
-        [Encapsulation showAlertControllerWithMessage:Localized(@"SuccessfulReinforcement") handler:^(UIAlertAction *action) {
+        [Encapsulation showAlertControllerWithMessage:Localized(@"SuccessfulReinforcement") handler:^ {
             NSUserDefaults * defaults = [NSUserDefaults standardUserDefaults];
             [defaults setObject:App_Version forKey:LastVersion];
             [defaults synchronize];

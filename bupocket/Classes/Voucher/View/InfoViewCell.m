@@ -43,18 +43,21 @@ static NSString * const NormalCellID = @"NormalCellID";
         [self.info mas_makeConstraints:^(MASConstraintMaker *make) {
             make.edges.equalTo(self.contentView);
         }];
-        _info.contentEdgeInsets = UIEdgeInsetsMake(Margin_10, Margin_Main, Margin_10, Margin_Main);
+        _info.contentEdgeInsets = UIEdgeInsetsMake(0, Margin_Main, Margin_10, Margin_Main);
     } else if ([self.reuseIdentifier isEqualToString:NormalCellID]) {
         [self.info mas_makeConstraints:^(MASConstraintMaker *make) {
             make.top.bottom.equalTo(self.contentView);
-            make.centerX.equalTo(self.contentView);
-            make.width.mas_equalTo(View_Width_Main);
+            make.left.equalTo(self.contentView.mas_left).offset(Margin_Main);
+            make.right.equalTo(self.contentView.mas_right).offset(-Margin_Main);
+//            make.width.mas_equalTo(View_Width_Main);
         }];
-        _info.contentEdgeInsets = UIEdgeInsetsMake(Margin_5, Margin_10, Margin_5, Margin_10);
-        CGSize maximumSize = CGSizeMake(View_Width_Main, CGFLOAT_MAX);
-        CGSize expectSize = [_info sizeThatFits:maximumSize];
-        _info.size = expectSize;
-        [self.info setViewSize:_info.size borderWidth:0 borderColor:nil borderRadius:BG_CORNER];
+        self.info.contentEdgeInsets = UIEdgeInsetsMake(Margin_5, Margin_10, Margin_5, Margin_10);
+        self.info.layer.masksToBounds = YES;
+        self.info.layer.cornerRadius = BG_CORNER;
+//        CGSize maximumSize = CGSizeMake(Content_Width_Main, CGFLOAT_MAX);
+//        CGSize expectSize = [_info sizeThatFits:maximumSize];
+//        _info.size = expectSize;
+//        [self.info setViewSize:_info.size borderWidth:0 borderColor:nil borderRadius:BG_CORNER];
     }
 }
 - (UIButton *)info
@@ -66,6 +69,11 @@ static NSString * const NormalCellID = @"NormalCellID";
         _info.contentHorizontalAlignment = UIControlContentHorizontalAlignmentLeft;
     }
     return _info;
+}
+- (void)setInfoStr:(NSString *)infoStr
+{
+    _infoStr = infoStr;
+    [self.info setAttributedTitle:[Encapsulation getAttrWithInfoStr:infoStr] forState:UIControlStateNormal];
 }
 
 - (void)awakeFromNib {

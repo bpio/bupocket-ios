@@ -150,7 +150,7 @@ static NSString * const Issue_Leave = @"leaveRoomForApp";
     CGFloat isOverFlow = [self.distributionModel.totalSupply longLongValue] - [self.distributionModel.actualSupply longLongValue] - [self.registeredModel.amount longLongValue];
     if ([self.distributionModel.totalSupply longLongValue] != 0 && isOverFlow < 0) {
         // Your tokens issued exceed the total amount of tokens registered
-        [Encapsulation showAlertControllerWithMessage:Localized(@"CirculationExceeded") handler:^(UIAlertAction *action) {
+        [Encapsulation showAlertControllerWithMessage:Localized(@"CirculationExceeded") handler:^ {
             [self cancelAction];
         }];
         return;

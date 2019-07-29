@@ -10,7 +10,7 @@
 #import "PlaceholderTextView.h"
 #import "ExplainInfoViewController.h"
 #import "TextFieldViewCell.h"
-#import "CreateTipsAlertView.h"
+#import "TipsAlertView.h"
 
 @interface RestoreIdentityViewController ()<UITextFieldDelegate, UITextViewDelegate, UITableViewDelegate, UITableViewDataSource>
 
@@ -51,9 +51,7 @@
 }
 - (void)showCreateTips
 {
-    CreateTipsAlertView * alertView = [[CreateTipsAlertView alloc] initWithTitle:Localized(@"PromptTitle") confrimBolck:^{
-        
-    }];
+    TipsAlertView * alertView = [[TipsAlertView alloc] initWithTipsType:TipsTypeNormal title:Localized(@"PromptTitle") message:Localized(@"PWTips") confrimBolck:nil];
     [alertView showInWindowWithMode:CustomAnimationModeDisabled inView:nil bgAlpha:AlertBgAlpha needEffectView:NO];
 }
 - (void)setupView

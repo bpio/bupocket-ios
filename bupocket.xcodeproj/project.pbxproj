@@ -104,6 +104,7 @@
 		9519ED7022E6A67E00A4AAC1 /* ChangePasswordViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 9519ED6F22E6A67E00A4AAC1 /* ChangePasswordViewController.m */; };
 		9519ED7622E8338F00A4AAC1 /* TransactionDetailsViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 9519ED7522E8338F00A4AAC1 /* TransactionDetailsViewController.m */; };
 		9519ED7922EAFA3800A4AAC1 /* TransactionViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 9519ED7822EAFA3800A4AAC1 /* TransactionViewController.m */; };
+		9519ED7E22EECCCE00A4AAC1 /* TipsAlertView.m in Sources */ = {isa = PBXBuildFile; fileRef = 9519ED7D22EECCCE00A4AAC1 /* TipsAlertView.m */; };
 		95266CCD226F062E002CD915 /* NodePlanViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 95266CA1226F062E002CD915 /* NodePlanViewController.m */; };
 		95266CCE226F062E002CD915 /* CooperateViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 95266CA4226F062E002CD915 /* CooperateViewController.m */; };
 		95266CCF226F062E002CD915 /* NodeSharingViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 95266CA7226F062E002CD915 /* NodeSharingViewController.m */; };
@@ -133,7 +134,6 @@
 		9538308722CEE93D00607F0C /* ResultViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 9538308622CEE93D00607F0C /* ResultViewController.m */; };
 		9538308A22CF10E500607F0C /* VoucherModel.m in Sources */ = {isa = PBXBuildFile; fileRef = 9538308922CF10E500607F0C /* VoucherModel.m */; };
 		954371742199234100915BBE /* SettingViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 954371732199234100915BBE /* SettingViewController.m */; };
-		9549EC66219C0CF800307255 /* CreateTipsAlertView.m in Sources */ = {isa = PBXBuildFile; fileRef = 9549EC65219C0CF800307255 /* CreateTipsAlertView.m */; };
 		9549EC70219D075F00307255 /* ClearCacheTool.m in Sources */ = {isa = PBXBuildFile; fileRef = 9549EC6F219D075E00307255 /* ClearCacheTool.m */; };
 		9569288321D7541400B7721A /* libc++.tbd in Frameworks */ = {isa = PBXBuildFile; fileRef = 9569288221D7541400B7721A /* libc++.tbd */; };
 		956CD42121B016D1004DC1FA /* ListModel.m in Sources */ = {isa = PBXBuildFile; fileRef = 956CD42021B016D1004DC1FA /* ListModel.m */; };
@@ -413,6 +413,8 @@
 		9519ED7522E8338F00A4AAC1 /* TransactionDetailsViewController.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = TransactionDetailsViewController.m; sourceTree = "<group>"; };
 		9519ED7722EAFA3800A4AAC1 /* TransactionViewController.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = TransactionViewController.h; sourceTree = "<group>"; };
 		9519ED7822EAFA3800A4AAC1 /* TransactionViewController.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = TransactionViewController.m; sourceTree = "<group>"; };
+		9519ED7C22EECCCE00A4AAC1 /* TipsAlertView.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = TipsAlertView.h; sourceTree = "<group>"; };
+		9519ED7D22EECCCE00A4AAC1 /* TipsAlertView.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = TipsAlertView.m; sourceTree = "<group>"; };
 		95266CA1226F062E002CD915 /* NodePlanViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = NodePlanViewController.m; sourceTree = "<group>"; };
 		95266CA2226F062E002CD915 /* VotingRecordsViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = VotingRecordsViewController.h; sourceTree = "<group>"; };
 		95266CA3226F062E002CD915 /* NodeTransferSuccessViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = NodeTransferSuccessViewController.h; sourceTree = "<group>"; };
@@ -470,8 +472,6 @@
 		9538308922CF10E500607F0C /* VoucherModel.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = VoucherModel.m; sourceTree = "<group>"; };
 		954371722199234100915BBE /* SettingViewController.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = SettingViewController.h; sourceTree = "<group>"; };
 		954371732199234100915BBE /* SettingViewController.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = SettingViewController.m; sourceTree = "<group>"; };
-		9549EC64219C0CF800307255 /* CreateTipsAlertView.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = CreateTipsAlertView.h; sourceTree = "<group>"; };
-		9549EC65219C0CF800307255 /* CreateTipsAlertView.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = CreateTipsAlertView.m; sourceTree = "<group>"; };
 		9549EC6E219D075E00307255 /* ClearCacheTool.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ClearCacheTool.h; sourceTree = "<group>"; };
 		9549EC6F219D075E00307255 /* ClearCacheTool.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ClearCacheTool.m; sourceTree = "<group>"; };
 		9569288221D7541400B7721A /* libc++.tbd */ = {isa = PBXFileReference; lastKnownFileType = "sourcecode.text-based-dylib-definition"; name = "libc++.tbd"; path = "usr/lib/libc++.tbd"; sourceTree = SDKROOT; };
@@ -727,8 +727,8 @@
 		835A452B2174C1F9005BFCDD /* View */ = {
 			isa = PBXGroup;
 			children = (
-				9549EC64219C0CF800307255 /* CreateTipsAlertView.h */,
-				9549EC65219C0CF800307255 /* CreateTipsAlertView.m */,
+				9519ED7C22EECCCE00A4AAC1 /* TipsAlertView.h */,
+				9519ED7D22EECCCE00A4AAC1 /* TipsAlertView.m */,
 				959726EC21E8C84F0022CB78 /* PasswordAlertView.h */,
 				959726ED21E8C84F0022CB78 /* PasswordAlertView.m */,
 				958127ED219ABD9D0081A02E /* VersionUpdateAlertView.h */,
@@ -1613,7 +1613,6 @@
 				95266CD1226F062E002CD915 /* NodeTransferSuccessViewController.m in Sources */,
 				8372C86C2174CCB000FF9506 /* MyViewController.m in Sources */,
 				83379A80217B524D00C222A5 /* UIApplication+Extension.m in Sources */,
-				9549EC66219C0CF800307255 /* CreateTipsAlertView.m in Sources */,
 				959E28F02248B998006FCA30 /* LoginConfirmViewController.m in Sources */,
 				83379AE52180631200C222A5 /* TxInfoModel.m in Sources */,
 				83379A8C217DB25A00C222A5 /* TransferAccountsViewController.m in Sources */,
@@ -1671,6 +1670,7 @@
 				959726D721E5E76F0022CB78 /* ImportWalletModeViewController.m in Sources */,
 				959726E821E893400022CB78 /* SafetyReinforcementAlertView.m in Sources */,
 				83D5B1EE21818F7700BF1FF1 /* NSString+Extension.m in Sources */,
+				9519ED7E22EECCCE00A4AAC1 /* TipsAlertView.m in Sources */,
 				9513639F22B8F4E700BF8DF5 /* WalletDetailsViewController.m in Sources */,
 				83FB4443219131EC00D68569 /* UINavigationController+Extension.m in Sources */,
 				9513637E22B3990500BF8DF5 /* WalletListViewController.m in Sources */,

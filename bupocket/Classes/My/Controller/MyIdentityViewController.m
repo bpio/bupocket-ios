@@ -206,9 +206,7 @@
 }
 - (void)exitIDAction
 {
-    [Encapsulation showAlertControllerWithTitle:Localized(@"ExitCurrentID") message:Localized(@"ExitCurrentIdentityPrompt") cancelHandler:^(UIAlertAction *action) {
-        
-    } confirmHandler:^(UIAlertAction *action) {
+    [Encapsulation showAlertControllerWithTitle:Localized(@"ExitCurrentID") message:Localized(@"ExitCurrentIdentityPrompt") confirmHandler:^{
         PasswordAlertView * alertView = [[PasswordAlertView alloc] initWithPrompt:Localized(@"IdentityCipherWarning") confrimBolck:^(NSString * _Nonnull password, NSArray * _Nonnull words) {
             [self exitIDData];
         } cancelBlock:^{

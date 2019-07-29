@@ -151,7 +151,7 @@
         [VC loadWebURLSring:Information_URL];
         [self.navigationController pushViewController:VC animated:YES];
     } else if (indexPath.section == 2) {
-        [Encapsulation showAlertControllerWithTitle:Localized(@"Disclaimer") message:Localized(@"DisclaimerInfo") confirmHandler:^(UIAlertAction *action) {
+        [Encapsulation showAlertControllerWithTitle:Localized(@"Disclaimer") message:Localized(@"DisclaimerInfo") confirmHandler:^{
             [WechatTool enterWechatMiniProgram];
         }];
     }

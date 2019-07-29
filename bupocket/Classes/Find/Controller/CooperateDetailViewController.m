@@ -173,11 +173,14 @@ static NSString * const CooperateDetailCellID = @"CooperateDetailCellID";
     if (button == _redemptionAllSupport) {
         [self setSignOutData];
     } else {
-        [Encapsulation showAlertControllerWithTitle:nil message:Localized(@"ConfirmWithdrawalPrompt") cancelHandler:^(UIAlertAction *action) {
-            
-        } confirmHandler:^(UIAlertAction *action) {
+        [Encapsulation showAlertControllerWithTitle:Localized(@"ConfirmWithdrawalPrompt") message:nil confirmHandler:^{
             [self setSignOutData];
         }];
+//        [Encapsulation showAlertControllerWithTitle:nil message:Localized(@"ConfirmWithdrawalPrompt") cancelHandler:^(UIAlertAction *action) {
+//
+//        } confirmHandler:^(UIAlertAction *action) {
+//            [self setSignOutData];
+//        }];
     }
 }
 - (void)setSignOutData
@@ -397,7 +400,7 @@ static NSString * const CooperateDetailCellID = @"CooperateDetailCellID";
         }
     } else if (indexPath.section == 1) {
 //        CooperateDetailViewCell * cell = [tableView cellForRowAtIndexPath:indexPath];
-        return [Encapsulation getAttrHeightWithInfoStr:Localized(@"RiskStatementPrompt")];
+        return [Encapsulation getAttrHeightWithInfoStr:Localized(@"RiskStatementPrompt") width:Content_Width_Main];
 //        return ceil([Encapsulation getSizeSpaceLabelWithStr:Localized(@"RiskStatementPrompt") font:FONT(13) width:Content_Width_Main height:CGFLOAT_MAX lineSpacing:LINE_SPACING].height) + 1 + Margin_25;
 //        [Encapsulation rectWithText:self.riskStatement font:FONT(13) textWidth:DEVICE_WIDTH - Margin_30].size.height + Margin_20;
     } else {
@@ -473,7 +476,7 @@ static NSString * const CooperateDetailCellID = @"CooperateDetailCellID";
         return cell;
     } else if (indexPath.section == 1) {
         InfoViewCell * cell = [InfoViewCell cellWithTableView:tableView cellType:CellTypeNormal];
-        [cell.info setAttributedTitle:[Encapsulation getAttrWithInfoStr:Localized(@"RiskStatementPrompt")] forState:UIControlStateNormal];
+        cell.infoStr = Localized(@"RiskStatementPrompt");
         return cell;
     } else {
         AssetsDetailListViewCell * cell = [AssetsDetailListViewCell cellWithTableView:tableView];

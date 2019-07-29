@@ -96,12 +96,13 @@
 + (CGSize)getSizeSpaceLabelWithStr:(NSString *)str font:(UIFont *)font width:(CGFloat)width height:(CGFloat)height lineSpacing:(CGFloat)lineSpacing
 {
     NSMutableParagraphStyle * paragraphStyle = [Encapsulation setDefaultParagraphStyleWithStr:str font:font lineSpacing:lineSpacing];
-    NSDictionary * dic = @{NSFontAttributeName:font,NSParagraphStyleAttributeName:paragraphStyle, NSKernAttributeName:@1.0f};
+    NSDictionary * dic = @{NSFontAttributeName:font,NSParagraphStyleAttributeName:paragraphStyle};
+//    NSDictionary * dic = @{NSFontAttributeName:font,NSParagraphStyleAttributeName:paragraphStyle, NSKernAttributeName:@1.0f};
     CGSize size = [str boundingRectWithSize:CGSizeMake(width, height) options:NSStringDrawingUsesLineFragmentOrigin attributes:dic context:nil].size;
     return size;
 }
 
-
+/*
 + (void)showAlertControllerWithTitle:(NSString *)title message:(NSString*)message cancelHandler:(void(^)(UIAlertAction * action))cancelHandler confirmHandler:(void(^)(UIAlertAction * action))confirmHandler
 {
     UIAlertController * alertController = [UIAlertController alertControllerWithTitle:title message:message preferredStyle:UIAlertControllerStyleAlert];
@@ -129,7 +130,7 @@
     [confirmAction setValue:MAIN_COLOR forKey:@"titleTextColor"];
     [[[UIApplication sharedApplication] keyWindow].rootViewController presentViewController:alertController animated:YES completion:nil];
 }
-
+*/
 /*
 + (void)showAlertControllerWithTitle:(NSString *)title messageAttr:(NSAttributedString *)messageAttr cancelHandler:(void(^)(UIAlertAction * action))cancelHandler confirmHandler:(void(^)(UIAlertAction * action))confirmHandler
 {    
@@ -149,8 +150,11 @@
     [[[UIApplication sharedApplication] keyWindow].rootViewController presentViewController:alertController animated:YES completion:nil];
 }
  */
-+ (void)showAlertControllerWithMessage:(NSString *)message handler:(void(^)(UIAlertAction * action))handle
++ (void)showAlertControllerWithMessage:(NSString *)message handler:(void (^)(void))handle
 {
+    TipsAlertView * alertView = [[TipsAlertView alloc] initWithTipsType:TipsTypeError title: message message:nil confrimBolck:handle];
+    [alertView showInWindowWithMode:CustomAnimationModeDisabled inView:nil bgAlpha:AlertBgAlpha needEffectView:NO];
+    /*
     UIAlertController * alertController = [UIAlertController alertControllerWithTitle:nil message:message preferredStyle:UIAlertControllerStyleAlert];
     UIView * alertBg = alertController.view.subviews[0].subviews[0].subviews[0];
     alertBg.backgroundColor = [UIColor whiteColor];
@@ -159,10 +163,13 @@
     [cancelAction setValue:MAIN_COLOR forKey:@"titleTextColor"];
     [alertController addAction:cancelAction];
     [[[UIApplication sharedApplication] keyWindow].rootViewController presentViewController:alertController animated:YES completion:nil];
+     */
 }
-+ (void)showAlertControllerWithErrorMessage:(NSString *)message handler:(void(^)(UIAlertAction * action))handle
++ (void)showAlertControllerWithErrorMessage:(NSString *)message handler:(void (^)(void))handle
 {
-    [Encapsulation showAlertControllerWithTitle:Localized(@"ErrorPrompt") message:message confirmHandler:handle];
+    TipsAlertView * alertView = [[TipsAlertView alloc] initWithTipsType:TipsTypeError title: Localized(@"ErrorPrompt") message:message confrimBolck:handle];
+    [alertView showInWindowWithMode:CustomAnimationModeDisabled inView:nil bgAlpha:AlertBgAlpha needEffectView:NO];
+//    [Encapsulation showAlertControllerWithTitle:Localized(@"ErrorPrompt") message:message confirmHandler:handle];
     /*
     UIAlertController * alertController = [UIAlertController alertControllerWithTitle:Localized(@"ErrorPrompt") message:message preferredStyle:UIAlertControllerStyleAlert];
     UIView * alertBg = alertController.view.subviews[0].subviews[0].subviews[0];
@@ -188,8 +195,11 @@
      */
 }
 
-+ (void)showAlertControllerWithTitle:(NSString *)title message:(NSString*)message confirmHandler:(void(^)(UIAlertAction * action))confirmHandler
++ (void)showAlertControllerWithTitle:(NSString *)title message:(NSString *)message confirmHandler:(void (^)(void))confirmHandler
 {
+    TipsAlertView * alertView = [[TipsAlertView alloc] initWithTipsType:TipsTypeChoice title: title message:message confrimBolck:confirmHandler];
+    [alertView showInWindowWithMode:CustomAnimationModeDisabled inView:nil bgAlpha:AlertBgAlpha needEffectView:NO];
+    /*
     UIAlertController * alertController = [UIAlertController alertControllerWithTitle:title message:message preferredStyle:UIAlertControllerStyleAlert];
     UIAlertAction * confirmAction = [UIAlertAction actionWithTitle:Localized(@"IGotIt") style:UIAlertActionStyleDefault handler:confirmHandler];
     [alertController addAction:confirmAction];
@@ -211,6 +221,7 @@
     }
     [confirmAction setValue:MAIN_COLOR forKey:@"titleTextColor"];
     [[[UIApplication sharedApplication] keyWindow].rootViewController presentViewController:alertController animated:YES completion:nil];
+     */
 }
 + (UIButton *)showNoDataWithTitle:(NSString *)title imageName:(NSString *)imageName superView:(UIView *)superView frame:(CGRect)frame
 {
@@ -276,11 +287,10 @@
     }
     return nil;
 }
-+ (CGFloat)getAttrHeightWithInfoStr:(NSString *)infoStr
++ (CGFloat)getAttrHeightWithInfoStr:(NSString *)infoStr width:(CGFloat)width
 {
-    return NotNULLString(infoStr) ? ceil([Encapsulation getSizeSpaceLabelWithStr:infoStr font:FONT_TITLE width:View_Width_Main height:CGFLOAT_MAX lineSpacing:Margin_10].height) + 1 + Margin_20 : CGFLOAT_MIN;
+    return NotNULLString(infoStr) ? ceil([Encapsulation getSizeSpaceLabelWithStr:infoStr font:FONT_TITLE width:width height:CGFLOAT_MAX lineSpacing:Margin_10].height) + 1 + Margin_10 : CGFLOAT_MIN;
 }
-
 #pragma mark 多张图片合成一张
 + (UIImage *)mergedImageWithMainImage:(UIView *)mainImage
 {

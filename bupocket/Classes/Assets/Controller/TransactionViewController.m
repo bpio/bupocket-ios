@@ -383,7 +383,7 @@ static NSString * const ChooseVoucherCellID = @"ChooseVoucherCellID";
 }
 - (CGFloat)tableView:(UITableView *)tableView heightForFooterInSection:(NSInteger)section
 {
-    return ContentInset_Bottom;
+    return ContentInset_Bottom + NavBarH;
 }
 - (NSInteger)numberOfSectionsInTableView:(UITableView *)tableView
 {

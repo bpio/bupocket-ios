@@ -59,7 +59,8 @@ static NSString * const CooperateDetailCellID = @"CooperateDetailCellID";
     if (indexPath.section == 0) {
         return ScreenScale(80);
     } else {
-        return (NotNULLString(self.info) ? ceil([Encapsulation getSizeSpaceLabelWithStr:self.info font:FONT(13) width:View_Width_Main height:CGFLOAT_MAX lineSpacing:LINE_SPACING].height) + 1 + Margin_20 : CGFLOAT_MIN);
+        return [Encapsulation getAttrHeightWithInfoStr:self.info width:View_Width_Main];
+//        return (NotNULLString(self.info) ? ceil([Encapsulation getSizeSpaceLabelWithStr:self.info font:FONT(13) width:View_Width_Main height:CGFLOAT_MAX lineSpacing:LINE_SPACING].height) + 1 + Margin_20 : CGFLOAT_MIN);
     }
 }
 - (CGFloat)tableView:(UITableView *)tableView heightForHeaderInSection:(NSInteger)section
@@ -73,7 +74,7 @@ static NSString * const CooperateDetailCellID = @"CooperateDetailCellID";
 - (UIView *)tableView:(UITableView *)tableView viewForHeaderInSection:(NSInteger)section
 {
     if (section == 1 || section == 2) {
-        UIButton * title = [UIButton createHeaderButtonWithTitle:self.listArray[section][0]];
+        UIButton * title = [UIButton createAttrHeaderTitle:self.listArray[section][0]];
         return title;
     } else {
         return nil;
@@ -84,7 +85,7 @@ static NSString * const CooperateDetailCellID = @"CooperateDetailCellID";
     if (section == self.listArray.count - 1 && NotNULLString(self.info)) {
         return ContentSizeBottom;
     } else {
-        return CGFLOAT_MIN;
+        return Margin_10;
     }
 }
 
@@ -107,23 +108,22 @@ static NSString * const CooperateDetailCellID = @"CooperateDetailCellID";
         cell.walletName.text = self.voucherModel.voucherIssuer[@"name"];
         [cell.walletName mas_remakeConstraints:^(MASConstraintMaker *make) {
             make.top.bottom.equalTo(cell.walletImage);
-            make.left.equalTo(cell.walletImage.mas_right).offset(Margin_15);
-            make.right.mas_lessThanOrEqualTo(cell.listBg.mas_right).offset(-Margin_15);
+            make.left.equalTo(cell.walletImage.mas_right).offset(Margin_Main);
+            make.right.mas_lessThanOrEqualTo(cell.listBg.mas_right).offset(-Margin_Main);
         }];
-        
 //        cell.walletAddress.text = [NSString stringWithFormat:Localized(@"Abbreviation：%@"), self.voucherModel.voucherIssuer[@"shortName"]];
         cell.detailImage.hidden = YES;
         return cell;
     } else {
         InfoViewCell * cell = [InfoViewCell cellWithTableView:tableView cellType:CellTypeDefault];
-        [cell.info setAttributedTitle:[self getAttrWithInfo] forState:UIControlStateNormal];
+        cell.infoStr = self.info;
         return cell;
     }
 }
-- (NSAttributedString *)getAttrWithInfo
-{
-    return [Encapsulation attrWithString:self.listArray[1][1] preFont:FONT(13) preColor:COLOR_6 index:0 sufFont:FONT(13) sufColor:COLOR_6 lineSpacing:LINE_SPACING];
-}
+//- (NSAttributedString *)getAttrWithInfo
+//{
+//    return [Encapsulation attrWithString:self.info preFont:FONT(13) preColor:COLOR_6 index:0 sufFont:FONT(13) sufColor:COLOR_6 lineSpacing:LINE_SPACING];
+//}
 - (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath
 {
     [tableView deselectRowAtIndexPath:indexPath animated:YES];

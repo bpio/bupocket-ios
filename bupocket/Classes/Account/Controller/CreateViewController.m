@@ -9,7 +9,7 @@
 #import "CreateViewController.h"
 #import "TextFieldViewCell.h"
 #import "BackUpWalletViewController.h"
-#import "CreateTipsAlertView.h"
+#import "TipsAlertView.h"
 
 @interface CreateViewController ()<UITextFieldDelegate, UITableViewDelegate, UITableViewDataSource>
 
@@ -53,7 +53,7 @@
 }
 - (void)showCreateTips
 {
-    CreateTipsAlertView * alertView = [[CreateTipsAlertView alloc] initWithTitle:Localized(@"PromptTitle") confrimBolck:^{
+    TipsAlertView * alertView = [[TipsAlertView alloc] initWithTipsType:TipsTypeNormal title:Localized(@"PromptTitle") message:Localized(@"PWTips") confrimBolck:^{
         
     }];
     [alertView showInWindowWithMode:CustomAnimationModeDisabled inView:nil bgAlpha:AlertBgAlpha needEffectView:NO];
@@ -197,6 +197,7 @@
         if (self.createType == CreateWallet) {
             message = Localized(@"WalletNameFormatIncorrect");
         }
+        
         [Encapsulation showAlertControllerWithErrorMessage:message handler:nil];
         return NO;
     } else if ([RegexPatternTool validatePassword:self.PW] == NO) {

@@ -119,7 +119,17 @@ static NSString *_title;
     button.contentHorizontalAlignment = UIControlContentHorizontalAlignmentLeft;
     return button;
 }
-
+// 设置标题属性文字
++ (UIButton *)createAttrHeaderTitle:(NSString *)title
+{
+    NSString * titleStr = [NSString stringWithFormat:@"|  %@", title];
+    UIButton * button = [UIButton buttonWithType:UIButtonTypeCustom];
+    [button setAttributedTitle:[Encapsulation attrWithString:titleStr preFont:FONT_Bold(14) preColor:MAIN_COLOR index:1 sufFont:FONT_TITLE sufColor:TITLE_COLOR lineSpacing:0] forState:UIControlStateNormal];
+    button.backgroundColor = [UIColor whiteColor];
+    button.contentEdgeInsets = UIEdgeInsetsMake(0, Margin_Main, 0, Margin_Main);
+    button.contentHorizontalAlignment = UIControlContentHorizontalAlignmentLeft;
+    return button;
+}
 + (UIButton *)createFooterViewWithTitle:(NSString *)title  isEnabled:(BOOL)isEnabled Target:(id)target Selector:(SEL)selector
 {
     UIView * footerView = [[UIView alloc] init];
