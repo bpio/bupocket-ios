@@ -120,18 +120,18 @@
 //        if (self.mnemonicType == MnemonicExport) {
 //            prompt = Localized(@"WalletPWPrompt");
 //        }
-        PasswordAlertView * alertView = [[PasswordAlertView alloc] initWithPrompt:Localized(@"BackupWalletPWPrompt") confrimBolck:^(NSString * _Nonnull password, NSArray * _Nonnull words) {
+        TextInputAlertView * alertView = [[TextInputAlertView alloc] initWithInputType:PWTypeBackUpID confrimBolck:^(NSString * _Nonnull text, NSArray * _Nonnull words) {
             if (words.count > 0) {
                 [self pushBackupMnemonicsWithArray:words];
             }
         } cancelBlock:^{
+            
         }];
         if (self.randomNumber) {
             alertView.randomNumber = self.randomNumber;
         }
-        alertView.passwordType = PWTypeBackUpID;
         [alertView showInWindowWithMode:CustomAnimationModeAlert inView:nil bgAlpha:AlertBgAlpha needEffectView:NO];
-        [alertView.PWTextField becomeFirstResponder];
+        [alertView.textField becomeFirstResponder];
     }
 }
 - (void)pushBackupMnemonicsWithArray:(NSArray *)array

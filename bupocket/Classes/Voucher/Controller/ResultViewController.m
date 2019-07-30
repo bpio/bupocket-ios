@@ -129,7 +129,7 @@
 }
 - (CGFloat)getCellHeightWithText:(NSString *)text
 {
-    return (NotNULLString(text)) ? [Encapsulation rectWithText:text font:FONT_TITLE textWidth:Info_Width_Max].size.height + Margin_30 : MAIN_HEIGHT;
+    return (NotNULLString(text)) ? [Encapsulation rectWithText:text font:FONT_TITLE textWidth:Info_Width_Max].size.height + Margin_20 : Detail_Main_Height;
 }
 - (NSString *)infoStringWithIndexPath:(NSIndexPath *)indexPath
 {

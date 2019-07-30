@@ -59,6 +59,7 @@ static NSString * const VoucherCellID = @"VoucherCellID";
         [self setupNav];
     } else {
         self.headerTitle = [NSString stringWithFormat:Localized(@"%@ Vouchers available under"), CurrentWalletName];
+        self.headerTitleH = Margin_10 + [Encapsulation getSizeSpaceLabelWithStr:self.headerTitle font:FONT_13 width:View_Width_Main height:CGFLOAT_MAX lineSpacing:LINE_SPACING].height;
     }
     [self setupView];
     self.noNetWork = [Encapsulation showNoNetWorkWithSuperView:self.view target:self action:@selector(reloadData)];
@@ -221,7 +222,6 @@ static NSString * const VoucherCellID = @"VoucherCellID";
             sufColor = MAIN_COLOR;
         }
         [self.titleBtn setAttributedTitle:[Encapsulation attrWithString:self.headerTitle preFont:FONT_13 preColor:preColor index:index sufFont:FONT_13 sufColor:sufColor lineSpacing:LINE_SPACING] forState:UIControlStateNormal];
-        self.headerTitleH = Margin_10 + [Encapsulation getSizeSpaceLabelWithStr:self.headerTitle font:FONT_13 width:View_Width_Main height:CGFLOAT_MAX lineSpacing:LINE_SPACING].height;
         self.titleBtn.contentHorizontalAlignment = UIControlContentHorizontalAlignmentLeft;
         self.titleBtn.contentEdgeInsets = UIEdgeInsetsMake(Margin_10, Margin_Main, 0, Margin_Main);
 //        CGSize maximumSize = CGSizeMake(DEVICE_WIDTH, CGFLOAT_MAX);

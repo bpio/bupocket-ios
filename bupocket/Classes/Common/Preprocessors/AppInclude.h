@@ -44,7 +44,7 @@
 #import "LanguageManager.h"
 #import "Encapsulation.h"
 #import "UIView+Extension.h"
-#import "PasswordAlertView.h"
+#import "TextInputAlertView.h"
 #import "UIApplication+Extension.h"
 
 #import "NavigationViewController.h"

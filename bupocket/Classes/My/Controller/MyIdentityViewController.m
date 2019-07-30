@@ -207,14 +207,13 @@
 - (void)exitIDAction
 {
     [Encapsulation showAlertControllerWithTitle:Localized(@"ExitCurrentID") message:Localized(@"ExitCurrentIdentityPrompt") confirmHandler:^{
-        PasswordAlertView * alertView = [[PasswordAlertView alloc] initWithPrompt:Localized(@"IdentityCipherWarning") confrimBolck:^(NSString * _Nonnull password, NSArray * _Nonnull words) {
+        TextInputAlertView * alertView = [[TextInputAlertView alloc] initWithInputType:PWTypeExitID confrimBolck:^(NSString * _Nonnull text, NSArray * _Nonnull words) {
             [self exitIDData];
         } cancelBlock:^{
             
         }];
-        alertView.passwordType = PWTypeExitID;
         [alertView showInWindowWithMode:CustomAnimationModeAlert inView:nil bgAlpha:AlertBgAlpha needEffectView:NO];
-        [alertView.PWTextField becomeFirstResponder];
+        [alertView.textField becomeFirstResponder];
     }];
 }
 - (void)exitIDData

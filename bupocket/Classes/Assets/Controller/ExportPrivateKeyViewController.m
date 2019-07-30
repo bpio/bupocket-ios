@@ -73,7 +73,7 @@
 }
 - (CGFloat)tableView:(UITableView *)tableView heightForRowAtIndexPath:(NSIndexPath *)indexPath
 {
-    CGFloat rowHeight = [Encapsulation rectWithText:[self.listArray lastObject][indexPath.row]  font:FONT_TITLE textWidth: View_Width_Main].size.height + ScreenScale(55);
+    CGFloat rowHeight = [Encapsulation rectWithText:[self.listArray lastObject][indexPath.row]  font:FONT_TITLE textWidth: View_Width_Main].size.height + ScreenScale(50);
     return rowHeight;
 }
 - (CGFloat)tableView:(UITableView *)tableView heightForHeaderInSection:(NSInteger)section
@@ -95,7 +95,7 @@
 - (UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath
 {
     DetailListViewCell * cell = [DetailListViewCell cellWithTableView:tableView cellType:DetailCellSubtitle];
-    cell.title.font = FONT(16);
+    cell.title.font = FONT_Bold(16);
     cell.title.textColor = COLOR_6;
     cell.infoTitle.font = FONT(14);
     cell.title.text = [self.listArray firstObject][indexPath.row];

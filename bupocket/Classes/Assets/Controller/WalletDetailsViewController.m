@@ -9,7 +9,6 @@
 #import "WalletDetailsViewController.h"
 #import "WalletManagementViewController.h"
 #import "ListTableViewCell.h"
-#import "ModifyAlertView.h"
 #import "ModifyIconAlertView.h"
 
 @interface WalletDetailsViewController ()<UITableViewDelegate, UITableViewDataSource>
@@ -68,7 +67,7 @@
 }
 - (CGFloat)tableView:(UITableView *)tableView heightForHeaderInSection:(NSInteger)section
 {
-    return Margin_10;
+    return CGFLOAT_MIN;
 }
 - (CGFloat)tableView:(UITableView *)tableView heightForFooterInSection:(NSInteger)section
 {
@@ -146,7 +145,7 @@
 }
 - (void)modifyWalletNameWithCell:(ListTableViewCell *)cell
 {
-    ModifyAlertView * alertView = [[ModifyAlertView alloc] initWithTitle:Localized(@"ModifyWalletName") placeholder:Localized(@"EnterWalletName") modifyType:ModifyTypeWalletName confrimBolck:^(NSString * _Nonnull text) {
+    TextInputAlertView * alertView = [[TextInputAlertView alloc] initWithInputType:InputTypeWalletName confrimBolck:^(NSString * _Nonnull text, NSArray * _Nonnull words) {
         if ([RegexPatternTool validateUserName:text]) {
             self.walletModel.walletName = text;
             cell.detailTitle.text = text;

@@ -27,8 +27,9 @@
         self.titleLabel.text = title;
         self.promptLabel.text = promptText;
         [self.confrimButton setTitle:confrim forState:UIControlStateNormal];
-        CGFloat height = [Encapsulation rectWithText:title font:self.titleLabel.font textWidth:DEVICE_WIDTH - ScreenScale(80)].size.height + [Encapsulation rectWithText:promptText font:self.promptLabel.font textWidth:DEVICE_WIDTH - ScreenScale(80)].size.height + ScreenScale(120);
-        self.bounds = CGRectMake(0, 0, DEVICE_WIDTH - Margin_40, height);
+        CGFloat contentW = Alert_Width - Margin_30;
+        CGFloat height = [Encapsulation rectWithText:title font:self.titleLabel.font textWidth:contentW].size.height + [Encapsulation rectWithText:promptText font:self.promptLabel.font textWidth:contentW].size.height + ScreenScale(120);
+        self.bounds = CGRectMake(0, 0, Alert_Width, height);
     }
     return self;
 }
@@ -36,7 +37,7 @@
 - (void)setupView {
     
     self.backgroundColor = [UIColor whiteColor];
-    self.layer.cornerRadius = MAIN_CORNER;
+    self.layer.cornerRadius = BG_CORNER;
     
     [self addSubview:self.titleLabel];
     
@@ -51,8 +52,8 @@
     
     [self.titleLabel mas_makeConstraints:^(MASConstraintMaker *make) {
         make.top.equalTo(self).offset(Margin_20);
-        make.left.equalTo(self.mas_left).offset(Margin_20);
-        make.right.equalTo(self.mas_right).offset(-Margin_20);
+        make.left.equalTo(self.mas_left).offset(Margin_Main);
+        make.right.equalTo(self.mas_right).offset(-Margin_Main);
     }];
     
     [self.promptLabel mas_makeConstraints:^(MASConstraintMaker *make) {

@@ -105,6 +105,8 @@
 		9519ED7622E8338F00A4AAC1 /* TransactionDetailsViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 9519ED7522E8338F00A4AAC1 /* TransactionDetailsViewController.m */; };
 		9519ED7922EAFA3800A4AAC1 /* TransactionViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 9519ED7822EAFA3800A4AAC1 /* TransactionViewController.m */; };
 		9519ED7E22EECCCE00A4AAC1 /* TipsAlertView.m in Sources */ = {isa = PBXBuildFile; fileRef = 9519ED7D22EECCCE00A4AAC1 /* TipsAlertView.m */; };
+		9519ED8422EFDDA400A4AAC1 /* TextInputAlertView.m in Sources */ = {isa = PBXBuildFile; fileRef = 9519ED8322EFDDA400A4AAC1 /* TextInputAlertView.m */; };
+		9519ED8722F01AE100A4AAC1 /* DetailModel.m in Sources */ = {isa = PBXBuildFile; fileRef = 9519ED8622F01AE100A4AAC1 /* DetailModel.m */; };
 		95266CCD226F062E002CD915 /* NodePlanViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 95266CA1226F062E002CD915 /* NodePlanViewController.m */; };
 		95266CCE226F062E002CD915 /* CooperateViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 95266CA4226F062E002CD915 /* CooperateViewController.m */; };
 		95266CCF226F062E002CD915 /* NodeSharingViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 95266CA7226F062E002CD915 /* NodeSharingViewController.m */; };
@@ -147,7 +149,6 @@
 		959575C421FFF6EB0089479C /* AddressBookListViewCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 959575C321FFF6EB0089479C /* AddressBookListViewCell.m */; };
 		959575C821FFF8010089479C /* AddressBookModel.m in Sources */ = {isa = PBXBuildFile; fileRef = 959575C721FFF8010089479C /* AddressBookModel.m */; };
 		959575CB21FFFD040089479C /* ContactViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 959575CA21FFFD040089479C /* ContactViewController.m */; };
-		959726C221E44FFB0022CB78 /* ModifyAlertView.m in Sources */ = {isa = PBXBuildFile; fileRef = 959726C121E44FFB0022CB78 /* ModifyAlertView.m */; };
 		959726C521E487F10022CB78 /* ExportKeystoreViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 959726C421E487F10022CB78 /* ExportKeystoreViewController.m */; };
 		959726C821E4893F0022CB78 /* ExportPrivateKeyViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 959726C721E4893F0022CB78 /* ExportPrivateKeyViewController.m */; };
 		959726CB21E5A8640022CB78 /* ImportWalletViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 959726CA21E5A8640022CB78 /* ImportWalletViewController.m */; };
@@ -155,7 +156,6 @@
 		959726DA21E6DCA10022CB78 /* TextFieldViewCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 959726D921E6DCA10022CB78 /* TextFieldViewCell.m */; };
 		959726E521E88C610022CB78 /* UILabel+Extension.m in Sources */ = {isa = PBXBuildFile; fileRef = 959726E421E88C610022CB78 /* UILabel+Extension.m */; };
 		959726E821E893400022CB78 /* SafetyReinforcementAlertView.m in Sources */ = {isa = PBXBuildFile; fileRef = 959726E721E893400022CB78 /* SafetyReinforcementAlertView.m */; };
-		959726EE21E8C84F0022CB78 /* PasswordAlertView.m in Sources */ = {isa = PBXBuildFile; fileRef = 959726ED21E8C84F0022CB78 /* PasswordAlertView.m */; };
 		959726F121E8CAAA0022CB78 /* WalletAddressAlertView.m in Sources */ = {isa = PBXBuildFile; fileRef = 959726F021E8CAAA0022CB78 /* WalletAddressAlertView.m */; };
 		959726F421E8D1970022CB78 /* ExplainInfoViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 959726F321E8D1970022CB78 /* ExplainInfoViewController.m */; };
 		959E28F02248B998006FCA30 /* LoginConfirmViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 959E28EF2248B998006FCA30 /* LoginConfirmViewController.m */; };
@@ -415,6 +415,10 @@
 		9519ED7822EAFA3800A4AAC1 /* TransactionViewController.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = TransactionViewController.m; sourceTree = "<group>"; };
 		9519ED7C22EECCCE00A4AAC1 /* TipsAlertView.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = TipsAlertView.h; sourceTree = "<group>"; };
 		9519ED7D22EECCCE00A4AAC1 /* TipsAlertView.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = TipsAlertView.m; sourceTree = "<group>"; };
+		9519ED8222EFDDA400A4AAC1 /* TextInputAlertView.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = TextInputAlertView.h; sourceTree = "<group>"; };
+		9519ED8322EFDDA400A4AAC1 /* TextInputAlertView.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = TextInputAlertView.m; sourceTree = "<group>"; };
+		9519ED8522F01AE100A4AAC1 /* DetailModel.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = DetailModel.h; sourceTree = "<group>"; };
+		9519ED8622F01AE100A4AAC1 /* DetailModel.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = DetailModel.m; sourceTree = "<group>"; };
 		95266CA1226F062E002CD915 /* NodePlanViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = NodePlanViewController.m; sourceTree = "<group>"; };
 		95266CA2226F062E002CD915 /* VotingRecordsViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = VotingRecordsViewController.h; sourceTree = "<group>"; };
 		95266CA3226F062E002CD915 /* NodeTransferSuccessViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = NodeTransferSuccessViewController.h; sourceTree = "<group>"; };
@@ -504,8 +508,6 @@
 		959575CA21FFFD040089479C /* ContactViewController.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = ContactViewController.m; sourceTree = "<group>"; };
 		959575D4221BD6BC0089479C /* CommonMacro.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = CommonMacro.h; sourceTree = "<group>"; };
 		959575D7221BD7F10089479C /* AppInclude.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = AppInclude.h; sourceTree = "<group>"; };
-		959726C021E44FFB0022CB78 /* ModifyAlertView.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = ModifyAlertView.h; sourceTree = "<group>"; };
-		959726C121E44FFB0022CB78 /* ModifyAlertView.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = ModifyAlertView.m; sourceTree = "<group>"; };
 		959726C321E487F10022CB78 /* ExportKeystoreViewController.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = ExportKeystoreViewController.h; sourceTree = "<group>"; };
 		959726C421E487F10022CB78 /* ExportKeystoreViewController.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = ExportKeystoreViewController.m; sourceTree = "<group>"; };
 		959726C621E4893F0022CB78 /* ExportPrivateKeyViewController.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = ExportPrivateKeyViewController.h; sourceTree = "<group>"; };
@@ -520,8 +522,6 @@
 		959726E421E88C610022CB78 /* UILabel+Extension.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "UILabel+Extension.m"; sourceTree = "<group>"; };
 		959726E621E893400022CB78 /* SafetyReinforcementAlertView.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = SafetyReinforcementAlertView.h; sourceTree = "<group>"; };
 		959726E721E893400022CB78 /* SafetyReinforcementAlertView.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = SafetyReinforcementAlertView.m; sourceTree = "<group>"; };
-		959726EC21E8C84F0022CB78 /* PasswordAlertView.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = PasswordAlertView.h; sourceTree = "<group>"; };
-		959726ED21E8C84F0022CB78 /* PasswordAlertView.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = PasswordAlertView.m; sourceTree = "<group>"; };
 		959726EF21E8CAAA0022CB78 /* WalletAddressAlertView.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = WalletAddressAlertView.h; sourceTree = "<group>"; };
 		959726F021E8CAAA0022CB78 /* WalletAddressAlertView.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = WalletAddressAlertView.m; sourceTree = "<group>"; };
 		959726F221E8D1970022CB78 /* ExplainInfoViewController.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = ExplainInfoViewController.h; sourceTree = "<group>"; };
@@ -729,8 +729,6 @@
 			children = (
 				9519ED7C22EECCCE00A4AAC1 /* TipsAlertView.h */,
 				9519ED7D22EECCCE00A4AAC1 /* TipsAlertView.m */,
-				959726EC21E8C84F0022CB78 /* PasswordAlertView.h */,
-				959726ED21E8C84F0022CB78 /* PasswordAlertView.m */,
 				958127ED219ABD9D0081A02E /* VersionUpdateAlertView.h */,
 				958127EE219ABD9D0081A02E /* VersionUpdateAlertView.m */,
 				959726E621E893400022CB78 /* SafetyReinforcementAlertView.h */,
@@ -908,6 +906,8 @@
 				959E290D224F1F25006FCA30 /* ConfirmTransactionModel.m */,
 				95B066C02282CD890005731A /* DposModel.h */,
 				95B066C12282CD890005731A /* DposModel.m */,
+				9519ED8522F01AE100A4AAC1 /* DetailModel.h */,
+				9519ED8622F01AE100A4AAC1 /* DetailModel.m */,
 			);
 			path = Model;
 			sourceTree = "<group>";
@@ -929,8 +929,8 @@
 				83379A94217EB08600C222A5 /* DetailListViewCell.m */,
 				951363A022B9E2B000BF8DF5 /* SubtitleListViewCell.h */,
 				951363A122B9E2B000BF8DF5 /* SubtitleListViewCell.m */,
-				959726C021E44FFB0022CB78 /* ModifyAlertView.h */,
-				959726C121E44FFB0022CB78 /* ModifyAlertView.m */,
+				9519ED8222EFDDA400A4AAC1 /* TextInputAlertView.h */,
+				9519ED8322EFDDA400A4AAC1 /* TextInputAlertView.m */,
 				95D92DA822C22D3E00AFC8C2 /* ModifyIconAlertView.h */,
 				95D92DA922C22D3E00AFC8C2 /* ModifyIconAlertView.m */,
 				95D92DAB22C2347100AFC8C2 /* ModifyIconCollectionViewCell.h */,
@@ -1633,6 +1633,7 @@
 				83D5B1EB2181741200BF1FF1 /* AddAssetsViewCell.m in Sources */,
 				95A8A3B1219D1352008E978E /* LanguageManager.m in Sources */,
 				8395AF22218725D20082EA30 /* RegisteredAssetsViewController.m in Sources */,
+				9519ED8422EFDDA400A4AAC1 /* TextInputAlertView.m in Sources */,
 				95162FDC22C758170024FD22 /* UITabBar+Extension.m in Sources */,
 				8337992F21772E0300C222A5 /* CustomButton.m in Sources */,
 				95266CD9226F062E002CD915 /* CooperateDetailModel.m in Sources */,
@@ -1663,7 +1664,6 @@
 				959E2908224CCA45006FCA30 /* ScanCodeFailureViewController.m in Sources */,
 				959726DA21E6DCA10022CB78 /* TextFieldViewCell.m in Sources */,
 				9538308A22CF10E500607F0C /* VoucherModel.m in Sources */,
-				959726EE21E8C84F0022CB78 /* PasswordAlertView.m in Sources */,
 				83379A89217DA4F900C222A5 /* AssetsDetailListViewCell.m in Sources */,
 				951363A222B9E2B000BF8DF5 /* SubtitleListViewCell.m in Sources */,
 				959E28FF224A1B6A006FCA30 /* LoginConfirmModel.m in Sources */,
@@ -1717,11 +1717,11 @@
 				8372C872217588D100FF9506 /* IdentityViewController.m in Sources */,
 				95A8A41C219D5FF7008E978E /* YBPopupMenu.m in Sources */,
 				95266CD6226F062E002CD915 /* VotingRecordsModel.m in Sources */,
+				9519ED8722F01AE100A4AAC1 /* DetailModel.m in Sources */,
 				83EE39422181633A0017CDE5 /* AddAssetsViewController.m in Sources */,
 				8395AF2B218843650082EA30 /* RegisteredModel.m in Sources */,
 				8395AF25218725FF0082EA30 /* RegisteredResultViewController.m in Sources */,
 				95266CDB226F062E002CD915 /* CooperateViewCell.m in Sources */,
-				959726C221E44FFB0022CB78 /* ModifyAlertView.m in Sources */,
 				95162FE222C9A9AA0024FD22 /* VoucherDetailViewController.m in Sources */,
 				950E4145219E6ADD002C7900 /* AssetCurrencyModel.m in Sources */,
 				95B066BC2282AABD0005731A /* WechatTool.m in Sources */,

@@ -21,14 +21,14 @@ typedef NS_ENUM(NSInteger, HandlerType) {
 };
 
 typedef void (^OnCancleClick)(void);
-typedef void (^OnSureClick)(void);
+typedef void (^OnConfirmBlock)(void);
 
 @interface BottomConfirmAlertView : UIView
 
 @property (nonatomic, strong) UILabel * title;
 
 @property (nonatomic, copy) OnCancleClick cancleBlock;
-@property (nonatomic, copy) OnSureClick sureBlock;
+@property (nonatomic, copy) OnConfirmBlock sureBlock;
 @property (nonatomic, strong) DposModel * dposModel;
 
 - (instancetype)initWithIsShowValue:(BOOL)isShowValue handlerType:(HandlerType)handlerType confirmModel:(ConfirmTransactionModel *)confirmModel confrimBolck:(void (^)(void))confrimBlock cancelBlock:(void (^)(void))cancelBlock;

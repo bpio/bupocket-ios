@@ -50,7 +50,8 @@
 
 // dpos
 // 轮播图
-#define Node_Ad_Banner @"nodeServer/slideshow/v1"
+#define Node_Ad_Banner @"newsApi/slideshow/list"
+//#define Node_Ad_Banner @"nodeServer/slideshow/v1"
 
 #define Node_Content @"nodeServer/qr/v1/content"
 // 确认交易

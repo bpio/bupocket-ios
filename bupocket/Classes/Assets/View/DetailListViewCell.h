@@ -7,6 +7,7 @@
 //
 
 #import <UIKit/UIKit.h>
+#import "DetailModel.h"
 
 NS_ASSUME_NONNULL_BEGIN
 
@@ -25,6 +26,8 @@ typedef NS_ENUM(NSInteger, DetailCellType) {
 @property (nonatomic, strong) UIView * detailBg;
 @property (nonatomic, strong) UILabel * title;
 @property (nonatomic, strong) UILabel * infoTitle;
+
+@property (nonatomic, strong) DetailModel * detailModel;
 
 @end
 

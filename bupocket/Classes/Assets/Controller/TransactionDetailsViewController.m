@@ -272,13 +272,13 @@ static NSInteger const TxInfoNormalCount = 6;
 - (CGFloat)tableView:(UITableView *)tableView heightForRowAtIndexPath:(NSIndexPath *)indexPath
 {
     if (indexPath.section == 1 && indexPath.row == TxInfoNormalCount) {
-        return MAIN_HEIGHT;
+        return Detail_Main_Height;
     } else if (indexPath.section == 1 && indexPath.row > TxInfoNormalCount) {
         CGFloat bottomH = indexPath.row % 2 ? 0 : Margin_15;
-        CGFloat rowHeight = [Encapsulation rectWithText:self.infoArray[indexPath.section][indexPath.row] font:FONT_TITLE textWidth: Content_Width_Main].size.height + ScreenScale(50) + bottomH;
+        CGFloat rowHeight = [Encapsulation rectWithText:self.infoArray[indexPath.section][indexPath.row] font:FONT_TITLE textWidth: Content_Width_Main].size.height + ScreenScale(40) + bottomH;
         return rowHeight;
     } else {
-        CGFloat rowHeight = [Encapsulation rectWithText:self.infoArray[indexPath.section][indexPath.row] font:FONT_TITLE textWidth: Info_Width_Max].size.height + Margin_30;
+        CGFloat rowHeight = [Encapsulation rectWithText:self.infoArray[indexPath.section][indexPath.row] font:FONT_TITLE textWidth: Info_Width_Max].size.height + Margin_20;
         return rowHeight;
     }
 }

@@ -130,6 +130,8 @@ static NSString * const ChooseVoucherCellID = @"ChooseVoucherCellID";
     [self.view addSubview:self.tableView];
     if (self.transferType == TransferTypeVoucher) {
         [self setupHeaderView];
+    } else {
+        self.tableView.tableHeaderView = [[UIView alloc] initWithFrame:CGRectMake(0, 0, 0, CGFLOAT_MIN)];
     }
     self.next = [UIButton createFooterViewWithTitle:Localized(@"Next") isEnabled:NO Target:self Selector:@selector(nextAction:)];
     //    [self setupFooterView];
@@ -287,6 +289,10 @@ static NSString * const ChooseVoucherCellID = @"ChooseVoucherCellID";
 - (void)showConfirmAlertView
 {
     self.confirmModel = [[ConfirmTransactionModel alloc] init];
+    self.confirmModel.amount = self.valueStr;
+    self.confirmModel.destAddress = self.receiveAddressStr;
+    self.confirmModel.transactionCost = self.transactionCostsStr;
+    self.confirmModel.qrRemark = self.remarksStr;
     HandlerType handlerType = HandlerTypeTransferAssets;
     NSString * transactionDetail;
     if (self.transferType == TransferTypeAssets) {
@@ -300,10 +306,6 @@ static NSString * const ChooseVoucherCellID = @"ChooseVoucherCellID";
         self.confirmModel.script = SKUTokenTranche(self.voucherModel.voucherId, self.voucherModel.trancheId, self.confirmModel.destAddress, self.confirmModel.amount);
     }
     self.confirmModel.transactionDetail = transactionDetail;
-    self.confirmModel.amount = self.valueStr;
-    self.confirmModel.destAddress = self.receiveAddressStr;
-    self.confirmModel.transactionCost = self.transactionCostsStr;
-    self.confirmModel.qrRemark = self.remarksStr;
     BottomConfirmAlertView * confirmAlertView = [[BottomConfirmAlertView alloc] initWithIsShowValue:NO handlerType:handlerType confirmModel:self.confirmModel confrimBolck:^{
         dispatch_after(dispatch_time(DISPATCH_TIME_NOW, (int64_t)(Dispatch_After_Time * NSEC_PER_SEC)), dispatch_get_main_queue(), ^{
             [self showPWAlert];
@@ -318,10 +320,11 @@ static NSString * const ChooseVoucherCellID = @"ChooseVoucherCellID";
     __weak typeof(self) weakSelf = self;
     NSOperationQueue * queue = [[NSOperationQueue alloc] init];
     [queue addOperationWithBlock:^{
-        NSString * prompt;
+//        NSString * prompt;
+        InputType inputType = PWTypeTransferAssets;
         if (self.transferType == TransferTypeAssets) {
             if (![[HTTPManager shareManager] setTransferDataWithTokenType:self.listModel.type destAddress:self.receiveAddressStr assets:self.valueStr decimals:self.listModel.decimals feeLimit:self.transactionCostsStr notes:self.remarksStr code:self.listModel.assetCode issuer:self.listModel.issuer]) return;
-            prompt = Localized(@"TransactionWalletPWPrompt");
+//            prompt = Localized(@"TransactionWalletPWPrompt");
         } else if (self.transferType == TransferTypeVoucher) {
             DposModel * dposModel = [[DposModel alloc] init];
             dposModel.dest_address = self.voucherModel.contractAddress;
@@ -331,19 +334,19 @@ static NSString * const ChooseVoucherCellID = @"ChooseVoucherCellID";
             dposModel.amount = @"0";
             dposModel.to_address = self.receiveAddressStr;
             if (![[HTTPManager shareManager] getTransactionWithDposModel: dposModel isDonateVoucher:YES]) return;
-            prompt = Localized(@"TransferWalletPWPrompt");
+            inputType = PWTypeTransferVoucher;
+//            prompt = Localized(@"TransferWalletPWPrompt");
         }
         [[NSOperationQueue mainQueue] addOperationWithBlock:^{
-            PasswordAlertView * alertView = [[PasswordAlertView alloc] initWithPrompt:prompt confrimBolck:^(NSString * _Nonnull password, NSArray * _Nonnull words) {
-                if (NotNULLString(password)) {
+            TextInputAlertView * alertView = [[TextInputAlertView alloc] initWithInputType:inputType confrimBolck:^(NSString * _Nonnull text, NSArray * _Nonnull words) {
+                if (NotNULLString(text)) {
                     [weakSelf submitTransaction];
                 }
             } cancelBlock:^{
                 
             }];
             [alertView showInWindowWithMode:CustomAnimationModeAlert inView:nil bgAlpha:AlertBgAlpha needEffectView:NO];
-            [alertView.PWTextField becomeFirstResponder];
-            
+            [alertView.textField becomeFirstResponder];
         }];
     }];
 }

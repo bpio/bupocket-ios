@@ -83,7 +83,7 @@ static NSString * const VoucherDetailCellID = @"VoucherDetailCellID";
             NSString * specifications = NotNULLString(self.voucherModel.voucherSpec) ? self.voucherModel.voucherSpec : Localized(@"None");
             self.listArray = [NSMutableArray arrayWithArray:@[@[@""], @[@[Localized(@"Validity"), date], @[Localized(@"VoucherCode"), self.voucherModel.voucherId], @[Localized(@"Specification"), specifications], @[Localized(@"Describe"), self.voucherModel.desc], @[Localized(@"HoldingQuantity"), holdingQuantity]], @[@[Localized(@"Acceptor"), self.voucherModel.voucherAcceptance[@"name"]], @[Localized(@"AssetIssuer"), self.voucherModel.voucherIssuer[@"name"]]]]];
             
-            self.infoCellHeight = MAX(Margin_40, ([Encapsulation getSizeSpaceLabelWithStr:self.voucherModel.desc font:FONT_TITLE width:Info_Width_Max height:CGFLOAT_MAX lineSpacing:LINE_SPACING].height + Margin_30));
+            self.infoCellHeight = MAX(Detail_Main_Height, ([Encapsulation getSizeSpaceLabelWithStr:self.voucherModel.desc font:FONT_TITLE width:Info_Width_Max height:CGFLOAT_MAX lineSpacing:LINE_SPACING].height + Margin_20));
             [self.tableView reloadData];
         } else {
             [MBProgressHUD showTipMessageInWindow:[ErrorTypeTool getDescriptionWithNodeErrorCode:code]];
@@ -266,7 +266,8 @@ static NSString * const VoucherDetailCellID = @"VoucherDetailCellID";
         [lineView drawDashLine];
         [cell.contentView addSubview:lineView];
         [lineView mas_makeConstraints:^(MASConstraintMaker *make) {
-            make.left.mas_equalTo(Margin_5);
+            make.left.mas_equalTo(Margin_15);
+//            make.centerX.equalTo(cell.contentView);
             make.bottom.equalTo(cell.contentView);
         }];
     }

@@ -29,21 +29,21 @@ static NSString * const ModifyIconCellID = @"ModifyIconCellID";
         _cancleBlock = cancelBlock;
         [self setupView];
         self.titleLabel.text = title;
-        self.bounds = CGRectMake(0, 0, DEVICE_WIDTH - Margin_60, ScreenScale(135) + self.collectView.size.height);
+        self.bounds = CGRectMake(0, 0, Alert_Width, ScreenScale(135) + self.collectView.size.height);
     }
     return self;
 }
 
 - (void)setupView {
     self.backgroundColor = [UIColor whiteColor];
-    self.layer.cornerRadius = MAIN_CORNER;
+    self.layer.cornerRadius = BG_CORNER;
     
     [self addSubview:self.titleLabel];
     [self.titleLabel mas_makeConstraints:^(MASConstraintMaker *make) {
         make.top.equalTo(self).offset(Margin_20);
         make.centerX.equalTo(self);
     }];
-    UIButton * cancel = [UIButton createButtonWithTitle:Localized(@"Cancel") TextFont:FONT_BUTTON TextNormalColor:COLOR_9 TextSelectedColor:COLOR_9 Target:self Selector:@selector(cancleBtnClick)];
+    UIButton * cancel = [UIButton createButtonWithTitle:Localized(@"Cancel") TextFont:Alert_Button_Font TextNormalColor:COLOR_9 TextSelectedColor:COLOR_9 Target:self Selector:@selector(cancleBtnClick)];
     [self addSubview:cancel];
     [cancel mas_makeConstraints:^(MASConstraintMaker *make) {
 //        make.top.equalTo(line.mas_bottom);
@@ -115,7 +115,7 @@ static NSString * const ModifyIconCellID = @"ModifyIconCellID";
 - (UIButton *)confirm
 {
     if (!_confirm) {
-        _confirm = [UIButton createButtonWithTitle:Localized(@"Confirm") TextFont:FONT_BUTTON TextNormalColor:MAIN_COLOR TextSelectedColor:MAIN_COLOR Target:self Selector:@selector(sureBtnClick)];
+        _confirm = [UIButton createButtonWithTitle:Localized(@"Confirm") TextFont:Alert_Button_Font TextNormalColor:MAIN_COLOR TextSelectedColor:MAIN_COLOR Target:self Selector:@selector(sureBtnClick)];
     }
     return _confirm;
 }

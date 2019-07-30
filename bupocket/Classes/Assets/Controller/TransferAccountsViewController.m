@@ -199,15 +199,15 @@
     [queue addOperationWithBlock:^{
         if (![[HTTPManager shareManager] setTransferDataWithTokenType:self.listModel.type destAddress:self.address assets:self.transferVolumeStr decimals:self.listModel.decimals feeLimit:self.transactionCostsStr notes:self.remarksStr code:self.listModel.assetCode issuer:self.listModel.issuer]) return;
         [[NSOperationQueue mainQueue] addOperationWithBlock:^{
-            PasswordAlertView * alertView = [[PasswordAlertView alloc] initWithPrompt:Localized(@"TransactionWalletPWPrompt") confrimBolck:^(NSString * _Nonnull password, NSArray * _Nonnull words) {
-                if (NotNULLString(password)) {
+            TextInputAlertView * alertView = [[TextInputAlertView alloc] initWithInputType:PWTypeTransferAssets confrimBolck:^(NSString * _Nonnull text, NSArray * _Nonnull words) {
+                if (NotNULLString(text)) {
                     [weakSelf submitTransaction];
                 }
             } cancelBlock:^{
                 
             }];
             [alertView showInWindowWithMode:CustomAnimationModeAlert inView:nil bgAlpha:AlertBgAlpha needEffectView:NO];
-            [alertView.PWTextField becomeFirstResponder];
+            [alertView.textField becomeFirstResponder];
            
         }];
     }];

@@ -58,6 +58,7 @@
 #define ContentInset_Bottom (SafeAreaBottomH + ScreenScale(85))
 #define TextViewH ScreenScale(100)
 #define Subtitle_EdgeInsets_Y ScreenScale(3)
+#define Detail_Main_Height ScreenScale(35)
 
 #define Info_Width_Max (DEVICE_WIDTH - ScreenScale(165))
 // font

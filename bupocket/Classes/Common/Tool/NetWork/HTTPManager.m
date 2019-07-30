@@ -511,7 +511,7 @@ static int64_t const gasPrice = 1000;
         }
     }];
 }
-// find ad banner
+// find ad
 - (void)getAdsDataWithURL:(NSString *)URL
                   success:(void (^)(id responseObject))success
                   failure:(void (^)(NSError *error))failure
@@ -537,6 +537,25 @@ static int64_t const gasPrice = 1000;
 {
     [MBProgressHUD showActivityMessageInWindow:Localized(@"Loading")];
     [[HttpTool shareTool] GET:URL parameters:nil success:^(id responseObject) {
+        if(success != nil)
+        {
+            success(responseObject);
+        }
+    } failure:^(NSError *error) {
+        if(failure != nil)
+        {
+            failure(error);
+        }
+    }];
+}
+// banner
+- (void)getBannerAdsDataWithSuccess:(void (^)(id responseObject))success
+                            failure:(void (^)(NSError *error))failure
+{
+    NSString * url = SERVER_COMBINE_API(_webServerDomain, Node_Ad_Banner);
+    NSString * body = [NSString stringWithFormat:@"target=1"];
+    NSDictionary * parameters = [[HTTPManager shareManager] parametersWithHTTPBody:body];
+    [[HttpTool shareTool] POST:url parameters:parameters success:^(id responseObject) {
         if(success != nil)
         {
             success(responseObject);
@@ -1468,7 +1487,7 @@ static int64_t const gasPrice = 1000;
         [MBProgressHUD showActivityMessageInWindow:Localized(@"Loading")];
     });
     NSString * sourceAddress = CurrentWalletAddress;
-    NSString * notes = (NotNULLString(dposModel.notes)) ? dposModel.notes : Localized(@"DposContract");
+    NSString * notes = (isDonateVoucher) ? dposModel.notes : Localized(@"DposContract");
     int64_t fee = [[[NSDecimalNumber decimalNumberWithString:dposModel.tx_fee] decimalNumberByMultiplyingByPowerOf10: Decimals_BU] longLongValue];
     int64_t nonce = [[HTTPManager shareManager] getAccountNonce: sourceAddress] + 1;
     if (nonce == 0) return NO;

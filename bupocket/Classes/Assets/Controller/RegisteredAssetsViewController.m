@@ -166,14 +166,14 @@ static NSString * const Register_Leave = @"leaveRoomForApp";
             }
             [weakSelf.socket emit:Register_Processing with:@[]];
             if (![[HTTPManager shareManager] getRegisteredDataWithRegisteredModel:self.registeredModel]) return;
-            PasswordAlertView * alertView = [[PasswordAlertView alloc] initWithPrompt:Localized(@"RegistrationWalletPWPrompt") confrimBolck:^(NSString * _Nonnull password, NSArray * _Nonnull words) {
-                if (NotNULLString(password)) {
+            TextInputAlertView * alertView = [[TextInputAlertView alloc] initWithInputType:PWTypeTransferRegistered confrimBolck:^(NSString * _Nonnull text, NSArray * _Nonnull words) {
+                if (NotNULLString(text)) {
                     [weakSelf submitTransaction];
                 }
             } cancelBlock:^{
             }];
             [alertView showInWindowWithMode:CustomAnimationModeAlert inView:nil bgAlpha:AlertBgAlpha needEffectView:NO];
-            [alertView.PWTextField becomeFirstResponder];
+            [alertView.textField becomeFirstResponder];
         }];
     }];
 }

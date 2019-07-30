@@ -35,15 +35,15 @@
         self.versionUpdateTitle.text = [NSString stringWithFormat:@"%@ %@？", Localized(@"IfUpdate"), versionNumber];
         self.versionSize.text = [NSString stringWithFormat:@"%@%@", Localized(@"AppSize"), versionSize];
         self.updateContent.attributedText = [Encapsulation attrWithString:content preFont:FONT_TITLE preColor:COLOR_6 index:0 sufFont:FONT_TITLE sufColor:COLOR_6 lineSpacing:LINE_SPACING];
-        CGFloat contentW = DEVICE_WIDTH - ScreenScale(80);
+        CGFloat contentW = Alert_Width - Margin_30;
         CGFloat updateContentH = [Encapsulation getSizeSpaceLabelWithStr:content font:FONT_TITLE width:contentW height:CGFLOAT_MAX lineSpacing:LINE_SPACING].height;
 //        self.updateContent.text = content;
 //        ScreenScale(350)
-        CGFloat bgW = DEVICE_WIDTH - Margin_40;
+        CGFloat bgW = Alert_Width;
         self.updateImageH = bgW * self.updateImage.image.size.height / self.updateImage.image.size.width;
         CGFloat height = [Encapsulation rectWithText:self.versionUpdateTitle.text font:_versionUpdateTitle.font textWidth:contentW].size.height + [Encapsulation rectWithText:self.versionSize.text font:_versionSize.font textWidth:contentW].size.height + updateContentH + ScreenScale(115) + self.updateImageH;
         height = (verType == 0) ? height + ScreenScale(82) : height;
-        self.bounds = CGRectMake(0, 0, DEVICE_WIDTH - Margin_40, height);
+        self.bounds = CGRectMake(0, 0, bgW, height);
     }
     return self;
 }
@@ -92,8 +92,8 @@
     [self.versionUpdateTitle mas_makeConstraints:^(MASConstraintMaker *make) {
 //        make.top.equalTo(self).offset(ScreenScale(140));
         make.top.equalTo(self).offset(self.updateImageH);
-        make.left.equalTo(self.mas_left).offset(Margin_20);
-        make.right.equalTo(self.mas_right).offset(-Margin_20);
+        make.left.equalTo(self.mas_left).offset(Margin_Main);
+        make.right.equalTo(self.mas_right).offset(-Margin_Main);
     }];
     
     [self.versionSize mas_makeConstraints:^(MASConstraintMaker *make) {

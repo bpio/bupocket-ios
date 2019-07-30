@@ -121,7 +121,7 @@ static NSString * const VersionLogCellID = @"VersionLogCellID";
 - (CGFloat)tableView:(UITableView *)tableView heightForRowAtIndexPath:(NSIndexPath *)indexPath
 {
     NSString * updateContent = [self getUpdateContentWithIndexPath:indexPath];
-    CGFloat cellHeight = [Encapsulation getSizeSpaceLabelWithStr:updateContent font:FONT_TITLE width:(DEVICE_WIDTH - Margin_30) height:CGFLOAT_MAX lineSpacing:Margin_10].height + ScreenScale(70);
+    CGFloat cellHeight = [Encapsulation getSizeSpaceLabelWithStr:updateContent font:FONT_TITLE width:(DEVICE_WIDTH - Margin_50) height:CGFLOAT_MAX lineSpacing:Margin_10].height + ScreenScale(90);
 //  + ScreenScale(75);
     return cellHeight == 0 ? ScreenScale(120) : cellHeight;
 }

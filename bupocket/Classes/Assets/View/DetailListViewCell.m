@@ -69,6 +69,10 @@ static NSString * const VersionLogCellID = @"VersionLogCellID";
         self.title.font = titleFont;
         self.title.textColor = titleColor;
         self.infoTitle.font = infoTitleFont;
+//        self.title.backgroundColor = RandomColor;
+//        self.infoTitle.backgroundColor = RandomColor;
+//        self.backgroundColor = RandomColor;
+//        self.contentView.backgroundColor = RandomColor;
     }
     return self;
 }
@@ -83,7 +87,7 @@ static NSString * const VersionLogCellID = @"VersionLogCellID";
         }];
         [self.title mas_makeConstraints:^(MASConstraintMaker *make) {
             make.left.equalTo(self.detailBg.mas_left).offset(Margin_10);
-            make.top.equalTo(self.detailBg.mas_top).offset(Margin_15);
+            make.top.equalTo(self.detailBg.mas_top).offset(Margin_10);
         }];
         [self.infoTitle mas_makeConstraints:^(MASConstraintMaker *make) {
             make.left.equalTo(self.title);
@@ -93,11 +97,15 @@ static NSString * const VersionLogCellID = @"VersionLogCellID";
         }];
     } else {
         CGFloat titleX = Margin_Main;
-        CGFloat titleY = Margin_Main;
+        CGFloat infoTitleX = titleX;
+//        CGFloat titleY = Margin_Main;
+        CGFloat titleY = Margin_10;
         CGFloat infoTitleY = Margin_10;
         if ([self.reuseIdentifier isEqualToString:VersionLogCellID]) {
+            titleY = Margin_20;
+            infoTitleX = Margin_25;
 //            titleX = Margin_Main;
-            infoTitleY = Margin_Main;
+            infoTitleY = titleY;
 //            titleY = Margin_20;
 //            infoTitleY = Margin_20;
         }
@@ -107,7 +115,8 @@ static NSString * const VersionLogCellID = @"VersionLogCellID";
             make.right.equalTo(self.contentView.mas_right).offset(-titleX);
         }];
         [self.infoTitle mas_makeConstraints:^(MASConstraintMaker *make) {
-            make.right.equalTo(self.title);
+            make.right.equalTo(self.contentView.mas_right).offset(-infoTitleX);
+//            make.right.equalTo(self.title);
 //            make.right.equalTo(self.contentView.mas_right).offset(-Margin_10);
         }];
         if ([self.reuseIdentifier isEqualToString:DefaultDetailCellID]) {
@@ -122,10 +131,16 @@ static NSString * const VersionLogCellID = @"VersionLogCellID";
 //            self.infoTitle.size = expectSize;
             [self.infoTitle mas_makeConstraints:^(MASConstraintMaker *make) {
                 make.top.equalTo(self.title.mas_bottom).offset(infoTitleY);
-                make.left.equalTo(self.title);
+                make.left.equalTo(self.contentView.mas_left).offset(infoTitleX);
             }];
         }
     }
+}
+- (void)setDetailModel:(DetailModel *)detailModel
+{
+    _detailModel = detailModel;
+    self.title.text = detailModel.title;
+    self.infoTitle.text = detailModel.infoTitle;
 }
 - (UIView *)detailBg
 {

@@ -9,7 +9,7 @@
 #import "NodeSettingsViewController.h"
 #import "ListTableViewCell.h"
 #import "BottomAlertView.h"
-#import "ModifyAlertView.h"
+#import "TextInputAlertView.h"
 
 @interface NodeSettingsViewController ()<UITableViewDelegate, UITableViewDataSource>
 
@@ -70,7 +70,7 @@
             [UIApplication sharedApplication].keyWindow.rootViewController = [[TabBarViewController alloc] init];
             return;
         }
-        [self CheckDefaultURLWithCustomURL:self.listArray[self.index] modifyType:ModifyTypeNodeEdit index:self.index isChoice:YES];
+        [self CheckDefaultURLWithCustomURL:self.listArray[self.index] modifyType:InputTypeNodeEdit index:self.index isChoice:YES];
     }
 }
 - (void)setupView
@@ -99,19 +99,13 @@
     if (self.listArray.count >= 10) {
         return;
     }
-    [self showNodeSettingsAlertWithModifyType:ModifyTypeNodeAdd index:0];
+    [self showNodeSettingsAlertWithModifyType:InputTypeNodeAdd index:0];
 }
-- (void)showNodeSettingsAlertWithModifyType:(ModifyType)modifyType index:(NSInteger)index
+- (void)showNodeSettingsAlertWithModifyType:(InputType)modifyType index:(NSInteger)index
 {
-    NSString * title = Localized(@"AddNodePrompt");
-    NSString * placeholder = title;
-    if (modifyType == ModifyTypeNodeEdit) {
-        title = Localized(@"EditNodePrompt");
-        placeholder = self.listArray[index];
-    }
-    ModifyAlertView * alertView = [[ModifyAlertView alloc] initWithTitle:title placeholder:placeholder modifyType:modifyType confrimBolck:^(NSString * _Nonnull text) {
+    TextInputAlertView * alertView = [[TextInputAlertView alloc] initWithInputType:modifyType confrimBolck:^(NSString * _Nonnull text, NSArray * _Nonnull words) {
         if ([self.listArray containsObject:text]) {
-            if ([self.listArray indexOfObject:text] != index || modifyType == ModifyTypeNodeAdd) {
+            if ([self.listArray indexOfObject:text] != index || modifyType == InputTypeNodeAdd) {
                 [Encapsulation showAlertControllerWithErrorMessage:Localized(@"NodeDuplication") handler:nil];
             }
             return;
@@ -120,9 +114,10 @@
     } cancelBlock:^{
         
     }];
+    alertView.text = self.listArray[index];
     [alertView showInWindowWithMode:CustomAnimationModeAlert inView:nil bgAlpha:AlertBgAlpha needEffectView:NO];
 }
-- (void)CheckDefaultURLWithCustomURL:(NSString *)URL modifyType:(ModifyType)modifyType index:(NSInteger)index isChoice:(BOOL)isChoice
+- (void)CheckDefaultURLWithCustomURL:(NSString *)URL modifyType:(InputType)modifyType index:(NSInteger)index isChoice:(BOOL)isChoice
 {
     [[HTTPManager shareManager] getNodeDataWithURL:[NSString stringWithFormat:@"%@%@", [self.listArray firstObject], Node_Check] success:^(id responseObject) {
         NSInteger code = [[responseObject objectForKey:@"error_code"] integerValue];
@@ -136,7 +131,7 @@
         [Encapsulation showAlertControllerWithErrorMessage:Localized(@"InvalidNodeURL") handler:nil];
     }];
 }
-- (void)CheckWithURL:(NSString *)URL modifyType:(ModifyType)modifyType index:(NSInteger)index isChoice:(BOOL)isChoice
+- (void)CheckWithURL:(NSString *)URL modifyType:(InputType)modifyType index:(NSInteger)index isChoice:(BOOL)isChoice
 {
     [[HTTPManager shareManager] getNodeDataWithURL:[NSString stringWithFormat:@"%@%@", URL, Node_Check] success:^(id responseObject) {
         NSInteger code = [[responseObject objectForKey:@"error_code"] integerValue];
@@ -147,9 +142,9 @@
                     [[HTTPManager shareManager] SwitchedNodeWithURL:self.listArray[self.index]];
                     [UIApplication sharedApplication].keyWindow.rootViewController = [[TabBarViewController alloc] init];
                 } else {
-                    if (modifyType == ModifyTypeNodeAdd) {
+                    if (modifyType == InputTypeNodeAdd) {
                         [self.listArray addObject:URL];
-                    } else if (modifyType == ModifyTypeNodeEdit) {
+                    } else if (modifyType == InputTypeNodeEdit) {
                         [self.listArray replaceObjectAtIndex:index withObject:URL];
                     }
                     [[NSUserDefaults standardUserDefaults] setObject:self.listArray forKey:self.nodeURLArrayKey];
@@ -208,7 +203,7 @@
     BottomAlertView * alertView = [[BottomAlertView alloc] initWithHandlerArray:titleArray handlerType:HandlerTypeNodeSettings handlerClick:^(UIButton * _Nonnull btn) {
         dispatch_after(dispatch_time(DISPATCH_TIME_NOW, (int64_t)(Dispatch_After_Time * NSEC_PER_SEC)), dispatch_get_main_queue(), ^{
             if ([btn.titleLabel.text isEqualToString:titleArray[0]]) {
-                [self showNodeSettingsAlertWithModifyType:ModifyTypeNodeEdit index:button.tag];
+                [self showNodeSettingsAlertWithModifyType:InputTypeNodeEdit index:button.tag];
             } else if ([btn.titleLabel.text isEqualToString:titleArray[1]]) {
                 NSString * message = (self.index == button.tag) ? Localized(@"DeleteCurrentNode") : @"";
                 [Encapsulation showAlertControllerWithTitle:Localized(@"ConfirmDeleteNode") message:message confirmHandler:^{

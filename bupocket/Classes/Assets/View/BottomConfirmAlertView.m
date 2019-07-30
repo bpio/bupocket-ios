@@ -424,7 +424,8 @@
 - (void)sureBtnClick {
     [self hideView];
     if (_sureBlock) {
-        if (self.handlerType == HandlerTypeTransferDpos) {
+        _sureBlock();
+        if (self.handlerType == HandlerTypeTransferDposCommand || self.handlerType == HandlerTypeTransferDpos) {
             [self getDposData];
         }
     }
@@ -441,15 +442,19 @@
         } else if ([totleAmountStr hasPrefix:@"-"]) {
             [MBProgressHUD showTipMessageInWindow:Localized(@"NotSufficientFunds")];
         } else {
-            if (![[HTTPManager shareManager] getTransactionHashWithModel: self.confirmTransactionModel]) return;
+            if (self.handlerType == HandlerTypeTransferDposCommand) {
+                if (![[HTTPManager shareManager] getTransactionWithDposModel: self.dposModel isDonateVoucher:NO]) return;
+            } else if (self.handlerType == HandlerTypeTransferDpos) {
+                if (![[HTTPManager shareManager] getTransactionHashWithModel: self.confirmTransactionModel]) return;
+            }
             [self showPWAlertView:self.confirmTransactionModel];
         }
     });
 }
 - (void)showPWAlertView:(ConfirmTransactionModel *)confirmTransactionModel
 {
-    PasswordAlertView * PWAlertView = [[PasswordAlertView alloc] initWithPrompt:Localized(@"DposWalletPWPrompt") confrimBolck:^(NSString * _Nonnull password, NSArray * _Nonnull words) {
-        if (NotNULLString(password)) {
+    TextInputAlertView * PWAlertView = [[TextInputAlertView alloc] initWithInputType:PWTypeTransferDpos confrimBolck:^(NSString * _Nonnull text, NSArray * _Nonnull words) {
+        if (NotNULLString(text)) {
             if (self.handlerType == HandlerTypeTransferDposCommand) {
                 [self submitDposTransaction];
             } else {
@@ -460,7 +465,7 @@
         
     }];
     [PWAlertView showInWindowWithMode:CustomAnimationModeAlert inView:nil bgAlpha:AlertBgAlpha needEffectView:NO];
-    [PWAlertView.PWTextField becomeFirstResponder];
+    [PWAlertView.textField becomeFirstResponder];
 }
 // Transaction confirmation and submission
 - (void)getContractTransactionData

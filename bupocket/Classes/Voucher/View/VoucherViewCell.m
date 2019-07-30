@@ -56,7 +56,7 @@ static NSString * const VoucherDetailCellID = @"VoucherDetailCellID";
     CGFloat left = Margin_30;
     CGFloat iconTop = iPhone5 ? Margin_25 : ScreenScale(21);
     CGFloat listImageTop = Margin_15;
-    CGFloat dateBottom = iPhone5 ? Margin_20 : ScreenScale(18);
+    CGFloat dateBottom = iPhone5 ? Margin_20 : ScreenScale(15);
     if ([self.reuseIdentifier isEqualToString:VoucherCellID]) {
         [self.listBg mas_makeConstraints:^(MASConstraintMaker *make) {
             make.left.equalTo(self.contentView.mas_left).offset(Margin_5);

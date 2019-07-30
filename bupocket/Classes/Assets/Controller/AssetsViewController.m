@@ -512,8 +512,9 @@
                             VC.listModel = listModel;
                         }
                     }
+                    VC.transferType = TransferTypeAssets;
                     VC.receiveAddressStr = stringValue;
-                    [weakself.navigationController pushViewController:VC animated:NO];
+                    [weakself.navigationController pushViewController:VC animated:YES];
                 } else {
                     weakself.scanDic = [JsonTool dictionaryOrArrayWithJSONSString:[NSString dencode:stringValue]];
                     if (weakself.scanDic) {
@@ -717,6 +718,7 @@
         } cancelBlock:^{
             
         }];
+        confirmAlertView.dposModel = self.dposModel;
         [confirmAlertView showInWindowWithMode:CustomAnimationModeShare inView:nil bgAlpha:AlertBgAlpha needEffectView:NO];
         /*
         ConfirmTransactionAlertView * confirmAlertView = [[ConfirmTransactionAlertView alloc] initWithDposConfrimBolck:^(NSString * _Nonnull transactionCost) {

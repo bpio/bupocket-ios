@@ -11,11 +11,11 @@
 
 NS_ASSUME_NONNULL_BEGIN
 
-typedef void (^OnSureClick)(void);
+typedef void (^OnConfirmClick)(void);
 
 @interface SafetyReinforcementAlertView : UIView
 
-@property (nonatomic, copy) OnSureClick sureBlock;
+@property (nonatomic, copy) OnConfirmClick sureBlock;
 
 - (instancetype)initWithTitle:(NSString *)title promptText:(NSString *)promptText confrim:(NSString *)confrim confrimBolck:(nonnull void (^)(void))confrimBlock;
 

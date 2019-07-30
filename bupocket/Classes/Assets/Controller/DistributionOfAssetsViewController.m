@@ -171,14 +171,14 @@ static NSString * const Issue_Leave = @"leaveRoomForApp";
             int64_t issueAsset = [[[NSDecimalNumber decimalNumberWithString:self.registeredModel.amount] decimalNumberByMultiplyingByPowerOf10: self.distributionModel.decimals] longLongValue];
             if (![[HTTPManager shareManager] getIssueAssetDataWithAssetCode:self.registeredModel.code assetAmount:issueAsset decimals:self.distributionModel.decimals]) return;
             [weakSelf.socket emit:Issue_Processing with:@[]];
-            PasswordAlertView * alertView = [[PasswordAlertView alloc] initWithPrompt:Localized(@"DistributionWalletPWPrompt") confrimBolck:^(NSString * _Nonnull password, NSArray * _Nonnull words) {
-                if (NotNULLString(password)) {
+            TextInputAlertView * alertView = [[TextInputAlertView alloc] initWithInputType:PWTypeTransferDistribution confrimBolck:^(NSString * _Nonnull text, NSArray * _Nonnull words) {
+                if (NotNULLString(text)) {
                     [weakSelf submitTransaction];
                 }
             } cancelBlock:^{
             }];
             [alertView showInWindowWithMode:CustomAnimationModeAlert inView:nil bgAlpha:AlertBgAlpha needEffectView:NO];
-            [alertView.PWTextField becomeFirstResponder];
+            [alertView.textField becomeFirstResponder];
         }];
     }];
 }

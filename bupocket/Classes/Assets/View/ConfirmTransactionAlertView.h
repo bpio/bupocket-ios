@@ -14,12 +14,12 @@
 NS_ASSUME_NONNULL_BEGIN
 
 typedef void (^OnCancleClick)(void);
-typedef void (^OnSureClick)(NSString * transactionCost);
+typedef void (^OnConfirmClick)(NSString * transactionCost);
 
 @interface ConfirmTransactionAlertView : UIView
 
 @property (nonatomic, copy) OnCancleClick cancleBlock;
-@property (nonatomic, copy) OnSureClick sureBlock;
+@property (nonatomic, copy) OnConfirmClick sureBlock;
 @property (nonatomic, strong) ConfirmTransactionModel * confirmTransactionModel;
 @property (nonatomic, strong) DposModel * dposModel;
 

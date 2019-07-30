@@ -65,7 +65,7 @@ static NSString * const CooperateDetailCellID = @"CooperateDetailCellID";
 }
 - (CGFloat)tableView:(UITableView *)tableView heightForHeaderInSection:(NSInteger)section
 {
-    if (section == 1 || section == 2) {
+    if ((section == 1 || section == 2) && NotNULLString(self.info)) {
         return Margin_Section_Header;
     } else {
         return CGFLOAT_MIN;
@@ -73,7 +73,7 @@ static NSString * const CooperateDetailCellID = @"CooperateDetailCellID";
 }
 - (UIView *)tableView:(UITableView *)tableView viewForHeaderInSection:(NSInteger)section
 {
-    if (section == 1 || section == 2) {
+    if ((section == 1 || section == 2) && NotNULLString(self.info)) {
         UIButton * title = [UIButton createAttrHeaderTitle:self.listArray[section][0]];
         return title;
     } else {

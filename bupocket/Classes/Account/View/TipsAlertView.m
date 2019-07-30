@@ -43,8 +43,8 @@
             _promptBtn.titleLabel.font = FONT_Bold(15);
             [_promptBtn setImage:[UIImage imageNamed:@"PWPrompt"] forState:UIControlStateNormal];
             height = (H + ScreenScale(120));
-            height = MIN(height, ScreenScale(360));
         }
+        height = MIN(height, ScreenScale(380));
         self.bounds = CGRectMake(0, 0, Alert_Width, height);
     }
     return self;
@@ -143,7 +143,7 @@
         [_promptBtn setTitle:self.title forState:UIControlStateNormal];
         CGSize maximumSize = CGSizeMake(Alert_Width - Margin_50, CGFLOAT_MAX);
         CGSize expectSize = [_promptBtn.titleLabel sizeThatFits:maximumSize];
-        _promptBtn.titleLabel.size = CGSizeMake(expectSize.width, expectSize.height + Margin_10);
+        _promptBtn.titleLabel.size = CGSizeMake(expectSize.width, expectSize.height + Margin_15);
     }
     return _promptBtn;
 }
@@ -164,7 +164,7 @@
 - (UIButton *)setupButtonWithTitle:(NSString *)title
 {
     UIButton * prompt = [UIButton buttonWithType:UIButtonTypeCustom];
-    [prompt setAttributedTitle:[Encapsulation getAttrWithInfoStr:title] forState:UIControlStateNormal];
+    [prompt setAttributedTitle:[self getAttrWithInfoStr:title] forState:UIControlStateNormal];
     prompt.titleLabel.numberOfLines = 0;
     prompt.contentHorizontalAlignment = UIControlContentHorizontalAlignmentLeft;
     CGSize maximumSize = CGSizeMake(Alert_Width - Margin_50, CGFLOAT_MAX);
@@ -172,7 +172,13 @@
     prompt.size = expectSize;
     return prompt;
 }
-
+- (NSAttributedString *)getAttrWithInfoStr:(NSString *)infoStr
+{
+    if (NotNULLString(infoStr)) {
+        return [Encapsulation attrWithString:infoStr preFont:FONT_TITLE preColor:COLOR_6 index:0 sufFont:FONT_TITLE sufColor:COLOR_6 lineSpacing:Margin_10];
+    }
+    return nil;
+}
 - (UIButton *)sureBtn
 {
     if (!_sureBtn) {

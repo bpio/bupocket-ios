@@ -125,6 +125,10 @@ typedef NS_ENUM(NSInteger, AccountDataType) {
 - (void)getNodeDataWithURL:(NSString *)URL
                    success:(void (^)(id responseObject))success
                    failure:(void (^)(NSError *error))failure;
+
+// banner
+- (void)getBannerAdsDataWithSuccess:(void (^)(id responseObject))success
+                            failure:(void (^)(NSError *error))failure;
 // dpos
 - (void)getDposApplyNodeDataWithQRcodeSessionId:(NSString *)QRcodeSessionId
                                         success:(void (^)(id responseObject))success

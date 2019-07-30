@@ -158,8 +158,8 @@
 }
 - (void)setCustomData
 {
-    self.walletText.userInteractionEnabled = self.nodeText.userInteractionEnabled = self.footerView.hidden = self.rightBtn.selected;
     self.rightBtn.selected = !self.rightBtn.selected;
+    [self.tableView reloadData];
     if (self.rightBtn.selected == YES) {
         NSUserDefaults * defaults = [NSUserDefaults standardUserDefaults];
         [defaults setObject:self.walletService forKey:Server_Custom];
@@ -211,9 +211,11 @@
         self.walletText.text = self.walletService;
         self.nodeService = [defaults objectForKey:Current_Node_URL_Custom];
         self.nodeText.text = self.nodeService;
-        self.walletText.userInteractionEnabled = NO;
-        self.nodeText.userInteractionEnabled = NO;
+//        self.walletText.userInteractionEnabled = NO;
+//        self.nodeText.userInteractionEnabled = NO;
     }
+    self.walletText.userInteractionEnabled = self.nodeText.userInteractionEnabled = self.footerView.hidden = !self.rightBtn.selected;
+    cell.line.hidden = self.rightBtn.selected;
     cell.textChange = ^(UITextField * _Nonnull textField) {
         [self judgeHasText];
     };

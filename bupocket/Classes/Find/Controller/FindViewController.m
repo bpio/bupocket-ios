@@ -46,7 +46,7 @@
 }
 - (void)getData
 {
-    [[HTTPManager shareManager] getAdsDataWithURL:Node_Ad_Banner success:^(id responseObject) {
+    [[HTTPManager shareManager] getBannerAdsDataWithSuccess:^(id responseObject) {
         NSInteger code = [[responseObject objectForKey:@"errCode"] integerValue];
         if (code == Success_Code) {
             self.bannerArray = responseObject[@"data"][@"slideshow"];

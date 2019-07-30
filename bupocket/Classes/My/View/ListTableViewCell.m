@@ -172,11 +172,19 @@ static NSString * const VoucherCellID = @"VoucherCellID";
     [self.listImage setContentCompressionResistancePriority:UILayoutPriorityRequired forAxis:UILayoutConstraintAxisHorizontal];
     [self.title setContentCompressionResistancePriority:UILayoutPriorityRequired forAxis:UILayoutConstraintAxisHorizontal];
     [self.detail setContentCompressionResistancePriority:UILayoutPriorityRequired forAxis:UILayoutConstraintAxisHorizontal];
+    if ([self.reuseIdentifier isEqualToString:DetailCellID]) {
+        [self.lineView mas_makeConstraints:^(MASConstraintMaker *make) {
+            make.left.equalTo(self.title);
+            make.right.equalTo(self.listBg);
+        }];
+    } else {
+        [self.lineView mas_makeConstraints:^(MASConstraintMaker *make) {
+            make.left.equalTo(self.listBg.mas_left).offset(Margin_Main);
+            make.right.equalTo(self.listBg.mas_right).offset(-Margin_Main);
+        }];
+    }
     [self.lineView mas_makeConstraints:^(MASConstraintMaker *make) {
-//        make.left.equalTo(self.listBg.mas_left).offset(Margin_10);
-//        make.right.equalTo(self.listBg.mas_right).offset(-Margin_10);
-        make.left.equalTo(self.title);
-        make.right.bottom.equalTo(self.listBg);
+        make.bottom.equalTo(self.listBg);
         make.height.mas_equalTo(LINE_WIDTH);
     }];
 }

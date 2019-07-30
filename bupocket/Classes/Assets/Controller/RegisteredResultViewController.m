@@ -117,10 +117,10 @@
     CGFloat marginH;
     if ((self.registeredModel.desc.length > 0 && indexPath.section == 0 && indexPath.row == [self.listArray[0] count] - 1) || (indexPath.section == 1 && indexPath.row > 0)) {
         textWidth = View_Width_Main;
-        marginH = ScreenScale(55);
+        marginH = Detail_Main_Height;
     } else {
         textWidth = Info_Width_Max;
-        marginH = Margin_30;
+        marginH = Margin_20;
     }
     CGFloat rowHeight = [Encapsulation rectWithText:[[self.listArray[indexPath.section][indexPath.row] allValues] firstObject] font:FONT_TITLE textWidth: textWidth].size.height + marginH;
     return rowHeight;
