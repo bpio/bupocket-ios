@@ -2,7 +2,7 @@
 //  AtpProperty.h
 //  bupocket
 //
-//  Created by bubi on 2018/11/1.
+//  Created by bupocket on 2018/11/1.
 //  Copyright © 2018年 bupocket. All rights reserved.
 //
 

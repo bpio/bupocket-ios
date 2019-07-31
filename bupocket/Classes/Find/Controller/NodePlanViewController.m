@@ -158,7 +158,7 @@ static NSString * const NodePlanCellID = @"NodePlanCellID";
     self.tableView.delegate = self;
     self.tableView.dataSource = self;
     self.tableView.separatorStyle = UITableViewCellSeparatorStyleNone;
-    self.tableView.keyboardDismissMode = UIScrollViewKeyboardDismissModeOnDrag;
+//    self.tableView.keyboardDismissMode = UIScrollViewKeyboardDismissModeOnDrag;
     [self.view addSubview:self.tableView];
     self.noNetWork = [Encapsulation showNoNetWorkWithSuperView:self.view target:self action:@selector(reloadData)];
     self.tableView.contentInset = UIEdgeInsetsMake(Margin_Section_Header - Margin_5, 0, 0, 0);

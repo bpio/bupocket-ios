@@ -2,7 +2,7 @@
 //  CustomEnvironmentViewController.h
 //  bupocket
 //
-//  Created by huoss on 2019/6/26.
+//  Created by bupocket on 2019/6/26.
 //  Copyright © 2019 bupocket. All rights reserved.
 //
 

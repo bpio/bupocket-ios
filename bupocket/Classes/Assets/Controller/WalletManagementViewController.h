@@ -2,7 +2,7 @@
 //  WalletManagementViewController.h
 //  bupocket
 //
-//  Created by huoss on 2019/6/14.
+//  Created by bupocket on 2019/6/14.
 //  Copyright © 2019 bupocket. All rights reserved.
 //
 

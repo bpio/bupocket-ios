@@ -2,7 +2,7 @@
 //  TextInputAlertView.m
 //  bupocket
 //
-//  Created by huoss on 2019/7/30.
+//  Created by bupocket on 2019/7/30.
 //  Copyright © 2019 bupocket. All rights reserved.
 //
 
@@ -15,6 +15,7 @@
 @property (nonatomic, strong) UIButton * confirm;
 
 @property (nonatomic, assign) InputType inputType;
+@property (nonatomic, strong) NSString * text;
 
 @property (nonatomic, strong) NSString * title;
 @property (nonatomic, strong) NSString * prompt;
@@ -60,7 +61,6 @@
             self.prompt = Localized(@"BackupWalletPWPrompt");
         }
         if (inputType == PWTypeExitID) {
-            _promptLabel.textColor = WARNING_COLOR;
             self.prompt = Localized(@"IdentityCipherWarning");
         }
         if (inputType == PWTypeBackUpID) {
@@ -185,7 +185,7 @@
     if (!_promptLabel) {
         _promptLabel = [UILabel new];
         _promptLabel.font = FONT_13;
-        _promptLabel.textColor = COLOR_6;
+        _promptLabel.textColor = (_inputType == PWTypeExitID) ? WARNING_COLOR : COLOR_6;
         _promptLabel.numberOfLines = 0;
         _promptLabel.textAlignment = NSTextAlignmentCenter;
         _promptLabel.text = _prompt;
@@ -238,12 +238,12 @@
 {
     _walletKeyStore = walletKeyStore;
 }
-- (void)setText:(NSString *)text
-{
-    _text = text;
-    self.textField.text = text;
-//    [self textChange:self.textField];
-}
+//- (void)setText:(NSString *)text
+//{
+//    _text = text;
+//    self.textField.text = text;
+////    [self textChange:self.textField];
+//}
 - (void)cancleBtnClick {
     [self hideView];
     if (_cancleBlock) {
@@ -256,10 +256,9 @@
     }
     if (self.inputType != InputTypeWalletName && self.inputType != InputTypeNodeAdd && self.inputType != InputTypeNodeEdit) {
         [self confirmPW];
-    } else {
-        if (_sureBlock) {
-            _sureBlock(self.text , [NSArray array]);
-        }
+    }
+    if (_sureBlock) {
+        _sureBlock(self.text , [NSArray array]);
     }
 }
 - (void)confirmPW

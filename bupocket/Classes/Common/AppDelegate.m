@@ -8,7 +8,6 @@
 
 #import "AppDelegate.h"
 #import "IdentityViewController.h"
-//#import "BackUpWalletViewController.h"
 #import "VersionUpdateAlertView.h"
 #import "SafetyReinforcementAlertView.h"
 #import "VersionModel.h"
@@ -49,6 +48,7 @@
     [UIApplication sharedApplication].statusBarStyle = UIStatusBarStyleDefault;
     if (@available(iOS 11.0, *)){
         [[UIScrollView appearance] setContentInsetAdjustmentBehavior:UIScrollViewContentInsetAdjustmentNever];
+        [[UIScrollView appearance] setKeyboardDismissMode:UIScrollViewKeyboardDismissModeOnDrag];
         UITableView.appearance.estimatedRowHeight = 0;
         UITableView.appearance.estimatedSectionFooterHeight = 0;
         UITableView.appearance.estimatedSectionHeaderHeight = 0;
@@ -63,16 +63,7 @@
 {
     NSUserDefaults * defaults = [NSUserDefaults standardUserDefaults];
     if ([defaults boolForKey:If_Created]) {
-//        if ([defaults boolForKey:If_Backup]) {
-//        if ([defaults boolForKey:If_Backup] || [defaults boolForKey:If_Skip]) {
             self.window.rootViewController = [[TabBarViewController alloc] init];
-            /*
-        } else {
-            BackUpWalletViewController * VC = [[BackUpWalletViewController alloc] init];
-            VC.mnemonicType = MnemonicSafe;
-            self.window.rootViewController = [[NavigationViewController alloc] initWithRootViewController:VC];
-        }
-             */
         [self storageSafetyReinforcement];
     } else {
         self.window.rootViewController = [[NavigationViewController alloc] initWithRootViewController:[[IdentityViewController alloc] init]];

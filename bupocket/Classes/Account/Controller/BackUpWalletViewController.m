@@ -2,7 +2,7 @@
 //  BackUpWalletViewController.m
 //  bupocket
 //
-//  Created by huoss on 2019/6/17.
+//  Created by bupocket on 2019/6/17.
 //  Copyright © 2019 bupocket. All rights reserved.
 //
 
@@ -32,7 +32,7 @@
 - (void)setupView
 {
     self.scrollView = [[UIScrollView alloc] initWithFrame:CGRectMake(0, 0, DEVICE_WIDTH, DEVICE_HEIGHT)];
-    self.scrollView.keyboardDismissMode = UIScrollViewKeyboardDismissModeOnDrag;
+//    self.scrollView.keyboardDismissMode = UIScrollViewKeyboardDismissModeOnDrag;
     [self.view addSubview:self.scrollView];
     
     UILabel * title = [[UILabel alloc] init];

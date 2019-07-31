@@ -2,7 +2,7 @@
 //  AppInclude.h
 //  bupocket
 //
-//  Created by bubi on 2019/2/19.
+//  Created by bupocket on 2019/2/19.
 //  Copyright © 2019年 bupocket. All rights reserved.
 //
 //  #import "APP 用到的分类、三方库、SDK 等"

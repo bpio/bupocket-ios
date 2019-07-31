@@ -66,7 +66,7 @@
 - (void)setupView
 {
     self.scrollView = [[UIScrollView alloc] initWithFrame:CGRectMake(0, 0, DEVICE_WIDTH, DEVICE_HEIGHT)];
-    self.scrollView.keyboardDismissMode = UIScrollViewKeyboardDismissModeOnDrag;
+//    self.scrollView.keyboardDismissMode = UIScrollViewKeyboardDismissModeOnDrag;
     [self.view addSubview:self.scrollView];
     UILabel * confirmPrompt = [UILabel createTitleLabel];
     confirmPrompt.text = Localized(@"ConfirmMnemonicPrompt");

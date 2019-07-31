@@ -2,7 +2,7 @@
 //  NodeSettingsViewController.m
 //  bupocket
 //
-//  Created by huoss on 2019/6/19.
+//  Created by bupocket on 2019/6/19.
 //  Copyright © 2019 bupocket. All rights reserved.
 //
 
@@ -104,6 +104,9 @@
 - (void)showNodeSettingsAlertWithModifyType:(InputType)modifyType index:(NSInteger)index
 {
     TextInputAlertView * alertView = [[TextInputAlertView alloc] initWithInputType:modifyType confrimBolck:^(NSString * _Nonnull text, NSArray * _Nonnull words) {
+        if (modifyType == InputTypeNodeEdit && [text isEqualToString:self.listArray[index]]) {
+            return;
+        }
         if ([self.listArray containsObject:text]) {
             if ([self.listArray indexOfObject:text] != index || modifyType == InputTypeNodeAdd) {
                 [Encapsulation showAlertControllerWithErrorMessage:Localized(@"NodeDuplication") handler:nil];
@@ -115,7 +118,8 @@
         
     }];
     if (modifyType == InputTypeNodeEdit) {
-        alertView.text = self.listArray[index];        
+        alertView.textField.text = self.listArray[index];
+        [alertView.textField sendActionsForControlEvents:UIControlEventEditingChanged];
     }
     [alertView showInWindowWithMode:CustomAnimationModeAlert inView:nil bgAlpha:AlertBgAlpha needEffectView:NO];
 }

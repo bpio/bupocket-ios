@@ -2,7 +2,7 @@
 //  BackUpWalletViewController.h
 //  bupocket
 //
-//  Created by huoss on 2019/6/17.
+//  Created by bupocket on 2019/6/17.
 //  Copyright © 2019 bupocket. All rights reserved.
 //
 

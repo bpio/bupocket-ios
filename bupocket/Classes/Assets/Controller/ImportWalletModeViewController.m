@@ -70,10 +70,7 @@
     
     self.importText = [PlaceholderTextView createPlaceholderTextView:headerView Target:self placeholder:textArray[self.importWalletMode][1]];
     
-//    UIView * footerView = [[UIView alloc] initWithFrame:CGRectMake(0, 0, DEVICE_WIDTH, ScreenScale(150) + SafeAreaBottomH)];
-//    self.tableView.tableFooterView = footerView;
-    
-    self.import = [UIButton createFooterViewWithTitle:Localized(@"StartImporting") isEnabled:NO Target:self Selector:@selector(importAction)];
+    self.import = [UIButton createFooterViewWithSuperView:self.view title:Localized(@"StartImporting") isEnabled:NO Target:self Selector:@selector(importAction)];
 //    [UIButton createButtonWithTitle:Localized(@"StartImporting") isEnabled:NO Target:self Selector:@selector(importAction)];
 //    [footerView addSubview:self.import];
     

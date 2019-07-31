@@ -2,7 +2,7 @@
 //  InfoViewCell.h
 //  bupocket
 //
-//  Created by huoss on 2019/7/22.
+//  Created by bupocket on 2019/7/22.
 //  Copyright © 2019 bupocket. All rights reserved.
 //
 

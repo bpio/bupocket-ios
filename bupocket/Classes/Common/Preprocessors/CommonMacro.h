@@ -2,7 +2,7 @@
 //  CommonMacro.h
 //  bupocket
 //
-//  Created by bubi on 2019/2/19.
+//  Created by bupocket on 2019/2/19.
 //  Copyright © 2019年 bupocket. All rights reserved.
 //
 

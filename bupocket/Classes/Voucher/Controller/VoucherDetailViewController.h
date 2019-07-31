@@ -2,7 +2,7 @@
 //  VoucherDetailViewController.h
 //  bupocket
 //
-//  Created by huoss on 2019/7/1.
+//  Created by bupocket on 2019/7/1.
 //  Copyright © 2019 bupocket. All rights reserved.
 //
 

@@ -2,7 +2,7 @@
 //  TextInputAlertView.h
 //  bupocket
 //
-//  Created by huoss on 2019/7/30.
+//  Created by bupocket on 2019/7/30.
 //  Copyright © 2019 bupocket. All rights reserved.
 //
 
@@ -35,7 +35,6 @@ typedef void (^OnSureClick)(NSString * text, NSArray * words);
 
 @property (nonatomic, copy) OnCancleClick cancleBlock;
 @property (nonatomic, copy) OnSureClick sureBlock;
-@property (nonatomic, strong) NSString * text;
 
 // PW
 @property (nonatomic, strong) UITextField * textField;

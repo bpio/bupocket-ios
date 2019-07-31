@@ -2,7 +2,7 @@
 //  ResultViewController.h
 //  bupocket
 //
-//  Created by huoss on 2019/7/5.
+//  Created by bupocket on 2019/7/5.
 //  Copyright © 2019 bupocket. All rights reserved.
 //
 

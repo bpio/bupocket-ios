@@ -27,6 +27,7 @@
 + (UIButton *)createHeaderButtonWithTitle:(NSString *)title;
 + (UIButton *)createAttrHeaderTitle:(NSString *)title;
 + (UIButton *)createFooterViewWithTitle:(NSString *)title  isEnabled:(BOOL)isEnabled Target:(id)target Selector:(SEL)selector;
++ (UIButton *)createFooterViewWithSuperView:(UIView *)superView title:(NSString *)title isEnabled:(BOOL)isEnabled Target:(id)target Selector:(SEL)selector;
 
 + (UIButton *)createExplainWithSuperView:(UIView *)superView title:(NSString *)title Target:(id)target Selector:(SEL)selector;
 

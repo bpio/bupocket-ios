@@ -2,7 +2,7 @@
 //  AssetIssuerViewController.m
 //  bupocket
 //
-//  Created by huoss on 2019/7/3.
+//  Created by bupocket on 2019/7/3.
 //  Copyright © 2019 bupocket. All rights reserved.
 //
 

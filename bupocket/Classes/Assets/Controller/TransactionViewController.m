@@ -2,7 +2,7 @@
 //  TransactionViewController.m
 //  bupocket
 //
-//  Created by huoss on 2019/7/26.
+//  Created by bupocket on 2019/7/26.
 //  Copyright © 2019 bupocket. All rights reserved.
 //
 
@@ -47,6 +47,7 @@
 @property (nonatomic, strong) NSString * number;
 
 @property (nonatomic, strong) NSString * availableAmount;
+@property (nonatomic, strong) NSString * minAssetsTxFee;
 
 @end
 
@@ -107,6 +108,7 @@ static NSString * const ChooseVoucherCellID = @"ChooseVoucherCellID";
     __weak typeof(self) weakSelf = self;
     DposModel * dposModel = [[DposModel alloc] init];
     dposModel.dest_address = self.voucherModel.contractAddress;
+    // query方法 tx_fee = 0
     dposModel.tx_fee = TransactionCost_MIN;
     dposModel.input = SKUTokenQuery(self.voucherModel.voucherId, CurrentWalletAddress);
     NSOperationQueue * queue = [[NSOperationQueue alloc] init];
@@ -133,21 +135,8 @@ static NSString * const ChooseVoucherCellID = @"ChooseVoucherCellID";
     } else {
         self.tableView.tableHeaderView = [[UIView alloc] initWithFrame:CGRectMake(0, 0, 0, CGFLOAT_MIN)];
     }
-    self.next = [UIButton createFooterViewWithTitle:Localized(@"Next") isEnabled:NO Target:self Selector:@selector(nextAction:)];
-    //    [self setupFooterView];
+    self.next = [UIButton createFooterViewWithSuperView:self.view title:Localized(@"Next") isEnabled:NO Target:self Selector:@selector(nextAction:)];
 }
-//- (void)viewDidLayoutSubviews
-//{
-//    [super viewDidLayoutSubviews];
-//    [self.tableView mas_makeConstraints:^(MASConstraintMaker *make) {
-//        make.top.mas_equalTo(0);
-//        make.bottom.left.right.mas_equalTo(0);
-//    }];
-//}
-//- (void)scrollViewDidChangeAdjustedContentInset:(UIScrollView *)scrollView
-//{
-//    DLog(@"%@", scrollView);
-//}
 - (void)setupHeaderView
 {
     UIButton * titleBtn = [UIButton buttonWithType:UIButtonTypeCustom];
@@ -157,22 +146,6 @@ static NSString * const ChooseVoucherCellID = @"ChooseVoucherCellID";
     titleBtn.frame = CGRectMake(0, 0, DEVICE_WIDTH, MAIN_HEIGHT);
     self.tableView.tableHeaderView = titleBtn;
 }
-/*
- - (void)setupFooterView
- {
- UIView * footerView = [[UIView alloc] initWithFrame:CGRectMake(0, 0, DEVICE_WIDTH, ScreenScale(200) + SafeAreaBottomH)];
- self.next = [UIButton createButtonWithTitle:Localized(@"Next") isEnabled:NO Target:self Selector:@selector(nextAction:)];
- [footerView addSubview:self.next];
- 
- [self.next mas_makeConstraints:^(MASConstraintMaker *make) {
- make.top.equalTo(footerView.mas_top).offset(ScreenScale(50));
- make.left.equalTo(footerView.mas_left).offset(Margin_15);
- make.right.equalTo(footerView.mas_right).offset(-Margin_15);
- make.height.mas_equalTo(MAIN_HEIGHT);
- }];
- self.tableView.tableFooterView = footerView;
- }
- */
 - (void)nextAction:(UIButton *)button
 {
     [self DataJudgment];
@@ -194,17 +167,11 @@ static NSString * const ChooseVoucherCellID = @"ChooseVoucherCellID";
                 [MBProgressHUD showTipMessageInWindow:Localized(@"CannotTransferVoucherToOneself")];
                 return;
             }
-            //            if ([self.number isEqualToString:@"0"]) {
-            //                [MBProgressHUD hideHUD];
-            //                [MBProgressHUD showTipMessageInWindow:Localized(@"NoVouchers")];
-            //                return;
-            //            }
             RegexPatternTool * regex = [[RegexPatternTool alloc] init];
-            NSString * minTxFee;
+            NSString * minTxFee = self.minAssetsTxFee;
             NSDecimalNumber * txFee = [NSDecimalNumber decimalNumberWithString:self.transactionCostsStr];
             NSDecimalNumber * sendNumber = [NSDecimalNumber decimalNumberWithString: self.valueStr];
             if (self.transferType == TransferTypeAssets) {
-                minTxFee = TransactionCost_MIN;
                 NSInteger decimals = self.listModel.decimals < 0 ? 0 : self.listModel.decimals;
                 BOOL transferVolumeRegx = [regex validateIsPositiveFloatingPoint:self.valueStr] && [regex validateIsPositiveFloatingPoint:self.valueStr decimals:decimals];
                 if (transferVolumeRegx == NO) {
@@ -218,6 +185,12 @@ static NSString * const ChooseVoucherCellID = @"ChooseVoucherCellID";
                     if ([maxSending hasPrefix:@"-"]) {
                         [MBProgressHUD hideHUD];
                         [MBProgressHUD showTipMessageInWindow:[NSString stringWithFormat:Localized(@"SendingQuantityMax%@"), SendingQuantity_MAX_Division]];
+                        return;
+                    }
+                } else {
+                    if ([self.availableAmount floatValue] - [self.valueStr integerValue] < 0) {
+                        [MBProgressHUD hideHUD];
+                        [MBProgressHUD showTipMessageInWindow:@"可用资产数量不足"];
                         return;
                     }
                 }
@@ -250,15 +223,12 @@ static NSString * const ChooseVoucherCellID = @"ChooseVoucherCellID";
                 [MBProgressHUD showTipMessageInWindow:Localized(@"TransactionCostIsIncorrect")];
                 return;
             }
-            //            TransactionCost_Voucher_MIN "TransactionCostMin%@"
-            
-            NSString * minCost  = [[txFee decimalNumberBySubtracting:minTransactionCost] stringValue];
+            NSString * minCost = [[txFee decimalNumberBySubtracting:minTransactionCost] stringValue];
             if ([minCost hasPrefix:@"-"]) {
                 [MBProgressHUD hideHUD];
                 [MBProgressHUD showTipMessageInWindow:[NSString stringWithFormat:Localized(@"TransactionCostMin%@"), minTransactionCost]];
                 return;
             }
-            
             NSString * maxCost  = [[maxTransactionCost decimalNumberBySubtracting:txFee] stringValue];
             if ([maxCost hasPrefix:@"-"]) {
                 [MBProgressHUD hideHUD];
@@ -266,9 +236,9 @@ static NSString * const ChooseVoucherCellID = @"ChooseVoucherCellID";
                 return;
             }
             NSString * amount;
-            if (self.transferType == TransferTypeAssets) {
+            if (self.transferType == TransferTypeAssets && self.listModel.type == Token_Type_BU) {
                 NSDecimalNumber * totalNumber = [sendNumber decimalNumberByAdding:txFee];
-                amount  = [[[NSDecimalNumber decimalNumberWithString:self.availableAmount] decimalNumberBySubtracting:totalNumber] stringValue];
+                amount = [[[NSDecimalNumber decimalNumberWithString:self.availableAmount] decimalNumberBySubtracting:totalNumber] stringValue];
             } else {
                 NSDecimalNumber * amountNumber = [[HTTPManager shareManager] getDataWithBalanceJudgmentWithCost:[txFee stringValue] ifShowLoading:NO];
                 amount = [amountNumber stringValue];
@@ -445,8 +415,11 @@ static NSString * const ChooseVoucherCellID = @"ChooseVoucherCellID";
     //    }
     if ([title isEqualToString:[NSString stringWithFormat:@"%@ *", Localized(@"ReceivingAccount")]]) {
         self.receiveAddress = cell.textField;
+        self.receiveAddress.delegate = self;
         if (NotNULLString(self.receiveAddressStr)) {
             self.receiveAddress.text = self.receiveAddressStr;
+            [self.receiveAddress sendActionsForControlEvents:UIControlEventEditingChanged];
+            [self IsActivatedWithAddress:self.receiveAddressStr];
         }
         cell.scanClick = ^{
             [self scanAction];
@@ -473,8 +446,12 @@ static NSString * const ChooseVoucherCellID = @"ChooseVoucherCellID";
         self.remarks = cell.textField;
     } else if ([title isEqualToString:Localized(@"EstimatedMaximum")]) {
         self.transactionCosts = cell.textField;
-        cell.textField.text = TransactionCost_Voucher_MIN;
-        [cell.textField sendActionsForControlEvents:UIControlEventEditingChanged];
+        if (self.transferType == TransferTypeAssets) {
+            self.transactionCosts.text = TransactionCost_MIN;
+        } else {
+            self.transactionCosts.text = TransactionCost_Voucher_MIN;
+        }
+        [self.transactionCosts sendActionsForControlEvents:UIControlEventEditingChanged];
     }
 }
 - (CustomButton *)chooseVoucher
@@ -508,9 +485,28 @@ static NSString * const ChooseVoucherCellID = @"ChooseVoucherCellID";
     VC.walletAddress = ^(NSString * stringValue) {
         self.receiveAddress.text = stringValue;
         [self.receiveAddress sendActionsForControlEvents:UIControlEventEditingChanged];
-        //        [self IsActivatedWithAddress:stringValue];
+        [self IsActivatedWithAddress:stringValue];
     };
     [self.navigationController pushViewController:VC animated:YES];
+}
+- (void)IsActivatedWithAddress:(NSString *)address
+{
+    if (self.transferType == TransferTypeVoucher || self.listModel.type == Token_Type_BU) return;
+    __weak typeof(self) weakSelf = self;
+    NSOperationQueue * queue = [[NSOperationQueue alloc] init];
+    [queue addOperationWithBlock:^{
+        NSString * costs = [[HTTPManager shareManager] getAccountInfoWithAddress:address];
+        [[NSOperationQueue mainQueue] addOperationWithBlock:^{
+            weakSelf.transactionCosts.text = costs;
+            weakSelf.minAssetsTxFee = costs;
+        }];
+    }];
+}
+- (void)textFieldDidEndEditing:(UITextField *)textField
+{
+    if (textField == self.receiveAddress) {
+        [self IsActivatedWithAddress:textField.text];
+    }
 }
 - (void)scanAction
 {
@@ -528,7 +524,7 @@ static NSString * const ChooseVoucherCellID = @"ChooseVoucherCellID";
             }
             weakself.receiveAddress.text = str;
             [weakself.receiveAddress sendActionsForControlEvents:UIControlEventEditingChanged];
-            //            [weakself IsActivatedWithAddress:stringValue];
+            [weakself IsActivatedWithAddress:stringValue];
         }];
     }];
     [scanner setTitleColor:[UIColor whiteColor] tintColor:MAIN_COLOR];

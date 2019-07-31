@@ -139,10 +139,15 @@ static NSString *_title;
     button.contentHorizontalAlignment = UIControlContentHorizontalAlignmentLeft;
     return button;
 }
-+ (UIButton *)createFooterViewWithTitle:(NSString *)title  isEnabled:(BOOL)isEnabled Target:(id)target Selector:(SEL)selector
++ (UIButton *)createFooterViewWithTitle:(NSString *)title isEnabled:(BOOL)isEnabled Target:(id)target Selector:(SEL)selector
+{
+    UIButton * button = [UIButton createFooterViewWithSuperView:nil title:title isEnabled:isEnabled Target:target Selector:selector];
+    return button;
+}
++ (UIButton *)createFooterViewWithSuperView:(UIView *)superView title:(NSString *)title isEnabled:(BOOL)isEnabled Target:(id)target Selector:(SEL)selector
 {
     UIView * footerView = [[UIView alloc] init];
-//                           WithFrame:CGRectMake(0, DEVICE_HEIGHT - ContentInset_Bottom - NavBarH, DEVICE_WIDTH, ContentInset_Bottom)];
+    //                           WithFrame:CGRectMake(0, DEVICE_HEIGHT - ContentInset_Bottom - NavBarH, DEVICE_WIDTH, ContentInset_Bottom)];
     footerView.backgroundColor = [UIColor whiteColor];
     UIButton * button = [UIButton createButtonWithTitle:title isEnabled:isEnabled Target:target Selector:selector];
     [footerView addSubview:button];
@@ -152,7 +157,9 @@ static NSString *_title;
         make.right.equalTo(footerView.mas_right).offset(-Margin_Main);
         make.height.mas_equalTo(MAIN_HEIGHT);
     }];
-    UIView * superView = [UIApplication currentViewController].view;
+    if (!superView) {
+        superView = [UIApplication currentViewController].view;
+    }
     [superView addSubview:footerView];
     [footerView mas_makeConstraints:^(MASConstraintMaker *make) {
         make.left.bottom.right.equalTo(superView);
