@@ -82,8 +82,7 @@
         make.centerX.mas_equalTo(0);
         make.size.mas_equalTo(btnSize);
     }];
-    UIButton * cancelBtn = [UIButton createButtonWithTitle:Localized(@"Cancel")isEnabled:YES Target:self Selector:@selector(cancelAction)];
-    cancelBtn.backgroundColor = COLOR(@"EDEDED");
+    UIButton * cancelBtn = [UIButton createCornerRadiusButtonWithTitle:Localized(@"Cancel")isEnabled:YES Target:self Selector:@selector(cancelAction)];
     [self.scrollView addSubview:cancelBtn];
     [cancelBtn mas_makeConstraints:^(MASConstraintMaker *make) {
         make.top.equalTo(confirmBtn.mas_bottom).offset(Margin_30);

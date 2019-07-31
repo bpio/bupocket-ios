@@ -62,6 +62,8 @@
 @property (nonatomic, strong) NSDictionary * scanDic;
 @property (nonatomic, assign) UIStatusBarStyle statusBarStyle;
 @property (nonatomic, strong) NSString * assetsCacheDataKey;
+@property (nonatomic, strong) UILabel * safetyTips;
+@property (nonatomic, strong) UILabel * safetyTipsTitle;
 
 @property (nonatomic, strong) ConfirmTransactionModel * confirmTransactionModel;
 @property (nonatomic, strong) DposModel * dposModel;
@@ -789,7 +791,8 @@
 //                return 217;
 ////                return 195;
 //            }
-            return ScreenScale(130) + [Encapsulation getSizeSpaceLabelWithStr:Localized(@"SafetyTips") font:FONT_TITLE width:Content_Width_Main height:CGFLOAT_MAX lineSpacing:LINE_SPACING].height;
+//            return ScreenScale(130) + [Encapsulation getSizeSpaceLabelWithStr:Localized(@"SafetyTips") font:FONT_TITLE width:Content_Width_Main height:CGFLOAT_MAX lineSpacing:LINE_SPACING].height;
+            return ScreenScale(110) + self.safetyTipsTitle.size.height + self.safetyTips.size.height;
 //            [Encapsulation rectWithText:Localized(@"SafetyTips") font:FONT_TITLE textWidth:DEVICE_WIDTH - Margin_40].size.height;
         } else {
             return Margin_Section_Header - Margin_5;
@@ -823,32 +826,22 @@
                 make.right.equalTo(headerView.mas_right).offset(- Margin_Main);
                 make.bottom.equalTo(header.mas_top);
             }];
-            UILabel * safetyTipsTitle = [[UILabel alloc] init];
-            safetyTipsTitle.textColor = COLOR_6;
-            safetyTipsTitle.font = FONT_Bold(15);
-            safetyTipsTitle.text = Localized(@"SafetyTipsTitle");
-            [backupBg addSubview:safetyTipsTitle];
-            [safetyTipsTitle mas_makeConstraints:^(MASConstraintMaker *make) {
-                make.top.equalTo(backupBg.mas_top).offset(Margin_15);
+            [backupBg addSubview:self.safetyTipsTitle];
+            [self.safetyTipsTitle mas_makeConstraints:^(MASConstraintMaker *make) {
+//                make.top.equalTo(backupBg.mas_top).offset(Margin_15);
                 make.left.equalTo(backupBg.mas_left).offset(Margin_10);
-                make.right.equalTo(backupBg.mas_right).offset(- Margin_10);
+//                make.right.equalTo(backupBg.mas_right).offset(- Margin_10);
+                make.size.mas_equalTo(self.safetyTipsTitle.size);
 //                make.height.mas_equalTo(Margin_20);
             }];
             
-            UILabel * safetyTips = [[UILabel alloc] init];
-            safetyTips.attributedText = [Encapsulation attrWithString:Localized(@"SafetyTips") font:FONT_TITLE color:COLOR_6 lineSpacing:LINE_SPACING];
-//            safetyTips.textColor = COLOR_6;
-//            safetyTips.font = FONT_TITLE;
-//            safetyTips.text = Localized(@"SafetyTips");
-            safetyTips.numberOfLines = 0;
-            CGSize maximumSize = CGSizeMake(Content_Width_Main, CGFLOAT_MAX);
-            CGSize expectSize = [safetyTips sizeThatFits:maximumSize];
-            CGSize promptSize = CGSizeMake(Content_Width_Main, expectSize.height);
-            [backupBg addSubview:safetyTips];
-            [safetyTips mas_makeConstraints:^(MASConstraintMaker *make) {
-                make.top.equalTo(safetyTipsTitle.mas_bottom).offset(Margin_10);
-                make.centerX.mas_equalTo(0);
-                make.size.mas_equalTo(promptSize);
+            [backupBg addSubview:self.safetyTips];
+            [self.safetyTips mas_makeConstraints:^(MASConstraintMaker *make) {
+                make.top.equalTo(self.safetyTipsTitle.mas_bottom).offset(Margin_10);
+                make.left.equalTo(backupBg.mas_left).offset(Margin_10);
+//                make.right.equalTo(backupBg.mas_right).offset(- Margin_10);
+//                make.left.right.equalTo(self.safetyTipsTitle);
+                make.size.mas_equalTo(self.safetyTips.size);
 //                make.left.right.equalTo(safetyTipsTitle);
             }];
             /*
@@ -875,8 +868,8 @@
 //            [UIButton createButtonWithTitle:Localized(@"ImmediateBackup") TextFont:FONT_16 TextNormalColor:[UIColor whiteColor] TextSelectedColor:[UIColor whiteColor] Target:self Selector:@selector(backupAction)];
             [backupBg addSubview:backup];
             [backup mas_makeConstraints:^(MASConstraintMaker *make) {
-                make.top.equalTo(safetyTips.mas_bottom);
-                make.right.equalTo(safetyTipsTitle);
+                make.top.equalTo(self.safetyTips.mas_bottom);
+                make.right.equalTo(backupBg.mas_right).offset(- Margin_10);
                 make.height.mas_equalTo(MAIN_HEIGHT);
                 make.bottom.equalTo(backupBg.mas_bottom);
 //                make.right.equalTo(safetyTipsTitle);
@@ -885,6 +878,34 @@
         }
     }
     return headerView;
+}
+- (UILabel *)safetyTipsTitle
+{
+    if (!_safetyTipsTitle) {
+        _safetyTipsTitle = [[UILabel alloc] init];
+        _safetyTipsTitle.textColor = COLOR_6;
+        _safetyTipsTitle.font = FONT_Bold(15);
+        _safetyTipsTitle.text = Localized(@"SafetyTipsTitle");
+        CGSize maximumSize = CGSizeMake(Content_Width_Main, CGFLOAT_MAX);
+        CGSize expectSize = [_safetyTipsTitle sizeThatFits:maximumSize];
+        _safetyTipsTitle.size = expectSize;
+    }
+    return _safetyTipsTitle;
+}
+- (UILabel *)safetyTips
+{
+    if (!_safetyTips) {
+        _safetyTips = [[UILabel alloc] init];
+        _safetyTips.numberOfLines = 0;
+        _safetyTips.attributedText = [Encapsulation attrWithString:Localized(@"SafetyTips") font:FONT_TITLE color:COLOR_6 lineSpacing:LINE_SPACING];
+        //            safetyTips.textColor = COLOR_6;
+        //            safetyTips.font = FONT_TITLE;
+        //            safetyTips.text = Localized(@"SafetyTips");
+        CGSize maximumSize = CGSizeMake(Content_Width_Main, CGFLOAT_MAX);
+        CGSize expectSize = [_safetyTips sizeThatFits:maximumSize];
+        _safetyTips.size = expectSize;
+    }
+    return _safetyTips;
 }
 #pragma mark - backup
 - (void)backupAction

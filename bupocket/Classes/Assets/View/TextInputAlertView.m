@@ -16,6 +16,11 @@
 
 @property (nonatomic, assign) InputType inputType;
 
+@property (nonatomic, strong) NSString * title;
+@property (nonatomic, strong) NSString * prompt;
+@property (nonatomic, strong) NSString * placeholder;
+
+
 @end
 
 @implementation TextInputAlertView
@@ -39,63 +44,58 @@
         _cancleBlock = cancelBlock;
         self.inputType = inputType;
         self.walletKeyStore = CurrentWalletKeyStore;
-        [self setupView];
-        NSString * title = Localized(@"IdentityCipherConfirm");
-        NSString * placeholder = Localized(@"PWPlaceholder");
+        self.title = Localized(@"IdentityCipherConfirm");
+        self.placeholder = Localized(@"PWPlaceholder");
         if (inputType == InputTypeWalletName) {
-            title = Localized(@"ModifyWalletName");
-            placeholder = Localized(@"EnterWalletName");
+            self.title = Localized(@"ModifyWalletName");
+            self.placeholder = Localized(@"EnterWalletName");
         } else if (inputType == InputTypeNodeAdd) {
-            title = Localized(@"AddNodePrompt");
-            placeholder = title;
+            self.title = Localized(@"AddNodePrompt");
+            self.placeholder = self.title;
         } else if (inputType == InputTypeNodeEdit) {
-            title = Localized(@"EditNodePrompt");
+            self.title = Localized(@"EditNodePrompt");
             self.confirm.enabled = YES;
-        } else {
-            self.textField.placeholder = placeholder;
         }
-        self.titleLabel.text = title;
-        NSString * prompt;
         if (inputType == PWTypeDataReinforcement) {
-            prompt = Localized(@"BackupWalletPWPrompt");
+            self.prompt = Localized(@"BackupWalletPWPrompt");
         }
         if (inputType == PWTypeExitID) {
             _promptLabel.textColor = WARNING_COLOR;
-            prompt = Localized(@"IdentityCipherWarning");
+            self.prompt = Localized(@"IdentityCipherWarning");
         }
         if (inputType == PWTypeBackUpID) {
-            prompt = Localized(@"BackupWalletPWPrompt");
+            self.prompt = Localized(@"BackupWalletPWPrompt");
         }
         if (inputType == PWTypeTransferAssets) {
-            prompt = Localized(@"TransactionWalletPWPrompt");
+            self.prompt = Localized(@"TransactionWalletPWPrompt");
         }
         if (inputType == PWTypeTransferVoucher) {
-            prompt = Localized(@"TransferWalletPWPrompt");
+            self.prompt = Localized(@"TransferWalletPWPrompt");
         }
         if (inputType == PWTypeTransferRegistered) {
-            prompt = Localized(@"RegistrationWalletPWPrompt");
+            self.prompt = Localized(@"RegistrationWalletPWPrompt");
         }
         if (inputType == PWTypeTransferDistribution) {
-            prompt = Localized(@"DistributionWalletPWPrompt");
+            self.prompt = Localized(@"DistributionWalletPWPrompt");
         }
         if (inputType == PWTypeDeleteWallet) {
-            prompt = Localized(@"WalletPWPrompt");
+            self.prompt = Localized(@"WalletPWPrompt");
         }
         if (inputType == PWTypeExportKeystore || inputType == PWTypeExportPrivateKey) {
-            prompt = Localized(@"WalletPWPrompt");
+            self.prompt = Localized(@"WalletPWPrompt");
         }
         if (inputType == PWTypeTransferDpos) {
-            prompt = Localized(@"DposWalletPWPrompt");
+            self.prompt = Localized(@"DposWalletPWPrompt");
         }
-        self.promptLabel.text = prompt;
-//        CGFloat promptH = (NotNULLString(prompt)) ? self.promptLabel.height + Margin_15 : 0;
-        CGFloat contentW = Alert_Width - Margin_40;
-        CGFloat titleH = [Encapsulation rectWithText:title font:self.titleLabel.font textWidth:contentW].size.height;
-        CGFloat promptH = 0;
-        if (NotNULLString(prompt)) {
-            promptH = [Encapsulation rectWithText:prompt font:self.promptLabel.font textWidth:contentW].size.height + Margin_15;
-        }
-//        CGFloat titleH = (NotNULLString(title)) ? self.titleLabel.height : 0;
+        [self setupView];
+//        CGFloat contentW = Alert_Width - Margin_40;
+//        CGFloat titleH = [Encapsulation rectWithText:self.title font:self.titleLabel.font textWidth:contentW].size.height;
+//        CGFloat promptH = 0;
+//        if (NotNULLString(self.prompt)) {
+//            promptH = [Encapsulation rectWithText:self.prompt font:self.promptLabel.font textWidth:contentW].size.height + Margin_15;
+//        }
+        CGFloat titleH = (NotNULLString(self.title)) ? self.titleLabel.height : 0;
+        CGFloat promptH = (NotNULLString(self.prompt)) ? self.promptLabel.height + Margin_15 : 0;
         self.bounds = CGRectMake(0, 0, Alert_Width, ScreenScale(105) + titleH + Alert_Button_Height + promptH);
     }
     return self;
@@ -113,15 +113,16 @@
         //        make.centerX.equalTo(self);
         //        make.width.mas_lessThanOrEqualTo(DEVICE_WIDTH - ScreenScale(80));
     }];
+    [self addSubview:self.textField];
     if (self.inputType != InputTypeWalletName && self.inputType != InputTypeNodeAdd && self.inputType != InputTypeNodeEdit) {
         [self addSubview:self.promptLabel];
         [self.promptLabel mas_makeConstraints:^(MASConstraintMaker *make) {
             make.top.equalTo(self.titleLabel.mas_bottom).offset(Margin_15);
             make.left.right.equalTo(self.titleLabel);
-        }];        
+        }];
+        self.textField.secureTextEntry = YES;
     }
     
-    [self addSubview:self.textField];
     [self.textField mas_makeConstraints:^(MASConstraintMaker *make) {
         make.bottom.equalTo(self.mas_bottom).offset(-(Alert_Button_Height + Margin_20));
         make.left.equalTo(self).offset(marginX);
@@ -172,9 +173,10 @@
         _titleLabel.textColor = TITLE_COLOR;
         _titleLabel.numberOfLines = 0;
         _titleLabel.textAlignment = NSTextAlignmentCenter;
-//        CGSize maximumSize = CGSizeMake(Alert_Width - Margin_40, CGFLOAT_MAX);
-//        CGSize expectSize = [_titleLabel sizeThatFits:maximumSize];
-//        _titleLabel.size = CGSizeMake(expectSize.width, expectSize.height);
+        _titleLabel.text = _title;
+        CGSize maximumSize = CGSizeMake(Alert_Width - Margin_40, CGFLOAT_MAX);
+        CGSize expectSize = [_titleLabel sizeThatFits:maximumSize];
+        _titleLabel.size = CGSizeMake(expectSize.width, expectSize.height);
     }
     return _titleLabel;
 }
@@ -186,9 +188,10 @@
         _promptLabel.textColor = COLOR_6;
         _promptLabel.numberOfLines = 0;
         _promptLabel.textAlignment = NSTextAlignmentCenter;
-//        CGSize maximumSize = CGSizeMake(Alert_Width - Margin_40, CGFLOAT_MAX);
-//        CGSize expectSize = [_promptLabel sizeThatFits:maximumSize];
-//        _promptLabel.size = CGSizeMake(expectSize.width, expectSize.height);
+        _promptLabel.text = _prompt;
+        CGSize maximumSize = CGSizeMake(Alert_Width - Margin_40, CGFLOAT_MAX);
+        CGSize expectSize = [_promptLabel sizeThatFits:maximumSize];
+        _promptLabel.size = CGSizeMake(expectSize.width, expectSize.height);
     }
     return _promptLabel;
 }
@@ -208,6 +211,7 @@
         _textField.rightView = [[UIView alloc] initWithFrame:CGRectMake(0, 0, Margin_10, MAIN_HEIGHT)];
         _textField.rightViewMode = UITextFieldViewModeAlways;
         [_textField addTarget:self action:@selector(textChange:) forControlEvents:UIControlEventEditingChanged];
+        _textField.placeholder = _placeholder;
     }
     return _textField;
 }

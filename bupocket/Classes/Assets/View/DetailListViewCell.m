@@ -69,10 +69,6 @@ static NSString * const VersionLogCellID = @"VersionLogCellID";
         self.title.font = titleFont;
         self.title.textColor = titleColor;
         self.infoTitle.font = infoTitleFont;
-//        self.title.backgroundColor = RandomColor;
-//        self.infoTitle.backgroundColor = RandomColor;
-//        self.backgroundColor = RandomColor;
-//        self.contentView.backgroundColor = RandomColor;
     }
     return self;
 }

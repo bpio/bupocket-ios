@@ -18,6 +18,7 @@
 + (UIButton *)createButtonWithTitle:(NSString *)title TextFont:(UIFont *)textFont TextNormalColor:(UIColor *)textNormalColor TextSelectedColor:(UIColor *)textSelectedColor NormalBackgroundImage:(NSString *)normalBackgroundImage SelectedBackgroundImage:(NSString *)selectedBackgroundImage Target:(id)target Selector:(SEL)selector;
 // Button
 + (UIButton *)createButtonWithTitle:(NSString *)title isEnabled:(BOOL)isEnabled Target:(id)target Selector:(SEL)selector;
++ (UIButton *)createCornerRadiusButtonWithTitle:(NSString *)title isEnabled:(BOOL)isEnabled Target:(id)target Selector:(SEL)selector;
 // Nav_Button
 + (UIButton *)createNavButtonWithTitle:(NSString *)title Target:(id)target Selector:(SEL)selector;
 

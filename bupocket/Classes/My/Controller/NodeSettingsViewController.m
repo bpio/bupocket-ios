@@ -114,7 +114,9 @@
     } cancelBlock:^{
         
     }];
-    alertView.text = self.listArray[index];
+    if (modifyType == InputTypeNodeEdit) {
+        alertView.text = self.listArray[index];        
+    }
     [alertView showInWindowWithMode:CustomAnimationModeAlert inView:nil bgAlpha:AlertBgAlpha needEffectView:NO];
 }
 - (void)CheckDefaultURLWithCustomURL:(NSString *)URL modifyType:(InputType)modifyType index:(NSInteger)index isChoice:(BOOL)isChoice

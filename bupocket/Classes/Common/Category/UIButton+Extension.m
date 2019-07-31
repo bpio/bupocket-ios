@@ -83,6 +83,15 @@ static NSString *_title;
     button.enabled = isEnabled;
     return button;
 }
++ (UIButton *)createCornerRadiusButtonWithTitle:(NSString *)title isEnabled:(BOOL)isEnabled Target:(id)target Selector:(SEL)selector
+{
+    UIButton * button = [UIButton createButtonWithTitle:title isEnabled:isEnabled Target:target Selector:selector];
+    button.backgroundColor = [UIColor whiteColor];
+    button.layer.borderColor = MAIN_COLOR.CGColor;
+    button.layer.borderWidth = LINE_WIDTH;
+    [button setTitleColor:MAIN_COLOR forState:UIControlStateNormal];
+    return button;
+}
 // Nav_Button
 + (UIButton *)createNavButtonWithTitle:(NSString *)title Target:(id)target Selector:(SEL)selector
 {

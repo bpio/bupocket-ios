@@ -62,11 +62,7 @@
         make.height.mas_equalTo(MAIN_HEIGHT);
     }];
     
-    UIButton * restoreIdentity = [UIButton createButtonWithTitle:Localized(@"RestoreIdentity") isEnabled:YES Target:self Selector:@selector(IDAction:)];
-    restoreIdentity.backgroundColor = [UIColor whiteColor];
-    restoreIdentity.layer.borderColor = MAIN_COLOR.CGColor;
-    restoreIdentity.layer.borderWidth = LINE_WIDTH;
-    [restoreIdentity setTitleColor:MAIN_COLOR forState:UIControlStateNormal];
+    UIButton * restoreIdentity = [UIButton createCornerRadiusButtonWithTitle:Localized(@"RestoreIdentity") isEnabled:YES Target:self Selector:@selector(IDAction:)];
     [identityBg addSubview:restoreIdentity];
     [restoreIdentity mas_makeConstraints:^(MASConstraintMaker *make) {
         make.top.equalTo(createIdentity.mas_bottom).offset(ScreenScale(35));
