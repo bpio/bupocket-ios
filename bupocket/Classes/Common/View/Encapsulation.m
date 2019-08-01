@@ -223,6 +223,11 @@
     [[[UIApplication sharedApplication] keyWindow].rootViewController presentViewController:alertController animated:YES completion:nil];
      */
 }
++ (void)showAlertControllerForceWithTitle:(NSString *)title message:(NSString *)message confirmHandler:(void (^)(void))confirmHandler
+{
+    TipsAlertView * alertView = [[TipsAlertView alloc] initWithTipsType:TipsTypeDefault title: title message:message confrimBolck:confirmHandler];
+    [alertView showInWindowWithMode:CustomAnimationModeDisabled inView:nil bgAlpha:AlertBgAlpha needEffectView:NO];
+}
 + (UIButton *)showNoDataWithTitle:(NSString *)title imageName:(NSString *)imageName superView:(UIView *)superView frame:(CGRect)frame
 {
     CustomButton * button = [[CustomButton alloc] init];

@@ -81,7 +81,8 @@ static NSString * const VoucherDetailCellID = @"VoucherDetailCellID";
             NSString * endTime = ([self.voucherModel.endTime isEqualToString:Voucher_Validity_Date]) ? @"~" : [DateTool getDateStringWithDataStr:self.voucherModel.endTime];
             NSString * date = ([self.voucherModel.startTime isEqualToString:Voucher_Validity_Date]) ? Localized(@"LongTerm") : [NSString stringWithFormat:Localized(@"%@ to %@"), startTime, endTime];
             NSString * specifications = NotNULLString(self.voucherModel.voucherSpec) ? self.voucherModel.voucherSpec : Localized(@"None");
-            self.listArray = [NSMutableArray arrayWithArray:@[@[@""], @[@[Localized(@"Validity"), date], @[Localized(@"VoucherCode"), self.voucherModel.voucherId], @[Localized(@"Specification"), specifications], @[Localized(@"Describe"), self.voucherModel.desc], @[Localized(@"HoldingQuantity"), holdingQuantity]], @[@[Localized(@"Acceptor"), self.voucherModel.voucherAcceptance[@"name"]], @[Localized(@"AssetIssuer"), self.voucherModel.voucherIssuer[@"name"]]]]];
+            // , @[Localized(@"VoucherCode"), self.voucherModel.voucherId]
+            self.listArray = [NSMutableArray arrayWithArray:@[@[@""], @[@[Localized(@"Validity"), date], @[Localized(@"Specification"), specifications], @[Localized(@"Describe"), self.voucherModel.desc], @[Localized(@"HoldingQuantity"), holdingQuantity]], @[@[Localized(@"Acceptor"), self.voucherModel.voucherAcceptance[@"name"]], @[Localized(@"AssetIssuer"), self.voucherModel.voucherIssuer[@"name"]]]]];
             
             self.infoCellHeight = MAX(Detail_Main_Height, ([Encapsulation getSizeSpaceLabelWithStr:self.voucherModel.desc font:FONT_TITLE width:Info_Width_Max height:CGFLOAT_MAX lineSpacing:LINE_SPACING].height + Margin_20));
             [self.tableView reloadData];
@@ -156,7 +157,9 @@ static NSString * const VoucherDetailCellID = @"VoucherDetailCellID";
 {
     if (section == self.listArray.count - 1) {
 //        return ScreenScale(180) - self.infoCellHeight;
-        return self.imageBgH - (ScreenScale(145) + self.infoCellHeight + Margin_40 * ([self.listArray[1] count] - 1) * self.proportion + (MAIN_HEIGHT * [self.listArray[2] count])) - Margin_10 * self.proportion;
+        return self.imageBgH - (ScreenScale(165) + self.infoCellHeight + Margin_40 * ([self.listArray[1] count] - 1) * self.proportion + (MAIN_HEIGHT * [self.listArray[2] count])) - Margin_10 * self.proportion;
+    } else if (section == 1) {
+        return Margin_20;
     }
     return CGFLOAT_MIN;
 }
@@ -184,7 +187,7 @@ static NSString * const VoucherDetailCellID = @"VoucherDetailCellID";
         [giftGiving mas_makeConstraints:^(MASConstraintMaker *make) {
 //            make.top.equalTo(footerView.mas_top).offset(Margin_10);
             make.left.equalTo(footerView.mas_left).offset(Margin_15);
-            make.centerY.equalTo(footerView.mas_centerY).offset(-Margin_20 * self.proportion);
+            make.centerY.equalTo(footerView.mas_centerY).offset(-Margin_25 * self.proportion);
 //            make.left.equalTo(exchange.mas_right).offset(Margin_20);
             make.right.equalTo(footerView.mas_right).offset(-Margin_15);
             make.height.mas_equalTo(Margin_40);
@@ -218,7 +221,7 @@ static NSString * const VoucherDetailCellID = @"VoucherDetailCellID";
 {
     if (indexPath.section == 0) {
         return ScreenScale(145);
-    } else if (indexPath.section == 1 && indexPath.row == 3) {
+    } else if (indexPath.section == 1 && indexPath.row == 2) {
        return self.infoCellHeight;
     } else if (indexPath.section == self.listArray.count - 1) {
         return MAIN_HEIGHT;

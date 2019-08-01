@@ -130,12 +130,12 @@
     CGFloat marginH;
     if ((self.distributionModel.tokenDescription && indexPath.section == 0 && indexPath.row == [self.listArray[0] count] - 1) || (indexPath.section == 1 && indexPath.row > 0)) {
         textWidth = View_Width_Main;
-        marginH = Detail_Main_Height;
+        marginH = Detail_Main_Height + Margin_5;
     } else {
         textWidth = Info_Width_Max;
-        marginH = Margin_20;
+        marginH = Margin_10;
     }
-    CGFloat rowHeight = [Encapsulation rectWithText:[[self.listArray[indexPath.section][indexPath.row] allValues] firstObject] font:FONT_TITLE textWidth: textWidth].size.height + marginH;
+    CGFloat rowHeight = MAX(Detail_Main_Height, [Encapsulation rectWithText:[[self.listArray[indexPath.section][indexPath.row] allValues] firstObject] font:FONT_TITLE textWidth: textWidth].size.height + marginH + Margin_10);
     return rowHeight;
 }
 - (NSInteger)numberOfSectionsInTableView:(UITableView *)tableView

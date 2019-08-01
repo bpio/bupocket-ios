@@ -35,6 +35,8 @@
 + (void)showAlertControllerWithErrorMessage:(NSString *)message handler:(void (^)(void))handle;
 // (标题) (信息)  取消  确认
 + (void)showAlertControllerWithTitle:(NSString *)title message:(NSString*)message confirmHandler:(void (^)(void))confirmHandler;
+// (标题) (信息)  我知道了
++ (void)showAlertControllerForceWithTitle:(NSString *)title message:(NSString *)message confirmHandler:(void (^)(void))confirmHandler;
 + (UIButton *)showNoDataWithTitle:(NSString *)title imageName:(NSString *)imageName superView:(UIView *)superView frame:(CGRect)frame;
 
 + (NSAttributedString *)getAttrWithInfoStr:(NSString *)infoStr;

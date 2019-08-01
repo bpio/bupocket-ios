@@ -188,22 +188,26 @@
 {
     [tableView deselectRowAtIndexPath:indexPath animated:YES];
     SubtitleListViewCell * cell = [tableView cellForRowAtIndexPath:indexPath];
-    NSUserDefaults * defaults = [NSUserDefaults standardUserDefaults];
-    [defaults setObject:cell.walletModel.walletAddress forKey:Current_WalletAddress];
-    [defaults setObject:cell.walletModel.walletKeyStore forKey:Current_WalletKeyStore];
-    [defaults setObject:cell.walletModel.walletName forKey:Current_WalletName];
-    [defaults setObject:cell.walletModel.walletIconName forKey:Current_Wallet_IconName];
-    [defaults synchronize];
-    
-    [self.tableView reloadData];
-    for (UIViewController *vc in self.navigationController.viewControllers) {
-        if ([vc isKindOfClass:[MyViewController class]]) {
-            [self.navigationController.tabBarController setSelectedIndex:0];
-            [self.navigationController popToRootViewControllerAnimated:YES];
-        } else {
-            [self.navigationController popToRootViewControllerAnimated:YES];
-        }
+    BOOL isChanged = ![CurrentWalletAddress isEqualToString:cell.walletModel.walletAddress];
+    if (isChanged) {
+        NSUserDefaults * defaults = [NSUserDefaults standardUserDefaults];
+        [defaults setObject:cell.walletModel.walletAddress forKey:Current_WalletAddress];
+        [defaults setObject:cell.walletModel.walletKeyStore forKey:Current_WalletKeyStore];
+        [defaults setObject:cell.walletModel.walletName forKey:Current_WalletName];
+        [defaults setObject:cell.walletModel.walletIconName forKey:Current_Wallet_IconName];
+        [defaults synchronize];
+        //    [self.tableView reloadData];
     }
+    NSArray * VCs = self.navigationController.viewControllers;
+    if ([[VCs firstObject] isKindOfClass:[MyViewController class]]) {
+        [self.navigationController.tabBarController setSelectedIndex:0];
+    }
+    [self.navigationController popToRootViewControllerAnimated:YES];
+    
+//    [UIApplication sharedApplication].keyWindow.rootViewController = [[TabBarViewController alloc] init];
+//    if (self.changeWallet) {
+//        self.changeWallet();
+//    }
 }
 
 

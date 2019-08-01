@@ -25,6 +25,8 @@
 @property (nonatomic, assign) CGFloat headerTitleH;
 @property (nonatomic, strong) UIButton * titleBtn;
 
+@property (nonatomic, strong) NSString * walletAddress;
+
 @end
 
 static NSString * const VoucherCellID = @"VoucherCellID";
@@ -38,7 +40,6 @@ static NSString * const VoucherCellID = @"VoucherCellID";
     }
     return _listArray;
 }
-
 
 - (void)viewDidLoad {
     [super viewDidLoad];
@@ -64,6 +65,7 @@ static NSString * const VoucherCellID = @"VoucherCellID";
     [self setupView];
     self.noNetWork = [Encapsulation showNoNetWorkWithSuperView:self.view target:self action:@selector(reloadData)];
     [self setupRefresh];
+    self.walletAddress = CurrentWalletAddress;
     // Do any additional setup after loading the view.
 }
 - (void)viewWillAppear:(BOOL)animated {
@@ -71,8 +73,11 @@ static NSString * const VoucherCellID = @"VoucherCellID";
     if (_isChoiceVouchers) {
         self.navigationItem.title = Localized(@"ChoiceVouchersTitle");
     } else {
-        self.navigationItem.title = CurrentWalletName ? CurrentWalletName : Current_WalletName;
-        [self reloadData];
+        if (![self.walletAddress isEqualToString:CurrentWalletAddress]) {
+            self.walletAddress = CurrentWalletAddress;
+            self.navigationItem.title = CurrentWalletName ? CurrentWalletName : Current_WalletName;
+            [self reloadData];
+        }
     }
 }
 - (void)viewWillDisappear:(BOOL)animated {
@@ -143,6 +148,7 @@ static NSString * const VoucherCellID = @"VoucherCellID";
     QRCode.frame = CGRectMake(0, 0, ScreenScale(44), ScreenScale(44));
     QRCode.contentHorizontalAlignment = UIControlContentHorizontalAlignmentLeft;
     self.navigationItem.leftBarButtonItem = [[UIBarButtonItem alloc]initWithCustomView:QRCode];
+    self.navigationItem.title = CurrentWalletName ? CurrentWalletName : Current_WalletName;
 }
 - (void)walletAction
 {

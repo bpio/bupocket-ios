@@ -44,7 +44,7 @@
             [_promptBtn setImage:[UIImage imageNamed:@"PWPrompt"] forState:UIControlStateNormal];
             height = (H + ScreenScale(120));
         }
-        height = MIN(height, ScreenScale(380));
+        height = MIN(height, ScreenScale(360));
         self.bounds = CGRectMake(0, 0, Alert_Width, height);
     }
     return self;

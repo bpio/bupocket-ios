@@ -256,9 +256,10 @@
     }
     if (self.inputType != InputTypeWalletName && self.inputType != InputTypeNodeAdd && self.inputType != InputTypeNodeEdit) {
         [self confirmPW];
-    }
-    if (_sureBlock) {
-        _sureBlock(self.text , [NSArray array]);
+    } else {
+        if (_sureBlock) {
+            _sureBlock(self.text , [NSArray array]);
+        }
     }
 }
 - (void)confirmPW

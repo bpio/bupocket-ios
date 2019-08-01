@@ -84,6 +84,7 @@ static NSString * const ChooseVoucherCellID = @"ChooseVoucherCellID";
     if (self.transferType == TransferTypeAssets) {
         title = Localized(@"TransferAccounts");
         self.listArray = [NSMutableArray arrayWithObjects:@[[NSString stringWithFormat:@"%@ *", Localized(@"ReceivingAccount")], Localized(@"ReceiveAddressPlaceholder")], @[Localized(@"AmountOfTransfer*"), Localized(@"AmountOfTransferPlaceholder")], @[Localized(@"Remarks"), Localized(@"RemarksPlaceholder")], @[Localized(@"EstimatedMaximum"), Localized(@"TransactionCostPlaceholder")], nil];
+        self.minAssetsTxFee = TransactionCost_MIN;
         if (self.listModel.type == Token_Type_BU) {
             NSDecimalNumber * amountNumber = [NSDecimalNumber decimalNumberWithString:self.listModel.amount];
             NSDecimalNumber * minLimitationNumber = [NSDecimalNumber decimalNumberWithString:[[NSUserDefaults standardUserDefaults] objectForKey:Minimum_Asset_Limitation]];
@@ -190,7 +191,7 @@ static NSString * const ChooseVoucherCellID = @"ChooseVoucherCellID";
                 } else {
                     if ([self.availableAmount floatValue] - [self.valueStr integerValue] < 0) {
                         [MBProgressHUD hideHUD];
-                        [MBProgressHUD showTipMessageInWindow:@"可用资产数量不足"];
+                        [MBProgressHUD showTipMessageInWindow:Localized(@"NotSufficientFunds")];
                         return;
                     }
                 }

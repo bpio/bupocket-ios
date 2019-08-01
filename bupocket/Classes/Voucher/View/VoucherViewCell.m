@@ -147,7 +147,9 @@ static NSString * const VoucherDetailCellID = @"VoucherDetailCellID";
     [self.listImage sd_setImageWithURL:[NSURL URLWithString:voucherModel.voucherIcon] placeholderImage:[UIImage imageNamed:@"good_placehoder"]];
 //    self.title.text = voucherModel.voucherName;
     self.title.attributedText = [Encapsulation attrWithString:voucherModel.voucherName font:FONT_Bold(14) color:TITLE_COLOR lineSpacing:ScreenScale(3)];
-    self.value.text = [NSString stringWithFormat:Localized(@"Value:%@"), voucherModel.faceValue];
+    NSString * faceValue = NotNULLString(voucherModel.faceValue) ? [NSString stringWithFormat:Localized(@"Value:%@"), voucherModel.faceValue] : @"";
+    self.value.text = faceValue;
+    
     self.number.text = [NSString stringWithFormat:@"× %@", voucherModel.balance];
 //    self.number.attributedText = [Encapsulation attrWithString:[NSString stringWithFormat:@"×%@", voucherModel.balance] preFont:FONT(18) preColor:TITLE_COLOR index:1 sufFont:FONT(18) sufColor:TITLE_COLOR lineSpacing:0];
     NSString * startTime = ([voucherModel.startTime isEqualToString:Voucher_Validity_Date]) ? @"~" : [DateTool getDateStringWithDataStr:voucherModel.startTime];

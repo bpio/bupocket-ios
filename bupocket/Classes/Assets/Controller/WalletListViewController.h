@@ -8,9 +8,13 @@
 
 #import "BaseViewController.h"
 
+//typedef void (^ChangeWalletBlock) (void);
+
 NS_ASSUME_NONNULL_BEGIN
 
 @interface WalletListViewController : BaseViewController
+
+//@property(nonatomic, copy) ChangeWalletBlock changeWallet;
 
 @end
 
