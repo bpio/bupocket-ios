@@ -145,14 +145,12 @@
         UIButton * cancel = [UIButton createButtonWithTitle:Localized(@"Cancel") TextFont:Alert_Button_Font TextNormalColor:Alert_Button_Color TextSelectedColor:Alert_Button_Color Target:self Selector:@selector(cancleBtnClick)];
         [self addSubview:cancel];
         [cancel mas_makeConstraints:^(MASConstraintMaker *make) {
-            make.top.equalTo(line.mas_bottom);
             make.left.bottom.equalTo(self);
             make.size.mas_equalTo(CGSizeMake(btnW, Alert_Button_Height));
         }];
     }
     [self addSubview:self.confirm];
     [self.confirm mas_makeConstraints:^(MASConstraintMaker *make) {
-        make.top.equalTo(line.mas_bottom);
         make.bottom.right.equalTo(self);
         make.size.mas_equalTo(CGSizeMake(btnW, Alert_Button_Height));
     }];

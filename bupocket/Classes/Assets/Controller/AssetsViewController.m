@@ -118,8 +118,14 @@
     self.navBackgroundColor = [UIColor whiteColor];
     self.navTitleColor = self.navTintColor = [UIColor whiteColor];
 }
-- (void)viewWillAppear:(BOOL)animated {
-    [super viewWillAppear:animated];
+//- (void)viewWillAppear:(BOOL)animated {
+//    [super viewWillAppear:animated];
+//    [self.tableView.mj_header beginRefreshing];
+//    self.navigationItem.title = CurrentWalletName ? CurrentWalletName : Current_WalletName;
+//}
+- (void)viewDidAppear:(BOOL)animated
+{
+    [super viewDidAppear:animated];
     [self.tableView.mj_header beginRefreshing];
     self.navigationItem.title = CurrentWalletName ? CurrentWalletName : Current_WalletName;
 }

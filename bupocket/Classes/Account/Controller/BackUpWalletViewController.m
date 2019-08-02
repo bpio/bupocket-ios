@@ -104,7 +104,7 @@
 //        make.height.mas_equalTo(MAIN_HEIGHT);
 //    }];
     [self.view layoutIfNeeded];
-    self.scrollView.contentSize = CGSizeMake(0, CGRectGetMaxY(noteLabel.frame) + ContentInset_Bottom);
+    self.scrollView.contentSize = CGSizeMake(0, CGRectGetMaxY(noteLabel.frame) + NavBarH + ContentSize_Bottom + ContentInset_Bottom);
 }
 - (CGFloat)getNoteTextHeightWithText:(NSString *)text
 {

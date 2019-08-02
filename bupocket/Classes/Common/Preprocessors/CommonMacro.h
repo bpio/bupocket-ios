@@ -56,6 +56,7 @@
 #define Alert_Button_Height ScreenScale(53)
 #define LINE_SPACING Margin_5
 #define ContentInset_Bottom (SafeAreaBottomH + ScreenScale(85))
+#define ContentSize_Bottom Margin_20
 #define TextViewH ScreenScale(100)
 #define Subtitle_EdgeInsets_Y ScreenScale(3)
 #define Detail_Main_Height ScreenScale(35)

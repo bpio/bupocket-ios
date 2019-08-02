@@ -131,7 +131,7 @@ static NSString * const VoucherDetailCellID = @"VoucherDetailCellID";
     [self.loadingBg mas_makeConstraints:^(MASConstraintMaker *make) {
         make.edges.equalTo(imageBg);
     }];
-    self.scrollView.contentSize = CGSizeMake(DEVICE_WIDTH, self.imageBgH + ScreenScale(100) + NavBarH + SafeAreaBottomH);
+    self.scrollView.contentSize = CGSizeMake(DEVICE_WIDTH, self.imageBgH + Margin_15 + ContentSizeBottom);
     self.tableView = [[UITableView alloc] initWithFrame:imageBg.bounds style:UITableViewStyleGrouped];
     self.tableView.delegate = self;
     self.tableView.dataSource = self;

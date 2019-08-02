@@ -597,6 +597,9 @@ static int64_t const gasPrice = 1000;
 // Contract Transaction hash
 - (BOOL)getTransactionHashWithModel:(ConfirmTransactionModel *)confirmTransactionModel
 {
+    dispatch_async(dispatch_get_main_queue(), ^{
+        [MBProgressHUD showActivityMessageInWindow:Localized(@"Loading")];
+    });
     NSString * sourceAddress = CurrentWalletAddress;
     NSString * ID = confirmTransactionModel.qrcodeSessionId;
     if (confirmTransactionModel.nodeId) {

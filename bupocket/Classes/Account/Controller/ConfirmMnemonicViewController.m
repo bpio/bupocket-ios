@@ -133,7 +133,7 @@
     self.finish = finish;
      */
     [self.view layoutIfNeeded];
-    self.scrollView.contentSize = CGSizeMake(0, CGRectGetMaxY(lineView.frame) + tagH + ContentSizeBottom + ScreenScale(100));
+    self.scrollView.contentSize = CGSizeMake(0, CGRectGetMaxY(lineView.frame) + ScreenScale(135) + (tagH + Margin_10) * (self.mnemonicArray.count / 4) + ContentInset_Bottom);
 }
 - (void)tagAction:(UIButton *)button
 {

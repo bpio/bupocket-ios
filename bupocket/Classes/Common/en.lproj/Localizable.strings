@@ -627,7 +627,7 @@
 "BusinessData" = "Processing business data";
 "BusinessDataPrompt" = "Business data is analyzed and processed according to the transaction metadata of the chain, and the processing is expected to be completed within 20 seconds.";
 "DataRefreshed" = "Data is refreshed";
-"NodeTransferPrompt" = "Tips: after transactions such as voting to \n node or withdrawing votes from \n node are successful on the chain, the statistics of related data are delayed, and it is expected to be completed within 30 seconds. ";
+"NodeTransferPrompt" = "Tips: \n after transactions such as voting to a node or withdrawing votes from a node are successful on the chain, the statistics of related data are delayed, and it is expected to be completed within 30 seconds.";
 // Transaction failure
 "ContractTransferFailure" = "The contract call failed";
 // Errors

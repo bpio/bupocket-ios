@@ -21,8 +21,6 @@
 @property (nonatomic, strong) UIView * line;
 @property (nonatomic, strong) UITableView * infoTableView;
 @property (nonatomic, strong) UITableView * detailTableView;
-//@property (nonatomic, strong) UIScrollView * infoScrollView;
-//@property (nonatomic, strong) UIScrollView * transactionScrollView;
 @property (nonatomic, strong) NSArray * titleArray;
 @property (nonatomic, strong) UIButton * details;
 @property (nonatomic, strong) CustomButton * back;
@@ -152,148 +150,6 @@
         make.size.centerX.equalTo(self.lineView);
     }];
 }
-/*
-- (void)setConfirmTransactionModel:(ConfirmTransactionModel *)confirmTransactionModel
-{
-    _confirmTransactionModel = confirmTransactionModel;
-    int transactionInfoCount = 6;
-    NSArray * infoArray;
-    self.transactionCost = TransactionCost_Check_MIN;
-    if ([self.confirmTransactionModel.type integerValue] == TransactionTypeCooperate) {
-        self.transactionCost = TransactionCost_Cooperate_MIN;
-    }
-    self.confirmTransactionModel.transactionCost = self.transactionCost;
-    NSString * qrRemark = self.confirmTransactionModel.qrRemark;
-    NSString * accountTag = self.confirmTransactionModel.accountTag;
-    if ([CurrentAppLanguage isEqualToString:EN]) {
-        if (self.confirmTransactionModel.qrRemarkEn) {
-            qrRemark = self.confirmTransactionModel.qrRemarkEn;
-        }
-        if (self.confirmTransactionModel.accountTagEn) {
-            accountTag = self.confirmTransactionModel.accountTagEn;
-        }
-    }
-    if (NotNULLString(self.confirmTransactionModel.destAddress)) {
-        _infoTitleArray = @[Localized(@"TransactionDetail"), Localized(@"ReceivingAccount"), Localized(@"MaximumTransactionCosts"), Localized(@"SendingAccount"), Localized(@"ReceivingAccount"), Localized(@"Number（BU）"), Localized(@"TransactionCosts（BU）"), Localized(@"Parameter")];
-        NSString * destAddress;
-        if (NotNULLString(accountTag)) {
-            destAddress = [NSString stringWithFormat:@"%@%@", self.confirmTransactionModel.destAddress, accountTag];
-        } else {
-            destAddress = self.confirmTransactionModel.destAddress;
-        }
-        infoArray = @[qrRemark, destAddress, self.transactionCost, CurrentWalletAddress, destAddress, self.confirmTransactionModel.amount, self.transactionCost, self.confirmTransactionModel.script];
-        
-    } else {
-        _infoTitleArray = @[Localized(@"TransactionDetail"), Localized(@"MaximumTransactionCosts"), Localized(@"SendingAccount"), Localized(@"Number（BU）"), Localized(@"TransactionCosts（BU）"), Localized(@"Parameter")];
-        transactionInfoCount = 4;
-        infoArray = @[qrRemark, self.transactionCost, CurrentWalletAddress, self.confirmTransactionModel.amount, self.transactionCost, self.confirmTransactionModel.script];
-    }
-    
-    CGFloat infoLabelTotalH = 0;
-    CGFloat transactionTotalH = 0;
-    for (NSInteger i = 0; i < _infoTitleArray.count * 2; i++) {
-        UILabel * infoLabel = [[UILabel alloc] init];
-        infoLabel.tag = i;
-        if (i < transactionInfoCount) {
-            [self.transactionScrollView addSubview:infoLabel];
-        } else {
-            [self.infoScrollView addSubview:infoLabel];
-        }
-        if (i % 2) {
-            infoLabel.font = FONT(14);
-            infoLabel.textColor = COLOR_6;
-            infoLabel.text = infoArray[i / 2];
-        } else {
-            infoLabel.font = FONT(13);
-            infoLabel.textColor = COLOR_9;
-            infoLabel.text = self.infoTitleArray[i / 2];
-        }
-        CGFloat infoLabelX = Margin_20;
-        CGFloat infoLabelW = DEVICE_WIDTH - Margin_40;
-        infoLabel.preferredMaxLayoutWidth = infoLabelW;
-        infoLabel.numberOfLines = 0;
-        [infoLabel sizeToFit];
-        CGFloat infoLabelH = ceil([Encapsulation rectWithText:infoLabel.text font:infoLabel.font textWidth:infoLabelW].size.height) + 1;
-        if (i == 0 && [_confirmTransactionModel.type integerValue] == TransactionTypeApplyNode) {
-            infoLabelTotalH = self.amount.height;
-        } else if (i == transactionInfoCount) {
-            transactionTotalH = infoLabelTotalH + Margin_50;
-            infoLabelTotalH = Margin_15;
-        } else if (i % 2) {
-            infoLabelTotalH += Margin_5;
-        } else {
-            infoLabelTotalH += Margin_15;
-        }
-        [infoLabel mas_makeConstraints:^(MASConstraintMaker *make) {
-            make.left.mas_equalTo(infoLabelX);
-            make.top.mas_equalTo(infoLabelTotalH);
-            make.size.mas_equalTo(CGSizeMake(infoLabelW, infoLabelH));
-        }];
-        infoLabelTotalH = infoLabelTotalH + infoLabelH;
-    }
-    
-    infoLabelTotalH = infoLabelTotalH + Margin_15;
-    _infoScrollView.contentSize = CGSizeMake(0, infoLabelTotalH);
-    _transactionScrollView.contentSize = CGSizeMake(0, transactionTotalH);
-}
-- (void)setDposModel:(DposModel *)dposModel
-{
-    _dposModel = dposModel;
-    int transactionInfoCount = 6;
-    NSArray * infoArray;
-    self.transactionCost = dposModel.tx_fee;
-    NSString * destAddress = dposModel.dest_address;
-    _infoTitleArray = @[Localized(@"TransactionDetail"), Localized(@"ReceivingAccount"), Localized(@"MaximumTransactionCosts"), Localized(@"SendingAccount"), Localized(@"ReceivingAccount"), Localized(@"Number（BU）"), Localized(@"TransactionCosts（BU）"), Localized(@"Parameter")];
-    infoArray = @[Localized(@"DposContract"), destAddress, self.transactionCost, CurrentWalletAddress, destAddress, dposModel.amount, self.transactionCost, dposModel.input];
-    
-    CGFloat infoLabelTotalH = 0;
-    CGFloat transactionTotalH = 0;
-    for (NSInteger i = 0; i < _infoTitleArray.count * 2; i++) {
-        UILabel * infoLabel = [[UILabel alloc] init];
-        infoLabel.tag = i;
-        if (i < transactionInfoCount) {
-            [self.transactionScrollView addSubview:infoLabel];
-        } else {
-            [self.infoScrollView addSubview:infoLabel];
-        }
-        if (i % 2) {
-            infoLabel.font = FONT(14);
-            infoLabel.textColor = COLOR_6;
-            infoLabel.text = infoArray[i / 2];
-        } else {
-            infoLabel.font = FONT(13);
-            infoLabel.textColor = COLOR_9;
-            infoLabel.text = self.infoTitleArray[i / 2];
-        }
-        CGFloat infoLabelX = Margin_20;
-        CGFloat infoLabelW = DEVICE_WIDTH - Margin_40;
-        infoLabel.preferredMaxLayoutWidth = infoLabelW;
-        infoLabel.numberOfLines = 0;
-        [infoLabel sizeToFit];
-        CGFloat infoLabelH = ceil([Encapsulation rectWithText:infoLabel.text font:infoLabel.font textWidth:infoLabelW].size.height) + 1;
-        if (i == 0 && [_confirmTransactionModel.type integerValue] == TransactionTypeApplyNode) {
-            infoLabelTotalH = self.amount.height;
-        } else if (i == transactionInfoCount) {
-            transactionTotalH = infoLabelTotalH + Margin_50;
-            infoLabelTotalH = Margin_15;
-        } else if (i % 2) {
-            infoLabelTotalH += Margin_5;
-        } else {
-            infoLabelTotalH += Margin_15;
-        }
-        [infoLabel mas_makeConstraints:^(MASConstraintMaker *make) {
-            make.left.mas_equalTo(infoLabelX);
-            make.top.mas_equalTo(infoLabelTotalH);
-            make.size.mas_equalTo(CGSizeMake(infoLabelW, infoLabelH));
-        }];
-        infoLabelTotalH = infoLabelTotalH + infoLabelH;
-    }
-    
-    infoLabelTotalH = infoLabelTotalH + Margin_15;
-    _infoScrollView.contentSize = CGSizeMake(0, infoLabelTotalH);
-    _transactionScrollView.contentSize = CGSizeMake(0, transactionTotalH);
-}
- */
 - (UIScrollView *)bgScrollView
 {
     if (!_bgScrollView) {
@@ -436,11 +292,14 @@
         NSDecimalNumber * amount = [NSDecimalNumber decimalNumberWithString:self.confirmTransactionModel.amount];
         NSDecimalNumber * minTransactionCost = [NSDecimalNumber decimalNumberWithString:self.confirmTransactionModel.transactionCost];
         NSDecimalNumber * totleAmount = [amount decimalNumberByAdding:minTransactionCost];
-        NSDecimalNumber * amountNumber = [[HTTPManager shareManager] getDataWithBalanceJudgmentWithCost:[totleAmount stringValue] ifShowLoading:NO];
+        NSDecimalNumber * amountNumber = [[HTTPManager shareManager] getDataWithBalanceJudgmentWithCost:[totleAmount stringValue] ifShowLoading:YES];
         NSString * totleAmountStr = [amountNumber stringValue];
         if (!NotNULLString(totleAmountStr) || [amountNumber isEqualToNumber:NSDecimalNumber.notANumber]) {
+            DLog(@"数据有误");
         } else if ([totleAmountStr hasPrefix:@"-"]) {
-            [MBProgressHUD showTipMessageInWindow:Localized(@"NotSufficientFunds")];
+            dispatch_async(dispatch_get_main_queue(), ^{
+                [MBProgressHUD showTipMessageInWindow:Localized(@"NotSufficientFunds")];
+            });
         } else {
             if (self.handlerType == HandlerTypeTransferDposCommand) {
                 if (![[HTTPManager shareManager] getTransactionWithDposModel: self.dposModel isDonateVoucher:NO]) return;

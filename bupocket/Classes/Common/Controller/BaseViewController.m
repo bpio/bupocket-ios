@@ -18,6 +18,7 @@
 
 #import "RegisteredResultViewController.h"
 #import "DistributionResultsViewController.h"
+#import "BackUpWalletViewController.h"
 //#import "LoginConfirmViewController.h"
 //#import "ScanCodeFailureViewController.h"
 
@@ -49,11 +50,7 @@
 }
 - (void)back
 {
-    if ([self isKindOfClass:[TransferResultsViewController class]] ||
-        [self isKindOfClass:[RequestTimeoutViewController class]] ||
-        [self isKindOfClass:[RegisteredResultViewController class]] ||
-        [self isKindOfClass:[DistributionResultsViewController class]]  ||
-        [self isKindOfClass:[ResultViewController class]]) {
+    if ([self isBackRootVC]) {
         [self.navigationController popToRootViewControllerAnimated:YES];
     } else {
         [self.navigationController popViewControllerAnimated:YES];
@@ -72,10 +69,24 @@
 - (BOOL)gestureRecognizerShouldBegin:(UIGestureRecognizer *)gestureRecognizer
 {
     NSArray * VCs = self.navigationController.viewControllers;
-    if (VCs.count > 1 && [[VCs firstObject] isKindOfClass:[AssetsViewController class]]) {
+//    if ((VCs.count == 2 && [[VCs firstObject] isKindOfClass:[AssetsViewController class]]) || [self isBackRootVC]) {
+    if ([self isBackRootVC]) {
         return NO;
     } else {
         return ![self isRootViewController];
+    }
+}
+- (BOOL)isBackRootVC
+{
+    if ([self isKindOfClass:[TransferResultsViewController class]] ||
+        [self isKindOfClass:[RequestTimeoutViewController class]] ||
+        [self isKindOfClass:[RegisteredResultViewController class]] ||
+        [self isKindOfClass:[DistributionResultsViewController class]] ||
+        [self isKindOfClass:[ResultViewController class]] ||
+        [self isKindOfClass:[BackUpWalletViewController class]]) {
+        return YES;
+    } else {
+        return NO;
     }
 }
 - (void)handleNavigationTransition:(UIPanGestureRecognizer *)recognizer

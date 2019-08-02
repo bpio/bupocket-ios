@@ -89,7 +89,7 @@
         make.size.centerX.equalTo(confirmBtn);
     }];
     [self.view layoutIfNeeded];
-    self.scrollView.contentSize = CGSizeMake(0, CGRectGetMaxY(cancelBtn.frame) + ContentSizeBottom + ScreenScale(100));
+    self.scrollView.contentSize = CGSizeMake(0, CGRectGetMaxY(cancelBtn.frame) + ContentSizeBottom);
 }
 
 - (void)confirmAction

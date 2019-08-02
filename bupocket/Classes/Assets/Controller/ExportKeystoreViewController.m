@@ -71,7 +71,7 @@
 //    }];
     
     [self.view layoutIfNeeded];
-    self.scrollView.contentSize = CGSizeMake(0, CGRectGetMaxY(keystore.frame) + NavBarH + ContentInset_Bottom);
+    self.scrollView.contentSize = CGSizeMake(0, CGRectGetMaxY(keystore.frame) + ContentSize_Bottom + NavBarH + ContentInset_Bottom);
 }
 
 - (void)copyAction

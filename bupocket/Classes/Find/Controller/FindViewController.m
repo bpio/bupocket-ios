@@ -63,6 +63,7 @@
         [self.tableView.mj_header endRefreshing];
     } failure:^(NSError *error) {
         [self.tableView.mj_header endRefreshing];
+        self.tableView.tableHeaderView = [[UIView alloc] initWithFrame:CGRectMake(0, 0, 0, CGFLOAT_MIN)];
     }];
 }
 

@@ -51,9 +51,8 @@
         make.centerX.mas_equalTo(0);
         make.width.mas_equalTo(View_Width_Main);
     }];
-    
     [self.view layoutIfNeeded];
-    self.scrollView.contentSize = CGSizeMake(0, CGRectGetMaxY(infoLabel.frame) + ContentSizeBottom + ScreenScale(100));
+    self.scrollView.contentSize = CGSizeMake(0, CGRectGetMaxY(infoLabel.frame) + ContentSizeBottom);
 }
 
 /*
