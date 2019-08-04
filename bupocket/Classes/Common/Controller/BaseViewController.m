@@ -9,8 +9,6 @@
 #import "BaseViewController.h"
 
 #import "AssetsViewController.h"
-//#import "AddAssetsViewController.h"
-//#import "AssetsDetailViewController.h"
 #import "TransferResultsViewController.h"
 #import "ResultViewController.h"
 #import "TransactionDetailsViewController.h"
@@ -68,7 +66,7 @@
 }
 - (BOOL)gestureRecognizerShouldBegin:(UIGestureRecognizer *)gestureRecognizer
 {
-    NSArray * VCs = self.navigationController.viewControllers;
+//    NSArray * VCs = self.navigationController.viewControllers;
 //    if ((VCs.count == 2 && [[VCs firstObject] isKindOfClass:[AssetsViewController class]]) || [self isBackRootVC]) {
     if ([self isBackRootVC]) {
         return NO;

@@ -43,4 +43,7 @@ typedef NS_ENUM(NSInteger, UIViewBorderLineType) {
 // UIView 分开设置边框
 + (void)setViewBorder:(UIView *)view color:(UIColor *)color border:(float)border type:(UIViewBorderLineType)borderLineType;
 
+// 设置旋转动画
+- (void)setTransformAnimation;
+
 @end

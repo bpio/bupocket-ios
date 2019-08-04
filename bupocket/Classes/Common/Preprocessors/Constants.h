@@ -27,6 +27,8 @@
 
 #define Information_URL @"https://m-news.bumo.io"
 
+// 设备绑定
+#define Device_Bind @"wallet/device/bind"
 // App type 1-android 2-iOS
 #define Version_Update @"wallet/version?appType=2"
 #define Version_Log @"wallet/version/log"
@@ -95,8 +97,15 @@
 #define Voucher_List @"voucher/v1/my/list"
 #define Voucher_Detail @"voucher/v1/detail"
 
+// 红包
+#define Activity_Status @"activity/v1/open/status"
+#define Activity_Bonus_Status @"activity/bonus/v1/status"
+#define Open_Bonus @"activity/bonus/v1/open"
+#define Activity_Detail @"activity/bonus/v1/detail"
+
 
 #define HDPaths @[@"M/44H/526H/0H/0/0", @"M/44H/526H/1H/0/0"]
+#define KeyChain_UUID @"KeyChainUUID"
 #define LastVersion @"LastVersion"
 // Identity creation
 #define If_Created @"ifCreated"
@@ -212,5 +221,8 @@
 
 // -1:没有有效期开始时间/结束时间
 #define Voucher_Validity_Date @"-1"
+
+// 活动id
+#define Activity_ID @"ActivityID"
 
 #endif /* Constants_h */

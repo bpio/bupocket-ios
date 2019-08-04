@@ -100,6 +100,18 @@
 		95162FDF22C77A070024FD22 /* VoucherViewCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 95162FDE22C77A070024FD22 /* VoucherViewCell.m */; };
 		95162FE222C9A9AA0024FD22 /* VoucherDetailViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 95162FE122C9A9AA0024FD22 /* VoucherDetailViewController.m */; };
 		95162FE522CB3D9B0024FD22 /* AcceptorViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 95162FE422CB3D9B0024FD22 /* AcceptorViewController.m */; };
+		95179FB122F43B3C0094E750 /* RedEnvelopesViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 95179FB022F43B3C0094E750 /* RedEnvelopesViewController.m */; };
+		95179FBC22F525130094E750 /* CFCycleScrollViewCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 95179FB422F525130094E750 /* CFCycleScrollViewCell.m */; };
+		95179FBD22F525130094E750 /* CFCycleScrollView.m in Sources */ = {isa = PBXBuildFile; fileRef = 95179FB822F525130094E750 /* CFCycleScrollView.m */; };
+		95179FBE22F525130094E750 /* NSTimer+CFNoCycleRetain.m in Sources */ = {isa = PBXBuildFile; fileRef = 95179FB922F525130094E750 /* NSTimer+CFNoCycleRetain.m */; };
+		95179FC822F53EA30094E750 /* OpenRedEnvelopes.m in Sources */ = {isa = PBXBuildFile; fileRef = 95179FC722F53EA30094E750 /* OpenRedEnvelopes.m */; };
+		95179FCE22F55DC60094E750 /* RedEnvelopesInfo.m in Sources */ = {isa = PBXBuildFile; fileRef = 95179FCD22F55DC60094E750 /* RedEnvelopesInfo.m */; };
+		95179FDA22F697EC0094E750 /* getUUID.m in Sources */ = {isa = PBXBuildFile; fileRef = 95179FD622F697EC0094E750 /* getUUID.m */; };
+		95179FDB22F697EC0094E750 /* KeyChainStore.m in Sources */ = {isa = PBXBuildFile; fileRef = 95179FD822F697EC0094E750 /* KeyChainStore.m */; };
+		95179FDE22F6A2350094E750 /* DeviceInfo.m in Sources */ = {isa = PBXBuildFile; fileRef = 95179FDD22F6A2350094E750 /* DeviceInfo.m */; };
+		95179FE122F6CE250094E750 /* ActivityResultModel.m in Sources */ = {isa = PBXBuildFile; fileRef = 95179FE022F6CE250094E750 /* ActivityResultModel.m */; };
+		95179FE422F6D19D0094E750 /* ActivityInfoModel.m in Sources */ = {isa = PBXBuildFile; fileRef = 95179FE322F6D19D0094E750 /* ActivityInfoModel.m */; };
+		95179FE722F6DDC30094E750 /* ActivityAwardsModel.m in Sources */ = {isa = PBXBuildFile; fileRef = 95179FE622F6DDC30094E750 /* ActivityAwardsModel.m */; };
 		9519ED6D22E5883200A4AAC1 /* InfoViewCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 9519ED6C22E5883200A4AAC1 /* InfoViewCell.m */; };
 		9519ED7022E6A67E00A4AAC1 /* ChangePasswordViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 9519ED6F22E6A67E00A4AAC1 /* ChangePasswordViewController.m */; };
 		9519ED7622E8338F00A4AAC1 /* TransactionDetailsViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 9519ED7522E8338F00A4AAC1 /* TransactionDetailsViewController.m */; };
@@ -405,6 +417,30 @@
 		95162FE122C9A9AA0024FD22 /* VoucherDetailViewController.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = VoucherDetailViewController.m; sourceTree = "<group>"; };
 		95162FE322CB3D9B0024FD22 /* AcceptorViewController.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = AcceptorViewController.h; sourceTree = "<group>"; };
 		95162FE422CB3D9B0024FD22 /* AcceptorViewController.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = AcceptorViewController.m; sourceTree = "<group>"; };
+		95179FAF22F43B3C0094E750 /* RedEnvelopesViewController.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = RedEnvelopesViewController.h; sourceTree = "<group>"; };
+		95179FB022F43B3C0094E750 /* RedEnvelopesViewController.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = RedEnvelopesViewController.m; sourceTree = "<group>"; };
+		95179FB322F525130094E750 /* CFCycleScrollView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = CFCycleScrollView.h; sourceTree = "<group>"; };
+		95179FB422F525130094E750 /* CFCycleScrollViewCell.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = CFCycleScrollViewCell.m; sourceTree = "<group>"; };
+		95179FB522F525130094E750 /* NSTimer+CFNoCycleRetain.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "NSTimer+CFNoCycleRetain.h"; sourceTree = "<group>"; };
+		95179FB722F525130094E750 /* CFCycleScrollViewCell.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = CFCycleScrollViewCell.h; sourceTree = "<group>"; };
+		95179FB822F525130094E750 /* CFCycleScrollView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = CFCycleScrollView.m; sourceTree = "<group>"; };
+		95179FB922F525130094E750 /* NSTimer+CFNoCycleRetain.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "NSTimer+CFNoCycleRetain.m"; sourceTree = "<group>"; };
+		95179FC622F53EA30094E750 /* OpenRedEnvelopes.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = OpenRedEnvelopes.h; sourceTree = "<group>"; };
+		95179FC722F53EA30094E750 /* OpenRedEnvelopes.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = OpenRedEnvelopes.m; sourceTree = "<group>"; };
+		95179FCC22F55DC60094E750 /* RedEnvelopesInfo.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = RedEnvelopesInfo.h; sourceTree = "<group>"; };
+		95179FCD22F55DC60094E750 /* RedEnvelopesInfo.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = RedEnvelopesInfo.m; sourceTree = "<group>"; };
+		95179FD622F697EC0094E750 /* getUUID.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = getUUID.m; sourceTree = "<group>"; };
+		95179FD722F697EC0094E750 /* KeyChainStore.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = KeyChainStore.h; sourceTree = "<group>"; };
+		95179FD822F697EC0094E750 /* KeyChainStore.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = KeyChainStore.m; sourceTree = "<group>"; };
+		95179FD922F697EC0094E750 /* getUUID.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = getUUID.h; sourceTree = "<group>"; };
+		95179FDC22F6A2350094E750 /* DeviceInfo.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = DeviceInfo.h; sourceTree = "<group>"; };
+		95179FDD22F6A2350094E750 /* DeviceInfo.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = DeviceInfo.m; sourceTree = "<group>"; };
+		95179FDF22F6CE250094E750 /* ActivityResultModel.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = ActivityResultModel.h; sourceTree = "<group>"; };
+		95179FE022F6CE250094E750 /* ActivityResultModel.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = ActivityResultModel.m; sourceTree = "<group>"; };
+		95179FE222F6D19D0094E750 /* ActivityInfoModel.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = ActivityInfoModel.h; sourceTree = "<group>"; };
+		95179FE322F6D19D0094E750 /* ActivityInfoModel.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = ActivityInfoModel.m; sourceTree = "<group>"; };
+		95179FE522F6DDC30094E750 /* ActivityAwardsModel.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = ActivityAwardsModel.h; sourceTree = "<group>"; };
+		95179FE622F6DDC30094E750 /* ActivityAwardsModel.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = ActivityAwardsModel.m; sourceTree = "<group>"; };
 		9519ED6B22E5883200A4AAC1 /* InfoViewCell.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = InfoViewCell.h; sourceTree = "<group>"; };
 		9519ED6C22E5883200A4AAC1 /* InfoViewCell.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = InfoViewCell.m; sourceTree = "<group>"; };
 		9519ED6E22E6A67E00A4AAC1 /* ChangePasswordViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ChangePasswordViewController.h; sourceTree = "<group>"; };
@@ -611,6 +647,8 @@
 		833799292177091500C222A5 /* Tool */ = {
 			isa = PBXGroup;
 			children = (
+				95179FD222F693C10094E750 /* UDID */,
+				95179FB222F525130094E750 /* CFCycleScrollView */,
 				95B066B92282AA9D0005731A /* Wechat */,
 				959E2931225C9E04006FCA30 /* QQ */,
 				9579E74D21B5353700051EDB /* Lib */,
@@ -863,6 +901,8 @@
 				959E28EF2248B998006FCA30 /* LoginConfirmViewController.m */,
 				959E2906224CCA45006FCA30 /* ScanCodeFailureViewController.h */,
 				959E2907224CCA45006FCA30 /* ScanCodeFailureViewController.m */,
+				95179FAF22F43B3C0094E750 /* RedEnvelopesViewController.h */,
+				95179FB022F43B3C0094E750 /* RedEnvelopesViewController.m */,
 			);
 			path = Controller;
 			sourceTree = "<group>";
@@ -908,6 +948,12 @@
 				95B066C12282CD890005731A /* DposModel.m */,
 				9519ED8522F01AE100A4AAC1 /* DetailModel.h */,
 				9519ED8622F01AE100A4AAC1 /* DetailModel.m */,
+				95179FE222F6D19D0094E750 /* ActivityInfoModel.h */,
+				95179FE322F6D19D0094E750 /* ActivityInfoModel.m */,
+				95179FDF22F6CE250094E750 /* ActivityResultModel.h */,
+				95179FE022F6CE250094E750 /* ActivityResultModel.m */,
+				95179FE522F6DDC30094E750 /* ActivityAwardsModel.h */,
+				95179FE622F6DDC30094E750 /* ActivityAwardsModel.m */,
 			);
 			path = Model;
 			sourceTree = "<group>";
@@ -943,6 +989,10 @@
 				9538308322CE001A00607F0C /* BottomConfirmAlertView.m */,
 				9513638B22B88DE300BF8DF5 /* BottomAlertView.h */,
 				9513638C22B88DE300BF8DF5 /* BottomAlertView.m */,
+				95179FC622F53EA30094E750 /* OpenRedEnvelopes.h */,
+				95179FC722F53EA30094E750 /* OpenRedEnvelopes.m */,
+				95179FCC22F55DC60094E750 /* RedEnvelopesInfo.h */,
+				95179FCD22F55DC60094E750 /* RedEnvelopesInfo.m */,
 			);
 			path = View;
 			sourceTree = "<group>";
@@ -1135,6 +1185,32 @@
 				9519ED6C22E5883200A4AAC1 /* InfoViewCell.m */,
 			);
 			path = View;
+			sourceTree = "<group>";
+		};
+		95179FB222F525130094E750 /* CFCycleScrollView */ = {
+			isa = PBXGroup;
+			children = (
+				95179FB322F525130094E750 /* CFCycleScrollView.h */,
+				95179FB822F525130094E750 /* CFCycleScrollView.m */,
+				95179FB722F525130094E750 /* CFCycleScrollViewCell.h */,
+				95179FB422F525130094E750 /* CFCycleScrollViewCell.m */,
+				95179FB522F525130094E750 /* NSTimer+CFNoCycleRetain.h */,
+				95179FB922F525130094E750 /* NSTimer+CFNoCycleRetain.m */,
+			);
+			path = CFCycleScrollView;
+			sourceTree = "<group>";
+		};
+		95179FD222F693C10094E750 /* UDID */ = {
+			isa = PBXGroup;
+			children = (
+				95179FDC22F6A2350094E750 /* DeviceInfo.h */,
+				95179FDD22F6A2350094E750 /* DeviceInfo.m */,
+				95179FD922F697EC0094E750 /* getUUID.h */,
+				95179FD622F697EC0094E750 /* getUUID.m */,
+				95179FD722F697EC0094E750 /* KeyChainStore.h */,
+				95179FD822F697EC0094E750 /* KeyChainStore.m */,
+			);
+			path = UDID;
 			sourceTree = "<group>";
 		};
 		95266C9F226F062E002CD915 /* Find */ = {
@@ -1625,6 +1701,7 @@
 				83B594B42175F46E009F91BA /* TermsOfUseViewController.m in Sources */,
 				959726CB21E5A8640022CB78 /* ImportWalletViewController.m in Sources */,
 				83379AAA217F006600C222A5 /* HttpTool.m in Sources */,
+				95179FBC22F525130094E750 /* CFCycleScrollViewCell.m in Sources */,
 				8372C86F2174D03F00FF9506 /* UIButton+Extension.m in Sources */,
 				95266CDE226F062E002CD915 /* LinkAlertView.m in Sources */,
 				9513639C22B8CCDF00BF8DF5 /* WalletTool.m in Sources */,
@@ -1652,6 +1729,7 @@
 				9538307E22CCC04A00607F0C /* AssetIssuerViewController.m in Sources */,
 				95266CE422703868002CD915 /* CooperateDetailViewCell.m in Sources */,
 				95B066C22282CD890005731A /* DposModel.m in Sources */,
+				95179FDA22F697EC0094E750 /* getUUID.m in Sources */,
 				95D92D9522BB6E1400AFC8C2 /* AboutUsViewController.m in Sources */,
 				95A8A3B9219D15D8008E978E /* RegexPatternTool.m in Sources */,
 				8395AF34218958840082EA30 /* TransactionResultModel.m in Sources */,
@@ -1666,6 +1744,7 @@
 				9538308A22CF10E500607F0C /* VoucherModel.m in Sources */,
 				83379A89217DA4F900C222A5 /* AssetsDetailListViewCell.m in Sources */,
 				951363A222B9E2B000BF8DF5 /* SubtitleListViewCell.m in Sources */,
+				95179FE422F6D19D0094E750 /* ActivityInfoModel.m in Sources */,
 				959E28FF224A1B6A006FCA30 /* LoginConfirmModel.m in Sources */,
 				959726D721E5E76F0022CB78 /* ImportWalletModeViewController.m in Sources */,
 				959726E821E893400022CB78 /* SafetyReinforcementAlertView.m in Sources */,
@@ -1681,16 +1760,19 @@
 				95A8A3BF219D166D008E978E /* Encapsulation.m in Sources */,
 				958AA69821A2A89600BEA50C /* CustomRefreshFooter.m in Sources */,
 				83D5BCCE2182A87B00BF1FF1 /* AccountModel.m in Sources */,
+				95179FCE22F55DC60094E750 /* RedEnvelopesInfo.m in Sources */,
 				83FB443921904AA400D68569 /* HMScanerCardViewController.m in Sources */,
 				95266CE0226F062E002CD915 /* SupportAlertView.m in Sources */,
 				9519ED6D22E5883200A4AAC1 /* InfoViewCell.m in Sources */,
 				9513639B22B8CCDF00BF8DF5 /* WalletModel.m in Sources */,
 				83379AC6217F3F4200C222A5 /* AssetsListModel.m in Sources */,
 				9594E5CE222938AF006EFB6D /* AddressBookCache.m in Sources */,
+				95179FDB22F697EC0094E750 /* KeyChainStore.m in Sources */,
 				95266CD8226F062E002CD915 /* CooperateSupportModel.m in Sources */,
 				8372C8692174CCA000FF9506 /* AssetsViewController.m in Sources */,
 				952EA85B22C3550F00AD1F8D /* CustomEnvironmentViewController.m in Sources */,
 				95266CCD226F062E002CD915 /* NodePlanViewController.m in Sources */,
+				95179FBE22F525130094E750 /* NSTimer+CFNoCycleRetain.m in Sources */,
 				95D92D9822BB85E600AFC8C2 /* VersionLogViewController.m in Sources */,
 				83B594B72175FC8B009F91BA /* BackupMnemonicsViewController.m in Sources */,
 				95266CD4226F062E002CD915 /* AdsModel.m in Sources */,
@@ -1704,6 +1786,8 @@
 				83379AE8218066FE00C222A5 /* BlockInfoModel.m in Sources */,
 				95266CD2226F062E002CD915 /* FindViewController.m in Sources */,
 				95D92DAA22C22D3E00AFC8C2 /* ModifyIconAlertView.m in Sources */,
+				95179FE722F6DDC30094E750 /* ActivityAwardsModel.m in Sources */,
+				95179FDE22F6A2350094E750 /* DeviceInfo.m in Sources */,
 				958127F2219AC82A0081A02E /* VersionModel.m in Sources */,
 				838DC7682186AFFB002FF276 /* DistributionResultsViewController.m in Sources */,
 				95266CCE226F062E002CD915 /* CooperateViewController.m in Sources */,
@@ -1718,6 +1802,7 @@
 				95A8A41C219D5FF7008E978E /* YBPopupMenu.m in Sources */,
 				95266CD6226F062E002CD915 /* VotingRecordsModel.m in Sources */,
 				9519ED8722F01AE100A4AAC1 /* DetailModel.m in Sources */,
+				95179FBD22F525130094E750 /* CFCycleScrollView.m in Sources */,
 				83EE39422181633A0017CDE5 /* AddAssetsViewController.m in Sources */,
 				8395AF2B218843650082EA30 /* RegisteredModel.m in Sources */,
 				8395AF25218725FF0082EA30 /* RegisteredResultViewController.m in Sources */,
@@ -1740,6 +1825,7 @@
 				9538308722CEE93D00607F0C /* ResultViewController.m in Sources */,
 				9513638A22B7A1A100BF8DF5 /* BackUpWalletViewController.m in Sources */,
 				959726F121E8CAAA0022CB78 /* WalletAddressAlertView.m in Sources */,
+				95179FB122F43B3C0094E750 /* RedEnvelopesViewController.m in Sources */,
 				95162FDF22C77A070024FD22 /* VoucherViewCell.m in Sources */,
 				83D5B1F1218199E900BF1FF1 /* JsonTool.m in Sources */,
 				83B465A821745C9300187961 /* ViewController.m in Sources */,
@@ -1753,6 +1839,7 @@
 				95A8A41D219D5FF7008E978E /* YBRectConst.m in Sources */,
 				959575C821FFF8010089479C /* AddressBookModel.m in Sources */,
 				95162FE522CB3D9B0024FD22 /* AcceptorViewController.m in Sources */,
+				95179FE122F6CE250094E750 /* ActivityResultModel.m in Sources */,
 				833799172176E1E600C222A5 /* ListTableViewCell.m in Sources */,
 				9519ED7622E8338F00A4AAC1 /* TransactionDetailsViewController.m in Sources */,
 				959575CB21FFFD040089479C /* ContactViewController.m in Sources */,
@@ -1765,6 +1852,7 @@
 				959575C421FFF6EB0089479C /* AddressBookListViewCell.m in Sources */,
 				83379A092178509300C222A5 /* WKWebViewController.m in Sources */,
 				9519ED7022E6A67E00A4AAC1 /* ChangePasswordViewController.m in Sources */,
+				95179FC822F53EA30094E750 /* OpenRedEnvelopes.m in Sources */,
 				83379A6221797BDD00C222A5 /* ConfirmMnemonicViewController.m in Sources */,
 				95266CD3226F062E002CD915 /* CooperateDetailViewController.m in Sources */,
 				95266CDA226F062E002CD915 /* NodeTransferSuccessViewCell.m in Sources */,

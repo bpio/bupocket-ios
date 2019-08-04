@@ -101,6 +101,8 @@
 	<string>允许此权限才能访问：麦克风</string>
 	<key>NSPhotoLibraryUsageDescription</key>
 	<string>bupocket需要访问您的相册，为了帮您进行相关图片的扫描</string>
+    <key>NSPhotoLibraryAddUsageDescription</key>
+    <string>bupocket需要访问您的相册，为了帮您保存图片到相册</string>
 	<key>UIMainStoryboardFile</key>
 	<string>Main</string>
 	<key>UIRequiredDeviceCapabilities</key>

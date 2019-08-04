@@ -40,6 +40,19 @@
     [WXApi registerApp:Wechat_APP_ID];
     _tencentOAuth = [[TencentOAuth alloc] initWithAppId:Tencent_App_ID andDelegate:self];
     [UMConfigure initWithAppkey:UM_App_Key channel:@""];
+    
+//    NSData * addressData = [@"buQtvuyYA3u5Yxs28vBmwEZKB3TPuUcNhxbw" dataUsingEncoding:NSUTF8StringEncoding];
+//    NSData * data = [Keypair sign:addressData :@"privbsaPXTFM9Dq2d5nC9Tm1zUWTy1zBrQKQe4ZoCvWkpDLNrbzxnH9x"];
+//    [Tools dataToHexStr:<#(NSData *)#>]
+//    id dataStr = [NSJSONSerialization JSONObjectWithData:data options:NSJSONReadingAllowFragments error:nil];
+//    NSString * keychainUUID = [DeviceInfo getDeviceID];
+//    NSLog(@"keychainUUID : %@", keychainUUID);
+//    NSString *udid = [getUUID getUUID];
+//    NSLog(@"udid in keychain %@", udid);
+//
+//    NSLog(@"current identityForVendor %@", [UIDevice currentDevice].identifierForVendor);
+//    NSString *deviceUUID = [[[UIDevice currentDevice] identifierForVendor] UUIDString];
+//    NSLog(@"设备的UUID： %@",deviceUUID);
     return YES;
 }
 - (void)initializationSettings
@@ -93,6 +106,7 @@
         [self getVersionData];
     }
 }
+
 - (void)upDateAccountDataWithRandom:(NSData *)random password:(NSString *)password
 {
     [[HTTPManager shareManager] setAccountDataWithRandom:random password:password name:[[AccountTool shareTool] account].identityName accountDataType:AccountDataSafe success:^(id responseObject) {

@@ -9,6 +9,7 @@
 #import "HTTPManager.h"
 #import "HttpTool.h"
 #import "AtpProperty.h"
+#import "DeviceInfo.h"
 
 @interface HTTPManager ()
 
@@ -334,6 +335,30 @@ static int64_t const gasPrice = 1000;
                                   @"assetCode": assetCode,
                                   @"issueAddress": issueAddress
                                   };
+    [[HttpTool shareTool] POST:url parameters:parameters success:^(id responseObject) {
+        if(success != nil)
+        {
+            success(responseObject);
+        }
+    } failure:^(NSError *error) {
+        if(failure != nil)
+        {
+            failure(error);
+            [MBProgressHUD showTipMessageInWindow:Localized(@"NoNetWork")];
+        }
+    }];
+}
+#pragma mark - Activity(RedEnvelopes)
+// Activity
+- (void)getActivityDataWithURL:(NSString *)URL
+                     bonusCode:(NSString *)bonusCode
+                       success:(void (^)(id responseObject))success
+                       failure:(void (^)(NSError *error))failure
+{
+//    [MBProgressHUD showActivityMessageInWindow:Localized(@"Loading")];
+    NSString * url = SERVER_COMBINE_API(_webServerDomain, URL);
+    NSString * body = [NSString stringWithFormat:@"address=%@&bonusCode=%@", CurrentWalletAddress, bonusCode];
+    NSDictionary * parameters = [[HTTPManager shareManager] parametersWithHTTPBody:body];
     [[HttpTool shareTool] POST:url parameters:parameters success:^(id responseObject) {
         if(success != nil)
         {
@@ -1069,9 +1094,11 @@ static int64_t const gasPrice = 1000;
         // private key -> address
         NSString * identityAddress = [Keypair getEncAddress : [Keypair getEncPublicKey: [privateKeys firstObject]]];
         NSString * identityKeyStore = [NSString generateKeyStoreWithPW:password key:[privateKeys firstObject]];
-        NSString * walletAddress = [Keypair getEncAddress : [Keypair getEncPublicKey: [privateKeys lastObject]]];
+        NSString * walletPublicKey = [Keypair getEncPublicKey: [privateKeys lastObject]];
+        NSString * walletAddress = [Keypair getEncAddress : walletPublicKey];
         NSString * walletKeyStore = [NSString generateKeyStoreWithPW:password key:[privateKeys lastObject]];
         [[NSOperationQueue mainQueue] addOperationWithBlock:^{
+            /*
             if (randomKey == nil || identityKeyStore == nil || walletKeyStore == nil) {
                 [MBProgressHUD hideHUD];
                 if (accountDataType == AccountDataCreateID) {
@@ -1088,9 +1115,16 @@ static int64_t const gasPrice = 1000;
                     [Encapsulation showAlertControllerWithErrorMessage:Localized(@"PasswordIsIncorrect") handler:nil];
                 }
             } else {
+                */
                 [MBProgressHUD hideHUD];
                 if(success != nil)
                 {
+                    NSString * signData = [Tools dataToHexStr:[Keypair sign:[walletAddress dataUsingEncoding:NSUTF8StringEncoding] :[privateKeys lastObject]]];
+                    [self getDeviceBindDataWithURL:Device_Bind identityAddress:identityAddress walletAddress:walletAddress signData:signData publicKey:walletPublicKey success:^(id responseObject) {
+                        
+                    } failure:^(NSError *error) {
+                        
+                    }];
                     if (accountDataType == AccountDataCreateWallet) {
                         [self setWalletDataWalletName:name walletAddress:walletAddress walletKeyStore:walletKeyStore randomNumber:randomKey];
                     } else {
@@ -1115,7 +1149,7 @@ static int64_t const gasPrice = 1000;
                     }
                     success(words);
                 }
-            }
+//            }
         }];
     }];
 }
@@ -1188,6 +1222,31 @@ static int64_t const gasPrice = 1000;
         [[WalletTool shareTool] save:importedWallet];
     }
     return success;
+}
+// device bind
+- (void)getDeviceBindDataWithURL:(NSString *)URL
+                 identityAddress:(NSString *)identityAddress
+                   walletAddress:(NSString *)walletAddress
+                        signData:(NSString *)signData
+                       publicKey:(NSString *)publicKey
+                         success:(void (^)(id responseObject))success
+                         failure:(void (^)(NSError *error))failure
+{
+//    Device_Bind
+    NSString * url = SERVER_COMBINE_API(_webServerDomain, URL);
+    NSString * body = [NSString stringWithFormat:@"deviceId=%@&identityAddress=%@&walletAddress=%@&signData=%@&publicKey=%@", [DeviceInfo getDeviceID], identityAddress, walletAddress, signData, publicKey];
+    NSDictionary * parameters = [[HTTPManager shareManager] parametersWithHTTPBody:body];
+    [[HttpTool shareTool] POST:url parameters:parameters success:^(id responseObject) {
+        if(success != nil)
+        {
+            success(responseObject);
+        }
+    } failure:^(NSError *error) {
+        if(failure != nil)
+        {
+            failure(error);
+        }
+    }];
 }
 - (void)modifyPasswordWithOldPW:(NSString *)oldPW
                              PW:(NSString *)PW

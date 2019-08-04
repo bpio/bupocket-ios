@@ -70,6 +70,7 @@
             mnemonicType = MnemonicCreateWallet;
         }
         [[HTTPManager shareManager] setAccountDataWithRandom:random password:PW name:identityName accountDataType:accountDataType success:^(id responseObject) {
+            [self getDataWithDeviceBind];
             if (self.createType == AccountDataCreateID) {
                 NSUserDefaults * defaults = [NSUserDefaults standardUserDefaults];
                 [defaults setBool:YES forKey:If_Created];
@@ -86,6 +87,9 @@
     } else {
         [MBProgressHUD showTipMessageInWindow:Localized(@"CreateIdentityFailure")];
     }
+}
+- (void)getDataWithDeviceBind
+{
 }
 - (void)createAction
 {

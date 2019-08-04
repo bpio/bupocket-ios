@@ -39,7 +39,12 @@
 //#import "ResultViewController.h"
 //#import "RequestTimeoutViewController.h"
 #import "UITabBar+Extension.h"
-
+#import "DeviceInfo.h"
+#import "RedEnvelopesViewController.h"
+#import "OpenRedEnvelopes.h"
+#import "RedEnvelopesInfo.h"
+#import "ActivityResultModel.h"
+#import "ActivityInfoModel.h"
 
 @interface AssetsViewController ()<UITableViewDelegate, UITableViewDataSource>
 
@@ -67,6 +72,15 @@
 
 @property (nonatomic, strong) ConfirmTransactionModel * confirmTransactionModel;
 @property (nonatomic, strong) DposModel * dposModel;
+
+@property (nonatomic, strong) UIButton * redEnvelopes;
+
+@property (nonatomic, strong) NSString * redEnvelopesBgUrl;
+@property (nonatomic, strong) NSString * bonusCode;
+@property (nonatomic, assign) BOOL isActivityOpened;
+@property (nonatomic, assign) BOOL isReceived;
+@property (nonatomic, strong) ActivityInfoModel * activityInfoModel;
+@property (nonatomic, strong) ActivityResultModel * activityResultModel;
 
 @end
 
@@ -106,6 +120,15 @@
     } else {
         [self.navigationController.tabBarController.tabBar showBadgeOnItemIndex:1 tabbarNum:self.navigationController.tabBarController.viewControllers.count];
     }
+    // 设备绑定
+//    [KeychainWrapper deleteDateiWithService:KeyChain_UUID];
+    NSString * uuid = [KeychainWrapper searchDateWithService:KeyChain_UUID];
+    NSLog(@"uuid：----%@", uuid);
+    if (!NotNULLString(uuid)) {
+        [self getDeviceBind];
+    }
+    // 红包数据
+    [self getActivityData];
     // Do any additional setup after loading the view.
 }
 - (void)setupNav
@@ -244,6 +267,79 @@
         
     }];
 }
+#pragma mark activity
+- (void)getDeviceBind
+{
+    //    NSString * privateKey = [Keypair getEncPublicKey: [NSString decipherKeyStoreWithPW:PW keyStoreValueStr: CurrentWalletKeyStore]];
+    //    NSString * walletPublicKey = [Keypair getEncPublicKey: privateKey];
+    //    NSString * signData = [Tools dataToHexStr:[Keypair sign:[CurrentWalletAddress dataUsingEncoding:NSUTF8StringEncoding] :privateKey]];
+    NSString * walletPublicKey = @"walletPublicKey";
+    NSString * signData = @"signData";
+    [[HTTPManager shareManager] getDeviceBindDataWithURL:Device_Bind identityAddress:[[AccountTool shareTool] account].identityAddress walletAddress:CurrentWalletAddress signData:signData publicKey:walletPublicKey success:^(id responseObject) {
+        
+    } failure:^(NSError *error) {
+        
+    }];
+}
+- (void)getActivityData
+{
+    [self getActivityDataWithURL:Activity_Status];
+}
+- (void)getActivityDataWithURL:(NSString *)URL
+{
+    [[HTTPManager shareManager] getActivityDataWithURL:URL bonusCode:self.bonusCode success:^(id responseObject) {
+        NSInteger code = [[responseObject objectForKey:@"errCode"] integerValue];
+        BOOL isActivityStatus = [URL isEqualToString:Activity_Status];
+        BOOL isReceiveStatus = [URL isEqualToString:Activity_Bonus_Status];
+        BOOL isOpen = [URL isEqualToString:Open_Bonus];
+        // 活动是否开启
+        if (isActivityStatus) {
+            if (code == Success_Code) {
+                // 已开启
+                NSDictionary * dataDic = [responseObject objectForKey:@"data"];
+                self.bonusCode = dataDic[@"activityId"];
+                [self getActivityDataWithURL:Activity_Bonus_Status];
+                self.isActivityOpened = YES;
+                self.redEnvelopes.hidden = NO;
+            } else if (code == 100021) {
+                self.isActivityOpened = NO;
+                self.redEnvelopes.hidden = NO;
+                [MBProgressHUD showTipMessageInWindow:[responseObject objectForKey:@"msg"]];
+            }
+        } else if (isReceiveStatus) {
+            // 红包是否已领取
+            if (code == Success_Code) {
+                NSDictionary * dataDic = [responseObject objectForKey:@"data"];
+                // 未领取
+                self.isReceived = NO;
+                self.redEnvelopesBgUrl = dataDic[@"topImage"];
+                [self showOpenRedEnvelopes];
+            } else if (code == 100022) {
+                // 已领取
+                self.isReceived = YES;
+//                [self setReceivedData];
+            }
+        } else if (isOpen) {
+            if (code == Success_Code) {
+                NSDictionary * dataDic = [responseObject objectForKey:@"data"];
+                self.activityInfoModel = [ActivityInfoModel mj_objectWithKeyValues:dataDic];
+//                self.activityResultModel = [[ActivityResultModel alloc] init];
+//                self.activityResultModel.bonusInfo = dataDic;
+                // 已领取
+                self.isReceived = YES;
+                NSUserDefaults * defaults = [NSUserDefaults standardUserDefaults];
+                [defaults setObject:self.bonusCode forKey:Activity_ID];
+                [defaults synchronize];
+                [self showRedEnvelopesInfo];
+            } else if (code == 100023) {
+                // 红包已被领完
+                
+            }
+        }
+    } failure:^(NSError *error) {
+        
+    }];
+}
 #pragma mark - Scan code registration / issue
 - (void)getAssetsStateData
 {
@@ -326,6 +422,17 @@
     _headerViewH = ScreenScale(375 * self.headerImage.size.height / self.headerImage.size.width) + Margin_15;
     [self.view addSubview:self.tableView];
     self.noNetWork = [Encapsulation showNoNetWorkWithSuperView:self.view target:self action:@selector(reloadData)];
+    [self setupRedEnvelopes];
+}
+- (void)setupRedEnvelopes
+{
+    self.redEnvelopes =  [UIButton createButtonWithNormalImage:@"grab_redEnvelopes" SelectedImage:@"grab_redEnvelopes" Target:self Selector:@selector(redEnvelopesClick)];
+    [self.view addSubview: self.redEnvelopes];
+    [self.redEnvelopes mas_makeConstraints:^(MASConstraintMaker *make) {
+        make.right.equalTo(self.view);
+        make.bottom.mas_equalTo(-SafeAreaBottomH - Margin_30);
+    }];
+    self.redEnvelopes.hidden = YES;
 }
 - (UITableView *)tableView
 {
@@ -420,6 +527,27 @@
         _headerBg = headerBg;
     }
     return _headerBg;
+}
+- (void)showOpenRedEnvelopes
+{
+    OpenRedEnvelopes * alertView = [[OpenRedEnvelopes alloc] initWithRedEnvelopes:self.redEnvelopesBgUrl confrimBolck:^{
+        [self getActivityDataWithURL:Open_Bonus];
+//        dispatch_after(dispatch_time(DISPATCH_TIME_NOW, (int64_t)(Dispatch_After_Time * NSEC_PER_SEC)), dispatch_get_main_queue(), ^{
+//        });
+    } cancelBlock:^{
+        
+    }];
+    [alertView showInWindowWithMode:CustomAnimationModeAlert inView:nil bgAlpha:AlertBgAlpha needEffectView:NO];
+}
+- (void)showRedEnvelopesInfo
+{
+    RedEnvelopesInfo * alertView = [[RedEnvelopesInfo alloc] initWithRedEnvelopesType:RedEnvelopesTypeDefault confrimBolck:^{
+        
+    } cancelBlock:^{
+        
+    }];
+    alertView.activityInfoModel = self.activityInfoModel;
+    [alertView showInWindowWithMode:CustomAnimationModeAlert inView:nil bgAlpha:AlertBgAlpha needEffectView:NO];
 }
 - (void)totalAssetsInfo:(UIButton *)button
 {
@@ -920,6 +1048,23 @@
     BackUpWalletViewController * VC = [[BackUpWalletViewController alloc] init];
     VC.mnemonicType = MnemonicBackup;
     [self.navigationController pushViewController:VC animated:YES];
+}
+// 点击红包
+- (void)redEnvelopesClick
+{
+    if (self.isActivityOpened) {
+        if (self.isReceived) {
+            // 缓存中有红包id
+            NSString * activityID = [[NSUserDefaults standardUserDefaults] objectForKey:Activity_ID];
+            if (NotNULLString(activityID)) {
+                RedEnvelopesViewController * VC = [[RedEnvelopesViewController alloc] init];
+                VC.activityID = activityID;
+                [self.navigationController pushViewController:VC animated:YES];
+            }
+        } else {
+            [self showOpenRedEnvelopes];
+        }
+    }
 }
 /*
 - (void)noBackupAction:(UIButton *)button

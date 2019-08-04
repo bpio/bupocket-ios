@@ -94,6 +94,8 @@
 #define RECEIVE_COLOR COLOR(@"72AFFF")
 #define ADDRESS_COLOR COLOR(@"6D8BFF")
 
+#define Valentine_COLOR COLOR(@"FF7884")
+
 #define Alert_Button_Color COLOR_9
 // ******
 #define TAGBG_COLOR COLOR(@"3FD592")

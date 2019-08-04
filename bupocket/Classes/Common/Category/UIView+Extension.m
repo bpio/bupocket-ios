@@ -155,4 +155,34 @@
     [view.layer addSublayer:lineLayer];
 }
 
+// 设置旋转动画
+- (void)setTransformAnimation
+{
+    CAKeyframeAnimation *theAnimation = [CAKeyframeAnimation animation];
+    //    CATransform3DMakeRotation(CGFloat angle, CGFloat x, CGFloat y, CGFloat z); 第一个参数是旋转角度，后面三个参数形成一个围绕其旋转的向量，起点位置由UIView的center属性标识。
+    theAnimation.values = [NSArray arrayWithObjects:
+                           [NSValue valueWithCATransform3D:CATransform3DMakeRotation(0, 0, 0.5, 0)],
+                           [NSValue valueWithCATransform3D:CATransform3DMakeRotation(3.13, 0, 0.5, 0)],
+                           [NSValue valueWithCATransform3D:CATransform3DMakeRotation(6.28, 0, 0.5, 0)],
+                           nil];
+    
+    
+    theAnimation.cumulative = YES;
+    //    每个帧的时间=总duration/(values.count - 1)
+    // 间隔时间 频率
+    theAnimation.duration = .4;
+    // 重复次数
+    theAnimation.repeatCount = 2;
+    
+    
+    // 取消反弹// 告诉在动画结束的时候不要移除
+    theAnimation.removedOnCompletion = YES;
+    // 始终保持最新的效果
+    theAnimation.fillMode = kCAFillModeForwards;
+    
+//    theAnimation.delegate = self;
+    self.layer.zPosition = 50;
+    [self.layer addAnimation:theAnimation forKey:@"transform"];
+}
+
 @end

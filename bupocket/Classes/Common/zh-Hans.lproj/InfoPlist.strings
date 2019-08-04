@@ -9,6 +9,7 @@ CFBundleDisplayName = "小布口袋";
 
 NSCameraUsageDescription = "小布口袋需要访问您的相机，为了帮您进行扫描二维码";
 NSPhotoLibraryUsageDescription = "小布口袋需要访问您的相册，为了帮您进行相关图片的扫描";
+NSPhotoLibraryAddUsageDescription = "小布口袋需要访问您的相册，为了帮您保存图片到相册";
 NSAppleMusicUsageDescription = "允许此权限才能访问：媒体资料库，为了帮您进行相关图片的扫描";
 NSMicrophoneUsageDescription = "允许此权限才能访问：麦克风";
 NSContactsUsageDescription = "允许此权限才能访问：通讯录";

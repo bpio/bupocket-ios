@@ -54,6 +54,9 @@ static CGFloat animationTime;
         case CustomAnimationModeNone:
             [self showViewWithOutAnimation];
             break;
+        case CustomAnimationModeView:
+            [self showView];
+            break;
         default:
             break;
     }
@@ -73,6 +76,7 @@ static CGFloat animationTime;
 {
     switch (mode) {
         case CustomAnimationModeAlert:
+        case CustomAnimationModeView:
             [self hide];
             break;
         case CustomAnimationModeDrop:
@@ -179,7 +183,18 @@ static CGFloat animationTime;
     //
     //    }];
 }
-
+-(void)showView {
+    if (self.superview) {
+        [self removeFromSuperview];
+    }
+    [self addViewInWindow];
+    if (supView) {
+        [supView addSubview:self];
+    }else{
+        [[UIApplication sharedApplication].keyWindow addSubview:self];
+    }
+    self.frame = CGRectMake(0, 0, self.frame.size.width, self.frame.size.height);
+}
 
 #pragma mark - 动画隐藏
 
@@ -326,6 +341,7 @@ static CGFloat animationTime;
 -(CGFloat)getAnimationTimeWithMode:(CustomAnimationMode)type{
     switch (type) {
         case CustomAnimationModeNone:
+        case CustomAnimationModeView:
             return 0;
         case CustomAnimationModeShare:
             return ShareTime;

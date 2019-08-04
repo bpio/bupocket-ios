@@ -82,6 +82,12 @@ typedef NS_ENUM(NSInteger, AccountDataType) {
                                         issueAddress:(NSString *)issueAddress
                                              success:(void (^)(id responseObject))success
                                              failure:(void (^)(NSError *error))failure;
+#pragma mark - Activity(RedEnvelopes)
+// Activity
+- (void)getActivityDataWithURL:(NSString *)URL
+                     bonusCode:(NSString *)bonusCode
+                       success:(void (^)(id responseObject))success
+                       failure:(void (^)(NSError *error))failure;
 // Feedback feedback
 - (void)getFeedbackDataWithContent:(NSString *)content
                            contact:(NSString *)contact
@@ -227,6 +233,14 @@ typedef NS_ENUM(NSInteger, AccountDataType) {
                         walletName:(NSString *)walletName
                            success:(void (^)(id responseObject))success
                            failure:(void (^)(NSError *error))failure;
+// device bind
+- (void)getDeviceBindDataWithURL:(NSString *)URL
+                 identityAddress:(NSString *)identityAddress
+                   walletAddress:(NSString *)walletAddress
+                        signData:(NSString *)signData
+                       publicKey:(NSString *)publicKey
+                         success:(void (^)(id responseObject))success
+                         failure:(void (^)(NSError *error))failure;
 - (BOOL)setWalletDataWalletName:(NSString *)walletName
                   walletAddress:(NSString *)walletAddress
                  walletKeyStore:(NSString *)walletKeyStore

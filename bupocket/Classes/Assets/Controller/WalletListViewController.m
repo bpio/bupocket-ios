@@ -10,7 +10,8 @@
 #import "SubtitleListViewCell.h"
 #import "WalletManagementViewController.h"
 #import "ImportWalletViewController.h"
-#import "MyViewController.h"
+//#import "MyViewController.h"
+#import "VoucherViewController.h"
 #import "BottomAlertView.h"
 #import "CreateViewController.h"
 
@@ -198,13 +199,14 @@
         [defaults synchronize];
         //    [self.tableView reloadData];
     }
+    TabBarViewController * tabBarVC = [[TabBarViewController alloc] init];
     NSArray * VCs = self.navigationController.viewControllers;
-    if ([[VCs firstObject] isKindOfClass:[MyViewController class]]) {
-        [self.navigationController.tabBarController setSelectedIndex:0];
+    if ([[VCs firstObject] isKindOfClass:[VoucherViewController class]]) {
+        [tabBarVC setSelectedIndex:1];
     }
-    [self.navigationController popToRootViewControllerAnimated:YES];
+    [UIApplication sharedApplication].keyWindow.rootViewController = tabBarVC;
+//    [self.navigationController popToRootViewControllerAnimated:YES];
     
-//    [UIApplication sharedApplication].keyWindow.rootViewController = [[TabBarViewController alloc] init];
 //    if (self.changeWallet) {
 //        self.changeWallet();
 //    }
