@@ -16,11 +16,26 @@
 #import <TencentOpenAPI/TencentOAuth.h>
 #import <UMCommon/UMCommon.h>
 
+//#import "RedEnvelopesViewController.h"
+//#import "OpenRedEnvelopes.h"
+//#import "RedEnvelopesInfo.h"
+//#import "ActivityResultModel.h"
+//#import "ActivityInfoModel.h"
+
 @interface AppDelegate ()<WXApiDelegate, TencentSessionDelegate>
 
 @property (nonatomic, strong) VersionUpdateAlertView * alertView;
 @property (nonatomic, strong) TextInputAlertView * PWAlertView;
 @property (nonatomic, strong) TencentOAuth * tencentOAuth;
+
+//@property (nonatomic, strong) UIButton * redEnvelopes;
+//@property (nonatomic, strong) NSString * redEnvelopesBgUrl;
+//@property (nonatomic, strong) NSString * bonusCode;
+////@property (nonatomic, assign) BOOL isActivityOpened;
+//@property (nonatomic, assign) BOOL isReceived;
+//@property (nonatomic, assign) BOOL isActivityFinished;
+//@property (nonatomic, strong) ActivityInfoModel * activityInfoModel;
+//@property (nonatomic, strong) ActivityResultModel * activityResultModel;
 
 @end
 
@@ -40,19 +55,6 @@
     [WXApi registerApp:Wechat_APP_ID];
     _tencentOAuth = [[TencentOAuth alloc] initWithAppId:Tencent_App_ID andDelegate:self];
     [UMConfigure initWithAppkey:UM_App_Key channel:@""];
-    
-//    NSData * addressData = [@"buQtvuyYA3u5Yxs28vBmwEZKB3TPuUcNhxbw" dataUsingEncoding:NSUTF8StringEncoding];
-//    NSData * data = [Keypair sign:addressData :@"privbsaPXTFM9Dq2d5nC9Tm1zUWTy1zBrQKQe4ZoCvWkpDLNrbzxnH9x"];
-//    [Tools dataToHexStr:<#(NSData *)#>]
-//    id dataStr = [NSJSONSerialization JSONObjectWithData:data options:NSJSONReadingAllowFragments error:nil];
-//    NSString * keychainUUID = [DeviceInfo getDeviceID];
-//    NSLog(@"keychainUUID : %@", keychainUUID);
-//    NSString *udid = [getUUID getUUID];
-//    NSLog(@"udid in keychain %@", udid);
-//
-//    NSLog(@"current identityForVendor %@", [UIDevice currentDevice].identifierForVendor);
-//    NSString *deviceUUID = [[[UIDevice currentDevice] identifierForVendor] UUIDString];
-//    NSLog(@"设备的UUID： %@",deviceUUID);
     return YES;
 }
 - (void)initializationSettings
@@ -76,7 +78,7 @@
 {
     NSUserDefaults * defaults = [NSUserDefaults standardUserDefaults];
     if ([defaults boolForKey:If_Created]) {
-            self.window.rootViewController = [[TabBarViewController alloc] init];
+        self.window.rootViewController = [[TabBarViewController alloc] init];
         [self storageSafetyReinforcement];
     } else {
         self.window.rootViewController = [[NavigationViewController alloc] initWithRootViewController:[[IdentityViewController alloc] init]];
@@ -87,7 +89,8 @@
 {
     NSUserDefaults * defaults = [NSUserDefaults standardUserDefaults];
     NSString * lastVersion = [defaults objectForKey:LastVersion];
-    if (!lastVersion || [@"1.4.3" compare:lastVersion] == NSOrderedDescending) {
+    
+    if ((!lastVersion || [@"1.4.3" compare:lastVersion] == NSOrderedDescending)) {
         SafetyReinforcementAlertView * alertView = [[SafetyReinforcementAlertView alloc] initWithTitle:Localized(@"SafetyReinforcementTitle") promptText:Localized(@"SafetyReinforcementPrompt") confrim:Localized(@"StartReinforcement") confrimBolck:^{
             dispatch_after(dispatch_time(DISPATCH_TIME_NOW, (int64_t)(Dispatch_After_Time * NSEC_PER_SEC)), dispatch_get_main_queue(), ^{
                 self.PWAlertView = [[TextInputAlertView alloc] initWithInputType:PWTypeDataReinforcement confrimBolck:^(NSString * _Nonnull text, NSArray * _Nonnull words) {
@@ -107,6 +110,7 @@
     }
 }
 
+
 - (void)upDateAccountDataWithRandom:(NSData *)random password:(NSString *)password
 {
     [[HTTPManager shareManager] setAccountDataWithRandom:random password:password name:[[AccountTool shareTool] account].identityName accountDataType:AccountDataSafe success:^(id responseObject) {
@@ -123,7 +127,7 @@
 }
 - (void)getVersionData
 {
-    [[HTTPManager shareManager] getVersionDataWithSuccess:^(id responseObject) {
+    [[HTTPManager shareManager] getDataWithURL:Version_Update success:^(id responseObject) {
         NSInteger code = [[responseObject objectForKey:@"errCode"] integerValue];
         if (code == Success_Code) {
             NSDictionary * dataDic = [responseObject objectForKey:@"data"];

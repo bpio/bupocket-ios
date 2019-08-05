@@ -16,22 +16,26 @@
 @property (nonatomic, strong) UIView * lineView;
 
 @property (nonatomic, assign) CGFloat imageH;
+//@property (nonatomic, assign) OpenRedEnvelopesType openType;
 
 @end
 
 @implementation OpenRedEnvelopes
 
-- (instancetype)initWithRedEnvelopes:(NSString *)redEnvelopes confrimBolck:(nonnull void (^)(void))confrimBlock cancelBlock:(nonnull void (^)(void))cancelBlock
+- (instancetype)initWithOpenType:(OpenRedEnvelopesType)openType redEnvelopes:(NSString *)redEnvelopes confrimBolck:(nonnull void (^)(void))confrimBlock cancelBlock:(nonnull void (^)(void))cancelBlock
 {
     self = [super init];
     if (self) {
         _sureBlock = confrimBlock;
         _cancleBlock = cancelBlock;
-        UIImage * image = [UIImage imageNamed:@"open_redEnvelopes_bg"];
+//        _openType = openType;
+        NSString * imageName = (openType == OpenRedEnvelopesNormal) ? @"redEnvelopes_finished" : @"open_redEnvelopes_bg";
+        UIImage * image = [UIImage imageNamed:imageName];
         self.imageH = Alert_Width * image.size.height / image.size.width;
         [self setupView];
 //        self.redEnvelopesImage.image = image;
         [self.redEnvelopesImage sd_setImageWithURL:[NSURL URLWithString:redEnvelopes] placeholderImage:image];
+        self.openBtn.hidden = (openType == OpenRedEnvelopesNormal);
         self.bounds = CGRectMake(0, 0, Alert_Width, self.imageH + ScreenScale(52));
     }
     return self;

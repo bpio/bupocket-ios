@@ -29,6 +29,8 @@ NS_ASSUME_NONNULL_BEGIN
 
 + (NSString *)stringAmountSplitWith:(NSString *)str;
 
++ (NSString *)MD5:(NSString *)mdStr;
+
 
 @end
 

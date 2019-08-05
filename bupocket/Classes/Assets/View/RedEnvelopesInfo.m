@@ -52,11 +52,10 @@
         self.downloadImageH = (_redEnvelopesType == RedEnvelopesTypeNormal) ? self.download.size.height : (self.width * self.download.size.height / self.download.size.width);
         [self setupView];
         self.closeBtn.hidden = (self.redEnvelopesType == RedEnvelopesTypeNormal);
-        self.headerImage.image = self.header;
-        _iconImage.image = self.icon;
-//        [_iconBtn setImage:icon forState:UIControlStateNormal];
-        self.downloadImage.image = self.download;
-        self.bounds = CGRectMake(0, 0, self.width, self.headerImageH + self.downloadImageH + ScreenScale(240));
+//        self.headerImage.image = self.header;
+//        _iconImage.image = self.icon;
+//        self.downloadImage.image = self.download;
+        self.bounds = CGRectMake(0, 0, self.width, self.headerImageH + self.downloadImageH + (self.iconBtnH / 2) + ScreenScale(225));
     }
     return self;
 }
@@ -97,8 +96,8 @@
     [self.iconImage mas_makeConstraints:^(MASConstraintMaker *make) {
         make.centerX.equalTo(self.infoBg);
 //        make.top.mas_equalTo(self.headerImageH);
-//        make.centerY.equalTo(self.headerImage.mas_bottom);
-        make.bottom.equalTo(self.headerImage.mas_bottom).offset(Margin_15);
+        make.centerY.equalTo(self.headerImage.mas_bottom);
+//        make.bottom.equalTo(self.headerImage.mas_bottom).offset(Margin_15);
 //        make.bottom.equalTo(self.headerImage.mas_bottom).offset(Margin_20);
 //        make.top.mas_equalTo(self.headerImageH - self.iconBtnH + Margin_20);
 //        make.top.equalTo(self.headerImage.mas_bottom).offset(self.iconBtnH + Margin_10);
@@ -216,7 +215,7 @@
 - (UIImageView *)downloadImage
 {
     if (!_downloadImage) {
-        _downloadImage = [[UIImageView alloc] initWithImage:[UIImage imageNamed:@"download_QRCode"]];
+        _downloadImage = [[UIImageView alloc] init];
         _downloadImage.contentMode = UIViewContentModeScaleAspectFit;
     }
     return _downloadImage;

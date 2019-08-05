@@ -24,6 +24,8 @@ NS_ASSUME_NONNULL_BEGIN
 /** 通过keystone存储的随机数 */
 @property (nonatomic, strong) NSString * randomNumber;
 
+//@property (nonatomic, assign) BOOL isDeviceBind;
+
 @end
 
 NS_ASSUME_NONNULL_END

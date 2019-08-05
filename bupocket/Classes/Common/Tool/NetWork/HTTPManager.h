@@ -39,9 +39,10 @@ typedef NS_ENUM(NSInteger, AccountDataType) {
 // Switched Node url
 - (void)SwitchedNodeWithURL:(NSString *)URL;
 
-// VersionUpdate
-- (void)getVersionDataWithSuccess:(void (^)(id responseObject))success
-                          failure:(void (^)(NSError *error))failure;
+// Version Update
+- (void)getDataWithURL:(NSString *)URL
+               success:(void (^)(id responseObject))success
+               failure:(void (^)(NSError *error))failure;
 
 // Version Log
 - (void)getVersionLogDataWithPageIndex:(NSInteger)pageIndex

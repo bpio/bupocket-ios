@@ -35,6 +35,9 @@
  */
 + (NSString *)getDeviceID;
 
++ (NSArray *)getWalletAddressArrayFromKeychain;
++ (void)saveWalletAddress:(NSString *)walletAddress;
+
 /**
  *  获取设备名字
  */

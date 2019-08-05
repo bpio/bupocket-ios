@@ -108,6 +108,9 @@
 #define Current_WalletAddress @"CurrentWalletAddress"
 #define CurrentWalletAddress [[NSUserDefaults standardUserDefaults] objectForKey:Current_WalletAddress]
 
+//#define Current_Wallet_DecviceBind @"CurrentWalletDecviceBind"
+//#define CurrentWalletDecviceBind [[NSUserDefaults standardUserDefaults] objectForKey:Current_Wallet_DecviceBind]
+
 #define Current_WalletName @"Wallet_1"
 #define CurrentWalletName [[NSUserDefaults standardUserDefaults] objectForKey:Current_WalletName]
 

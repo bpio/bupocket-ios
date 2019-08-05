@@ -196,6 +196,7 @@
         [defaults setObject:cell.walletModel.walletKeyStore forKey:Current_WalletKeyStore];
         [defaults setObject:cell.walletModel.walletName forKey:Current_WalletName];
         [defaults setObject:cell.walletModel.walletIconName forKey:Current_Wallet_IconName];
+//        [defaults setBool:cell.walletModel.isDeviceBind forKey:Current_Wallet_DecviceBind];
         [defaults synchronize];
         //    [self.tableView reloadData];
     }

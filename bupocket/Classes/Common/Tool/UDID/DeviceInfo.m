@@ -46,19 +46,28 @@
 + (NSString *)getUUIDfromKeychain
 {
     NSString * uuid = NULL;
-    uuid = [KeychainWrapper searchDateWithService:KeyChain_UUID];
+    uuid = [KeychainWrapper searchDateWithService:Device_ID];
     if (uuid) {
         return uuid;
     }else{
         uuid = [self getRandomUUID];
-        if([KeychainWrapper saveDate:uuid withService:KeyChain_UUID]){
+        if([KeychainWrapper saveDate:uuid withService:Device_ID]){
             return uuid;
         }else{
             return NULL;
         }
     }
 }
-
++ (NSArray *)getWalletAddressArrayFromKeychain
+{
+    return [KeychainWrapper searchDateWithService:WalletAddress_Binded];
+}
++ (void)saveWalletAddress:(NSString *)walletAddress
+{
+    NSMutableArray * array = [NSMutableArray arrayWithArray:[self getWalletAddressArrayFromKeychain]];
+    [array addObject:walletAddress];
+    [KeychainWrapper saveDate:array withService:WalletAddress_Binded];
+}
 #pragma mark - DeviceModel
 
 + (NSString *)getDeviceName

@@ -25,7 +25,7 @@
 @property (nonatomic, assign) CGFloat headerTitleH;
 @property (nonatomic, strong) UIButton * titleBtn;
 
-@property (nonatomic, strong) NSString * walletAddress;
+//@property (nonatomic, strong) NSString * walletAddress;
 
 @end
 
@@ -65,7 +65,7 @@ static NSString * const VoucherCellID = @"VoucherCellID";
     [self setupView];
     self.noNetWork = [Encapsulation showNoNetWorkWithSuperView:self.view target:self action:@selector(reloadData)];
     [self setupRefresh];
-    self.walletAddress = CurrentWalletAddress;
+//    self.walletAddress = CurrentWalletAddress;
     // Do any additional setup after loading the view.
 }
 - (void)viewWillAppear:(BOOL)animated {
@@ -73,11 +73,11 @@ static NSString * const VoucherCellID = @"VoucherCellID";
     if (_isChoiceVouchers) {
         self.navigationItem.title = Localized(@"ChoiceVouchersTitle");
     } else {
-        if (![self.walletAddress isEqualToString:CurrentWalletAddress]) {
-            self.walletAddress = CurrentWalletAddress;
-            self.navigationItem.title = CurrentWalletName ? CurrentWalletName : Current_WalletName;
-            [self reloadData];
-        }
+//        if (![self.walletAddress isEqualToString:CurrentWalletAddress]) {
+//        }
+//        self.walletAddress = CurrentWalletAddress;
+        self.navigationItem.title = CurrentWalletName ? CurrentWalletName : Current_WalletName;
+        [self reloadData];
     }
 }
 - (void)viewWillDisappear:(BOOL)animated {

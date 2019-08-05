@@ -14,8 +14,7 @@ NS_ASSUME_NONNULL_BEGIN
 
 @property (nonatomic, strong) NSDictionary * bonusInfo;
 @property (nonatomic, strong) NSDictionary * activityRules;
-// 七夕幸运儿
-@property (nonatomic, strong) NSString * label;
+@property (nonatomic, strong) NSString * pageTitle;
 // 获奖信息
 @property (nonatomic, strong) NSDictionary * latelyData;
 

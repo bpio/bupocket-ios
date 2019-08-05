@@ -50,7 +50,7 @@
     NSString * amount = activityAwardsModel.amount;
     NSString * amountStr = [NSString stringWithFormat:@"%@ %@", amount, activityAwardsModel.tokenSymbol];
     self.amountLabel.attributedText = [Encapsulation attrWithString:amountStr preFont:FONT_TITLE preColor:MAIN_COLOR index:amount.length sufFont:FONT_TITLE sufColor:TITLE_COLOR lineSpacing:0];
-    self.luckyImage.hidden = !activityAwardsModel.mvpFlag;
+    self.luckyImage.hidden = [activityAwardsModel.mvpFlag isEqualToString:@"0"];
 }
 - (UILabel *)addressLabel
 {

@@ -46,4 +46,7 @@ typedef NS_ENUM(NSInteger, UIViewBorderLineType) {
 // 设置旋转动画
 - (void)setTransformAnimation;
 
+#pragma mark - 抖动动画
+- (void)setShakeAnimation;
+
 @end

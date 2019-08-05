@@ -161,10 +161,12 @@ static int64_t const gasPrice = 1000;
     [self initNetWork];
 }
 // Version Update
-- (void)getVersionDataWithSuccess:(void (^)(id responseObject))success
-                          failure:(void (^)(NSError *error))failure
+- (void)getDataWithURL:(NSString *)URL
+               success:(void (^)(id responseObject))success
+               failure:(void (^)(NSError *error))failure
 {
-    NSString * url = SERVER_COMBINE_API(_webServerDomain, Version_Update);
+    // Version_Update
+    NSString * url = SERVER_COMBINE_API(_webServerDomain, URL);
     [[HttpTool shareTool] GET:url parameters:nil success:^(id responseObject) {
         if(success != nil)
         {
@@ -174,7 +176,7 @@ static int64_t const gasPrice = 1000;
         if(failure != nil)
         {
             failure(error);
-            [MBProgressHUD showTipMessageInWindow:Localized(@"NoNetWork")];
+//            [MBProgressHUD showTipMessageInWindow:Localized(@"NoNetWork")];
         }
     }];
 }
@@ -368,7 +370,7 @@ static int64_t const gasPrice = 1000;
         if(failure != nil)
         {
             failure(error);
-            [MBProgressHUD showTipMessageInWindow:Localized(@"NoNetWork")];
+//            [MBProgressHUD showTipMessageInWindow:Localized(@"NoNetWork")];
         }
     }];
 }
@@ -1234,11 +1236,16 @@ static int64_t const gasPrice = 1000;
 {
 //    Device_Bind
     NSString * url = SERVER_COMBINE_API(_webServerDomain, URL);
-    NSString * body = [NSString stringWithFormat:@"deviceId=%@&identityAddress=%@&walletAddress=%@&signData=%@&publicKey=%@", [DeviceInfo getDeviceID], identityAddress, walletAddress, signData, publicKey];
+    NSString * deviceID = [DeviceInfo getDeviceID];
+    if (NotNULLString(deviceID)) {
+        deviceID = [NSString MD5:deviceID];
+    }
+    NSString * body = [NSString stringWithFormat:@"deviceId=%@&identityAddress=%@&walletAddress=%@&signData=%@&publicKey=%@", deviceID, identityAddress, walletAddress, signData, publicKey];
     NSDictionary * parameters = [[HTTPManager shareManager] parametersWithHTTPBody:body];
     [[HttpTool shareTool] POST:url parameters:parameters success:^(id responseObject) {
         if(success != nil)
         {
+            [DeviceInfo saveWalletAddress:walletAddress];
             success(responseObject);
         }
     } failure:^(NSError *error) {

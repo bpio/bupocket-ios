@@ -7,9 +7,9 @@
 */
 CFBundleDisplayName = "BU Pocket";
 
-NSCameraUsageDescription = "Bupocket needs to visit your camera, in order to help you scan the two-dimensional code.";
-NSPhotoLibraryUsageDescription = "Bupocket needs to visit your photo album, in order to help you scan related pictures.";
-NSPhotoLibraryAddUsageDescription = "小布口袋需要访问您的相册，为了帮您保存图片到相册";
-NSAppleMusicUsageDescription = "Media database helpful to scan related photos is accessible after being authorized this permission";
-NSMicrophoneUsageDescription = "Microphone is accessible after being authorized this permission";
-NSContactsUsageDescription = "Contact is accessible after being authorized this permission";
+NSCameraUsageDescription = "BU Pocket needs your permission to access your camera to scan the QR code ";
+NSPhotoLibraryUsageDescription = " BU Pocket needs your permission to access your album to scan related photos ";
+NSPhotoLibraryAddUsageDescription = " BU Pocket needs your permission to access your album to store the photo ";
+NSAppleMusicUsageDescription = " BU Pocket needs your permission to access your media library to scan related photos ";
+NSMicrophoneUsageDescription = " BU Pocket needs your permission to access your microphone ";
+NSContactsUsageDescription = " BU Pocket needs your permission to access your contacts";

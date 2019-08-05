@@ -7,6 +7,7 @@
 //
 
 #import "NSString+Extension.h"
+#import "CommonCrypto/CommonDigest.h"
 
 @implementation NSString (Extension)
 
@@ -80,6 +81,21 @@
                                                        numberStyle:NSNumberFormatterDecimalStyle];
     }
     return currencyStr;
+}
+
+/**
+ * MD5加密
+ *
+ * return  加密后的字符串
+ */
++ (NSString *)MD5:(NSString *)mdStr {
+    const char *original_str = [mdStr UTF8String];
+    unsigned char result[CC_MD5_DIGEST_LENGTH];
+    CC_MD5(original_str, (CC_LONG)strlen(original_str), result);
+    NSMutableString *hash = [NSMutableString string];
+    for (int i = 0; i < CC_MD5_DIGEST_LENGTH; i++)
+        [hash appendFormat:@"%02X", result[i]];
+    return [hash lowercaseString];
 }
 
 @end

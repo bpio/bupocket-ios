@@ -155,7 +155,7 @@
     [view.layer addSublayer:lineLayer];
 }
 
-// 设置旋转动画
+#pragma mark - 旋转动画
 - (void)setTransformAnimation
 {
     CAKeyframeAnimation *theAnimation = [CAKeyframeAnimation animation];
@@ -165,16 +165,12 @@
                            [NSValue valueWithCATransform3D:CATransform3DMakeRotation(3.13, 0, 0.5, 0)],
                            [NSValue valueWithCATransform3D:CATransform3DMakeRotation(6.28, 0, 0.5, 0)],
                            nil];
-    
-    
     theAnimation.cumulative = YES;
     //    每个帧的时间=总duration/(values.count - 1)
     // 间隔时间 频率
     theAnimation.duration = .4;
     // 重复次数
     theAnimation.repeatCount = 2;
-    
-    
     // 取消反弹// 告诉在动画结束的时候不要移除
     theAnimation.removedOnCompletion = YES;
     // 始终保持最新的效果
@@ -184,5 +180,20 @@
     self.layer.zPosition = 50;
     [self.layer addAnimation:theAnimation forKey:@"transform"];
 }
-
+#define Angle2Radian(angle) ((angle) / 180.0 * M_PI)
+#pragma mark - 抖动动画
+- (void)setShakeAnimation
+{
+    // 创建动画
+    CAKeyframeAnimation * keyAnimaion = [CAKeyframeAnimation animation];
+    keyAnimaion.keyPath = @"transform.rotation";
+    //    keyAnimaion.values = @[@(-10 / 180.0 * M_PI),@(10 /180.0 * M_PI),@(-10/ 180.0 * M_PI),@(0 /180.0 * M_PI)];//度数转弧度
+    keyAnimaion.values = @[@(Angle2Radian(-3)), @(Angle2Radian(3)), @(Angle2Radian(-3))];
+    // removedOnCompletion和fillMode一般是配合起来用的
+    keyAnimaion.removedOnCompletion = NO;
+    keyAnimaion.fillMode = kCAFillModeForwards;
+    keyAnimaion.duration = 0.3;
+    keyAnimaion.repeatCount = CGFLOAT_MAX;//动画次数
+    [self.layer addAnimation:keyAnimaion forKey:Shake_Animation];
+}
 @end

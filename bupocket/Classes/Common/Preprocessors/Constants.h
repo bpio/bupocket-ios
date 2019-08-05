@@ -29,6 +29,8 @@
 
 // 设备绑定
 #define Device_Bind @"wallet/device/bind"
+#define Device_Bind_Config @"wallet/v1/config"
+#define Device_Bind_Check @"wallet/v1/check"
 // App type 1-android 2-iOS
 #define Version_Update @"wallet/version?appType=2"
 #define Version_Log @"wallet/version/log"
@@ -105,7 +107,9 @@
 
 
 #define HDPaths @[@"M/44H/526H/0H/0/0", @"M/44H/526H/1H/0/0"]
-#define KeyChain_UUID @"KeyChainUUID"
+#define Device_ID @"DeviceID"
+#define WalletAddress_Binded @"WalletAddressBinded"
+#define Shake_Animation @"ShakeAnimation"
 #define LastVersion @"LastVersion"
 // Identity creation
 #define If_Created @"ifCreated"
@@ -192,7 +196,7 @@
 #define Maximum_Number 30
 // Feedback content
 #define SuggestionsContent_MAX 100
-#define AlertBgAlpha 0.2
+#define AlertBgAlpha 0.5
 // ATP Version
 #define ATP_Version @"1.0"
 // Obtain minimum asset limits and fuel unit prices for accounts in designated blocks
@@ -223,6 +227,6 @@
 #define Voucher_Validity_Date @"-1"
 
 // 活动id
-#define Activity_ID @"ActivityID"
+//#define Activity_ID @"ActivityID"
 
 #endif /* Constants_h */
