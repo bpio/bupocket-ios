@@ -16,18 +16,20 @@
 @property (nonatomic, strong) UIView * lineView;
 
 @property (nonatomic, assign) CGFloat imageH;
+@property (nonatomic, strong) NSString * activityID;
 //@property (nonatomic, assign) OpenRedEnvelopesType openType;
 
 @end
 
 @implementation OpenRedEnvelopes
 
-- (instancetype)initWithOpenType:(OpenRedEnvelopesType)openType redEnvelopes:(NSString *)redEnvelopes confrimBolck:(nonnull void (^)(void))confrimBlock cancelBlock:(nonnull void (^)(void))cancelBlock
+- (instancetype)initWithOpenType:(OpenRedEnvelopesType)openType redEnvelopes:(NSString *)redEnvelopes activityID:(NSString *)activityID confrimBolck:(nonnull void (^)(id responseObject))confrimBlock cancelBlock:(nonnull void (^)(void))cancelBlock
 {
     self = [super init];
     if (self) {
         _sureBlock = confrimBlock;
         _cancleBlock = cancelBlock;
+        _activityID = activityID;
 //        _openType = openType;
         NSString * imageName = (openType == OpenRedEnvelopesNormal) ? @"redEnvelopes_finished" : @"open_redEnvelopes_bg";
         UIImage * image = [UIImage imageNamed:imageName];
@@ -115,14 +117,20 @@
 }
 - (void)openClick {
     [self.openBtn setTransformAnimation];
-    dispatch_after(dispatch_time(DISPATCH_TIME_NOW, (int64_t)(Dispatch_After_Time * NSEC_PER_SEC)), dispatch_get_main_queue(), ^{
-        [self hideView];
-        if (self->_sureBlock) {
-            self->_sureBlock();
-        }
-    });
+    [self getActivityDataWithURL:Open_Bonus];
 }
-
+- (void)getActivityDataWithURL:(NSString *)URL
+{
+    [[HTTPManager shareManager] getActivityDataWithURL:URL bonusCode:self.activityID success:^(id responseObject) {
+        [self.openBtn.layer removeAnimationForKey:@"transform"];
+        [self hideView];
+        if (self.sureBlock) {
+            self.sureBlock(responseObject);
+        }
+    } failure:^(NSError *error) {
+        
+    }];
+}
 /*
 // Only override drawRect: if you perform custom drawing.
 // An empty implementation adversely affects performance during animation.

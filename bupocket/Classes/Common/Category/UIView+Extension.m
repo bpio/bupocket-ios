@@ -170,7 +170,7 @@
     // 间隔时间 频率
     theAnimation.duration = .4;
     // 重复次数
-    theAnimation.repeatCount = 2;
+    theAnimation.repeatCount = CGFLOAT_MAX;
     // 取消反弹// 告诉在动画结束的时候不要移除
     theAnimation.removedOnCompletion = YES;
     // 始终保持最新的效果

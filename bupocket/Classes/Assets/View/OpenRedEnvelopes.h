@@ -17,14 +17,14 @@ typedef NS_ENUM(NSInteger, OpenRedEnvelopesType) {
 NS_ASSUME_NONNULL_BEGIN
 
 typedef void (^OnCancleButtonClick)(void);
-typedef void (^OnSureUpdateClick)(void);
+typedef void (^OnSureOpenClick)(id responseObject);
 
 @interface OpenRedEnvelopes : UIView
 
 @property (nonatomic, copy) OnCancleButtonClick cancleBlock;
-@property (nonatomic, copy) OnSureUpdateClick sureBlock;
+@property (nonatomic, copy) OnSureOpenClick sureBlock;
 
-- (instancetype)initWithOpenType:(OpenRedEnvelopesType)openType redEnvelopes:(NSString *)redEnvelopes confrimBolck:(nonnull void (^)(void))confrimBlock cancelBlock:(nonnull void (^)(void))cancelBlock;
+- (instancetype)initWithOpenType:(OpenRedEnvelopesType)openType redEnvelopes:(NSString *)redEnvelopes activityID:(NSString *)activityID confrimBolck:(nonnull void (^)(id responseObject))confrimBlock cancelBlock:(nonnull void (^)(void))cancelBlock;
 @end
 
 NS_ASSUME_NONNULL_END

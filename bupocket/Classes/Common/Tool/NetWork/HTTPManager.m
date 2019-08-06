@@ -69,6 +69,7 @@ static int64_t const gasPrice = 1000;
         _bumoNodeUrl = [defaults objectForKey:Current_Node_URL];
         _shareManager.pushMessageSocketUrl = BUMO_TOOLS_URL;
     }
+    [KeychainWrapper deleteDateiWithService:WalletAddress_Binded];
 }
 - (void)setNodeURL
 {

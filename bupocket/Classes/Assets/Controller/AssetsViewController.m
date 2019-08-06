@@ -141,6 +141,9 @@
         // 红包数据
         [self getActivityData];
     }
+//    NSString * signData = [Tools dataToHexStr:[Keypair sign:[@"buQqxLCiZyNC3LLtpwW4CG17LCtULbMt9tZM" dataUsingEncoding:NSUTF8StringEncoding] :@"privbzAstg4JWNtPB9yJA9An9zRXAkSyNJf6naCPowpTreAccdECdTah"]];
+//    NSString * deviceID = [NSString MD5:@"202cb962ac59075b964b07152d234b70"];
+//    NSLog(@"signData=%@\nID=%@", signData, deviceID);
     
     // Do any additional setup after loading the view.
 }
@@ -316,10 +319,10 @@
 {
     BOOL isActivityStatus = [URL isEqualToString:Activity_Status];
     BOOL isReceiveStatus = [URL isEqualToString:Activity_Bonus_Status];
-    BOOL isOpen = [URL isEqualToString:Open_Bonus];
-    if (isOpen) {
-        [MBProgressHUD showActivityMessageInWindow:Localized(@"Loading")];
-    }
+//    BOOL isOpen = [URL isEqualToString:Open_Bonus];
+//    if (isOpen) {
+//        [MBProgressHUD showActivityMessageInWindow:Localized(@"Loading")];
+//    }
     [[HTTPManager shareManager] getActivityDataWithURL:URL bonusCode:self.activityID success:^(id responseObject) {
         NSInteger code = [[responseObject objectForKey:@"errCode"] integerValue];
         // 活动已关闭
@@ -353,29 +356,6 @@
 //                self.isActivityFinished = YES;
 //                self.redEnvelopesBgUrl = dataDic[@"BonusOverImage"];
 //                [self showOpenRedEnvelopes];
-            }
-        } else if (isOpen) {
-            if (code == Success_Code) {
-                NSDictionary * dataDic = [responseObject objectForKey:@"data"];
-                self.activityInfoModel = [ActivityInfoModel mj_objectWithKeyValues:dataDic];
-//                self.activityResultModel = [[ActivityResultModel alloc] init];
-//                self.activityResultModel.bonusInfo = dataDic;
-                // 已领取
-                self.isReceived = YES;
-//                NSUserDefaults * defaults = [NSUserDefaults standardUserDefaults];
-//                [defaults setObject:self.bonusCode forKey:Activity_ID];
-//                [defaults synchronize];
-                [self showRedEnvelopesInfo];
-                [self.redEnvelopes.layer removeAnimationForKey:Shake_Animation];
-            } else if (code == 100023) {
-                NSDictionary * dataDic = [responseObject objectForKey:@"data"];
-                // 红包已被领完
-                [self.redEnvelopes.layer removeAnimationForKey:Shake_Animation];
-                self.isActivityFinished = YES;
-                self.redEnvelopesBgUrl = dataDic[@"BonusOverImage"];
-                [self showOpenRedEnvelopes];
-            } else {
-                [MBProgressHUD showTipMessageInWindow:[responseObject objectForKey:@"msg"]];
             }
         }
     } failure:^(NSError *error) {
@@ -578,10 +558,30 @@
 - (void)showOpenRedEnvelopes
 {
     OpenRedEnvelopesType openType = (self.isActivityFinished) ? OpenRedEnvelopesNormal : OpenRedEnvelopesDefault;
-    OpenRedEnvelopes * alertView = [[OpenRedEnvelopes alloc] initWithOpenType:openType redEnvelopes:self.redEnvelopesBgUrl confrimBolck:^{
-        [self getActivityDataWithURL:Open_Bonus];
-//        dispatch_after(dispatch_time(DISPATCH_TIME_NOW, (int64_t)(Dispatch_After_Time * NSEC_PER_SEC)), dispatch_get_main_queue(), ^{
-//        });
+    OpenRedEnvelopes * alertView = [[OpenRedEnvelopes alloc] initWithOpenType:openType redEnvelopes:self.redEnvelopesBgUrl activityID:self.activityID confrimBolck:^(id  _Nonnull responseObject) {
+        NSInteger code = [[responseObject objectForKey:@"errCode"] integerValue];
+        if (code == Success_Code) {
+            NSDictionary * dataDic = [responseObject objectForKey:@"data"];
+            self.activityInfoModel = [ActivityInfoModel mj_objectWithKeyValues:dataDic];
+            //                self.activityResultModel = [[ActivityResultModel alloc] init];
+            //                self.activityResultModel.bonusInfo = dataDic;
+            // 已领取
+            self.isReceived = YES;
+            //                NSUserDefaults * defaults = [NSUserDefaults standardUserDefaults];
+            //                [defaults setObject:self.bonusCode forKey:Activity_ID];
+            //                [defaults synchronize];
+            [self showRedEnvelopesInfo];
+            [self.redEnvelopes.layer removeAnimationForKey:Shake_Animation];
+        } else if (code == 100023) {
+            NSDictionary * dataDic = [responseObject objectForKey:@"data"];
+            // 红包已被领完
+            [self.redEnvelopes.layer removeAnimationForKey:Shake_Animation];
+            self.isActivityFinished = YES;
+            self.redEnvelopesBgUrl = dataDic[@"BonusOverImage"];
+            [self showOpenRedEnvelopes];
+        } else {
+            [MBProgressHUD showTipMessageInWindow:[responseObject objectForKey:@"msg"]];
+        }
     } cancelBlock:^{
         
     }];
