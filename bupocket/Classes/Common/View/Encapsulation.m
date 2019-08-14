@@ -271,11 +271,16 @@
         make.top.equalTo(noNetWorkImage.mas_bottom).offset(ScreenScale(50));
     }];
     
-    UIButton * reloadBtn = [UIButton createButtonWithTitle:Localized(@"Reload") TextFont:FONT_BUTTON TextNormalColor:[UIColor whiteColor] TextSelectedColor:[UIColor whiteColor] Target:target Selector:action];
-    reloadBtn.layer.masksToBounds = YES;
-    reloadBtn.clipsToBounds = YES;
-    reloadBtn.layer.cornerRadius = MAIN_CORNER;
-    reloadBtn.backgroundColor = MAIN_COLOR;
+//    UIButton * reloadBtn = [UIButton createButtonWithTitle:Localized(@"Reload") TextFont:FONT_BUTTON TextNormalColor:[UIColor whiteColor] TextSelectedColor:[UIColor whiteColor] Target:target Selector:action];
+//    reloadBtn.layer.masksToBounds = YES;
+//    reloadBtn.clipsToBounds = YES;
+//    reloadBtn.layer.cornerRadius = MAIN_CORNER;
+//    reloadBtn.layer.borderWidth = LINE_WIDTH;
+//    reloadBtn.layer.borderColor = MAIN_COLOR.CGColor;
+//    reloadBtn.backgroundColor = MAIN_COLOR;
+    UIButton * reloadBtn = [UIButton createCornerRadiusButtonWithTitle:Localized(@"Reload") isEnabled:YES Target:target Selector:action];
+//    reloadBtn.titleLabel.font = FONT(16);
+    reloadBtn.backgroundColor = [UIColor clearColor];
     [noNetWork addSubview:reloadBtn];
     [reloadBtn mas_makeConstraints:^(MASConstraintMaker *make) {
         make.top.equalTo(titleLabel.mas_bottom).offset(Margin_40);

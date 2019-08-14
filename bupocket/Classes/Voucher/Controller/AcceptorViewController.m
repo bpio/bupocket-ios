@@ -27,7 +27,7 @@ static NSString * const CooperateDetailCellID = @"CooperateDetailCellID";
     [super viewDidLoad];
     self.navigationItem.title = Localized(@"Acceptor");
     self.listArray = @[@[@""], @[Localized(@"InfoOfAcceptorTitle"), self.voucherModel.voucherAcceptance[@"intro"]]];
-    self.info = [self.listArray lastObject][1];
+    self.info = self.voucherModel.voucherAcceptance[@"intro"];
     [self setupView];
     if (!NotNULLString(self.info)) {
         self.tableView.tableFooterView = self.noData;
@@ -41,14 +41,16 @@ static NSString * const CooperateDetailCellID = @"CooperateDetailCellID";
     self.tableView.delegate = self;
     self.tableView.dataSource = self;
     self.tableView.separatorStyle = UITableViewCellSeparatorStyleNone;
+    self.tableView.tableHeaderView = [[UIView alloc] initWithFrame:CGRectMake(0, 0, 0, CGFLOAT_MIN)];
     [self.view addSubview:self.tableView];
 }
 
 - (UIView *)noData
 {
     if (!_noData) {
-        CGFloat noDataH = DEVICE_HEIGHT - NavBarH - SafeAreaBottomH - ScreenScale(120);
+        CGFloat noDataH = DEVICE_HEIGHT - NavBarH - SafeAreaBottomH - ScreenScale(90);
         _noData = [[UIView alloc] initWithFrame:CGRectMake(0, 0, DEVICE_WIDTH, noDataH)];
+        _noData.backgroundColor = [UIColor whiteColor];
         UIButton * noDataBtn = [Encapsulation showNoDataWithTitle:Localized(@"NoIntroduction") imageName:@"noRecord" superView:_noData frame:CGRectMake(0, (noDataH - ScreenScale(160)) / 2, DEVICE_WIDTH, ScreenScale(160))];
         [_noData addSubview:noDataBtn];
     }
@@ -67,7 +69,7 @@ static NSString * const CooperateDetailCellID = @"CooperateDetailCellID";
 }
 - (CGFloat)tableView:(UITableView *)tableView heightForHeaderInSection:(NSInteger)section
 {
-    if ((section == 1 || section == 2) && NotNULLString(self.info)) {
+    if (NotNULLString(self.info) && (section == 1 || section == 2)) {
         return Margin_Section_Header;
     } else {
         return CGFLOAT_MIN;
@@ -75,7 +77,7 @@ static NSString * const CooperateDetailCellID = @"CooperateDetailCellID";
 }
 - (UIView *)tableView:(UITableView *)tableView viewForHeaderInSection:(NSInteger)section
 {
-    if ((section == 1 || section == 2) && NotNULLString(self.info)) {
+    if (NotNULLString(self.info) && (section == 1 || section == 2)) {
         UIButton * title = [UIButton createAttrHeaderTitle:self.listArray[section][0]];
         return title;
     } else {
@@ -84,7 +86,7 @@ static NSString * const CooperateDetailCellID = @"CooperateDetailCellID";
 }
 - (CGFloat)tableView:(UITableView *)tableView heightForFooterInSection:(NSInteger)section
 {
-    if (section == self.listArray.count - 1 && NotNULLString(self.info)) {
+    if (NotNULLString(self.info) && section == self.listArray.count - 1) {
         return ContentSizeBottom;
     } else {
         return Margin_10;
@@ -93,7 +95,10 @@ static NSString * const CooperateDetailCellID = @"CooperateDetailCellID";
 
 - (NSInteger)numberOfSectionsInTableView:(UITableView *)tableView
 {
-    return self.listArray.count;
+    if (NotNULLString(self.info)) {
+        return self.listArray.count;
+    }
+    return 1;
 }
 - (NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section
 {

@@ -62,13 +62,6 @@
         make.size.mas_equalTo(CGSizeMake(View_Width_Main, keystoreH));
     }];
     self.bottomBtn = [UIButton createFooterViewWithTitle:Localized(@"CopyKeystore") isEnabled:YES Target:self Selector:@selector(copyAction)];
-//    UIButton * copy = [UIButton createButtonWithTitle:Localized(@"CopyKeystore") isEnabled:YES Target:self Selector:@selector(copyAction)];
-//    [self.scrollView addSubview:copy];
-//    [copy mas_makeConstraints:^(MASConstraintMaker *make) {
-//        make.top.equalTo(keystore.mas_bottom).offset(MAIN_HEIGHT);
-//        make.left.width.equalTo(keystore);
-//        make.height.mas_equalTo(MAIN_HEIGHT);
-//    }];
     
     [self.view layoutIfNeeded];
     self.scrollView.contentSize = CGSizeMake(0, CGRectGetMaxY(keystore.frame) + ContentSize_Bottom + NavBarH + ContentInset_Bottom);

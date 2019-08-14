@@ -12,8 +12,10 @@
 "AppSize" = "The size of the new version：";
 "UpdateVersion" = "Update";
 
-"NoNetWork" = "Network failure, please try again later";
-"Reload" = "Reload";
+//"NoNetWork" = "Network failure, please try again later";
+//"Reload" = "Reload";
+"NoNetWork" = "Internet interrupted, please check your internet";
+"Reload" = "Refresh";
 "MyTitle" = "Profile";
 "FindTitle" = "Explore";
 "AssetsTitle" = "Tokens";
@@ -682,7 +684,7 @@
 // Details of Voucher
 "VoucherDetail" = "Details of Voucher";
 "ProvideAcceptance" = "Provides Acceptance";
-"VoucherCode" = "Code of Voucher";
+//"VoucherCode" = "Code of Voucher";
 "Specification" = "Specification";
 "HoldingQuantity" = "Amount Held";
 "GiftGiving" = "Transfer";

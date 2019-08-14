@@ -126,7 +126,6 @@
 //#define NodeCustom [[NSUserDefaults standardUserDefaults] objectForKey:Node_URL_Custom]
 
 
-
 // language
 #define CurrentAppLanguage [[NSUserDefaults standardUserDefaults] objectForKey: AppLanguage]
 #define Localized(key) [[NSBundle bundleWithPath:[[NSBundle mainBundle] pathForResource:[NSString stringWithFormat:@"%@", CurrentAppLanguage] ofType:@"lproj"]] localizedStringForKey:(key) value:nil table:@"Localizable"]

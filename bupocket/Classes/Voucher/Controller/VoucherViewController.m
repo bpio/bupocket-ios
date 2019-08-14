@@ -13,6 +13,7 @@
 #import "VoucherViewCell.h"
 #import "VoucherDetailViewController.h"
 #import "TipsAlertView.h"
+#import "DataBase.h"
 
 @interface VoucherViewController ()<UITableViewDelegate, UITableViewDataSource>
 
@@ -107,10 +108,12 @@ static NSString * const VoucherCellID = @"VoucherCellID";
 }
 - (void)getDataWithPageindex:(NSInteger)pageindex
 {
+    [self getCacheData];
     [[HTTPManager shareManager] getVoucherListDataWithPageIndex:pageindex success:^(id responseObject) {
         NSInteger code = [[responseObject objectForKey:@"errCode"] integerValue];
         if (code == Success_Code) {
-            NSArray * listArray = [VoucherModel mj_objectArrayWithKeyValuesArray:responseObject[@"data"] [@"voucherList"]];
+            NSArray * array = responseObject[@"data"] [@"voucherList"];
+            NSArray * listArray = [VoucherModel mj_objectArrayWithKeyValuesArray:array];
             if (pageindex == PageIndex_Default) {
                 [self.listArray removeAllObjects];
                 self.pageindex = PageIndex_Default;
@@ -122,21 +125,36 @@ static NSString * const VoucherCellID = @"VoucherCellID";
             } else {
                 [self.tableView.mj_footer endRefreshing];
             }
-            [self.tableView reloadData];
+            [[DataBase shareDataBase] deleteCachedDataWithCacheType:CacheTypeVoucherList];
+            [[DataBase shareDataBase] saveDataWithArray:array cacheType:CacheTypeVoucherList];
         } else {
             [MBProgressHUD showTipMessageInWindow:[ErrorTypeTool getDescriptionWithErrorCode:code]];
         }
-        [self.tableView.mj_header endRefreshing];
-        (self.listArray.count > 0) ? (self.tableView.tableFooterView = [[UIView alloc] initWithFrame:CGRectMake(0, 0, DEVICE_WIDTH, CGFLOAT_MIN)]) : (self.tableView.tableFooterView = self.noData);
-        self.tableView.mj_footer.hidden = (self.listArray.count == 0);
-        self.noNetWork.hidden = YES;
+        [self reloadUI];
+        
     } failure:^(NSError *error) {
         [self.tableView.mj_header endRefreshing];
         [self.tableView.mj_footer endRefreshing];
-        self.noNetWork.hidden = NO;
+        self.noNetWork.hidden = (self.listArray.count > 0);
     }];
 }
-
+- (void)getCacheData
+{
+    NSArray * listArray = [[DataBase shareDataBase] getCachedDataWithCacheType:CacheTypeVoucherList];
+    if (listArray.count > 0) {
+        self.listArray = [NSMutableArray array];
+        [self.listArray addObjectsFromArray:listArray];
+        [self reloadUI];
+    }
+}
+- (void)reloadUI
+{
+    [self.tableView reloadData];
+    [self.tableView.mj_header endRefreshing];
+    (self.listArray.count > 0) ? (self.tableView.tableFooterView = [[UIView alloc] initWithFrame:CGRectMake(0, 0, DEVICE_WIDTH, CGFLOAT_MIN)]) : (self.tableView.tableFooterView = self.noData);
+    self.tableView.mj_footer.hidden = (self.listArray.count == 0);
+    self.noNetWork.hidden = YES;
+}
 - (void)setupNav
 {
     UIButton * wallet = [UIButton createButtonWithNormalImage:@"nav_wallet" SelectedImage:@"nav_wallet" Target:self Selector:@selector(walletAction)];

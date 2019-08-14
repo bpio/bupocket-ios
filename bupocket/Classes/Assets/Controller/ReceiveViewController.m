@@ -98,9 +98,9 @@
     [self presentViewController:activity animated:YES completion:nil];
     activity.completionWithItemsHandler = ^(UIActivityType  _Nullable activityType, BOOL completed, NSArray * _Nullable returnedItems, NSError * _Nullable activityError) {
         if (completed) {
-            NSLog(@"系统分享成功");
+            DLog(@"系统分享成功");
         } else {
-            NSLog(@"系统分享失败");
+            DLog(@"系统分享失败");
         }
     };
 }

@@ -257,7 +257,6 @@ static NSString *cellIdentify = @"CFCycleScrollViewCell";
 - (void)dealloc
 {
     [self removeTimer];
-    NSLog(@"%@------dealloc", [self class]);
 }
 
 @end

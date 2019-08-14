@@ -7,8 +7,10 @@
 */
 //"LaunchTitle" = "小布口袋";
 //"LaunchBriefIntroduction" = "泛在价值流通区块链网络";
-"NoNetWork" = "网络不给力，请稍后再试";
-"Reload" = "重新加载";
+//"NoNetWork" = "网络不给力，请稍后再试";
+//"Reload" = "重新加载";
+"NoNetWork" = "网络不太给力，请检查您的网络";
+"Reload" = "刷新试试";
 "MyTitle" = "我的";
 "FindTitle" = "发现";
 "AssetsTitle" = "资产";
@@ -666,7 +668,7 @@
 // 券详情
 "VoucherDetail" = "券详情";
 "ProvideAcceptance" = "提供承兑";
-"VoucherCode" = "券编码";
+//"VoucherCode" = "券编码";
 "Specification" = "规格";
 "HoldingQuantity" = "持有数量";
 "GiftGiving" = "转赠";

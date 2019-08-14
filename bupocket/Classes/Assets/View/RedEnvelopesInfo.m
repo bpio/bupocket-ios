@@ -2,7 +2,7 @@
 //  RedEnvelopesInfo.m
 //  bupocket
 //
-//  Created by huoss on 2019/8/3.
+//  Created by bupocket on 2019/8/3.
 //  Copyright © 2019 bupocket. All rights reserved.
 //
 
@@ -288,16 +288,16 @@
     [[UIApplication currentViewController] presentViewController:activity animated:YES completion:nil];
     activity.completionWithItemsHandler = ^(UIActivityType  _Nullable activityType, BOOL completed, NSArray * _Nullable returnedItems, NSError * _Nullable activityError) {
         if (completed) {
-            NSLog(@"系统分享成功");
+            DLog(@"系统分享成功");
         } else {
-            NSLog(@"系统分享失败");
+            DLog(@"系统分享失败");
         }
     };
 }
 - (void)image:(UIImage *)image didFinishSavingWithError:(NSError *)error contextInfo:(void *)contextInfo
 
 {
-    NSLog(@"image = %@, error = %@, contextInfo = %@", image, error, contextInfo);
+    DLog(@"image = %@, error = %@, contextInfo = %@", image, error, contextInfo);
 }
 /*
 // Only override drawRect: if you perform custom drawing.

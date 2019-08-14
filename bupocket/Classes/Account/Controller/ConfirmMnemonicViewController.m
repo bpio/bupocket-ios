@@ -57,10 +57,6 @@
     } else if (VCArray.count >= index) {
         [self.navigationController popToViewController:VCArray[VCArray.count - index] animated:NO];
     }
-//    NSUserDefaults * defaults = [NSUserDefaults standardUserDefaults];
-//    [defaults setBool:YES forKey:If_Skip];
-//    [defaults synchronize];
-//    [UIApplication sharedApplication].keyWindow.rootViewController = [[TabBarViewController alloc] init];
     
 }
 - (void)setupView
@@ -122,16 +118,6 @@
         }];
     }
     self.finish = [UIButton createFooterViewWithTitle:Localized(@"Finished") isEnabled:NO Target:self Selector:@selector(finishedAction)];
-    /*
-    UIButton * finish = [UIButton createButtonWithTitle:Localized(@"Finished") isEnabled:NO Target:self Selector:@selector(finishedAction)];
-    [self.scrollView addSubview:finish];
-    [finish mas_makeConstraints:^(MASConstraintMaker *make) {
-        make.top.equalTo(lineView.mas_bottom).offset(tagBgH);
-        make.left.width.equalTo(confirmPrompt);
-        make.height.mas_equalTo(MAIN_HEIGHT);
-    }];
-    self.finish = finish;
-     */
     [self.view layoutIfNeeded];
     self.scrollView.contentSize = CGSizeMake(0, CGRectGetMaxY(lineView.frame) + ScreenScale(135) + (tagH + Margin_10) * (self.mnemonicArray.count / 4) + ContentInset_Bottom);
 }

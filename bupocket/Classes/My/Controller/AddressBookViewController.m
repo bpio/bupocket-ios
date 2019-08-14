@@ -13,7 +13,7 @@
 #import "MyViewController.h"
 //#import "TransferAccountsViewController.h"
 #import "TransactionViewController.h"
-#import "AddressBookCache.h"
+#import "DataBase.h"
 
 @interface AddressBookViewController ()<UITableViewDelegate, UITableViewDataSource>
 
@@ -74,20 +74,12 @@ static NSString * const AddressBookCellID = @"AddressBookCellID";
 }
 - (void)getDataWithPageindex:(NSInteger)pageindex
 {
-    NSArray * listArray = [AddressBookCache cachedAddressBookData];
-    if (listArray.count > 0) {
-        self.listArray = [NSMutableArray array];
-        [self.listArray addObjectsFromArray:listArray];
-        [self.tableView reloadData];
-        self.tableView.tableFooterView = [[UIView alloc] initWithFrame:CGRectMake(0, 0, DEVICE_WIDTH, CGFLOAT_MIN)];
-        [self.tableView.mj_header endRefreshing];
-        [self.tableView.mj_footer endRefreshing];
-        self.noNetWork.hidden = YES;
-    }
+    [self getCacheData];
     [[HTTPManager shareManager] getAddressBookListWithIdentityAddress:[[AccountTool shareTool] account].identityAddress pageIndex:pageindex success:^(id responseObject) {
         NSInteger code = [[responseObject objectForKey:@"errCode"] integerValue];
         if (code == Success_Code) {
-            NSArray * listArray = [AddressBookModel mj_objectArrayWithKeyValuesArray:responseObject[@"data"] [@"addressBookList"]];
+            NSArray * array = responseObject[@"data"] [@"addressBookList"];
+            NSArray * listArray = [AddressBookModel mj_objectArrayWithKeyValuesArray:array];
             if (pageindex == PageIndex_Default) {
                 [self.listArray removeAllObjects];
                 self.pageindex = PageIndex_Default;
@@ -99,22 +91,37 @@ static NSString * const AddressBookCellID = @"AddressBookCellID";
             } else {
                 [self.tableView.mj_footer endRefreshing];
             }
-            [self.tableView reloadData];
+            [[DataBase shareDataBase] deleteCachedDataWithCacheType:CacheTypeAddressBook];
+            [[DataBase shareDataBase] saveDataWithArray:array cacheType:CacheTypeAddressBook];
         } else {
             [MBProgressHUD showTipMessageInWindow:[ErrorTypeTool getDescriptionWithErrorCode:code]];
         }
-        [self.tableView.mj_header endRefreshing];
-        (self.listArray.count > 0) ? (self.tableView.tableFooterView = [[UIView alloc] initWithFrame:CGRectMake(0, 0, DEVICE_WIDTH, CGFLOAT_MIN)]) : (self.tableView.tableFooterView = self.noData);
-        self.tableView.mj_footer.hidden = (self.listArray.count == 0);
-        self.noNetWork.hidden = YES;
-        
-        [AddressBookCache deleteAddressBookCached];
-        [AddressBookCache saveAddressBookWithArray:responseObject[@"data"] [@"addressBookList"]];
+        [self reloadUI];
+//        [CacheData deleteAddressBookCached];
+//        [CacheData saveAddressBookWithArray:responseObject[@"data"] [@"addressBookList"]];
     } failure:^(NSError *error) {
         [self.tableView.mj_header endRefreshing];
         [self.tableView.mj_footer endRefreshing];
-        self.noNetWork.hidden = NO;
+        self.noNetWork.hidden = (self.listArray.count > 0);
     }];
+}
+- (void)getCacheData
+{
+    NSArray * listArray = [[DataBase shareDataBase] getCachedDataWithCacheType:CacheTypeAddressBook];
+    //    NSArray * listArray = [CacheData cachedAddressBookData];
+    if (listArray.count > 0) {
+        self.listArray = [NSMutableArray array];
+        [self.listArray addObjectsFromArray:listArray];
+        [self reloadUI];
+    }
+}
+- (void)reloadUI
+{
+    [self.tableView reloadData];
+    [self.tableView.mj_header endRefreshing];
+    (self.listArray.count > 0) ? (self.tableView.tableFooterView = [[UIView alloc] initWithFrame:CGRectMake(0, 0, DEVICE_WIDTH, CGFLOAT_MIN)]) : (self.tableView.tableFooterView = self.noData);
+    self.tableView.mj_footer.hidden = (self.listArray.count == 0);
+    self.noNetWork.hidden = YES;
 }
 - (void)setupNav
 {
@@ -145,8 +152,8 @@ static NSString * const AddressBookCellID = @"AddressBookCellID";
     if (!_noData) {
         CGFloat noDataH = DEVICE_HEIGHT - NavBarH - SafeAreaBottomH;
         _noData = [[UIView alloc] initWithFrame:CGRectMake(0, 0, DEVICE_WIDTH, noDataH)];
+        _noData.backgroundColor = [UIColor whiteColor];
         UIButton * noDataBtn = [Encapsulation showNoDataWithTitle:Localized(@"NoRecord") imageName:@"noRecord" superView:_noData frame:CGRectMake(0, (noDataH - ScreenScale(160)) / 2, DEVICE_WIDTH, ScreenScale(160))];
-//        _noData.backgroundColor = [UIColor blueColor];
         [_noData addSubview:noDataBtn];
     }
     return _noData;
@@ -159,14 +166,10 @@ static NSString * const AddressBookCellID = @"AddressBookCellID";
 }
 - (CGFloat)tableView:(UITableView *)tableView heightForHeaderInSection:(NSInteger)section
 {
-//    if (section == 0 && self.listArray.count > 0) {
-//        return Margin_5;
-//    }
     return CGFLOAT_MIN;
 }
 - (CGFloat)tableView:(UITableView *)tableView heightForFooterInSection:(NSInteger)section
 {
-//    return ContentSizeBottom;
     return CGFLOAT_MIN;
 }
 - (UIView *)tableView:(UITableView *)tableView viewForFooterInSection:(NSInteger)section
@@ -210,12 +213,6 @@ static NSString * const AddressBookCellID = @"AddressBookCellID";
         VC.addressBookModel = self.listArray[indexPath.row];
         [self.navigationController pushViewController:VC animated:YES];
     }
-//    NSIndexPath * lastIndex = [NSIndexPath indexPathForRow:_index inSection:indexPath.section];
-//    AddressBookListViewCell * lastcell = [tableView cellForRowAtIndexPath:lastIndex];
-//    lastcell.detailImage.hidden = YES;
-//    AddressBookListViewCell * cell = [tableView cellForRowAtIndexPath:indexPath];
-//    cell.detailImage.hidden = NO;
-//    _index = indexPath.row;
 }
 
 

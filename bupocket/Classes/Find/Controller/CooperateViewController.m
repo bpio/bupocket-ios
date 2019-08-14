@@ -11,6 +11,7 @@
 #import "CooperateDetailViewController.h"
 #import "CooperateModel.h"
 #import "YBPopupMenu.h"
+#import "DataBase.h"
 
 @interface CooperateViewController ()<UITableViewDelegate, UITableViewDataSource, YBPopupMenuDelegate>
 
@@ -53,22 +54,39 @@ static NSString * const CooperateCellID = @"CooperateCellID";
 }
 - (void)getData
 {
+    [self getCacheData];
     [[HTTPManager shareManager] getNodeCooperateListDataSuccess:^(id responseObject) {
         NSInteger code = [[responseObject objectForKey:@"errCode"] integerValue];
         if (code == Success_Code) {
-            self.listArray = [CooperateModel mj_objectArrayWithKeyValuesArray:responseObject[@"data"][@"nodeList"]];
-            [self.tableView reloadData];
+            NSArray * array = responseObject[@"data"][@"nodeList"];
+            self.listArray = [CooperateModel mj_objectArrayWithKeyValuesArray:array];
+            [[DataBase shareDataBase] deleteCachedDataWithCacheType:CacheTypeCooperateList];
+            [[DataBase shareDataBase] saveDataWithArray:array cacheType:CacheTypeCooperateList];
         } else {
             [MBProgressHUD showTipMessageInWindow:[ErrorTypeTool getDescriptionWithNodeErrorCode:code]];
         }
-        [self.tableView.mj_header endRefreshing];
-        (self.listArray.count > 0) ? (self.tableView.tableFooterView = [[UIView alloc] initWithFrame:CGRectMake(0, 0, DEVICE_WIDTH, CGFLOAT_MIN)]) : (self.tableView.tableFooterView = self.noData);
-        self.tableView.mj_footer.hidden = (self.listArray.count == 0);
-        self.noNetWork.hidden = YES;
+        [self reloadUI];
     } failure:^(NSError *error) {
         [self.tableView.mj_header endRefreshing];
-        self.noNetWork.hidden = NO;
+        self.noNetWork.hidden = (self.listArray.count > 0);
     }];
+}
+- (void)getCacheData
+{
+    NSArray * listArray = [[DataBase shareDataBase] getCachedDataWithCacheType:CacheTypeCooperateList];
+    if (listArray.count > 0) {
+        self.listArray = [NSMutableArray array];
+        [self.listArray addObjectsFromArray:listArray];
+        [self reloadUI];
+    }
+}
+- (void)reloadUI
+{
+    [self.tableView reloadData];
+    [self.tableView.mj_header endRefreshing];
+    (self.listArray.count > 0) ? (self.tableView.tableFooterView = [[UIView alloc] initWithFrame:CGRectMake(0, 0, DEVICE_WIDTH, CGFLOAT_MIN)]) : (self.tableView.tableFooterView = self.noData);
+    self.tableView.mj_footer.hidden = (self.listArray.count == 0);
+    self.noNetWork.hidden = YES;
 }
 - (void)reloadData
 {
@@ -89,6 +107,7 @@ static NSString * const CooperateCellID = @"CooperateCellID";
     if (!_noData) {
         CGFloat noDataH = DEVICE_HEIGHT - NavBarH - SafeAreaBottomH;
         _noData = [[UIView alloc] initWithFrame:CGRectMake(0, 0, DEVICE_WIDTH, noDataH)];
+        _noData.backgroundColor = [UIColor whiteColor];
         UIButton * noDataBtn = [Encapsulation showNoDataWithTitle:Localized(@"NoRecord") imageName:@"noRecord" superView:_noData frame:CGRectMake(0, (noDataH - ScreenScale(160)) / 2, DEVICE_WIDTH, ScreenScale(160))];
         [_noData addSubview:noDataBtn];
     }

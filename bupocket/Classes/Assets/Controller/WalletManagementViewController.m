@@ -57,17 +57,6 @@
         [deleteBtn setTitleColor:WARNING_COLOR forState:UIControlStateNormal];
         deleteBtn.backgroundColor = [UIColor whiteColor];
         deleteBtn.superview.backgroundColor = self.tableView.backgroundColor;
-//        [UIButton createButtonWithTitle:Localized(@"DeleteWallet") isEnabled:YES Target:self Selector:@selector(deleteAction)];
-//        [deleteBtn setTitleColor:WARNING_COLOR forState:UIControlStateNormal];
-//        deleteBtn.backgroundColor = [UIColor whiteColor];
-//        [footerView addSubview:deleteBtn];
-//        [deleteBtn mas_makeConstraints:^(MASConstraintMaker *make) {
-//            make.top.equalTo(footerView.mas_top).offset(ScreenScale(90));
-//            //            make.bottom.equalTo(footerView);
-//            make.centerX.equalTo(footerView);
-//            make.size.mas_equalTo(btnSize);
-//        }];
-//        return footerView;
     }
 }
 

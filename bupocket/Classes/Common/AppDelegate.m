@@ -16,26 +16,11 @@
 #import <TencentOpenAPI/TencentOAuth.h>
 #import <UMCommon/UMCommon.h>
 
-//#import "RedEnvelopesViewController.h"
-//#import "OpenRedEnvelopes.h"
-//#import "RedEnvelopesInfo.h"
-//#import "ActivityResultModel.h"
-//#import "ActivityInfoModel.h"
-
 @interface AppDelegate ()<WXApiDelegate, TencentSessionDelegate>
 
 @property (nonatomic, strong) VersionUpdateAlertView * alertView;
 @property (nonatomic, strong) TextInputAlertView * PWAlertView;
 @property (nonatomic, strong) TencentOAuth * tencentOAuth;
-
-//@property (nonatomic, strong) UIButton * redEnvelopes;
-//@property (nonatomic, strong) NSString * redEnvelopesBgUrl;
-//@property (nonatomic, strong) NSString * bonusCode;
-////@property (nonatomic, assign) BOOL isActivityOpened;
-//@property (nonatomic, assign) BOOL isReceived;
-//@property (nonatomic, assign) BOOL isActivityFinished;
-//@property (nonatomic, strong) ActivityInfoModel * activityInfoModel;
-//@property (nonatomic, strong) ActivityResultModel * activityResultModel;
 
 @end
 
@@ -54,7 +39,7 @@
     [[HTTPManager shareManager] getBlockLatestFees];
     [WXApi registerApp:Wechat_APP_ID];
     _tencentOAuth = [[TencentOAuth alloc] initWithAppId:Tencent_App_ID andDelegate:self];
-    [UMConfigure initWithAppkey:UM_App_Key channel:@""];
+//    [UMConfigure initWithAppkey:UM_App_Key channel:@""];
     return YES;
 }
 - (void)initializationSettings

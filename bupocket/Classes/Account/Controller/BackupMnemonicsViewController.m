@@ -86,13 +86,6 @@
     }
     
     self.copied = [UIButton createFooterViewWithTitle:Localized(@"Copied") isEnabled:YES Target:self Selector:@selector(copiedAction)];
-//    [UIButton createButtonWithTitle:Localized(@"Copied") isEnabled:YES Target:self Selector:@selector(copiedAction)];
-//    [self.scrollView addSubview:copied];
-//    [copied mas_makeConstraints:^(MASConstraintMaker *make) {
-//        make.top.equalTo(savePrompt.mas_bottom).offset(ScreenScale(135) + (tagH + Margin_10) * (self.mnemonicArray.count / 4));
-//        make.left.right.equalTo(promptBg);
-//        make.height.mas_equalTo(MAIN_HEIGHT);
-//    }];
     [self.view layoutIfNeeded];
     self.scrollView.contentSize = CGSizeMake(0, CGRectGetMaxY(savePrompt.frame) + ScreenScale(135) + (tagH + Margin_10) * (self.mnemonicArray.count / 4) + ContentInset_Bottom);
 }

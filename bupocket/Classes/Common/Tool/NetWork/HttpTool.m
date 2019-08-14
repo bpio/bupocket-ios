@@ -27,7 +27,7 @@ static HttpTool * _shareTool = nil;
             _shareTool = [[HttpTool alloc] init];
              NSURLSessionConfiguration * sessionConfiguration = [NSURLSessionConfiguration defaultSessionConfiguration];
              sessionConfiguration.timeoutIntervalForRequest = Timeout_Interval;
-             sessionConfiguration.requestCachePolicy = NSURLRequestReloadIgnoringCacheData;
+//             sessionConfiguration.requestCachePolicy = NSURLRequestReloadIgnoringCacheData;
             _shareTool.sessionManager = [[AFURLSessionManager alloc] initWithSessionConfiguration:sessionConfiguration];
             [_shareTool.sessionManager.reachabilityManager startMonitoring];
             _shareTool.manager = [AFHTTPSessionManager manager];

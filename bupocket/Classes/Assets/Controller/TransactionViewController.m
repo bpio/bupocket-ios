@@ -165,7 +165,8 @@ static NSString * const ChooseVoucherCellID = @"ChooseVoucherCellID";
             }
             if ([weakself.receiveAddressStr isEqualToString:CurrentWalletAddress]) {
                 [MBProgressHUD hideHUD];
-                [MBProgressHUD showTipMessageInWindow:Localized(@"CannotTransferVoucherToOneself")];
+                NSString * message = (self.transferType == TransferTypeAssets) ? Localized(@"CannotTransferToOneself") : Localized(@"CannotTransferVoucherToOneself");
+                [MBProgressHUD showTipMessageInWindow:message];
                 return;
             }
             RegexPatternTool * regex = [[RegexPatternTool alloc] init];

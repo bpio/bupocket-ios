@@ -21,15 +21,11 @@
 #import "FeedbackViewController.h"
 #import "AboutUsViewController.h"
 
-//#import "SettingViewController.h"
 #import "ChangePasswordViewController.h"
-//#import "UINavigationController+Extension.h"
 
 @interface MyViewController ()<UITableViewDelegate, UITableViewDataSource>
 
 @property (nonatomic, strong) UITableView * tableView;
-//@property (nonatomic, strong) UIImage * headerImage;
-//@property (nonatomic, strong) UIImageView * headerBg;
 @property (nonatomic, strong) UIButton * networkPrompt;
 @property (nonatomic, strong) NSMutableArray * listArray;
 
@@ -45,15 +41,9 @@
     }
     return _listArray;
 }
-//- (UIStatusBarStyle)preferredStatusBarStyle {
-//    return UIStatusBarStyleLightContent;
-//}
 
 - (void)viewDidLoad {
     [super viewDidLoad];
-//    self.headerImage = [UIImage imageNamed:@"my_header"];
-    
-//    self.listArray = @[Localized(@"Setting"), Localized(@"AddressBook"), Localized(@"WalletManagement"), Localized(@"ModifyIdentityPassword"), Localized(@"Feedback"), Localized(@"VersionNumber")];
     [self setupView];
     // Do any additional setup after loading the view.
 }
@@ -68,10 +58,8 @@
     } else if ([defaults boolForKey:If_Switch_TestNetwork]) {
         self.networkPrompt = [UIButton createNavButtonWithTitle:Localized(@"TestNetworkPrompt") Target:nil Selector:nil];
         self.navigationItem.leftBarButtonItem = [[UIBarButtonItem alloc] initWithCustomView:self.networkPrompt];
-//        self.headerBg.image = [UIImage imageNamed:@"my_header_test"];
     } else {
         self.navigationItem.leftBarButtonItem = nil;
-//        self.headerBg.image = self.headerImage;
     }
     [self.tableView reloadData];
 }
@@ -80,72 +68,10 @@
     self.tableView = [[UITableView alloc] initWithFrame:CGRectMake(0, 0, DEVICE_WIDTH, DEVICE_HEIGHT - TabBarH) style:UITableViewStyleGrouped];
     self.tableView.delegate = self;
     self.tableView.dataSource = self;
-//    self.tableView.separatorInset = UIEdgeInsetsZero;
     self.tableView.separatorStyle = UITableViewCellSeparatorStyleNone;
     [self.view addSubview:self.tableView];
-//    self.tableView.bounces = NO;
     self.tableView.tableHeaderView = [[UIView alloc] initWithFrame:CGRectMake(0, 0, 0, CGFLOAT_MIN)];
-//    self.tableView.backgroundColor = [UIColor whiteColor];
-//    [self setupHeaderView];
 }
-/*
-- (void)setupHeaderView
-{
-    self.headerBg = [[UIImageView alloc] initWithImage:self.headerImage];
-    self.headerBg.userInteractionEnabled = YES;
-    
-//    self.networkPrompt = [[UILabel alloc] init];
-//    self.networkPrompt.font = FONT(15);
-//    self.networkPrompt.textColor = MAIN_COLOR;
-//    self.networkPrompt.numberOfLines = 0;
-//    self.networkPrompt.preferredMaxLayoutWidth = DEVICE_WIDTH - Margin_40;
-//    [self.headerBg addSubview:self.networkPrompt];
-//    [self.networkPrompt mas_makeConstraints:^(MASConstraintMaker *make) {
-//        make.top.equalTo(self.headerBg.mas_top).offset(StatusBarHeight + Margin_10);
-//        make.centerX.equalTo(self.headerBg);
-//    }];
-    UIButton * userIcon = [UIButton createButtonWithNormalImage:@"userIcon_placeholder" SelectedImage:@"userIcon_placeholder" Target:self Selector:@selector(userIconAction)];
-    userIcon.imageView.contentMode = UIViewContentModeScaleAspectFit;
-    [self.headerBg addSubview:userIcon];
-    [userIcon mas_makeConstraints:^(MASConstraintMaker *make) {
-        make.left.equalTo(self.headerBg.mas_left).offset(ScreenScale(35));
-        make.centerY.equalTo(self.headerBg.mas_bottom).offset(-ScreenScale(64));
-        make.height.mas_equalTo(ScreenScale(100));
-    }];
-    UILabel * userName = [[UILabel alloc] init];
-    userName.font = FONT_Bold(18);
-    userName.textColor = TITLE_COLOR;
-    userName.text = [[AccountTool shareTool] account].identityName;
-    [self.headerBg addSubview:userName];
-    [userName mas_makeConstraints:^(MASConstraintMaker *make) {
-        make.top.equalTo(userIcon.mas_bottom).offset(Margin_5);
-        make.width.mas_lessThanOrEqualTo(DEVICE_WIDTH - Margin_40);
-    }];
-    CGFloat userNameW = [Encapsulation rectWithText:userName.text font:userName.font textHeight:ScreenScale(20)].size.width;
-    if (userNameW > ScreenScale(130)) {
-        [userName mas_makeConstraints:^(MASConstraintMaker *make) {
-            make.left.equalTo(self.headerBg.mas_left).offset(Margin_20);
-        }];
-    } else {
-        [userName mas_makeConstraints:^(MASConstraintMaker *make) {
-            make.centerX.equalTo(userIcon);
-        }];
-    }
-    CGFloat headerH = ScreenScale(375 * self.headerImage.size.height / self.headerImage.size.width);
-    UIView * headerView = [[UIView alloc] initWithFrame:CGRectMake(0, 0, DEVICE_WIDTH, headerH + Margin_30)];
-    [headerView addSubview:self.headerBg];
-    [self.headerBg mas_makeConstraints:^(MASConstraintMaker *make) {
-        make.left.top.right.equalTo(headerView);
-        make.height.mas_equalTo(headerH);
-    }];
-    self.tableView.tableHeaderView = headerView;
-}
-- (void)userIconAction
-{
-    MyIdentityViewController * VC = [[MyIdentityViewController alloc] init];
-    [self.navigationController pushViewController:VC animated:YES];
-}
- */
 - (CGFloat)tableView:(UITableView *)tableView heightForHeaderInSection:(NSInteger)section
 {
     if (section == 0) {
@@ -233,7 +159,6 @@
     } else {
         ListTableViewCell * cell = [ListTableViewCell cellWithTableView:tableView cellType:CellTypeDetail];
         [cell.listImage setImage:[UIImage imageNamed:[NSString stringWithFormat:@"my_list_%zd_%zd", indexPath.section, indexPath.row]] forState:UIControlStateNormal];
-//        [cell.detail setImage:[UIImage imageNamed:@"list_arrow"] forState:UIControlStateNormal];
         cell.title.text = self.listArray[indexPath.section][indexPath.row];
         cell.selectionStyle = UITableViewCellSelectionStyleNone;
         if (indexPath.section == 1) {
@@ -249,13 +174,6 @@
             }
         }
         cell.lineView.hidden = (indexPath.row == [self.listArray[indexPath.section] count] - 1);
-        //    if (indexPath.row == self.listArray.count - 1) {
-        //        cell.detailImage.hidden = YES;
-        //        cell.detailTitle.text = [NSString stringWithFormat:@"V%@", App_Version];
-        //    } else {
-        //        cell.detailImage.hidden = NO;
-        //        cell.detailTitle.text = nil;
-        //    }
         return cell;
     }
 }
@@ -290,23 +208,6 @@
             [self.navigationController pushViewController:VC animated:YES];
         }
     }
-    /*
-    if (indexPath.row == 0) {
-        SettingViewController * VC = [[SettingViewController alloc] init];
-        [self.navigationController pushViewController:VC animated:YES];
-    } else if (indexPath.row == 1) {
-     
-    } else if (indexPath.row == 2) {
-     
-    } else if (indexPath.row == 3) {
-        ChangePasswordViewController * VC = [[ChangePasswordViewController alloc] init];
-        [self.navigationController pushViewController:VC animated:YES];
-    } else if (indexPath.row == 4) {
-     
-    } else if (indexPath.row == self.listArray.count - 1) {
-        [self SwitchingNetwork];
-    }
-     */
 }
 
 /*

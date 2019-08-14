@@ -9,6 +9,7 @@
 #import "VersionLogViewController.h"
 #import "VersionModel.h"
 #import "DetailListViewCell.h"
+#import "DataBase.h"
 
 @interface VersionLogViewController ()<UITableViewDelegate, UITableViewDataSource>
 
@@ -70,10 +71,12 @@ static NSString * const VersionLogCellID = @"VersionLogCellID";
 }
 - (void)getDataWithPageindex:(NSInteger)pageindex
 {
+    [self getCacheData];
     [[HTTPManager shareManager] getVersionLogDataWithPageIndex:pageindex success:^(id responseObject) {
         NSInteger code = [[responseObject objectForKey:@"errCode"] integerValue];
         if (code == Success_Code) {
-            NSArray * listArray = [VersionModel mj_objectArrayWithKeyValuesArray:responseObject[@"data"] [@"logList"]];
+            NSArray * array = responseObject[@"data"] [@"logList"];
+            NSArray * listArray = [VersionModel mj_objectArrayWithKeyValuesArray:array];
             if (pageindex == PageIndex_Default) {
                 [self.listArray removeAllObjects];
                 self.pageindex = PageIndex_Default;
@@ -85,19 +88,34 @@ static NSString * const VersionLogCellID = @"VersionLogCellID";
             } else {
                 [self.tableView.mj_footer endRefreshing];
             }
-            [self.tableView reloadData];
+            [[DataBase shareDataBase] deleteCachedDataWithCacheType:CacheTypeVersionLogList];
+            [[DataBase shareDataBase] saveDataWithArray:array cacheType:CacheTypeVersionLogList];
         } else {
             [MBProgressHUD showTipMessageInWindow:[ErrorTypeTool getDescriptionWithErrorCode:code]];
         }
-        [self.tableView.mj_header endRefreshing];
-        (self.listArray.count > 0) ? (self.tableView.tableFooterView = [[UIView alloc] initWithFrame:CGRectMake(0, 0, DEVICE_WIDTH, CGFLOAT_MIN)]) : (self.tableView.tableFooterView = self.noData);
-        self.tableView.mj_footer.hidden = (self.listArray.count == 0);
-        self.noNetWork.hidden = YES;
+        [self reloadUI];
     } failure:^(NSError *error) {
         [self.tableView.mj_header endRefreshing];
         [self.tableView.mj_footer endRefreshing];
-        self.noNetWork.hidden = NO;
+        self.noNetWork.hidden = (self.listArray.count > 0);
     }];
+}
+- (void)getCacheData
+{
+    NSArray * listArray = [[DataBase shareDataBase] getCachedDataWithCacheType:CacheTypeVersionLogList];
+    if (listArray.count > 0) {
+        self.listArray = [NSMutableArray array];
+        [self.listArray addObjectsFromArray:listArray];
+        [self reloadUI];
+    }
+}
+- (void)reloadUI
+{
+    [self.tableView reloadData];
+    [self.tableView.mj_header endRefreshing];
+    (self.listArray.count > 0) ? (self.tableView.tableFooterView = [[UIView alloc] initWithFrame:CGRectMake(0, 0, DEVICE_WIDTH, CGFLOAT_MIN)]) : (self.tableView.tableFooterView = self.noData);
+    self.tableView.mj_footer.hidden = (self.listArray.count == 0);
+    self.noNetWork.hidden = YES;
 }
 - (void)setupView
 {
@@ -113,6 +131,7 @@ static NSString * const VersionLogCellID = @"VersionLogCellID";
     if (!_noData) {
         CGFloat noDataH = DEVICE_HEIGHT - NavBarH - SafeAreaBottomH;
         _noData = [[UIView alloc] initWithFrame:CGRectMake(0, 0, DEVICE_WIDTH, noDataH)];
+        _noData.backgroundColor = [UIColor whiteColor];
         UIButton * noDataBtn = [Encapsulation showNoDataWithTitle:Localized(@"NoRecord") imageName:@"noRecord" superView:_noData frame:CGRectMake(0, (noDataH - ScreenScale(160)) / 2, DEVICE_WIDTH, ScreenScale(160))];
         [_noData addSubview:noDataBtn];
     }

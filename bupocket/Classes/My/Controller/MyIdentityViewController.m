@@ -8,7 +8,6 @@
 
 #import "MyIdentityViewController.h"
 #import "IdentityViewController.h"
-//#import "BackupMnemonicsViewController.h"
 #import "BackUpWalletViewController.h"
 #import "ClearCacheTool.h"
 #import "YBPopupMenu.h"
@@ -29,7 +28,7 @@
 - (void)viewDidLoad {
     [super viewDidLoad];
     self.navigationItem.title = Localized(@"MyIdentity");
-    self.listArray = @[@[Localized(@"IdentityNameTitle"), [[AccountTool shareTool] account].identityName], @[Localized(@"IdentityIDTitle"), [NSString stringEllipsisWithStr:[[AccountTool shareTool] account].identityAddress subIndex:SubIndex_Address]]];
+    self.listArray = @[@[Localized(@"IdentityNameTitle"), [[AccountTool shareTool] account].identityName], @[Localized(@"IdentityIDTitle"), [[AccountTool shareTool] account].identityAddress]];
     [self setupView];
     // Do any additional setup after loading the view.
 }
@@ -46,6 +45,9 @@
 
 - (CGFloat)tableView:(UITableView *)tableView heightForRowAtIndexPath:(NSIndexPath *)indexPath
 {
+    if (indexPath.row == 1) {
+        return ScreenScale(70);
+    }
     return Margin_50;
 }
 - (CGFloat)tableView:(UITableView *)tableView heightForHeaderInSection:(NSInteger)section
@@ -99,6 +101,9 @@
     cell.selectionStyle = UITableViewCellSelectionStyleNone;
     cell.lineView.hidden = (indexPath.row == self.listArray.count - 1 );
     if (indexPath.row == self.listArray.count - 1) {
+        cell.detailTitle.numberOfLines = 0;
+        cell.detailTitle.textAlignment = NSTextAlignmentRight;
+        cell.detailTitle.copyable = YES;
         [cell.listImage setImage:[UIImage imageNamed:@"explain_info"] forState:UIControlStateNormal];
     }
     return cell;
@@ -111,98 +116,12 @@
         [self identityIDInfo:cell.listImage];
     }
 }
-/*
-- (void)viewDidLoad {
-    [super viewDidLoad];
-    self.navigationItem.title = Localized(@"MyIdentity");
-    [self setupView];
-    // Do any additional setup after loading the view.
-}
 
-- (void)setupView
-{
-    self.view.backgroundColor = COLOR(@"F2F2F2");
-    UIView * myIdentityBg = [[UIView alloc] initWithFrame:CGRectMake(Margin_15, Margin_10, DEVICE_WIDTH - Margin_30, ScreenScale(90))];
-    myIdentityBg.backgroundColor = [UIColor whiteColor];
-    [myIdentityBg setViewSize:myIdentityBg.size borderWidth:0 borderColor:nil borderRadius:BG_CORNER];
-    [self.view addSubview:myIdentityBg];
-    
-    UILabel * IDNameTitle = [[UILabel alloc] init];
-    IDNameTitle.font = FONT(15);
-    IDNameTitle.textColor = COLOR_9;
-    IDNameTitle.text = Localized(@"IdentityNameTitle");
-    [myIdentityBg addSubview:IDNameTitle];
-    UILabel * IDName = [[UILabel alloc] init];
-    IDName.font = FONT(15);
-    IDName.textColor = COLOR_6;
-    IDName.text = [[AccountTool shareTool] account].identityName;
-    [myIdentityBg addSubview:IDName];
-    [IDNameTitle setContentCompressionResistancePriority:UILayoutPriorityRequired forAxis:UILayoutConstraintAxisHorizontal];
-    [IDNameTitle mas_makeConstraints:^(MASConstraintMaker *make) {
-        make.top.equalTo(myIdentityBg.mas_top).offset(Margin_15);
-        make.left.equalTo(myIdentityBg.mas_left).offset(Margin_10);
-        make.right.mas_lessThanOrEqualTo(IDName.mas_left).offset(-Margin_10);
-    }];
-    
-    [IDName mas_makeConstraints:^(MASConstraintMaker *make) {
-        make.top.equalTo(IDNameTitle);
-        make.right.equalTo(myIdentityBg.mas_right).offset(-Margin_10);
-        make.left.mas_greaterThanOrEqualTo(IDNameTitle.mas_right).offset(Margin_10);
-    }];
-    
-    self.identityIDTitle = [[CustomButton alloc] init];
-    self.identityIDTitle.layoutMode = HorizontalInverted;
-    self.identityIDTitle.titleLabel.font = IDNameTitle.font;
-    [self.identityIDTitle setTitleColor:IDNameTitle.textColor forState:UIControlStateNormal];
-    [self.identityIDTitle setTitle:Localized(@"IdentityIDTitle") forState:UIControlStateNormal];
-    [self.identityIDTitle setImage:[UIImage imageNamed:@"explain_info"] forState:UIControlStateNormal];
-    [self.identityIDTitle addTarget:self action:@selector(identityIDInfo:) forControlEvents:UIControlEventTouchUpInside];
-    [myIdentityBg addSubview:self.identityIDTitle];
-    
-    UILabel * IdentityID = [[UILabel alloc] init];
-    IdentityID.font = IDName.font;
-    IdentityID.textColor = IDName.textColor;
-    IdentityID.text = [NSString stringEllipsisWithStr:[[AccountTool shareTool] account].identityAddress subIndex:SubIndex_Address];
-    IdentityID.numberOfLines = 0;
-    IdentityID.textAlignment = NSTextAlignmentRight;
-    [myIdentityBg addSubview:IdentityID];
-    
-    [self.identityIDTitle setContentCompressionResistancePriority:UILayoutPriorityRequired forAxis:UILayoutConstraintAxisHorizontal];
-    [self.identityIDTitle mas_makeConstraints:^(MASConstraintMaker *make) {
-        make.top.equalTo(IDNameTitle.mas_bottom).offset(Margin_25);
-        make.left.equalTo(IDNameTitle);
-        make.right.mas_lessThanOrEqualTo(IdentityID.mas_left).offset(-Margin_10);
-    }];
-    [IdentityID mas_makeConstraints:^(MASConstraintMaker *make) {
-        make.top.equalTo(self.identityIDTitle);
-        make.right.equalTo(IDName);
-        make.left.mas_greaterThanOrEqualTo(self.identityIDTitle.mas_right).offset(Margin_10);
-    }];
-    
- 
-}
-
- */
 - (void)backupIdentityAction
 {
     BackUpWalletViewController * VC = [[BackUpWalletViewController alloc] init];
     VC.mnemonicType = MnemonicBackup;
     [self.navigationController pushViewController:VC animated:YES];
-    /*
-    PasswordAlertView * alertView = [[PasswordAlertView alloc] initWithPrompt:Localized(@"IdentityCipherPrompt") confrimBolck:^(NSString * _Nonnull password, NSArray * _Nonnull words) {
-        if (words.count > 0) {
-            BackupMnemonicsViewController * VC = [[BackupMnemonicsViewController alloc] init];
-            VC.mnemonicArray = words;
-            [self.navigationController pushViewController:VC animated:YES];
-        }
-        //        [UIApplication sharedApplication].keyWindow.rootViewController = [[NavigationViewController alloc] initWithRootViewController:VC];
-    } cancelBlock:^{
-        
-    }];
-    alertView.passwordType = PWTypeBackUpID;
-    [alertView showInWindowWithMode:CustomAnimationModeAlert inView:nil bgAlpha:AlertBgAlpha needEffectView:NO];
-    [alertView.PWTextField becomeFirstResponder];
-     */
 }
 - (void)exitIDAction
 {

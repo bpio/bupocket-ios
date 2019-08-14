@@ -74,35 +74,7 @@
         make.centerX.width.equalTo(note);
         make.height.mas_equalTo(expectSize.height);
     }];
-    /*
-    NSArray * noteArray = @[Localized(@"BackUpWalletNote1"), Localized(@"BackUpWalletNote2"), Localized(@"BackUpWalletNote3"), Localized(@"BackUpWalletNote4")];
-    CGFloat noteLabelH = 0;
-    for (NSInteger i = 0; i < noteArray.count; i++) {
-        UILabel * noteLabel = [[UILabel alloc] init];
-        noteLabel.numberOfLines = 0;
-        noteLabel.attributedText = [Encapsulation attrWithString:noteArray[i] preFont:FONT_13 preColor:COLOR_6 index:0 sufFont:FONT_13 sufColor:COLOR_6 lineSpacing:LINE_SPACING];
-        [self.scrollView addSubview:noteLabel];
-        if (i > 0) {
-            noteLabelH += [self getNoteTextHeightWithText:noteArray[i - 1]] + Margin_10;
-        }
-        CGSize maximumSize = CGSizeMake(View_Width_Main, CGFLOAT_MAX);
-        CGSize expectSize = [noteLabel sizeThatFits:maximumSize];
-        [noteLabel mas_makeConstraints:^(MASConstraintMaker *make) {
-            make.top.equalTo(note.mas_bottom).offset(Margin_15 + noteLabelH);
-            make.centerX.width.equalTo(note);
-            make.height.mas_equalTo(expectSize.height);
-        }];
-    }
-    noteLabelH += [self getNoteTextHeightWithText:noteArray[noteArray.count - 1]];
-     */
    self.backupMnemonics = [UIButton createFooterViewWithTitle:Localized(@"BackupMnemonics") isEnabled:YES Target:self Selector:@selector(backupMnemonicsAction)];
-//    [UIButton createButtonWithTitle:Localized(@"BackupMnemonics") isEnabled:YES Target:self Selector:@selector(backupMnemonicsAction)];
-//    [self.scrollView addSubview:backupMnemonics];
-//    [backupMnemonics mas_makeConstraints:^(MASConstraintMaker *make) {
-//        make.top.equalTo(note.mas_bottom).offset(Margin_15 + noteLabelH + Margin_60);
-//        make.left.width.equalTo(note);
-//        make.height.mas_equalTo(MAIN_HEIGHT);
-//    }];
     [self.view layoutIfNeeded];
     self.scrollView.contentSize = CGSizeMake(0, CGRectGetMaxY(noteLabel.frame) + NavBarH + ContentSize_Bottom + ContentInset_Bottom);
 }
@@ -116,10 +88,6 @@
     if (self.mnemonicArray.count > 0) {
         [self pushBackupMnemonicsWithArray:self.mnemonicArray];
     } else {
-//        NSString * prompt = Localized(@"IdentityCipherPrompt");
-//        if (self.mnemonicType == MnemonicExport) {
-//            prompt = Localized(@"WalletPWPrompt");
-//        }
         TextInputAlertView * alertView = [[TextInputAlertView alloc] initWithInputType:PWTypeBackUpID confrimBolck:^(NSString * _Nonnull text, NSArray * _Nonnull words) {
             if (words.count > 0) {
                 [self pushBackupMnemonicsWithArray:words];
@@ -143,11 +111,6 @@
 }
 - (void)skipAction
 {
-//    if (self.mnemonicType != MnemonicCreateWallet && self.mnemonicType != MnemonicCreateWallet) {
-//        NSUserDefaults * defaults = [NSUserDefaults standardUserDefaults];
-//        [defaults setBool:YES forKey:If_Skip];
-//        [defaults synchronize];
-//    }
     if (self.mnemonicType == MnemonicCreateID) {
         [UIApplication sharedApplication].keyWindow.rootViewController = [[TabBarViewController alloc] init];
     } else if (self.mnemonicType == MnemonicCreateWallet) {

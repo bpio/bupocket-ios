@@ -82,8 +82,6 @@
         make.centerY.equalTo(explain);
         make.left.equalTo(headerView.mas_left).offset(Margin_Main);
         make.width.mas_lessThanOrEqualTo(memorizingWordsW);
-        //        make.height.mas_equalTo(Margin_50);
-        //        make.right.mas_lessThanOrEqualTo(explain.mas_left).offset(-Margin_10);
     }];
 //    [explain setContentCompressionResistancePriority:UILayoutPriorityRequired forAxis:UILayoutConstraintAxisHorizontal];
     
@@ -95,35 +93,8 @@
     headerView.frame = CGRectMake(0, 0, DEVICE_WIDTH, memorizingWordsH + Margin_30 + TextViewH);
     self.tableView.tableHeaderView = headerView;
     
-//    UIView * footerView = [[UIView alloc] initWithFrame:CGRectMake(0, 0, DEVICE_WIDTH, ScreenScale(150) + SafeAreaBottomH)];
     _restoreIdentity = [UIButton createFooterViewWithTitle:Localized(@"Restore") isEnabled:NO Target:self Selector:@selector(restoreAction)];
-//    [UIButton createButtonWithTitle:Localized(@"Restore") isEnabled:NO Target:self Selector:@selector(restoreAction)];
-//    [footerView addSubview:_restoreIdentity];
-//
-//    [self.restoreIdentity mas_makeConstraints:^(MASConstraintMaker *make) {
-//        make.top.equalTo(footerView.mas_top).offset(ScreenScale(90));
-//        make.left.equalTo(footerView.mas_left).offset(Margin_15);
-//        make.right.equalTo(footerView.mas_right).offset(-Margin_15);
-//        make.height.mas_equalTo(MAIN_HEIGHT);
-//    }];
-//    self.tableView.tableFooterView = footerView;
-    
 }
-/*
-- (PlaceholderTextView *)memorizingWords
-{
-    if (!_memorizingWords) {
-        _memorizingWords = [[PlaceholderTextView alloc] init];
-        _memorizingWords.placeholder = Localized(@"MnemonicPlaceholder");
-        _memorizingWords.delegate = self;
-        _memorizingWords.clipsToBounds = YES;
-        _memorizingWords.layer.masksToBounds = YES;
-        _memorizingWords.layer.cornerRadius = BG_CORNER;
-        _memorizingWords.backgroundColor = VIEWBG_COLOR;
-    }
-    return _memorizingWords;
-}
- */
 - (void)explainInfo:(UIButton *)button
 {
     ExplainInfoViewController * VC = [[ExplainInfoViewController alloc] init];

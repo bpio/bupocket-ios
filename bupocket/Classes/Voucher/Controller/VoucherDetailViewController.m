@@ -167,21 +167,6 @@ static NSString * const VoucherDetailCellID = @"VoucherDetailCellID";
 {
     if (section == self.listArray.count - 1) {
         UIView * footerView = [[UIView alloc] init];
-//        WithFrame:CGRectMake(0, 0, DEVICE_WIDTH - Margin_50, ScreenScale(140) * self.proportion - self.infoCellHeight)
-        /*
-        CGFloat btnW = (DEVICE_WIDTH - ScreenScale(80)) / 2;
-        UIButton * exchange = [UIButton createButtonWithTitle:@"兑换" isEnabled:YES Target:self Selector:@selector(exchangeAction)];
-        exchange.backgroundColor = COLOR(@"3485FB");
-        [footerView addSubview:exchange];
-        [exchange mas_makeConstraints:^(MASConstraintMaker *make) {
-//            make.top.equalTo(footerView.mas_top).offset(Margin_10);
-            make.centerY.equalTo(footerView.mas_centerY).offset(-Margin_20 * self.proportion);
-            make.left.equalTo(footerView.mas_left).offset(Margin_15);
-            make.width.mas_equalTo(btnW);
-//            make.right.equalTo(footerView.mas_right).offset(-Margin_15);
-            make.height.mas_equalTo(Margin_40);
-        }];
-         */
         UIButton * giftGiving = [UIButton createButtonWithTitle:Localized(@"GiftGiving") isEnabled:YES Target:self Selector:@selector(giftGivingAction)];
         [footerView addSubview:giftGiving];
         [giftGiving mas_makeConstraints:^(MASConstraintMaker *make) {
@@ -197,14 +182,7 @@ static NSString * const VoucherDetailCellID = @"VoucherDetailCellID";
     }
     return nil;
 }
-/*
-- (void)exchangeAction
-{
-    [Encapsulation showAlertControllerWithTitle:Localized(@"PromptTitle") message:@"兑换功能即将上线" confirmHandler:^(UIAlertAction *action) {
-        
-    }];
-}
- */
+
 - (void)giftGivingAction
 {
     TransactionViewController * VC = [[TransactionViewController alloc] init];

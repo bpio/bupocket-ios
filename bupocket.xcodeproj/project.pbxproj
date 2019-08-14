@@ -156,7 +156,8 @@
 		958127EF219ABD9D0081A02E /* VersionUpdateAlertView.m in Sources */ = {isa = PBXBuildFile; fileRef = 958127EE219ABD9D0081A02E /* VersionUpdateAlertView.m */; };
 		958127F2219AC82A0081A02E /* VersionModel.m in Sources */ = {isa = PBXBuildFile; fileRef = 958127F1219AC82A0081A02E /* VersionModel.m */; };
 		958AA69821A2A89600BEA50C /* CustomRefreshFooter.m in Sources */ = {isa = PBXBuildFile; fileRef = 958AA69721A2A89600BEA50C /* CustomRefreshFooter.m */; };
-		9594E5CE222938AF006EFB6D /* AddressBookCache.m in Sources */ = {isa = PBXBuildFile; fileRef = 9594E5CD222938AF006EFB6D /* AddressBookCache.m */; };
+		9593C3542302B03A0027A479 /* DataBase.m in Sources */ = {isa = PBXBuildFile; fileRef = 9593C3532302B03A0027A479 /* DataBase.m */; };
+		9593C3582303AFBF0027A479 /* FileManager.m in Sources */ = {isa = PBXBuildFile; fileRef = 9593C3572303AFBF0027A479 /* FileManager.m */; };
 		959575C121FFF00F0089479C /* AddressBookViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 959575C021FFF00F0089479C /* AddressBookViewController.m */; };
 		959575C421FFF6EB0089479C /* AddressBookListViewCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 959575C321FFF6EB0089479C /* AddressBookListViewCell.m */; };
 		959575C821FFF8010089479C /* AddressBookModel.m in Sources */ = {isa = PBXBuildFile; fileRef = 959575C721FFF8010089479C /* AddressBookModel.m */; };
@@ -532,8 +533,10 @@
 		958127F1219AC82A0081A02E /* VersionModel.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = VersionModel.m; sourceTree = "<group>"; };
 		958AA69621A2A89600BEA50C /* CustomRefreshFooter.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = CustomRefreshFooter.h; sourceTree = "<group>"; };
 		958AA69721A2A89600BEA50C /* CustomRefreshFooter.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = CustomRefreshFooter.m; sourceTree = "<group>"; };
-		9594E5CC222938AF006EFB6D /* AddressBookCache.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = AddressBookCache.h; sourceTree = "<group>"; };
-		9594E5CD222938AF006EFB6D /* AddressBookCache.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = AddressBookCache.m; sourceTree = "<group>"; };
+		9593C3522302B03A0027A479 /* DataBase.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = DataBase.h; sourceTree = "<group>"; };
+		9593C3532302B03A0027A479 /* DataBase.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = DataBase.m; sourceTree = "<group>"; };
+		9593C3562303AFBF0027A479 /* FileManager.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = FileManager.h; sourceTree = "<group>"; };
+		9593C3572303AFBF0027A479 /* FileManager.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = FileManager.m; sourceTree = "<group>"; };
 		959575BF21FFF00F0089479C /* AddressBookViewController.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = AddressBookViewController.h; sourceTree = "<group>"; };
 		959575C021FFF00F0089479C /* AddressBookViewController.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = AddressBookViewController.m; sourceTree = "<group>"; };
 		959575C221FFF6EB0089479C /* AddressBookListViewCell.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = AddressBookListViewCell.h; sourceTree = "<group>"; };
@@ -647,6 +650,7 @@
 		833799292177091500C222A5 /* Tool */ = {
 			isa = PBXGroup;
 			children = (
+				9593C3552303AF940027A479 /* FileManager */,
 				95179FD222F693C10094E750 /* UDID */,
 				95179FB222F525130094E750 /* CFCycleScrollView */,
 				95B066B92282AA9D0005731A /* Wechat */,
@@ -694,6 +698,8 @@
 			children = (
 				83379AC1217F3F3000C222A5 /* BaseModel.h */,
 				83379AC2217F3F3000C222A5 /* BaseModel.m */,
+				9593C3522302B03A0027A479 /* DataBase.h */,
+				9593C3532302B03A0027A479 /* DataBase.m */,
 			);
 			path = Model;
 			sourceTree = "<group>";
@@ -1313,13 +1319,20 @@
 			path = "MBProgressHUD+JDragon";
 			sourceTree = "<group>";
 		};
+		9593C3552303AF940027A479 /* FileManager */ = {
+			isa = PBXGroup;
+			children = (
+				9593C3562303AFBF0027A479 /* FileManager.h */,
+				9593C3572303AFBF0027A479 /* FileManager.m */,
+			);
+			path = FileManager;
+			sourceTree = "<group>";
+		};
 		959575C521FFF7D90089479C /* Model */ = {
 			isa = PBXGroup;
 			children = (
 				959575C621FFF8010089479C /* AddressBookModel.h */,
 				959575C721FFF8010089479C /* AddressBookModel.m */,
-				9594E5CC222938AF006EFB6D /* AddressBookCache.h */,
-				9594E5CD222938AF006EFB6D /* AddressBookCache.m */,
 			);
 			path = Model;
 			sourceTree = "<group>";
@@ -1766,7 +1779,6 @@
 				9519ED6D22E5883200A4AAC1 /* InfoViewCell.m in Sources */,
 				9513639B22B8CCDF00BF8DF5 /* WalletModel.m in Sources */,
 				83379AC6217F3F4200C222A5 /* AssetsListModel.m in Sources */,
-				9594E5CE222938AF006EFB6D /* AddressBookCache.m in Sources */,
 				95179FDB22F697EC0094E750 /* KeyChainStore.m in Sources */,
 				95266CD8226F062E002CD915 /* CooperateSupportModel.m in Sources */,
 				8372C8692174CCA000FF9506 /* AssetsViewController.m in Sources */,
@@ -1847,11 +1859,13 @@
 				95266CDF226F062E002CD915 /* VotingRecordsViewCell.m in Sources */,
 				95A8A3BC219D161D008E978E /* CustomRefreshHeader.m in Sources */,
 				95266CD0226F062E002CD915 /* VotingRecordsViewController.m in Sources */,
+				9593C3582303AFBF0027A479 /* FileManager.m in Sources */,
 				959726C521E487F10022CB78 /* ExportKeystoreViewController.m in Sources */,
 				959E290E224F1F25006FCA30 /* ConfirmTransactionModel.m in Sources */,
 				959575C421FFF6EB0089479C /* AddressBookListViewCell.m in Sources */,
 				83379A092178509300C222A5 /* WKWebViewController.m in Sources */,
 				9519ED7022E6A67E00A4AAC1 /* ChangePasswordViewController.m in Sources */,
+				9593C3542302B03A0027A479 /* DataBase.m in Sources */,
 				95179FC822F53EA30094E750 /* OpenRedEnvelopes.m in Sources */,
 				83379A6221797BDD00C222A5 /* ConfirmMnemonicViewController.m in Sources */,
 				95266CD3226F062E002CD915 /* CooperateDetailViewController.m in Sources */,

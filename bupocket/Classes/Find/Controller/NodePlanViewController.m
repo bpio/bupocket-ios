@@ -14,6 +14,7 @@
 //#import "ConfirmTransactionAlertView.h"
 #import "NodePlanModel.h"
 #import "NodeSharingViewController.h"
+#import "DataBase.h"
 
 //#import "NodeTransferSuccessViewController.h"
 //#import "TransferResultsViewController.h"
@@ -91,36 +92,56 @@ static NSString * const NodePlanCellID = @"NodePlanCellID";
 
 - (void)getData
 {
+    [self getCacheData];
     [[HTTPManager shareManager] getNodeListDataWithIdentityType:@"" nodeName:@"" capitalAddress:@""  success:^(id responseObject) {
         NSInteger code = [[responseObject objectForKey:@"errCode"] integerValue];
         if (code == Success_Code) {
-            self.listArray = [NodePlanModel mj_objectArrayWithKeyValuesArray:responseObject[@"data"][@"nodeList"]];
+            NSArray * array = responseObject[@"data"][@"nodeList"];
+            self.listArray = [NodePlanModel mj_objectArrayWithKeyValuesArray:array];
             self.nodeListArray = self.listArray;
             self.contractAddress = responseObject[@"data"][@"contractAddress"];
             self.accountTag = responseObject[@"data"][@"accountTag"];
             self.accountTagEn = responseObject[@"data"][@"accountTagEn"];
+            [[DataBase shareDataBase] deleteCachedDataWithCacheType:CacheTypeNodeList];
+            [[DataBase shareDataBase] saveDataWithArray:array cacheType:CacheTypeNodeList];
             [self setNodeData];
-            [self.tableView reloadData];
         } else {
             [MBProgressHUD showTipMessageInWindow:[ErrorTypeTool getDescriptionWithNodeErrorCode:code]];
         }
-        [self ifShowNoData];
-        self.noNetWork.hidden = YES;
-        [self.tableView.mj_header endRefreshing];
+        [self reloadUI];
     } failure:^(NSError *error) {
-        self.noNetWork.hidden = NO;
         [self.tableView.mj_header endRefreshing];
+        self.noNetWork.hidden = (self.listArray.count > 0);
     }];
+}
+- (void)getCacheData
+{
+    NSArray * listArray = [[DataBase shareDataBase] getCachedDataWithCacheType:CacheTypeNodeList];
+    if (listArray.count > 0) {
+        self.listArray = [NSMutableArray array];
+        [self.listArray addObjectsFromArray:listArray];
+        self.nodeListArray = self.listArray;
+        [self setNodeData];
+        [self reloadUI];
+    }
+}
+- (void)reloadUI
+{
+    [self.tableView reloadData];
+    [self.tableView.mj_header endRefreshing];
+    (self.listArray.count > 0) ? (self.tableView.tableFooterView = [[UIView alloc] initWithFrame:CGRectMake(0, 0, DEVICE_WIDTH, SafeAreaBottomH + NavBarH)]) : (self.tableView.tableFooterView = self.noData);
+    self.tableView.mj_footer.hidden = (self.listArray.count == 0);
+    self.noNetWork.hidden = YES;
 }
 - (void)reloadData
 {
     [self getData];
 }
-- (void)ifShowNoData
-{
-    (self.listArray.count > 0) ? (self.tableView.tableFooterView = [[UIView alloc] initWithFrame:CGRectMake(0, 0, DEVICE_WIDTH, SafeAreaBottomH + NavBarH)]) : (self.tableView.tableFooterView = self.noData);
-    self.tableView.mj_footer.hidden = (self.listArray.count == 0);
-}
+//- (void)ifShowNoData
+//{
+//    (self.listArray.count > 0) ? (self.tableView.tableFooterView = [[UIView alloc] initWithFrame:CGRectMake(0, 0, DEVICE_WIDTH, SafeAreaBottomH + NavBarH)]) : (self.tableView.tableFooterView = self.noData);
+//    self.tableView.mj_footer.hidden = (self.listArray.count == 0);
+//}
 #pragma mark 数据筛选
 - (void)setNodeData
 {
@@ -160,9 +181,10 @@ static NSString * const NodePlanCellID = @"NodePlanCellID";
     self.tableView.separatorStyle = UITableViewCellSeparatorStyleNone;
 //    self.tableView.keyboardDismissMode = UIScrollViewKeyboardDismissModeOnDrag;
     [self.view addSubview:self.tableView];
-    self.noNetWork = [Encapsulation showNoNetWorkWithSuperView:self.view target:self action:@selector(reloadData)];
+//    self.noNetWork.backgroundColor = [UIColor clearColor];
     self.tableView.contentInset = UIEdgeInsetsMake(Margin_Section_Header - Margin_5, 0, 0, 0);
     [self.view addSubview:self.headerView];
+    self.noNetWork = [Encapsulation showNoNetWorkWithSuperView:self.view target:self action:@selector(reloadData)];
 }
 - (UIView *)noData
 {
@@ -178,8 +200,7 @@ static NSString * const NodePlanCellID = @"NodePlanCellID";
 {
     [self.searchTextField resignFirstResponder];
     [self setNodeData];
-    [self.tableView reloadData];
-    [self ifShowNoData];
+    [self reloadUI];
 }
 - (BOOL)textFieldShouldClear:(UITextField *)textField
 {
@@ -266,8 +287,7 @@ static NSString * const NodePlanCellID = @"NodePlanCellID";
 {
     button.selected = !button.selected;
     [self setNodeData];
-    [self.tableView reloadData];
-    [self ifShowNoData];
+    [self reloadUI];
 }
 - (void)infoAction:(UIButton *)button
 {

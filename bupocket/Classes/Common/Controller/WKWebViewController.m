@@ -105,7 +105,7 @@ static void *WkwebBrowserContext = &WkwebBrowserContext;
     switch (self.loadType) {
         case WebLoadURLString:{
             //创建一个NSURLRequest 的对象
-            NSURLRequest * Request_zsj = [NSURLRequest requestWithURL:[NSURL URLWithString:self.URLString] cachePolicy:NSURLRequestReloadIgnoringCacheData timeoutInterval:10];
+            NSURLRequest * Request_zsj = [NSURLRequest requestWithURL:[NSURL URLWithString:self.URLString] cachePolicy:NSURLRequestUseProtocolCachePolicy timeoutInterval:10];
             //加载网页
             [self.wkWebView loadRequest:Request_zsj];
             break;
@@ -123,7 +123,7 @@ static void *WkwebBrowserContext = &WkwebBrowserContext;
         }
         case webloadLocalPath: {
             //创建一个NSURLRequest 的对象
-            NSURLRequest * request = [NSURLRequest requestWithURL:[NSURL fileURLWithPath:self.URLString] cachePolicy:NSURLRequestReloadIgnoringCacheData timeoutInterval:10];
+            NSURLRequest * request = [NSURLRequest requestWithURL:[NSURL fileURLWithPath:self.URLString] cachePolicy:NSURLRequestUseProtocolCachePolicy timeoutInterval:10];
             //加载网页
             [self.wkWebView loadRequest:request];
             break;

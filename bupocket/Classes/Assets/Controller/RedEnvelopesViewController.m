@@ -2,7 +2,7 @@
 //  RedEnvelopesViewController.m
 //  bupocket
 //
-//  Created by huoss on 2019/8/2.
+//  Created by bupocket on 2019/8/2.
 //  Copyright © 2019 bupocket. All rights reserved.
 //
 
@@ -68,7 +68,6 @@
         self.noNetWork.hidden = YES;
     } failure:^(NSError *error) {
         self.noNetWork.hidden = NO;
-        NSLog(@"%@",error);
     }];
 }
 - (void)loopGetData
@@ -86,7 +85,7 @@
     dispatch_source_set_event_handler(self.timer, ^{
         //重复执行的事件
         count++;
-        NSLog(@"-----%ld-----", count);
+        DLog(@"-----%ld-----", count);
         [self getActivityDataIsShowLoading:(count == 1)];
     });
     //启动定时器

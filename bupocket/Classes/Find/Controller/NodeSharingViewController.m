@@ -156,7 +156,6 @@ static NSString * const NodeSharingID = @"NodeSharingID";
         NSString *jScript = [NSString stringWithFormat:@"var meta = document.createElement('meta'); meta.setAttribute('name', 'viewport'); meta.setAttribute('content', 'width=%f'); document.getElementsByTagName('head')[0].appendChild(meta);", View_Width_Main];
         WKUserScript *wkUScript = [[WKUserScript alloc] initWithSource:jScript injectionTime:WKUserScriptInjectionTimeAtDocumentEnd forMainFrameOnly:YES];
         WKUserContentController *wkUController = [[WKUserContentController alloc] init];
-//        [wkUController addUserScript:wkUserScript];
         [wkUController addUserScript:wkUScript];
         
         WKWebViewConfiguration *wkWebConfig = [[WKWebViewConfiguration alloc] init];

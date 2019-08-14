@@ -117,34 +117,18 @@
     if (dic) {
         [self setDataWithResponseObject:dic];
     }
-//    NSArray * VCs = self.tabBarController.viewControllers;
-//    for (UINavigationController * nav in VCs) {
-//
-//        if ([VC isKindOfClass:[VoucherViewController class]]) {
-//            if ([defaults objectForKey:If_Hidden_New]) {
-//                [self.navigationController.tabBarController.tabBar hideBadgeOnItemIndex:1];
-//            } else {
-//                [self.navigationController.tabBarController.tabBar showBadgeOnItemIndex:1 tabbarNum:self.navigationController.tabBarController.viewControllers.count];
-//            }
-//        }
-//
-//    }
-    // 设备绑定
-//    [KeychainWrapper deleteDateiWithService:Device_ID];
-//    [KeychainWrapper deleteDateiWithService:WalletAddress_Binded];
+    if ([defaults objectForKey:If_Hidden_New]) {
+        [self.navigationController.tabBarController.tabBar hideBadgeOnItemIndex:1];
+    } else {
+        [self.navigationController.tabBarController.tabBar showBadgeOnItemIndex:1 tabbarNum:self.navigationController.tabBarController.viewControllers.count];
+    }
     NSString * uuid = [KeychainWrapper searchDateWithService:Device_ID];
-    NSLog(@"uuid：----%@", uuid);
     NSArray * walletAddressArray = [DeviceInfo getWalletAddressArrayFromKeychain];
     if (!NotNULLString(uuid) || ![walletAddressArray containsObject:CurrentWalletAddress]) {
         [self getDeviceBind];
     } else {
-        // 红包数据
         [self getActivityData];
     }
-//    NSString * signData = [Tools dataToHexStr:[Keypair sign:[@"buQqxLCiZyNC3LLtpwW4CG17LCtULbMt9tZM" dataUsingEncoding:NSUTF8StringEncoding] :@"privbzAstg4JWNtPB9yJA9An9zRXAkSyNJf6naCPowpTreAccdECdTah"]];
-//    NSString * deviceID = [NSString MD5:@"202cb962ac59075b964b07152d234b70"];
-//    NSLog(@"signData=%@\nID=%@", signData, deviceID);
-    
     // Do any additional setup after loading the view.
 }
 - (void)setupNav
@@ -157,11 +141,6 @@
     self.navBackgroundColor = [UIColor whiteColor];
     self.navTitleColor = self.navTintColor = [UIColor whiteColor];
 }
-//- (void)viewWillAppear:(BOOL)animated {
-//    [super viewWillAppear:animated];
-//    [self.tableView.mj_header beginRefreshing];
-//    self.navigationItem.title = CurrentWalletName ? CurrentWalletName : Current_WalletName;
-//}
 - (void)viewDidAppear:(BOOL)animated
 {
     [super viewDidAppear:animated];

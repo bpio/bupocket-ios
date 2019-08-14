@@ -56,15 +56,6 @@
         make.width.mas_lessThanOrEqualTo(View_Width_Main);
     }];
     self.bottomBtn = [UIButton createFooterViewWithTitle:Localized(@"CopyPrivateKeys") isEnabled:YES Target:self Selector:@selector(copyAction)];
-//    UIView * footerView = [[UIView alloc] initWithFrame:CGRectMake(0, 0, DEVICE_WIDTH, ScreenScale(200) + SafeAreaBottomH + NavBarH)];
-//    UIButton * copy = [UIButton createButtonWithTitle:Localized(@"CopyPrivateKeys") isEnabled:YES Target:self Selector:@selector(copyAction)];
-//    [footerView addSubview:copy];
-//    [copy mas_makeConstraints:^(MASConstraintMaker *make) {
-//        make.top.mas_equalTo(ScreenScale(120));
-//        make.left.mas_equalTo(Margin_20);
-//        make.size.mas_equalTo(CGSizeMake(DEVICE_WIDTH - Margin_40, MAIN_HEIGHT));
-//    }];
-//    self.tableView.tableFooterView = footerView;
 }
 - (void)copyAction
 {

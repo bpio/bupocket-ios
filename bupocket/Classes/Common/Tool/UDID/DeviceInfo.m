@@ -93,7 +93,7 @@
     
     NSString * mobile;
     if (!carrier.isoCountryCode) {
-        NSLog(@"没有SIM卡");
+        DLog(@"没有SIM卡");
         mobile = @"无运营商";
     }else{
         mobile = [carrier carrierName];
@@ -219,7 +219,7 @@
             retsult = [NSKeyedUnarchiver unarchiveObjectWithData:(__bridge NSData *)resultDate];
         }
         @catch(NSException *e){
-            NSLog(@"查找数据不存在");
+            DLog(@"查找数据不存在");
         }
         @finally{
             
@@ -268,7 +268,7 @@ static void PrintReachabilityFlags(SCNetworkReachabilityFlags flags, const char*
 {
 #if kShouldPrintReachabilityFlags
     
-    NSLog(@"Reachability Flag Status: %c%c %c%c%c%c%c%c%c %s\n",
+    DLog(@"Reachability Flag Status: %c%c %c%c%c%c%c%c%c %s\n",
           (flags & kSCNetworkReachabilityFlagsIsWWAN)                ? 'W' : '-',
           (flags & kSCNetworkReachabilityFlagsReachable)            ? 'R' : '-',
           

@@ -70,7 +70,6 @@
 {
     ListTableViewCell * cell = [ListTableViewCell cellWithTableView:tableView cellType:CellTypeDetail];
     [cell.listImage setImage:[UIImage imageNamed:[NSString stringWithFormat:@"setting_list_%zd", indexPath.row]] forState:UIControlStateNormal];
-//    cell.detailImage.image = [UIImage imageNamed:@"list_arrow"];
     cell.title.text = self.listArray[indexPath.row];
     cell.selectionStyle = UITableViewCellSelectionStyleNone;
     if (indexPath.row == 2) {

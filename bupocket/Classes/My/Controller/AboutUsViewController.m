@@ -75,17 +75,6 @@
     NSUserDefaults * defaults = [NSUserDefaults standardUserDefaults];
     self.versionModel  = [VersionModel mj_objectWithKeyValues:[defaults objectForKey:Version_Info]];
     [self.tableView reloadData];
-//    [[HTTPManager shareManager] getVersionDataWithSuccess:^(id responseObject) {
-//        NSInteger code = [[responseObject objectForKey:@"errCode"] integerValue];
-//        if (code == Success_Code) {
-//            self.versionModel  = [VersionModel mj_objectWithKeyValues:[responseObject objectForKey:@"data"]];
-//            [self.tableView reloadData];
-//        } else {
-////            [MBProgressHUD showTipMessageInWindow:[ErrorTypeTool getDescriptionWithErrorCode:code]];
-//        }
-//    } failure:^(NSError *error) {
-//
-//    }];
 }
 - (void)setupView
 {
@@ -119,24 +108,6 @@
     }];
     headerView.frame = CGRectMake(0, 0, DEVICE_WIDTH, ScreenScale(200));
     self.tableView.tableHeaderView = headerView;
-
-    
-//    CustomButton * currentVersion = [[CustomButton alloc] init];
-//    currentVersion.layoutMode = VerticalNormal;
-//    [currentVersion setTitleColor:COLOR_6 forState:UIControlStateNormal];
-//    currentVersion.titleLabel.font = FONT_15;
-//    [currentVersion setTitle:[NSString stringWithFormat:Localized(@"Current version: %@"), App_Version] forState:UIControlStateNormal];
-//    [currentVersion setImage:[UIImage imageNamed:@"about_us_logo"] forState:UIControlStateNormal];
-//    [currentVersion addTarget:self action:@selector(SwitchingNetwork) forControlEvents:UIControlEventTouchUpInside];
-//    headerView.frame = CGRectMake(0, 0, DEVICE_WIDTH, ScreenScale(200));
-//    self.tableView.tableHeaderView = headerView;
-//    [headerView addSubview:currentVersion];
-//    [currentVersion mas_makeConstraints:^(MASConstraintMaker *make) {
-//        make.centerY.equalTo(headerView);
-//        make.left.equalTo(headerView.mas_left).offset(Margin_15);
-//        make.right.equalTo(headerView.mas_right).offset(-Margin_15);
-//        make.height.mas_equalTo(ScreenScale(130));
-//    }];
 }
 - (CGFloat)tableView:(UITableView *)tableView heightForRowAtIndexPath:(NSIndexPath *)indexPath
 {
@@ -207,15 +178,6 @@
                 } else {
                     updateContent = self.versionModel.englishVerContents;
                 }
-                /*
-                NSAttributedString * attr = [Encapsulation attrWithString:[NSString stringWithFormat:Localized(@"NewVersionContent%@"), updateContent] preFont:FONT_15 preColor:TITLE_COLOR index:8 sufFont:FONT_TITLE sufColor:COLOR_6 lineSpacing:Margin_10];
-                [Encapsulation showAlertControllerWithTitle:[NSString stringWithFormat: Localized(@"NewVersionTitle%@"), self.versionModel.verNumber]  messageAttr:attr cancelHandler:^(UIAlertAction *action) {
-                    
-                } confirmHandler:^(UIAlertAction *action) {
-                    [[UIApplication sharedApplication] openURL:[NSURL URLWithString:self.versionModel.downloadLink]];
-                    
-                }];
-                 */
                 VersionUpdateAlertView * alertView = [[VersionUpdateAlertView alloc] initWithUpdateVersionNumber:self.versionModel.verNumber versionSize:self.versionModel.appSize content:updateContent verType:self.versionModel.verType confrimBolck:^{
                     [[UIApplication sharedApplication] openURL:[NSURL URLWithString:self.versionModel.downloadLink]];
                 } cancelBlock:^{
@@ -272,18 +234,6 @@
             [[HTTPManager shareManager] SwitchedNetworkWithIsTest:YES];
             [self setData];
         }];
-        /*
-        NSString * message = Localized(@"SwitchToTestNetwork");
-        UIAlertController * alertController = [UIAlertController alertControllerWithTitle:message message:nil preferredStyle:UIAlertControllerStyleAlert];
-        UIAlertAction * cancelAction = [UIAlertAction actionWithTitle:Localized(@"NO") style:UIAlertActionStyleDefault handler:nil];
-        [alertController addAction:cancelAction];
-        UIAlertAction * okAction = [UIAlertAction actionWithTitle:Localized(@"YES") style:UIAlertActionStyleDefault handler:^(UIAlertAction * _Nonnull action) {
-            [[HTTPManager shareManager] SwitchedNetworkWithIsTest:YES];
-            [self setData];
-        }];
-        [alertController addAction:okAction];
-        [self presentViewController:alertController animated:YES completion:nil];
-         */
     }
 }
 - (void)showCustomEnvironment
