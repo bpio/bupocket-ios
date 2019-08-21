@@ -15,6 +15,7 @@
 
 @property (nonatomic, strong) UITableView * tableView;
 @property (nonatomic, strong) NSMutableArray * listArray;
+@property (nonatomic, strong) NSMutableArray * dataArray;
 @property (nonatomic, strong) NSMutableArray * cellHeightArray;
 @property (nonatomic, strong) UIView * noData;
 @property (nonatomic, assign) NSInteger pageindex;
@@ -32,6 +33,13 @@ static NSString * const VersionLogCellID = @"VersionLogCellID";
         _listArray = [NSMutableArray array];
     }
     return _listArray;
+}
+- (NSMutableArray *)dataArray
+{
+    if (!_dataArray) {
+        _dataArray = [NSMutableArray array];
+    }
+    return _dataArray;
 }
 - (NSMutableArray *)cellHeightArray
 {
@@ -83,13 +91,14 @@ static NSString * const VersionLogCellID = @"VersionLogCellID";
             }
             self.pageindex = self.pageindex + 1;
             [self.listArray addObjectsFromArray:listArray];
+            [self.dataArray addObjectsFromArray:array];
             if (listArray.count < PageSize_Max) {
                 [self.tableView.mj_footer endRefreshingWithNoMoreData];
             } else {
                 [self.tableView.mj_footer endRefreshing];
             }
             [[DataBase shareDataBase] deleteCachedDataWithCacheType:CacheTypeVersionLogList];
-            [[DataBase shareDataBase] saveDataWithArray:array cacheType:CacheTypeVersionLogList];
+            [[DataBase shareDataBase] saveDataWithArray:self.dataArray cacheType:CacheTypeVersionLogList];
         } else {
             [MBProgressHUD showTipMessageInWindow:[ErrorTypeTool getDescriptionWithErrorCode:code]];
         }
@@ -98,6 +107,9 @@ static NSString * const VersionLogCellID = @"VersionLogCellID";
         [self.tableView.mj_header endRefreshing];
         [self.tableView.mj_footer endRefreshing];
         self.noNetWork.hidden = (self.listArray.count > 0);
+        if (self.listArray.count > 0) {
+            [MBProgressHUD showTipMessageInWindow:Localized(@"NoNetWork")];
+        }
     }];
 }
 - (void)getCacheData

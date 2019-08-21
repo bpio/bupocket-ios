@@ -14,6 +14,7 @@
 #import "AcceptorViewController.h"
 #import "AssetIssuerViewController.h"
 #import "TransactionViewController.h"
+#import "DataBase.h"
 
 
 @interface VoucherDetailViewController ()<UIScrollViewDelegate, UITableViewDelegate, UITableViewDataSource>
@@ -21,6 +22,7 @@
 @property (nonatomic, strong) UIScrollView * scrollView;
 @property (nonatomic, strong) UITableView * tableView;
 @property (nonatomic, strong) NSMutableArray * listArray;
+@property (nonatomic, strong) NSMutableDictionary * dataDic;
 @property (nonatomic, assign) CGFloat infoCellHeight;
 @property (nonatomic, strong) UIView * noNetWork;
 @property (nonatomic, strong) UIImageView * loadingBg;
@@ -28,12 +30,21 @@
 @property (nonatomic, assign) CGFloat imageBgH;
 @property (nonatomic, assign) CGFloat proportion;
 
+@property (nonatomic, strong) NSString * holdingQuantity;
+
 @end
 
 static NSString * const VoucherDetailCellID = @"VoucherDetailCellID";
 
 @implementation VoucherDetailViewController
 
+- (NSMutableDictionary *)dataDic
+{
+    if (!_dataDic) {
+        _dataDic = [NSMutableDictionary dictionary];
+    }
+    return _dataDic;
+}
 - (NSMutableArray *)listArray
 {
     if (!_listArray) {
@@ -41,6 +52,7 @@ static NSString * const VoucherDetailCellID = @"VoucherDetailCellID";
     }
     return _listArray;
 }
+
 - (UIStatusBarStyle)preferredStatusBarStyle {
     return UIStatusBarStyleLightContent;
 }
@@ -53,6 +65,7 @@ static NSString * const VoucherDetailCellID = @"VoucherDetailCellID";
     self.navAlpha = 0;
     self.navBackgroundColor = COLOR(@"3C3B6D");
     self.navTitleColor = self.navTintColor = [UIColor whiteColor];
+    self.holdingQuantity = self.voucherModel.balance;
     [self setupView];
     [self getData];
     // Do any additional setup after loading the view.
@@ -70,36 +83,60 @@ static NSString * const VoucherDetailCellID = @"VoucherDetailCellID";
 //}
 - (void)getData
 {
-    NSString * holdingQuantity = self.voucherModel.balance;
+    [self getCacheData];
     [[HTTPManager shareManager] getVoucherDetailDataWithVoucherId:self.voucherModel.voucherId trancheId:self.voucherModel.trancheId spuId:self.voucherModel.spuId contractAddress:self.voucherModel.contractAddress success:^(id responseObject) {
         NSInteger code = [[responseObject objectForKey:@"errCode"] integerValue];
         if (code == Success_Code) {
-            self.loadingBg.hidden = YES;
-            self.voucherModel = [VoucherModel mj_objectWithKeyValues:responseObject[@"data"]];
-            //            self.listArray = [CooperateModel mj_objectArrayWithKeyValuesArray:responseObject[@"data"][@"nodeList"]];
-            NSString * startTime = ([self.voucherModel.startTime isEqualToString:Voucher_Validity_Date]) ? @"~" : [DateTool getDateStringWithDataStr:self.voucherModel.startTime];
-            NSString * endTime = ([self.voucherModel.endTime isEqualToString:Voucher_Validity_Date]) ? @"~" : [DateTool getDateStringWithDataStr:self.voucherModel.endTime];
-            NSString * date = ([self.voucherModel.startTime isEqualToString:Voucher_Validity_Date]) ? Localized(@"LongTerm") : [NSString stringWithFormat:Localized(@"%@ to %@"), startTime, endTime];
-            NSString * specifications = NotNULLString(self.voucherModel.voucherSpec) ? self.voucherModel.voucherSpec : Localized(@"None");
-            // , @[Localized(@"VoucherCode"), self.voucherModel.voucherId]
-            self.listArray = [NSMutableArray arrayWithArray:@[@[@""], @[@[Localized(@"Validity"), date], @[Localized(@"Specification"), specifications], @[Localized(@"Describe"), self.voucherModel.desc], @[Localized(@"HoldingQuantity"), holdingQuantity]], @[@[Localized(@"Acceptor"), self.voucherModel.voucherAcceptance[@"name"]], @[Localized(@"AssetIssuer"), self.voucherModel.voucherIssuer[@"name"]]]]];
-            
-            self.infoCellHeight = MAX(Detail_Main_Height, ([Encapsulation getSizeSpaceLabelWithStr:self.voucherModel.desc font:FONT_TITLE width:Info_Width_Max height:CGFLOAT_MAX lineSpacing:LINE_SPACING].height + Margin_20));
-            [self.tableView reloadData];
+            self.dataDic = responseObject[@"data"];
+            [self setDataWithDic:self.dataDic];
+            [[DataBase shareDataBase] deleteTxDetailsCachedDataWithCacheType:CacheTypeVoucherDetail detailId:self.voucherModel.voucherId];
+            [[DataBase shareDataBase] saveDetailDataWithCacheType:CacheTypeVoucherDetail dic:self.dataDic ID:self.voucherModel.voucherId];
         } else {
             [MBProgressHUD showTipMessageInWindow:[ErrorTypeTool getDescriptionWithNodeErrorCode:code]];
         }
-        [self.tableView.mj_header endRefreshing];
-        self.tableView.mj_footer.hidden = (self.listArray.count == 0);
-        self.noNetWork.hidden = YES;
-        self.navBackgroundColor = COLOR(@"3C3B6D");
-        self.navTitleColor = self.navTintColor = [UIColor whiteColor];
+        [self reloadUI];
     } failure:^(NSError *error) {
         [self.tableView.mj_header endRefreshing];
-        self.noNetWork.hidden = NO;
-        self.navBackgroundColor = [UIColor whiteColor];
-        self.navTitleColor = self.navTintColor = TITLE_COLOR;
+        if ([self.dataDic count]) {
+            [MBProgressHUD showTipMessageInWindow:Localized(@"NoNetWork")];
+        } else {
+            self.navBackgroundColor = [UIColor whiteColor];
+            self.navTitleColor = self.navTintColor = TITLE_COLOR;
+        }
+        self.noNetWork.hidden = ([self.dataDic count] > 0);
     }];
+}
+- (void)getCacheData
+{
+    self.dataDic = [NSMutableDictionary dictionaryWithDictionary:[[DataBase shareDataBase] getDetailCachedDataWithCacheType:CacheTypeVoucherDetail detailId:self.voucherModel.voucherId]];
+    if ([self.dataDic count]) {
+        [self setDataWithDic:self.dataDic];
+        [self reloadUI];
+    }
+}
+- (void)setDataWithDic:(NSDictionary *)dic
+{
+    self.loadingBg.hidden = YES;
+    self.voucherModel = [VoucherModel mj_objectWithKeyValues:dic];
+    //            self.listArray = [CooperateModel mj_objectArrayWithKeyValuesArray:responseObject[@"data"][@"nodeList"]];
+    NSString * startTime = ([self.voucherModel.startTime isEqualToString:Voucher_Validity_Date]) ? @"~" : [DateTool getDateStringWithDataStr:self.voucherModel.startTime];
+    NSString * endTime = ([self.voucherModel.endTime isEqualToString:Voucher_Validity_Date]) ? @"~" : [DateTool getDateStringWithDataStr:self.voucherModel.endTime];
+    NSString * date = ([self.voucherModel.startTime isEqualToString:Voucher_Validity_Date]) ? Localized(@"LongTerm") : [NSString stringWithFormat:Localized(@"%@ to %@"), startTime, endTime];
+    NSString * specifications = NotNULLString(self.voucherModel.voucherSpec) ? self.voucherModel.voucherSpec : Localized(@"None");
+    // , @[Localized(@"VoucherCode"), self.voucherModel.voucherId]
+    
+    self.listArray = [NSMutableArray arrayWithArray:@[@[@""], @[@[Localized(@"Validity"), date], @[Localized(@"Specification"), specifications], @[Localized(@"Describe"), self.voucherModel.desc], @[Localized(@"HoldingQuantity"), self.holdingQuantity]], @[@[Localized(@"Acceptor"), self.voucherModel.voucherAcceptance[@"name"]], @[Localized(@"AssetIssuer"), self.voucherModel.voucherIssuer[@"name"]]]]];
+    
+    self.infoCellHeight = MAX(Detail_Main_Height, ([Encapsulation getSizeSpaceLabelWithStr:self.voucherModel.desc font:FONT_TITLE width:Info_Width_Max height:CGFLOAT_MAX lineSpacing:LINE_SPACING].height + Margin_20));
+}
+- (void)reloadUI
+{
+    [self.tableView reloadData];
+    [self.tableView.mj_header endRefreshing];
+    self.tableView.mj_footer.hidden = (self.listArray.count == 0);
+    self.noNetWork.hidden = YES;
+    self.navBackgroundColor = COLOR(@"3C3B6D");
+    self.navTitleColor = self.navTintColor = [UIColor whiteColor];
 }
 - (void)reloadData
 {

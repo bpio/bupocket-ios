@@ -19,6 +19,7 @@
 
 @property (nonatomic, strong) UITableView * tableView;
 @property (nonatomic, strong) NSMutableArray * listArray;
+@property (nonatomic, strong) NSMutableArray * dataArray;
 @property (nonatomic, strong) UIView * noData;
 @property (nonatomic, assign) NSInteger pageindex;
 @property (nonatomic, strong) UIView * noNetWork;
@@ -40,6 +41,13 @@ static NSString * const VoucherCellID = @"VoucherCellID";
         _listArray = [NSMutableArray array];
     }
     return _listArray;
+}
+- (NSMutableArray *)dataArray
+{
+    if (!_dataArray) {
+        _dataArray = [NSMutableArray array];
+    }
+    return _dataArray;
 }
 
 - (void)viewDidLoad {
@@ -120,13 +128,14 @@ static NSString * const VoucherCellID = @"VoucherCellID";
             }
             self.pageindex = self.pageindex + 1;
             [self.listArray addObjectsFromArray:listArray];
+            [self.dataArray addObjectsFromArray:array];
             if (listArray.count < PageSize_Max) {
                 [self.tableView.mj_footer endRefreshingWithNoMoreData];
             } else {
                 [self.tableView.mj_footer endRefreshing];
             }
             [[DataBase shareDataBase] deleteCachedDataWithCacheType:CacheTypeVoucherList];
-            [[DataBase shareDataBase] saveDataWithArray:array cacheType:CacheTypeVoucherList];
+            [[DataBase shareDataBase] saveDataWithArray:self.dataArray cacheType:CacheTypeVoucherList];
         } else {
             [MBProgressHUD showTipMessageInWindow:[ErrorTypeTool getDescriptionWithErrorCode:code]];
         }
@@ -136,6 +145,9 @@ static NSString * const VoucherCellID = @"VoucherCellID";
         [self.tableView.mj_header endRefreshing];
         [self.tableView.mj_footer endRefreshing];
         self.noNetWork.hidden = (self.listArray.count > 0);
+        if (self.listArray.count > 0) {
+            [MBProgressHUD showTipMessageInWindow:Localized(@"NoNetWork")];
+        }
     }];
 }
 - (void)getCacheData

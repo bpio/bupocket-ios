@@ -141,9 +141,9 @@
 //#define imported_Wallet @"importedWallet"
 // Network request timeout limit time
 #define Timeout_Interval 60.0
-#define Assets_HomePage_CacheData @"AssetsHomePageCacheData"
-#define Assets_HomePage_CacheData_Test @"AssetsHomePageCacheDataTest"
-#define Assets_HomePage_CacheData_Custom @"AssetsHomePageCacheDataCustom"
+//#define Assets_HomePage_CacheData @"AssetsHomePageCacheData"
+//#define Assets_HomePage_CacheData_Test @"AssetsHomePageCacheDataTest"
+//#define Assets_HomePage_CacheData_Custom @"AssetsHomePageCacheDataCustom"
 // 0: BU 1：ATP 2：CTP
 #define Token_Type_BU 0
 // 0：Turn out 1：To change into

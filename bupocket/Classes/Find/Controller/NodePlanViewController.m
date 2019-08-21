@@ -112,6 +112,9 @@ static NSString * const NodePlanCellID = @"NodePlanCellID";
     } failure:^(NSError *error) {
         [self.tableView.mj_header endRefreshing];
         self.noNetWork.hidden = (self.listArray.count > 0);
+        if (self.listArray.count > 0) {
+            [MBProgressHUD showTipMessageInWindow:Localized(@"NoNetWork")];
+        }
     }];
 }
 - (void)getCacheData

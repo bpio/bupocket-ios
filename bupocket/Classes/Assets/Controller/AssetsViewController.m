@@ -9,19 +9,16 @@
 #import "AssetsViewController.h"
 #import "AssetsListViewCell.h"
 #import "MyIdentityViewController.h"
-//#import "WalletAddressAlertView.h"
 #import "AssetsDetailViewController.h"
 #import "AssetsListModel.h"
 #import "AddAssetsViewController.h"
 #import "HMScannerController.h"
 #import "RegisteredAssetsViewController.h"
 #import "DistributionOfAssetsViewController.h"
-//#import "TransferAccountsViewController.h"
 #import "TransactionViewController.h"
 #import "WalletListViewController.h"
 #import "LoginConfirmViewController.h"
 #import "BottomConfirmAlertView.h"
-//#import "ConfirmTransactionAlertView.h"
 #import "ScanCodeFailureViewController.h"
 #import "ReceiveViewController.h"
 #import "RegisteredModel.h"
@@ -34,11 +31,6 @@
 #import "DposModel.h"
 
 #import "UINavigationController+Extension.h"
-
-//#import "NodeTransferSuccessViewController.h"
-//#import "TransferResultsViewController.h"
-//#import "ResultViewController.h"
-//#import "RequestTimeoutViewController.h"
 #import "UITabBar+Extension.h"
 
 #import "DeviceInfo.h"
@@ -48,6 +40,7 @@
 #import "RedEnvelopesInfo.h"
 #import "ActivityResultModel.h"
 #import "ActivityInfoModel.h"
+#import "DataBase.h"
 
 @interface AssetsViewController ()<UITableViewDelegate, UITableViewDataSource>
 
@@ -69,7 +62,6 @@
 @property (nonatomic, strong) DistributionModel * distributionModel;
 @property (nonatomic, strong) NSDictionary * scanDic;
 @property (nonatomic, assign) UIStatusBarStyle statusBarStyle;
-@property (nonatomic, strong) NSString * assetsCacheDataKey;
 @property (nonatomic, strong) UILabel * safetyTips;
 @property (nonatomic, strong) UILabel * safetyTipsTitle;
 
@@ -80,7 +72,6 @@
 
 @property (nonatomic, strong) NSString * redEnvelopesBgUrl;
 @property (nonatomic, strong) NSString * activityID;
-//@property (nonatomic, assign) BOOL isActivityOpened;
 @property (nonatomic, assign) BOOL isReceived;
 @property (nonatomic, assign) BOOL isActivityFinished;
 @property (nonatomic, strong) ActivityInfoModel * activityInfoModel;
@@ -105,18 +96,7 @@
     [self setupNav];
     [self setupView];
     NSUserDefaults * defaults = [NSUserDefaults standardUserDefaults];
-    if ([defaults boolForKey:If_Custom_Network] == YES) {
-        self.assetsCacheDataKey = Assets_HomePage_CacheData_Custom;
-    } else if ([defaults boolForKey:If_Switch_TestNetwork]) {
-        self.assetsCacheDataKey = Assets_HomePage_CacheData_Test;
-    } else {
-        self.assetsCacheDataKey = Assets_HomePage_CacheData;
-    }
     [self setupRefresh];
-    NSDictionary * dic = [defaults objectForKey:self.assetsCacheDataKey];
-    if (dic) {
-        [self setDataWithResponseObject:dic];
-    }
     if ([defaults objectForKey:If_Hidden_New]) {
         [self.navigationController.tabBarController.tabBar hideBadgeOnItemIndex:1];
     } else {
@@ -168,6 +148,7 @@
 }
 - (void)loadData
 {
+    [self getCacheData];
     NSString * addAssetsKey;
     NSUserDefaults * defaults = [NSUserDefaults standardUserDefaults];
     if ([defaults boolForKey:If_Custom_Network] == YES) {
@@ -189,16 +170,14 @@
     [[HTTPManager shareManager] getAssetsDataWithAddress:currentWalletAddress currencyType:currentCurrency tokenList:assetsArray success:^(id responseObject) {
         NSInteger code = [[responseObject objectForKey:@"errCode"] integerValue];
         if (code == Success_Code) {
-            [self setDataWithResponseObject:responseObject];
-            NSUserDefaults * defaults = [NSUserDefaults standardUserDefaults];
-            [defaults setObject:responseObject forKey:self.assetsCacheDataKey];
-            [defaults synchronize];
+            NSArray * array = responseObject[@"data"] [@"tokenList"];
+            self.listArray = [AssetsListModel mj_objectArrayWithKeyValuesArray:array];
+            [[DataBase shareDataBase] deleteCachedDataWithCacheType:CacheTypeAssets];
+            [[DataBase shareDataBase] saveDataWithArray:array cacheType:CacheTypeAssets];
         } else {
             [MBProgressHUD showTipMessageInWindow:[ErrorTypeTool getDescriptionWithErrorCode:code]];
         }
-        [self.tableView.mj_header endRefreshing];
-        self.statusBarStyle = UIStatusBarStyleLightContent;
-        [self.navigationController setNeedsStatusBarAppearanceUpdate];
+        [self reloadUI];
     } failure:^(NSError *error) {
         [self.tableView.mj_header endRefreshing];
         if (self.listArray.count == 0) {
@@ -210,24 +189,37 @@
         }
     }];
 }
-- (void)setDataWithResponseObject:(id)responseObject
+- (void)getCacheData
+{
+    NSArray * listArray = [[DataBase shareDataBase] getCachedDataWithCacheType:CacheTypeAssets];
+    if (listArray.count > 0) {
+        self.listArray = [NSMutableArray array];
+        [self.listArray addObjectsFromArray:listArray];
+        [self reloadUI];
+    }
+}
+- (void)reloadUI
 {
     [self.tableView addSubview:self.headerBg];
     [self.tableView insertSubview:self.headerBg atIndex:0];
-    self.listArray = [AssetsListModel mj_objectArrayWithKeyValuesArray:responseObject[@"data"] [@"tokenList"]];
-    NSString * amountStr = responseObject[@"data"][@"totalAmount"];
-    if ([amountStr isEqualToString:@"~"]) {
-        self.totalAssets.text = amountStr;
-    } else {
-        NSString * currencyUnit = [AssetCurrencyModel getCurrencyUnitWithAssetCurrency:[[[NSUserDefaults standardUserDefaults] objectForKey:Current_Currency] integerValue]];
-        NSString * amountString = [NSString stringWithFormat:@"≈%@%@", amountStr, currencyUnit];
-        NSMutableAttributedString * attr = [Encapsulation attrWithString:amountString preFont:FONT(36) preColor:[UIColor whiteColor] index:amountString.length - currencyUnit.length sufFont:FONT(18) sufColor:[UIColor whiteColor] lineSpacing:0];
-        [attr addAttribute:NSBaselineOffsetAttributeName value:@((FONT(18).lineHeight)/2) range:NSMakeRange(amountString.length - currencyUnit.length, currencyUnit.length)];
-        self.totalAssets.attributedText = attr;
+    if (self.listArray.count > 0) {
+        AssetsListModel * assetsModel = [self.listArray firstObject];
+        NSString * amountStr = assetsModel.assetAmount;
+        if ([amountStr isEqualToString:@"~"]) {
+            self.totalAssets.text = amountStr;
+        } else {
+            NSString * currencyUnit = [AssetCurrencyModel getCurrencyUnitWithAssetCurrency:[[[NSUserDefaults standardUserDefaults] objectForKey:Current_Currency] integerValue]];
+            NSString * amountString = [NSString stringWithFormat:@"≈%@%@", amountStr, currencyUnit];
+            NSMutableAttributedString * attr = [Encapsulation attrWithString:amountString preFont:FONT(36) preColor:[UIColor whiteColor] index:amountString.length - currencyUnit.length sufFont:FONT(18) sufColor:[UIColor whiteColor] lineSpacing:0];
+            [attr addAttribute:NSBaselineOffsetAttributeName value:@((FONT(18).lineHeight)/2) range:NSMakeRange(amountString.length - currencyUnit.length, currencyUnit.length)];
+            self.totalAssets.attributedText = attr;
+        }
     }
     [self setNetworkEnvironment];
     [self getVersionData];
     [self.tableView reloadData];
+    [self.tableView.mj_header endRefreshing];
+    self.noNetWork.hidden = YES;
 }
 #pragma mark - Switching Network Environment
 - (void)setNetworkEnvironment
@@ -270,11 +262,6 @@
         if (code == Success_Code) {
             NSDictionary * dataDic = [responseObject objectForKey:@"data"];
             NSString * signData = [Tools dataToHexStr:[Keypair sign:[CurrentWalletAddress dataUsingEncoding:NSUTF8StringEncoding] :dataDic[@"sk"]]];
-            //    NSString * privateKey = [NSString decipherKeyStoreWithPW:PW keyStoreValueStr: CurrentWalletKeyStore];
-            //    NSString * walletPublicKey = [Keypair getEncPublicKey: privateKey];
-            //    NSString * signData = [Tools dataToHexStr:[Keypair sign:[CurrentWalletAddress dataUsingEncoding:NSUTF8StringEncoding] :privateKey]];
-//            NSString * walletPublicKey = @"walletPublicKey";
-//            NSString * signData = @"signData";
             [[HTTPManager shareManager] getDeviceBindDataWithURL:Device_Bind_Check identityAddress:[[AccountTool shareTool] account].identityAddress walletAddress:CurrentWalletAddress signData:signData publicKey:nil success:^(id responseObject) {
                 NSInteger code = [[responseObject objectForKey:@"errCode"] integerValue];
                 if (code == Success_Code) {
@@ -298,16 +285,11 @@
 {
     BOOL isActivityStatus = [URL isEqualToString:Activity_Status];
     BOOL isReceiveStatus = [URL isEqualToString:Activity_Bonus_Status];
-//    BOOL isOpen = [URL isEqualToString:Open_Bonus];
-//    if (isOpen) {
-//        [MBProgressHUD showActivityMessageInWindow:Localized(@"Loading")];
-//    }
     [[HTTPManager shareManager] getActivityDataWithURL:URL bonusCode:self.activityID success:^(id responseObject) {
         NSInteger code = [[responseObject objectForKey:@"errCode"] integerValue];
         // 活动已关闭
         if (code == 100021) {
             self.redEnvelopes.hidden = YES;
-//            [MBProgressHUD showTipMessageInWindow:[responseObject objectForKey:@"msg"]];
         }
         // 活动是否开启
         if (isActivityStatus) {
@@ -328,13 +310,9 @@
                 self.redEnvelopesBgUrl = dataDic[@"topImage"];
                 [self showOpenRedEnvelopes];
             } else if (code == 100022) {
-//                NSDictionary * dataDic = [responseObject objectForKey:@"data"];
                 // 已领取
                 self.isReceived = YES;
                 [self.redEnvelopes.layer removeAnimationForKey:Shake_Animation];
-//                self.isActivityFinished = YES;
-//                self.redEnvelopesBgUrl = dataDic[@"BonusOverImage"];
-//                [self showOpenRedEnvelopes];
             }
         }
     } failure:^(NSError *error) {
@@ -430,7 +408,6 @@
     UIImage * image = [UIImage imageNamed:@"grab_redEnvelopes"];
     self.redEnvelopes = [UIButton buttonWithType:UIButtonTypeCustom];
     [self.redEnvelopes addTarget:self action:@selector(redEnvelopesClick:) forControlEvents:UIControlEventTouchUpInside];
-//    [UIButton createButtonWithNormalImage:@"grab_redEnvelopes" SelectedImage:@"grab_redEnvelopes" Target:self Selector:@selector(redEnvelopesClick:)];
     [self.view addSubview: self.redEnvelopes];
     [self.redEnvelopes mas_makeConstraints:^(MASConstraintMaker *make) {
         make.right.equalTo(self.view);
@@ -498,15 +475,12 @@
         
         CGFloat btnW = [Encapsulation rectWithText:totalAssetsTitle.titleLabel.text font:totalAssetsTitle.titleLabel.font textHeight:Margin_20].size.width + Margin_20;
         [totalAssetsTitle mas_makeConstraints:^(MASConstraintMaker *make) {
-//            make.top.equalTo(self.totalAssets.mas_bottom).offset(Margin_10);
             make.bottom.equalTo(operationBtnBg.mas_top).offset(-Margin_20);
             make.size.mas_equalTo(CGSizeMake(btnW, Margin_20));
             make.centerX.equalTo(self.headerViewBg);
         }];
         
         [self.totalAssets mas_makeConstraints:^(MASConstraintMaker *make) {
-            //            make.top.equalTo(self.headerViewBg.mas_top).offset(StatusBarHeight + MAIN_HEIGHT);
-//            make.top.equalTo(self.headerViewBg.mas_top).offset(NavBarH + Margin_10);
             make.bottom.equalTo(totalAssetsTitle.mas_top).offset(-Margin_5);
             make.centerX.equalTo(self.headerViewBg);
             make.width.mas_lessThanOrEqualTo(View_Width_Main);
@@ -542,13 +516,8 @@
         if (code == Success_Code) {
             NSDictionary * dataDic = [responseObject objectForKey:@"data"];
             self.activityInfoModel = [ActivityInfoModel mj_objectWithKeyValues:dataDic];
-            //                self.activityResultModel = [[ActivityResultModel alloc] init];
-            //                self.activityResultModel.bonusInfo = dataDic;
             // 已领取
             self.isReceived = YES;
-            //                NSUserDefaults * defaults = [NSUserDefaults standardUserDefaults];
-            //                [defaults setObject:self.bonusCode forKey:Activity_ID];
-            //                [defaults synchronize];
             [self showRedEnvelopesInfo];
             [self.redEnvelopes.layer removeAnimationForKey:Shake_Animation];
         } else if (code == 100023) {
@@ -700,15 +669,6 @@
     ReceiveViewController * VC = [[ReceiveViewController alloc] init];
     VC.receiveType = ReceiveTypeDefault;
     [self.navigationController pushViewController:VC animated:YES];
-    /*
-    WalletAddressAlertView * alertView = [[WalletAddressAlertView alloc] initWithWalletAddress:CurrentWalletAddress confrimBolck:^{
-        [[UIPasteboard generalPasteboard] setString:CurrentWalletAddress];
-        [MBProgressHUD showTipMessageInWindow:Localized(@"Replicating")];
-    } cancelBlock:^{
-        
-    }];
-    [alertView showInWindowWithMode:CustomAnimationModeShare inView:nil bgAlpha:AlertBgAlpha needEffectView:NO];
-     */
 }
 
 #pragma mark - add Assets
@@ -745,92 +705,8 @@
         
     }];
     [confirmAlertView showInWindowWithMode:CustomAnimationModeShare inView:nil bgAlpha:AlertBgAlpha needEffectView:NO];
-    /*
-    ConfirmTransactionAlertView * confirmAlertView = [[ConfirmTransactionAlertView alloc] initWithDposConfrimBolck:^(NSString * _Nonnull transactionCost) {
-        dispatch_after(dispatch_time(DISPATCH_TIME_NOW, (int64_t)(Dispatch_After_Time * NSEC_PER_SEC)), dispatch_get_main_queue(), ^{
-            NSDecimalNumber * amount = [NSDecimalNumber decimalNumberWithString:self.confirmTransactionModel.amount];
-            NSDecimalNumber * minTransactionCost = [NSDecimalNumber decimalNumberWithString:transactionCost];
-            NSDecimalNumber * totleAmount = [amount decimalNumberByAdding:minTransactionCost];
-            NSDecimalNumber * amountNumber = [[HTTPManager shareManager] getDataWithBalanceJudgmentWithCost:[totleAmount stringValue] ifShowLoading:NO];
-            NSString * totleAmountStr = [amountNumber stringValue];
-            if (!NotNULLString(totleAmountStr) || [amountNumber isEqualToNumber:NSDecimalNumber.notANumber]) {
-            } else if ([totleAmountStr hasPrefix:@"-"]) {
-                [MBProgressHUD showTipMessageInWindow:Localized(@"NotSufficientFunds")];
-            } else {
-                if (![[HTTPManager shareManager] getTransactionHashWithModel: self.confirmTransactionModel]) return;
-                [self showPWAlertView];
-            }
-        });
-    } cancelBlock:^{
-        
-    }];
-    confirmAlertView.confirmTransactionModel = self.confirmTransactionModel;
-    [confirmAlertView showInWindowWithMode:CustomAnimationModeShare inView:nil bgAlpha:AlertBgAlpha needEffectView:NO];
-     */
-}
-/*
-// Transaction confirmation and submission
-- (void)getConfirmTransactionData
-{
-    [[HTTPManager shareManager] getContractTransactionWithModel:self.confirmTransactionModel  success:^(id responseObject) {
-        NSInteger code = [[responseObject objectForKey:@"errCode"] integerValue];
-        if (code == Success_Code || code == ErrorNotSubmitted) {
-            NSString * dateStr = [NSString stringWithFormat:@"%@", [[responseObject objectForKey:@"data"] objectForKey:@"expiryTime"]];
-            if (code == Success_Code) {
-                NSDate * date = [NSDate dateWithTimeIntervalSince1970:[dateStr longLongValue] / 1000];
-                NSTimeInterval time = [date timeIntervalSinceNow];
-                if (time < 0) {
-                    [Encapsulation showAlertControllerWithMessage:Localized(@"Overtime") handler:nil];
-                } else {
-                    [self submitTransaction];
-                }
-            } else {
-                [Encapsulation showAlertControllerWithMessage:[NSString stringWithFormat:Localized(@"NotSubmitted%@"), [DateTool getTimeIntervalWithStr:dateStr]] handler:nil];
-            }
-        } else {
-            [Encapsulation showAlertControllerWithMessage:[ErrorTypeTool getDescriptionWithNodeErrorCode:code] handler:nil];
-        }
-    } failure:^(NSError *error) {
-        
-    }];
-}
-- (void)showPWAlertView
-{
-    PasswordAlertView * PWAlertView = [[PasswordAlertView alloc] initWithPrompt:Localized(@"TransactionWalletPWPrompt") confrimBolck:^(NSString * _Nonnull password, NSArray * _Nonnull words) {
-        if (NotNULLString(password)) {
-            if (self.confirmTransactionModel) {
-                [self getConfirmTransactionData];
-            } else if (self.dposModel) {
-                [self submitDposTransaction];
-            }
-        }
-    } cancelBlock:^{
-        
-    }];
-    [PWAlertView showInWindowWithMode:CustomAnimationModeAlert inView:nil bgAlpha:AlertBgAlpha needEffectView:NO];
-    [PWAlertView.PWTextField becomeFirstResponder];
 }
 
-- (void)submitTransaction
-{
-    [[HTTPManager shareManager] submitTransactionWithSuccess:^(TransactionResultModel *resultModel) {
-        if (resultModel.errorCode == Success_Code) {
-            NodeTransferSuccessViewController * VC = [[NodeTransferSuccessViewController alloc] init];
-            [self.navigationController pushViewController:VC animated:YES];
-        } else {
-            ResultViewController * VC = [[ResultViewController alloc] init];
-            VC.state = NO;
-            VC.resultModel = resultModel;
-            VC.confirmModel = self.confirmTransactionModel;
-            [self.navigationController pushViewController:VC animated:YES];
-        }
-    } failure:^(TransactionResultModel *resultModel) {
-        RequestTimeoutViewController * VC = [[RequestTimeoutViewController alloc] init];
-        VC.transactionHash = resultModel.transactionHash;
-        [self.navigationController pushViewController:VC animated:YES];
-    }];
-}
-  */
 #pragma mark 扫描调用底层合约操作
 - (void)getDposTransactionWithStr:(NSString *)str
 {
@@ -883,54 +759,11 @@
         }];
         confirmAlertView.dposModel = self.dposModel;
         [confirmAlertView showInWindowWithMode:CustomAnimationModeShare inView:nil bgAlpha:AlertBgAlpha needEffectView:NO];
-        /*
-        ConfirmTransactionAlertView * confirmAlertView = [[ConfirmTransactionAlertView alloc] initWithDposConfrimBolck:^(NSString * _Nonnull transactionCost) {
-            dispatch_after(dispatch_time(DISPATCH_TIME_NOW, (int64_t)(Dispatch_After_Time * NSEC_PER_SEC)), dispatch_get_main_queue(), ^{
-                NSDecimalNumber * amount = [NSDecimalNumber decimalNumberWithString:self.dposModel.amount];
-                NSDecimalNumber * minTransactionCost = [NSDecimalNumber decimalNumberWithString:transactionCost];
-                NSDecimalNumber * totleAmount = [amount decimalNumberByAdding:minTransactionCost];
-                NSDecimalNumber * amountNumber = [[HTTPManager shareManager] getDataWithBalanceJudgmentWithCost:[totleAmount stringValue] ifShowLoading:NO];
-                NSString * totleAmountStr = [amountNumber stringValue];
-                if (!NotNULLString(totleAmountStr) || [amountNumber isEqualToNumber:NSDecimalNumber.notANumber]) {
-                } else if ([totleAmountStr hasPrefix:@"-"]) {
-                    [MBProgressHUD showTipMessageInWindow:Localized(@"NotSufficientFunds")];
-                } else {
-                    if (![[HTTPManager shareManager] getTransactionWithDposModel: self.dposModel isDonateVoucher:NO]) return;
-                    [self showPWAlertView];
-                }
-            });
-        } cancelBlock:^{
-            
-        }];
-        confirmAlertView.dposModel = self.dposModel;
-        [confirmAlertView showInWindowWithMode:CustomAnimationModeShare inView:nil bgAlpha:AlertBgAlpha needEffectView:NO];
-        */
     } else {
         [MBProgressHUD showTipMessageInWindow:Localized(@"ScanFailure")];
     }
 }
-/*
-- (void)submitDposTransaction
-{
-    [[HTTPManager shareManager] submitTransactionWithSuccess:^(TransactionResultModel *resultModel) {
-        resultModel.remark = Localized(@"DposContract");
-        ResultViewController * VC = [[ResultViewController alloc] init];
-        if (resultModel.errorCode == Success_Code) {
-            VC.state = YES;
-        } else {
-            VC.state = NO;
-        }
-        VC.resultModel = resultModel;
-        VC.confirmModel = self.confirmTransactionModel;
-//        VC.transferInfoArray = [NSMutableArray arrayWithObjects:self.dposModel.dest_address, [NSString stringAppendingBUWithStr:self.dposModel.amount], nil];
-        [self.navigationController pushViewController:VC animated:YES];
-    } failure:^(TransactionResultModel *resultModel) {
-        RequestTimeoutViewController * VC = [[RequestTimeoutViewController alloc] init];
-        VC.transactionHash = resultModel.transactionHash;
-        [self.navigationController pushViewController:VC animated:YES];
-    }];
-}
- */
+
 - (CGFloat)tableView:(UITableView *)tableView heightForRowAtIndexPath:(NSIndexPath *)indexPath
 {
     return ScreenScale(90);
@@ -943,18 +776,8 @@
 {
     if (section == 0) {
         NSUserDefaults * defaults = [NSUserDefaults standardUserDefaults];
-//        if (![defaults boolForKey:If_Backup] && _noBackup.selected == NO) {
         if (![defaults boolForKey:If_Backup]) {
-//            if (iPhone6plus && [CurrentAppLanguage isEqualToString:ZhHans]) {
-//                return 184;
-////                return 165;
-//            } else if (iPhone6plus && [CurrentAppLanguage isEqualToString:EN]) {
-//                return 217;
-////                return 195;
-//            }
-//            return ScreenScale(130) + [Encapsulation getSizeSpaceLabelWithStr:Localized(@"SafetyTips") font:FONT_TITLE width:Content_Width_Main height:CGFLOAT_MAX lineSpacing:LINE_SPACING].height;
             return ScreenScale(110) + self.safetyTipsTitle.size.height + self.safetyTips.size.height;
-//            [Encapsulation rectWithText:Localized(@"SafetyTips") font:FONT_TITLE textWidth:DEVICE_WIDTH - Margin_40].size.height;
         } else {
             return Margin_Section_Header - Margin_5;
         }
@@ -989,36 +812,17 @@
             }];
             [backupBg addSubview:self.safetyTipsTitle];
             [self.safetyTipsTitle mas_makeConstraints:^(MASConstraintMaker *make) {
-//                make.top.equalTo(backupBg.mas_top).offset(Margin_15);
                 make.left.equalTo(backupBg.mas_left).offset(Margin_10);
-//                make.right.equalTo(backupBg.mas_right).offset(- Margin_10);
                 make.size.mas_equalTo(self.safetyTipsTitle.size);
-//                make.height.mas_equalTo(Margin_20);
             }];
             
             [backupBg addSubview:self.safetyTips];
             [self.safetyTips mas_makeConstraints:^(MASConstraintMaker *make) {
                 make.top.equalTo(self.safetyTipsTitle.mas_bottom).offset(Margin_10);
                 make.left.equalTo(backupBg.mas_left).offset(Margin_10);
-//                make.right.equalTo(backupBg.mas_right).offset(- Margin_10);
-//                make.left.right.equalTo(self.safetyTipsTitle);
                 make.size.mas_equalTo(self.safetyTips.size);
-//                make.left.right.equalTo(safetyTipsTitle);
             }];
-            /*
-            CGFloat btnW = (DEVICE_WIDTH - ScreenScale(65)) / 2;
-            _noBackup = [UIButton createButtonWithTitle:Localized(@"TemporaryBackup") TextFont:FONT_16 TextNormalColor:COLOR(@"9298BD") TextSelectedColor:COLOR(@"9298BD") Target:self Selector:@selector(noBackupAction:)];
-            _noBackup.backgroundColor = COLOR(@"DADDF3");
-            _noBackup.layer.masksToBounds = YES;
-            _noBackup.layer.cornerRadius = MAIN_CORNER;
-            [backupBg addSubview:_noBackup];
-            [_noBackup mas_makeConstraints:^(MASConstraintMaker *make) {
-                make.top.equalTo(safetyTips.mas_bottom).offset(Margin_10);
-                make.left.equalTo(safetyTipsTitle);
-                make.bottom.equalTo(backupBg.mas_bottom).offset(-Margin_15);
-                make.size.mas_equalTo(CGSizeMake(btnW, Margin_40));
-            }];
-             */
+            
             CustomButton * backup = [[CustomButton alloc] init];
             [backup setTitleColor:MAIN_COLOR forState:UIControlStateNormal];
             backup.titleLabel.font = FONT_Bold(15);
@@ -1026,15 +830,12 @@
             [backup setTitle:Localized(@"ImmediateBackup") forState:UIControlStateNormal];
             [backup addTarget:self action:@selector(backupAction) forControlEvents:UIControlEventTouchUpInside];
             backup.layoutMode = HorizontalInverted;
-//            [UIButton createButtonWithTitle:Localized(@"ImmediateBackup") TextFont:FONT_16 TextNormalColor:[UIColor whiteColor] TextSelectedColor:[UIColor whiteColor] Target:self Selector:@selector(backupAction)];
             [backupBg addSubview:backup];
             [backup mas_makeConstraints:^(MASConstraintMaker *make) {
                 make.top.equalTo(self.safetyTips.mas_bottom);
                 make.right.equalTo(backupBg.mas_right).offset(- Margin_10);
                 make.height.mas_equalTo(MAIN_HEIGHT);
                 make.bottom.equalTo(backupBg.mas_bottom);
-//                make.right.equalTo(safetyTipsTitle);
-//                make.size.bottom.equalTo(_noBackup);
             }];
         }
     }
@@ -1059,9 +860,6 @@
         _safetyTips = [[UILabel alloc] init];
         _safetyTips.numberOfLines = 0;
         _safetyTips.attributedText = [Encapsulation attrWithString:Localized(@"SafetyTips") font:FONT_TITLE color:COLOR_6 lineSpacing:LINE_SPACING];
-        //            safetyTips.textColor = COLOR_6;
-        //            safetyTips.font = FONT_TITLE;
-        //            safetyTips.text = Localized(@"SafetyTips");
         CGSize maximumSize = CGSizeMake(Content_Width_Main, CGFLOAT_MAX);
         CGSize expectSize = [_safetyTips sizeThatFits:maximumSize];
         _safetyTips.size = expectSize;
@@ -1071,7 +869,6 @@
 #pragma mark - backup
 - (void)backupAction
 {
-//    [self.navigationController pushViewController:[[MyIdentityViewController alloc] init] animated:NO];
     BackUpWalletViewController * VC = [[BackUpWalletViewController alloc] init];
     VC.mnemonicType = MnemonicBackup;
     [self.navigationController pushViewController:VC animated:YES];
@@ -1081,7 +878,6 @@
 {
     if (self.isReceived) {
         // 缓存中有红包id
-//        NSString * activityID = [[NSUserDefaults standardUserDefaults] objectForKey:Activity_ID];
         if (NotNULLString(self.activityID)) {
             RedEnvelopesViewController * VC = [[RedEnvelopesViewController alloc] init];
             VC.activityID = self.activityID;
@@ -1091,17 +887,6 @@
         [self showOpenRedEnvelopes];
     }
 }
-
-/*
-- (void)noBackupAction:(UIButton *)button
-{
-    button.selected = YES;
-    [self.tableView reloadData];
-//    NSUserDefaults * defaults = [NSUserDefaults standardUserDefaults];
-//    [defaults setBool:YES forKey:If_Skip];
-//    [defaults synchronize];
-}
- */
 
 - (CGFloat)tableView:(UITableView *)tableView heightForFooterInSection:(NSInteger)section
 {

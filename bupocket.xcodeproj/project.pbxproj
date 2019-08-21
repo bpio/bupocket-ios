@@ -157,7 +157,6 @@
 		958127F2219AC82A0081A02E /* VersionModel.m in Sources */ = {isa = PBXBuildFile; fileRef = 958127F1219AC82A0081A02E /* VersionModel.m */; };
 		958AA69821A2A89600BEA50C /* CustomRefreshFooter.m in Sources */ = {isa = PBXBuildFile; fileRef = 958AA69721A2A89600BEA50C /* CustomRefreshFooter.m */; };
 		9593C3542302B03A0027A479 /* DataBase.m in Sources */ = {isa = PBXBuildFile; fileRef = 9593C3532302B03A0027A479 /* DataBase.m */; };
-		9593C3582303AFBF0027A479 /* FileManager.m in Sources */ = {isa = PBXBuildFile; fileRef = 9593C3572303AFBF0027A479 /* FileManager.m */; };
 		959575C121FFF00F0089479C /* AddressBookViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 959575C021FFF00F0089479C /* AddressBookViewController.m */; };
 		959575C421FFF6EB0089479C /* AddressBookListViewCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 959575C321FFF6EB0089479C /* AddressBookListViewCell.m */; };
 		959575C821FFF8010089479C /* AddressBookModel.m in Sources */ = {isa = PBXBuildFile; fileRef = 959575C721FFF8010089479C /* AddressBookModel.m */; };
@@ -535,8 +534,6 @@
 		958AA69721A2A89600BEA50C /* CustomRefreshFooter.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = CustomRefreshFooter.m; sourceTree = "<group>"; };
 		9593C3522302B03A0027A479 /* DataBase.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = DataBase.h; sourceTree = "<group>"; };
 		9593C3532302B03A0027A479 /* DataBase.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = DataBase.m; sourceTree = "<group>"; };
-		9593C3562303AFBF0027A479 /* FileManager.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = FileManager.h; sourceTree = "<group>"; };
-		9593C3572303AFBF0027A479 /* FileManager.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = FileManager.m; sourceTree = "<group>"; };
 		959575BF21FFF00F0089479C /* AddressBookViewController.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = AddressBookViewController.h; sourceTree = "<group>"; };
 		959575C021FFF00F0089479C /* AddressBookViewController.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = AddressBookViewController.m; sourceTree = "<group>"; };
 		959575C221FFF6EB0089479C /* AddressBookListViewCell.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = AddressBookListViewCell.h; sourceTree = "<group>"; };
@@ -650,7 +647,6 @@
 		833799292177091500C222A5 /* Tool */ = {
 			isa = PBXGroup;
 			children = (
-				9593C3552303AF940027A479 /* FileManager */,
 				95179FD222F693C10094E750 /* UDID */,
 				95179FB222F525130094E750 /* CFCycleScrollView */,
 				95B066B92282AA9D0005731A /* Wechat */,
@@ -1319,15 +1315,6 @@
 			path = "MBProgressHUD+JDragon";
 			sourceTree = "<group>";
 		};
-		9593C3552303AF940027A479 /* FileManager */ = {
-			isa = PBXGroup;
-			children = (
-				9593C3562303AFBF0027A479 /* FileManager.h */,
-				9593C3572303AFBF0027A479 /* FileManager.m */,
-			);
-			path = FileManager;
-			sourceTree = "<group>";
-		};
 		959575C521FFF7D90089479C /* Model */ = {
 			isa = PBXGroup;
 			children = (
@@ -1859,7 +1846,6 @@
 				95266CDF226F062E002CD915 /* VotingRecordsViewCell.m in Sources */,
 				95A8A3BC219D161D008E978E /* CustomRefreshHeader.m in Sources */,
 				95266CD0226F062E002CD915 /* VotingRecordsViewController.m in Sources */,
-				9593C3582303AFBF0027A479 /* FileManager.m in Sources */,
 				959726C521E487F10022CB78 /* ExportKeystoreViewController.m in Sources */,
 				959E290E224F1F25006FCA30 /* ConfirmTransactionModel.m in Sources */,
 				959575C421FFF6EB0089479C /* AddressBookListViewCell.m in Sources */,

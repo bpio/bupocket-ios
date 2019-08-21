@@ -35,16 +35,6 @@
     [self setupView];
     // Do any additional setup after loading the view.
 }
-- (void)viewDidAppear:(BOOL)animated
-{
-    [super viewDidAppear:animated];
-//    [self.navigationController.navigationBar setBackgroundImage:[UIImage new] forBarMetrics:UIBarMetricsDefault];
-//    self.navigationController.navigationBar.shadowImage = [UIImage new];
-    
-//    self.navBackgroundColor = [UIColor whiteColor];
-//    //    self.navigationController.navigationBar = [UIColor clearColor];
-//    self.navTitleColor = self.navTintColor = [UIColor whiteColor];
-}
 - (UIStatusBarStyle)preferredStatusBarStyle {
     return UIStatusBarStyleLightContent;
 }

@@ -39,6 +39,8 @@ typedef NS_ENUM(NSInteger, AccountDataType) {
 // Switched Node url
 - (void)SwitchedNodeWithURL:(NSString *)URL;
 
+- (NSString *)getCurrentNetwork;
+
 // Version Update
 - (void)getDataWithURL:(NSString *)URL
                success:(void (^)(id responseObject))success
@@ -70,10 +72,9 @@ typedef NS_ENUM(NSInteger, AccountDataType) {
                                  success:(void (^)(id responseObject))success
                                  failure:(void (^)(NSError *error))failure;
 // Transaction detail
-- (void)getOrderDetailsDataWithAddress:(NSString *)address
-                                 optNo:(NSInteger)optNo
-                               success:(void (^)(id responseObject))success
-                               failure:(void (^)(NSError *error))failure;
+- (void)getOrderDetailsDataWithOptNo:(NSInteger)optNo
+                             success:(void (^)(id responseObject))success
+                             failure:(void (^)(NSError *error))failure;
 // Transaction Details
 - (void)getTransactionDetailsDataWithHash:(NSString *)hash
                                   success:(void (^)(id responseObject))success

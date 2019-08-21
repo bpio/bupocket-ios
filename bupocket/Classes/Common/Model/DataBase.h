@@ -9,8 +9,12 @@
 #import "BaseModel.h"
 
 typedef NS_ENUM(NSInteger, CacheDataType) {
+    CacheTypeAssets,
+    CacheTypeTransactionRecord,
+    CacheTypeTransactionDetails,
     CacheTypeAddressBook,
     CacheTypeVoucherList,
+    CacheTypeVoucherDetail,
     CacheTypeFindBanner,
     CacheTypeNodeList,
     CacheTypeCooperateList,
@@ -26,6 +30,11 @@ NS_ASSUME_NONNULL_BEGIN
 - (void)saveDataWithArray:(NSArray *)array cacheType:(CacheDataType)cacheType;
 - (NSArray *)getCachedDataWithCacheType:(CacheDataType)cacheType;
 - (void)deleteCachedDataWithCacheType:(CacheDataType)cacheType;
+
+// Transaction Details
+- (void)saveDetailDataWithCacheType:(CacheDataType)cacheType dic:(NSDictionary *)dic ID:(NSString *)ID;
+- (NSDictionary *)getDetailCachedDataWithCacheType:(CacheDataType)cacheType detailId:(NSString *)detailId;
+- (void)deleteTxDetailsCachedDataWithCacheType:(CacheDataType)cacheType detailId:(NSString *)detailId;
 
 @end
 

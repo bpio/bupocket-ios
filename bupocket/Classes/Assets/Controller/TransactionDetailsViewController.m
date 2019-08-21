@@ -11,6 +11,7 @@
 #import "BlockInfoModel.h"
 #import "TxDetailModel.h"
 #import "TxInfoModel.h"
+#import "DataBase.h"
 
 @interface TransactionDetailsViewController ()<UITableViewDelegate, UITableViewDataSource>
 
@@ -20,7 +21,7 @@
 @property (nonatomic, strong) UILabel * state;
 
 @property (nonatomic, assign) CGFloat headerViewH;
-@property (nonatomic, strong) NSDictionary * dataDic;
+@property (nonatomic, strong) NSMutableDictionary * dataDic;
 @property (nonatomic, strong) NSArray * listArray;
 @property (nonatomic, strong) NSMutableArray * infoArray;
 @property (nonatomic, strong) BlockInfoModel * blockInfoModel;
@@ -37,6 +38,13 @@
 
 static NSInteger const TxInfoNormalCount = 6;
 
+- (NSMutableDictionary *)dataDic
+{
+    if (!_dataDic) {
+        _dataDic = [NSMutableDictionary dictionary];
+    }
+    return _dataDic;
+}
 
 - (void)viewDidLoad {
     [super viewDidLoad];
@@ -75,32 +83,42 @@ static NSInteger const TxInfoNormalCount = 6;
 }
 - (void)loadData
 {
-    [[HTTPManager shareManager] getOrderDetailsDataWithAddress:CurrentWalletAddress optNo:self.listModel.optNo success:^(id responseObject) {
+    [self getCacheData];
+    [[HTTPManager shareManager] getOrderDetailsDataWithOptNo:self.listModel.optNo success:^(id responseObject) {
         NSInteger code = [[responseObject objectForKey:@"errCode"] integerValue];
         if (code == Success_Code) {
-            [self.tableView addSubview:self.headerView];
-            [self.tableView insertSubview:self.headerView atIndex:0];
-            self.blockInfoModel = [BlockInfoModel mj_objectWithKeyValues:responseObject[@"data"][@"blockInfoRespBo"]];
-            self.txDetailModel = [TxDetailModel mj_objectWithKeyValues:responseObject[@"data"][@"txDeatilRespBo"]];
-            self.txInfoModel = [TxInfoModel mj_objectWithKeyValues:responseObject[@"data"][@"txInfoRespBo"]];
-            [self setListData];
-            [self.tableView reloadData];
-            if ([self.txDetailModel.errorCode longLongValue] == ERRCODE_CONTRACT_EXECUTE_FAIL) {
-                self.state.text = [ErrorTypeTool getDescription:ERRCODE_CONTRACT_EXECUTE_FAIL];
-            }
+            self.dataDic = responseObject[@"data"];
+            [self setListDataWithDic:self.dataDic];
+            NSString * optNo = [NSString stringWithFormat:@"%zd", self.listModel.optNo];
+            [[DataBase shareDataBase] deleteTxDetailsCachedDataWithCacheType:CacheTypeTransactionDetails detailId:optNo];
+            [[DataBase shareDataBase] saveDetailDataWithCacheType:CacheTypeTransactionDetails dic:self.dataDic ID:optNo];
         } else {
             [MBProgressHUD showTipMessageInWindow:[ErrorTypeTool getDescriptionWithErrorCode:code]];
         }
-        [self.tableView.mj_header endRefreshing];
-        self.noNetWork.hidden = YES;
+        [self reloadUI];
     } failure:^(NSError *error) {
         [self.tableView.mj_header endRefreshing];
-        self.noNetWork.hidden = NO;
-        
+        if ([self.dataDic count]) {
+            [MBProgressHUD showTipMessageInWindow:Localized(@"NoNetWork")];
+        }
+        self.noNetWork.hidden = ([self.dataDic count] > 0);
     }];
 }
-- (void)setListData
+- (void)getCacheData
 {
+    self.dataDic = [NSMutableDictionary dictionaryWithDictionary:[[DataBase shareDataBase] getDetailCachedDataWithCacheType:CacheTypeTransactionDetails detailId:[NSString stringWithFormat:@"%zd", self.listModel.optNo]]];
+    if ([self.dataDic count]) {
+        [self setListDataWithDic:self.dataDic];
+        [self reloadUI];
+    }
+}
+- (void)setListDataWithDic:(NSDictionary *)dic
+{
+    [self.tableView addSubview:self.headerView];
+    [self.tableView insertSubview:self.headerView atIndex:0];
+    self.blockInfoModel = [BlockInfoModel mj_objectWithKeyValues:dic[@"blockInfoRespBo"]];
+    self.txDetailModel = [TxDetailModel mj_objectWithKeyValues:dic[@"txDeatilRespBo"]];
+    self.txInfoModel = [TxInfoModel mj_objectWithKeyValues:dic[@"txInfoRespBo"]];
     NSMutableArray * infoTitleArray = [NSMutableArray arrayWithObjects:@"TxHash", @"From", @"To", @"Value", @"TX Fee", @"Nonce", nil];
     if (self.txInfoModel.signatureStr) {
         [infoTitleArray addObject:@"Transaction Signature"];
@@ -141,8 +159,17 @@ static NSInteger const TxInfoNormalCount = 6;
     [self.infoArray addObject:blockInfoArray];
     
     self.listArray = @[@[Localized(@"SendingAccount"), Localized(@"ReceivingAccount"), Localized(@"TransactionCost"), Localized(@"TransferTime"), Localized(@"Remarks")], infoTitleArray, @[@"Block Height", @"Block Hash", @"Prev Block Hash", @"TX Count", @"Consensus Time"]];
+    
 }
-
+- (void)reloadUI
+{
+    [self.tableView reloadData];
+    if ([self.txDetailModel.errorCode longLongValue] == ERRCODE_CONTRACT_EXECUTE_FAIL) {
+        self.state.text = [ErrorTypeTool getDescription:ERRCODE_CONTRACT_EXECUTE_FAIL];
+    }
+    [self.tableView.mj_header endRefreshing];
+    self.noNetWork.hidden = YES;
+}
 - (void)setupView
 {
     self.tableView = [[UITableView alloc] initWithFrame:self.view.frame style:UITableViewStyleGrouped];

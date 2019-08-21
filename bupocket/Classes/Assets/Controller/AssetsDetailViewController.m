@@ -8,19 +8,19 @@
 
 #import "AssetsDetailViewController.h"
 #import "AssetsDetailListViewCell.h"
-//#import "TransferAccountsViewController.h"
 #import "TransactionViewController.h"
 #import "TransactionDetailsViewController.h"
 #import "AssetsDetailModel.h"
 #import "ReceiveViewController.h"
+#import "DataBase.h"
 
 @interface AssetsDetailViewController ()<UITableViewDelegate, UITableViewDataSource>
 
 @property (nonatomic, strong) UITableView * tableView;
-//@property (nonatomic, strong) UIView * headerBg;
 @property (nonatomic, strong) UIView * headerViewBg;
 @property (nonatomic, assign) CGFloat headerViewH;
 @property (nonatomic, strong) NSMutableArray * listArray;
+@property (nonatomic, strong) NSMutableArray * dataArray;
 
 @property (nonatomic, strong) UIImageView * assetsIconBg;
 @property (nonatomic, strong) UIImageView * assetsIcon;
@@ -29,7 +29,6 @@
 
 @property (nonatomic, strong) UILabel * assets;
 @property (nonatomic, strong) UILabel * amount;
-//@property (nonatomic, strong) UILabel * header;
 @property (nonatomic, strong) UIView * noData;
 @property (nonatomic, assign) NSInteger pageindex;
 @property (nonatomic, strong) UIView * noNetWorkBg;
@@ -49,11 +48,16 @@
     }
     return _listArray;
 }
-
+- (NSMutableArray *)dataArray
+{
+    if (!_dataArray) {
+        _dataArray = [NSMutableArray array];
+    }
+    return _dataArray;
+}
 - (void)viewDidLoad {
     [super viewDidLoad];
     self.navigationItem.title = self.listModel.assetCode;
-//    self.headerViewH = ScreenScale(240);
     [self setupView];
     [self setupRefresh];
     // Do any additional setup after loading the view.
@@ -69,8 +73,6 @@
     self.tableView.mj_header.automaticallyChangeAlpha = YES;
     [self.tableView.mj_header beginRefreshing];
     self.tableView.mj_footer = [CustomRefreshFooter footerWithRefreshingTarget:self refreshingAction:@selector(loadMoreData)];
-//    self.tableView.mj_header.ignoredScrollViewContentInsetTop = _headerViewH;
-//    self.tableView.mj_footer.ignoredScrollViewContentInsetBottom = -(ContentSizeBottom);
 }
 - (void)loadNewData
 {
@@ -82,48 +84,61 @@
 }
 - (void)getDataWithPageindex:(NSInteger)pageindex
 {
+    [self getCacheData];
     NSString * currentCurrency = [AssetCurrencyModel getAssetCurrencyTypeWithAssetCurrency:[[[NSUserDefaults standardUserDefaults] objectForKey:Current_Currency] integerValue]];
     [[HTTPManager shareManager] getAssetsDetailDataWithTokenType:self.listModel.type currencyType:currentCurrency assetCode:self.listModel.assetCode issuer:self.listModel.issuer address:CurrentWalletAddress pageIndex:pageindex success:^(id responseObject) {
         NSInteger code = [[responseObject objectForKey:@"errCode"] integerValue];
         if (code == Success_Code) {
             NSDictionary * assetDic = responseObject[@"data"] [@"assetData"];
             [self setHeaderDataWithAsset:assetDic[@"balance"] amount:assetDic[@"totalAmount"]];
-//            if (self.headerBg) {
-//                [self.headerBg removeFromSuperview];
-//                self.headerBg = nil;
-//                [self upDateLayout];
-//            }
-//            [self.tableView addSubview:self.headerBg];
-//            [self.tableView insertSubview:self.headerBg atIndex:0];
-//            [self layoutSubView];
-            NSArray * listArray = [AssetsDetailModel mj_objectArrayWithKeyValuesArray:responseObject[@"data"] [@"txRecord"]];
+            NSArray * array = responseObject[@"data"] [@"txRecord"];
+            NSArray * listArray = [AssetsDetailModel mj_objectArrayWithKeyValuesArray:array];
             if (pageindex == PageIndex_Default) {
                 [self.listArray removeAllObjects];
                 self.pageindex = PageIndex_Default;
             }
             self.pageindex = self.pageindex + 1;
             [self.listArray addObjectsFromArray:listArray];
+            [self.dataArray addObjectsFromArray:array];
             if (listArray.count < PageSize_Max) {
                 [self.tableView.mj_footer endRefreshingWithNoMoreData];
             } else {
                 [self.tableView.mj_footer endRefreshing];
             }
-            [self.tableView reloadData];
+            [[DataBase shareDataBase] deleteCachedDataWithCacheType:CacheTypeTransactionRecord];
+            [[DataBase shareDataBase] saveDataWithArray:self.dataArray cacheType:CacheTypeTransactionRecord];
         } else {
             [MBProgressHUD showTipMessageInWindow:[ErrorTypeTool getDescriptionWithErrorCode:code]];
         }
-        [self.tableView.mj_header endRefreshing];
-        (self.listArray.count > 0) ? (self.tableView.tableFooterView = [[UIView alloc] initWithFrame:CGRectMake(0, 0, DEVICE_WIDTH, CGFLOAT_MIN)]) : (self.tableView.tableFooterView = self.noData);
-        self.noNetWork.hidden = YES;
-        self.tableView.mj_footer.hidden = (self.listArray.count == 0);
+        [self reloadUI];
     } failure:^(NSError *error) {
         [self.tableView.mj_header endRefreshing];
         [self.tableView.mj_footer endRefreshing];
-        self.tableView.tableFooterView = self.noNetWorkBg;
-        self.noNetWork.hidden = NO;
+        if (self.listArray.count > 0) {
+            [MBProgressHUD showTipMessageInWindow:Localized(@"NoNetWork")];
+        } else {
+            self.tableView.tableFooterView = self.noNetWorkBg;
+        }
+        self.noNetWork.hidden = (self.listArray.count > 0);
     }];
 }
-
+- (void)getCacheData
+{
+    NSArray * listArray = [[DataBase shareDataBase] getCachedDataWithCacheType:CacheTypeTransactionRecord];
+    if (listArray.count > 0) {
+        self.listArray = [NSMutableArray array];
+        [self.listArray addObjectsFromArray:listArray];
+        [self reloadUI];
+    }
+}
+- (void)reloadUI
+{
+    [self.tableView reloadData];
+    [self.tableView.mj_header endRefreshing];
+    (self.listArray.count > 0) ? (self.tableView.tableFooterView = [[UIView alloc] initWithFrame:CGRectMake(0, 0, DEVICE_WIDTH, CGFLOAT_MIN)]) : (self.tableView.tableFooterView = self.noData);
+    self.tableView.mj_footer.hidden = (self.listArray.count == 0);
+    self.noNetWork.hidden = YES;
+}
 - (void)setHeaderDataWithAsset:(NSString *)asset amount:(NSString *)amount
 {
     self.assetsStr = [NSString stringWithFormat:@"%@ %@", asset, self.listModel.assetCode];
@@ -137,25 +152,12 @@
     self.headerViewBg.frame = CGRectMake(0, 0, DEVICE_WIDTH, self.headerViewH);
     self.tableView.tableHeaderView = self.headerViewBg;
 }
-/*
-- (void)upDateLayout
-{
-    self.tableView.mj_header.ignoredScrollViewContentInsetTop = _headerViewH;
-    self.tableView.contentInset = UIEdgeInsetsMake(_headerViewH, 0, 0, 0);
-    DLog(@"%f", self.tableView.contentInset.top);
-    self.headerBg.frame = CGRectMake(0, -_headerViewH, DEVICE_WIDTH, _headerViewH);
-    self.headerViewBg.frame = CGRectMake(0, 0, DEVICE_WIDTH, _headerViewH);
-   
-}
- */
 - (void)setupView
 {
     self.tableView = [[UITableView alloc] initWithFrame:self.view.frame style:UITableViewStyleGrouped];
     self.tableView.delegate = self;
     self.tableView.dataSource = self;
-//    self.tableView.separatorInset = UIEdgeInsetsZero;
     self.tableView.separatorStyle = UITableViewCellSeparatorStyleNone;
-//    self.tableView.contentInset = UIEdgeInsetsMake(_headerViewH, 0, 0, 0);
     self.tableView.contentInset = UIEdgeInsetsMake(0, 0, ContentSizeBottom, 0);
     [self.view addSubview:self.tableView];
     [self setupHeaderView];
@@ -216,7 +218,6 @@
     [_headerViewBg addSubview: _receiveBtn];
     _receiveBtn.layer.masksToBounds = YES;
     _receiveBtn.layer.cornerRadius = MAIN_CORNER;
-    //        [_scanBtn setViewSize:CGSizeMake(btnW, MAIN_HEIGHT) borderWidth:0 borderColor:nil borderRadius:ScreenScale(3)];
     _receiveBtn.backgroundColor = RECEIVE_COLOR;
     
     _transferAccounts = [[CustomButton alloc] init];
@@ -229,7 +230,6 @@
     [_headerViewBg addSubview: _transferAccounts];
     _transferAccounts.layer.masksToBounds = YES;
     _transferAccounts.layer.cornerRadius = MAIN_CORNER;
-    //        [_transferAccounts setViewSize:CGSizeMake(btnW, MAIN_HEIGHT) borderWidth:0 borderColor:nil borderRadius:MAIN_CORNER];
     _transferAccounts.backgroundColor = MAIN_COLOR;
     [self layoutSubView];
     [self setHeaderDataWithAsset:self.listModel.amount amount:self.listModel.assetAmount];
@@ -260,73 +260,18 @@
         make.top.equalTo(self.amount.mas_bottom).offset(Margin_20);
         make.left.equalTo(self.headerViewBg.mas_left).offset(Margin_Main);
         make.size.mas_equalTo(CGSizeMake(btnW, MAIN_HEIGHT));
-//        make.bottom.equalTo(self.headerViewBg.mas_bottom).offset(-Margin_20);
     }];
     [_transferAccounts mas_makeConstraints:^(MASConstraintMaker *make) {
         make.right.equalTo(self.headerViewBg.mas_right).offset(-Margin_Main);
         make.size.top.equalTo(self->_receiveBtn);
     }];
 }
-//- (void)scrollViewDidScroll:(UIScrollView *)scrollView
-//{
-//    CGFloat offsetY = scrollView.contentOffset.y;
-//    if (offsetY <= -_headerViewH) {
-//        _headerBg.y = offsetY;
-//        _headerBg.height = - offsetY;
-//    } else {
-//        _headerBg.y = -_headerViewH;
-//        _headerBg.height = _headerViewH;
-//    }
-//    _headerViewBg.y = _headerBg.height - _headerViewH;
-//}
 #pragma mark - receiveAction
 - (void)receiveAction:(UIButton *)button
 {
     ReceiveViewController * VC = [[ReceiveViewController alloc] init];
     VC.receiveType = ReceiveTypeDefault;
     [self.navigationController pushViewController:VC animated:YES];
-    /*
-    __block NSString * result = nil;
-    __weak typeof (self) weakself = self;
-    HMScannerController *scanner = [HMScannerController scannerWithCardName:nil avatar:nil completion:^(NSString *stringValue) {
-        if (result) {
-            return;
-        }
-        result = stringValue;
-        if ([stringValue hasPrefix:Dpos_Prefix]) {
-            [self showAlert];
-            return;
-        }
-        if ([stringValue hasPrefix:@"http"] && [stringValue containsString:Account_Center_Contains] && ![[[[[stringValue componentsSeparatedByString:Account_Center_Contains] firstObject] componentsSeparatedByString:@"://"] lastObject] containsString:@"/"] && [[[stringValue componentsSeparatedByString:Account_Center_Contains] lastObject] length] == 32) {
-            [self showAlert];
-            return;
-        } else if ([stringValue hasPrefix:@"http"] && [stringValue containsString:Dpos_Contains] && ![[[[[stringValue componentsSeparatedByString:Dpos_Contains] firstObject] componentsSeparatedByString:@"://"] lastObject] containsString:@"/"] && [[[stringValue componentsSeparatedByString:Dpos_Contains] lastObject] length] == 32) {
-            [self showAlert];
-            return;
-        }
-        NSOperationQueue * queue = [[NSOperationQueue alloc] init];
-        [queue addOperationWithBlock:^{
-            BOOL isCorrectAddress = [Keypair isAddressValid: stringValue];
-            [[NSOperationQueue mainQueue] addOperationWithBlock:^{
-                if (isCorrectAddress) {
-                    TransferAccountsViewController * VC = [[TransferAccountsViewController alloc] init];
-                    VC.listModel = weakself.listModel;
-                    VC.address = stringValue;
-                    [weakself.navigationController pushViewController:VC animated:NO];
-                } else {
-                    NSDictionary * scanDic = [JsonTool dictionaryOrArrayWithJSONSString:[NSString dencode:stringValue]];
-                    if (scanDic) {
-                        [self showAlert];
-                    } else {
-                        [MBProgressHUD showTipMessageInWindow:Localized(@"ScanFailure")];
-                    }
-                }
-            }];
-        }];
-    }];
-    [scanner setTitleColor:[UIColor whiteColor] tintColor:MAIN_COLOR];
-    [self showDetailViewController:scanner sender:nil];
-    */
 }
 - (void)showAlert
 {
@@ -337,8 +282,6 @@
 #pragma mark - transferAccountsAction
 - (void)transferAccountsAction:(UIButton *)button
 {
-//    TransferAccountsViewController * VC = [[TransferAccountsViewController alloc] init];
-//    VC.listModel = self.listModel;
     TransactionViewController * VC = [[TransactionViewController alloc] init];
     VC.transferType = TransferTypeAssets;
     VC.listModel = self.listModel;
@@ -375,11 +318,7 @@
 
 - (CGFloat)tableView:(UITableView *)tableView heightForFooterInSection:(NSInteger)section
 {
-//    if (section == self.listArray.count - 1) {
-//        return ContentSizeBottom + Margin_30;
-//    } else {
-        return CGFLOAT_MIN;
-//    }
+    return CGFLOAT_MIN;
 }
 - (NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section
 {

@@ -115,7 +115,6 @@
 - (UIView *)headerView
 {
     if (!_headerView) {
-//         CGFloat headerH = (DEVICE_WIDTH - Margin_20) * 375 / 700;
         _headerView = [[UIView alloc] initWithFrame:CGRectMake(0, 0, DEVICE_WIDTH, ScreenScale(150))];
         _cycleScrollView = [SDCycleScrollView cycleScrollViewWithFrame:_headerView.bounds delegate:self placeholderImage:[UIImage imageNamed:@"banner_placehoder"]];
         _cycleScrollView.autoScrollTimeInterval = Auto_Scroll_TimeInterval;
@@ -132,7 +131,6 @@
 {
     AdsModel * adsModel = self.bannerArray[index];
     NSString * url = adsModel.url;
-//    NSString * url = [self.bannerArray valueForKeyPath:@"url"][index];
     if (NotNULLString(url)) {
         WKWebViewController * VC = [[WKWebViewController alloc] init];
         [VC loadWebURLSring: url];

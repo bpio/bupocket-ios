@@ -28,7 +28,8 @@ static NSString * _webServerDomain;
 static NSString * _bumoNodeUrl;
 static HTTPManager * _shareManager = nil;
 
-static int64_t const gasPrice = 1000;
+//static int64_t const gasPrice = 1000;
+static int64_t const gasPrice = 1002;
 
 + (instancetype)shareManager
 {
@@ -95,6 +96,17 @@ static int64_t const gasPrice = 1000;
         [defaults synchronize];
     }
      */
+}
+- (NSString *)getCurrentNetwork
+{
+    NSUserDefaults * defaults = [NSUserDefaults standardUserDefaults];
+    if ([defaults boolForKey:If_Custom_Network] == YES) {
+        return [defaults objectForKey:Server_Custom];
+    } else if ([defaults boolForKey:If_Switch_TestNetwork] == YES) {
+        return WEB_SERVER_DOMAIN_TEST;
+    } else {
+        return WEB_SERVER_DOMAIN;
+    }
 }
 - (id)copyWithZone:(NSZone *)zone
 {
@@ -282,14 +294,13 @@ static int64_t const gasPrice = 1000;
     }];
 }
 // Transaction detail
-- (void)getOrderDetailsDataWithAddress:(NSString *)address
-                                 optNo:(NSInteger)optNo
-                               success:(void (^)(id responseObject))success
-                               failure:(void (^)(NSError *error))failure
+- (void)getOrderDetailsDataWithOptNo:(NSInteger)optNo
+                             success:(void (^)(id responseObject))success
+                             failure:(void (^)(NSError *error))failure
 {
     NSString * url = SERVER_COMBINE_API(_webServerDomain, Order_Details);
     NSDictionary * parameters = @{
-                                  @"address" : address,
+                                  @"address" : CurrentWalletAddress,
                                   @"optNo": @(optNo)
                                   };
     [[HttpTool shareTool] POST:url parameters:parameters success:^(id responseObject) {

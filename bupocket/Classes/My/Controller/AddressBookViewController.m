@@ -103,6 +103,9 @@ static NSString * const AddressBookCellID = @"AddressBookCellID";
         [self.tableView.mj_header endRefreshing];
         [self.tableView.mj_footer endRefreshing];
         self.noNetWork.hidden = (self.listArray.count > 0);
+        if (self.listArray.count > 0) {
+            [MBProgressHUD showTipMessageInWindow:Localized(@"NoNetWork")];
+        }
     }];
 }
 - (void)getCacheData

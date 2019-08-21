@@ -103,7 +103,6 @@
     if (indexPath.row == self.listArray.count - 1) {
         cell.detailTitle.numberOfLines = 0;
         cell.detailTitle.textAlignment = NSTextAlignmentRight;
-        cell.detailTitle.copyable = YES;
         [cell.listImage setImage:[UIImage imageNamed:@"explain_info"] forState:UIControlStateNormal];
     }
     return cell;
