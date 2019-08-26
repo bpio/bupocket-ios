@@ -13,6 +13,7 @@
 #import "VersionModel.h"
 #import <IQKeyboardManager/IQKeyboardManager.h>
 #import <WXApi.h>
+#import "WXApiManager.h"
 #import <TencentOpenAPI/TencentOAuth.h>
 #import <UMCommon/UMCommon.h>
 
@@ -149,7 +150,7 @@
 {
     NSString * str = [url absoluteString];
     if ([str hasPrefix:Wechat_APP_ID]) {
-        return [WXApi handleOpenURL:url delegate:self];
+        return [WXApi handleOpenURL:url delegate:[WXApiManager sharedManager]];
     } else if ([str containsString:Tencent_App_ID]) {
         return [TencentOAuth HandleOpenURL:url];
     }
@@ -158,7 +159,7 @@
 - (BOOL)application:(UIApplication *)application handleOpenURL:(NSURL *)url{
     NSString * str = [url absoluteString];
     if ([str hasPrefix:Wechat_APP_ID]) {
-        return [WXApi handleOpenURL:url delegate:self];
+        return [WXApi handleOpenURL:url delegate:[WXApiManager sharedManager]];
     } else if ([str containsString:Tencent_App_ID]) {
         return [TencentOAuth HandleOpenURL:url];
     }

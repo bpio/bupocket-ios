@@ -27,6 +27,8 @@ NS_ASSUME_NONNULL_BEGIN
 
 + (instancetype)shareDataBase;
 
+- (void)clearCache;
+
 - (void)saveDataWithArray:(NSArray *)array cacheType:(CacheDataType)cacheType;
 - (NSArray *)getCachedDataWithCacheType:(CacheDataType)cacheType;
 - (void)deleteCachedDataWithCacheType:(CacheDataType)cacheType;

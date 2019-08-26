@@ -12,6 +12,7 @@
 #import "ClearCacheTool.h"
 #import "YBPopupMenu.h"
 #import "ListTableViewCell.h"
+#import "Database.h"
 
 @interface MyIdentityViewController ()<UITableViewDelegate, UITableViewDataSource>
 
@@ -143,6 +144,7 @@
             [ClearCacheTool cleanUserDefaults];
             [[AccountTool shareTool] clearCache];
             [[WalletTool shareTool] clearCache];
+            [[DataBase shareDataBase] clearCache];
             //            [[LanguageManager shareInstance] setDefaultLocale];
             [[HTTPManager shareManager] initNetWork];
             // Minimum Asset Limitation

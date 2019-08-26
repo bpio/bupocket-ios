@@ -22,8 +22,11 @@ NS_ASSUME_NONNULL_BEGIN
 @property (nonatomic, strong) UIImageView * listImage;
 @property (nonatomic, strong) UILabel * name;
 @property (nonatomic, strong) UILabel * nodeType;
+@property (nonatomic, strong) UILabel * slogan;
 @property (nonatomic, strong) UILabel * votesObtained;
 @property (nonatomic, strong) UILabel * numberOfVotes;
+@property (nonatomic, strong) UIView * bottomBg;
+
 @property (nonatomic, strong) UIView * moreOperations;
 
 @property (nonatomic, copy) void (^invitationVoteClick)(void);

@@ -8,6 +8,7 @@
 
 #import "NodePlanViewController.h"
 #import "NodePlanViewCell.h"
+#import "NodeDetailViewController.h"
 #import "YBPopupMenu.h"
 #import "VotingRecordsViewController.h"
 #import "BottomConfirmAlertView.h"
@@ -92,12 +93,14 @@ static NSString * const NodePlanCellID = @"NodePlanCellID";
 
 - (void)getData
 {
-    [self getCacheData];
+    if (self.listArray.count == 0) {
+        [self getCacheData];
+    }
     [[HTTPManager shareManager] getNodeListDataWithIdentityType:@"" nodeName:@"" capitalAddress:@""  success:^(id responseObject) {
         NSInteger code = [[responseObject objectForKey:@"errCode"] integerValue];
         if (code == Success_Code) {
             NSArray * array = responseObject[@"data"][@"nodeList"];
-            self.listArray = [NodePlanModel mj_objectArrayWithKeyValuesArray:array];
+            self.listArray = [NSMutableArray arrayWithArray:[NodePlanModel mj_objectArrayWithKeyValuesArray:array]];
             self.nodeListArray = self.listArray;
             self.contractAddress = responseObject[@"data"][@"contractAddress"];
             self.accountTag = responseObject[@"data"][@"accountTag"];
@@ -317,7 +320,8 @@ static NSString * const NodePlanCellID = @"NodePlanCellID";
 }
 - (CGFloat)tableView:(UITableView *)tableView heightForRowAtIndexPath:(NSIndexPath *)indexPath
 {
-    return ScreenScale(160);
+//    return ScreenScale(160);
+    return ScreenScale(140);
 }
 - (UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath
 {
@@ -473,6 +477,20 @@ static NSString * const NodePlanCellID = @"NodePlanCellID";
 - (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath
 {
     [tableView deselectRowAtIndexPath:indexPath animated:YES];
+    NodePlanModel * nodePlanModel = self.listArray[indexPath.row];
+    if ([nodePlanModel.status integerValue] == NodeStatusSuccess) {
+        NodeDetailViewController * VC = [[NodeDetailViewController alloc] init];
+        VC.nodeID = nodePlanModel.nodeId;
+        [self.navigationController pushViewController:VC animated:YES];
+    } else {
+        NSString * status;
+        if ([nodePlanModel.status integerValue] == NodeStatusExit) {
+            status = Localized(@"NodeStatusExiting");
+        } else if ([nodePlanModel.status integerValue] == NodeStatusQuit) {
+            status = Localized(@"NodeStatusExited");
+        }
+        [Encapsulation showAlertControllerWithMessage:status handler:nil];
+    }
 }
 
 

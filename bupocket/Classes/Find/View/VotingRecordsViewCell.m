@@ -126,7 +126,7 @@ static NSString * const NodeRecordsCellID = @"NodeRecordsCellID";
         _nodeType.font = FONT(11);
         _nodeType.textAlignment = NSTextAlignmentCenter;
         _nodeType.textColor = COLOR(@"B2B2B2");
-        _nodeType.backgroundColor = COLOR(@"F2F2F2");
+        _nodeType.backgroundColor = TYPEBG_COLOR;
         _nodeType.layer.masksToBounds = YES;
         _nodeType.layer.cornerRadius = TAG_CORNER;
     }

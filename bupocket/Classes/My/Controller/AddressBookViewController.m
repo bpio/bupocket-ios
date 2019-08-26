@@ -74,7 +74,9 @@ static NSString * const AddressBookCellID = @"AddressBookCellID";
 }
 - (void)getDataWithPageindex:(NSInteger)pageindex
 {
-    [self getCacheData];
+    if (self.listArray.count == 0) {
+        [self getCacheData];        
+    }
     [[HTTPManager shareManager] getAddressBookListWithIdentityAddress:[[AccountTool shareTool] account].identityAddress pageIndex:pageindex success:^(id responseObject) {
         NSInteger code = [[responseObject objectForKey:@"errCode"] integerValue];
         if (code == Success_Code) {

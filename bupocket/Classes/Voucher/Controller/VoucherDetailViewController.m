@@ -83,7 +83,9 @@ static NSString * const VoucherDetailCellID = @"VoucherDetailCellID";
 //}
 - (void)getData
 {
-    [self getCacheData];
+    if ([self.dataDic count] == 0) {
+        [self getCacheData];
+    }
     [[HTTPManager shareManager] getVoucherDetailDataWithVoucherId:self.voucherModel.voucherId trancheId:self.voucherModel.trancheId spuId:self.voucherModel.spuId contractAddress:self.voucherModel.contractAddress success:^(id responseObject) {
         NSInteger code = [[responseObject objectForKey:@"errCode"] integerValue];
         if (code == Success_Code) {

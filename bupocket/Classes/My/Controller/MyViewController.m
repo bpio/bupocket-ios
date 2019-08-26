@@ -22,13 +22,16 @@
 #import "AboutUsViewController.h"
 
 #import "ChangePasswordViewController.h"
+#import <WXApi.h>
+#import "WXApiManager.h"
 
-@interface MyViewController ()<UITableViewDelegate, UITableViewDataSource>
+@interface MyViewController ()<UITableViewDelegate, UITableViewDataSource, WXApiManagerDelegate>
 
 @property (nonatomic, strong) UITableView * tableView;
 @property (nonatomic, strong) UIButton * networkPrompt;
 @property (nonatomic, strong) NSMutableArray * listArray;
-
+@property (nonatomic, strong) UIImageView * IDIcon;
+@property (nonatomic, strong) UIButton * bindingBtn;
 
 @end
 
@@ -45,16 +48,18 @@
 - (void)viewDidLoad {
     [super viewDidLoad];
     [self setupView];
+    [self getWechatBindWithURL:Binding_Wechat_Status wxCode:@""];
     // Do any additional setup after loading the view.
 }
 - (void)viewWillAppear:(BOOL)animated {
     [super viewWillAppear:animated];
-    self.listArray = [NSMutableArray arrayWithArray:@[@[@""], @[Localized(@"MoneyOfAccount"), Localized(@"DisplayLanguage"), Localized(@"NodeSettings")], @[Localized(@"UserProtocol"), Localized(@"Feedback"), Localized(@"AboutUs")]]];
+    [self.tableView.mj_header beginRefreshing];
+    self.listArray = [NSMutableArray arrayWithArray:@[@[@""], @[Localized(@"MoneyOfAccount"), Localized(@"DisplayLanguage"), Localized(@"NodeSettings"), Localized(@"BindingWechat")], @[Localized(@"UserProtocol"), Localized(@"Feedback"), Localized(@"AboutUs")]]];
     NSUserDefaults * defaults = [NSUserDefaults standardUserDefaults];
     if ([defaults boolForKey:If_Custom_Network] == YES) {
         self.networkPrompt = [UIButton createNavButtonWithTitle:Localized(@"CustomEnvironment") Target:nil Selector:nil];
         self.navigationItem.leftBarButtonItem = [[UIBarButtonItem alloc] initWithCustomView:self.networkPrompt];
-        self.listArray = [NSMutableArray arrayWithArray:@[@[@""], @[Localized(@"MoneyOfAccount"), Localized(@"DisplayLanguage")], @[Localized(@"UserProtocol"), Localized(@"Feedback"), Localized(@"AboutUs")]]];
+        self.listArray = [NSMutableArray arrayWithArray:@[@[@""], @[Localized(@"MoneyOfAccount"), Localized(@"DisplayLanguage"), Localized(@"BindingWechat")], @[Localized(@"UserProtocol"), Localized(@"Feedback"), Localized(@"AboutUs")]]];
     } else if ([defaults boolForKey:If_Switch_TestNetwork]) {
         self.networkPrompt = [UIButton createNavButtonWithTitle:Localized(@"TestNetworkPrompt") Target:nil Selector:nil];
         self.navigationItem.leftBarButtonItem = [[UIBarButtonItem alloc] initWithCustomView:self.networkPrompt];
@@ -62,6 +67,39 @@
         self.navigationItem.leftBarButtonItem = nil;
     }
     [self.tableView reloadData];
+}
+- (void)viewWillDisappear:(BOOL)animated {
+    [super viewWillDisappear:animated];
+    [self.tableView.mj_header endRefreshing];
+}
+// Wechat Bind
+- (void)getWechatBindWithURL:(NSString *)URL wxCode:(NSString *)wxCode
+{
+    NSUserDefaults * defaults = [NSUserDefaults standardUserDefaults];
+    if ([URL isEqualToString:Binding_Wechat_Status] && [defaults objectForKey:If_Wechat_Binded]) return;
+    [[HTTPManager shareManager] getBindingWechatDataWithURL:URL wxCode:wxCode success:^(id responseObject) {
+        NSInteger code = [[responseObject objectForKey:@"errCode"] integerValue];
+        if (code == Success_Code) {
+            NSDictionary * dataDic = [responseObject objectForKey:@"data"];
+            if ([URL isEqualToString:Binding_Wechat_Status]) {
+                // 已绑定 头像返回
+                self.bindingBtn.hidden = NO;
+                NSString * isBind = [NSString stringWithFormat:@"%@", dataDic[@"isBindWx"]];
+                DLog(@"是否绑定：%@", isBind);
+                [defaults setObject:isBind forKey:If_Wechat_Binded];
+                self.bindingBtn.selected = [dataDic[@"isBindWx"] integerValue];
+            } else if ([URL isEqualToString:Binding_Wechat]) {
+                self.bindingBtn.selected = YES;
+                [defaults setObject:@"1" forKey:If_Wechat_Binded];
+                [self.IDIcon sd_setImageWithURL:[NSURL URLWithString:dataDic[@"wxHeadImgUrl"]] placeholderImage:self.IDIcon.image];
+            }
+        } else {
+            [MBProgressHUD showTipMessageInWindow:[ErrorTypeTool getDescriptionWithNodeErrorCode:code]];
+        }
+//        [self.tableView.mj_header endRefreshing];
+    } failure:^(NSError *error) {
+//            [self.tableView.mj_header endRefreshing];
+    }];
 }
 - (void)setupView
 {
@@ -155,11 +193,30 @@
         cell.selectionStyle = UITableViewCellSelectionStyleNone;
         cell.walletName.text = [[AccountTool shareTool] account].identityName;
         cell.walletAddress.text = [NSString stringEllipsisWithStr:[[AccountTool shareTool] account].identityAddress subIndex:SubIndex_Address];
+        self.IDIcon = cell.walletImage;
         return cell;
     } else {
         ListTableViewCell * cell = [ListTableViewCell cellWithTableView:tableView cellType:CellTypeDetail];
-        [cell.listImage setImage:[UIImage imageNamed:[NSString stringWithFormat:@"my_list_%zd_%zd", indexPath.section, indexPath.row]] forState:UIControlStateNormal];
         cell.title.text = self.listArray[indexPath.section][indexPath.row];
+        NSString * imageName = [NSString stringWithFormat:@"my_list_%zd_%zd", indexPath.section, indexPath.row];
+        if ([cell.title.text isEqualToString:Localized(@"BindingWechat")]) {
+            imageName = @"my_list_1_3";
+            [cell.detail setImage:nil forState:UIControlStateNormal];
+            [cell.detail setTitle:Localized(@"ImmediateBinding") forState:UIControlStateNormal];
+            [cell.detail setTitleColor:MAIN_COLOR forState:UIControlStateNormal];
+            [cell.detail setTitle:Localized(@"Binded") forState:UIControlStateSelected];
+            [cell.detail setTitleColor:COLOR_9 forState:UIControlStateSelected];
+            self.bindingBtn = cell.detail;
+            NSUserDefaults * defaults = [NSUserDefaults standardUserDefaults];
+            NSString * isBind = [defaults objectForKey:If_Wechat_Binded];
+            if (isBind) {
+                self.bindingBtn.selected = [isBind integerValue];
+                self.bindingBtn.hidden = NO;
+            } else {
+                self.bindingBtn.hidden = YES;
+            }
+        }
+        [cell.listImage setImage:[UIImage imageNamed:imageName] forState:UIControlStateNormal];
         cell.selectionStyle = UITableViewCellSelectionStyleNone;
         if (indexPath.section == 1) {
             if (indexPath.row == 0) {
@@ -181,6 +238,7 @@
 - (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath
 {
     [tableView deselectRowAtIndexPath:indexPath animated:YES];
+    NSString * title = self.listArray[indexPath.section][indexPath.row];
     if (indexPath.section == 0) {
         MyIdentityViewController * VC = [[MyIdentityViewController alloc] init];
         [self.navigationController pushViewController:VC animated:YES];
@@ -191,9 +249,12 @@
         } else if (indexPath.row == 1) {
             MultilingualViewController * VC = [[MultilingualViewController alloc] init];
             [self.navigationController pushViewController:VC animated:YES];
-        } else if (indexPath.row == 2) {
+        }
+        if ([title isEqualToString:Localized(@"NodeSettings")]) {
             NodeSettingsViewController * VC = [[NodeSettingsViewController alloc] init];
             [self.navigationController pushViewController:VC animated:YES];
+        } else if ([title isEqualToString:Localized(@"BindingWechat")]) {
+            [self bindingWechat];
         }
     } else if (indexPath.section == 2) {
         if (indexPath.row == 0) {
@@ -209,7 +270,55 @@
         }
     }
 }
-
+- (void)bindingWechat
+{
+    if (self.bindingBtn.selected == YES) return;
+    // 绑定微信
+    SendAuthReq * req = [[SendAuthReq alloc] init];
+    req.openID = Wechat_APP_ID;
+    req.state = Wechat_Bind_State;
+    req.scope = @"snsapi_userinfo";
+    WXApiManager * manger = [WXApiManager sharedManager];
+    manger.delegate = self;
+    [WXApi sendAuthReq:req
+        viewController:self
+              delegate:manger];
+}
+- (void)wxSendAuthResponse:(SendAuthResp *)resp {
+    if (resp.errCode == 0) {
+        //获取授权成功
+        [self getWechatBindWithURL:Binding_Wechat wxCode:resp.code];
+//        [self getWeChatTokenThenGetUserInfoWithCode:resp.code];
+    } else if (resp.errCode == -4) {
+        //用户拒绝授权
+    } else if (resp.errCode == -2) {
+        //用户取消授权
+    }
+}
+/*
+// 获取用户微信token
+- (void)getWeChatTokenThenGetUserInfoWithCode:(NSString *)code {
+    NSString *url =[NSString stringWithFormat:@"https://api.weixin.qq.com/sns/oauth2/access_token?appid=%@&secret=%@&code=%@&grant_type=authorization_code",Wechat_APP_ID ,@"APPsecret",code];
+    //
+    [WLHttpTool post:url params:nil success:^(id responseObj) {
+        //
+        [self getWeChatUserInfoWithToken:responseObj[@"access_token"] andOpenID:responseObj[@"openid"]];
+    } failure:^(NSError *error) {
+        
+    }];
+}
+// 获取微信用户信息
+- (void)getWeChatUserInfoWithToken:(NSString *)token andOpenID:(NSString *)openid {
+    //
+    NSString *url =[NSString stringWithFormat:@"https://api.weixin.qq.com/sns/userinfo?access_token=%@&openid=%@",token,openid];
+    //
+    [WLHttpTool post:url params:nil success:^(id responseObj) {
+        NSLog(@"responseObj == %@",responseObj);
+    } failure:^(NSError *error) {
+        
+    }];
+}
+ */
 /*
 #pragma mark - Navigation
 

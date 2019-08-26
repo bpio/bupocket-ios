@@ -82,6 +82,9 @@
 		83FB443921904AA400D68569 /* HMScanerCardViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 83FB442F21904AA300D68569 /* HMScanerCardViewController.m */; };
 		83FB443A21904AA400D68569 /* HMScannerController.m in Sources */ = {isa = PBXBuildFile; fileRef = 83FB443121904AA300D68569 /* HMScannerController.m */; };
 		83FB4443219131EC00D68569 /* UINavigationController+Extension.m in Sources */ = {isa = PBXBuildFile; fileRef = 83FB4442219131EC00D68569 /* UINavigationController+Extension.m */; };
+		95031164230F8F21000AAC99 /* DataBase.m in Sources */ = {isa = PBXBuildFile; fileRef = 95031162230F8F21000AAC99 /* DataBase.m */; };
+		9503116723138818000AAC99 /* NodeDetailViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 9503116623138818000AAC99 /* NodeDetailViewController.m */; };
+		9503116A2313D37F000AAC99 /* StatusViewCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 950311692313D37F000AAC99 /* StatusViewCell.m */; };
 		950E4145219E6ADD002C7900 /* AssetCurrencyModel.m in Sources */ = {isa = PBXBuildFile; fileRef = 950E4144219E6ADD002C7900 /* AssetCurrencyModel.m */; };
 		950EF2A3219D801300F5121A /* MonetaryUnitViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 950EF2A2219D801300F5121A /* MonetaryUnitViewController.m */; };
 		9510A3CC219A91D4007A49A4 /* ErrorTypeTool.m in Sources */ = {isa = PBXBuildFile; fileRef = 9510A3CB219A91D4007A49A4 /* ErrorTypeTool.m */; };
@@ -156,7 +159,7 @@
 		958127EF219ABD9D0081A02E /* VersionUpdateAlertView.m in Sources */ = {isa = PBXBuildFile; fileRef = 958127EE219ABD9D0081A02E /* VersionUpdateAlertView.m */; };
 		958127F2219AC82A0081A02E /* VersionModel.m in Sources */ = {isa = PBXBuildFile; fileRef = 958127F1219AC82A0081A02E /* VersionModel.m */; };
 		958AA69821A2A89600BEA50C /* CustomRefreshFooter.m in Sources */ = {isa = PBXBuildFile; fileRef = 958AA69721A2A89600BEA50C /* CustomRefreshFooter.m */; };
-		9593C3542302B03A0027A479 /* DataBase.m in Sources */ = {isa = PBXBuildFile; fileRef = 9593C3532302B03A0027A479 /* DataBase.m */; };
+		9593C35B230E91C80027A479 /* WXApiManager.m in Sources */ = {isa = PBXBuildFile; fileRef = 9593C35A230E91C80027A479 /* WXApiManager.m */; };
 		959575C121FFF00F0089479C /* AddressBookViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 959575C021FFF00F0089479C /* AddressBookViewController.m */; };
 		959575C421FFF6EB0089479C /* AddressBookListViewCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 959575C321FFF6EB0089479C /* AddressBookListViewCell.m */; };
 		959575C821FFF8010089479C /* AddressBookModel.m in Sources */ = {isa = PBXBuildFile; fileRef = 959575C721FFF8010089479C /* AddressBookModel.m */; };
@@ -382,6 +385,12 @@
 		83FB4441219131EC00D68569 /* UINavigationController+Extension.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = "UINavigationController+Extension.h"; sourceTree = "<group>"; };
 		83FB4442219131EC00D68569 /* UINavigationController+Extension.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = "UINavigationController+Extension.m"; sourceTree = "<group>"; };
 		8BAFA7A3EC4992591E7450DA /* Pods-bupocket.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-bupocket.release.xcconfig"; path = "Pods/Target Support Files/Pods-bupocket/Pods-bupocket.release.xcconfig"; sourceTree = "<group>"; };
+		95031162230F8F21000AAC99 /* DataBase.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = DataBase.m; sourceTree = "<group>"; };
+		95031163230F8F21000AAC99 /* DataBase.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = DataBase.h; sourceTree = "<group>"; };
+		9503116523138818000AAC99 /* NodeDetailViewController.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = NodeDetailViewController.h; sourceTree = "<group>"; };
+		9503116623138818000AAC99 /* NodeDetailViewController.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = NodeDetailViewController.m; sourceTree = "<group>"; };
+		950311682313D37F000AAC99 /* StatusViewCell.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = StatusViewCell.h; sourceTree = "<group>"; };
+		950311692313D37F000AAC99 /* StatusViewCell.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = StatusViewCell.m; sourceTree = "<group>"; };
 		950E4143219E6ADD002C7900 /* AssetCurrencyModel.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = AssetCurrencyModel.h; sourceTree = "<group>"; };
 		950E4144219E6ADD002C7900 /* AssetCurrencyModel.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = AssetCurrencyModel.m; sourceTree = "<group>"; };
 		950EF2A1219D801300F5121A /* MonetaryUnitViewController.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = MonetaryUnitViewController.h; sourceTree = "<group>"; };
@@ -532,8 +541,8 @@
 		958127F1219AC82A0081A02E /* VersionModel.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = VersionModel.m; sourceTree = "<group>"; };
 		958AA69621A2A89600BEA50C /* CustomRefreshFooter.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = CustomRefreshFooter.h; sourceTree = "<group>"; };
 		958AA69721A2A89600BEA50C /* CustomRefreshFooter.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = CustomRefreshFooter.m; sourceTree = "<group>"; };
-		9593C3522302B03A0027A479 /* DataBase.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = DataBase.h; sourceTree = "<group>"; };
-		9593C3532302B03A0027A479 /* DataBase.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = DataBase.m; sourceTree = "<group>"; };
+		9593C359230E91C80027A479 /* WXApiManager.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = WXApiManager.h; sourceTree = "<group>"; };
+		9593C35A230E91C80027A479 /* WXApiManager.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = WXApiManager.m; sourceTree = "<group>"; };
 		959575BF21FFF00F0089479C /* AddressBookViewController.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = AddressBookViewController.h; sourceTree = "<group>"; };
 		959575C021FFF00F0089479C /* AddressBookViewController.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = AddressBookViewController.m; sourceTree = "<group>"; };
 		959575C221FFF6EB0089479C /* AddressBookListViewCell.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = AddressBookListViewCell.h; sourceTree = "<group>"; };
@@ -647,6 +656,7 @@
 		833799292177091500C222A5 /* Tool */ = {
 			isa = PBXGroup;
 			children = (
+				95031161230F8F21000AAC99 /* DataBase */,
 				95179FD222F693C10094E750 /* UDID */,
 				95179FB222F525130094E750 /* CFCycleScrollView */,
 				95B066B92282AA9D0005731A /* Wechat */,
@@ -694,8 +704,6 @@
 			children = (
 				83379AC1217F3F3000C222A5 /* BaseModel.h */,
 				83379AC2217F3F3000C222A5 /* BaseModel.m */,
-				9593C3522302B03A0027A479 /* DataBase.h */,
-				9593C3532302B03A0027A479 /* DataBase.m */,
 			);
 			path = Model;
 			sourceTree = "<group>";
@@ -1142,6 +1150,15 @@
 			path = QRCode;
 			sourceTree = "<group>";
 		};
+		95031161230F8F21000AAC99 /* DataBase */ = {
+			isa = PBXGroup;
+			children = (
+				95031163230F8F21000AAC99 /* DataBase.h */,
+				95031162230F8F21000AAC99 /* DataBase.m */,
+			);
+			path = DataBase;
+			sourceTree = "<group>";
+		};
 		95162FD022C754770024FD22 /* Voucher */ = {
 			isa = PBXGroup;
 			children = (
@@ -1232,6 +1249,8 @@
 				95266CAC226F062E002CD915 /* FindViewController.m */,
 				95266CA8226F062E002CD915 /* NodePlanViewController.h */,
 				95266CA1226F062E002CD915 /* NodePlanViewController.m */,
+				9503116523138818000AAC99 /* NodeDetailViewController.h */,
+				9503116623138818000AAC99 /* NodeDetailViewController.m */,
 				95266CA2226F062E002CD915 /* VotingRecordsViewController.h */,
 				95266CAA226F062E002CD915 /* VotingRecordsViewController.m */,
 				95266CAE226F062E002CD915 /* NodeSharingViewController.h */,
@@ -1284,6 +1303,8 @@
 				95266CBD226F062E002CD915 /* NodeTransferSuccessViewCell.m */,
 				95266CE222703868002CD915 /* CooperateDetailViewCell.h */,
 				95266CE322703868002CD915 /* CooperateDetailViewCell.m */,
+				950311682313D37F000AAC99 /* StatusViewCell.h */,
+				950311692313D37F000AAC99 /* StatusViewCell.m */,
 			);
 			path = View;
 			sourceTree = "<group>";
@@ -1389,6 +1410,8 @@
 			children = (
 				95B066BA2282AABD0005731A /* WechatTool.h */,
 				95B066BB2282AABD0005731A /* WechatTool.m */,
+				9593C359230E91C80027A479 /* WXApiManager.h */,
+				9593C35A230E91C80027A479 /* WXApiManager.m */,
 			);
 			path = Wechat;
 			sourceTree = "<group>";
@@ -1718,6 +1741,7 @@
 				9549EC70219D075F00307255 /* ClearCacheTool.m in Sources */,
 				952ADD0D21A65B4B00BEE51B /* SocketIOHandler.m in Sources */,
 				95266CD7226F062E002CD915 /* NodePlanModel.m in Sources */,
+				9503116A2313D37F000AAC99 /* StatusViewCell.m in Sources */,
 				83B594B12175E6FA009F91BA /* PlaceholderTextView.m in Sources */,
 				8395AF312189496E0082EA30 /* DistributionModel.m in Sources */,
 				83379AA9217F006600C222A5 /* HTTPManager.m in Sources */,
@@ -1789,6 +1813,7 @@
 				95179FDE22F6A2350094E750 /* DeviceInfo.m in Sources */,
 				958127F2219AC82A0081A02E /* VersionModel.m in Sources */,
 				838DC7682186AFFB002FF276 /* DistributionResultsViewController.m in Sources */,
+				9503116723138818000AAC99 /* NodeDetailViewController.m in Sources */,
 				95266CCE226F062E002CD915 /* CooperateViewController.m in Sources */,
 				83379A86217D9C8A00C222A5 /* AssetsDetailViewController.m in Sources */,
 				83379A92217DE12600C222A5 /* TransferResultsViewController.m in Sources */,
@@ -1799,6 +1824,7 @@
 				83D5BCD12182AB8200BF1FF1 /* AccountTool.m in Sources */,
 				8372C872217588D100FF9506 /* IdentityViewController.m in Sources */,
 				95A8A41C219D5FF7008E978E /* YBPopupMenu.m in Sources */,
+				9593C35B230E91C80027A479 /* WXApiManager.m in Sources */,
 				95266CD6226F062E002CD915 /* VotingRecordsModel.m in Sources */,
 				9519ED8722F01AE100A4AAC1 /* DetailModel.m in Sources */,
 				95179FBD22F525130094E750 /* CFCycleScrollView.m in Sources */,
@@ -1851,7 +1877,7 @@
 				959575C421FFF6EB0089479C /* AddressBookListViewCell.m in Sources */,
 				83379A092178509300C222A5 /* WKWebViewController.m in Sources */,
 				9519ED7022E6A67E00A4AAC1 /* ChangePasswordViewController.m in Sources */,
-				9593C3542302B03A0027A479 /* DataBase.m in Sources */,
+				95031164230F8F21000AAC99 /* DataBase.m in Sources */,
 				95179FC822F53EA30094E750 /* OpenRedEnvelopes.m in Sources */,
 				83379A6221797BDD00C222A5 /* ConfirmMnemonicViewController.m in Sources */,
 				95266CD3226F062E002CD915 /* CooperateDetailViewController.m in Sources */,

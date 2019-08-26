@@ -102,6 +102,7 @@
 #define PLACEHOLDER_COLOR COLOR(@"B2B2B2")
 #define COLOR_POPUPMENU COLOR(@"56526D")
 
+#define TYPEBG_COLOR COLOR(@"F2F2F2")
 
 
 // Current Wallet Address

@@ -83,7 +83,9 @@ static NSInteger const TxInfoNormalCount = 6;
 }
 - (void)loadData
 {
-    [self getCacheData];
+    if ([self.dataDic count] == 0) {
+        [self getCacheData];
+    }
     [[HTTPManager shareManager] getOrderDetailsDataWithOptNo:self.listModel.optNo success:^(id responseObject) {
         NSInteger code = [[responseObject objectForKey:@"errCode"] integerValue];
         if (code == Success_Code) {

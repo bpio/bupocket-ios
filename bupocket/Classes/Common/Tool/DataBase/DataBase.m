@@ -17,6 +17,8 @@
 #import "CooperateModel.h"
 #import "VersionModel.h"
 
+#define DataBaseFilePath [[NSSearchPathForDirectoriesInDomains(NSDocumentDirectory, NSUserDomainMask, YES) lastObject] stringByAppendingPathComponent:@"dataBase.sqlite"]
+
 @interface DataBase()<NSCopying,NSMutableCopying>
 
 @end
@@ -70,12 +72,9 @@ static FMDatabase * _db;
 
 - (void)initDataBase {
     // 获得Documents目录路径
-    NSString * documentsPath = [NSSearchPathForDirectoriesInDomains(NSDocumentDirectory, NSUserDomainMask, YES) lastObject];
-    // 文件路径
-    NSString * filePath = [documentsPath stringByAppendingPathComponent:@"dataBase.sqlite"];
-    NSLog(@"数据库路径 %@", filePath);
+    DLog(@"数据库路径 %@", DataBaseFilePath);
     // 实例化FMDataBase对象
-    _db = [FMDatabase databaseWithPath:filePath];
+    _db = [FMDatabase databaseWithPath:DataBaseFilePath];
     [_db open];
     // 初始化数据表
     NSArray * titleArray = @[Assets , TransactionRecord, TransactionDetails, AddressBook, Voucher, VoucherDetail, Find_Banner, Node, Cooperate, VersionLog];
@@ -182,6 +181,7 @@ static FMDatabase * _db;
     if (cacheType == CacheTypeAssets) {
         sql = [NSString stringWithFormat:@"SELECT * FROM t_%@ WHERE network = ? and currency = ? and walletAddress = ?;", dbName];
         resultSet = [_db executeQuery: sql , network, [self getCurrentCurrency], CurrentWalletAddress];
+        DLog(@"当前钱包地址：%@", CurrentWalletAddress);
     } else if (cacheType == CacheTypeTransactionRecord || cacheType == CacheTypeVoucherList) {
         sql = [NSString stringWithFormat:@"SELECT * FROM t_%@ WHERE network = ? and walletAddress = ?;", dbName];
         resultSet = [_db executeQuery: sql, network, CurrentWalletAddress];
@@ -256,7 +256,12 @@ static FMDatabase * _db;
     [_db executeUpdate: sql, detailId];
     [_db close];
 }
-
+- (void)clearCache
+{
+    if ([[NSFileManager defaultManager] isDeletableFileAtPath:DataBaseFilePath]) {
+        [[NSFileManager defaultManager] removeItemAtPath:DataBaseFilePath error:nil];
+    }
+}
 
 /*
  - (void)executeUpdateWithAssetsSql:(NSString *)sql dicData:(NSData *)dicData

@@ -96,9 +96,13 @@
 "MoneyOfAccount" = "Currency";
 "DisplayLanguage" = "Language";
 "NodeSettings" = "Node Setting";
+"BindingWechat" = "绑定微信";
 "UserProtocol" = "User Agreement";
 "Feedback" = "Feedback";
 "AboutUs" = "About Us";
+
+"ImmediateBinding" = "立即绑定";
+"Binded" = "已绑定";
 
 "Setting" = "Setting";
 "AddressBook" = "Address List";
@@ -525,9 +529,19 @@
 "RelevantNodes" = "Filter the nodes that are related to me, such as the node I voted for or the campaign node itself";
 "Search" = "Search";
 "CancellationOfVotes" = "Cancel Votes";
-"VotingRecords" = "Record of Votes";
+//"VotingRecords" = "Record of Votes";
+"OperationalRecords" = "操作记录";
 "InvitationToVote" = "Invite to Vote";
 "IrrevocableVotes" = "No revocable votes";
+// 节点详情
+"NodeDetail" = "节点详情";
+"NodeData" = "节点数据";
+"NodeEquityValue" = "节点权益值";
+"CampaignBond(BU)" = "竞选保证金(BU)";
+"AccumulatedAward(BU)" = "累计获得奖励(BU)";
+"AwardSharingRatioForVotingUsers" = "对投票用户奖励分享比例";
+"StatusUpdate" = "状态更新";
+"I want to vote" = "我要投票";
 // Records of voting
 "Throw" = "Vote";
 "withdraw" = "Cancel";

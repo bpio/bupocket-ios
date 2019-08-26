@@ -170,27 +170,31 @@
             VersionLogViewController * VC = [[VersionLogViewController alloc] init];
             [self.navigationController pushViewController:VC animated:YES];
         } else if (indexPath.row == 1) {
-            BOOL result = [App_Version compare:self.versionModel.verNumber] == NSOrderedAscending;
-            if (result) {
-                NSString * updateContent = nil;
-                if ([CurrentAppLanguage hasPrefix:ZhHans]) {
-                    updateContent = self.versionModel.verContents;
-                } else {
-                    updateContent = self.versionModel.englishVerContents;
-                }
-                VersionUpdateAlertView * alertView = [[VersionUpdateAlertView alloc] initWithUpdateVersionNumber:self.versionModel.verNumber versionSize:self.versionModel.appSize content:updateContent verType:self.versionModel.verType confrimBolck:^{
-                    [[UIApplication sharedApplication] openURL:[NSURL URLWithString:self.versionModel.downloadLink]];
-                } cancelBlock:^{
-                    
-                }];
-                [alertView showInWindowWithMode:CustomAnimationModeDisabled inView:nil bgAlpha:AlertBgAlpha needEffectView:NO];
-            }
+            [self showVersionUpdate];
         }
     } else if ([cell.title.text isEqualToString:Localized(@"SwitchedNetwork")]) {
         [self showCustomEnvironment];
     } else if ([cell.title.text isEqualToString:Localized(@"CustomEnvironment")]) {
         CustomEnvironmentViewController * VC = [[CustomEnvironmentViewController alloc] init];
         [self.navigationController pushViewController:VC animated:YES];
+    }
+}
+- (void)showVersionUpdate
+{
+    BOOL result = [App_Version compare:self.versionModel.verNumber] == NSOrderedAscending;
+    if (result) {
+        NSString * updateContent = nil;
+        if ([CurrentAppLanguage hasPrefix:ZhHans]) {
+            updateContent = self.versionModel.verContents;
+        } else {
+            updateContent = self.versionModel.englishVerContents;
+        }
+        VersionUpdateAlertView * alertView = [[VersionUpdateAlertView alloc] initWithUpdateVersionNumber:self.versionModel.verNumber versionSize:self.versionModel.appSize content:updateContent verType:self.versionModel.verType confrimBolck:^{
+            [[UIApplication sharedApplication] openURL:[NSURL URLWithString:self.versionModel.downloadLink]];
+        } cancelBlock:^{
+            
+        }];
+        [alertView showInWindowWithMode:CustomAnimationModeDisabled inView:nil bgAlpha:AlertBgAlpha needEffectView:NO];
     }
 }
 - (UISwitch *)switchControl

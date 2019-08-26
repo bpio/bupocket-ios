@@ -10,6 +10,7 @@
 #import "HttpTool.h"
 #import "AtpProperty.h"
 #import "DeviceInfo.h"
+#import "DataBase.h"
 
 @interface HTTPManager ()
 
@@ -28,8 +29,8 @@ static NSString * _webServerDomain;
 static NSString * _bumoNodeUrl;
 static HTTPManager * _shareManager = nil;
 
-//static int64_t const gasPrice = 1000;
-static int64_t const gasPrice = 1002;
+static int64_t const gasPrice = 1000;
+//static int64_t const gasPrice = 1002;
 
 + (instancetype)shareManager
 {
@@ -53,6 +54,7 @@ static int64_t const gasPrice = 1002;
 }
 - (void)initNetWork
 {
+//    [[DataBase shareDataBase] clearCache];
     [self setNodeURL];
     NSUserDefaults * defaults = [NSUserDefaults standardUserDefaults];
     if ([defaults boolForKey:If_Custom_Network] == YES) {
@@ -220,6 +222,7 @@ static int64_t const gasPrice = 1002;
                          success:(void (^)(id responseObject))success
                          failure:(void (^)(NSError *error))failure
 {
+//    [MBProgressHUD showActivityMessageInWindow:Localized(@"Loading")];
     NSString * url = SERVER_COMBINE_API(_webServerDomain, Assets_List);
     NSDictionary * parameters = @{@"address": address,
                                   @"currencyType": currencyType,
@@ -383,6 +386,28 @@ static int64_t const gasPrice = 1002;
         {
             failure(error);
 //            [MBProgressHUD showTipMessageInWindow:Localized(@"NoNetWork")];
+        }
+    }];
+}
+#pragma mark - Binding Wechat
+- (void)getBindingWechatDataWithURL:(NSString *)URL
+                             wxCode:(NSString *)wxCode
+                            success:(void (^)(id responseObject))success
+                            failure:(void (^)(NSError *error))failure
+{
+    NSString * url = SERVER_COMBINE_API(_webServerDomain, URL);
+    NSString * body = [NSString stringWithFormat:@"identityAddress=%@&wxCode=%@", [[AccountTool shareTool] account].identityAddress, wxCode];
+    NSDictionary * parameters = [[HTTPManager shareManager] parametersWithHTTPBody:body];
+    [[HttpTool shareTool] POST:url parameters:parameters success:^(id responseObject) {
+        if(success != nil)
+        {
+            success(responseObject);
+        }
+    } failure:^(NSError *error) {
+        if(failure != nil)
+        {
+            failure(error);
+            //            [MBProgressHUD showTipMessageInWindow:Localized(@"NoNetWork")];
         }
     }];
 }

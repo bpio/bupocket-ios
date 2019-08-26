@@ -90,6 +90,11 @@ typedef NS_ENUM(NSInteger, AccountDataType) {
                      bonusCode:(NSString *)bonusCode
                        success:(void (^)(id responseObject))success
                        failure:(void (^)(NSError *error))failure;
+#pragma mark - Binding Wechat
+- (void)getBindingWechatDataWithURL:(NSString *)URL
+                             wxCode:(NSString *)wxCode
+                            success:(void (^)(id responseObject))success
+                            failure:(void (^)(NSError *error))failure;
 // Feedback feedback
 - (void)getFeedbackDataWithContent:(NSString *)content
                            contact:(NSString *)contact

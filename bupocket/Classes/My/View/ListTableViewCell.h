@@ -20,7 +20,7 @@ typedef NS_ENUM(NSInteger, CellType) {
     CellTypeChoice, // 文字，图片
     CellTypeWalletDetail, // 文字，图片/文字，箭头 圆角
     CellTypeWalletDetail1, // title 和 detail 顶部对齐
-    CellTypeID, // 文字，图片 文字 圆角
+    CellTypeID, // 文字，图片 文字
     CellTypeVoucher // 文字 图片 文字 箭头
 };
 

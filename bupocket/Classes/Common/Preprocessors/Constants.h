@@ -105,6 +105,9 @@
 #define Open_Bonus @"activity/bonus/v1/open"
 #define Activity_Detail @"activity/bonus/v1/detail"
 
+// 微信绑定
+#define Binding_Wechat_Status @"wallet/v1/identity/info"
+#define Binding_Wechat @"wx/v1/bind"
 
 #define HDPaths @[@"M/44H/526H/0H/0/0", @"M/44H/526H/1H/0/0"]
 #define Device_ID @"DeviceID"
@@ -209,6 +212,7 @@
 
 #define Wechat_APP_ID @"wxaecf7ac4085fd34a"
 #define XCX_YouPin_Original_ID @"gh_545e659b7dcd"
+#define Wechat_Bind_State @"wechat_sdk_bind"
 
 #define Tencent_App_ID @"101569415"
 #define UM_App_Key @"5cc7a6020cafb223d0000ae9"
@@ -226,5 +230,7 @@
 
 // 活动id
 //#define Activity_ID @"ActivityID"
+
+#define If_Wechat_Binded @"ifWechatBinded"
 
 #endif /* Constants_h */

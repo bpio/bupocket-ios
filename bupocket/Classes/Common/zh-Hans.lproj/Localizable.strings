@@ -91,9 +91,13 @@
 "MoneyOfAccount" = "计价货币";
 "DisplayLanguage" = "显示语言";
 "NodeSettings" = "节点设置";
+"BindingWechat" = "绑定微信";
 "UserProtocol" = "用户协议";
 "Feedback" = "意见反馈";
 "AboutUs" = "关于我们";
+
+"ImmediateBinding" = "立即绑定";
+"Binded" = "已绑定";
 
 "Setting" = "设置";
 "AddressBook" = "地址簿";
@@ -508,9 +512,19 @@
 "RelevantNodes" = "筛选和我相关的节点，例如：我投票的节点/竞选节点自身";
 "Search" = "搜索";
 "CancellationOfVotes" = "撤销投票";
-"VotingRecords" = "投票记录";
+//"VotingRecords" = "投票记录";
+"OperationalRecords" = "操作记录";
 "InvitationToVote" = "邀请投票";
 "IrrevocableVotes" = "暂无可撤销的票数";
+// 节点详情
+"NodeDetail" = "节点详情";
+"NodeData" = "节点数据";
+"NodeEquityValue" = "节点权益值";
+"CampaignBond(BU)" = "竞选保证金(BU)";
+"AccumulatedAward(BU)" = "累计获得奖励(BU)";
+"AwardSharingRatioForVotingUsers" = "对投票用户奖励分享比例";
+"StatusUpdate" = "状态更新";
+"I want to vote" = "我要投票";
 // 投票记录
 "Throw" = "投";
 "withdraw" = "撤";

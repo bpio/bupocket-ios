@@ -12,7 +12,7 @@
 
 static NSString * const NodePlanCellID = @"NodePlanCellID";
 static NSString * const NodeCellID = @"NodeCellID";
-static NSString * const NodeSharingID = @"NodeSharingID";
+static NSString * const NodeDetailID = @"NodeDetailID";
 
 + (instancetype)cellWithTableView:(UITableView *)tableView identifier:(NSString *)identifier
 {
@@ -30,16 +30,20 @@ static NSString * const NodeSharingID = @"NodeSharingID";
         [self.listBg addSubview:self.listImage];
         [self.listBg addSubview:self.name];
         [self.listBg addSubview:self.nodeType];
-        [self.listBg addSubview:self.votesObtained];
-        [self.listBg addSubview:self.numberOfVotes];
+        [self.listBg addSubview:self.slogan];
+        [self.bottomBg addSubview:self.votesObtained];
+        [self.bottomBg addSubview:self.numberOfVotes];
         if ([reuseIdentifier isEqualToString:NodePlanCellID]) {
-            [self.listBg setViewSize:CGSizeMake(DEVICE_WIDTH - Margin_20, ScreenScale(150)) borderWidth:0 borderColor:nil borderRadius:BG_CORNER];
-            [self setupMoreOperations];
+            [self.listBg setViewSize:CGSizeMake(DEVICE_WIDTH - Margin_20, ScreenScale(130)) borderWidth:0 borderColor:nil borderRadius:BG_CORNER];
+            [self.listBg addSubview:self.bottomBg];
+//            [self setupMoreOperations];
         }
+        self.slogan.text = @"一句话竞选口号 我要成为超级节点";
         self.backgroundColor = self.contentView.superview.backgroundColor;
     }
     return self;
 }
+/*
 - (void)setupMoreOperations
 {
     [self.listBg addSubview:self.moreOperations];
@@ -84,24 +88,26 @@ static NSString * const NodeSharingID = @"NodeSharingID";
         }
     }
 }
+ */
 - (void)layoutSubviews
 {
     [super layoutSubviews];
     CGFloat numberW = 0;
     if ([self.reuseIdentifier isEqualToString:NodePlanCellID]) {
-        numberW = (DEVICE_WIDTH - ScreenScale(100)) / 2;
+//        numberW = (DEVICE_WIDTH - ScreenScale(100)) / 2;
+        numberW = (DEVICE_WIDTH - ScreenScale(50)) / 2;
         [self.listBg mas_makeConstraints:^(MASConstraintMaker *make) {
             make.left.equalTo(self.contentView.mas_left).offset(Margin_10);
             make.right.equalTo(self.contentView.mas_right).offset(-Margin_10);
             make.top.equalTo(self.contentView.mas_top).offset(Margin_5);
             make.bottom.equalTo(self.contentView.mas_bottom).offset(-Margin_5);
         }];
-    } else if ([self.reuseIdentifier isEqualToString:NodeCellID] || [self.reuseIdentifier isEqualToString:NodeSharingID]) {
+    } else if ([self.reuseIdentifier isEqualToString:NodeCellID] || [self.reuseIdentifier isEqualToString:NodeDetailID]) {
         numberW = (DEVICE_WIDTH - ScreenScale(80)) / 2;
         [self.listBg mas_makeConstraints:^(MASConstraintMaker *make) {
             make.edges.equalTo(self.contentView);
         }];
-        if ([self.reuseIdentifier isEqualToString:NodeSharingID]) {
+        if ([self.reuseIdentifier isEqualToString:NodeDetailID]) {
             self.name.numberOfLines = 2;
         }
     }
@@ -119,7 +125,7 @@ static NSString * const NodeSharingID = @"NodeSharingID";
     [self.name mas_makeConstraints:^(MASConstraintMaker *make) {
 //        make.top.equalTo(self.listBg.mas_top).offset(Margin_20);
         make.top.equalTo(self.listImage.mas_top);
-        make.left.equalTo(self.listImage.mas_right).offset(Margin_10);
+        make.left.equalTo(self.listImage.mas_right).offset(Margin_15);
     }];
     [self.nodeType mas_makeConstraints:^(MASConstraintMaker *make) {
         make.left.equalTo(self.name.mas_right).offset(Margin_10);
@@ -131,17 +137,24 @@ static NSString * const NodeSharingID = @"NodeSharingID";
         make.right.mas_lessThanOrEqualTo(self.listBg.mas_right).offset(-Margin_10);
     }];
     [self.nodeType setContentCompressionResistancePriority:UILayoutPriorityRequired forAxis:UILayoutConstraintAxisHorizontal];
-    [self.votesObtained mas_makeConstraints:^(MASConstraintMaker *make) {
-        make.left.equalTo(self.name);
-        make.height.mas_equalTo(ScreenScale(16));
+    [self.slogan mas_makeConstraints:^(MASConstraintMaker *make) {
         make.top.equalTo(self.name.mas_bottom).offset(Margin_10);
-        make.width.mas_equalTo(numberW);
+        make.left.equalTo(self.name);
+        make.right.equalTo(self.listBg.mas_right).offset(-Margin_10);
+    }];
+    [self.votesObtained mas_makeConstraints:^(MASConstraintMaker *make) {
+        make.left.top.bottom.equalTo(self.bottomBg);
+//        make.height.mas_equalTo(ScreenScale(16));
+//        make.top.equalTo(self.name.mas_bottom).offset(Margin_10);
+        make.width.mas_lessThanOrEqualTo(numberW);
     }];
     [self.numberOfVotes mas_makeConstraints:^(MASConstraintMaker *make) {
-        make.left.mas_equalTo(ScreenScale(70) + numberW);
-        make.top.width.equalTo(self.votesObtained);
+//        make.left.mas_equalTo(ScreenScale(70) + numberW);
+//        make.top.width.equalTo(self.votesObtained);
+        make.right.top.bottom.equalTo(self.bottomBg);
+        make.width.mas_lessThanOrEqualTo(numberW);
     }];
-    [self.numberOfVotes setContentCompressionResistancePriority:UILayoutPriorityRequired forAxis:UILayoutConstraintAxisHorizontal];
+//    [self.numberOfVotes setContentCompressionResistancePriority:UILayoutPriorityRequired forAxis:UILayoutConstraintAxisHorizontal];
 }
 - (UIView *)listBg
 {
@@ -187,11 +200,20 @@ static NSString * const NodeSharingID = @"NodeSharingID";
         _nodeType.font = FONT(11);
         _nodeType.textAlignment = NSTextAlignmentCenter;
         _nodeType.textColor = COLOR(@"B2B2B2");
-        _nodeType.backgroundColor = COLOR(@"F2F2F2");
+        _nodeType.backgroundColor = TYPEBG_COLOR;
         _nodeType.layer.masksToBounds = YES;
         _nodeType.layer.cornerRadius = TAG_CORNER;
     }
     return _nodeType;
+}
+- (UILabel *)slogan
+{
+    if (!_slogan) {
+        _slogan = [[UILabel alloc] init];
+        _slogan.font = FONT_13;
+        _slogan.textColor = COLOR_9;
+    }
+    return _slogan;
 }
 - (UILabel *)votesObtained
 {
@@ -218,6 +240,14 @@ static NSString * const NodeSharingID = @"NodeSharingID";
         [UIView setViewBorder:_moreOperations color:LINE_COLOR border:LINE_WIDTH type:UIViewBorderLineTypeTop];
     }
     return _moreOperations;
+}
+- (UIView *)bottomBg
+{
+    if (!_bottomBg) {
+        _bottomBg = [[UIView alloc] initWithFrame:CGRectMake(Margin_10, ScreenScale(85), DEVICE_WIDTH - Margin_40, MAIN_HEIGHT)];
+        [UIView setViewBorder:_bottomBg color:LINE_COLOR border:LINE_WIDTH type:UIViewBorderLineTypeTop];
+    }
+    return _bottomBg;
 }
 - (void)invitationVoteAction
 {
@@ -267,7 +297,7 @@ static NSString * const NodeSharingID = @"NodeSharingID";
         myVote = Localized(@"My vote");
     }
     self.numberOfVotes.attributedText = [Encapsulation attrWithString:[NSString stringWithFormat:@"%@ %@", myVote, nodePlanModel.myVoteCount] preFont:FONT(12) preColor:COLOR(@"B2B2B2") index:myVote.length sufFont:FONT(14) sufColor:COLOR_6 lineSpacing:0];
-    if ([self.reuseIdentifier isEqualToString:NodeSharingID]) {
+    if ([self.reuseIdentifier isEqualToString:NodeDetailID]) {
         CGFloat nameW = DEVICE_WIDTH - (ceil([Encapsulation rectWithText:self.nodeType.text font:self.nodeType.font textHeight:ScreenScale(16)].size.width) + 1 + Margin_10) - ScreenScale(80);
         nodePlanModel.cellHeight = ceil([Encapsulation rectWithText:self.name.text font:self.name.font textWidth:nameW].size.height) + 1 + ScreenScale(60);
     } 

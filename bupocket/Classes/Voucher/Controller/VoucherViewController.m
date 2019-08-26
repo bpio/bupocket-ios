@@ -116,7 +116,9 @@ static NSString * const VoucherCellID = @"VoucherCellID";
 }
 - (void)getDataWithPageindex:(NSInteger)pageindex
 {
-    [self getCacheData];
+    if (self.listArray == 0) {
+        [self getCacheData];
+    }
     [[HTTPManager shareManager] getVoucherListDataWithPageIndex:pageindex success:^(id responseObject) {
         NSInteger code = [[responseObject objectForKey:@"errCode"] integerValue];
         if (code == Success_Code) {
@@ -140,7 +142,6 @@ static NSString * const VoucherCellID = @"VoucherCellID";
             [MBProgressHUD showTipMessageInWindow:[ErrorTypeTool getDescriptionWithErrorCode:code]];
         }
         [self reloadUI];
-        
     } failure:^(NSError *error) {
         [self.tableView.mj_header endRefreshing];
         [self.tableView.mj_footer endRefreshing];

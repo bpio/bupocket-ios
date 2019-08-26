@@ -87,6 +87,7 @@
         self.bannerArray = [NSMutableArray array];
         [self.bannerArray addObjectsFromArray:listArray];
         [self reloadUI];
+        [self.tableView.mj_header endRefreshing];
     }
 }
 - (void)reloadUI

@@ -36,7 +36,7 @@ static NSString * const VotingRecordsCellID = @"VotingRecordsCellID";
 
 - (void)viewDidLoad {
     [super viewDidLoad];
-    self.navigationItem.title = Localized(@"VotingRecords");
+    self.navigationItem.title = Localized(@"OperationalRecords");
     [self setupView];
     [self setupRefresh];
     // Do any additional setup after loading the view.
@@ -129,7 +129,7 @@ static NSString * const VotingRecordsCellID = @"VotingRecordsCellID";
 - (UIView *)tableView:(UITableView *)tableView viewForHeaderInSection:(NSInteger)section
 {
     if (self.nodePlanModel && section == 1) {
-        UIButton * title = [UIButton createHeaderButtonWithTitle:Localized(@"VotingRecords")];
+        UIButton * title = [UIButton createHeaderButtonWithTitle:Localized(@"OperationalRecords")];
         title.contentEdgeInsets = UIEdgeInsetsMake(Margin_5, Margin_Main, 0, Margin_Main);
         return title;
     } else {

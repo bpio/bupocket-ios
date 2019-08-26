@@ -109,6 +109,7 @@
     } else {
         [self getActivityData];
     }
+    [self getVersionData];
     // Do any additional setup after loading the view.
 }
 - (void)setupNav
@@ -148,7 +149,9 @@
 }
 - (void)loadData
 {
-    [self getCacheData];
+    if (self.listArray.count == 0) {
+        [self getCacheData];
+    }
     NSString * addAssetsKey;
     NSUserDefaults * defaults = [NSUserDefaults standardUserDefaults];
     if ([defaults boolForKey:If_Custom_Network] == YES) {
@@ -171,13 +174,15 @@
         NSInteger code = [[responseObject objectForKey:@"errCode"] integerValue];
         if (code == Success_Code) {
             NSArray * array = responseObject[@"data"] [@"tokenList"];
-            self.listArray = [AssetsListModel mj_objectArrayWithKeyValuesArray:array];
+            self.listArray = [NSMutableArray arrayWithArray:[AssetsListModel mj_objectArrayWithKeyValuesArray:array]];
+            [self reloadUI];
             [[DataBase shareDataBase] deleteCachedDataWithCacheType:CacheTypeAssets];
             [[DataBase shareDataBase] saveDataWithArray:array cacheType:CacheTypeAssets];
         } else {
             [MBProgressHUD showTipMessageInWindow:[ErrorTypeTool getDescriptionWithErrorCode:code]];
         }
-        [self reloadUI];
+        [self.tableView.mj_header endRefreshing];
+        self.noNetWork.hidden = YES;
     } failure:^(NSError *error) {
         [self.tableView.mj_header endRefreshing];
         if (self.listArray.count == 0) {
@@ -196,6 +201,8 @@
         self.listArray = [NSMutableArray array];
         [self.listArray addObjectsFromArray:listArray];
         [self reloadUI];
+        [self.tableView.mj_header endRefreshing];
+        self.noNetWork.hidden = YES;
     }
 }
 - (void)reloadUI
@@ -216,10 +223,7 @@
         }
     }
     [self setNetworkEnvironment];
-    [self getVersionData];
     [self.tableView reloadData];
-    [self.tableView.mj_header endRefreshing];
-    self.noNetWork.hidden = YES;
 }
 #pragma mark - Switching Network Environment
 - (void)setNetworkEnvironment
