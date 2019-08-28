@@ -542,6 +542,7 @@
 "AwardSharingRatioForVotingUsers" = "对投票用户奖励分享比例";
 "StatusUpdate" = "状态更新";
 "I want to vote" = "我要投票";
+"SharingRatioInfo" = "竞选节点自定义设置对投票用户的奖励比例";
 // Records of voting
 "Throw" = "Vote";
 "withdraw" = "Cancel";

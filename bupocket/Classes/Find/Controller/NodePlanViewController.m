@@ -478,10 +478,14 @@ static NSString * const NodePlanCellID = @"NodePlanCellID";
 {
     [tableView deselectRowAtIndexPath:indexPath animated:YES];
     NodePlanModel * nodePlanModel = self.listArray[indexPath.row];
+    NodeDetailViewController * VC = [[NodeDetailViewController alloc] init];
+    VC.nodePlanModel = nodePlanModel;
+    VC.contractAddress = self.contractAddress;
+    VC.accountTag = self.accountTag;
+    VC.accountTagEn = self.accountTagEn;
+    [self.navigationController pushViewController:VC animated:YES];
+    /*
     if ([nodePlanModel.status integerValue] == NodeStatusSuccess) {
-        NodeDetailViewController * VC = [[NodeDetailViewController alloc] init];
-        VC.nodeID = nodePlanModel.nodeId;
-        [self.navigationController pushViewController:VC animated:YES];
     } else {
         NSString * status;
         if ([nodePlanModel.status integerValue] == NodeStatusExit) {
@@ -491,6 +495,7 @@ static NSString * const NodePlanCellID = @"NodePlanCellID";
         }
         [Encapsulation showAlertControllerWithMessage:status handler:nil];
     }
+     */
 }
 
 

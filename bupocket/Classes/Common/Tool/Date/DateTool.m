@@ -44,6 +44,22 @@ static int timeStampLength = 13;
     [formatter setDateFormat:@"yyyy-MM-dd"];
     return [formatter stringFromDate:date];
 }
++ (NSString *)getDateStrWithTimeStr:(NSString *)str
+{
+    NSTimeInterval interval;
+    if (str.length == timeStampLength - 3) {
+        interval = [str doubleValue];
+    } else if (str.length >= timeStampLength) {
+        interval = [[str substringToIndex:timeStampLength] doubleValue] / 1000.0;
+    } else {
+        return nil;
+    }
+    NSDate * date = [NSDate dateWithTimeIntervalSince1970:interval];
+    NSDateFormatter *formatter = [[NSDateFormatter alloc] init];
+    //    [formatter setDateFormat:@"YYYY.MM.dd HH:mm:ss"];
+    [formatter setDateFormat:@"MM-dd\nHH:mm"];
+    return [formatter stringFromDate:date];
+}
 /*
 + (NSString *)getDateProcessingWithTimeStr:(NSString *)str
 {

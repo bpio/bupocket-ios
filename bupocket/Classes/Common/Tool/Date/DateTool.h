@@ -15,6 +15,7 @@ NS_ASSUME_NONNULL_BEGIN
 // Time stamp - > time
 + (NSString *)getDateStringWithTimeStr:(NSString *)str;
 + (NSString *)getDateStringWithDataStr:(NSString *)str;
++ (NSString *)getDateStrWithTimeStr:(NSString *)str;
 + (NSString *)getDateProcessingWithTimeStr:(NSString *)str;
 // 计算时间间隔
 + (NSString *)getTimeIntervalWithStr:(NSString *)str;

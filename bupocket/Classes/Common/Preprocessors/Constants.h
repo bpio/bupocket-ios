@@ -66,6 +66,10 @@
 #define Node_List @"nodeServer/node/v1/list/app"
 // 邀请投票
 #define Node_Invitation_Vote @"nodeServer/node/v1/detail"
+// 共识节点详情
+#define Node_Validate_Detail @"nodeServer/node/v1/validate/detail"
+// 生态节点详情
+#define Node_Ecology_Detail @"nodeServer/node/v1/ecology/detail"
 // 共建节点列表
 #define Node_Cooperate_List @"nodeServer/node/v1/cooperate/list"
 #define Node_Cooperate_Detail @"nodeServer/node/v1/cooperate/detail"

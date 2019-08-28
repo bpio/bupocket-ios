@@ -14,23 +14,28 @@
 #import <WebKit/WebKit.h>
 #import "WKWebViewController.h"
 #import "YBPopupMenu.h"
+#import "VotingRecordsViewController.h"
+#import "BottomConfirmAlertView.h"
+#import "NodeDataModel.h"
+#import "StatusUpdateModel.h"
 
-@interface NodeDetailViewController ()<UITableViewDelegate, UITableViewDataSource, WKNavigationDelegate, WKUIDelegate>
+@interface NodeDetailViewController ()<UITableViewDelegate, UITableViewDataSource, WKNavigationDelegate, WKUIDelegate, YBPopupMenuDelegate>
 
-@property (nonatomic, strong) NodePlanModel * nodePlanModel;
 @property (nonatomic, strong) UITableView * tableView;
 @property (nonatomic, strong) UIView * noNetWork;
 @property (nonatomic, strong) WKWebView * wkWebView;
 @property (nonatomic,strong) UIProgressView * progressView;
-@property (nonatomic,strong) UILabel * titleLabel;
+//@property (nonatomic,strong) UILabel * titleLabel;
 @property (nonatomic, strong) YBPopupMenu *popupMenu;
-//@property (nonatomic, strong) UIButton * shareBtn;
+@property (nonatomic, strong) UIButton * moreBtn;
 
 @property (nonatomic, strong) NSArray * titleArray;
+@property (nonatomic, strong) NodeDataModel * nodeDataModel;
 @property (nonatomic, strong) NSArray * nodeData;
 @property (nonatomic, strong) NSArray * statusArray;
 @property (nonatomic, strong) UIView * footerView;
 @property (nonatomic, strong) UIButton * vote;
+
 
 @end
 
@@ -51,10 +56,10 @@ static NSString * const StatusID = @"StatusID";
 }
 - (void)setupNav
 {
-    UIButton * moreBtn = [UIButton createButtonWithNormalImage:@"nav_more" SelectedImage:@"nav_more" Target:self Selector:@selector(moreAction:)];
-    moreBtn.frame = CGRectMake(0, 0, ScreenScale(60), ScreenScale(44));
-    moreBtn.contentHorizontalAlignment = UIControlContentHorizontalAlignmentRight;
-    self.navigationItem.rightBarButtonItem = [[UIBarButtonItem alloc]initWithCustomView:moreBtn];
+    _moreBtn = [UIButton createButtonWithNormalImage:@"nav_more" SelectedImage:@"nav_more" Target:self Selector:@selector(moreAction:)];
+    _moreBtn.frame = CGRectMake(0, 0, ScreenScale(60), ScreenScale(44));
+    _moreBtn.contentHorizontalAlignment = UIControlContentHorizontalAlignmentRight;
+    self.navigationItem.rightBarButtonItem = [[UIBarButtonItem alloc]initWithCustomView:_moreBtn];
 //    self.shareBtn.userInteractionEnabled = NO;
 }
 
@@ -74,18 +79,22 @@ static NSString * const StatusID = @"StatusID";
 }
 - (void)getData
 {
-    [[HTTPManager shareManager] getNodeInvitationVoteDataWithNodeId:self.nodeID success:^(id responseObject) {
+    [[HTTPManager shareManager] getNodeDetailDataWithIDType:[self.nodePlanModel.identityType integerValue] nodeId: self.nodePlanModel.nodeId success:^(id responseObject) {
         NSInteger code = [[responseObject objectForKey:@"errCode"] integerValue];
         if (code == Success_Code) {
 //            self.shareBtn.userInteractionEnabled = YES;
             self.titleArray = @[Localized(@"NodeData"), Localized(@"NodeIntroduction"), Localized(@"StatusUpdate")];
-            self.nodeData = @[Localized(@"NodeEquityValue"), Localized(@"CampaignBond(BU)"), Localized(@"AccumulatedAward(BU)"), Localized(@"AwardSharingRatioForVotingUsers"), Localized(@"Vote"), Localized(@"My vote")];
-            self.statusArray = @[@"08-28\n12:00", @"07-26\n10:00", @"07-18\n16:00"];
-            self.nodePlanModel = [NodePlanModel mj_objectWithKeyValues:responseObject[@"data"]];
-            if (NotNULLString(self.nodePlanModel.introduce)) {
-                [self.wkWebView loadHTMLString:self.nodePlanModel.introduce baseURL:nil];
+            self.nodeDataModel = [NodeDataModel mj_objectWithKeyValues:responseObject[@"data"][@"nodeData"]];
+            self.statusArray = [StatusUpdateModel mj_objectArrayWithKeyValuesArray:responseObject[@"data"][@"nodeInfo"][@"timeline"]];
+            self.nodeData = @[@[Localized(@"NodeEquityValue"), Localized(@"CampaignBond(BU)"), Localized(@"AccumulatedAward(BU)"), Localized(@"AwardSharingRatioForVotingUsers"), Localized(@"Vote"), Localized(@"My vote")], @[self.nodeDataModel.equityValue, self.nodeDataModel.deposit, self.nodeDataModel.totalRewardAmount, [NSString stringWithFormat:@"%@%%", self.nodeDataModel.ratio], self.nodeDataModel.totalVoteCount, self.nodePlanModel.myVoteCount]];
+//            self.nodePlanModel = [NodePlanModel mj_objectWithKeyValues:responseObject[@"data"]];
+            NSString * introduce = responseObject[@"data"][@"nodeInfo"][@"introduce"];
+            if ([self.nodePlanModel.identityType isEqualToString:@"2"]) {
+                introduce = responseObject[@"data"][@"nodeInfo"][@"applyIntroduce"];
             }
-            self.titleLabel.text = Localized(@"NodeIntroduction");
+            if (NotNULLString(introduce)) {
+                [self.wkWebView loadHTMLString:introduce baseURL:nil];
+            }
             [self.tableView reloadData];
         } else {
             [MBProgressHUD showTipMessageInWindow:[ErrorTypeTool getDescriptionWithNodeErrorCode:code]];
@@ -94,7 +103,7 @@ static NSString * const StatusID = @"StatusID";
         self.noNetWork.hidden = YES;
     } failure:^(NSError *error) {
         [self.tableView.mj_header endRefreshing];
-        self.noNetWork.hidden = NO;
+        self.noNetWork.hidden = (self.titleArray.count > 0);
     }];
 }
 - (void)reloadData
@@ -160,7 +169,7 @@ static NSString * const StatusID = @"StatusID";
     if (section == 0 || section == 2) {
         return 1;
     } else if (section == 1) {
-        return self.nodeData.count;
+        return [[self.nodeData firstObject] count];
     } else {
         return self.statusArray.count;
     }
@@ -197,9 +206,10 @@ static NSString * const StatusID = @"StatusID";
     } else if (indexPath.section == 1) {
         return ScreenScale(35);
     } else if (indexPath.section == 2) {
-        return self.wkWebView.height + Margin_15;
+        return self.wkWebView.height;
     } else {
-        return ScreenScale(80);
+        StatusUpdateModel * statusUpdateModel = self.statusArray[indexPath.row];
+        return statusUpdateModel.cellHeight;
     }
 }
 - (UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath
@@ -216,17 +226,18 @@ static NSString * const StatusID = @"StatusID";
         cell.title.textColor = COLOR_6;
         cell.detailTitle.textColor = TITLE_COLOR;
         
-        cell.title.text = self.nodeData[indexPath.row];
-        cell.detailTitle.text = [NSString stringAppendingBUWithStr:@"23,345,333.897645"];
+        cell.title.text = [self.nodeData firstObject][indexPath.row];
+        NSString * info = [self.nodeData lastObject][indexPath.row];
+        cell.detailTitle.text = [NSString stringAppendingBUWithStr:info];
         cell.detail.hidden = YES;
         cell.selectionStyle = UITableViewCellSelectionStyleNone;
 //        cell.lineView.hidden = (indexPath.row == self.nodeData.count - 1 );
-        if (indexPath.row == self.nodeData.count - 3) {
+        if (indexPath.row == 3) {
             cell.detailTitle.textAlignment = NSTextAlignmentRight;
             [cell.listImage setImage:[UIImage imageNamed:@"explain_info"] forState:UIControlStateNormal];
-            cell.detailTitle.text = @"50%";
+            cell.detailTitle.text = info;
         } else {
-            cell.detailTitle.text = [NSString stringAmountSplitWith:@"23345333.897645"];
+            cell.detailTitle.text = [NSString stringAmountSplitWith:info];
         }
 //        if (indexPath.row == 0 || indexPath.row > self.nodeData.count - 3) {
 //            cell.detailTitle.text = [NSString stringAmountSplitWith:@"13000000"];
@@ -244,42 +255,121 @@ static NSString * const StatusID = @"StatusID";
         cell.selectionStyle = UITableViewCellSelectionStyleNone;
         [cell.contentView addSubview:self.wkWebView];
         [self.wkWebView mas_makeConstraints:^(MASConstraintMaker *make) {
-            make.edges.equalTo(cell.contentView);
+//            make.edges.equalTo(cell.contentView);
+            make.top.bottom.equalTo(cell.contentView);
+            make.left.equalTo(cell.contentView.mas_left).offset(Margin_10);
+            make.right.equalTo(cell.contentView.mas_right).offset(-Margin_10);
         }];
         return cell;
     } else {
-        StatusViewCell *cell = [StatusViewCell cellWithTableView:tableView identifier:StatusID];
+        StatusCellType cellType;
+        if (indexPath.row == 0) {
+            cellType = StatusCellTypeTop;
+        } else if (indexPath.row == self.statusArray.count - 1) {
+            cellType = StatusCellTypeBottom;
+        } else {
+            cellType = StatusCellTypeDefault;
+        }
+        StatusViewCell *cell = [StatusViewCell cellWithTableView:tableView indexPath:indexPath identifier:StatusID cellType:cellType];
+        cell.statusUpdateModel = self.statusArray[indexPath.row];
         cell.selectionStyle = UITableViewCellSelectionStyleNone;
-        cell.type = indexPath.row;
-//        cell.title.text = array[0][indexPath.row];
         return cell;
     }
 }
-- (void)moreAction:(UIButton *)button
+- (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath
 {
-    NSArray * titleArray = @[Localized(@"CancellationOfVotes"), Localized(@"OperationalRecords")];
-    NSArray * imageArray = @[@"cancellation_of_votes", @"voting_records"];
-    CGFloat width;
-    NSString * language = CurrentAppLanguage;
-    if ([language hasPrefix:ZhHans]) {
-        width = ScreenScale(120);
-    } else {
-        width = ScreenScale(165);
+    [tableView deselectRowAtIndexPath:indexPath animated:NO];
+    ListTableViewCell * cell = [tableView cellForRowAtIndexPath:indexPath];
+    if (indexPath.section == 1 && indexPath.row == 3) {
+        [self moreAction:cell.listImage];
     }
-    _popupMenu = [YBPopupMenu showRelyOnView:button titles:titleArray icons:imageArray menuWidth:width otherSettings:^(YBPopupMenu * popupMenu) {
+}
+- (void)moreAction:(UIView *)sender
+{
+    CGFloat width;
+    CGFloat height;
+    CGFloat itemHeight;
+    NSArray * titleArray;
+    NSArray * imageArray;
+    BOOL allowsSelection;
+    if (sender == self.moreBtn) {
+        titleArray = @[Localized(@"CancellationOfVotes"), Localized(@"OperationalRecords")];
+        imageArray = @[@"cancellation_of_votes", @"voting_records"];
+        NSString * language = CurrentAppLanguage;
+        if ([language hasPrefix:ZhHans]) {
+            width = ScreenScale(120);
+        } else {
+            width = ScreenScale(165);
+        }
+        sender = self.moreBtn.imageView;
+        sender.height = Margin_15;
+        itemHeight = Margin_50;
+        height = itemHeight * 2 + Margin_10;
+        allowsSelection = YES;
+    } else {
+        NSString * title = Localized(@"SharingRatioInfo");
+        CGFloat titleHeight = [Encapsulation rectWithText:title font:FONT_TITLE textWidth:DEVICE_WIDTH - ScreenScale(120)].size.height;
+        titleArray = @[title];
+        width = DEVICE_WIDTH - ScreenScale(100);
+        itemHeight = titleHeight + Margin_30;
+        height = titleHeight + Margin_40;
+        allowsSelection = NO;
+    }
+    _popupMenu = [YBPopupMenu showRelyOnView:sender titles:titleArray icons:imageArray menuWidth:width otherSettings:^(YBPopupMenu * popupMenu) {
         popupMenu.priorityDirection = YBPopupMenuPriorityDirectionTop;
-        popupMenu.itemHeight = Margin_50;
+        popupMenu.itemHeight = itemHeight;
         popupMenu.dismissOnTouchOutside = YES;
-        popupMenu.dismissOnSelected = NO;
+        popupMenu.dismissOnSelected = YES;
         popupMenu.fontSize = FONT_TITLE;
         popupMenu.textColor = [UIColor whiteColor];
         popupMenu.backColor = COLOR_POPUPMENU;
         popupMenu.tableView.separatorStyle = UITableViewCellSeparatorStyleNone;
         popupMenu.tableView.scrollEnabled = NO;
-        popupMenu.tableView.allowsSelection = NO;
-        popupMenu.height = popupMenu.itemHeight * 2 + Margin_10;
+        popupMenu.tableView.allowsSelection = allowsSelection;
+        popupMenu.delegate = self;
+        popupMenu.height = height;
     }];
 }
+- (void)ybPopupMenu:(YBPopupMenu *)ybPopupMenu didSelectedAtIndex:(NSInteger)index
+{
+    NSString * title = ybPopupMenu.titles[index];
+    if ([title isEqualToString:Localized(@"CancellationOfVotes")]) {
+        [self cancellationVotes];
+    } else if ([title isEqualToString: Localized(@"OperationalRecords")]) {
+        VotingRecordsViewController * VC = [[VotingRecordsViewController alloc] init];
+        VC.nodePlanModel = self.nodePlanModel;
+        [self.navigationController pushViewController:VC animated:YES];
+    }
+}
+- (void)cancellationVotes
+{
+    if ([self.nodePlanModel.myVoteCount isEqualToString:@"0"]) {
+        [Encapsulation showAlertControllerWithMessage:Localized(@"IrrevocableVotes") handler:nil];
+        return;
+    }
+    ConfirmTransactionModel * confirmTransactionModel = [[ConfirmTransactionModel alloc] init];
+    confirmTransactionModel.qrRemark = [NSString stringWithFormat:Localized_Language(@"Number of votes revoked on '%@'", ZhHans), self.nodePlanModel.nodeName];
+    confirmTransactionModel.qrRemarkEn = [NSString stringWithFormat:Localized_Language(@"Number of votes revoked on '%@'", EN), self.nodePlanModel.nodeName];
+    confirmTransactionModel.destAddress = self.contractAddress;
+    confirmTransactionModel.accountTag = self.accountTag;
+    confirmTransactionModel.accountTagEn = self.accountTagEn;
+    confirmTransactionModel.amount = @"0";
+    NSString * role;
+    if ([self.nodePlanModel.identityType integerValue] == NodeIDTypeConsensus) {
+        role = Role_validator;
+    } else if ([self.nodePlanModel.identityType integerValue] == NodeIDTypeEcological) {
+        role = Role_kol;
+    }
+    confirmTransactionModel.script = DposUnVote(role, self.nodePlanModel.nodeCapitalAddress);
+    confirmTransactionModel.nodeId = self.nodePlanModel.nodeId;
+    confirmTransactionModel.type = [NSString stringWithFormat:@"%zd", TransactionTypeNodeWithdrawal];
+    BottomConfirmAlertView * confirmAlertView = [[BottomConfirmAlertView alloc] initWithIsShowValue:NO handlerType:HandlerTypeTransferDpos confirmModel:confirmTransactionModel confrimBolck:^{
+    } cancelBlock:^{
+        
+    }];
+    [confirmAlertView showInWindowWithMode:CustomAnimationModeShare inView:nil bgAlpha:AlertBgAlpha needEffectView:NO];
+}
+/*
 - (void)shareAction
 {
     NSString * dateStr = self.nodePlanModel.shareStartTime;
@@ -312,7 +402,6 @@ static NSString * const StatusID = @"StatusID";
     } failure:^(NSError *error) {
     }];
 }
-/*
  - (CGFloat)tableView:(UITableView *)tableView heightForFooterInSection:(NSInteger)section
  {
  return ScreenScale(50) + self.wkWebView.height + NavBarH + SafeAreaBottomH;;
@@ -327,23 +416,23 @@ static NSString * const StatusID = @"StatusID";
  footerView.frame = CGRectMake(0, 0, DEVICE_WIDTH, ScreenScale(40) + self.wkWebView.height  + NavBarH + SafeAreaBottomH);
  return footerView;
  }
+ - (UILabel *)titleLabel
+ {
+ if (!_titleLabel) {
+ _titleLabel = [[UILabel alloc] initWithFrame:CGRectMake(Margin_15, 0, DEVICE_WIDTH - Margin_30, Margin_40)];
+ _titleLabel.font = FONT(13);
+ _titleLabel.textColor = COLOR_9;
+ }
+ return _titleLabel;
+ }
  */
-- (UILabel *)titleLabel
-{
-    if (!_titleLabel) {
-        _titleLabel = [[UILabel alloc] initWithFrame:CGRectMake(Margin_15, 0, DEVICE_WIDTH - Margin_30, Margin_40)];
-        _titleLabel.font = FONT(13);
-        _titleLabel.textColor = COLOR_9;
-    }
-    return _titleLabel;
-}
 - (WKWebView *)wkWebView {
     if (!_wkWebView) {
         // 图片自适应
         //        NSString * jsString = @"var objs = document.getElementsByTagName('img');for(var i=0;i++){var img = objs[i];img.style.maxWidth = '20%';img.style.height='auto';}";
         //        WKUserScript * wkUserScript = [[WKUserScript alloc] initWithSource:jsString injectionTime:WKUserScriptInjectionTimeAtDocumentEnd forMainFrameOnly:YES];
         //        NSString *jScript = @"var meta = document.createElement('meta'); meta.setAttribute('name', 'viewport'); meta.setAttribute('content', 'width=device-width'); document.getElementsByTagName('head')[0].appendChild(meta);";
-        NSString *jScript = [NSString stringWithFormat:@"var meta = document.createElement('meta'); meta.setAttribute('name', 'viewport'); meta.setAttribute('content', 'width=%f'); document.getElementsByTagName('head')[0].appendChild(meta);", View_Width_Main];
+        NSString *jScript = [NSString stringWithFormat:@"var meta = document.createElement('meta'); meta.setAttribute('name', 'viewport'); meta.setAttribute('content', 'width=%f'); document.getElementsByTagName('head')[0].appendChild(meta);", DEVICE_WIDTH - Margin_20];
         WKUserScript *wkUScript = [[WKUserScript alloc] initWithSource:jScript injectionTime:WKUserScriptInjectionTimeAtDocumentEnd forMainFrameOnly:YES];
         WKUserContentController *wkUController = [[WKUserContentController alloc] init];
         [wkUController addUserScript:wkUScript];
@@ -351,13 +440,12 @@ static NSString * const StatusID = @"StatusID";
         WKWebViewConfiguration *wkWebConfig = [[WKWebViewConfiguration alloc] init];
         wkWebConfig.userContentController = wkUController;
         WKPreferences *preference = [[WKPreferences alloc]init];
-        preference.minimumFontSize = ScreenScale(12);
+//        preference.minimumFontSize = ScreenScale(12);
+        preference.minimumFontSize = ScreenScale(13);
         wkWebConfig.preferences = preference;
-        _wkWebView = [[WKWebView alloc] initWithFrame:CGRectMake(Margin_Main, Margin_40, View_Width_Main, CGFLOAT_MIN) configuration:wkWebConfig];
+        _wkWebView = [[WKWebView alloc] initWithFrame:CGRectMake(Margin_10, 0, DEVICE_WIDTH - Margin_20, CGFLOAT_MIN) configuration:wkWebConfig];
         _wkWebView.navigationDelegate = self;
         _wkWebView.UIDelegate = self;
-        _wkWebView.layer.masksToBounds = YES;
-        _wkWebView.layer.cornerRadius = BG_CORNER;
         if (@available(iOS 11.0, *)) {
             _wkWebView.scrollView.contentInsetAdjustmentBehavior = UIScrollViewContentInsetAdjustmentNever;
             _wkWebView.scrollView.contentInset = UIEdgeInsetsMake(0, 0, 0, 0);
@@ -402,7 +490,7 @@ static NSString * const StatusID = @"StatusID";
     }
 }
 - (void)webView:(WKWebView *)webView didFinishNavigation:(WKNavigation *)navigation {
-    [self setImageFit];
+//    [self setImageFit];
     // 设置字体
     //    NSString *fontFamilyStr = @"document.getElementsByTagName('body')[0].style.fontFamily='Arial';";
     //    [webView evaluateJavaScript:fontFamilyStr completionHandler:nil];
@@ -411,14 +499,27 @@ static NSString * const StatusID = @"StatusID";
     //    //修改字体大小
     //    [ webView evaluateJavaScript:@"document.getElementsByTagName('body')[0].style.webkitTextSizeAdjust= '200%'"completionHandler:nil];
     //修改字体大小
-    [ webView evaluateJavaScript:@"document.getElementsByTagName('body')[0].style.webkitTextSizeAdjust= '85%'" completionHandler:^(id _Nullable result, NSError * _Nullable error) {
-        [webView evaluateJavaScript:@"document.body.offsetHeight" completionHandler:^(id _Nullable result, NSError * _Nullable error) {
-            CGRect webFrame = webView.frame;
-            webFrame.size.height = webView.scrollView.contentSize.height;
-            webView.frame = webFrame;
-            [self.tableView reloadData];
+//    document.getElementsByTagName('body')[0].style.webkitTextSizeAdjust= '85%'
+    // 设置字体颜色
+    NSString * fontColorStr = @"document.getElementsByTagName('body')[0].style.color='#666666';";
+    // 设置字体
+    NSString * fontFamilyStr = @"document.getElementsByTagName('body')[0].style.fontFamily='PingFangSC-Light';";
+    // 设置字体大小
+    NSString * fontSizeStr = @"document.getElementsByTagName('body')[0].style.fontSize='13px';";
+    [webView evaluateJavaScript:fontSizeStr completionHandler:^(id _Nullable result, NSError * _Nullable error) {
+        [webView evaluateJavaScript:fontFamilyStr completionHandler:^(id _Nullable result, NSError * _Nullable error) {
+            [webView evaluateJavaScript:@"document.body.offsetHeight" completionHandler:^(id _Nullable result, NSError * _Nullable error) {
+                [webView evaluateJavaScript:fontColorStr completionHandler:^(id _Nullable result, NSError * _Nullable error) {
+                    dispatch_after(dispatch_time(DISPATCH_TIME_NOW, (int64_t)(Dispatch_After_Time * NSEC_PER_SEC)), dispatch_get_main_queue(), ^{
+                        //                    [webView sizeToFit];
+                        CGRect webFrame = webView.frame;
+                        webFrame.size.height = webView.scrollView.contentSize.height;
+                        webView.frame = webFrame;
+                        [self.tableView reloadData];                        
+                    });
+                }];
+            }];
         }];
-        
     }];
 }
 - (void)setImageFit
@@ -438,7 +539,7 @@ static NSString * const StatusID = @"StatusID";
     "}\";"
     "document.getElementsByTagName('head')[0].appendChild(script);";
     
-    js = [NSString stringWithFormat:js,View_Width_Main,Content_Width_Main];
+    js = [NSString stringWithFormat:js,DEVICE_WIDTH - Margin_20,DEVICE_WIDTH - Margin_20];
     
     [self.wkWebView evaluateJavaScript:js completionHandler:nil];
     

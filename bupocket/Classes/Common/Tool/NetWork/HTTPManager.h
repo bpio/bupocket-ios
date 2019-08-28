@@ -164,10 +164,11 @@ typedef NS_ENUM(NSInteger, AccountDataType) {
                          capitalAddress:(NSString *)capitalAddress
                                 success:(void (^)(id responseObject))success
                                 failure:(void (^)(NSError *error))failure;
-// Node Invitation Vote
-- (void)getNodeInvitationVoteDataWithNodeId:(NSString *)nodeId
-                                    success:(void (^)(id responseObject))success
-                                    failure:(void (^)(NSError *error))failure;
+// Node Detail
+- (void)getNodeDetailDataWithIDType:(NSInteger)IDType
+                             nodeId:(NSString *)nodeId
+                            success:(void (^)(id responseObject))success
+                            failure:(void (^)(NSError *error))failure;
 // Voting Record
 - (void)getVotingRecordDataWithNodeId:(NSString *)nodeId
                               success:(void (^)(id responseObject))success

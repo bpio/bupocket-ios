@@ -85,6 +85,8 @@
 		95031164230F8F21000AAC99 /* DataBase.m in Sources */ = {isa = PBXBuildFile; fileRef = 95031162230F8F21000AAC99 /* DataBase.m */; };
 		9503116723138818000AAC99 /* NodeDetailViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 9503116623138818000AAC99 /* NodeDetailViewController.m */; };
 		9503116A2313D37F000AAC99 /* StatusViewCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 950311692313D37F000AAC99 /* StatusViewCell.m */; };
+		9503116D23150BF6000AAC99 /* NodeDataModel.m in Sources */ = {isa = PBXBuildFile; fileRef = 9503116C23150BF6000AAC99 /* NodeDataModel.m */; };
+		9503117323150CC0000AAC99 /* StatusUpdateModel.m in Sources */ = {isa = PBXBuildFile; fileRef = 9503117223150CC0000AAC99 /* StatusUpdateModel.m */; };
 		950E4145219E6ADD002C7900 /* AssetCurrencyModel.m in Sources */ = {isa = PBXBuildFile; fileRef = 950E4144219E6ADD002C7900 /* AssetCurrencyModel.m */; };
 		950EF2A3219D801300F5121A /* MonetaryUnitViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 950EF2A2219D801300F5121A /* MonetaryUnitViewController.m */; };
 		9510A3CC219A91D4007A49A4 /* ErrorTypeTool.m in Sources */ = {isa = PBXBuildFile; fileRef = 9510A3CB219A91D4007A49A4 /* ErrorTypeTool.m */; };
@@ -391,6 +393,10 @@
 		9503116623138818000AAC99 /* NodeDetailViewController.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = NodeDetailViewController.m; sourceTree = "<group>"; };
 		950311682313D37F000AAC99 /* StatusViewCell.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = StatusViewCell.h; sourceTree = "<group>"; };
 		950311692313D37F000AAC99 /* StatusViewCell.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = StatusViewCell.m; sourceTree = "<group>"; };
+		9503116B23150BF6000AAC99 /* NodeDataModel.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = NodeDataModel.h; sourceTree = "<group>"; };
+		9503116C23150BF6000AAC99 /* NodeDataModel.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = NodeDataModel.m; sourceTree = "<group>"; };
+		9503117123150CC0000AAC99 /* StatusUpdateModel.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = StatusUpdateModel.h; sourceTree = "<group>"; };
+		9503117223150CC0000AAC99 /* StatusUpdateModel.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = StatusUpdateModel.m; sourceTree = "<group>"; };
 		950E4143219E6ADD002C7900 /* AssetCurrencyModel.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = AssetCurrencyModel.h; sourceTree = "<group>"; };
 		950E4144219E6ADD002C7900 /* AssetCurrencyModel.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = AssetCurrencyModel.m; sourceTree = "<group>"; };
 		950EF2A1219D801300F5121A /* MonetaryUnitViewController.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = MonetaryUnitViewController.h; sourceTree = "<group>"; };
@@ -1280,6 +1286,10 @@
 				95266CB6226F062E002CD915 /* CooperateDetailModel.m */,
 				95266CBB226F062E002CD915 /* CooperateSupportModel.h */,
 				95266CB5226F062E002CD915 /* CooperateSupportModel.m */,
+				9503116B23150BF6000AAC99 /* NodeDataModel.h */,
+				9503116C23150BF6000AAC99 /* NodeDataModel.m */,
+				9503117123150CC0000AAC99 /* StatusUpdateModel.h */,
+				9503117223150CC0000AAC99 /* StatusUpdateModel.m */,
 			);
 			path = Model;
 			sourceTree = "<group>";
@@ -1715,6 +1725,7 @@
 				959E28F02248B998006FCA30 /* LoginConfirmViewController.m in Sources */,
 				83379AE52180631200C222A5 /* TxInfoModel.m in Sources */,
 				83379A8C217DB25A00C222A5 /* TransferAccountsViewController.m in Sources */,
+				9503117323150CC0000AAC99 /* StatusUpdateModel.m in Sources */,
 				95D92DAD22C2347100AFC8C2 /* ModifyIconCollectionViewCell.m in Sources */,
 				83FB443621904AA400D68569 /* HMScannerViewController.m in Sources */,
 				8337991A2176E80D00C222A5 /* MultilingualViewController.m in Sources */,
@@ -1818,6 +1829,7 @@
 				83379A86217D9C8A00C222A5 /* AssetsDetailViewController.m in Sources */,
 				83379A92217DE12600C222A5 /* TransferResultsViewController.m in Sources */,
 				8372C8632174CBF100FF9506 /* TabBarViewController.m in Sources */,
+				9503116D23150BF6000AAC99 /* NodeDataModel.m in Sources */,
 				9579EB5321BABE6300051EDB /* MBProgressHUD+JDragon.m in Sources */,
 				9513638D22B88DE300BF8DF5 /* BottomAlertView.m in Sources */,
 				83379AC3217F3F3000C222A5 /* BaseModel.m in Sources */,

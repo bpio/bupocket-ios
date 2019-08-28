@@ -61,7 +61,7 @@ static NSString * const NodeSharingID = @"NodeSharingID";
 }
 - (void)getData
 {
-    [[HTTPManager shareManager] getNodeInvitationVoteDataWithNodeId:self.nodeID success:^(id responseObject) {
+    [[HTTPManager shareManager] getNodeDetailDataWithIDType:1 nodeId: self.nodeID success:^(id responseObject) {
         NSInteger code = [[responseObject objectForKey:@"errCode"] integerValue];
         if (code == Success_Code) {
             self.shareBtn.userInteractionEnabled = YES;

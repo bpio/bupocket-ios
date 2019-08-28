@@ -12,12 +12,14 @@
 
 //static NSString * const StatusID = @"StatusID";
 
-+ (instancetype)cellWithTableView:(UITableView *)tableView identifier:(NSString *)identifier
++ (instancetype)cellWithTableView:(UITableView *)tableView indexPath:(NSIndexPath *)indexPath identifier:(NSString *)identifier cellType:(StatusCellType)cellType
 {
-    StatusViewCell * cell = [tableView dequeueReusableCellWithIdentifier:identifier];
+//    StatusViewCell * cell = [tableView dequeueReusableCellWithIdentifier:identifier];
+    StatusViewCell * cell = [tableView cellForRowAtIndexPath:indexPath];
     if (cell == nil) {
         cell = [[StatusViewCell alloc] initWithStyle:UITableViewCellStyleValue1 reuseIdentifier:identifier];
     }
+    cell.cellType = cellType;
     return cell;
 }
 - (instancetype)initWithStyle:(UITableViewCellStyle)style reuseIdentifier:(NSString *)reuseIdentifier
@@ -27,8 +29,6 @@
         [self.contentView addSubview:self.lineView];
         [self.contentView addSubview:self.spot];
         [self.contentView addSubview:self.title];
-        self.date.attributedText = [Encapsulation attrWithString:@"08-28\n12:00" preFont:FONT_TITLE preColor:COLOR_6 index:5 sufFont:FONT(12) sufColor:COLOR_9 lineSpacing:Margin_5];
-        self.date.textAlignment = NSTextAlignmentRight;
     }
     return self;
 }
@@ -51,34 +51,58 @@
         make.width.mas_equalTo(LINE_WIDTH);
     }];
     
+    if (self.cellType == StatusCellTypeTop) {
+        [self.lineView mas_makeConstraints:^(MASConstraintMaker *make) {
+            make.top.equalTo(self.spot.mas_centerY);
+            make.bottom.equalTo(self.contentView);
+        }];
+    } else if (self.cellType == StatusCellTypeDefault) {
+        [self.lineView mas_makeConstraints:^(MASConstraintMaker *make) {
+            make.top.bottom.equalTo(self.contentView);
+        }];
+    } else if (self.cellType == StatusCellTypeBottom) {
+        [self.lineView mas_makeConstraints:^(MASConstraintMaker *make) {
+            make.top.equalTo(self.contentView);
+            make.bottom.equalTo(self.spot.mas_centerY);
+        }];
+    }
+    
     [self.title mas_makeConstraints:^(MASConstraintMaker *make) {
         make.left.equalTo(self.spot.mas_right).offset(Margin_10);
         make.top.equalTo(self.date);
         make.right.equalTo(self.contentView.mas_right).offset(-Margin_Main);
     }];
 }
-- (void)setType:(NSInteger)type
+
+- (void)setStatusUpdateModel:(StatusUpdateModel *)statusUpdateModel
 {
-    _type = type;
-    self.title.text = @"bumeme 申请退出竞选节点集合";
-    if (type == 0) {
-        [self.lineView mas_makeConstraints:^(MASConstraintMaker *make) {
-            make.top.equalTo(self.spot.mas_centerY);
-            make.bottom.equalTo(self.contentView);
-        }];
-    } else if (type == 1) {
-        [self.lineView mas_makeConstraints:^(MASConstraintMaker *make) {
-            make.top.bottom.equalTo(self.contentView);
-        }];
-        self.title.text = @"";
-        self.title.attributedText = [Encapsulation attrWithString:@"成为共识节点\nbumeme 成功加入共识竞选节点集合，成为共识节点" preFont:FONT_TITLE preColor:MAIN_COLOR index:6 sufFont:FONT_13 sufColor:COLOR_6 lineSpacing:Margin_5];
-        self.spot.selected = YES;
-    } else if (type == 2) {
-        [self.lineView mas_makeConstraints:^(MASConstraintMaker *make) {
-            make.top.equalTo(self.contentView);
-            make.bottom.equalTo(self.spot.mas_centerY);
-        }];
+    _statusUpdateModel = statusUpdateModel;
+    // @"08-28\n12:00"
+    self.date.attributedText = [Encapsulation attrWithString:[DateTool getDateStrWithTimeStr:statusUpdateModel.createTime] preFont:FONT_TITLE preColor:COLOR_6 index:5 sufFont:FONT(12) sufColor:COLOR_9 lineSpacing:Margin_5];
+    self.date.textAlignment = NSTextAlignmentRight;
+    
+    NSString * updateText;
+    NSString * title;
+    NSString * content;
+    if ([CurrentAppLanguage hasPrefix:ZhHans]) {
+        title = statusUpdateModel.title;
+        content = statusUpdateModel.content;
+    } else {
+        title = statusUpdateModel.enTitle;
+        content = statusUpdateModel.enContent;
     }
+    updateText = (NotNULLString(title)) ? [NSString stringWithFormat:@"%@\n%@", title, content] : content;
+    CGFloat width = DEVICE_WIDTH - ScreenScale(105);
+    if ([updateText containsString:@"\n"]) {
+        self.title.text = @"";
+        self.title.attributedText = [Encapsulation attrWithString:updateText preFont:FONT_TITLE preColor:MAIN_COLOR index:title.length sufFont:FONT_13 sufColor:COLOR_6 lineSpacing:Margin_5];
+        statusUpdateModel.cellHeight = [Encapsulation getSizeSpaceLabelWithStr:updateText font:FONT_TITLE width:width height:CGFLOAT_MIN lineSpacing:Margin_5].height + Margin_30;
+    } else {
+        self.title.text = updateText;
+        statusUpdateModel.cellHeight = [Encapsulation rectWithText:updateText font:FONT_13 textWidth:width].size.height + Margin_30;
+    }
+    statusUpdateModel.cellHeight = MAX(ScreenScale(70), statusUpdateModel.cellHeight);
+    self.spot.selected = [statusUpdateModel.type integerValue];
 }
 - (UILabel *)date
 {

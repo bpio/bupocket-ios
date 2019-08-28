@@ -810,12 +810,19 @@ static int64_t const gasPrice = 1000;
     }];
 }
 
-// Node Invitation Vote
-- (void)getNodeInvitationVoteDataWithNodeId:(NSString *)nodeId
-                                    success:(void (^)(id responseObject))success
-                                    failure:(void (^)(NSError *error))failure
+// Node Detail
+- (void)getNodeDetailDataWithIDType:(NSInteger)IDType
+                             nodeId:(NSString *)nodeId
+                            success:(void (^)(id responseObject))success
+                            failure:(void (^)(NSError *error))failure
 {
-    NSString * url = SERVER_COMBINE_API(_webServerDomain, Node_Invitation_Vote);
+    NSString * URL;
+    if (IDType == 1) {
+        URL = Node_Validate_Detail;
+    } else if (IDType == 2) {
+        URL = Node_Ecology_Detail;
+    }
+    NSString * url = SERVER_COMBINE_API(_webServerDomain, URL);
     NSString * body = [NSString stringWithFormat:@"address=%@&nodeId=%@", CurrentWalletAddress, nodeId];
     NSDictionary * parameters = [[HTTPManager shareManager] parametersWithHTTPBody:body];
     [[HttpTool shareTool] POST:url parameters:parameters success:^(id responseObject) {
