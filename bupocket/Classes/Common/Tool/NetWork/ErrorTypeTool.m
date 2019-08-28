@@ -49,19 +49,13 @@
         case ErrorTypeAssetDetail: errorDesc = Localized(@"InabilityToIssue"); break;
         case ErrorTypeContactExisted: errorDesc = Localized(@"ContactExisted"); break;
         case ErrorTypePurseAddress: errorDesc = Localized(@"INVALID_ADDRESS_ERROR"); break;
-        default: errorDesc = Localized(@"LoadFailure"); break;
-    }
-    return errorDesc;
-}
-
-+ (NSString *)getDescriptionWithNodeErrorCode:(NSInteger)errorCode
-{
-    NSString * errorDesc;
-    switch(errorCode) {
+        case ErrorTypeIdentityBound: errorDesc = Localized(@"IdentityBound"); break;
+        case ErrorTypeWechatBound: errorDesc = Localized(@"WechatBound"); break;
+        
         case ErrorPhysicalAddressApplied: errorDesc = Localized(@"PhysicalAddressApplied"); break;
         case ErrorQRCodeExpired: errorDesc = Localized(@"RefreshQRCode"); break;
         case ErrorAccountApplied: errorDesc = Localized(@"AccountApplied"); break;
-//        case ErrorNotSubmitted: errorDesc = Localized(@"NotSubmitted"); break;
+            //        case ErrorNotSubmitted: errorDesc = Localized(@"NotSubmitted"); break;
         case ErrorCommitteeAuthority: errorDesc = Localized(@"CommitteeAuthority"); break;
         case ErrorNoVoteJurisdiction: errorDesc = Localized(@"NoVoteJurisdiction"); break;
         case ErrorUnsupportedSubscription: errorDesc = Localized(@"UnsupportedSubscription"); break;

@@ -95,7 +95,7 @@ static NSString * const CooperateDetailCellID = @"CooperateDetailCellID";
                 self.footerView.hidden = YES;
             }
         } else {
-            [MBProgressHUD showTipMessageInWindow:[ErrorTypeTool getDescriptionWithNodeErrorCode:code]];
+            [MBProgressHUD showTipMessageInWindow:[ErrorTypeTool getDescriptionWithErrorCode:code]];
         }
         [self.tableView.mj_header endRefreshing];
         self.noNetWork.hidden = YES;
@@ -272,7 +272,7 @@ static NSString * const CooperateDetailCellID = @"CooperateDetailCellID";
                 [Encapsulation showAlertControllerWithMessage:[NSString stringWithFormat:Localized(@"NotSubmitted%@"), [DateTool getTimeIntervalWithStr:dateStr]] handler:nil];
             }
         } else {
-            [Encapsulation showAlertControllerWithMessage:[ErrorTypeTool getDescriptionWithNodeErrorCode:code] handler:nil];
+            [Encapsulation showAlertControllerWithMessage:[ErrorTypeTool getDescriptionWithErrorCode:code] handler:nil];
         }
     } failure:^(NSError *error) {
         

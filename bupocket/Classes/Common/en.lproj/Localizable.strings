@@ -100,9 +100,13 @@
 "UserProtocol" = "User Agreement";
 "Feedback" = "Feedback";
 "AboutUs" = "About Us";
-
+// 绑定微信
+"WechatBindPrompt" = "需绑定微信后，方可使用此功能。";
 "ImmediateBinding" = "立即绑定";
 "Binded" = "已绑定";
+"WechatBoundSuccess" = "微信绑定成功";
+"IdentityBound" = "当前身份地址已被绑定";
+"WechatBound" = "当前微信已被绑定，请更换";
 
 "Setting" = "Setting";
 "AddressBook" = "Address List";
@@ -543,6 +547,13 @@
 "StatusUpdate" = "状态更新";
 "I want to vote" = "我要投票";
 "SharingRatioInfo" = "竞选节点自定义设置对投票用户的奖励比例";
+"NodeVoting" = "节点投票";
+"NumberOfVotes" = "投票数量（请确认投票数是10的倍数）";
+"NumberOfVotesPrompt" = "请输入投票数量";
+"Number %@ BU" = "数量：%@ BU";
+"ConfirmVote" = "确认投票";
+"Vote for '%@'%@" = "投票给\"%@\"%@票";
+
 // Records of voting
 "Throw" = "Vote";
 "withdraw" = "Cancel";
@@ -665,8 +676,10 @@
 "InitiatorAddressUnavailable" = "Only the initiator of this node can initiate this operation";
 "InitiatorCanNotSupport" = "The initiator of the node co-funding project cannot be a sponsor";
 "NonRepeatableWithdrawal" = "You have withdrawn successfully. Frequent operations are not allowed";
-"NodeStatusExiting" = "The current node is exiting, and is not accessible for vote invitation";
-"NodeStatusExited" = "The current node has exited, and is not accessible for vote invitation";
+//"NodeStatusExiting" = "The current node is exiting, and is not accessible for vote invitation";
+//"NodeStatusExited" = "The current node has exited, and is not accessible for vote invitation";
+"NodeStatusExiting" = "当前节点处于\"退出中\"状态，暂不支持投票操作";
+"NodeStatusExited" = "当前节点处于\"已退出\"状态，暂不支持投票操作";
 "NotSupportedOperation" = "This operation is not supported now.";
 // share
 "WXAppUninstalled" = "Please use it after downloading WeChat";

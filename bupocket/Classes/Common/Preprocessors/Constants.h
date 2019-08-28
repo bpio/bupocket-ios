@@ -236,5 +236,6 @@
 //#define Activity_ID @"ActivityID"
 
 #define If_Wechat_Binded @"ifWechatBinded"
+//#define Wechat_Image @"WechatImage"
 
 #endif /* Constants_h */

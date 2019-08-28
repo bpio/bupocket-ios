@@ -94,7 +94,7 @@ static NSString * const VoucherDetailCellID = @"VoucherDetailCellID";
             [[DataBase shareDataBase] deleteTxDetailsCachedDataWithCacheType:CacheTypeVoucherDetail detailId:self.voucherModel.voucherId];
             [[DataBase shareDataBase] saveDetailDataWithCacheType:CacheTypeVoucherDetail dic:self.dataDic ID:self.voucherModel.voucherId];
         } else {
-            [MBProgressHUD showTipMessageInWindow:[ErrorTypeTool getDescriptionWithNodeErrorCode:code]];
+            [MBProgressHUD showTipMessageInWindow:[ErrorTypeTool getDescriptionWithErrorCode:code]];
         }
         [self reloadUI];
     } failure:^(NSError *error) {

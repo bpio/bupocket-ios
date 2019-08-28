@@ -345,7 +345,7 @@
                 [Encapsulation showAlertControllerWithMessage:[NSString stringWithFormat:Localized(@"NotSubmitted%@"), [DateTool getTimeIntervalWithStr:dateStr]] handler:nil];
             }
         } else {
-            [Encapsulation showAlertControllerWithMessage:[ErrorTypeTool getDescriptionWithNodeErrorCode:code] handler:nil];
+            [Encapsulation showAlertControllerWithMessage:[ErrorTypeTool getDescriptionWithErrorCode:code] handler:nil];
         }
         
     } failure:^(NSError *error) {

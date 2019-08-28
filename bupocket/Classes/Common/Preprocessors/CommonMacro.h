@@ -138,6 +138,8 @@
 
 #define RandomNumber(From, To) (From + (arc4random() % (To - From + 1)))
 
+#define NodeVote(role, address) [NSString stringWithFormat:@"{\"method\":\"vote\",\"params\":{\"role\":\"%@\",\"address\":\"%@\"}}", role, address]
+
 #define DposUnVote(role, address) [NSString stringWithFormat:@"{\"method\":\"unVote\",\"params\":{\"role\":\"%@\",\"address\":\"%@\"}}", role, address]
 #define DopsRevoke @"{\"method\":\"revoke\"}"
 #define DopsSubscribe(shares) [NSString stringWithFormat:@"{\"method\":\"subscribe\",\"params\":{\"shares\":%@}}", shares]

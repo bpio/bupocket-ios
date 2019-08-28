@@ -37,6 +37,8 @@ NS_ASSUME_NONNULL_BEGIN
 @property (nonatomic, copy) NSString * support;
 @property (nonatomic, copy) NSString * shareStartTime;
 @property (nonatomic, copy) NSString * status;
+@property (nonatomic, copy) NSString * slogan;
+
 
 @property (nonatomic, copy) NSString * shortLink;
 @property (nonatomic, assign) CGFloat cellHeight;

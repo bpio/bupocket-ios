@@ -44,6 +44,13 @@
             [_promptBtn setImage:[UIImage imageNamed:@"PWPrompt"] forState:UIControlStateNormal];
             height = (H + ScreenScale(120));
         }
+        if (self.tipsType == TipsTypeChoice) {
+            NSString * sure = Localized(@"Confirm");
+            if ([title isEqualToString:Localized(@"WechatBindPrompt")]) {
+                sure = Localized(@"ImmediateBinding");
+            }
+            [self.sureBtn setTitle:sure forState:UIControlStateNormal];
+        }
         height = MIN(height, ScreenScale(360));
         self.bounds = CGRectMake(0, 0, Alert_Width, height);
     }
@@ -68,7 +75,7 @@
     [super layoutSubviews];
     
     CGFloat promptBtnY = (NotNULLString(self.promptStr)) ? Margin_10 : Margin_25;
-    CGFloat promptW = Alert_Width - Margin_50;
+    CGFloat promptW = Alert_Width - Margin_30;
 //    CGFloat promptBtnH = ScreenScale(35);
     CGFloat promptBtnH = _promptBtn.titleLabel.size.height;
     CGFloat scrollViewY = promptBtnY + promptBtnH + Margin_15;
@@ -115,7 +122,6 @@
         make.height.mas_equalTo(LINE_WIDTH);
     }];
     if (self.tipsType == TipsTypeChoice) {
-        [self.sureBtn setTitle:Localized(@"Confirm") forState:UIControlStateNormal];
         UIButton * cancel = [UIButton createButtonWithTitle:Localized(@"Cancel") TextFont:Alert_Button_Font TextNormalColor:Alert_Button_Color TextSelectedColor:Alert_Button_Color Target:self Selector:@selector(cancleBtnClick)];
         [self addSubview:cancel];
         [cancel mas_makeConstraints:^(MASConstraintMaker *make) {
@@ -141,7 +147,7 @@
         [_promptBtn setTitleColor:TITLE_COLOR forState:UIControlStateNormal];
         _promptBtn.titleLabel.numberOfLines = 0;
         [_promptBtn setTitle:self.title forState:UIControlStateNormal];
-        CGSize maximumSize = CGSizeMake(Alert_Width - Margin_50, CGFLOAT_MAX);
+        CGSize maximumSize = CGSizeMake(Alert_Width - Margin_30, CGFLOAT_MAX);
         CGSize expectSize = [_promptBtn.titleLabel sizeThatFits:maximumSize];
         _promptBtn.titleLabel.size = CGSizeMake(expectSize.width, expectSize.height + Margin_15);
     }
@@ -167,7 +173,7 @@
     [prompt setAttributedTitle:[self getAttrWithInfoStr:title] forState:UIControlStateNormal];
     prompt.titleLabel.numberOfLines = 0;
     prompt.contentHorizontalAlignment = UIControlContentHorizontalAlignmentLeft;
-    CGSize maximumSize = CGSizeMake(Alert_Width - Margin_50, CGFLOAT_MAX);
+    CGSize maximumSize = CGSizeMake(Alert_Width - Margin_30, CGFLOAT_MAX);
     CGSize expectSize = [prompt.titleLabel sizeThatFits:maximumSize];
     prompt.size = expectSize;
     return prompt;

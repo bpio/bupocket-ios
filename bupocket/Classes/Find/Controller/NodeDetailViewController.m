@@ -18,6 +18,7 @@
 #import "BottomConfirmAlertView.h"
 #import "NodeDataModel.h"
 #import "StatusUpdateModel.h"
+#import "NodeVotingAlertView.h"
 
 @interface NodeDetailViewController ()<UITableViewDelegate, UITableViewDataSource, WKNavigationDelegate, WKUIDelegate, YBPopupMenuDelegate>
 
@@ -86,7 +87,15 @@ static NSString * const StatusID = @"StatusID";
             self.titleArray = @[Localized(@"NodeData"), Localized(@"NodeIntroduction"), Localized(@"StatusUpdate")];
             self.nodeDataModel = [NodeDataModel mj_objectWithKeyValues:responseObject[@"data"][@"nodeData"]];
             self.statusArray = [StatusUpdateModel mj_objectArrayWithKeyValuesArray:responseObject[@"data"][@"nodeInfo"][@"timeline"]];
-            self.nodeData = @[@[Localized(@"NodeEquityValue"), Localized(@"CampaignBond(BU)"), Localized(@"AccumulatedAward(BU)"), Localized(@"AwardSharingRatioForVotingUsers"), Localized(@"Vote"), Localized(@"My vote")], @[self.nodeDataModel.equityValue, self.nodeDataModel.deposit, self.nodeDataModel.totalRewardAmount, [NSString stringWithFormat:@"%@%%", self.nodeDataModel.ratio], self.nodeDataModel.totalVoteCount, self.nodePlanModel.myVoteCount]];
+            NSString * vote = Localized(@"Votes");
+            if ([self.nodePlanModel.nodeVote longLongValue] < 2) {
+                vote = Localized(@"Vote");
+            }
+            NSString * myVote = Localized(@"My votes");
+            if ([self.nodePlanModel.myVoteCount longLongValue] < 2) {
+                myVote = Localized(@"My vote");
+            }
+            self.nodeData = @[@[Localized(@"NodeEquityValue"), Localized(@"CampaignBond(BU)"), Localized(@"AccumulatedAward(BU)"), Localized(@"AwardSharingRatioForVotingUsers"), vote, myVote], @[self.nodeDataModel.equityValue, self.nodeDataModel.deposit, self.nodeDataModel.totalRewardAmount, [NSString stringWithFormat:@"%@%%", self.nodeDataModel.ratio], self.nodePlanModel.nodeVote, self.nodePlanModel.myVoteCount]];
 //            self.nodePlanModel = [NodePlanModel mj_objectWithKeyValues:responseObject[@"data"]];
             NSString * introduce = responseObject[@"data"][@"nodeInfo"][@"introduce"];
             if ([self.nodePlanModel.identityType isEqualToString:@"2"]) {
@@ -97,7 +106,7 @@ static NSString * const StatusID = @"StatusID";
             }
             [self.tableView reloadData];
         } else {
-            [MBProgressHUD showTipMessageInWindow:[ErrorTypeTool getDescriptionWithNodeErrorCode:code]];
+            [MBProgressHUD showTipMessageInWindow:[ErrorTypeTool getDescriptionWithErrorCode:code]];
         }
         [self.tableView.mj_header endRefreshing];
         self.noNetWork.hidden = YES;
@@ -150,7 +159,26 @@ static NSString * const StatusID = @"StatusID";
 }
 - (void)voteAction:(UIButton *)button
 {
+    if ([self.nodePlanModel.status integerValue] != NodeStatusSuccess) {
+        NSString * status;
+        if ([self.nodePlanModel.status integerValue] == NodeStatusExit) {
+            status = Localized(@"NodeStatusExiting");
+        } else if ([self.nodePlanModel.status integerValue] == NodeStatusQuit) {
+            status = Localized(@"NodeStatusExited");
+        }
+        [Encapsulation showAlertControllerWithMessage:status handler:nil];
+        return;
+    }
+    NodeVotingAlertView * alertView = [[NodeVotingAlertView alloc] initWithVoteConfrimBolck:^(NSString * _Nonnull text) {
+        dispatch_after(dispatch_time(DISPATCH_TIME_NOW, (int64_t)(Dispatch_After_Time * NSEC_PER_SEC)), dispatch_get_main_queue(), ^{
+            [self showConfirmAlertWithTitle:button.titleLabel.text amount:text];
+        });
+    } cancelBlock:^{
+        
+    }];
+    [alertView showInWindowWithMode:CustomAnimationModeNone inView:nil bgAlpha:AlertBgAlpha needEffectView:NO];
 }
+
 - (UIProgressView *)progressView{
     if (!_progressView) {
         _progressView = [[UIProgressView alloc]initWithProgressViewStyle:UIProgressViewStyleDefault];
@@ -334,35 +362,55 @@ static NSString * const StatusID = @"StatusID";
 {
     NSString * title = ybPopupMenu.titles[index];
     if ([title isEqualToString:Localized(@"CancellationOfVotes")]) {
-        [self cancellationVotes];
+        [self cancellationVotes:title];
     } else if ([title isEqualToString: Localized(@"OperationalRecords")]) {
         VotingRecordsViewController * VC = [[VotingRecordsViewController alloc] init];
         VC.nodePlanModel = self.nodePlanModel;
         [self.navigationController pushViewController:VC animated:YES];
     }
 }
-- (void)cancellationVotes
+- (void)cancellationVotes:(NSString *)title
 {
     if ([self.nodePlanModel.myVoteCount isEqualToString:@"0"]) {
         [Encapsulation showAlertControllerWithMessage:Localized(@"IrrevocableVotes") handler:nil];
         return;
     }
-    ConfirmTransactionModel * confirmTransactionModel = [[ConfirmTransactionModel alloc] init];
-    confirmTransactionModel.qrRemark = [NSString stringWithFormat:Localized_Language(@"Number of votes revoked on '%@'", ZhHans), self.nodePlanModel.nodeName];
-    confirmTransactionModel.qrRemarkEn = [NSString stringWithFormat:Localized_Language(@"Number of votes revoked on '%@'", EN), self.nodePlanModel.nodeName];
-    confirmTransactionModel.destAddress = self.contractAddress;
-    confirmTransactionModel.accountTag = self.accountTag;
-    confirmTransactionModel.accountTagEn = self.accountTagEn;
-    confirmTransactionModel.amount = @"0";
+    [self showConfirmAlertWithTitle:title amount:@"0"];
+}
+- (void)showConfirmAlertWithTitle:(NSString *)title amount:(NSString *)amount
+{
+    NSString * qrRemark;
+    NSString * qrRemarkEn;
+    NSString * script;
     NSString * role;
+    NSString * type;
     if ([self.nodePlanModel.identityType integerValue] == NodeIDTypeConsensus) {
         role = Role_validator;
     } else if ([self.nodePlanModel.identityType integerValue] == NodeIDTypeEcological) {
         role = Role_kol;
     }
-    confirmTransactionModel.script = DposUnVote(role, self.nodePlanModel.nodeCapitalAddress);
+    
+    if ([title isEqualToString:Localized(@"CancellationOfVotes")]) {
+        qrRemark = [NSString stringWithFormat:Localized_Language(@"Number of votes revoked on '%@'", ZhHans), self.nodePlanModel.nodeName];
+        qrRemarkEn = [NSString stringWithFormat:Localized_Language(@"Number of votes revoked on '%@'", EN), self.nodePlanModel.nodeName];
+        script = DposUnVote(role, self.nodePlanModel.nodeCapitalAddress);
+        type = [NSString stringWithFormat:@"%zd", TransactionTypeNodeWithdrawal];
+    } else if ([title isEqualToString:Localized(@"I want to vote")]) {
+        qrRemark = [NSString stringWithFormat:Localized_Language(@"Vote for '%@'%@", ZhHans), self.nodePlanModel.nodeName, amount];
+        qrRemarkEn = [NSString stringWithFormat:Localized_Language(@"Vote for '%@'%@", EN), self.nodePlanModel.nodeName, amount];
+        script = NodeVote(role, self.nodePlanModel.nodeCapitalAddress);
+        type = [NSString stringWithFormat:@"%zd", TransactionTypeVote];
+    }
+    ConfirmTransactionModel * confirmTransactionModel = [[ConfirmTransactionModel alloc] init];
+    confirmTransactionModel.qrRemark = qrRemark;
+    confirmTransactionModel.qrRemarkEn = qrRemarkEn;
+    confirmTransactionModel.destAddress = self.contractAddress;
+    confirmTransactionModel.accountTag = self.accountTag;
+    confirmTransactionModel.accountTagEn = self.accountTagEn;
+    confirmTransactionModel.amount = amount;
+    confirmTransactionModel.script = script;
     confirmTransactionModel.nodeId = self.nodePlanModel.nodeId;
-    confirmTransactionModel.type = [NSString stringWithFormat:@"%zd", TransactionTypeNodeWithdrawal];
+    confirmTransactionModel.type = type;
     BottomConfirmAlertView * confirmAlertView = [[BottomConfirmAlertView alloc] initWithIsShowValue:NO handlerType:HandlerTypeTransferDpos confirmModel:confirmTransactionModel confrimBolck:^{
     } cancelBlock:^{
         
@@ -397,7 +445,7 @@ static NSString * const StatusID = @"StatusID";
             }];
             [alertView showInWindowWithMode:CustomAnimationModeShare inView:nil bgAlpha:AlertBgAlpha needEffectView:NO];
         } else {
-            [MBProgressHUD showTipMessageInWindow:[ErrorTypeTool getDescriptionWithNodeErrorCode:code]];
+            [MBProgressHUD showTipMessageInWindow:[ErrorTypeTool getDescriptionWithErrorCode:code]];
         }
     } failure:^(NSError *error) {
     }];

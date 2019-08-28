@@ -87,6 +87,7 @@
 		9503116A2313D37F000AAC99 /* StatusViewCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 950311692313D37F000AAC99 /* StatusViewCell.m */; };
 		9503116D23150BF6000AAC99 /* NodeDataModel.m in Sources */ = {isa = PBXBuildFile; fileRef = 9503116C23150BF6000AAC99 /* NodeDataModel.m */; };
 		9503117323150CC0000AAC99 /* StatusUpdateModel.m in Sources */ = {isa = PBXBuildFile; fileRef = 9503117223150CC0000AAC99 /* StatusUpdateModel.m */; };
+		95031176231617A5000AAC99 /* NodeVotingAlertView.m in Sources */ = {isa = PBXBuildFile; fileRef = 95031175231617A5000AAC99 /* NodeVotingAlertView.m */; };
 		950E4145219E6ADD002C7900 /* AssetCurrencyModel.m in Sources */ = {isa = PBXBuildFile; fileRef = 950E4144219E6ADD002C7900 /* AssetCurrencyModel.m */; };
 		950EF2A3219D801300F5121A /* MonetaryUnitViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 950EF2A2219D801300F5121A /* MonetaryUnitViewController.m */; };
 		9510A3CC219A91D4007A49A4 /* ErrorTypeTool.m in Sources */ = {isa = PBXBuildFile; fileRef = 9510A3CB219A91D4007A49A4 /* ErrorTypeTool.m */; };
@@ -397,6 +398,8 @@
 		9503116C23150BF6000AAC99 /* NodeDataModel.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = NodeDataModel.m; sourceTree = "<group>"; };
 		9503117123150CC0000AAC99 /* StatusUpdateModel.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = StatusUpdateModel.h; sourceTree = "<group>"; };
 		9503117223150CC0000AAC99 /* StatusUpdateModel.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = StatusUpdateModel.m; sourceTree = "<group>"; };
+		95031174231617A5000AAC99 /* NodeVotingAlertView.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = NodeVotingAlertView.h; sourceTree = "<group>"; };
+		95031175231617A5000AAC99 /* NodeVotingAlertView.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = NodeVotingAlertView.m; sourceTree = "<group>"; };
 		950E4143219E6ADD002C7900 /* AssetCurrencyModel.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = AssetCurrencyModel.h; sourceTree = "<group>"; };
 		950E4144219E6ADD002C7900 /* AssetCurrencyModel.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = AssetCurrencyModel.m; sourceTree = "<group>"; };
 		950EF2A1219D801300F5121A /* MonetaryUnitViewController.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = MonetaryUnitViewController.h; sourceTree = "<group>"; };
@@ -1301,6 +1304,8 @@
 				95266CC7226F062E002CD915 /* NodePlanViewCell.m */,
 				95266CC1226F062E002CD915 /* VotingRecordsViewCell.h */,
 				95266CCA226F062E002CD915 /* VotingRecordsViewCell.m */,
+				95031174231617A5000AAC99 /* NodeVotingAlertView.h */,
+				95031175231617A5000AAC99 /* NodeVotingAlertView.m */,
 				95266CC3226F062E002CD915 /* SharingCanvassingAlertView.h */,
 				95266CCC226F062E002CD915 /* SharingCanvassingAlertView.m */,
 				95266CC2226F062E002CD915 /* LinkAlertView.h */,
@@ -1808,6 +1813,7 @@
 				95266CCD226F062E002CD915 /* NodePlanViewController.m in Sources */,
 				95179FBE22F525130094E750 /* NSTimer+CFNoCycleRetain.m in Sources */,
 				95D92D9822BB85E600AFC8C2 /* VersionLogViewController.m in Sources */,
+				95031176231617A5000AAC99 /* NodeVotingAlertView.m in Sources */,
 				83B594B72175FC8B009F91BA /* BackupMnemonicsViewController.m in Sources */,
 				95266CD4226F062E002CD915 /* AdsModel.m in Sources */,
 				9513639022B8B83A00BF8DF5 /* CreateViewController.m in Sources */,

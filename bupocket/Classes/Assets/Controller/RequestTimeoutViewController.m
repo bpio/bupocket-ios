@@ -139,7 +139,7 @@
                 self.adImage.hidden = YES;
             }
         } else {
-            [MBProgressHUD showTipMessageInWindow:[ErrorTypeTool getDescriptionWithNodeErrorCode:code]];
+            [MBProgressHUD showTipMessageInWindow:[ErrorTypeTool getDescriptionWithErrorCode:code]];
         }
         self.noNetWork.hidden = YES;
     } failure:^(NSError *error) {

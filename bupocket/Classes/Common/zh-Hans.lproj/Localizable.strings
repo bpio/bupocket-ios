@@ -95,9 +95,13 @@
 "UserProtocol" = "用户协议";
 "Feedback" = "意见反馈";
 "AboutUs" = "关于我们";
-
+// 绑定微信
+"WechatBindPrompt" = "需绑定微信后，方可使用此功能。";
 "ImmediateBinding" = "立即绑定";
 "Binded" = "已绑定";
+"WechatBoundSuccess" = "微信绑定成功";
+"IdentityBound" = "当前身份地址已被绑定";
+"WechatBound" = "当前微信已被绑定，请更换";
 
 "Setting" = "设置";
 "AddressBook" = "地址簿";
@@ -526,6 +530,12 @@
 "StatusUpdate" = "状态更新";
 "I want to vote" = "我要投票";
 "SharingRatioInfo" = "竞选节点自定义设置对投票用户的奖励比例";
+"NodeVoting" = "节点投票";
+"NumberOfVotes" = "投票数量（请确认投票数是10的倍数）";
+"NumberOfVotesPrompt" = "请输入投票数量";
+"Number %@ BU" = "数量：%@ BU";
+"ConfirmVote" = "确认投票";
+"Vote for '%@'%@" = "投票给\"%@\"%@票";
 // 投票记录
 "Throw" = "投";
 "withdraw" = "撤";
@@ -650,8 +660,8 @@
 "InitiatorAddressUnavailable" = "不是该节点发起者，无法使用该操作";
 "InitiatorCanNotSupport" = "节点共建项目发起者不能参与支持";
 "NonRepeatableWithdrawal" = "您已成功撤回，不能重复操作";
-"NodeStatusExiting" = "当前节点处于\"退出中\"状态，暂不支持邀请投票";
-"NodeStatusExited" = "当前节点处于\"已退出\"状态，暂不支持邀请投票";
+"NodeStatusExiting" = "当前节点处于\"退出中\"状态，暂不支持投票操作";
+"NodeStatusExited" = "当前节点处于\"已退出\"状态，暂不支持投票操作";
 "NotSupportedOperation" = "暂不支持该操作";
 // share
 "WXAppUninstalled" = "请下载微信后使用";

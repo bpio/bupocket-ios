@@ -45,7 +45,8 @@ static NSString * const DetailSubtitleCellID = @"DetailSubtitleCellID";
         [self.contentView addSubview:self.listBg];
         
         CGFloat borderRadius;
-        NSString * walletImageName;
+//        NSString * walletImageName;
+        UIImage * icon;
         UIFont * walletNameFont = self.walletName.font;
         UIColor * walletAddressColor = self.walletAddress.textColor;
         UIFont * walletAddressFont = self.walletAddress.font;
@@ -53,18 +54,28 @@ static NSString * const DetailSubtitleCellID = @"DetailSubtitleCellID";
         if ([reuseIdentifier isEqualToString:NormalSubtitleCellID]) {
             self.walletImageWH = ScreenScale(70);
             borderRadius = self.walletImageWH * 0.5;
-            walletImageName = [[[AccountTool shareTool] account] walletIconName] == nil ? Current_Wallet_IconName : [[[AccountTool shareTool] account] walletIconName];
+            NSUserDefaults * defaults = [NSUserDefaults standardUserDefaults];
+            BOOL isBind = [defaults boolForKey:If_Wechat_Binded];
+//            NSData * imageData = [defaults objectForKey:Wechat_Image];
+            if (isBind) {
+//                icon = [UIImage imageWithData:imageData];
+                icon = [UIImage imageNamed:@"icon_placehoder"];
+            } else {
+                NSString * walletImageName = [[[AccountTool shareTool] account] walletIconName] == nil ? Current_Wallet_IconName : [[[AccountTool shareTool] account] walletIconName];
+                icon = [UIImage imageNamed:walletImageName];
+            }
 //            cell.walletImage.image = [UIImage imageNamed:walletIconName];
         } else if ([reuseIdentifier isEqualToString:DetailSubtitleCellID]) {
             self.walletImageWH = Margin_50;
             borderRadius = self.walletImageWH * 0.5;
-            walletImageName = @"icon_placehoder";
+            icon = [UIImage imageNamed:@"icon_placehoder"];
             walletNameFont = FONT_Bold(15);
             walletAddressFont = FONT(12);
         } else {
             self.walletImageWH = Margin_40;
             borderRadius = MAIN_CORNER;
-            walletImageName = CurrentWalletIconName ? CurrentWalletIconName : Current_Wallet_IconName;
+            NSString * walletImageName = CurrentWalletIconName ? CurrentWalletIconName : Current_Wallet_IconName;
+            icon = [UIImage imageNamed:walletImageName];
             if (![reuseIdentifier isEqualToString:ManageSubtitleCellID]) {
                 [self.listBg setViewSize:CGSizeMake(View_Width_Main, ScreenScale(85)) borderRadius:BG_CORNER corners:UIRectCornerAllCorners];                
             }
@@ -76,7 +87,7 @@ static NSString * const DetailSubtitleCellID = @"DetailSubtitleCellID";
         [self.listBg addSubview:self.manage];
         [self.listBg addSubview:self.detailImage];
         [_walletImage setViewSize:CGSizeMake(self.walletImageWH, self.walletImageWH) borderWidth:0 borderColor:nil borderRadius:borderRadius];
-        _walletImage.image = [UIImage imageNamed:walletImageName];
+        _walletImage.image = icon;
         self.walletName.font = walletNameFont;
         self.walletAddress.textColor = walletAddressColor;
         self.walletAddress.font = walletAddressFont;

@@ -19,6 +19,8 @@ typedef NS_ENUM(NSInteger, ErrorType) {
     ErrorTypeTxHash = 100013, // Invalid transaction hash
     ErrorTypePurseAddress = 100008, // Illegal wallet address
     ErrorTypeContactExisted = 100055,
+    ErrorTypeIdentityBound = 100025,
+    ErrorTypeWechatBound = 100026,
 };
 
 // SDK Error type
@@ -50,9 +52,6 @@ typedef NS_ENUM(NSInteger, NodeErrorCode) {
 
 // Error type
 + (NSString *)getDescriptionWithErrorCode:(NSInteger)errorCode;
-
-// Node Error type
-+ (NSString *)getDescriptionWithNodeErrorCode:(NSInteger)errorCode;
 
 @end
 

@@ -38,7 +38,6 @@ static NSString * const NodeDetailID = @"NodeDetailID";
             [self.listBg addSubview:self.bottomBg];
 //            [self setupMoreOperations];
         }
-        self.slogan.text = @"一句话竞选口号 我要成为超级节点";
         self.backgroundColor = self.contentView.superview.backgroundColor;
     }
     return self;
@@ -287,6 +286,7 @@ static NSString * const NodeDetailID = @"NodeDetailID";
     } else if ([nodePlanModel.identityType integerValue] == NodeIDTypeEcological) {
         self.nodeType.text = Localized(@"EcologicalNodes");
     }
+    self.slogan.text = nodePlanModel.slogan;
     NSString * vote = Localized(@"Votes");
     if ([nodePlanModel.nodeVote longLongValue] < 2) {
         vote = Localized(@"Vote");

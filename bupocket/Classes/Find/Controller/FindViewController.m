@@ -69,7 +69,7 @@
             [[DataBase shareDataBase] deleteCachedDataWithCacheType:CacheTypeFindBanner];
             [[DataBase shareDataBase] saveDataWithArray:array cacheType:CacheTypeFindBanner];
         } else {
-            [MBProgressHUD showTipMessageInWindow:[ErrorTypeTool getDescriptionWithNodeErrorCode:code]];
+            [MBProgressHUD showTipMessageInWindow:[ErrorTypeTool getDescriptionWithErrorCode:code]];
         }
         [self.tableView.mj_header endRefreshing];
     } failure:^(NSError *error) {

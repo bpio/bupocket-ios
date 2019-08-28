@@ -49,6 +49,13 @@
     [super viewDidLoad];
     [self setupView];
     [self getWechatBindWithURL:Binding_Wechat_Status wxCode:@""];
+    NSUserDefaults * defaults = [NSUserDefaults standardUserDefaults];
+    BOOL isBind = [defaults boolForKey:If_Wechat_Binded];
+    if (!isBind) {
+        [Encapsulation showAlertControllerWithTitle:Localized(@"WechatBindPrompt") message:nil confirmHandler:^{
+            [self bindingWechat];
+        }];
+    }
     // Do any additional setup after loading the view.
 }
 - (void)viewWillAppear:(BOOL)animated {
@@ -67,6 +74,7 @@
         self.navigationItem.leftBarButtonItem = nil;
     }
     [self.tableView reloadData];
+    
 }
 - (void)viewWillDisappear:(BOOL)animated {
     [super viewWillDisappear:animated];
@@ -76,25 +84,35 @@
 - (void)getWechatBindWithURL:(NSString *)URL wxCode:(NSString *)wxCode
 {
     NSUserDefaults * defaults = [NSUserDefaults standardUserDefaults];
-    if ([URL isEqualToString:Binding_Wechat_Status] && [defaults objectForKey:If_Wechat_Binded]) return;
+//    [defaults removeObjectForKey:If_Wechat_Binded];
+//    if ([URL isEqualToString:Binding_Wechat_Status] && [defaults objectForKey:Wechat_Image]) return;
     [[HTTPManager shareManager] getBindingWechatDataWithURL:URL wxCode:wxCode success:^(id responseObject) {
         NSInteger code = [[responseObject objectForKey:@"errCode"] integerValue];
         if (code == Success_Code) {
             NSDictionary * dataDic = [responseObject objectForKey:@"data"];
+            NSString * imageUrl;
             if ([URL isEqualToString:Binding_Wechat_Status]) {
                 // 已绑定 头像返回
-                self.bindingBtn.hidden = NO;
-                NSString * isBind = [NSString stringWithFormat:@"%@", dataDic[@"isBindWx"]];
-                DLog(@"是否绑定：%@", isBind);
-                [defaults setObject:isBind forKey:If_Wechat_Binded];
-                self.bindingBtn.selected = [dataDic[@"isBindWx"] integerValue];
+                BOOL isBind = [dataDic[@"isBindWx"] integerValue];
+                DLog(@"是否绑定：%d", isBind);
+                [defaults setBool:isBind forKey:If_Wechat_Binded];
+                self.bindingBtn.selected = isBind;
+                imageUrl = dataDic[@"wxInfo"][@"headImgUrl"];
             } else if ([URL isEqualToString:Binding_Wechat]) {
                 self.bindingBtn.selected = YES;
-                [defaults setObject:@"1" forKey:If_Wechat_Binded];
-                [self.IDIcon sd_setImageWithURL:[NSURL URLWithString:dataDic[@"wxHeadImgUrl"]] placeholderImage:self.IDIcon.image];
+                [defaults setBool:YES forKey:If_Wechat_Binded];
+                imageUrl = dataDic[@"wxHeadImgUrl"];
+                [MBProgressHUD showTipMessageInWindow:Localized(@"WechatBoundSuccess")];
             }
+            if (self.bindingBtn.selected == YES) {
+                NSData * imageData = [NSData dataWithContentsOfURL:[NSURL URLWithString:imageUrl]];
+                UIImage * image = [UIImage imageWithData:imageData];
+                self.IDIcon.image = image;
+//                [defaults setObject:imageData forKey:Wechat_Image];
+            }
+            [defaults synchronize];
         } else {
-            [MBProgressHUD showTipMessageInWindow:[ErrorTypeTool getDescriptionWithNodeErrorCode:code]];
+            [MBProgressHUD showTipMessageInWindow:[ErrorTypeTool getDescriptionWithErrorCode:code]];
         }
 //        [self.tableView.mj_header endRefreshing];
     } failure:^(NSError *error) {
@@ -208,13 +226,8 @@
             [cell.detail setTitleColor:COLOR_9 forState:UIControlStateSelected];
             self.bindingBtn = cell.detail;
             NSUserDefaults * defaults = [NSUserDefaults standardUserDefaults];
-            NSString * isBind = [defaults objectForKey:If_Wechat_Binded];
-            if (isBind) {
-                self.bindingBtn.selected = [isBind integerValue];
-                self.bindingBtn.hidden = NO;
-            } else {
-                self.bindingBtn.hidden = YES;
-            }
+            BOOL isBind = [defaults boolForKey:If_Wechat_Binded];
+            self.bindingBtn.selected = isBind;
         }
         [cell.listImage setImage:[UIImage imageNamed:imageName] forState:UIControlStateNormal];
         cell.selectionStyle = UITableViewCellSelectionStyleNone;
@@ -287,6 +300,7 @@
 - (void)wxSendAuthResponse:(SendAuthResp *)resp {
     if (resp.errCode == 0) {
         //获取授权成功
+        DLog(@"授权code：%@", resp.code);
         [self getWechatBindWithURL:Binding_Wechat wxCode:resp.code];
 //        [self getWeChatTokenThenGetUserInfoWithCode:resp.code];
     } else if (resp.errCode == -4) {

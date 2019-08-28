@@ -385,7 +385,7 @@
             VC.promptStr = Localized(@"RefreshQRCode");
             [self.navigationController pushViewController:VC animated:YES];
         } else {
-            [Encapsulation showAlertControllerWithMessage:[ErrorTypeTool getDescriptionWithNodeErrorCode:code] handler:nil];
+            [Encapsulation showAlertControllerWithMessage:[ErrorTypeTool getDescriptionWithErrorCode:code] handler:nil];
         }
     } failure:^(NSError *error) {
         
@@ -696,7 +696,7 @@
             VC.promptStr = Localized(@"RefreshQRCode");
             [self.navigationController pushViewController:VC animated:YES];
         } else {
-            [Encapsulation showAlertControllerWithMessage:[ErrorTypeTool getDescriptionWithNodeErrorCode:code] handler:nil];
+            [Encapsulation showAlertControllerWithMessage:[ErrorTypeTool getDescriptionWithErrorCode:code] handler:nil];
         }
     } failure:^(NSError *error) {
 

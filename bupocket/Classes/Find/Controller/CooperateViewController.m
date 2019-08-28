@@ -65,7 +65,7 @@ static NSString * const CooperateCellID = @"CooperateCellID";
             [[DataBase shareDataBase] deleteCachedDataWithCacheType:CacheTypeCooperateList];
             [[DataBase shareDataBase] saveDataWithArray:array cacheType:CacheTypeCooperateList];
         } else {
-            [MBProgressHUD showTipMessageInWindow:[ErrorTypeTool getDescriptionWithNodeErrorCode:code]];
+            [MBProgressHUD showTipMessageInWindow:[ErrorTypeTool getDescriptionWithErrorCode:code]];
         }
         [self reloadUI];
     } failure:^(NSError *error) {

@@ -283,6 +283,8 @@
         _total.layer.shadowOffset = CGSizeMake(-ScreenScale(12), 0);
         _total.layer.shadowOpacity = 0.1;
         _total.layer.shadowColor = COLOR(@"656565").CGColor;
+        _total.contentEdgeInsets = UIEdgeInsetsMake(0, Margin_Main, 0, Margin_Main);
+        _total.contentHorizontalAlignment = UIControlContentHorizontalAlignmentLeft;
     }
     return _total;
 }

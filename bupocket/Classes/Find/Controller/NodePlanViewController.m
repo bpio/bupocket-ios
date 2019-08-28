@@ -109,7 +109,7 @@ static NSString * const NodePlanCellID = @"NodePlanCellID";
             [[DataBase shareDataBase] saveDataWithArray:array cacheType:CacheTypeNodeList];
             [self setNodeData];
         } else {
-            [MBProgressHUD showTipMessageInWindow:[ErrorTypeTool getDescriptionWithNodeErrorCode:code]];
+            [MBProgressHUD showTipMessageInWindow:[ErrorTypeTool getDescriptionWithErrorCode:code]];
         }
         [self reloadUI];
     } failure:^(NSError *error) {
@@ -433,7 +433,7 @@ static NSString * const NodePlanCellID = @"NodePlanCellID";
                 [Encapsulation showAlertControllerWithMessage:[NSString stringWithFormat:Localized(@"NotSubmitted%@"), [DateTool getTimeIntervalWithStr:dateStr]] handler:nil];
             }
         } else {
-            [Encapsulation showAlertControllerWithMessage:[ErrorTypeTool getDescriptionWithNodeErrorCode:code] handler:nil];
+            [Encapsulation showAlertControllerWithMessage:[ErrorTypeTool getDescriptionWithErrorCode:code] handler:nil];
         }
         
     } failure:^(NSError *error) {
