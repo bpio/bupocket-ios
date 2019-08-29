@@ -291,7 +291,9 @@ static NSString * const StatusID = @"StatusID";
         return cell;
     } else {
         StatusCellType cellType;
-        if (indexPath.row == 0) {
+        if (self.statusArray.count == 1) {
+            cellType = StatusCellTypeNormal;
+        } else if (indexPath.row == 0) {
             cellType = StatusCellTypeTop;
         } else if (indexPath.row == self.statusArray.count - 1) {
             cellType = StatusCellTypeBottom;
@@ -327,7 +329,7 @@ static NSString * const StatusID = @"StatusID";
         if ([language hasPrefix:ZhHans]) {
             width = ScreenScale(120);
         } else {
-            width = ScreenScale(165);
+            width = ScreenScale(175);
         }
         sender = self.moreBtn.imageView;
         sender.height = Margin_15;

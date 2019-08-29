@@ -40,6 +40,7 @@
     [super viewDidLoad];
     self.listArray = @[@[Localized(@"NodePlan"), Localized(@"JointlyCooperate")], @[Localized(@"Information")], @[Localized(@"YoPin")]];
     [self setupView];
+    [self getCacheData];
     [self setupRefresh];
     // Do any additional setup after loading the view.
 }
@@ -59,7 +60,6 @@
 }
 - (void)getData
 {
-    [self getCacheData];
     [[HTTPManager shareManager] getBannerAdsDataWithSuccess:^(id responseObject) {
         NSInteger code = [[responseObject objectForKey:@"errCode"] integerValue];
         if (code == Success_Code) {

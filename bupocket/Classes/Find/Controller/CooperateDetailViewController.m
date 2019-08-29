@@ -22,6 +22,7 @@
 
 #import "CooperateDetailViewCell.h"
 #import "InfoViewCell.h"
+#import "InfoModel.h"
 
 @interface CooperateDetailViewController ()<UITableViewDelegate, UITableViewDataSource>
 
@@ -37,6 +38,7 @@
 @property (nonatomic, strong) UIButton * redemptionAllSupport;
 @property (nonatomic, strong) UIButton * signOut;
 @property (nonatomic, strong) UIButton * support;
+@property (nonatomic, strong) InfoModel * infoModel;
 
 @end
 
@@ -54,6 +56,8 @@ static NSString * const CooperateDetailCellID = @"CooperateDetailCellID";
 - (void)viewDidLoad {
     [super viewDidLoad];
     self.navigationItem.title = Localized(@"JointlyCooperateDetail");
+    self.infoModel = [[InfoModel alloc] init];
+    self.infoModel.info = Localized(@"RiskStatementPrompt");
     [self setupView];
     [self setupRefresh];
     // Do any additional setup after loading the view.
@@ -399,10 +403,8 @@ static NSString * const CooperateDetailCellID = @"CooperateDetailCellID";
             return ScreenScale(35);
         }
     } else if (indexPath.section == 1) {
-//        CooperateDetailViewCell * cell = [tableView cellForRowAtIndexPath:indexPath];
-        return [Encapsulation getAttrHeightWithInfoStr:Localized(@"RiskStatementPrompt") width:Content_Width_Main];
-//        return ceil([Encapsulation getSizeSpaceLabelWithStr:Localized(@"RiskStatementPrompt") font:FONT(13) width:Content_Width_Main height:CGFLOAT_MAX lineSpacing:LINE_SPACING].height) + 1 + Margin_25;
-//        [Encapsulation rectWithText:self.riskStatement font:FONT(13) textWidth:DEVICE_WIDTH - Margin_30].size.height + Margin_20;
+//        return [Encapsulation getAttrHeightWithInfoStr:Localized(@"RiskStatementPrompt") width:Content_Width_Main];
+        return self.infoModel.cellHeight;
     } else {
         return ScreenScale(85);
     }
@@ -476,7 +478,7 @@ static NSString * const CooperateDetailCellID = @"CooperateDetailCellID";
         return cell;
     } else if (indexPath.section == 1) {
         InfoViewCell * cell = [InfoViewCell cellWithTableView:tableView cellType:CellTypeNormal];
-        cell.infoStr = Localized(@"RiskStatementPrompt");
+        cell.infoModel = self.infoModel;
         return cell;
     } else {
         AssetsDetailListViewCell * cell = [AssetsDetailListViewCell cellWithTableView:tableView];

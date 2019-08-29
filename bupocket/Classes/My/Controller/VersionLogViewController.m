@@ -52,6 +52,7 @@ static NSString * const VersionLogCellID = @"VersionLogCellID";
     [super viewDidLoad];
     self.navigationItem.title = Localized(@"VersionLog");
     [self setupView];
+    [self getCacheData];
     self.noNetWork = [Encapsulation showNoNetWorkWithSuperView:self.view target:self action:@selector(reloadData)];
     [self setupRefresh];
     // Do any additional setup after loading the view.
@@ -79,9 +80,6 @@ static NSString * const VersionLogCellID = @"VersionLogCellID";
 }
 - (void)getDataWithPageindex:(NSInteger)pageindex
 {
-    if (self.listArray.count == 0) {
-        [self getCacheData];
-    }
     [[HTTPManager shareManager] getVersionLogDataWithPageIndex:pageindex success:^(id responseObject) {
         NSInteger code = [[responseObject objectForKey:@"errCode"] integerValue];
         if (code == Success_Code) {

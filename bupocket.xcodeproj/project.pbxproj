@@ -88,6 +88,8 @@
 		9503116D23150BF6000AAC99 /* NodeDataModel.m in Sources */ = {isa = PBXBuildFile; fileRef = 9503116C23150BF6000AAC99 /* NodeDataModel.m */; };
 		9503117323150CC0000AAC99 /* StatusUpdateModel.m in Sources */ = {isa = PBXBuildFile; fileRef = 9503117223150CC0000AAC99 /* StatusUpdateModel.m */; };
 		95031176231617A5000AAC99 /* NodeVotingAlertView.m in Sources */ = {isa = PBXBuildFile; fileRef = 95031175231617A5000AAC99 /* NodeVotingAlertView.m */; };
+		950311792317812B000AAC99 /* InfoModel.m in Sources */ = {isa = PBXBuildFile; fileRef = 950311782317812A000AAC99 /* InfoModel.m */; };
+		9503117C23178193000AAC99 /* InfoViewCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 9503117B23178193000AAC99 /* InfoViewCell.m */; };
 		950E4145219E6ADD002C7900 /* AssetCurrencyModel.m in Sources */ = {isa = PBXBuildFile; fileRef = 950E4144219E6ADD002C7900 /* AssetCurrencyModel.m */; };
 		950EF2A3219D801300F5121A /* MonetaryUnitViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 950EF2A2219D801300F5121A /* MonetaryUnitViewController.m */; };
 		9510A3CC219A91D4007A49A4 /* ErrorTypeTool.m in Sources */ = {isa = PBXBuildFile; fileRef = 9510A3CB219A91D4007A49A4 /* ErrorTypeTool.m */; };
@@ -118,7 +120,6 @@
 		95179FE122F6CE250094E750 /* ActivityResultModel.m in Sources */ = {isa = PBXBuildFile; fileRef = 95179FE022F6CE250094E750 /* ActivityResultModel.m */; };
 		95179FE422F6D19D0094E750 /* ActivityInfoModel.m in Sources */ = {isa = PBXBuildFile; fileRef = 95179FE322F6D19D0094E750 /* ActivityInfoModel.m */; };
 		95179FE722F6DDC30094E750 /* ActivityAwardsModel.m in Sources */ = {isa = PBXBuildFile; fileRef = 95179FE622F6DDC30094E750 /* ActivityAwardsModel.m */; };
-		9519ED6D22E5883200A4AAC1 /* InfoViewCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 9519ED6C22E5883200A4AAC1 /* InfoViewCell.m */; };
 		9519ED7022E6A67E00A4AAC1 /* ChangePasswordViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 9519ED6F22E6A67E00A4AAC1 /* ChangePasswordViewController.m */; };
 		9519ED7622E8338F00A4AAC1 /* TransactionDetailsViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 9519ED7522E8338F00A4AAC1 /* TransactionDetailsViewController.m */; };
 		9519ED7922EAFA3800A4AAC1 /* TransactionViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 9519ED7822EAFA3800A4AAC1 /* TransactionViewController.m */; };
@@ -400,6 +401,10 @@
 		9503117223150CC0000AAC99 /* StatusUpdateModel.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = StatusUpdateModel.m; sourceTree = "<group>"; };
 		95031174231617A5000AAC99 /* NodeVotingAlertView.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = NodeVotingAlertView.h; sourceTree = "<group>"; };
 		95031175231617A5000AAC99 /* NodeVotingAlertView.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = NodeVotingAlertView.m; sourceTree = "<group>"; };
+		950311772317812A000AAC99 /* InfoModel.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = InfoModel.h; sourceTree = "<group>"; };
+		950311782317812A000AAC99 /* InfoModel.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = InfoModel.m; sourceTree = "<group>"; };
+		9503117A23178193000AAC99 /* InfoViewCell.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = InfoViewCell.h; sourceTree = "<group>"; };
+		9503117B23178193000AAC99 /* InfoViewCell.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = InfoViewCell.m; sourceTree = "<group>"; };
 		950E4143219E6ADD002C7900 /* AssetCurrencyModel.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = AssetCurrencyModel.h; sourceTree = "<group>"; };
 		950E4144219E6ADD002C7900 /* AssetCurrencyModel.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = AssetCurrencyModel.m; sourceTree = "<group>"; };
 		950EF2A1219D801300F5121A /* MonetaryUnitViewController.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = MonetaryUnitViewController.h; sourceTree = "<group>"; };
@@ -459,8 +464,6 @@
 		95179FE322F6D19D0094E750 /* ActivityInfoModel.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = ActivityInfoModel.m; sourceTree = "<group>"; };
 		95179FE522F6DDC30094E750 /* ActivityAwardsModel.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = ActivityAwardsModel.h; sourceTree = "<group>"; };
 		95179FE622F6DDC30094E750 /* ActivityAwardsModel.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = ActivityAwardsModel.m; sourceTree = "<group>"; };
-		9519ED6B22E5883200A4AAC1 /* InfoViewCell.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = InfoViewCell.h; sourceTree = "<group>"; };
-		9519ED6C22E5883200A4AAC1 /* InfoViewCell.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = InfoViewCell.m; sourceTree = "<group>"; };
 		9519ED6E22E6A67E00A4AAC1 /* ChangePasswordViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ChangePasswordViewController.h; sourceTree = "<group>"; };
 		9519ED6F22E6A67E00A4AAC1 /* ChangePasswordViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ChangePasswordViewController.m; sourceTree = "<group>"; };
 		9519ED7422E8338F00A4AAC1 /* TransactionDetailsViewController.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = TransactionDetailsViewController.h; sourceTree = "<group>"; };
@@ -1209,8 +1212,6 @@
 			children = (
 				95162FDD22C77A070024FD22 /* VoucherViewCell.h */,
 				95162FDE22C77A070024FD22 /* VoucherViewCell.m */,
-				9519ED6B22E5883200A4AAC1 /* InfoViewCell.h */,
-				9519ED6C22E5883200A4AAC1 /* InfoViewCell.m */,
 			);
 			path = View;
 			sourceTree = "<group>";
@@ -1293,6 +1294,8 @@
 				9503116C23150BF6000AAC99 /* NodeDataModel.m */,
 				9503117123150CC0000AAC99 /* StatusUpdateModel.h */,
 				9503117223150CC0000AAC99 /* StatusUpdateModel.m */,
+				950311772317812A000AAC99 /* InfoModel.h */,
+				950311782317812A000AAC99 /* InfoModel.m */,
 			);
 			path = Model;
 			sourceTree = "<group>";
@@ -1318,6 +1321,8 @@
 				95266CBD226F062E002CD915 /* NodeTransferSuccessViewCell.m */,
 				95266CE222703868002CD915 /* CooperateDetailViewCell.h */,
 				95266CE322703868002CD915 /* CooperateDetailViewCell.m */,
+				9503117A23178193000AAC99 /* InfoViewCell.h */,
+				9503117B23178193000AAC99 /* InfoViewCell.m */,
 				950311682313D37F000AAC99 /* StatusViewCell.h */,
 				950311692313D37F000AAC99 /* StatusViewCell.m */,
 			);
@@ -1803,7 +1808,6 @@
 				95179FCE22F55DC60094E750 /* RedEnvelopesInfo.m in Sources */,
 				83FB443921904AA400D68569 /* HMScanerCardViewController.m in Sources */,
 				95266CE0226F062E002CD915 /* SupportAlertView.m in Sources */,
-				9519ED6D22E5883200A4AAC1 /* InfoViewCell.m in Sources */,
 				9513639B22B8CCDF00BF8DF5 /* WalletModel.m in Sources */,
 				83379AC6217F3F4200C222A5 /* AssetsListModel.m in Sources */,
 				95179FDB22F697EC0094E750 /* KeyChainStore.m in Sources */,
@@ -1833,6 +1837,7 @@
 				9503116723138818000AAC99 /* NodeDetailViewController.m in Sources */,
 				95266CCE226F062E002CD915 /* CooperateViewController.m in Sources */,
 				83379A86217D9C8A00C222A5 /* AssetsDetailViewController.m in Sources */,
+				950311792317812B000AAC99 /* InfoModel.m in Sources */,
 				83379A92217DE12600C222A5 /* TransferResultsViewController.m in Sources */,
 				8372C8632174CBF100FF9506 /* TabBarViewController.m in Sources */,
 				9503116D23150BF6000AAC99 /* NodeDataModel.m in Sources */,
@@ -1858,6 +1863,7 @@
 				83379A6E2179CB9E00C222A5 /* FeedbackViewController.m in Sources */,
 				95162FD622C7548C0024FD22 /* VoucherViewController.m in Sources */,
 				83D5BCC72181BF9500BF1FF1 /* UIColor+Extension.m in Sources */,
+				9503117C23178193000AAC99 /* InfoViewCell.m in Sources */,
 				9510A3CC219A91D4007A49A4 /* ErrorTypeTool.m in Sources */,
 				95266CD5226F062E002CD915 /* CooperateModel.m in Sources */,
 				954371742199234100915BBE /* SettingViewController.m in Sources */,

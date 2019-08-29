@@ -46,11 +46,12 @@
         make.size.mas_equalTo(CGSizeMake(Margin_15, Margin_15));
     }];
     
-    [self.lineView mas_makeConstraints:^(MASConstraintMaker *make) {
-        make.centerX.equalTo(self.spot.mas_centerX);
-        make.width.mas_equalTo(LINE_WIDTH);
-    }];
-    
+    if (self.cellType != StatusCellTypeNormal) {
+        [self.lineView mas_makeConstraints:^(MASConstraintMaker *make) {
+            make.centerX.equalTo(self.spot.mas_centerX);
+            make.width.mas_equalTo(LINE_WIDTH);
+        }];
+    }
     if (self.cellType == StatusCellTypeTop) {
         [self.lineView mas_makeConstraints:^(MASConstraintMaker *make) {
             make.top.equalTo(self.spot.mas_centerY);
@@ -66,6 +67,7 @@
             make.bottom.equalTo(self.spot.mas_centerY);
         }];
     }
+    
     
     [self.title mas_makeConstraints:^(MASConstraintMaker *make) {
         make.left.equalTo(self.spot.mas_right).offset(Margin_10);
@@ -96,12 +98,15 @@
     if ([updateText containsString:@"\n"]) {
         self.title.text = @"";
         self.title.attributedText = [Encapsulation attrWithString:updateText preFont:FONT_TITLE preColor:MAIN_COLOR index:title.length sufFont:FONT_13 sufColor:COLOR_6 lineSpacing:Margin_5];
-        statusUpdateModel.cellHeight = [Encapsulation getSizeSpaceLabelWithStr:updateText font:FONT_TITLE width:width height:CGFLOAT_MIN lineSpacing:Margin_5].height + Margin_30;
+//        statusUpdateModel.cellHeight = [Encapsulation getSizeSpaceLabelWithStr:updateText font:FONT_TITLE width:width height:CGFLOAT_MIN lineSpacing:Margin_5].height + Margin_30;
     } else {
         self.title.text = updateText;
-        statusUpdateModel.cellHeight = [Encapsulation rectWithText:updateText font:FONT_13 textWidth:width].size.height + Margin_30;
+//        statusUpdateModel.cellHeight = [Encapsulation rectWithText:updateText font:FONT_13 textWidth:width].size.height + Margin_30;
     }
-    statusUpdateModel.cellHeight = MAX(ScreenScale(70), statusUpdateModel.cellHeight);
+    CGSize maximumSize = CGSizeMake(width, CGFLOAT_MAX);
+    CGSize expectSize = [self.title sizeThatFits:maximumSize];
+    self.title.size = expectSize;
+    statusUpdateModel.cellHeight = MAX(ScreenScale(70), expectSize.height + Margin_30);
     self.spot.selected = [statusUpdateModel.type integerValue];
 }
 - (UILabel *)date

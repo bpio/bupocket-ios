@@ -33,6 +33,11 @@ NS_ASSUME_NONNULL_BEGIN
 - (NSArray *)getCachedDataWithCacheType:(CacheDataType)cacheType;
 - (void)deleteCachedDataWithCacheType:(CacheDataType)cacheType;
 
+// Assest
+//- (void)saveAssestDataWithDic:(NSDictionary *)dic;
+//- (NSDictionary *)getAssestCachedData;
+//- (void)deleteAssestCachedData;
+
 // Transaction Details
 - (void)saveDetailDataWithCacheType:(CacheDataType)cacheType dic:(NSDictionary *)dic ID:(NSString *)ID;
 - (NSDictionary *)getDetailCachedDataWithCacheType:(CacheDataType)cacheType detailId:(NSString *)detailId;

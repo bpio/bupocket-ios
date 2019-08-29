@@ -191,8 +191,12 @@ static FMDatabase * _db;
     while (resultSet.next) {
         NSData * data = [resultSet objectForColumn:dbName];
         NSDictionary * dic = [NSKeyedUnarchiver unarchiveObjectWithData:data];
-        BaseModel * model = [self getDBModelWithCacheDataType:cacheType dic:dic];
-        [cacheArray addObject:model];
+        if (cacheType == CacheTypeAssets) {
+            [cacheArray addObject:dic];
+        } else {
+            BaseModel * model = [self getDBModelWithCacheDataType:cacheType dic:dic];
+            [cacheArray addObject:model];
+        }
     }
     [_db close];
     return cacheArray;
@@ -222,6 +226,45 @@ static FMDatabase * _db;
     NSString * currentCurrency = [AssetCurrencyModel getAssetCurrencyTypeWithAssetCurrency:[[defaults objectForKey:Current_Currency] integerValue]];
     return currentCurrency;
 }
+/*
+// Assest
+- (void)saveAssestDataWithDic:(NSDictionary *)dic
+{
+    [_db open];
+    NSString * dbName = [self getDBNameWithCacheDataType:CacheTypeAssets];
+    NSString * sql = [NSString stringWithFormat:@"INSERT INTO t_%@(network, currency, walletAddress, %@) VALUES (?, ?, ?, ?);", dbName, dbName];
+    NSData * dicData = [NSKeyedArchiver archivedDataWithRootObject:dic];
+    NSString * network = [[HTTPManager shareManager] getCurrentNetwork];
+    [_db executeUpdate: sql, network, [self getCurrentCurrency], CurrentWalletAddress, dicData];
+    [_db close];
+}
+- (NSDictionary *)getAssestCachedData
+{
+    [_db open];
+    NSString * dbName = [self getDBNameWithCacheDataType:CacheTypeAssets];
+    NSMutableDictionary * dic = [NSMutableDictionary dictionary];
+    // @"SELECT * FROM t_addressBook WHEWR ORDER BY idStr DESC limit;"
+    NSString * sql = [NSString stringWithFormat:@"SELECT * FROM t_%@ WHERE network = ? and currency = ? and walletAddress = ?;", dbName];
+    NSString * network = [[HTTPManager shareManager] getCurrentNetwork];
+    FMResultSet * resultSet = [_db executeQuery: sql , network, [self getCurrentCurrency], CurrentWalletAddress];
+    DLog(@"当前钱包地址：%@", CurrentWalletAddress);
+    while (resultSet.next) {
+        NSData * data = [resultSet objectForColumn:dbName];
+        dic = [NSKeyedUnarchiver unarchiveObjectWithData:data];
+    }
+    [_db close];
+    return dic;
+}
+- (void)deleteAssestCachedData
+{
+    [_db open];
+    NSString * dbName = [self getDBNameWithCacheDataType:CacheTypeAssets];
+    NSString * sql = [NSString stringWithFormat:@"DELETE FROM t_%@ WHERE network = ? and currency = ? and walletAddress = ?;", dbName];
+    NSString * network = [[HTTPManager shareManager] getCurrentNetwork];
+    [_db executeUpdate: sql, network, [self getCurrentCurrency], CurrentWalletAddress];
+    [_db close];
+}
+*/
 // Transaction Details
 - (void)saveDetailDataWithCacheType:(CacheDataType)cacheType dic:(NSDictionary *)dic ID:(NSString *)ID
 {

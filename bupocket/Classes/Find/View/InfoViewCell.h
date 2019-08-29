@@ -7,6 +7,7 @@
 //
 
 #import <UIKit/UIKit.h>
+#import "InfoModel.h"
 
 NS_ASSUME_NONNULL_BEGIN
 
@@ -20,7 +21,7 @@ typedef NS_ENUM(NSInteger, CellType) {
 + (instancetype)cellWithTableView:(UITableView *)tableView cellType:(CellType)cellType;
 
 @property (nonatomic, strong) UIButton * info;
-@property (nonatomic, strong) NSString * infoStr;
+@property (nonatomic, strong) InfoModel * infoModel;
 
 @end
 

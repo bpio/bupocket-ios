@@ -67,6 +67,7 @@ static NSString * const VoucherDetailCellID = @"VoucherDetailCellID";
     self.navTitleColor = self.navTintColor = [UIColor whiteColor];
     self.holdingQuantity = self.voucherModel.balance;
     [self setupView];
+    [self getCacheData];
     [self getData];
     // Do any additional setup after loading the view.
 }
@@ -83,16 +84,16 @@ static NSString * const VoucherDetailCellID = @"VoucherDetailCellID";
 //}
 - (void)getData
 {
-    if ([self.dataDic count] == 0) {
-        [self getCacheData];
-    }
     [[HTTPManager shareManager] getVoucherDetailDataWithVoucherId:self.voucherModel.voucherId trancheId:self.voucherModel.trancheId spuId:self.voucherModel.spuId contractAddress:self.voucherModel.contractAddress success:^(id responseObject) {
         NSInteger code = [[responseObject objectForKey:@"errCode"] integerValue];
         if (code == Success_Code) {
-            self.dataDic = responseObject[@"data"];
+            NSDictionary * dic = responseObject[@"data"];
+            if (![dic isEqualToDictionary:self.dataDic]) {
+                [[DataBase shareDataBase] deleteTxDetailsCachedDataWithCacheType:CacheTypeVoucherDetail detailId:self.voucherModel.voucherId];
+                [[DataBase shareDataBase] saveDetailDataWithCacheType:CacheTypeVoucherDetail dic:self.dataDic ID:self.voucherModel.voucherId];
+            }
+            self.dataDic = [NSMutableDictionary dictionaryWithDictionary:dic];
             [self setDataWithDic:self.dataDic];
-            [[DataBase shareDataBase] deleteTxDetailsCachedDataWithCacheType:CacheTypeVoucherDetail detailId:self.voucherModel.voucherId];
-            [[DataBase shareDataBase] saveDetailDataWithCacheType:CacheTypeVoucherDetail dic:self.dataDic ID:self.voucherModel.voucherId];
         } else {
             [MBProgressHUD showTipMessageInWindow:[ErrorTypeTool getDescriptionWithErrorCode:code]];
         }

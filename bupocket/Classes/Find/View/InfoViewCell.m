@@ -43,7 +43,7 @@ static NSString * const NormalCellID = @"NormalCellID";
         [self.info mas_makeConstraints:^(MASConstraintMaker *make) {
             make.edges.equalTo(self.contentView);
         }];
-        _info.contentEdgeInsets = UIEdgeInsetsMake(0, Margin_Main, Margin_10, Margin_Main);
+        _info.contentEdgeInsets = UIEdgeInsetsMake(Margin_Main, Margin_Main, Margin_Main, Margin_Main);
     } else if ([self.reuseIdentifier isEqualToString:NormalCellID]) {
         [self.info mas_makeConstraints:^(MASConstraintMaker *make) {
             make.top.bottom.equalTo(self.contentView);
@@ -51,7 +51,7 @@ static NSString * const NormalCellID = @"NormalCellID";
             make.right.equalTo(self.contentView.mas_right).offset(-Margin_Main);
 //            make.width.mas_equalTo(View_Width_Main);
         }];
-        self.info.contentEdgeInsets = UIEdgeInsetsMake(Margin_5, Margin_10, Margin_5, Margin_10);
+        self.info.contentEdgeInsets = UIEdgeInsetsMake(Margin_Main, Margin_10, Margin_Main, Margin_10);
         self.info.layer.masksToBounds = YES;
         self.info.layer.cornerRadius = BG_CORNER;
 //        CGSize maximumSize = CGSizeMake(Content_Width_Main, CGFLOAT_MAX);
@@ -70,10 +70,15 @@ static NSString * const NormalCellID = @"NormalCellID";
     }
     return _info;
 }
-- (void)setInfoStr:(NSString *)infoStr
+- (void)setInfoModel:(InfoModel *)infoModel
 {
-    _infoStr = infoStr;
-    [self.info setAttributedTitle:[Encapsulation getAttrWithInfoStr:infoStr] forState:UIControlStateNormal];
+    _infoModel = infoModel;
+    [self.info setAttributedTitle:[Encapsulation getAttrWithInfoStr:infoModel.info] forState:UIControlStateNormal];
+    CGFloat width = ([self.reuseIdentifier isEqualToString:DefaultCellID]) ? View_Width_Main : Content_Width_Main;
+    CGSize maximumSize = CGSizeMake(width, CGFLOAT_MAX);
+    CGSize expectSize = [self.info.titleLabel sizeThatFits:maximumSize];
+    self.info.size = CGSizeMake(expectSize.width, expectSize.height + Margin_30);
+    infoModel.cellHeight = expectSize.height + Margin_30;
 }
 
 - (void)awakeFromNib {

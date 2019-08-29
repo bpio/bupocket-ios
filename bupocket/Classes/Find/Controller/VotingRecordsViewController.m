@@ -20,7 +20,7 @@
 
 @end
 
-static NSString * const NodeCellID = @"NodeCellID";
+static NSString * const NodeDetailID = @"NodeDetailID";
 static NSString * const NodeRecordsCellID = @"NodeRecordsCellID";
 static NSString * const VotingRecordsCellID = @"VotingRecordsCellID";
 
@@ -153,7 +153,8 @@ static NSString * const VotingRecordsCellID = @"VotingRecordsCellID";
 - (CGFloat)tableView:(UITableView *)tableView heightForRowAtIndexPath:(NSIndexPath *)indexPath
 {
     if (self.nodePlanModel && indexPath.section == 0) {
-        return ScreenScale(80);
+//        return ScreenScale(80);
+        return self.nodePlanModel.cellHeight;
     } else {
         return ScreenScale(115);
     }
@@ -161,7 +162,7 @@ static NSString * const VotingRecordsCellID = @"VotingRecordsCellID";
 - (UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath
 {
     if (self.nodePlanModel && indexPath.section == 0) {
-        NodePlanViewCell * cell = [NodePlanViewCell cellWithTableView:tableView identifier:NodeCellID];
+        NodePlanViewCell * cell = [NodePlanViewCell cellWithTableView:tableView identifier:NodeDetailID];
         cell.selectionStyle = UITableViewCellSelectionStyleNone;
         cell.nodePlanModel = self.nodePlanModel;
         return cell;

@@ -42,7 +42,7 @@
 
 @end
 
-static NSString * const NodePlanCellID = @"NodePlanCellID";
+static NSString * const NodeCellID = @"NodeCellID";
 
 @implementation NodePlanViewController
 
@@ -65,6 +65,7 @@ static NSString * const NodePlanCellID = @"NodePlanCellID";
     self.navigationItem.title = Localized(@"NodePlan");
     [self setupNav];
     [self setupView];
+    [self getCacheData];
     [self setupRefresh];
     // Do any additional setup after loading the view.
 }
@@ -93,9 +94,6 @@ static NSString * const NodePlanCellID = @"NodePlanCellID";
 
 - (void)getData
 {
-    if (self.listArray.count == 0) {
-        [self getCacheData];
-    }
     [[HTTPManager shareManager] getNodeListDataWithIdentityType:@"" nodeName:@"" capitalAddress:@""  success:^(id responseObject) {
         NSInteger code = [[responseObject objectForKey:@"errCode"] integerValue];
         if (code == Success_Code) {
@@ -325,7 +323,7 @@ static NSString * const NodePlanCellID = @"NodePlanCellID";
 }
 - (UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath
 {
-    NodePlanViewCell * cell = [NodePlanViewCell cellWithTableView:tableView identifier:NodePlanCellID];
+    NodePlanViewCell * cell = [NodePlanViewCell cellWithTableView:tableView identifier:NodeCellID];
     __block NodePlanModel * nodePlanModel = self.listArray[indexPath.row];
     cell.nodePlanModel = nodePlanModel;
     cell.selectionStyle = UITableViewCellSelectionStyleNone;

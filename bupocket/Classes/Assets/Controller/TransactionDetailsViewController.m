@@ -60,6 +60,7 @@ static NSInteger const TxInfoNormalCount = 6;
     self.assets = [NSString stringWithFormat:@"%@%@ %@", outOrIn, self.listModel.amount, self.assetCode];
     _headerViewH = 75 + ScreenScale(100) + [Encapsulation rectWithText:self.assets font:FONT_Bold(27) textWidth:View_Width_Main].size.height;
     [self setupView];
+    [self getCacheData];
     [self setupRefresh];
     self.noNetWork = [Encapsulation showNoNetWorkWithSuperView:self.view target:self action:@selector(reloadData)];
     // Do any additional setup after loading the view.
@@ -83,9 +84,6 @@ static NSInteger const TxInfoNormalCount = 6;
 }
 - (void)loadData
 {
-    if ([self.dataDic count] == 0) {
-        [self getCacheData];
-    }
     [[HTTPManager shareManager] getOrderDetailsDataWithOptNo:self.listModel.optNo success:^(id responseObject) {
         NSInteger code = [[responseObject objectForKey:@"errCode"] integerValue];
         if (code == Success_Code) {

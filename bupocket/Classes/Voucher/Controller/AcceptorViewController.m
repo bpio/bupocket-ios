@@ -9,13 +9,14 @@
 #import "AcceptorViewController.h"
 #import "SubtitleListViewCell.h"
 #import "InfoViewCell.h"
+#import "InfoModel.h"
 
 @interface AcceptorViewController ()<UITableViewDelegate, UITableViewDataSource>
 
 @property (nonatomic, strong) UITableView * tableView;
 @property (nonatomic, strong) NSArray * listArray;
 @property (nonatomic, strong) UIView * noData;
-@property (nonatomic, strong) NSString * info;
+@property (nonatomic, strong) InfoModel * infoModel;
 
 @end
 
@@ -27,9 +28,10 @@ static NSString * const CooperateDetailCellID = @"CooperateDetailCellID";
     [super viewDidLoad];
     self.navigationItem.title = Localized(@"Acceptor");
     self.listArray = @[@[@""], @[Localized(@"InfoOfAcceptorTitle"), self.voucherModel.voucherAcceptance[@"intro"]]];
-    self.info = self.voucherModel.voucherAcceptance[@"intro"];
+    self.infoModel = [[InfoModel alloc] init];
+    self.infoModel.info = self.voucherModel.voucherAcceptance[@"intro"];
     [self setupView];
-    if (!NotNULLString(self.info)) {
+    if (!NotNULLString(self.infoModel.info)) {
         self.tableView.tableFooterView = self.noData;
     }
 //    , @[Localized(@"DeliveryInstructionsTitle"), @"NIKE公司总部位于美国俄勒冈州波特兰市。公司生产的体育用品包罗万象，例如服装，鞋类，运动器材等。NIKE是全球著名的体育运动品牌，英文原意指希腊胜利女神，中文译为耐克。"]
@@ -61,15 +63,13 @@ static NSString * const CooperateDetailCellID = @"CooperateDetailCellID";
     if (indexPath.section == 0) {
         return ScreenScale(80);
     } else {
-        return [Encapsulation getAttrHeightWithInfoStr:self.listArray[indexPath.section][1] width:View_Width_Main];
-//        CooperateDetailViewCell * cell = [tableView cellForRowAtIndexPath:indexPath];
-//        return (NotNULLString(self.info) ? ceil([Encapsulation rectWithAttrText:cell.riskStatementBtn.titleLabel.attributedText width:Content_Width_Main height:CGFLOAT_MIN].height + Margin_25) : CGFLOAT_MIN);
-//        return (NotNULLString(self.info) ? ceil([Encapsulation rectWithAttrText:cell.attrStr width:Content_Width_Main height:CGFLOAT_MIN].height + Margin_25 : CGFLOAT_MIN));
+//        return [Encapsulation getAttrHeightWithInfoStr:self.listArray[indexPath.section][1] width:View_Width_Main];
+        return self.infoModel.cellHeight;
     }
 }
 - (CGFloat)tableView:(UITableView *)tableView heightForHeaderInSection:(NSInteger)section
 {
-    if (NotNULLString(self.info) && (section == 1 || section == 2)) {
+    if (NotNULLString(self.infoModel.info) && (section == 1 || section == 2)) {
         return Margin_Section_Header;
     } else {
         return CGFLOAT_MIN;
@@ -77,7 +77,7 @@ static NSString * const CooperateDetailCellID = @"CooperateDetailCellID";
 }
 - (UIView *)tableView:(UITableView *)tableView viewForHeaderInSection:(NSInteger)section
 {
-    if (NotNULLString(self.info) && (section == 1 || section == 2)) {
+    if (NotNULLString(self.infoModel.info) && (section == 1 || section == 2)) {
         UIButton * title = [UIButton createAttrHeaderTitle:self.listArray[section][0]];
         return title;
     } else {
@@ -86,7 +86,7 @@ static NSString * const CooperateDetailCellID = @"CooperateDetailCellID";
 }
 - (CGFloat)tableView:(UITableView *)tableView heightForFooterInSection:(NSInteger)section
 {
-    if (NotNULLString(self.info) && section == self.listArray.count - 1) {
+    if (NotNULLString(self.infoModel.info) && section == self.listArray.count - 1) {
         return ContentSizeBottom;
     } else {
         return Margin_10;
@@ -95,7 +95,7 @@ static NSString * const CooperateDetailCellID = @"CooperateDetailCellID";
 
 - (NSInteger)numberOfSectionsInTableView:(UITableView *)tableView
 {
-    if (NotNULLString(self.info)) {
+    if (NotNULLString(self.infoModel.info)) {
         return self.listArray.count;
     }
     return 1;
@@ -117,7 +117,7 @@ static NSString * const CooperateDetailCellID = @"CooperateDetailCellID";
         return cell;
     } else {
         InfoViewCell * cell = [InfoViewCell cellWithTableView:tableView cellType:CellTypeDefault];
-        cell.infoStr = self.info;
+        cell.infoModel = self.infoModel;
         return cell;
     }
 }

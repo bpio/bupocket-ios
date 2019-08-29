@@ -10,7 +10,6 @@
 
 @implementation NodePlanViewCell
 
-static NSString * const NodePlanCellID = @"NodePlanCellID";
 static NSString * const NodeCellID = @"NodeCellID";
 static NSString * const NodeDetailID = @"NodeDetailID";
 
@@ -33,10 +32,15 @@ static NSString * const NodeDetailID = @"NodeDetailID";
         [self.listBg addSubview:self.slogan];
         [self.bottomBg addSubview:self.votesObtained];
         [self.bottomBg addSubview:self.numberOfVotes];
-        if ([reuseIdentifier isEqualToString:NodePlanCellID]) {
+        if ([reuseIdentifier isEqualToString:NodeCellID]) {
             [self.listBg setViewSize:CGSizeMake(DEVICE_WIDTH - Margin_20, ScreenScale(130)) borderWidth:0 borderColor:nil borderRadius:BG_CORNER];
             [self.listBg addSubview:self.bottomBg];
+//            self.listBg.layer.masksToBounds = YES;
+//            self.listBg.layer.cornerRadius = BG_CORNER;
 //            [self setupMoreOperations];
+        } else if ([self.reuseIdentifier isEqualToString:NodeDetailID]) {
+            self.name.numberOfLines = 2;
+            self.slogan.numberOfLines = 0;
         }
         self.backgroundColor = self.contentView.superview.backgroundColor;
     }
@@ -92,7 +96,8 @@ static NSString * const NodeDetailID = @"NodeDetailID";
 {
     [super layoutSubviews];
     CGFloat numberW = 0;
-    if ([self.reuseIdentifier isEqualToString:NodePlanCellID]) {
+    CGFloat marginW = Margin_10;
+    if ([self.reuseIdentifier isEqualToString:NodeCellID]) {
 //        numberW = (DEVICE_WIDTH - ScreenScale(100)) / 2;
         numberW = (DEVICE_WIDTH - ScreenScale(50)) / 2;
         [self.listBg mas_makeConstraints:^(MASConstraintMaker *make) {
@@ -101,19 +106,29 @@ static NSString * const NodeDetailID = @"NodeDetailID";
             make.top.equalTo(self.contentView.mas_top).offset(Margin_5);
             make.bottom.equalTo(self.contentView.mas_bottom).offset(-Margin_5);
         }];
-    } else if ([self.reuseIdentifier isEqualToString:NodeCellID] || [self.reuseIdentifier isEqualToString:NodeDetailID]) {
-        numberW = (DEVICE_WIDTH - ScreenScale(80)) / 2;
+        [self.votesObtained mas_makeConstraints:^(MASConstraintMaker *make) {
+            make.left.top.bottom.equalTo(self.bottomBg);
+            //        make.height.mas_equalTo(ScreenScale(16));
+            //        make.top.equalTo(self.name.mas_bottom).offset(Margin_10);
+            make.width.mas_lessThanOrEqualTo(numberW);
+        }];
+        [self.numberOfVotes mas_makeConstraints:^(MASConstraintMaker *make) {
+            //        make.left.mas_equalTo(ScreenScale(70) + numberW);
+            //        make.top.width.equalTo(self.votesObtained);
+            make.right.top.bottom.equalTo(self.bottomBg);
+            make.width.mas_lessThanOrEqualTo(numberW);
+        }];
+    } else if ([self.reuseIdentifier isEqualToString:NodeDetailID]) {
+//        numberW = (DEVICE_WIDTH - ScreenScale(80)) / 2;
+        marginW = Margin_Main;
         [self.listBg mas_makeConstraints:^(MASConstraintMaker *make) {
             make.edges.equalTo(self.contentView);
         }];
-        if ([self.reuseIdentifier isEqualToString:NodeDetailID]) {
-            self.name.numberOfLines = 2;
-        }
     }
     
 //    self.contentView.backgroundColor = VIEWBG_COLOR;
     [self.listImage mas_makeConstraints:^(MASConstraintMaker *make) {
-        make.left.equalTo(self.listBg.mas_left).offset(Margin_10);
+        make.left.equalTo(self.listBg.mas_left).offset(marginW);
         make.top.equalTo(self.listBg.mas_top).offset(Margin_15);
         make.width.height.mas_equalTo(Margin_40);
     }];
@@ -129,30 +144,18 @@ static NSString * const NodeDetailID = @"NodeDetailID";
     [self.nodeType mas_makeConstraints:^(MASConstraintMaker *make) {
         make.left.equalTo(self.name.mas_right).offset(Margin_10);
         make.centerY.equalTo(self.name);
-        make.height.mas_equalTo(ScreenScale(16));
-        make.width.mas_equalTo([Encapsulation rectWithText:self.nodeType.text font:self.nodeType.font textHeight:ScreenScale(16)].size.width + Margin_10);
-    }];
-    [self.nodeType mas_makeConstraints:^(MASConstraintMaker *make) {
-        make.right.mas_lessThanOrEqualTo(self.listBg.mas_right).offset(-Margin_10);
+        make.size.mas_equalTo(self.nodeType.size);
+        make.right.mas_lessThanOrEqualTo(self.listBg.mas_right).offset(- marginW);
+//        make.height.mas_equalTo(ScreenScale(16));
+//        make.width.mas_equalTo();
     }];
     [self.nodeType setContentCompressionResistancePriority:UILayoutPriorityRequired forAxis:UILayoutConstraintAxisHorizontal];
     [self.slogan mas_makeConstraints:^(MASConstraintMaker *make) {
         make.top.equalTo(self.name.mas_bottom).offset(Margin_10);
         make.left.equalTo(self.name);
-        make.right.equalTo(self.listBg.mas_right).offset(-Margin_10);
+        make.right.equalTo(self.listBg.mas_right).offset(-marginW);
     }];
-    [self.votesObtained mas_makeConstraints:^(MASConstraintMaker *make) {
-        make.left.top.bottom.equalTo(self.bottomBg);
-//        make.height.mas_equalTo(ScreenScale(16));
-//        make.top.equalTo(self.name.mas_bottom).offset(Margin_10);
-        make.width.mas_lessThanOrEqualTo(numberW);
-    }];
-    [self.numberOfVotes mas_makeConstraints:^(MASConstraintMaker *make) {
-//        make.left.mas_equalTo(ScreenScale(70) + numberW);
-//        make.top.width.equalTo(self.votesObtained);
-        make.right.top.bottom.equalTo(self.bottomBg);
-        make.width.mas_lessThanOrEqualTo(numberW);
-    }];
+    
 //    [self.numberOfVotes setContentCompressionResistancePriority:UILayoutPriorityRequired forAxis:UILayoutConstraintAxisHorizontal];
 }
 - (UIView *)listBg
@@ -197,11 +200,11 @@ static NSString * const NodeDetailID = @"NodeDetailID";
     if (!_nodeType) {
         _nodeType = [[UILabel alloc] init];
         _nodeType.font = FONT(11);
-        _nodeType.textAlignment = NSTextAlignmentCenter;
         _nodeType.textColor = COLOR(@"B2B2B2");
         _nodeType.backgroundColor = TYPEBG_COLOR;
         _nodeType.layer.masksToBounds = YES;
         _nodeType.layer.cornerRadius = TAG_CORNER;
+        _nodeType.textAlignment = NSTextAlignmentCenter;
     }
     return _nodeType;
 }
@@ -286,6 +289,11 @@ static NSString * const NodeDetailID = @"NodeDetailID";
     } else if ([nodePlanModel.identityType integerValue] == NodeIDTypeEcological) {
         self.nodeType.text = Localized(@"EcologicalNodes");
     }
+    CGSize typeMaximumSize = CGSizeMake(CGFLOAT_MAX, ScreenScale(16));
+    CGSize typeExpectSize = [self.nodeType sizeThatFits:typeMaximumSize];
+//    CGFloat nodeTypeW = [Encapsulation rectWithText:self.nodeType.text font:self.nodeType.font textHeight:ScreenScale(16)].size.width + Margin_10;
+    self.nodeType.size = CGSizeMake(typeExpectSize.width + Margin_10, typeExpectSize.height);
+    
     self.slogan.text = nodePlanModel.slogan;
     NSString * vote = Localized(@"Votes");
     if ([nodePlanModel.nodeVote longLongValue] < 2) {
@@ -298,9 +306,19 @@ static NSString * const NodeDetailID = @"NodeDetailID";
     }
     self.numberOfVotes.attributedText = [Encapsulation attrWithString:[NSString stringWithFormat:@"%@ %@", myVote, nodePlanModel.myVoteCount] preFont:FONT(12) preColor:COLOR(@"B2B2B2") index:myVote.length sufFont:FONT(14) sufColor:COLOR_6 lineSpacing:0];
     if ([self.reuseIdentifier isEqualToString:NodeDetailID]) {
-        CGFloat nameW = DEVICE_WIDTH - (ceil([Encapsulation rectWithText:self.nodeType.text font:self.nodeType.font textHeight:ScreenScale(16)].size.width) + 1 + Margin_10) - ScreenScale(80);
-        nodePlanModel.cellHeight = ceil([Encapsulation rectWithText:self.name.text font:self.name.font textWidth:nameW].size.height) + 1 + ScreenScale(60);
-    } 
+//        CGFloat nameW = DEVICE_WIDTH - (ceil([Encapsulation rectWithText:self.nodeType.text font:self.nodeType.font textHeight:ScreenScale(16)].size.width) + 1 + Margin_10) - ScreenScale(80);
+        CGFloat nameW = DEVICE_WIDTH - self.nodeType.size.width - ScreenScale(95);
+        CGSize nameMaximumSize = CGSizeMake(nameW, CGFLOAT_MAX);
+        CGSize nameExpectSize = [self.name sizeThatFits:nameMaximumSize];
+        self.name.size = nameExpectSize;
+        
+        CGFloat sloganW = DEVICE_WIDTH - ScreenScale(85);
+        CGSize sloganMaximumSize = CGSizeMake(sloganW, CGFLOAT_MAX);
+        CGSize sloganExpectSize = [self.slogan sizeThatFits:sloganMaximumSize];
+        self.slogan.size = sloganExpectSize;
+        nodePlanModel.cellHeight = Margin_40 + nameExpectSize.height + sloganExpectSize.height;
+//        nodePlanModel.cellHeight = ceil([Encapsulation rectWithText:self.name.text font:self.name.font textWidth:nameW].size.height) + 1 + ScreenScale(60);
+    }
 }
 
 - (void)awakeFromNib {

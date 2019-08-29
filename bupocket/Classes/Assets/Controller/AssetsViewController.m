@@ -77,6 +77,11 @@
 @property (nonatomic, strong) ActivityInfoModel * activityInfoModel;
 @property (nonatomic, strong) ActivityResultModel * activityResultModel;
 
+@property (nonatomic, strong) NSString * currentWalletAddress;
+@property (nonatomic, strong) NSString * currentCurrency;
+@property (nonatomic, strong) NSArray * assetsArray;
+@property (nonatomic, strong) NSArray * cacheArray;
+
 @end
 
 @implementation AssetsViewController
@@ -94,14 +99,11 @@
     self.automaticallyAdjustsScrollViewInsets = NO;
     self.statusBarStyle = UIStatusBarStyleLightContent;
     [self setupNav];
+    [self initData];
     [self setupView];
-    NSUserDefaults * defaults = [NSUserDefaults standardUserDefaults];
+    
     [self setupRefresh];
-    if ([defaults objectForKey:If_Hidden_New]) {
-        [self.navigationController.tabBarController.tabBar hideBadgeOnItemIndex:1];
-    } else {
-        [self.navigationController.tabBarController.tabBar showBadgeOnItemIndex:1 tabbarNum:self.navigationController.tabBarController.viewControllers.count];
-    }
+    
     NSString * uuid = [KeychainWrapper searchDateWithService:Device_ID];
     NSArray * walletAddressArray = [DeviceInfo getWalletAddressArrayFromKeychain];
     if (!NotNULLString(uuid) || ![walletAddressArray containsObject:CurrentWalletAddress]) {
@@ -111,6 +113,30 @@
     }
     [self getVersionData];
     // Do any additional setup after loading the view.
+}
+- (void)initData
+{
+    NSString * addAssetsKey;
+    NSUserDefaults * defaults = [NSUserDefaults standardUserDefaults];
+    if ([defaults boolForKey:If_Custom_Network] == YES) {
+        addAssetsKey = Add_Assets_Custom;
+    } else if ([defaults boolForKey:If_Switch_TestNetwork]) {
+        addAssetsKey = Add_Assets_Test;
+    } else {
+        addAssetsKey = Add_Assets;
+    }
+    NSArray * assetsArray = [defaults objectForKey:addAssetsKey];
+    self.assetsArray = (assetsArray) ? assetsArray : [NSArray array];
+    self.currentCurrency = [AssetCurrencyModel getAssetCurrencyTypeWithAssetCurrency:[[defaults objectForKey:Current_Currency] integerValue]];
+    self.currentWalletAddress = CurrentWalletAddress;
+    if (!self.currentWalletAddress) {
+        self.currentWalletAddress = [[[AccountTool shareTool] account] purseAccount];
+    }
+    if ([defaults objectForKey:If_Hidden_New]) {
+        [self.navigationController.tabBarController.tabBar hideBadgeOnItemIndex:1];
+    } else {
+        [self.navigationController.tabBarController.tabBar showBadgeOnItemIndex:1 tabbarNum:self.navigationController.tabBarController.viewControllers.count];
+    }
 }
 - (void)setupNav
 {
@@ -152,32 +178,16 @@
     if (self.listArray.count == 0) {
         [self getCacheData];
     }
-    NSString * addAssetsKey;
-    NSUserDefaults * defaults = [NSUserDefaults standardUserDefaults];
-    if ([defaults boolForKey:If_Custom_Network] == YES) {
-        addAssetsKey = Add_Assets_Custom;
-    } else if ([defaults boolForKey:If_Switch_TestNetwork]) {
-        addAssetsKey = Add_Assets_Test;
-    } else {
-        addAssetsKey = Add_Assets;
-    }
-    NSArray * assetsArray = [defaults objectForKey:addAssetsKey];
-    if (!assetsArray) {
-        assetsArray = [NSArray array];
-    }
-    NSString * currentCurrency = [AssetCurrencyModel getAssetCurrencyTypeWithAssetCurrency:[[defaults objectForKey:Current_Currency] integerValue]];
-    NSString * currentWalletAddress = CurrentWalletAddress;
-    if (!currentWalletAddress) {
-        currentWalletAddress = [[[AccountTool shareTool] account] purseAccount];
-    }
-    [[HTTPManager shareManager] getAssetsDataWithAddress:currentWalletAddress currencyType:currentCurrency tokenList:assetsArray success:^(id responseObject) {
+    [[HTTPManager shareManager] getAssetsDataWithAddress:self.currentWalletAddress currencyType:self.currentCurrency tokenList:self.assetsArray success:^(id responseObject) {
         NSInteger code = [[responseObject objectForKey:@"errCode"] integerValue];
         if (code == Success_Code) {
             NSArray * array = responseObject[@"data"] [@"tokenList"];
             self.listArray = [NSMutableArray arrayWithArray:[AssetsListModel mj_objectArrayWithKeyValuesArray:array]];
+            if (![array isEqualToArray:self.cacheArray]) {
+                [[DataBase shareDataBase] deleteCachedDataWithCacheType:CacheTypeAssets];
+                [[DataBase shareDataBase] saveDataWithArray:array cacheType:CacheTypeAssets];
+            }
             [self reloadUI];
-            [[DataBase shareDataBase] deleteCachedDataWithCacheType:CacheTypeAssets];
-            [[DataBase shareDataBase] saveDataWithArray:array cacheType:CacheTypeAssets];
         } else {
             [MBProgressHUD showTipMessageInWindow:[ErrorTypeTool getDescriptionWithErrorCode:code]];
         }
@@ -196,10 +206,9 @@
 }
 - (void)getCacheData
 {
-    NSArray * listArray = [[DataBase shareDataBase] getCachedDataWithCacheType:CacheTypeAssets];
-    if (listArray.count > 0) {
-        self.listArray = [NSMutableArray array];
-        [self.listArray addObjectsFromArray:listArray];
+    self.cacheArray = [[DataBase shareDataBase] getCachedDataWithCacheType:CacheTypeAssets];
+    if (self.cacheArray.count > 0) {
+        self.listArray = [NSMutableArray arrayWithArray:[AssetsListModel mj_objectArrayWithKeyValuesArray:self.cacheArray]];
         [self reloadUI];
         [self.tableView.mj_header endRefreshing];
         self.noNetWork.hidden = YES;
@@ -687,7 +696,7 @@
     [[HTTPManager shareManager] getDposApplyNodeDataWithQRcodeSessionId:str success:^(id responseObject) {
         NSInteger code = [[responseObject objectForKey:@"errCode"] integerValue];
         if (code == Success_Code) {
-            DLog(@"json = %@", [JsonTool JSONStringWithDictionaryOrArray:[responseObject objectForKey:@"data"]]);
+//            DLog(@"json = %@", [JsonTool JSONStringWithDictionaryOrArray:[responseObject objectForKey:@"data"]]);
             self.confirmTransactionModel = [ConfirmTransactionModel mj_objectWithKeyValues:[responseObject objectForKey:@"data"]];
             [self getDposData];
         } else if (code == ErrorQRCodeExpired) {
