@@ -49,6 +49,8 @@
     [super viewDidLoad];
     [self setupView];
     [self getWechatBindWithURL:Binding_Wechat_Status wxCode:@""];
+    /*
+     // 活动开启提示绑定微信
     NSUserDefaults * defaults = [NSUserDefaults standardUserDefaults];
     BOOL isBind = [defaults boolForKey:If_Wechat_Binded];
     if (!isBind) {
@@ -56,6 +58,7 @@
             [self bindingWechat];
         }];
     }
+     */
     // Do any additional setup after loading the view.
 }
 - (void)viewWillAppear:(BOOL)animated {
