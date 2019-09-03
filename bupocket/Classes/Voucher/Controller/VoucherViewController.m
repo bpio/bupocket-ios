@@ -72,7 +72,6 @@ static NSString * const VoucherCellID = @"VoucherCellID";
         self.headerTitleH = Margin_10 + [Encapsulation getSizeSpaceLabelWithStr:self.headerTitle font:FONT_13 width:View_Width_Main height:CGFLOAT_MAX lineSpacing:LINE_SPACING].height;
     }
     [self setupView];
-    [self getCacheData];
     self.noNetWork = [Encapsulation showNoNetWorkWithSuperView:self.view target:self action:@selector(reloadData)];
     [self setupRefresh];
 //    self.walletAddress = CurrentWalletAddress;
@@ -117,6 +116,9 @@ static NSString * const VoucherCellID = @"VoucherCellID";
 }
 - (void)getDataWithPageindex:(NSInteger)pageindex
 {
+    if (self.listArray == 0) {
+        [self getCacheData];
+    }
     [[HTTPManager shareManager] getVoucherListDataWithPageIndex:pageindex success:^(id responseObject) {
         NSInteger code = [[responseObject objectForKey:@"errCode"] integerValue];
         if (code == Success_Code) {

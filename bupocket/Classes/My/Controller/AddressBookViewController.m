@@ -42,7 +42,7 @@ static NSString * const AddressBookCellID = @"AddressBookCellID";
     [super viewDidLoad];
     [self setupNav];
     [self setupView];
-    [self getCacheData]; 
+    
     self.noNetWork = [Encapsulation showNoNetWorkWithSuperView:self.view target:self action:@selector(reloadData)];
     // Do any additional setup after loading the view.
 }
@@ -74,6 +74,9 @@ static NSString * const AddressBookCellID = @"AddressBookCellID";
 }
 - (void)getDataWithPageindex:(NSInteger)pageindex
 {
+    if (self.listArray.count == 0) {
+        [self getCacheData];        
+    }
     [[HTTPManager shareManager] getAddressBookListWithIdentityAddress:[[AccountTool shareTool] account].identityAddress pageIndex:pageindex success:^(id responseObject) {
         NSInteger code = [[responseObject objectForKey:@"errCode"] integerValue];
         if (code == Success_Code) {

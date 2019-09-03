@@ -65,7 +65,6 @@ static NSString * const NodeCellID = @"NodeCellID";
     self.navigationItem.title = Localized(@"NodePlan");
     [self setupNav];
     [self setupView];
-    [self getCacheData];
     [self setupRefresh];
     // Do any additional setup after loading the view.
 }
@@ -94,6 +93,9 @@ static NSString * const NodeCellID = @"NodeCellID";
 
 - (void)getData
 {
+    if (self.listArray.count == 0) {
+        [self getCacheData];
+    }
     [[HTTPManager shareManager] getNodeListDataWithIdentityType:@"" nodeName:@"" capitalAddress:@""  success:^(id responseObject) {
         NSInteger code = [[responseObject objectForKey:@"errCode"] integerValue];
         if (code == Success_Code) {

@@ -39,7 +39,6 @@ static NSString * const CooperateCellID = @"CooperateCellID";
     [super viewDidLoad];
     self.navigationItem.title = Localized(@"JointlyCooperate");
     [self setupView];
-    [self getCacheData]; 
     [self setupRefresh];
     // Do any additional setup after loading the view.
 }
@@ -55,6 +54,9 @@ static NSString * const CooperateCellID = @"CooperateCellID";
 }
 - (void)getData
 {
+    if (self.listArray.count == 0) {
+        [self getCacheData];        
+    }
     [[HTTPManager shareManager] getNodeCooperateListDataSuccess:^(id responseObject) {
         NSInteger code = [[responseObject objectForKey:@"errCode"] integerValue];
         if (code == Success_Code) {

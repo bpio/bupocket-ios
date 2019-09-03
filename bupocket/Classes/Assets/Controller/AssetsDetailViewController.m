@@ -59,7 +59,6 @@
     [super viewDidLoad];
     self.navigationItem.title = self.listModel.assetCode;
     [self setupView];
-    [self getCacheData];
     [self setupRefresh];
     // Do any additional setup after loading the view.
 }
@@ -85,6 +84,9 @@
 }
 - (void)getDataWithPageindex:(NSInteger)pageindex
 {
+    if ([self.listArray count] == 0) {
+        [self getCacheData];
+    }
     NSString * currentCurrency = [AssetCurrencyModel getAssetCurrencyTypeWithAssetCurrency:[[[NSUserDefaults standardUserDefaults] objectForKey:Current_Currency] integerValue]];
     [[HTTPManager shareManager] getAssetsDetailDataWithTokenType:self.listModel.type currencyType:currentCurrency assetCode:self.listModel.assetCode issuer:self.listModel.issuer address:CurrentWalletAddress pageIndex:pageindex success:^(id responseObject) {
         NSInteger code = [[responseObject objectForKey:@"errCode"] integerValue];
