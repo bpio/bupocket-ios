@@ -12,21 +12,24 @@
 // URL
 #define SERVER_COMBINE_API(API_BASE, API_INTERFACE) [NSString stringWithFormat:@"%@%@",API_BASE,API_INTERFACE]
 
-#define WEB_SERVER_DOMAIN @"https://api-bp.bumo.io/"
+//#define WEB_SERVER_DOMAIN @"https://api-bp.bumo.io/"
+#define WEB_SERVER_DOMAIN @"https://bupocket-api.bumo.io/"
 #define BUMO_NODE_URL @"https://wallet-node.bumo.io"
 #define BUMO_TOOLS_URL @"https://ws-tools.bumo.io"
 
-#define WEB_SERVER_DOMAIN_TEST @"http://api-bp.bumotest.io/"
+//#define WEB_SERVER_DOMAIN_TEST @"http://api-bp.bumotest.io/"
+#define WEB_SERVER_DOMAIN_TEST @"https://bupocket-api.bumotest.io/"
 #define BUMO_NODE_URL_TEST @"https://wallet-node.bumotest.io"
-//#define WEB_SERVER_DOMAIN_TEST @"http://dev-bp-api.bumocdn.com/"
+#define BUMO_TOOLS_URL_TEST @"https://ws-tools.bumotest.io"
 //#define BUMO_NODE_URL_TEST @"http://dev-wallet-node.bumocdn.com"
-
+// http://dev-bp-api.bumocdn.com/
+// http://dev-wallet-node.bumocdn.com
 //#define WEB_SERVER_DOMAIN_TEST @"http://192.168.6.97:5648/"
 //#define BUMO_NODE_URL_TEST @"http://192.168.21.35:36002"
 //#define WEB_SERVER_DOMAIN_TEST @"http://test-bupocket-api.bumocdn.com/"
 //#define BUMO_NODE_URL_TEST @"http://192.168.3.65:36002"
 
-#define BUMO_TOOLS_URL_TEST @"https://ws-tools.bumotest.io"
+//#define BUMO_TOOLS_URL_TEST @"https://ws-tools.bumotest.io"
 
 #define Information_URL @"https://m-news.bumo.io"
 

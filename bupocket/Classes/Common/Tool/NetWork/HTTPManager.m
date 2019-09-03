@@ -29,8 +29,8 @@ static NSString * _webServerDomain;
 static NSString * _bumoNodeUrl;
 static HTTPManager * _shareManager = nil;
 
-static int64_t const gasPrice = 1000;
-//static int64_t const gasPrice = 1002;
+//static int64_t const gasPrice = 1000;
+static int64_t const gasPrice = 1002;
 
 + (instancetype)shareManager
 {
