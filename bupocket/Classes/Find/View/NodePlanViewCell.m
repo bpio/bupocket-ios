@@ -299,12 +299,12 @@ static NSString * const NodeDetailID = @"NodeDetailID";
     if ([nodePlanModel.nodeVote longLongValue] < 2) {
         vote = Localized(@"Vote");
     }
-    self.votesObtained.attributedText = [Encapsulation attrWithString:[NSString stringWithFormat:@"%@ %@", vote, nodePlanModel.nodeVote] preFont:FONT(12) preColor:COLOR(@"B2B2B2") index:vote.length sufFont:FONT(14) sufColor:COLOR_6 lineSpacing:0];
+    self.votesObtained.attributedText = [Encapsulation attrWithString:[NSString stringWithFormat:@"%@ %@", vote, [NSString stringAmountSplitWith:nodePlanModel.nodeVote]] preFont:FONT(12) preColor:COLOR(@"B2B2B2") index:vote.length sufFont:FONT(14) sufColor:COLOR_6 lineSpacing:0];
     NSString * myVote = Localized(@"My votes");
     if ([nodePlanModel.myVoteCount longLongValue] < 2) {
         myVote = Localized(@"My vote");
     }
-    self.numberOfVotes.attributedText = [Encapsulation attrWithString:[NSString stringWithFormat:@"%@ %@", myVote, nodePlanModel.myVoteCount] preFont:FONT(12) preColor:COLOR(@"B2B2B2") index:myVote.length sufFont:FONT(14) sufColor:COLOR_6 lineSpacing:0];
+    self.numberOfVotes.attributedText = [Encapsulation attrWithString:[NSString stringWithFormat:@"%@ %@", myVote, [NSString stringAmountSplitWith:nodePlanModel.myVoteCount]] preFont:FONT(12) preColor:COLOR(@"B2B2B2") index:myVote.length sufFont:FONT(14) sufColor:COLOR_6 lineSpacing:0];
     if ([self.reuseIdentifier isEqualToString:NodeDetailID]) {
 //        CGFloat nameW = DEVICE_WIDTH - (ceil([Encapsulation rectWithText:self.nodeType.text font:self.nodeType.font textHeight:ScreenScale(16)].size.width) + 1 + Margin_10) - ScreenScale(80);
         CGFloat nameW = DEVICE_WIDTH - self.nodeType.size.width - ScreenScale(95);

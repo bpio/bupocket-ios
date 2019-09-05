@@ -178,7 +178,7 @@
     if (!_noData) {
         CGFloat noDataH = DEVICE_HEIGHT - _headerViewH - NavBarH - SafeAreaBottomH;
         _noData = [[UIView alloc] initWithFrame:CGRectMake(0, 0, DEVICE_WIDTH, noDataH)];
-        _noData.backgroundColor = [UIColor whiteColor];
+//        _noData.backgroundColor = [UIColor whiteColor];
         UIButton * noDataBtn = [Encapsulation showNoDataWithTitle:Localized(@"NoTransactionRecord") imageName:@"noRecord" superView:_noData frame:CGRectMake(0, (noDataH - ScreenScale(160)) / 2, DEVICE_WIDTH, ScreenScale(160))];
         [_noData addSubview:noDataBtn];
     }

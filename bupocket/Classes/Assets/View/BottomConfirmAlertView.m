@@ -281,7 +281,8 @@
     [self hideView];
     if (_sureBlock) {
         _sureBlock();
-        if (self.handlerType == HandlerTypeTransferDposCommand || self.handlerType == HandlerTypeTransferDpos) {
+        if (self.handlerType == HandlerTypeTransferDposCommand || self.handlerType == HandlerTypeTransferDpos ||
+            self.handlerType == HandlerTypeTransferDposVote) {
             [self getDposData];
         }
     }
@@ -301,7 +302,13 @@
                 [MBProgressHUD showTipMessageInWindow:Localized(@"NotSufficientFunds")];
             });
         } else {
-            if (self.handlerType == HandlerTypeTransferDposCommand) {
+            if (self.handlerType == HandlerTypeTransferDposVote || self.handlerType == HandlerTypeTransferDposCommand) {
+                if (self.handlerType == HandlerTypeTransferDposVote) {
+                    self.dposModel.tx_fee = self.confirmTransactionModel.transactionCost;
+                    self.dposModel.input = self.confirmTransactionModel.script;
+                    self.dposModel.notes = self.confirmTransactionModel.qrRemarkEn;
+                    self.dposModel.amount = self.confirmTransactionModel.amount;
+                }
                 if (![[HTTPManager shareManager] getTransactionWithDposModel: self.dposModel isDonateVoucher:NO]) return;
             } else if (self.handlerType == HandlerTypeTransferDpos) {
                 if (![[HTTPManager shareManager] getTransactionHashWithModel: self.confirmTransactionModel]) return;
@@ -314,7 +321,7 @@
 {
     TextInputAlertView * PWAlertView = [[TextInputAlertView alloc] initWithInputType:PWTypeTransferDpos confrimBolck:^(NSString * _Nonnull text, NSArray * _Nonnull words) {
         if (NotNULLString(text)) {
-            if (self.handlerType == HandlerTypeTransferDposCommand) {
+            if (self.handlerType == HandlerTypeTransferDposCommand || self.handlerType == HandlerTypeTransferDposVote) {
                 [self submitDposTransaction];
             } else {
                 [self getContractTransactionData];
@@ -427,7 +434,7 @@
     NSString * transactionDetail = self.confirmTransactionModel.transactionDetail;
     NSString * destAddress = self.confirmTransactionModel.destAddress;
     self.transactionCost = self.confirmTransactionModel.transactionCost;
-    if (self.handlerType == HandlerTypeTransferDpos) {
+    if (self.handlerType == HandlerTypeTransferDpos || self.handlerType == HandlerTypeTransferDposVote) {
         if (!NotNULLString(self.transactionCost)) {
             self.transactionCost = TransactionCost_Check_MIN;
             if ([self.confirmTransactionModel.type integerValue] == TransactionTypeCooperate) {

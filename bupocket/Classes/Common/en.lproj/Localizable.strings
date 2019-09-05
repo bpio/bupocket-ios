@@ -228,7 +228,7 @@
 "PhoneOrAddress" = "Please enter the recipient address";
 "AmountOfTransfer*" = "Amount to transfer *";
 "AmountOfTransfer（%@）*" = "Amount to transfer（%@）*";
-"AvailableBalance" = "Available balance";
+"AvailableBalance" = "Balance";
 //"MostOnce" = "Each transaction cannot exceed 10000 BU";
 "AmountOfTransferPlaceholder" = "Please enter the amount to be transferred";
 "Value" = "Value";
@@ -548,11 +548,13 @@
 "I want to vote" = "Vote";
 "SharingRatioInfo" = "Campaign node customizes proportion of rewards to voters";
 "NodeVoting" = "Node Voting";
-"NumberOfVotes" = "Number of votes (please ensure that the number of votes is a multiple of 10)";
-"NumberOfVotesPrompt" = "Please input the number of votes";
+"NumberOfVotes" = "Number of votes";
+"NumberOfVotesInfo" = " (please ensure that the number of votes is a multiple of 10)";
+"NumberOfVotesPrompt" = "1 BU = 1 Vote";
 "Number %@ BU" = "Number of votes: %@ BU";
 "ConfirmVote" = "Confirm";
 "Vote for '%@'%@" = "Vote for \"%@\"%@ ";
+"CurrentWallet" = "Current Wallet";
 
 // Records of voting
 "Throw" = "Vote";

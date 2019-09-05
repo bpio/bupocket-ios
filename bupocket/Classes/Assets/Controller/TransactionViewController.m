@@ -88,9 +88,9 @@ static NSString * const ChooseVoucherCellID = @"ChooseVoucherCellID";
         if (self.listModel.type == Token_Type_BU) {
             NSDecimalNumber * amountNumber = [NSDecimalNumber decimalNumberWithString:self.listModel.amount];
             NSDecimalNumber * minLimitationNumber = [NSDecimalNumber decimalNumberWithString:[[NSUserDefaults standardUserDefaults] objectForKey:Minimum_Asset_Limitation]];
-            NSDecimalNumber * minTransactionCost = [NSDecimalNumber decimalNumberWithString:TransactionCost_MIN];
-            NSDecimalNumber * minNumber = [minLimitationNumber decimalNumberByAdding:minTransactionCost];
-            self.availableAmount = [[amountNumber decimalNumberBySubtracting:minNumber] stringValue];
+//            NSDecimalNumber * minTransactionCost = [NSDecimalNumber decimalNumberWithString:TransactionCost_MIN];
+//            NSDecimalNumber * minNumber = [minLimitationNumber decimalNumberByAdding:minTransactionCost];
+            self.availableAmount = [[amountNumber decimalNumberBySubtracting:minLimitationNumber] stringValue];
             if ([self.availableAmount hasPrefix:@"-"]) {
                 self.availableAmount = @"0";
             }

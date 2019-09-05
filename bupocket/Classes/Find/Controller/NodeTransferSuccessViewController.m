@@ -17,12 +17,14 @@
 @property (nonatomic, strong) UITableView * tableView;
 @property (nonatomic, strong) NSArray * listArray;
 @property (nonatomic, strong) UIView * noNetWork;
+@property (nonatomic, strong) UIButton * prompt;
 @property (nonatomic, strong) UIImageView * adImage;
 @property (nonatomic, strong) AdsModel * adsModel;
 
 @end
 
 static NSString * const NodeTransferSuccessID = @"NodeTransferSuccessID";
+static NSString * const ADID = @"ADID";
 
 @implementation NodeTransferSuccessViewController
 
@@ -36,12 +38,11 @@ static NSString * const NodeTransferSuccessID = @"NodeTransferSuccessID";
 }
 - (void)setupView
 {
-    self.tableView = [[UITableView alloc] initWithFrame:self.view.bounds style:UITableViewStylePlain];
+    self.tableView = [[UITableView alloc] initWithFrame:self.view.bounds style:UITableViewStyleGrouped];
     self.tableView.delegate = self;
     self.tableView.dataSource = self;
     self.tableView.separatorStyle = UITableViewCellSeparatorStyleNone;
     [self.view addSubview:self.tableView];
-    [self setupFooterView];
     self.noNetWork = [Encapsulation showNoNetWorkWithSuperView:self.view target:self action:@selector(reloadData)];
 }
 - (void)reloadData
@@ -67,40 +68,6 @@ static NSString * const NodeTransferSuccessID = @"NodeTransferSuccessID";
         self.noNetWork.hidden = NO;
     }];
 }
-- (void)setupFooterView
-{
-    UIView * footerView = [[UIView alloc] init];
-    self.tableView.tableFooterView = footerView;
-    UIButton * prompt = [UIButton buttonWithType:UIButtonTypeCustom];
-    prompt.backgroundColor = COLOR(@"F8F8F8");
-    [prompt setAttributedTitle:[Encapsulation attrWithString:Localized(@"NodeTransferPrompt") preFont:FONT(13) preColor:COLOR_9 index:0 sufFont:FONT(13) sufColor:COLOR_9 lineSpacing:Margin_5] forState:UIControlStateNormal];
-    prompt.titleLabel.numberOfLines = 0;
-    CGFloat promptH = [Encapsulation getSizeSpaceLabelWithStr:Localized(@"NodeTransferPrompt") font:FONT(13) width:Content_Width_Main height:CGFLOAT_MAX lineSpacing:Margin_5].height + Margin_30;
-    [footerView addSubview:prompt];
-    prompt.contentEdgeInsets = UIEdgeInsetsMake(Margin_15, Margin_10, Margin_10, Margin_15);
-    [prompt mas_makeConstraints:^(MASConstraintMaker *make) {
-        make.top.equalTo(footerView.mas_top);
-        make.left.equalTo(footerView.mas_left).offset(Margin_Main);
-        make.right.equalTo(footerView.mas_right).offset(-Margin_Main);
-        make.height.mas_equalTo(promptH);
-    }];
-    prompt.layer.masksToBounds = YES;
-    prompt.layer.cornerRadius = BG_CORNER;
-    
-    self.adImage = [[UIImageView alloc] initWithImage:[UIImage imageNamed:@"ad_placehoder"]];
-    self.adImage.userInteractionEnabled = YES;
-    [self.adImage addGestureRecognizer:[[UITapGestureRecognizer alloc] initWithTarget:self action:@selector(adAction)]];
-    self.adImage.contentMode = UIViewContentModeScaleAspectFit;
-    [footerView addSubview:self.adImage];
-    [self.adImage mas_makeConstraints:^(MASConstraintMaker *make) {
-        make.top.equalTo(prompt.mas_bottom).offset(Margin_20);
-        make.left.right.equalTo(prompt);
-        make.height.mas_equalTo(self.adImage.height);
-    }];
-    
-    footerView.frame = CGRectMake(0, 0, DEVICE_WIDTH, promptH + SafeAreaBottomH + NavBarH + self.adImage.height + Margin_30);
-}
-
 - (void)adAction
 {
     if ([self.adsModel.type isEqualToString:@"1"]) {
@@ -116,14 +83,21 @@ static NSString * const NodeTransferSuccessID = @"NodeTransferSuccessID";
 
 - (NSInteger)numberOfSectionsInTableView:(UITableView *)tableView
 {
-    return 1;
+    return 3;
 }
 - (NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section
 {
-    return [[self.listArray firstObject] count];
+    if (section == 0) {
+        return [[self.listArray firstObject] count];
+    } else {
+        return 1;
+    }
 }
 - (CGFloat)tableView:(UITableView *)tableView heightForHeaderInSection:(NSInteger)section
 {
+    if (section == 2) {
+        return Margin_10;
+    }
     return CGFLOAT_MIN;
 }
 
@@ -133,23 +107,79 @@ static NSString * const NodeTransferSuccessID = @"NodeTransferSuccessID";
 }
 - (CGFloat)tableView:(UITableView *)tableView heightForRowAtIndexPath:(NSIndexPath *)indexPath
 {
-    return ScreenScale(60) + [Encapsulation rectWithText:self.listArray[1][indexPath.row] font:FONT(13) textWidth:DEVICE_WIDTH - ScreenScale(95)].size.height;
+    if (indexPath.section == 0) {
+        return ScreenScale(60) + [Encapsulation rectWithText:self.listArray[1][indexPath.row] font:FONT(13) textWidth:DEVICE_WIDTH - ScreenScale(95)].size.height;
+    } else if (indexPath.section == 1) {
+        return self.prompt.titleLabel.size.height + MAIN_HEIGHT;
+    } else {
+        return self.adImage.height;
+    }
 }
 - (UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath
 {
-    NodeTransferSuccessViewCell *cell = [NodeTransferSuccessViewCell cellWithTableView:tableView identifier:NodeTransferSuccessID];
-    cell.selectionStyle = UITableViewCellSelectionStyleNone;
-    cell.type = indexPath.row;
-    cell.icon.image = [UIImage imageNamed:[NSString stringWithFormat:@"node_transfer_success_%zd", indexPath.row]];
-    cell.title.text = self.listArray[0][indexPath.row];
-    cell.detail.text = self.listArray[1][indexPath.row];
-    if (indexPath.row == [[self.listArray firstObject] count] - 1) {
-        cell.lineView.backgroundColor = LINE_COLOR;
+    if (indexPath.section == 0) {
+        NodeTransferSuccessViewCell *cell = [NodeTransferSuccessViewCell cellWithTableView:tableView identifier:NodeTransferSuccessID];
+        cell.selectionStyle = UITableViewCellSelectionStyleNone;
+        cell.type = indexPath.row;
+        cell.icon.image = [UIImage imageNamed:[NSString stringWithFormat:@"node_transfer_success_%zd", indexPath.row]];
+        cell.title.text = self.listArray[0][indexPath.row];
+        cell.detail.text = self.listArray[1][indexPath.row];
+        if (indexPath.row == [[self.listArray firstObject] count] - 1) {
+            cell.lineView.backgroundColor = LINE_COLOR;
+        } else {
+            cell.lineView.backgroundColor = MAIN_COLOR;
+        }
+        return cell;
     } else {
-        cell.lineView.backgroundColor = MAIN_COLOR;
+        UITableViewCell * cell = [tableView dequeueReusableCellWithIdentifier:ADID];
+        if (cell == nil) {
+            cell = [[UITableViewCell alloc] initWithStyle:UITableViewCellStyleSubtitle reuseIdentifier:ADID];
+        }
+        cell.selectionStyle = UITableViewCellSelectionStyleNone;
+        if (indexPath.section == 1) {
+            [cell.contentView addSubview:self.prompt];
+            [self.prompt mas_makeConstraints:^(MASConstraintMaker *make) {
+                make.top.equalTo(cell.contentView);
+                make.left.equalTo(cell.contentView.mas_left).offset(Margin_Main);
+                make.right.equalTo(cell.contentView.mas_right).offset(-Margin_Main);
+                make.bottom.equalTo(cell.contentView.mas_bottom).offset(-Margin_Main);
+            }];
+        } else if (indexPath.section == 2) {
+            [cell.contentView addSubview:self.adImage];
+            [self.adImage mas_makeConstraints:^(MASConstraintMaker *make) {
+                make.edges.equalTo(cell.contentView);
+            }];
+        }
+        return cell;
     }
-    return cell;
 }
+- (UIImageView *)adImage
+{
+    if (!_adImage) {
+        _adImage = [[UIImageView alloc] initWithImage:[UIImage imageNamed:@"ad_placehoder"]];
+        _adImage.userInteractionEnabled = YES;
+        [_adImage addGestureRecognizer:[[UITapGestureRecognizer alloc] initWithTarget:self action:@selector(adAction)]];
+        _adImage.contentMode = UIViewContentModeScaleAspectFit;
+    }
+    return _adImage;
+}
+- (UIButton *)prompt
+{
+    if (!_prompt) {
+        _prompt = [UIButton buttonWithType:UIButtonTypeCustom];
+        _prompt.backgroundColor = VIEWBG_COLOR;
+        [_prompt setAttributedTitle:[Encapsulation attrWithString:Localized(@"NodeTransferPrompt") preFont:FONT(13) preColor:COLOR_9 index:0 sufFont:FONT(13) sufColor:COLOR_9 lineSpacing:Margin_5] forState:UIControlStateNormal];
+        _prompt.titleLabel.numberOfLines = 0;
+        _prompt.contentEdgeInsets = UIEdgeInsetsMake(Margin_15, Margin_10, Margin_10, Margin_15);
+        _prompt.layer.masksToBounds = YES;
+        _prompt.layer.cornerRadius = TEXT_CORNER;
+        CGSize maximumSize = CGSizeMake(Content_Width_Main, CGFLOAT_MAX);
+        CGSize expectSize = [_prompt.titleLabel sizeThatFits:maximumSize];
+        _prompt.titleLabel.size = expectSize;
+    }
+    return _prompt;
+}
+
 - (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath
 {
     [tableView deselectRowAtIndexPath:indexPath animated:NO];

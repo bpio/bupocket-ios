@@ -67,18 +67,28 @@
     NSString * string = [[NSString alloc] initWithData:data encoding:NSUTF8StringEncoding];
     return string;
 }
+// 千分符
 + (NSString *)stringAmountSplitWith:(NSString *)str
 {
+//    NSNumberFormatter *numberFormatter = [[NSNumberFormatter alloc]init];
+//    [numberFormatter setFormatterBehavior:NSNumberFormatterBehavior10_4];
+//    [numberFormatter setNumberStyle:NSNumberFormatterDecimalStyle];
+//    [numberFormatter setFormatWidth:20];
+//    NSString *numberString = [numberFormatter stringFromNumber:[NSNumber numberWithString:str]];
+//    NSLog(@"%@",numberString);
+//    return numberString;
     double oldf = [str doubleValue];
     long long oldll = [str longLongValue];
     double tmptf = oldf - oldll;
     NSString * currencyStr = nil;
     if(tmptf > 0){
-        currencyStr = [NSNumberFormatter localizedStringFromNumber:[NSNumber numberWithDouble:oldf]
-                                                       numberStyle:NSNumberFormatterDecimalStyle];
+//        currencyStr = [NSNumberFormatter localizedStringFromNumber:[NSNumber numberWithDouble:oldf] numberStyle:NSNumberFormatterDecimalStyle];
+        NSNumberFormatter *numberFormatter = [[NSNumberFormatter alloc] init];
+        numberFormatter.numberStyle = NSNumberFormatterRoundFloor;//格式化的格式
+        [numberFormatter setPositiveFormat:@" ###,###.000000"];//保留两位小数
+        currencyStr = [numberFormatter stringFromNumber:[NSNumber numberWithString:str]];
     } else {
-        currencyStr = [NSNumberFormatter localizedStringFromNumber:[NSNumber numberWithLongLong:oldll]
-                                                       numberStyle:NSNumberFormatterDecimalStyle];
+        currencyStr = [NSNumberFormatter localizedStringFromNumber:[NSNumber numberWithLongLong:oldll] numberStyle:NSNumberFormatterDecimalStyle];
     }
     return currencyStr;
 }

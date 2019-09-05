@@ -26,7 +26,7 @@ NS_ASSUME_NONNULL_BEGIN
 + (NSString *)encode:(NSString *)string;
 // base64 Decode
 + (NSString *)dencode:(NSString *)base64String;
-
+// 千分符
 + (NSString *)stringAmountSplitWith:(NSString *)str;
 
 + (NSString *)MD5:(NSString *)mdStr;

@@ -256,7 +256,7 @@ static NSString * const StatusID = @"StatusID";
         
         cell.title.text = [self.nodeData firstObject][indexPath.row];
         NSString * info = [self.nodeData lastObject][indexPath.row];
-        cell.detailTitle.text = [NSString stringAppendingBUWithStr:info];
+//        cell.detailTitle.text = [NSString stringAppendingBUWithStr:info];
         cell.detail.hidden = YES;
         cell.selectionStyle = UITableViewCellSelectionStyleNone;
 //        cell.lineView.hidden = (indexPath.row == self.nodeData.count - 1 );
@@ -267,13 +267,6 @@ static NSString * const StatusID = @"StatusID";
         } else {
             cell.detailTitle.text = [NSString stringAmountSplitWith:info];
         }
-//        if (indexPath.row == 0 || indexPath.row > self.nodeData.count - 3) {
-//            cell.detailTitle.text = [NSString stringAmountSplitWith:@"13000000"];
-//        } else if (indexPath.row < self.nodeData.count - 3) {
-//            cell.detailTitle.text = [NSString stringAppendingBUWithStr:[NSString stringAmountSplitWith:@"23345333.897645"]];
-//        }
-//        InfoViewCell * cell = [InfoViewCell cellWithTableView:tableView cellType:CellTypeNormal];
-//        cell.infoStr = Localized(@"RiskStatementPrompt");
         return cell;
     } else if (indexPath.section == 2) {
         UITableViewCell * cell = [tableView dequeueReusableCellWithIdentifier:NodeInfoID];
@@ -413,11 +406,15 @@ static NSString * const StatusID = @"StatusID";
     confirmTransactionModel.script = script;
     confirmTransactionModel.nodeId = self.nodePlanModel.nodeId;
     confirmTransactionModel.type = type;
-    BottomConfirmAlertView * confirmAlertView = [[BottomConfirmAlertView alloc] initWithIsShowValue:NO handlerType:HandlerTypeTransferDpos confirmModel:confirmTransactionModel confrimBolck:^{
+    BottomConfirmAlertView * confirmAlertView = [[BottomConfirmAlertView alloc] initWithIsShowValue:NO handlerType:HandlerTypeTransferDposVote confirmModel:confirmTransactionModel confrimBolck:^{
     } cancelBlock:^{
         
     }];
+    confirmAlertView.dposModel = [[DposModel alloc] init];
+    confirmAlertView.dposModel.to_address = self.nodePlanModel.nodeCapitalAddress;
+    confirmAlertView.dposModel.dest_address = self.contractAddress;
     [confirmAlertView showInWindowWithMode:CustomAnimationModeShare inView:nil bgAlpha:AlertBgAlpha needEffectView:NO];
+    
 }
 /*
 - (void)shareAction

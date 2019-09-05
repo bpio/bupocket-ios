@@ -51,7 +51,7 @@ static NSString * const CooperateDetailCellID = @"CooperateDetailCellID";
     if (!_noData) {
         CGFloat noDataH = DEVICE_HEIGHT - NavBarH - SafeAreaBottomH - ScreenScale(90);
         _noData = [[UIView alloc] initWithFrame:CGRectMake(0, 0, DEVICE_WIDTH, noDataH)];
-        _noData.backgroundColor = [UIColor whiteColor];
+//        _noData.backgroundColor = [UIColor whiteColor];
         UIButton * noDataBtn = [Encapsulation showNoDataWithTitle:Localized(@"NoIntroduction") imageName:@"noRecord" superView:_noData frame:CGRectMake(0, (noDataH - ScreenScale(160)) / 2, DEVICE_WIDTH, ScreenScale(160))];
         [_noData addSubview:noDataBtn];
     }

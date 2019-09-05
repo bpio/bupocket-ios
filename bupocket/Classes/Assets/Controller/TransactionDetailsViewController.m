@@ -131,7 +131,11 @@ static NSInteger const TxInfoNormalCount = 6;
     [detailArray addObject:self.txDetailModel.destAddress];
     [detailArray addObject:[NSString stringAppendingBUWithStr: self.txDetailModel.fee]];
     [detailArray addObject:[DateTool getDateStringWithTimeStr:self.txDetailModel.applyTimeDate]];
-    [detailArray addObject:self.txDetailModel.txMetadata];
+    NSString * remark = self.txDetailModel.txMetadata;
+    if (!NotNULLString(remark)) {
+       remark = self.txDetailModel.operaMetadata;
+    }
+    [detailArray addObject:remark];
     [self.infoArray addObject:detailArray];
     // TX Info
     NSMutableArray * infoArray = [NSMutableArray array];

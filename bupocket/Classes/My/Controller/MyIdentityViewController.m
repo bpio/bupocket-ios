@@ -29,7 +29,7 @@
 - (void)viewDidLoad {
     [super viewDidLoad];
     self.navigationItem.title = Localized(@"MyIdentity");
-    self.listArray = @[@[Localized(@"IdentityNameTitle"), [[AccountTool shareTool] account].identityName], @[Localized(@"IdentityIDTitle"), [[AccountTool shareTool] account].identityAddress]];
+    self.listArray = @[@[Localized(@"IdentityNameTitle"), [[AccountTool shareTool] account].identityName], @[Localized(@"IdentityIDTitle"), [NSString stringEllipsisWithStr:[[AccountTool shareTool] account].identityAddress subIndex:SubIndex_Address]]];
     [self setupView];
     // Do any additional setup after loading the view.
 }
@@ -46,9 +46,9 @@
 
 - (CGFloat)tableView:(UITableView *)tableView heightForRowAtIndexPath:(NSIndexPath *)indexPath
 {
-    if (indexPath.row == 1) {
-        return ScreenScale(70);
-    }
+//    if (indexPath.row == 1) {
+//        return ScreenScale(70);
+//    }
     return Margin_50;
 }
 - (CGFloat)tableView:(UITableView *)tableView heightForHeaderInSection:(NSInteger)section

@@ -17,6 +17,7 @@ typedef NS_ENUM(NSInteger, HandlerType) {
     HandlerTypeTransferAssets,
     HandlerTypeTransferDpos,
     HandlerTypeTransferDposCommand,
+    HandlerTypeTransferDposVote,
     HandlerTypeTransferVoucher
 };
 

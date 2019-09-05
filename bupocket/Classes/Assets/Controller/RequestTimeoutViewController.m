@@ -7,13 +7,16 @@
 //
 
 #import "RequestTimeoutViewController.h"
+#import "ListTableViewCell.h"
 #import "WechatTool.h"
 #import "AdsModel.h"
 #import "WKWebViewController.h"
 
-@interface RequestTimeoutViewController ()<UITextViewDelegate>
+@interface RequestTimeoutViewController ()<UITextViewDelegate, UITableViewDelegate, UITableViewDataSource>
 
-@property (nonatomic, strong) UIScrollView * scrollView;
+@property (nonatomic, strong) UITableView * tableView;
+
+//@property (nonatomic, strong) UIScrollView * scrollView;
 @property (nonatomic, strong) UITextView * queryLink;
 @property (nonatomic, strong) UIView * noNetWork;
 @property (nonatomic, strong) UIImageView * adImage;
@@ -32,9 +35,18 @@
 }
 - (void)setupView
 {
-    self.scrollView = [[UIScrollView alloc] initWithFrame:CGRectMake(0, 0, DEVICE_WIDTH, DEVICE_HEIGHT)];
-    [self.view addSubview:self.scrollView];
-    
+    self.tableView = [[UITableView alloc] initWithFrame:self.view.frame style:UITableViewStyleGrouped];
+    self.tableView.delegate = self;
+    self.tableView.dataSource = self;
+    self.tableView.separatorInset = UIEdgeInsetsZero;
+    self.tableView.separatorStyle = UITableViewCellSeparatorStyleNone;
+    [self.view addSubview:self.tableView];
+    [self setupHeaderView];
+}
+- (void)setupHeaderView
+{
+    UIView * headerView = [[UIView alloc] init];
+    headerView.backgroundColor = [UIColor whiteColor];
     CustomButton * transactionStatus = [[CustomButton alloc] init];
     transactionStatus.layoutMode = VerticalNormal;
     transactionStatus.titleLabel.font = FONT(16);
@@ -44,11 +56,13 @@
     transactionStatus.titleLabel.textAlignment = NSTextAlignmentCenter;
     [transactionStatus setImage:[UIImage imageNamed:@"assetsSuccess"] forState:UIControlStateNormal];
     transactionStatus.userInteractionEnabled = NO;
-    [self.scrollView addSubview:transactionStatus];
+    [headerView addSubview:transactionStatus];
+//    CGFloat transactionStatusH = 60 + Margin_40 + [Encapsulation rectWithText:transactionStatus.titleLabel.text font:transactionStatus.titleLabel.font textWidth:DEVICE_WIDTH - Margin_60].size.height;
+    CGFloat transactionStatusH = 60 + Margin_60;
     [transactionStatus mas_makeConstraints:^(MASConstraintMaker *make) {
         make.top.mas_equalTo(Margin_20);
         make.centerX.mas_equalTo(0);
-        make.height.mas_equalTo(60 + Margin_40 + [Encapsulation rectWithText:transactionStatus.titleLabel.text font:transactionStatus.titleLabel.font textWidth:DEVICE_WIDTH - Margin_60].size.height);
+        make.height.mas_equalTo(transactionStatusH);
         make.width.mas_equalTo(View_Width_Main);
     }];
     
@@ -69,59 +83,81 @@
     self.queryLink.editable = NO;
     self.queryLink.scrollEnabled = NO;
     self.queryLink.textAlignment = NSTextAlignmentCenter;
-    [self.scrollView addSubview:self.queryLink];
+    [headerView addSubview:self.queryLink];
     [self.queryLink mas_makeConstraints:^(MASConstraintMaker *make) {
         make.centerX.width.equalTo(transactionStatus);
         make.top.equalTo(transactionStatus.mas_bottom);
     }];
     
-    CustomButton * hash = [[CustomButton alloc] init];
-    hash.layoutMode = HorizontalInverted;
-    hash.titleLabel.font = FONT_TITLE;
-    [hash setTitle:[NSString stringEllipsisWithStr:self.transactionHash subIndex:SubIndex_hash] forState:UIControlStateNormal];
-    [hash setTitleColor:COLOR_6 forState:UIControlStateNormal];
-    [hash setImage:[UIImage imageNamed:@"copy"] forState:UIControlStateNormal];
-    [hash addTarget:self action:@selector(copyAction) forControlEvents:UIControlEventTouchUpInside];
-    [self.scrollView addSubview:hash];
-    [hash mas_makeConstraints:^(MASConstraintMaker *make) {
-        make.top.equalTo(self.queryLink.mas_bottom).offset(Margin_10);
-        make.right.mas_equalTo(DEVICE_WIDTH - Margin_Main);
-        make.height.mas_equalTo(Margin_40);
-    }];
-    
-    UILabel * transactionSummary = [[UILabel alloc] init];
-    transactionSummary.font = FONT(13);
-    transactionSummary.textColor = COLOR_9;
-    transactionSummary.text = Localized(@"TransactionSummary");
-    [self.scrollView addSubview:transactionSummary];
-    [transactionSummary mas_makeConstraints:^(MASConstraintMaker *make) {
-        make.centerY.equalTo(hash);
-        make.left.mas_equalTo(Margin_Main);
-        make.right.mas_lessThanOrEqualTo(hash.mas_left).offset(-Margin_10);
-    }];
-    
-    UIView * lineView = [[UIView alloc] init];
-    lineView.backgroundColor = COLOR(@"F8F8F8");
-    [self.scrollView addSubview:lineView];
-    [lineView mas_makeConstraints:^(MASConstraintMaker *make) {
-        make.top.equalTo(hash.mas_bottom).offset(Margin_10);
-        make.left.mas_equalTo(0);
-        make.size.mas_equalTo(CGSizeMake(DEVICE_WIDTH, Margin_10));
-    }];
-    
-    self.adImage = [[UIImageView alloc] initWithImage:[UIImage imageNamed:@"ad_placehoder"]];
-    self.adImage.userInteractionEnabled = YES;
-    [self.adImage addGestureRecognizer:[[UITapGestureRecognizer alloc] initWithTarget:self action:@selector(adAction)]];
-    self.adImage.contentMode = UIViewContentModeScaleAspectFit;
-    [self.scrollView addSubview:self.adImage];
-    [self.adImage mas_makeConstraints:^(MASConstraintMaker *make) {
-        make.top.equalTo(lineView.mas_bottom).offset(Margin_15);
-        make.left.mas_equalTo(Margin_10);
-        make.size.mas_equalTo(CGSizeMake(View_Width_Main, self.adImage.height));
-    }];
-    [self.view layoutIfNeeded];
-    self.scrollView.contentSize = CGSizeMake(0, CGRectGetMaxY(self.adImage.frame) + ContentSizeBottom + Margin_10);
-    self.noNetWork = [Encapsulation showNoNetWorkWithSuperView:self.view target:self action:@selector(reloadData)];
+    CGSize maximumSize = CGSizeMake(View_Width_Main, CGFLOAT_MAX);
+    CGSize expectSize = [self.queryLink sizeThatFits:maximumSize];
+    self.queryLink.size = expectSize;
+    headerView.frame = CGRectMake(0, 0, DEVICE_WIDTH, 60 + ScreenScale(80) + expectSize.height);
+    self.tableView.tableHeaderView = headerView;
+}
+- (CGFloat)tableView:(UITableView *)tableView heightForRowAtIndexPath:(NSIndexPath *)indexPath
+{
+    if (indexPath.section == 1) {
+        return self.adImage.height;
+    }
+    return Margin_50;
+        
+}
+- (CGFloat)tableView:(UITableView *)tableView heightForHeaderInSection:(NSInteger)section
+{
+    if (section == 1) {
+        return Margin_10;
+    }
+    return CGFLOAT_MIN;
+}
+- (CGFloat)tableView:(UITableView *)tableView heightForFooterInSection:(NSInteger)section
+{
+    if (section == 1) {
+        return ContentSizeBottom;
+    }
+    return CGFLOAT_MIN;
+}
+- (NSInteger)numberOfSectionsInTableView:(UITableView *)tableView
+{
+    return 2;
+}
+- (NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section
+{
+    return 1;
+}
+- (UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath
+{
+    ListTableViewCell * cell = [ListTableViewCell cellWithTableView:tableView cellType:CellTypeWalletDetail];
+    cell.selectionStyle = UITableViewCellSelectionStyleNone;
+    if (indexPath.section == 0) {
+        cell.title.textColor = COLOR_9;
+        cell.detailTitle.textColor = COLOR_6;
+        cell.title.text = Localized(@"TransactionSummary");
+        cell.detailTitle.text = [NSString stringEllipsisWithStr:self.transactionHash subIndex:SubIndex_hash];
+        cell.detail.hidden = NO;
+        [cell.detail setImage:[UIImage imageNamed:@"copy"] forState:UIControlStateNormal];
+        cell.detail.userInteractionEnabled = YES;
+        [cell.detail addTarget:self action:@selector(copyAction) forControlEvents:UIControlEventTouchUpInside];
+    } else {
+        cell.detail.hidden = YES;
+        [cell.contentView addSubview:self.adImage];
+        [self.adImage mas_makeConstraints:^(MASConstraintMaker *make) {
+            make.edges.equalTo(cell.contentView);
+        }];
+    }
+    cell.selectionStyle = UITableViewCellSelectionStyleNone;
+    cell.lineView.hidden = YES;
+    return cell;
+}
+- (UIImageView *)adImage
+{
+    if (!_adImage) {
+        _adImage = [[UIImageView alloc] initWithImage:[UIImage imageNamed:@"ad_placehoder"]];
+        _adImage.userInteractionEnabled = YES;
+        [_adImage addGestureRecognizer:[[UITapGestureRecognizer alloc] initWithTarget:self action:@selector(adAction)]];
+        _adImage.contentMode = UIViewContentModeScaleAspectFit;
+    }
+    return _adImage;
 }
 - (void)reloadData
 {

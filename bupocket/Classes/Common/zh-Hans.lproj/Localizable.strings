@@ -531,11 +531,13 @@
 "I want to vote" = "我要投票";
 "SharingRatioInfo" = "竞选节点自定义设置对投票用户的奖励比例";
 "NodeVoting" = "节点投票";
-"NumberOfVotes" = "投票数量（请确认投票数是10的倍数）";
-"NumberOfVotesPrompt" = "请输入投票数量";
+"NumberOfVotes" = "投票数量";
+"NumberOfVotesInfo" = "（请确认投票数是10的倍数）";
+"NumberOfVotesPrompt" = "1 BU = 1 票";
 "Number %@ BU" = "数量：%@ BU";
 "ConfirmVote" = "确认投票";
 "Vote for '%@'%@" = "投票给\"%@\"%@票";
+"CurrentWallet" = "当前钱包";
 // 投票记录
 "Throw" = "投";
 "withdraw" = "撤";

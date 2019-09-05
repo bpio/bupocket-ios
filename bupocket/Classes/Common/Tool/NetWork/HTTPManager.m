@@ -823,7 +823,7 @@ static int64_t const gasPrice = 1002;
         URL = Node_Ecology_Detail;
     }
     NSString * url = SERVER_COMBINE_API(_webServerDomain, URL);
-    NSString * body = [NSString stringWithFormat:@"address=%@&nodeId=%@", CurrentWalletAddress, nodeId];
+    NSString * body = [NSString stringWithFormat:@"nodeId=%@", nodeId];
     NSDictionary * parameters = [[HTTPManager shareManager] parametersWithHTTPBody:body];
     [[HttpTool shareTool] POST:url parameters:parameters success:^(id responseObject) {
         if(success != nil)
@@ -1600,7 +1600,7 @@ static int64_t const gasPrice = 1002;
         [MBProgressHUD showActivityMessageInWindow:Localized(@"Loading")];
     });
     NSString * sourceAddress = CurrentWalletAddress;
-    NSString * notes = (isDonateVoucher) ? dposModel.notes : Localized(@"DposContract");
+    NSString * notes = (dposModel.notes) ? dposModel.notes : Localized(@"DposContract");
     int64_t fee = [[[NSDecimalNumber decimalNumberWithString:dposModel.tx_fee] decimalNumberByMultiplyingByPowerOf10: Decimals_BU] longLongValue];
     int64_t nonce = [[HTTPManager shareManager] getAccountNonce: sourceAddress] + 1;
     if (nonce == 0) return NO;

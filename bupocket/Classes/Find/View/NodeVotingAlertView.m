@@ -12,15 +12,22 @@
 
 @property (nonatomic, strong) UILabel * titleLabel;
 @property (nonatomic, strong) UIButton * closeBtn;
+@property (nonatomic, strong) UIView * lineView;
 @property (nonatomic, strong) UILabel * supportNumber;
 @property (nonatomic, strong) UITextField * numberText;
-@property (nonatomic, strong) UIButton * total;
+
+@property (nonatomic, strong) UILabel * currentWallet;
+@property (nonatomic, strong) UILabel * currentWalletName;
+@property (nonatomic, strong) UILabel * availableBalance;
+
+//@property (nonatomic, strong) UIButton * total;
+@property (nonatomic, strong) UIView * bottomView;
 @property (nonatomic, strong) UIButton * confirm;
-@property (nonatomic, strong) UIView * lineView;
 
 //@property (nonatomic, strong) NSString * purchaseAmountStr;
 //@property (nonatomic, strong) NSString * totalTarget;
 @property (nonatomic, strong) NSString * numberStr;
+@property (nonatomic, strong) NSDecimalNumber * amountNumber;
 
 @end
 
@@ -34,7 +41,13 @@
         _cancleClick = cancelBlock;
         _numberStr = @"0";
         [self setupView];
-        self.frame = CGRectMake(0, 0, DEVICE_WIDTH, ScreenScale(210));
+        CGFloat height = ([CurrentAppLanguage hasPrefix:ZhHans]) ? ScreenScale(320) : ScreenScale(340);
+        self.frame = CGRectMake(0, 0, DEVICE_WIDTH, height);
+        
+        self.amountNumber = [[HTTPManager shareManager] getDataWithBalanceJudgmentWithCost:@"0" ifShowLoading:NO];
+        NSString * availableStr = [NSString stringAppendingBUWithStr:[NSString stringWithFormat:@"%@ %@", Localized(@"AvailableBalance"), [NSString stringAmountSplitWith:[self.amountNumber stringValue]]]];
+        _availableBalance.attributedText = [Encapsulation attrWithString:availableStr preFont:FONT(12) preColor:COLOR_9 index:[Localized(@"AvailableBalance") length] sufFont:FONT(12) sufColor:MAIN_COLOR lineSpacing:CGFLOAT_MIN];
+        _availableBalance.textAlignment = NSTextAlignmentRight;
     }
     return self;
 }
@@ -50,13 +63,20 @@
     
     [self addSubview:self.supportNumber];
     
+    [self addSubview:self.currentWallet];
+    
+    [self addSubview:self.currentWalletName];
+    
+    [self addSubview:self.availableBalance];
+    
     [self addSubview:self.numberText];
     
-    [self addSubview:self.total];
+    [self addSubview:self.bottomView];
+//    [self addSubview:self.total];
     
-    [self addSubview:self.confirm];
+    [self.bottomView addSubview:self.confirm];
     
-    [self setTotalText];
+//    [self setTotalText];
 }
 - (void)layoutSubviews
 {
@@ -81,27 +101,49 @@
     }];
     
     [self.supportNumber mas_makeConstraints:^(MASConstraintMaker *make) {
-        make.top.equalTo(self.lineView.mas_bottom);
+        make.top.equalTo(self.lineView.mas_bottom).offset(Margin_20);
         make.left.right.equalTo(self.lineView);
-        make.height.mas_equalTo(MAIN_HEIGHT);
+//        make.height.mas_equalTo(MAIN_HEIGHT);
     }];
     
     [self.numberText mas_makeConstraints:^(MASConstraintMaker *make) {
         make.left.right.equalTo(self.lineView);
-        make.top.equalTo(self.supportNumber.mas_bottom);
+        make.top.equalTo(self.supportNumber.mas_bottom).offset(Margin_15);
         make.height.mas_equalTo(MAIN_HEIGHT);
     }];
     
-    [self.confirm mas_makeConstraints:^(MASConstraintMaker *make) {
-        make.bottom.right.equalTo(self);
-        make.size.mas_equalTo(CGSizeMake(ScreenScale(145), Margin_50));
+    [self.currentWallet mas_makeConstraints:^(MASConstraintMaker *make) {
+        make.top.equalTo(self.numberText.mas_bottom).offset(Margin_20);
+        make.left.equalTo(self.lineView);
     }];
     
+    [self.currentWalletName mas_makeConstraints:^(MASConstraintMaker *make) {
+        make.right.equalTo(self.lineView);
+        make.top.equalTo(self.currentWallet);
+        make.left.mas_greaterThanOrEqualTo(self.currentWallet.mas_right).offset(Margin_50);
+    }];
+    [self.currentWallet setContentCompressionResistancePriority:UILayoutPriorityRequired forAxis:UILayoutConstraintAxisHorizontal];
+    [self.availableBalance mas_makeConstraints:^(MASConstraintMaker *make) {
+        make.left.right.equalTo(self.lineView);
+        make.top.equalTo(self.currentWalletName.mas_bottom).offset(Margin_15);
+    }];
+    
+    [self.bottomView mas_makeConstraints:^(MASConstraintMaker *make) {
+        make.left.bottom.equalTo(self);
+        make.size.mas_equalTo(CGSizeMake(DEVICE_WIDTH, ScreenScale(90)));
+    }];
+    [self.confirm mas_makeConstraints:^(MASConstraintMaker *make) {
+        make.top.equalTo(self.bottomView.mas_top).offset(Margin_20);
+        make.left.equalTo(self.bottomView.mas_left).offset(Margin_Main);
+        make.size.mas_equalTo(CGSizeMake(View_Width_Main, Margin_50));
+    }];
+    /*
     [self.total mas_makeConstraints:^(MASConstraintMaker *make) {
         make.height.equalTo(self.confirm);
         make.left.bottom.equalTo(self);
         make.right.equalTo(self.confirm.mas_left);
     }];
+     */
 }
 - (UILabel *)titleLabel
 {
@@ -133,9 +175,11 @@
 {
     if (!_supportNumber) {
         _supportNumber = [[UILabel alloc] init];
-        _supportNumber.textColor = COLOR_9;
+        _supportNumber.textColor = TITLE_COLOR;
         _supportNumber.font = FONT_13;
-        _supportNumber.text = Localized(@"NumberOfVotes");
+        _supportNumber.attributedText = [Encapsulation attrWithString:[NSString stringWithFormat:@"%@%@", Localized(@"NumberOfVotes"), Localized(@"NumberOfVotesInfo")] preFont:FONT_13 preColor:TITLE_COLOR index:[Localized(@"NumberOfVotes") length] sufFont:FONT_13 sufColor:COLOR_6 lineSpacing:CGFLOAT_MIN];
+        ;
+        _supportNumber.numberOfLines = 0;
     }
     return _supportNumber;
 }
@@ -165,7 +209,7 @@
     self.numberStr = TrimmingCharacters(self.numberText.text);
     if (NotNULLString(self.numberStr)) {
         long long number = [self.numberStr longLongValue];
-        if ((number / 10 > 0) && (number % 10) == 0 && [self.numberStr longLongValue] < [SendingQuantity_MAX longLongValue]) {
+        if ((number / 10 > 0) && (number % 10) == 0 && [self.numberStr longLongValue] < [SendingQuantity_MAX longLongValue] &&  [self.amountNumber floatValue] > [self.numberStr longLongValue]) {
             self.confirm.enabled = YES;
             self.confirm.backgroundColor = MAIN_COLOR;
         } else {
@@ -173,9 +217,10 @@
             self.confirm.backgroundColor = DISABLED_COLOR;
         }
     }
-    [self setTotalText];
+//    [self setTotalText];
 }
 
+/*
 - (void)setTotalText
 {
     NSString * totleAmount = [NSString stringWithFormat:Localized(@"Number %@ BU"), self.numberStr];
@@ -198,17 +243,55 @@
     }
     return _total;
 }
-
+*/
+- (UILabel *)currentWallet
+{
+    if (!_currentWallet) {
+        _currentWallet = [[UILabel alloc] init];
+        _currentWallet.textColor = TITLE_COLOR;
+        _currentWallet.font = FONT_13;
+        _currentWallet.text = Localized(@"CurrentWallet");
+    }
+    return _currentWallet;
+}
+- (UILabel *)currentWalletName
+{
+    if (!_currentWalletName) {
+        _currentWalletName = [[UILabel alloc] init];
+        _currentWalletName.textColor = TITLE_COLOR;
+        _currentWalletName.font = FONT_13;
+        _currentWalletName.text = CurrentWalletName;
+        _currentWalletName.lineBreakMode = NSLineBreakByTruncatingMiddle;
+    }
+    return _currentWalletName;
+}
+- (UILabel *)availableBalance
+{
+    if (!_availableBalance) {
+        _availableBalance = [[UILabel alloc] init];
+        _availableBalance.textColor = TITLE_COLOR;
+        _availableBalance.font = FONT_13;
+    }
+    return _availableBalance;
+}
 - (UIButton *)confirm
 {
     if (!_confirm) {
-        _confirm = [UIButton createButtonWithTitle:Localized(@"ConfirmVote") TextFont:FONT_16 TextNormalColor:[UIColor whiteColor] TextSelectedColor:[UIColor whiteColor] Target:self Selector:@selector(sureBtnClick)];
-        _confirm.enabled = NO;
-        _confirm.backgroundColor = DISABLED_COLOR;
+        _confirm = [UIButton createButtonWithTitle:Localized(@"ConfirmVote") isEnabled:NO Target:self Selector:@selector(sureBtnClick)];
+//        [UIButton createButtonWithTitle:Localized(@"ConfirmVote") TextFont:FONT_16 TextNormalColor:[UIColor whiteColor] TextSelectedColor:[UIColor whiteColor] Target:self Selector:@selector(sureBtnClick)];
+//        _confirm.enabled = NO;
+//        _confirm.backgroundColor = DISABLED_COLOR;
     }
     return _confirm;
 }
-
+- (UIView *)bottomView
+{
+    if (!_bottomView) {
+        _bottomView = [[UIView alloc] initWithFrame:CGRectMake(0, 0, DEVICE_WIDTH, ScreenScale(90))];
+        [UIView setViewBorder:_bottomView color:LINE_COLOR border:LINE_WIDTH type:UIViewBorderLineTypeTop];
+    }
+    return _bottomView;
+}
 - (void)cancleBtnClick {
     [self hideView];
     if (_cancleClick) {
