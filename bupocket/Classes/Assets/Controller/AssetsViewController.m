@@ -132,11 +132,12 @@
     if (!self.currentWalletAddress) {
         self.currentWalletAddress = [[[AccountTool shareTool] account] purseAccount];
     }
-    if ([defaults objectForKey:If_Hidden_New]) {
-        [self.navigationController.tabBarController.tabBar hideBadgeOnItemIndex:1];
-    } else {
-        [self.navigationController.tabBarController.tabBar showBadgeOnItemIndex:1 tabbarNum:self.navigationController.tabBarController.viewControllers.count];
-    }
+//    是否显示New
+//    if ([defaults objectForKey:If_Hidden_New]) {
+//        [self.navigationController.tabBarController.tabBar hideBadgeOnItemIndex:1];
+//    } else {
+//        [self.navigationController.tabBarController.tabBar showBadgeOnItemIndex:1 tabbarNum:self.navigationController.tabBarController.viewControllers.count];
+//    }
 }
 - (void)setupNav
 {
@@ -766,6 +767,7 @@
         self.confirmTransactionModel.amount = self.dposModel.amount;
         self.confirmTransactionModel.script = self.dposModel.input;
         self.confirmTransactionModel.qrRemarkEn = Localized(@"DposContract");
+//        self.confirmTransactionModel.qrRemarkEn = Localized_Language(@"DposContract", EN);
         BottomConfirmAlertView * confirmAlertView = [[BottomConfirmAlertView alloc] initWithIsShowValue:NO handlerType:HandlerTypeTransferDposCommand confirmModel:self.confirmTransactionModel confrimBolck:^{
         } cancelBlock:^{
             

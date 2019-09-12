@@ -1600,6 +1600,7 @@ static int64_t const gasPrice = 1002;
         [MBProgressHUD showActivityMessageInWindow:Localized(@"Loading")];
     });
     NSString * sourceAddress = CurrentWalletAddress;
+//    Localized_Language(@"DposContract", EN)
     NSString * notes = (dposModel.notes) ? dposModel.notes : Localized(@"DposContract");
     int64_t fee = [[[NSDecimalNumber decimalNumberWithString:dposModel.tx_fee] decimalNumberByMultiplyingByPowerOf10: Decimals_BU] longLongValue];
     int64_t nonce = [[HTTPManager shareManager] getAccountNonce: sourceAddress] + 1;

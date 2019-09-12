@@ -261,7 +261,7 @@
 }
 - (void)plusAction:(UIButton *)button
 {
-    self.numberText.text = [NSString stringWithFormat:@"%ld", [self.numberStr integerValue] + 1];
+    self.numberText.text = [NSString stringWithFormat:@"%d", [self.numberStr integerValue] + 1];
     self.numberStr = self.numberText.text;
     [self setTotalText];
     [self setButtonEnabled];

@@ -169,7 +169,9 @@ static NSString * const StatusID = @"StatusID";
         [Encapsulation showAlertControllerWithMessage:status handler:nil];
         return;
     }
-    NodeVotingAlertView * alertView = [[NodeVotingAlertView alloc] initWithVoteConfrimBolck:^(NSString * _Nonnull text) {
+    NSDecimalNumber * amountNumber = [[HTTPManager shareManager] getDataWithBalanceJudgmentWithCost:@"0" ifShowLoading:NO];
+    if (amountNumber == nil) return;
+    NodeVotingAlertView * alertView = [[NodeVotingAlertView alloc] initWithVoteAmountNumber:amountNumber confrimBolck:^(NSString * _Nonnull text) {
         dispatch_after(dispatch_time(DISPATCH_TIME_NOW, (int64_t)(Dispatch_After_Time * NSEC_PER_SEC)), dispatch_get_main_queue(), ^{
             [self showConfirmAlertWithTitle:button.titleLabel.text amount:text];
         });

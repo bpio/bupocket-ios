@@ -85,6 +85,7 @@
 //        currencyStr = [NSNumberFormatter localizedStringFromNumber:[NSNumber numberWithDouble:oldf] numberStyle:NSNumberFormatterDecimalStyle];
         NSNumberFormatter *numberFormatter = [[NSNumberFormatter alloc] init];
         numberFormatter.numberStyle = NSNumberFormatterRoundFloor;//格式化的格式
+//        numberFormatter.maximumFractionDigits = 8;
         [numberFormatter setPositiveFormat:@" ###,###.000000"];//保留两位小数
         currencyStr = [numberFormatter stringFromNumber:[NSNumber numberWithString:str]];
     } else {

@@ -27,27 +27,27 @@
 //@property (nonatomic, strong) NSString * purchaseAmountStr;
 //@property (nonatomic, strong) NSString * totalTarget;
 @property (nonatomic, strong) NSString * numberStr;
+//@property (nonatomic, strong) NSString * availableStr;
 @property (nonatomic, strong) NSDecimalNumber * amountNumber;
 
 @end
 
 @implementation NodeVotingAlertView
 
-- (instancetype)initWithVoteConfrimBolck:(void (^)(NSString * text))confrimBlock cancelBlock:(void (^)(void))cancelBlock
+- (instancetype)initWithVoteAmountNumber:(NSDecimalNumber * )amountNumber confrimBolck:(void (^)(NSString * text))confrimBlock cancelBlock:(void (^)(void))cancelBlock
 {
     self = [super init];
     if (self) {
         _confirmClick = confrimBlock;
         _cancleClick = cancelBlock;
         _numberStr = @"0";
+        _amountNumber = amountNumber;
         [self setupView];
         CGFloat height = ([CurrentAppLanguage hasPrefix:ZhHans]) ? ScreenScale(320) : ScreenScale(340);
         self.frame = CGRectMake(0, 0, DEVICE_WIDTH, height);
-        
-        self.amountNumber = [[HTTPManager shareManager] getDataWithBalanceJudgmentWithCost:@"0" ifShowLoading:NO];
-        NSString * availableStr = [NSString stringAppendingBUWithStr:[NSString stringWithFormat:@"%@ %@", Localized(@"AvailableBalance"), [NSString stringAmountSplitWith:[self.amountNumber stringValue]]]];
-        _availableBalance.attributedText = [Encapsulation attrWithString:availableStr preFont:FONT(12) preColor:COLOR_9 index:[Localized(@"AvailableBalance") length] sufFont:FONT(12) sufColor:MAIN_COLOR lineSpacing:CGFLOAT_MIN];
-        _availableBalance.textAlignment = NSTextAlignmentRight;
+//        self.amountNumber = [[HTTPManager shareManager] getDataWithBalanceJudgmentWithCost:@"0" ifShowLoading:NO];
+//        NSString * availableStr = [NSString stringAppendingBUWithStr:[NSString stringWithFormat:@"%@ %@", Localized(@"AvailableBalance"), self.amountNumber]];
+       
     }
     return self;
 }
@@ -271,6 +271,9 @@
         _availableBalance = [[UILabel alloc] init];
         _availableBalance.textColor = TITLE_COLOR;
         _availableBalance.font = FONT_13;
+        NSString * availableStr = [NSString stringAppendingBUWithStr:[NSString stringWithFormat:@"%@ %@", Localized(@"AvailableBalance"), _amountNumber]];
+        _availableBalance.attributedText = [Encapsulation attrWithString:availableStr preFont:FONT(12) preColor:COLOR_9 index:[Localized(@"AvailableBalance") length] sufFont:FONT(12) sufColor:MAIN_COLOR lineSpacing:CGFLOAT_MIN];
+        _availableBalance.textAlignment = NSTextAlignmentRight;
     }
     return _availableBalance;
 }

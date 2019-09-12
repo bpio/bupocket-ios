@@ -19,7 +19,7 @@ typedef void (^OnConfirmClick)(NSString * text);
 @property (nonatomic, copy) OnCancleClick cancleClick;
 @property (nonatomic, copy) OnConfirmClick confirmClick;
 
-- (instancetype)initWithVoteConfrimBolck:(void (^)(NSString * text))confrimBlock cancelBlock:(void (^)(void))cancelBlock;
+- (instancetype)initWithVoteAmountNumber:(NSDecimalNumber * )amountNumber confrimBolck:(void (^)(NSString * text))confrimBlock cancelBlock:(void (^)(void))cancelBlock;
 
 @end
 

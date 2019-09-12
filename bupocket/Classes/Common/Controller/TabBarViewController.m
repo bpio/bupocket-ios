@@ -8,7 +8,7 @@
 
 #import "TabBarViewController.h"
 #import "AssetsViewController.h"
-#import "VoucherViewController.h"
+//#import "VoucherViewController.h"
 #import "FindViewController.h"
 #import "MyViewController.h"
 
@@ -42,7 +42,7 @@
 - (void)viewDidLoad {
     [super viewDidLoad];
     [self setupChildVC:[[AssetsViewController alloc] init] title:Localized(@"AssetsTitle") image:@"tab_assets_n" selectedImage:@"tab_assets_s"];
-    [self setupChildVC:[[VoucherViewController alloc] init] title:Localized(@"Voucher") image:@"tab_voucher_n" selectedImage:@"tab_voucher_s"];
+//    [self setupChildVC:[[VoucherViewController alloc] init] title:Localized(@"Voucher") image:@"tab_voucher_n" selectedImage:@"tab_voucher_s"];
     [self setupChildVC:[[FindViewController alloc] init] title:Localized(@"FindTitle") image:@"tab_find_n" selectedImage:@"tab_find_s"];
     [self setupChildVC:[[MyViewController alloc] init] title:Localized(@"MyTitle") image:@"tab_my_n" selectedImage:@"tab_my_s"];
     // Do any additional setup after loading the view.
