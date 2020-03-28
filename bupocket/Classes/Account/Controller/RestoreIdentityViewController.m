@@ -232,7 +232,7 @@
         [defaults setBool:YES forKey:If_Backup];
         [defaults synchronize];
     } failure:^(NSError *error) {
-        
+        [Encapsulation showAlertControllerWithErrorMessage:Localized([error localizedDescription]) handler:nil];
     }];
 }
 

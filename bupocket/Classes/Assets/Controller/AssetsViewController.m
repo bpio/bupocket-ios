@@ -101,7 +101,6 @@
     [self setupNav];
     [self initData];
     [self setupView];
-    
     [self setupRefresh];
     
     NSString * uuid = [KeychainWrapper searchDateWithService:Device_ID];
@@ -111,6 +110,7 @@
     } else {
         [self getActivityData];
     }
+
     [self getVersionData];
     // Do any additional setup after loading the view.
 }

@@ -1143,60 +1143,70 @@ static int64_t const gasPrice = 1002;
         NSString * walletPublicKey = [Keypair getEncPublicKey: [privateKeys lastObject]];
         NSString * walletAddress = [Keypair getEncAddress : walletPublicKey];
         NSString * walletKeyStore = [NSString generateKeyStoreWithPW:password key:[privateKeys lastObject]];
-        [[NSOperationQueue mainQueue] addOperationWithBlock:^{
-            /*
-            if (randomKey == nil || identityKeyStore == nil || walletKeyStore == nil) {
+
+        // If wallet address is nil, means something is wrong with the restore, failure should be generated
+        if (walletAddress == nil) {
+            [[NSOperationQueue mainQueue] addOperationWithBlock:^{
                 [MBProgressHUD hideHUD];
-                if (accountDataType == AccountDataCreateID) {
-//                    [MBProgressHUD showTipMessageInWindow:Localized(@"CreateIdentityFailure")];
-                    [Encapsulation showAlertControllerWithErrorMessage:Localized(@"CreateIdentityFailure") handler:nil];
-                } else if (accountDataType == AccountDataCreateWallet) {
-                    //                    [MBProgressHUD showTipMessageInWindow:Localized(@"MnemonicIsIncorrect")];
-                    [Encapsulation showAlertControllerWithErrorMessage:Localized(@"CreateWalletFailure") handler:nil];
-                } else if (accountDataType == AccountDataRecoveryID) {
-//                    [MBProgressHUD showTipMessageInWindow:Localized(@"MnemonicIsIncorrect")];
-                    [Encapsulation showAlertControllerWithErrorMessage:Localized(@"MnemonicIsIncorrect") handler:nil];
-                } else if (accountDataType == AccountDataSafe) {
-//                    [MBProgressHUD showTipMessageInWindow:Localized(@"PasswordIsIncorrect")];
-                    [Encapsulation showAlertControllerWithErrorMessage:Localized(@"PasswordIsIncorrect") handler:nil];
-                }
-            } else {
-                */
-                [MBProgressHUD hideHUD];
-                if(success != nil)
-                {
-                    NSString * signData = [Tools dataToHexStr:[Keypair sign:[walletAddress dataUsingEncoding:NSUTF8StringEncoding] :[privateKeys lastObject]]];
-                    [self getDeviceBindDataWithURL:Device_Bind identityAddress:identityAddress walletAddress:walletAddress signData:signData publicKey:walletPublicKey success:^(id responseObject) {
-                        
-                    } failure:^(NSError *error) {
-                        
+                NSError *error = [[NSError alloc] initWithDomain:@"io.bupocket.Common.Tool.Network.HttpManager" code:500 userInfo:@{ NSLocalizedDescriptionKey: @"MnemonicIsIncorrect" }];
+                failure(error);
+            }];
+        } else {
+                    [[NSOperationQueue mainQueue] addOperationWithBlock:^{
+                        /*
+                        if (randomKey == nil || identityKeyStore == nil || walletKeyStore == nil) {
+                            [MBProgressHUD hideHUD];
+                            if (accountDataType == AccountDataCreateID) {
+            //                    [MBProgressHUD showTipMessageInWindow:Localized(@"CreateIdentityFailure")];
+                                [Encapsulation showAlertControllerWithErrorMessage:Localized(@"CreateIdentityFailure") handler:nil];
+                            } else if (accountDataType == AccountDataCreateWallet) {
+                                //                    [MBProgressHUD showTipMessageInWindow:Localized(@"MnemonicIsIncorrect")];
+                                [Encapsulation showAlertControllerWithErrorMessage:Localized(@"CreateWalletFailure") handler:nil];
+                            } else if (accountDataType == AccountDataRecoveryID) {
+            //                    [MBProgressHUD showTipMessageInWindow:Localized(@"MnemonicIsIncorrect")];
+                                [Encapsulation showAlertControllerWithErrorMessage:Localized(@"MnemonicIsIncorrect") handler:nil];
+                            } else if (accountDataType == AccountDataSafe) {
+            //                    [MBProgressHUD showTipMessageInWindow:Localized(@"PasswordIsIncorrect")];
+                                [Encapsulation showAlertControllerWithErrorMessage:Localized(@"PasswordIsIncorrect") handler:nil];
+                            }
+                        } else {
+                            */
+                            [MBProgressHUD hideHUD];
+                            if(success != nil)
+                            {
+                                NSString * signData = [Tools dataToHexStr:[Keypair sign:[walletAddress dataUsingEncoding:NSUTF8StringEncoding] :[privateKeys lastObject]]];
+                                [self getDeviceBindDataWithURL:Device_Bind identityAddress:identityAddress walletAddress:walletAddress signData:signData publicKey:walletPublicKey success:^(id responseObject) {
+                                    
+                                } failure:^(NSError *error) {
+                                    
+                                }];
+                                if (accountDataType == AccountDataCreateWallet) {
+                                    [self setWalletDataWalletName:name walletAddress:walletAddress walletKeyStore:walletKeyStore randomNumber:randomKey];
+                                } else {
+                                    AccountModel * account = [[AccountModel alloc] init];
+                                    account.identityName = name;
+                                    account.randomNumber = randomKey;
+                                    account.identityAddress = identityAddress;
+                                    account.identityKeyStore = identityKeyStore;
+                                    account.walletName = Current_WalletName;
+                                    NSInteger index = RandomNumber(0, 9);
+                                    NSString * walletIconName = (index == 0) ? Current_Wallet_IconName : [NSString stringWithFormat:@"%@_%zd", Current_Wallet_IconName, index];
+                                    account.walletIconName = walletIconName;
+                                    account.walletAddress = walletAddress;
+                                    account.walletKeyStore = walletKeyStore;
+                                    [[AccountTool shareTool] save:account];
+                                    NSUserDefaults * defaults = [NSUserDefaults standardUserDefaults];
+                                    [defaults setObject:walletAddress forKey:Current_WalletAddress];
+                                    [defaults setObject:walletKeyStore forKey:Current_WalletKeyStore];
+                                    [defaults setObject:Current_WalletName forKey:Current_WalletName];
+                                    [defaults setObject:walletIconName forKey:Current_Wallet_IconName];
+                                    [defaults synchronize];
+                                }
+                                success(words);
+                            }
+            //            }
                     }];
-                    if (accountDataType == AccountDataCreateWallet) {
-                        [self setWalletDataWalletName:name walletAddress:walletAddress walletKeyStore:walletKeyStore randomNumber:randomKey];
-                    } else {
-                        AccountModel * account = [[AccountModel alloc] init];
-                        account.identityName = name;
-                        account.randomNumber = randomKey;
-                        account.identityAddress = identityAddress;
-                        account.identityKeyStore = identityKeyStore;
-                        account.walletName = Current_WalletName;
-                        NSInteger index = RandomNumber(0, 9);
-                        NSString * walletIconName = (index == 0) ? Current_Wallet_IconName : [NSString stringWithFormat:@"%@_%zd", Current_Wallet_IconName, index];
-                        account.walletIconName = walletIconName;
-                        account.walletAddress = walletAddress;
-                        account.walletKeyStore = walletKeyStore;
-                        [[AccountTool shareTool] save:account];
-                        NSUserDefaults * defaults = [NSUserDefaults standardUserDefaults];
-                        [defaults setObject:walletAddress forKey:Current_WalletAddress];
-                        [defaults setObject:walletKeyStore forKey:Current_WalletKeyStore];
-                        [defaults setObject:Current_WalletName forKey:Current_WalletName];
-                        [defaults setObject:walletIconName forKey:Current_Wallet_IconName];
-                        [defaults synchronize];
-                    }
-                    success(words);
-                }
-//            }
-        }];
+        }
     }];
 }
 
