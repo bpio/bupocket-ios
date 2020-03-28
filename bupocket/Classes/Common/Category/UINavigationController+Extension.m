@@ -46,10 +46,14 @@
             effectFilterView.alpha = alpha;
         }
     }
-    if ([barBackground valueForKey:@"_shadowView"]) {
-        UIView *shadowView = [barBackground valueForKey:@"_shadowView"];
-        shadowView.alpha = alpha;
-        shadowView.hidden = alpha == 0 ? YES : NO;
+    if (@available(iOS 13.0, *)) {
+        
+    } else {
+        if ([barBackground valueForKey:@"_shadowView"]) {
+            UIView *shadowView = [barBackground valueForKey:@"_shadowView"];
+            shadowView.alpha = alpha;
+            shadowView.hidden = alpha == 0 ? YES : NO;
+        }
     }
 }
 
