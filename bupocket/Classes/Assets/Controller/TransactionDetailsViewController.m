@@ -182,7 +182,7 @@ static NSInteger const TxInfoNormalCount = 6;
     self.tableView.delegate = self;
     self.tableView.dataSource = self;
     self.tableView.separatorInset = UIEdgeInsetsZero;
-    self.tableView.separatorStyle = UITableViewCellSeparatorStyleNone;
+    self.tableView.separatorStyle = UITableViewCellSeparatorStyleSingleLine;
     self.tableView.contentInset = UIEdgeInsetsMake(_headerViewH, 0, 0, 0);
     [self.view addSubview:self.tableView];
 }

@@ -118,7 +118,7 @@ static NSString * const SearchID = @"SearchID";
     self.tableView.delegate = self;
     self.tableView.dataSource = self;
     self.tableView.backgroundColor = [UIColor whiteColor];
-    self.tableView.separatorStyle = UITableViewCellSeparatorStyleNone;
+    self.tableView.separatorStyle = UITableViewCellSeparatorStyleSingleLine;
     [self.view addSubview:self.tableView];
 //    self.tableView.contentInset = UIEdgeInsetsMake(MAIN_HEIGHT, 0, 0, 0);
 }

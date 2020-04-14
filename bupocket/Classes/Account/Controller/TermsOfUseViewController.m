@@ -42,7 +42,7 @@
         ifReaded.titleLabel.numberOfLines = 0;
         ifReaded.contentHorizontalAlignment = UIControlContentHorizontalAlignmentLeft;
         ifReaded.contentEdgeInsets = UIEdgeInsetsMake(0, Margin_10, 0, Margin_10);
-        ifReaded.backgroundColor = COLOR(@"FAFAFA");
+        ifReaded.backgroundColor = TERMS_READED_BG_COLOR;
         [self.view addSubview:ifReaded];
         [ifReaded mas_makeConstraints:^(MASConstraintMaker *make) {
             make.left.equalTo(self.view);

@@ -104,7 +104,7 @@
     }
     NSMutableAttributedString * attr = [Encapsulation attrWithString:support preFont:FONT(13) preColor:COLOR_6 index:0 sufFont:FONT(13) sufColor:COLOR_6 lineSpacing:0];
     NSRange receivedRange = [support rangeOfString:Localized(@"Received")];
-    [attr addAttribute:NSForegroundColorAttributeName value:COLOR(@"B2B2B2") range:receivedRange];
+    [attr addAttribute:NSForegroundColorAttributeName value:COLOR_B2 range:receivedRange];
     self.supportPortion.attributedText = attr;
     
     NSString * residualPortionStr = [NSString stringWithFormat:Localized(@"%lld shares left"), [cooperateModel.leftCopies longLongValue]];
@@ -113,7 +113,7 @@
     }
     NSMutableAttributedString * residualAttr = [Encapsulation attrWithString:residualPortionStr preFont:FONT(13) preColor:COLOR_6 index:0 sufFont:FONT(13) sufColor:COLOR_6 lineSpacing:0];
     NSRange leftRange = [residualPortionStr rangeOfString:Localized(@"Left")];
-    [residualAttr addAttribute:NSForegroundColorAttributeName value:COLOR(@"B2B2B2") range:leftRange];
+    [residualAttr addAttribute:NSForegroundColorAttributeName value:COLOR_B2 range:leftRange];
     self.residualPortion.attributedText = residualAttr;
     _residualPortion.textAlignment = NSTextAlignmentRight;
 }
@@ -149,7 +149,7 @@
     if (!_purchaseAmount) {
         _purchaseAmount = [[UILabel alloc] init];
         _purchaseAmount.font = FONT(12);
-        _purchaseAmount.textColor = COLOR(@"B2B2B2");
+        _purchaseAmount.textColor = COLOR_B2;
     }
     return _purchaseAmount;
 }
@@ -174,7 +174,7 @@
     if (!_progressView) {
         _progressView = [[UIProgressView alloc] init];
         _progressView.progressTintColor = MAIN_COLOR;
-        _progressView.trackTintColor = COLOR(@"E7E8EC");
+        _progressView.trackTintColor = PROGRESS_TINT_COLOR;
         _progressView.progressViewStyle = UIProgressViewStyleBar;
     }
     return _progressView;

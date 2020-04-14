@@ -21,7 +21,7 @@
 + (void)initialize
 {
     NSMutableDictionary * attrs = [NSMutableDictionary dictionary];
-    attrs[NSForegroundColorAttributeName] = COLOR(@"7F8389");
+    attrs[NSForegroundColorAttributeName] = TABBAR_FG_COLOR;
     NSMutableDictionary * selectedAttrs = [NSMutableDictionary dictionary];
     selectedAttrs[NSForegroundColorAttributeName] = MAIN_COLOR;
     UITabBarItem * item = [UITabBarItem appearance];
@@ -52,7 +52,6 @@
     [super didReceiveMemoryWarning];
     // Dispose of any resources that can be recreated.
 }
-
 /*
 #pragma mark - Navigation
 

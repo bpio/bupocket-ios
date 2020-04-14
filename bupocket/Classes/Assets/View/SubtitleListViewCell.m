@@ -202,7 +202,7 @@ static NSString * const DetailSubtitleCellID = @"DetailSubtitleCellID";
 {
     if (!_listBg) {
         _listBg = [[UIView alloc] init];
-        _listBg.backgroundColor = [UIColor whiteColor];
+        _listBg.backgroundColor = NAV_BAR_BG_COLOR;
     }
     return _listBg;
 }

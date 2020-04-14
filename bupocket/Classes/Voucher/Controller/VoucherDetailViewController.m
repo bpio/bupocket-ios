@@ -63,7 +63,7 @@ static NSString * const VoucherDetailCellID = @"VoucherDetailCellID";
     self.automaticallyAdjustsScrollViewInsets = NO;
     self.navigationItem.title = Localized(@"VoucherDetail");
     self.navAlpha = 0;
-    self.navBackgroundColor = COLOR(@"3C3B6D");
+    self.navBackgroundColor = VOUCHER_NAV_BG_COLOR;
     self.navTitleColor = self.navTintColor = [UIColor whiteColor];
     self.holdingQuantity = self.voucherModel.balance;
     [self setupView];
@@ -138,7 +138,7 @@ static NSString * const VoucherDetailCellID = @"VoucherDetailCellID";
     [self.tableView.mj_header endRefreshing];
     self.tableView.mj_footer.hidden = (self.listArray.count == 0);
     self.noNetWork.hidden = YES;
-    self.navBackgroundColor = COLOR(@"3C3B6D");
+    self.navBackgroundColor = VOUCHER_NAV_BG_COLOR;
     self.navTitleColor = self.navTintColor = [UIColor whiteColor];
 }
 - (void)reloadData
@@ -151,7 +151,7 @@ static NSString * const VoucherDetailCellID = @"VoucherDetailCellID";
     self.scrollView = [[UIScrollView alloc] initWithFrame:self.view.bounds];
     self.scrollView.delegate = self;
     [self.view addSubview:self.scrollView];
-    self.scrollView.backgroundColor = COLOR(@"3C3B6D");
+    self.scrollView.backgroundColor = VOUCHER_NAV_BG_COLOR;
     UIImage * image = [UIImage imageNamed:@"voucher_detail_bg"];
     CGFloat imageBgW = DEVICE_WIDTH - Margin_30;
     self.imageBgH = imageBgW * (image.size.height / image.size.width);
@@ -175,7 +175,7 @@ static NSString * const VoucherDetailCellID = @"VoucherDetailCellID";
     self.tableView = [[UITableView alloc] initWithFrame:imageBg.bounds style:UITableViewStyleGrouped];
     self.tableView.delegate = self;
     self.tableView.dataSource = self;
-    self.tableView.separatorStyle = UITableViewCellSeparatorStyleNone;
+    self.tableView.separatorStyle = UITableViewCellSeparatorStyleSingleLine;
     self.tableView.scrollEnabled = NO;
     self.tableView.backgroundColor = [UIColor clearColor];
     self.tableView.tableHeaderView = [[UIView alloc] initWithFrame:CGRectMake(0, 0, 0, CGFLOAT_MIN)];
@@ -313,7 +313,7 @@ static NSString * const VoucherDetailCellID = @"VoucherDetailCellID";
 {
     CGFloat y = scrollView.contentOffset.y;
     self.navAlpha = y / 80;
-    self.navBackgroundColor = COLOR(@"3C3B6D");
+    self.navBackgroundColor = VOUCHER_NAV_BG_COLOR;
 //    self.navTitleColor = self.navTintColor = [UIColor whiteColor];
 //    if (y > 80) {
 //        self.navTitleColor = self.navTintColor = [UIColor whiteColor];

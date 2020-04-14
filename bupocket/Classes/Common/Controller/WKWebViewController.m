@@ -56,7 +56,7 @@ static void *WkwebBrowserContext = &WkwebBrowserContext;
         }else{
             _progressView.frame = CGRectMake(0, 0, self.view.bounds.size.width, 3);
         }
-        [_progressView setTrackTintColor:COLOR(@"F0F0F0")];
+        [_progressView setTrackTintColor:PROGRESS_TINT_COLOR];
         _progressView.progressTintColor = MAIN_COLOR;
     }
     return _progressView;

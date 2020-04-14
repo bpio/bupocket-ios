@@ -174,7 +174,7 @@
     if (!_amount) {
         _amount = [[UILabel alloc] init];
         NSString * perAmount = [NSString stringAmountSplitWith:self.purchaseAmountStr];
-        _amount.attributedText = [Encapsulation attrWithString:[NSString stringWithFormat:@"%@ %@", perAmount, Localized(@"BU/Portion")] preFont:FONT(15) preColor:TITLE_COLOR index:perAmount.length sufFont:FONT(12) sufColor:COLOR(@"151515") lineSpacing:0];
+        _amount.attributedText = [Encapsulation attrWithString:[NSString stringWithFormat:@"%@ %@", perAmount, Localized(@"BU/Portion")] preFont:FONT(15) preColor:TITLE_COLOR index:perAmount.length sufFont:FONT(12) sufColor:AMOUNT_SUF_COLOR lineSpacing:0];
     }
     return _amount;
 }
@@ -282,7 +282,7 @@
         _total.backgroundColor = [UIColor whiteColor];
         _total.layer.shadowOffset = CGSizeMake(-ScreenScale(12), 0);
         _total.layer.shadowOpacity = 0.1;
-        _total.layer.shadowColor = COLOR(@"656565").CGColor;
+        _total.layer.shadowColor = TOTAL_LAYER_SHADOW_COLOR.CGColor;
         _total.contentEdgeInsets = UIEdgeInsetsMake(0, Margin_Main, 0, Margin_Main);
         _total.contentHorizontalAlignment = UIControlContentHorizontalAlignmentLeft;
     }

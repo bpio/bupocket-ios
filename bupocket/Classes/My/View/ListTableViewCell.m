@@ -70,6 +70,7 @@ static NSString * const VoucherCellID = @"VoucherCellID";
             _title.font = FONT(15);
             _detailTitle.font = FONT(15);
         }
+        
     }
     return self;
 }
@@ -192,7 +193,7 @@ static NSString * const VoucherCellID = @"VoucherCellID";
 {
     if (!_listBg) {
         _listBg = [[UIView alloc] init];
-        _listBg.backgroundColor = [UIColor whiteColor];
+        _listBg.backgroundColor = LIST_BG_COLOR;
     }
     return _listBg;
 }

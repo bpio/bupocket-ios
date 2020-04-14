@@ -39,7 +39,7 @@
     self.tableView = [[UITableView alloc] initWithFrame:self.view.frame style:UITableViewStyleGrouped];
     self.tableView.delegate = self;
     self.tableView.dataSource = self;
-    self.tableView.separatorStyle = UITableViewCellSeparatorStyleNone;
+    self.tableView.separatorStyle = UITableViewCellSeparatorStyleSingleLine;
     self.tableView.tableHeaderView = [[UIView alloc] initWithFrame:CGRectMake(0, 0, 0, CGFLOAT_MIN)];
     [self.view addSubview:self.tableView];
 }
@@ -168,7 +168,7 @@
         popupMenu.fontSize = FONT_TITLE;
         popupMenu.textColor = [UIColor whiteColor];
         popupMenu.backColor = COLOR_POPUPMENU;
-        popupMenu.tableView.separatorStyle = UITableViewCellSeparatorStyleNone;
+        popupMenu.tableView.separatorStyle = UITableViewCellSeparatorStyleSingleLine;
         popupMenu.tableView.scrollEnabled = NO;
         popupMenu.tableView.allowsSelection = NO;
         popupMenu.height = titleHeight + Margin_40;

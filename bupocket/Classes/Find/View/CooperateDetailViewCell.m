@@ -150,7 +150,7 @@
     if (!_progressView) {
         _progressView = [[UIProgressView alloc] init];
         _progressView.progressTintColor = MAIN_COLOR;
-        _progressView.trackTintColor = COLOR(@"E7E8EC");
+        _progressView.trackTintColor = PROGRESS_TINT_COLOR;
         _progressView.progressViewStyle = UIProgressViewStyleBar;
         _progressView.hidden = YES;
     }

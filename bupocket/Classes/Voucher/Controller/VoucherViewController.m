@@ -200,7 +200,7 @@ static NSString * const VoucherCellID = @"VoucherCellID";
     self.tableView = [[UITableView alloc] initWithFrame:CGRectMake(0, 0, DEVICE_WIDTH, tableViewH) style:UITableViewStyleGrouped];
     self.tableView.delegate = self;
     self.tableView.dataSource = self;
-    self.tableView.separatorStyle = UITableViewCellSeparatorStyleNone;
+    self.tableView.separatorStyle = UITableViewCellSeparatorStyleSingleLine;
     [self.view addSubview:self.tableView];
     self.tableView.backgroundColor = [UIColor whiteColor];
     self.tableView.tableHeaderView = [[UIView alloc] initWithFrame:CGRectMake(0, 0, 0, CGFLOAT_MIN)];
@@ -252,10 +252,10 @@ static NSString * const VoucherCellID = @"VoucherCellID";
         self.titleBtn.titleLabel.numberOfLines = 0;
         NSInteger index = [CurrentWalletName length];
         UIColor * preColor = MAIN_COLOR;
-        UIColor * sufColor = COLOR(@"2A2A2A");
+        UIColor * sufColor = SUF_MAIN_COLOR;
         if ([CurrentAppLanguage isEqualToString:EN]) {
             index = self.headerTitle.length - [CurrentWalletName length];
-            preColor = COLOR(@"2A2A2A");
+            preColor = SUF_MAIN_COLOR;
             sufColor = MAIN_COLOR;
         }
         [self.titleBtn setAttributedTitle:[Encapsulation attrWithString:self.headerTitle preFont:FONT_13 preColor:preColor index:index sufFont:FONT_13 sufColor:sufColor lineSpacing:LINE_SPACING] forState:UIControlStateNormal];

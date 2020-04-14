@@ -92,7 +92,7 @@ static NSString * const NodeSharingID = @"NodeSharingID";
         _tableView = [[UITableView alloc] initWithFrame:self.view.bounds style:UITableViewStyleGrouped];
         _tableView.delegate = self;
         _tableView.dataSource = self;
-        _tableView.separatorStyle = UITableViewCellSeparatorStyleNone;
+        _tableView.separatorStyle = UITableViewCellSeparatorStyleSingleLine;
     }
     return _tableView;
 }
@@ -106,7 +106,7 @@ static NSString * const NodeSharingID = @"NodeSharingID";
     if (!_progressView) {
         _progressView = [[UIProgressView alloc]initWithProgressViewStyle:UIProgressViewStyleDefault];
         _progressView.frame = CGRectMake(0, 0, self.view.bounds.size.width, ScreenScale(3));
-        [_progressView setTrackTintColor:COLOR(@"F0F0F0")];
+        [_progressView setTrackTintColor:PROGRESS_TINT_COLOR];
         _progressView.progressTintColor = MAIN_COLOR;
     }
     return _progressView;

@@ -127,7 +127,7 @@ static NSString * const Issue_Leave = @"leaveRoomForApp";
         make.size.mas_equalTo(btnSize);
     }];
     UIButton * cancel = [UIButton createButtonWithTitle:Localized(@"Cancel") isEnabled:YES Target:self Selector:@selector(cancelAction)];
-    cancel.backgroundColor = COLOR(@"A4A8CE");
+    cancel.backgroundColor = DIST_ASSET_CANCEL_BG_COLOR;
     [self.scrollView addSubview:cancel];
     [cancel mas_makeConstraints:^(MASConstraintMaker *make) {
         make.top.equalTo(confirmation.mas_bottom).offset(Margin_20);

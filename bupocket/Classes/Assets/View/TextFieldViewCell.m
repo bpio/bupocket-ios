@@ -123,7 +123,7 @@ static NSString * const NormalPWCellAddress = @"NormalPWCellAddress";
 {
     if (!_listBg) {
         _listBg = [[UIView alloc] init];
-        _listBg.backgroundColor = [UIColor whiteColor];
+        _listBg.backgroundColor = LIST_BG_COLOR;
     }
     return _listBg;
 }

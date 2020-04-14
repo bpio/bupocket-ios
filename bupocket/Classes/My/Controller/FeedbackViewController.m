@@ -51,9 +51,9 @@
     self.tableView = [[UITableView alloc] initWithFrame:self.view.bounds style:UITableViewStyleGrouped];
     self.tableView.delegate = self;
     self.tableView.dataSource = self;
-    self.tableView.separatorStyle = UITableViewCellSeparatorStyleNone;
+    self.tableView.separatorStyle = UITableViewCellSeparatorStyleSingleLine;
     [self.view addSubview:self.tableView];
-    self.tableView.backgroundColor = [UIColor whiteColor];
+    self.tableView.backgroundColor = LIST_BG_COLOR;
     self.tableView.tableHeaderView = headerView;
     
     self.submit = [UIButton createFooterViewWithTitle:Localized(@"Submission") isEnabled:NO Target:self Selector:@selector(submitAction)];

@@ -113,7 +113,7 @@
     [shapeLayer setBounds:self.bounds];
     [shapeLayer setPosition:CGPointMake(CGRectGetWidth(self.frame) / 2, CGRectGetHeight(self.frame))];
     [shapeLayer setFillColor:[UIColor clearColor].CGColor];
-    [shapeLayer setStrokeColor:COLOR(@"D4D4D4").CGColor];
+    [shapeLayer setStrokeColor:DARSHLINE_STROKE_COLOR.CGColor];
     [shapeLayer setLineWidth:CGRectGetHeight(self.frame)];
     [shapeLayer setLineJoin:kCALineJoinRound];
     [shapeLayer setLineDashPattern:[NSArray arrayWithObjects:[NSNumber numberWithInt:3], [NSNumber numberWithInt:2], nil]];

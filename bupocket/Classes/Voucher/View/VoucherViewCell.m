@@ -140,7 +140,7 @@ static NSString * const VoucherDetailCellID = @"VoucherDetailCellID";
     [self.icon sd_setImageWithURL:[NSURL URLWithString:voucherModel.voucherAcceptance[@"icon"]] placeholderImage:[UIImage imageNamed:@"icon_placehoder"]];
     NSString * name = voucherModel.voucherAcceptance[@"name"];
     if ([self.reuseIdentifier isEqualToString:VoucherDetailCellID]) {
-        self.name.attributedText = [Encapsulation attrWithString:[NSString stringWithFormat:@"%@ %@", name, Localized(@"ProvideAcceptance")] preFont:FONT_13 preColor:COLOR_9 index:name.length sufFont:FONT(12) sufColor:COLOR(@"B2B2B2") lineSpacing:0];
+        self.name.attributedText = [Encapsulation attrWithString:[NSString stringWithFormat:@"%@ %@", name, Localized(@"ProvideAcceptance")] preFont:FONT_13 preColor:COLOR_9 index:name.length sufFont:FONT(12) sufColor:VOUCHER_NAME_SUF_COLOR lineSpacing:0];
     } else {
         self.name.text = name;        
     }

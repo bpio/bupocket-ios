@@ -5,6 +5,7 @@
 //  Created by bupocket on 2019/2/19.
 //  Copyright © 2019年 bupocket. All rights reserved.
 //
+#import <EasyDarkMode/EasyDarkMode.h>
 
 #ifndef CommonMacro_h
 #define CommonMacro_h
@@ -76,34 +77,58 @@
 #define Alert_Title_Font FONT_Bold(18)
 #define Alert_Button_Font FONT(16)
 // Color
-#define COLOR(HexString)  [UIColor colorWithHexString:HexString]
+//#define COLOR(HexString)  [UIColor colorWithHexString:HexString]
+#define COLOR(colorForLight, colorForDark)  [UIColor dm_colorWithColorLight:[UIColor colorWithHexString:colorForLight] dark:[UIColor colorWithHexString:colorForDark]]
 
 #define RandomColor [UIColor colorWithRed:arc4random_uniform(255) / 255.0 green:arc4random_uniform(255) / 255.0 blue:arc4random_uniform(255) / 255.0 alpha:1.0]
 
-#define MAIN_COLOR COLOR(@"02CA71")
+#define MAIN_COLOR COLOR(@"02CA71", @"fd358e")
 //#define WARNING_COLOR COLOR(@"FF5824")
-#define WARNING_COLOR COLOR(@"FF6464")
-#define DISABLED_COLOR COLOR(@"8CD7B5")
+#define WARNING_COLOR COLOR(@"FF6464", @"009b9b")
+#define DISABLED_COLOR COLOR(@"8CD7B5", @"73284a")
 //#define VIEWBG_COLOR COLOR(@"EFEFF4")
-#define VIEWBG_COLOR COLOR(@"F5F5F5")
-#define LINE_COLOR COLOR(@"E3E3E3")
-#define TITLE_COLOR COLOR(@"333333")
-#define COLOR_6 COLOR(@"666666")
-#define COLOR_9 COLOR(@"999999")
-#define COLOR_B2 COLOR(@"B2B2B2")
-#define RECEIVE_COLOR COLOR(@"72AFFF")
-#define ADDRESS_COLOR COLOR(@"6D8BFF")
+#define VIEWBG_COLOR COLOR(@"F5F5F5", @"0A0A0A")
+#define LINE_COLOR COLOR(@"E3E3E3", @"1C1C1C")
+#define TITLE_COLOR COLOR(@"333333", @"cccccc")
+#define COLOR_6 COLOR(@"666666", @"999999")
+#define COLOR_9 COLOR(@"999999", @"C8C8C8")
+#define COLOR_B2 COLOR(@"B2B2B2", @"4D4D4D")
+#define RECEIVE_COLOR COLOR(@"72AFFF", @"8d5000")
+#define ADDRESS_COLOR COLOR(@"6D8BFF", @"927400")
 
-#define Valentine_COLOR COLOR(@"FF7884")
+#define Valentine_COLOR COLOR(@"FF7884", @"00877b")
 
 #define Alert_Button_Color COLOR_9
 // ******
-#define TAGBG_COLOR COLOR(@"3FD592")
-#define PLACEHOLDER_COLOR COLOR(@"B2B2B2")
-#define COLOR_POPUPMENU COLOR(@"56526D")
+#define TAGBG_COLOR COLOR(@"3FD592", @"c02a6d")
+#define PLACEHOLDER_COLOR COLOR(@"B2B2B2", @"4D4D4D")
+#define COLOR_POPUPMENU COLOR(@"56526D", @"a9ad92")
 
-#define TYPEBG_COLOR COLOR(@"F2F2F2")
+#define TYPEBG_COLOR COLOR(@"F2F2F2", @"0d0d0d")
 
+#define PROGRESS_TINT_COLOR COLOR(@"F0F0F0", @"0F0F0F")
+#define SUF_MAIN_COLOR COLOR(@"2A2A2A", @"D5D5D5")
+#define VOUCHER_NAME_SUF_COLOR COLOR(@"B2B2B2", @"4D4D4D")
+#define VOUCHER_NAV_BG_COLOR COLOR(@"3C3B6D", @"C3C492")
+#define VOTE_PROCESSING_COLOR COLOR(@"FF7C14", @"0083EB")
+#define NODE_TYPE_TEXT_COLOR COLOR(@"B2B2B2", @"4D4D4D")
+#define DARSHLINE_STROKE_COLOR COLOR(@"D4D4D4", @"B2B2B2")
+#define TERMS_READED_BG_COLOR COLOR(@"FAFAFA", @"050505")
+#define TABBAR_FG_COLOR COLOR(@"7F8389", @"807C76")
+#define AMOUNT_SUF_COLOR COLOR(@"151515", @"EAEAEA")
+#define TOTAL_LAYER_SHADOW_COLOR COLOR(@"656565", @"9a9a9a")
+#define SHARE_BG_COLOR COLOR(@"F8F8F8", @"070707")
+#define SHARE_INVITE_PRE_COLOR COLOR(@"BABCC9", @"454336")
+#define SHARE_INVITE_SUF_COLOR COLOR(@"737791", @"8c886e")
+#define NODE_SEARCH_BORDER_COLOR COLOR(@"D2D2D2", @"2d2d2d")
+#define NODE_NAME_FG_COLOR COLOR(@"151515", @"eaeaea")
+#define NODE_NAME_LINK_BG_COLOR COLOR(@"F8F8F8", @"070707")
+#define DIST_ASSET_CANCEL_BG_COLOR COLOR(@"A4A8CE", @"5b5731")
+#define CORP_CANCEL_BTN_BG_COLOR COLOR(@"A1A7C7", @"5e5838")
+#define ASSETS_OP_BG_COLOR COLOR(@"FFFFFF", @"1c1c1e")
+#define NAV_BAR_BG_COLOR COLOR(@"FFFFFF", @"1c1c1e")
+#define NAV_BAR_FG_COLOR COLOR(@"000000", @"FFFFFF")
+#define LIST_BG_COLOR COLOR(@"FFFFFF", @"1c1c1e")
 
 // Current Wallet Address
 #define Current_WalletAddress @"CurrentWalletAddress"

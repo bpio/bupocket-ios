@@ -159,7 +159,7 @@
     self.tableView = [[UITableView alloc] initWithFrame:self.view.frame style:UITableViewStyleGrouped];
     self.tableView.delegate = self;
     self.tableView.dataSource = self;
-    self.tableView.separatorStyle = UITableViewCellSeparatorStyleNone;
+    self.tableView.separatorStyle = UITableViewCellSeparatorStyleSingleLine;
     self.tableView.contentInset = UIEdgeInsetsMake(0, 0, ContentSizeBottom, 0);
     [self.view addSubview:self.tableView];
     [self setupHeaderView];
@@ -187,7 +187,7 @@
 - (void)setupHeaderView
 {
     _headerViewBg = [[UIView alloc] init];
-    _headerViewBg.backgroundColor = [UIColor whiteColor];
+    _headerViewBg.backgroundColor = NAV_BAR_BG_COLOR;
     _assetsIconBg = [[UIImageView alloc] initWithImage:[UIImage imageNamed:@"placeholder_bg"]];
     [_headerViewBg addSubview:_assetsIconBg];
     

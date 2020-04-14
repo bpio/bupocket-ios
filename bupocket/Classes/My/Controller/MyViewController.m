@@ -127,7 +127,7 @@
     self.tableView = [[UITableView alloc] initWithFrame:CGRectMake(0, 0, DEVICE_WIDTH, DEVICE_HEIGHT - TabBarH) style:UITableViewStyleGrouped];
     self.tableView.delegate = self;
     self.tableView.dataSource = self;
-    self.tableView.separatorStyle = UITableViewCellSeparatorStyleNone;
+    self.tableView.separatorStyle = UITableViewCellSeparatorStyleSingleLine;
     [self.view addSubview:self.tableView];
     self.tableView.tableHeaderView = [[UIView alloc] initWithFrame:CGRectMake(0, 0, 0, CGFLOAT_MIN)];
 }
@@ -153,7 +153,7 @@
 {
     if (section == 0) {
         UIView * footerView = [[UIView alloc] initWithFrame:CGRectMake(0, 0, DEVICE_WIDTH, ScreenScale(100))];
-        footerView.backgroundColor = [UIColor whiteColor];
+        footerView.backgroundColor = NAV_BAR_BG_COLOR;
         NSArray * array = @[@[Localized(@"AddressBook"), ADDRESS_COLOR, @"addressBookBg_icon"], @[Localized(@"WalletManagement"), MAIN_COLOR, @"walletManageBg_icon"]];
         CGFloat btnW = (DEVICE_WIDTH - Margin_40) / 2;
         CGSize btnSize = CGSizeMake(btnW, ScreenScale(80));

@@ -25,6 +25,11 @@
 @property (nonatomic, strong) NSMutableArray * bannerArray;
 @property (nonatomic, strong) UIView * headerView;
 
+@property (nonatomic, strong) UIView * headerBg;
+@property (nonatomic, strong) UIView * headerViewBg;
+@property (nonatomic, strong) UIImageView * headerImageView;
+@property (nonatomic, strong) UIImage * headerImage;
+
 @end
 
 @implementation FindViewController
@@ -109,7 +114,7 @@
     self.tableView = [[UITableView alloc] initWithFrame:self.view.frame style:UITableViewStyleGrouped];
     self.tableView.delegate = self;
     self.tableView.dataSource = self;
-    self.tableView.separatorStyle = UITableViewCellSeparatorStyleNone;
+    self.tableView.separatorStyle = UITableViewCellSeparatorStyleSingleLine;
     [self.view addSubview:self.tableView];
     self.tableView.tableHeaderView = self.headerView;
 }
@@ -193,6 +198,7 @@
         }];
     }
 }
+
 
 /*
 #pragma mark - Navigation

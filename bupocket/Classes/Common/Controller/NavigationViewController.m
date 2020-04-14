@@ -20,11 +20,11 @@
     UINavigationBar * bar = [UINavigationBar appearance];
     bar.shadowImage = [[UIImage alloc] init];
     bar.barTintColor = [UIColor whiteColor];
-//    NSMutableDictionary * attr = [NSMutableDictionary dictionary];
+    NSMutableDictionary * attr = [NSMutableDictionary dictionary];
 //    attr[NSFontAttributeName] = FONT(18);
-//    attr[NSForegroundColorAttributeName] = TITLE_COLOR;
-//    [bar setTitleTextAttributes:attr];
-//    [bar setBarTintColor:MAIN_COLOR];
+    attr[NSForegroundColorAttributeName] = NAV_BAR_FG_COLOR;
+    [bar setTitleTextAttributes:attr];
+    [bar setBarTintColor:NAV_BAR_BG_COLOR];
 }
 - (void)pushViewController:(UIViewController *)viewController animated:(BOOL)animated
 {

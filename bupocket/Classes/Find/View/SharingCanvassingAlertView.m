@@ -163,7 +163,7 @@
         _invitationPrompt = [UIButton buttonWithType:UIButtonTypeCustom];
         _invitationPrompt.contentEdgeInsets = UIEdgeInsetsMake(Margin_10, Margin_10, Margin_10, Margin_10);
         _invitationPrompt.titleLabel.numberOfLines = 0;
-        [_invitationPrompt setAttributedTitle:[Encapsulation attrWithString:[NSString stringWithFormat:@"%@\n%@", Localized(@"InvitationPrompt"), Localized(@"LongPressPrompt")] preFont:FONT(13) preColor:COLOR(@"BABCC9") index:[Localized(@"InvitationPrompt") length] sufFont:FONT(12) sufColor:COLOR(@"737791") lineSpacing:LINE_SPACING] forState:UIControlStateNormal];
+        [_invitationPrompt setAttributedTitle:[Encapsulation attrWithString:[NSString stringWithFormat:@"%@\n%@", Localized(@"InvitationPrompt"), Localized(@"LongPressPrompt")] preFont:FONT(13) preColor:SHARE_INVITE_PRE_COLOR index:[Localized(@"InvitationPrompt") length] sufFont:FONT(12) sufColor:SHARE_INVITE_SUF_COLOR lineSpacing:LINE_SPACING] forState:UIControlStateNormal];
         _invitationPrompt.contentHorizontalAlignment = UIControlContentVerticalAlignmentCenter;
     }
     return _invitationPrompt;
@@ -186,7 +186,7 @@
 {
     if (!_shareBg) {
         _shareBg = [[UIView alloc] init];
-        _shareBg.backgroundColor = COLOR(@"F8F8F8");
+        _shareBg.backgroundColor = SHARE_BG_COLOR;
         NSArray * shareTitles = @[Localized(@"WeChat"), Localized(@"QQ"), Localized(@"CopyBULink")];
         NSArray * shareImages = @[@"wechat", @"QQ", @"copy_link"];
         CGFloat shareW = (DEVICE_WIDTH - Margin_40) / shareTitles.count;

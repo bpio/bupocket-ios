@@ -308,7 +308,7 @@
         _amount = [[UILabel alloc] initWithFrame:CGRectMake(Margin_20, Margin_50, DEVICE_WIDTH - Margin_40, ScreenScale(70))];
         if ([_confirmTransactionModel.type integerValue] == TransactionTypeApplyNode) {
             NSString * str = [NSString stringAppendingBUWithStr:_confirmTransactionModel.amount];
-            _amount.attributedText = [Encapsulation attrWithString:str preFont:FONT_Bold(32) preColor:TITLE_COLOR index:self.confirmTransactionModel.amount.length sufFont:FONT(16) sufColor:COLOR(@"151515") lineSpacing:0];
+            _amount.attributedText = [Encapsulation attrWithString:str preFont:FONT_Bold(32) preColor:TITLE_COLOR index:self.confirmTransactionModel.amount.length sufFont:FONT(16) sufColor:AMOUNT_SUF_COLOR lineSpacing:0];
             _amount.textAlignment = NSTextAlignmentCenter;
             [UIView setViewBorder:_amount color:LINE_COLOR border:LINE_WIDTH type:UIViewBorderLineTypeTop];
         }

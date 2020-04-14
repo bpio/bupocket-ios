@@ -437,7 +437,7 @@
         _tableView = [[UITableView alloc] initWithFrame:self.view.bounds style:UITableViewStyleGrouped];
         _tableView.delegate = self;
         _tableView.dataSource = self;
-        _tableView.separatorStyle = UITableViewCellSeparatorStyleNone;
+        _tableView.separatorStyle = UITableViewCellSeparatorStyleSingleLine;
         _tableView.contentInset = UIEdgeInsetsMake(_headerViewH, 0, 0, 0);
         _tableView.scrollIndicatorInsets = _tableView.contentInset;
     }
@@ -476,7 +476,7 @@
         
         
         UIView * operationBtnBg = [[UIView alloc] init];
-        operationBtnBg.backgroundColor = [UIColor whiteColor];
+        operationBtnBg.backgroundColor = ASSETS_OP_BG_COLOR;
         operationBtnBg.layer.masksToBounds = YES;
         operationBtnBg.layer.cornerRadius = BG_CORNER;
         [self.headerViewBg addSubview:operationBtnBg];

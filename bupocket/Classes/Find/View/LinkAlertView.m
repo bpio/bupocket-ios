@@ -38,7 +38,7 @@
         NSRange nodeNameRange = [linkStr rangeOfString:nodeName];
         NSRange linkRange = [linkStr rangeOfString:link];
         [attr addAttribute:NSForegroundColorAttributeName value:MAIN_COLOR range:titleRange];
-        [attr addAttribute:NSForegroundColorAttributeName value:COLOR(@"151515") range:nodeNameRange];
+        [attr addAttribute:NSForegroundColorAttributeName value:NODE_NAME_FG_COLOR range:nodeNameRange];
         [attr addAttribute:NSFontAttributeName value:FONT_Bold(14) range:nodeNameRange];
         [attr addAttribute:NSForegroundColorAttributeName value:MAIN_COLOR range:linkRange];
         [self.linkContent setAttributedTitle:attr forState:UIControlStateNormal];
@@ -122,7 +122,7 @@
     if (!_linkContent) {
         _linkContent = [UIButton createButtonWithTitle:@"" TextFont:FONT_TITLE TextNormalColor:COLOR_6 TextSelectedColor:COLOR_6 Target:nil Selector:nil];
         _linkContent.titleLabel.numberOfLines = 0;
-        _linkContent.backgroundColor = COLOR(@"F8F8F8");
+        _linkContent.backgroundColor = NODE_NAME_LINK_BG_COLOR;
         _linkContent.contentEdgeInsets = UIEdgeInsetsMake(Margin_10, Margin_10, Margin_10, Margin_10);
     }
     return _linkContent;

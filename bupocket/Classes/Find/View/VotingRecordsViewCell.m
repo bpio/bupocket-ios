@@ -125,7 +125,7 @@ static NSString * const NodeRecordsCellID = @"NodeRecordsCellID";
         _nodeType = [[UILabel alloc] init];
         _nodeType.font = FONT(11);
         _nodeType.textAlignment = NSTextAlignmentCenter;
-        _nodeType.textColor = COLOR(@"B2B2B2");
+        _nodeType.textColor = NODE_TYPE_TEXT_COLOR;
         _nodeType.backgroundColor = TYPEBG_COLOR;
         _nodeType.layer.masksToBounds = YES;
         _nodeType.layer.cornerRadius = TAG_CORNER;
@@ -180,7 +180,7 @@ static NSString * const NodeRecordsCellID = @"NodeRecordsCellID";
     UIColor * stateColor;
     if ([votingRecordsModel.status integerValue] == VoteStatusInProcessing) {
         stateStr = Localized(@"InProcessing");
-        stateColor = COLOR(@"FF7C14");
+        stateColor = VOTE_PROCESSING_COLOR;
     } else if ([votingRecordsModel.status integerValue] == VoteStatusSuccess) {
         stateStr = Localized(@"Success");
         stateColor = MAIN_COLOR;

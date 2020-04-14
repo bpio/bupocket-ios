@@ -250,7 +250,7 @@
     if (!_addressTitle) {
         _addressTitle = [[UILabel alloc] init];
         _addressTitle.font = FONT_15;
-        _addressTitle.textColor = COLOR(@"B2B2B2");
+        _addressTitle.textColor = COLOR_B2;
         _addressTitle.text = Localized(@"ReceiveAddress");
         _addressTitle.textAlignment = NSTextAlignmentCenter;
     }

@@ -181,7 +181,7 @@
     UITableView * tableView = [[UITableView alloc] initWithFrame:CGRectMake(0, 0, DEVICE_WIDTH, ScreenScale(290)) style:UITableViewStyleGrouped];
     tableView.delegate = self;
     tableView.dataSource = self;
-    tableView.separatorStyle = UITableViewCellSeparatorStyleNone;
+    tableView.separatorStyle = UITableViewCellSeparatorStyleSingleLine;
     tableView.backgroundColor = [UIColor whiteColor];
     return tableView;
 }
@@ -225,7 +225,7 @@
         _amount = [[UILabel alloc] initWithFrame:CGRectMake(Margin_Main, Margin_50, View_Width_Main, ScreenScale(70))];
         if ([_confirmTransactionModel.type integerValue] == TransactionTypeApplyNode) {
             NSString * str = [NSString stringAppendingBUWithStr:_confirmTransactionModel.amount];
-            _amount.attributedText = [Encapsulation attrWithString:str preFont:FONT_Bold(32) preColor:TITLE_COLOR index:self.confirmTransactionModel.amount.length sufFont:FONT(16) sufColor:COLOR(@"151515") lineSpacing:0];
+            _amount.attributedText = [Encapsulation attrWithString:str preFont:FONT_Bold(32) preColor:TITLE_COLOR index:self.confirmTransactionModel.amount.length sufFont:FONT(16) sufColor:AMOUNT_SUF_COLOR lineSpacing:0];
             _amount.textAlignment = NSTextAlignmentCenter;
             [UIView setViewBorder:_amount color:LINE_COLOR border:LINE_WIDTH type:UIViewBorderLineTypeTop];
         }

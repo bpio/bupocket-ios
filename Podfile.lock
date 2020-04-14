@@ -14,6 +14,9 @@ PODS:
   - AFNetworking/Serialization (3.2.1)
   - AFNetworking/UIKit (3.2.1):
     - AFNetworking/NSURLSession
+  - EasyDarkMode (2.0.5):
+    - EasyDarkMode/Core (= 2.0.5)
+  - EasyDarkMode/Core (2.0.5)
   - FMDB (2.7.5):
     - FMDB/standard (= 2.7.5)
   - FMDB/standard (2.7.5)
@@ -42,6 +45,7 @@ PODS:
 
 DEPENDENCIES:
   - AFNetworking
+  - EasyDarkMode
   - FMDB
   - IQKeyboardManager
   - Masonry
@@ -77,9 +81,12 @@ SPEC REPOS:
     - WechatOpenSDK
     - XHToast
     - YYKit
+  trunk:
+    - EasyDarkMode
 
 SPEC CHECKSUMS:
   AFNetworking: b6f891fdfaed196b46c7a83cf209e09697b94057
+  EasyDarkMode: 5695ca163bcb999addd26f4902146c27cdc3cc8e
   FMDB: 2ce00b547f966261cd18927a3ddb07cb6f3db82a
   IQKeyboardManager: 6194101620b73af5e67900b8f89707a99de0b804
   Masonry: 678fab65091a9290e40e2832a55e7ab731aad201
@@ -97,6 +104,6 @@ SPEC CHECKSUMS:
   XHToast: 3b354766d56d9df8fef8e64387bbd25c90d71a86
   YYKit: 7cda43304a8dc3696c449041e2cb3107b4e236e7
 
-PODFILE CHECKSUM: 4cfedf13447772bfbcef8e01e770561f6ed880f7
+PODFILE CHECKSUM: e163562d6a6d32145efb735c649f600c1d8d5de6
 
 COCOAPODS: 1.9.1

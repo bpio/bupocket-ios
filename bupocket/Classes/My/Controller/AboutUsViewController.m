@@ -82,14 +82,14 @@
     self.tableView.delegate = self;
     self.tableView.dataSource = self;
     self.tableView.separatorInset = UIEdgeInsetsZero;
-    self.tableView.separatorStyle = UITableViewCellSeparatorStyleNone;
+    self.tableView.separatorStyle = UITableViewCellSeparatorStyleSingleLine;
     [self.view addSubview:self.tableView];
     [self setupHeaderView];
 }
 - (void)setupHeaderView
 {
     UIView * headerView = [[UIView alloc] init];
-    headerView.backgroundColor = [UIColor whiteColor];
+    headerView.backgroundColor = NAV_BAR_BG_COLOR;
     UIButton * icon = [UIButton createButtonWithNormalImage:@"about_us_logo" SelectedImage:@"about_us_logo" Target:self Selector:@selector(SwitchingNetwork)];
     [headerView addSubview:icon];
     CGSize iconSize = CGSizeMake(ScreenScale(70), ScreenScale(70));
