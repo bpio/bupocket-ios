@@ -19,7 +19,7 @@
     textField.leftViewMode = UITextFieldViewModeAlways;
     textField.rightViewMode = UITextFieldViewModeAlways;
     textField.clearButtonMode = UITextFieldViewModeWhileEditing;
-    textField.backgroundColor = [UIColor whiteColor];
+    textField.backgroundColor = WHITE_BG_COLOR;
     UILabel * titleLabel = [[UILabel alloc] init];
     CGFloat titleLabelW = [titleLabelText boundingRectWithSize:CGSizeMake(MAXFLOAT, ScreenScale(titleLabelHeight)) options:NSStringDrawingUsesLineFragmentOrigin attributes:@{NSFontAttributeName:FONT_TITLE} context:nil].size.width;
     if (titleLabelW < ScreenScale(90)) {
@@ -70,7 +70,7 @@
     textField.leftViewMode = UITextFieldViewModeAlways;
     textField.rightViewMode = UITextFieldViewModeAlways;
     textField.clearButtonMode = UITextFieldViewModeWhileEditing;
-    textField.backgroundColor = [UIColor whiteColor];
+    textField.backgroundColor = WHITE_BG_COLOR;
     UIButton * left = [UIButton createButtonWithTitle:leftText TextFont:FONT_TITLE TextNormalColor:TITLE_COLOR TextSelectedColor:TITLE_COLOR NormalImage:leftImage SelectedImage:leftImage Target:nil Selector:nil];
     CGSize maxSize = [leftText boundingRectWithSize:CGSizeMake(MAXFLOAT, titleFieldHeight) options:NSStringDrawingUsesLineFragmentOrigin attributes:@{NSFontAttributeName:[UIFont systemFontOfSize:14]} context:nil].size;
     left.frame = CGRectMake(0, 0, ScreenScale(maxSize.width + 40), ScreenScale(titleFieldHeight));
@@ -96,7 +96,7 @@
     textField.leftViewMode = UITextFieldViewModeAlways;
     textField.rightViewMode = UITextFieldViewModeAlways;
     textField.clearButtonMode = UITextFieldViewModeWhileEditing;
-    textField.backgroundColor = [UIColor whiteColor];
+    textField.backgroundColor = WHITE_BG_COLOR;
     UIButton * left = [UIButton createButtonWithTitle:leftText TextFont:FONT_TITLE TextNormalColor:TITLE_COLOR TextSelectedColor:TITLE_COLOR NormalImage:leftImage SelectedImage:leftImage Target:nil Selector:nil];
     CGSize maxSize = [leftText boundingRectWithSize:CGSizeMake(MAXFLOAT, ScreenScale(titleFieldHeight)) options:NSStringDrawingUsesLineFragmentOrigin attributes:@{NSFontAttributeName:FONT_TITLE} context:nil].size;
     left.frame = CGRectMake(0, 0, ScreenScale(maxSize.width + 40), ScreenScale(titleFieldHeight));
@@ -128,7 +128,7 @@
 + (UITextField *)textFieldTitleLabelText:(NSString *)titleLabelText placeholder:(NSString *)placeholder buttonTitle:(NSString *)title titleFieldHeight:(CGFloat)titleFieldHeight NormalImage:(NSString *)normalImage SelectedImage:(NSString *)SelectedImage Target:(id)target Selector:(SEL)selector lineViewHidden:(BOOL)lineViewHidden
 {
     UITextField * textField = [[UITextField alloc]init];
-    textField.backgroundColor = [UIColor whiteColor];
+    textField.backgroundColor = WHITE_BG_COLOR;
     textField.font = FONT_TITLE;
     textField.placeholder = placeholder;
     textField.textColor = TITLE_COLOR;

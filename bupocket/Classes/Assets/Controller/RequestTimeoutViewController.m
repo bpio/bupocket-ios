@@ -46,7 +46,7 @@
 - (void)setupHeaderView
 {
     UIView * headerView = [[UIView alloc] init];
-    headerView.backgroundColor = [UIColor whiteColor];
+    headerView.backgroundColor = WHITE_BG_COLOR;
     CustomButton * transactionStatus = [[CustomButton alloc] init];
     transactionStatus.layoutMode = VerticalNormal;
     transactionStatus.titleLabel.font = FONT(16);

@@ -31,7 +31,7 @@
 
 - (void)viewDidLoad {
     [super viewDidLoad];
-    self.view.backgroundColor = [UIColor whiteColor];
+    self.view.backgroundColor = WHITE_BG_COLOR;
     self.edgesForExtendedLayout = UIRectEdgeNone;
     if (![self isRootViewController]) {
         [self setupLeftItem];

@@ -170,7 +170,7 @@ static NSString *cellIdentify = @"CFCycleScrollViewCell";
     UICollectionView *mainView = [[UICollectionView alloc] initWithFrame:self.bounds collectionViewLayout:self.flowLayout];
   
     [mainView registerClass:[CFCycleScrollViewCell class] forCellWithReuseIdentifier:cellIdentify];
-    mainView.backgroundColor = [UIColor whiteColor];
+    mainView.backgroundColor = WHITE_BG_COLOR;
     mainView.pagingEnabled = YES;
     mainView.showsHorizontalScrollIndicator = NO;
     mainView.showsVerticalScrollIndicator = NO;

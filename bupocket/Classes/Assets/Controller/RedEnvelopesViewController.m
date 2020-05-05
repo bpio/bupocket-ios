@@ -149,7 +149,7 @@
 {
     if (!_activitiesContentBg) {
         _activitiesContentBg = [[UIView alloc] init];
-        _activitiesContentBg.backgroundColor = [UIColor whiteColor];
+        _activitiesContentBg.backgroundColor = WHITE_BG_COLOR;
     }
     return _activitiesContentBg;
 }
@@ -223,7 +223,7 @@
     [button setTitleColor:Valentine_COLOR forState:UIControlStateNormal];
     button.contentEdgeInsets = UIEdgeInsetsMake(0, Margin_Main, 0, Margin_Main);
 //    button.contentHorizontalAlignment = UIControlContentHorizontalAlignmentLeft;
-    button.backgroundColor = [UIColor whiteColor];
+    button.backgroundColor = WHITE_BG_COLOR;
     CGSize size = CGSizeMake(DEVICE_WIDTH, ScreenScale(65));
     [self.scrollView addSubview:button];
     [button mas_makeConstraints:^(MASConstraintMaker *make) {

@@ -62,7 +62,7 @@
 
 - (void)setupView
 {
-    self.backgroundColor = [UIColor whiteColor];
+    self.backgroundColor = WHITE_BG_COLOR;
     self.layer.cornerRadius = (self.redEnvelopesType == RedEnvelopesTypeNormal) ? 0 : BG_CORNER;
     self.clipsToBounds = YES;
     
@@ -223,7 +223,7 @@
 - (UIButton *)saveAndShareBtn
 {
     if (!_saveAndShareBtn) {
-        _saveAndShareBtn = [UIButton createButtonWithTitle:@"保存图片并分享" TextFont:FONT_Bold(14) TextNormalColor:[UIColor whiteColor] TextSelectedColor:[UIColor whiteColor] Target:self Selector:@selector(saveAndShare)];
+        _saveAndShareBtn = [UIButton createButtonWithTitle:@"保存图片并分享" TextFont:FONT_Bold(14) TextNormalColor:WHITE_BG_COLOR TextSelectedColor:WHITE_BG_COLOR Target:self Selector:@selector(saveAndShare)];
         _saveAndShareBtn.backgroundColor = Valentine_COLOR;
         _saveAndShareBtn.layer.masksToBounds = YES;
         _saveAndShareBtn.layer.cornerRadius = TAG_CORNER;

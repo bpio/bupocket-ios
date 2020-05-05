@@ -36,7 +36,7 @@
 
 - (void)setupView {
     
-    self.backgroundColor = [UIColor whiteColor];
+    self.backgroundColor = WHITE_BG_COLOR;
     self.layer.cornerRadius = BG_CORNER;
     
     [self addSubview:self.titleLabel];

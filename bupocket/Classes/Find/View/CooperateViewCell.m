@@ -121,7 +121,7 @@
 {
     if (!_listBg) {
         _listBg = [[UIView alloc] init];
-        _listBg.backgroundColor = [UIColor whiteColor];
+        _listBg.backgroundColor = WHITE_BG_COLOR;
         [_listBg setViewSize:CGSizeMake(View_Width_Main, ScreenScale(150)) borderRadius:BG_CORNER corners:UIRectCornerAllCorners];
     }
     return _listBg;

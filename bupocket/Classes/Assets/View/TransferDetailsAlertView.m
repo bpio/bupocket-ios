@@ -43,7 +43,7 @@
 }
 
 - (void)setupView {
-    self.backgroundColor = [UIColor whiteColor];
+    self.backgroundColor = WHITE_BG_COLOR;
     [self addSubview:self.closeBtn];
     [self addSubview:self.confirmationOfTransfer];
     [self addSubview:self.transferPrompt];

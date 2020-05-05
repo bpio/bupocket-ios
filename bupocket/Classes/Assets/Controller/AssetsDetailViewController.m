@@ -178,7 +178,7 @@
     if (!_noData) {
         CGFloat noDataH = DEVICE_HEIGHT - _headerViewH - NavBarH - SafeAreaBottomH;
         _noData = [[UIView alloc] initWithFrame:CGRectMake(0, 0, DEVICE_WIDTH, noDataH)];
-//        _noData.backgroundColor = [UIColor whiteColor];
+//        _noData.backgroundColor = WHITE_BG_COLOR;
         UIButton * noDataBtn = [Encapsulation showNoDataWithTitle:Localized(@"NoTransactionRecord") imageName:@"noRecord" superView:_noData frame:CGRectMake(0, (noDataH - ScreenScale(160)) / 2, DEVICE_WIDTH, ScreenScale(160))];
         [_noData addSubview:noDataBtn];
     }
@@ -212,7 +212,7 @@
     
     _receiveBtn = [[CustomButton alloc] init];
     _receiveBtn.layoutMode = HorizontalNormal;
-    [_receiveBtn setTitleColor:[UIColor whiteColor] forState:UIControlStateNormal];
+    [_receiveBtn setTitleColor:WHITE_BG_COLOR forState:UIControlStateNormal];
     _receiveBtn.titleLabel.font = FONT_TITLE;
     [_receiveBtn setTitle:Localized(@"Receive") forState:UIControlStateNormal];
     [_receiveBtn setImage:[UIImage imageNamed:@"receive_w"] forState:UIControlStateNormal];
@@ -224,7 +224,7 @@
     
     _transferAccounts = [[CustomButton alloc] init];
     _transferAccounts.layoutMode = HorizontalNormal;
-    [_transferAccounts setTitleColor:[UIColor whiteColor] forState:UIControlStateNormal];
+    [_transferAccounts setTitleColor:WHITE_BG_COLOR forState:UIControlStateNormal];
     _transferAccounts.titleLabel.font = FONT_TITLE;
     [_transferAccounts setTitle:Localized(@"TransferAccounts") forState:UIControlStateNormal];
     [_transferAccounts setImage:[UIImage imageNamed:@"transferAccounts"] forState:UIControlStateNormal];

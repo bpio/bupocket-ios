@@ -42,7 +42,7 @@
             textColor = MAIN_COLOR;
         }
         UIButton * btn = [UIButton createButtonWithTitle:self.handlerArray[i] TextFont:FONT_15 TextNormalColor:textColor TextSelectedColor:textColor Target:self Selector:@selector(handlerBtnClick:)];
-        btn.backgroundColor = [UIColor whiteColor];
+        btn.backgroundColor = WHITE_BG_COLOR;
         [self addSubview:btn];
         [btn mas_makeConstraints:^(MASConstraintMaker *make) {
             make.top.equalTo(self.mas_top).offset((Margin_50 + LINE_WIDTH) * i);
@@ -68,7 +68,7 @@
 {
     if (!_cancelBtn) {
         _cancelBtn = [UIButton createButtonWithTitle:Localized(@"Cancel") TextFont:FONT_15 TextNormalColor:COLOR_6 TextSelectedColor:COLOR_6 Target:self Selector:@selector(cancleBtnClick)];
-        _cancelBtn.backgroundColor = [UIColor whiteColor];
+        _cancelBtn.backgroundColor = WHITE_BG_COLOR;
     }
     return _cancelBtn;
 }

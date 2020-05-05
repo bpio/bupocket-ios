@@ -98,7 +98,7 @@
 {
     if (!_linkBg) {
         _linkBg = [[UIView alloc] init];
-        _linkBg.backgroundColor = [UIColor whiteColor];
+        _linkBg.backgroundColor = WHITE_BG_COLOR;
         _linkBg.layer.masksToBounds = YES;
         _linkBg.layer.cornerRadius = BG_CORNER;
     }
@@ -141,7 +141,7 @@
         _linkImage.contentMode = UIViewContentModeCenter;
         _linkImage.layer.masksToBounds = YES;
         _linkImage.layer.cornerRadius = _linkImage.width / 2.0 + Margin_5;
-        _linkImage.layer.borderColor = [UIColor whiteColor].CGColor;
+        _linkImage.layer.borderColor = WHITE_BG_COLOR.CGColor;
         _linkImage.layer.borderWidth = Margin_5;
     }
     return _linkImage;

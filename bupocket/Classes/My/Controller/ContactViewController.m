@@ -51,7 +51,7 @@
     self.tableView.delegate = self;
     self.tableView.dataSource = self;
     self.tableView.separatorStyle = UITableViewCellSeparatorStyleSingleLine;
-    self.tableView.backgroundColor = [UIColor whiteColor];
+    self.tableView.backgroundColor = WHITE_BG_COLOR;
     [self.view addSubview:self.tableView];
     
     self.tableView.tableHeaderView = [[UIView alloc] initWithFrame:CGRectMake(0, 0, DEVICE_WIDTH, CGFLOAT_MIN)];
@@ -74,7 +74,7 @@
         UIButton * deleteBtn = [UIButton createButtonWithTitle:Localized(@"DeleteContact") isEnabled:YES Target:self Selector:@selector(deleteAction)];
         [deleteBtn setTitleColor:WARNING_COLOR forState:UIControlStateNormal];
         deleteBtn.titleLabel.font = FONT(16);
-        deleteBtn.backgroundColor = [UIColor whiteColor];
+        deleteBtn.backgroundColor = WHITE_BG_COLOR;
         [footerView addSubview:deleteBtn];
         [deleteBtn mas_makeConstraints:^(MASConstraintMaker *make) {
             make.top.equalTo(self.save.mas_bottom).offset(Margin_20);
@@ -181,7 +181,7 @@
             }];
         }];
     }];
-    [scanner setTitleColor:[UIColor whiteColor] tintColor:MAIN_COLOR];
+    [scanner setTitleColor:WHITE_BG_COLOR tintColor:MAIN_COLOR];
     [self showDetailViewController:scanner sender:nil];
 }
 - (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath

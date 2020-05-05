@@ -134,7 +134,7 @@
     }
     UIImagePickerController *picker = [[UIImagePickerController alloc] init];
     //    picker.modalPresentationStyle = UIModalPresentationCurrentContext;
-    picker.view.backgroundColor = [UIColor whiteColor];
+    picker.view.backgroundColor = WHITE_BG_COLOR;
     picker.delegate = self;
     picker.navigationBar.translucent = NO;
     //    [self.navigationController presentViewController:picker animated:YES completion:nil];
@@ -226,7 +226,7 @@
     // 1> 提示标签
     tipLabel = [[UILabel alloc] init];
     tipLabel.font = [UIFont systemFontOfSize:12];
-    tipLabel.textColor = [UIColor whiteColor];
+    tipLabel.textColor = WHITE_BG_COLOR;
     tipLabel.textAlignment = NSTextAlignmentCenter;
     tipLabel.numberOfLines = 0;
     [self updateTipLabelFrameWithText:Localized(@"ScanPrompt")];

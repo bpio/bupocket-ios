@@ -80,7 +80,7 @@
 {
     if (!_headerView) {
         UIView * headerView = [[UIView alloc] init];
-        headerView.backgroundColor = [UIColor whiteColor];
+        headerView.backgroundColor = WHITE_BG_COLOR;
         NSString * imageName;
         NSString * result;
         CGFloat headerViewH = 60 + ScreenScale(50);

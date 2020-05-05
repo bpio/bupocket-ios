@@ -65,7 +65,7 @@ static NSString * const NormalCellID = @"NormalCellID";
     if (!_info) {
         _info = [UIButton buttonWithType:UIButtonTypeCustom];
         _info.titleLabel.numberOfLines = 0;
-        _info.backgroundColor = [UIColor whiteColor];
+        _info.backgroundColor = WHITE_BG_COLOR;
         _info.contentHorizontalAlignment = UIControlContentHorizontalAlignmentLeft;
     }
     return _info;

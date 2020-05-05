@@ -25,7 +25,7 @@
     label.clipsToBounds = YES;
     label.backgroundColor = [UIColor redColor];
     label.font = FONT(10);
-    label.textColor = [UIColor whiteColor];
+    label.textColor = WHITE_BG_COLOR;
     label.text = Localized(@"New");
     label.textAlignment = NSTextAlignmentCenter;
     CGFloat labelW = [Encapsulation rectWithText:label.text font:label.font textHeight:Margin_10].size.width + ScreenScale(8);

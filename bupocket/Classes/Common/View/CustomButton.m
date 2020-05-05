@@ -68,7 +68,7 @@
 //{
 //    UIButton * button = [[CustomButton alloc]init];
 //    [button setImage:[UIImage imageNamed:imageName] forState:UIControlStateNormal];
-//    //    button.backgroundColor = [UIColor whiteColor];
+//    //    button.backgroundColor = WHITE_BG_COLOR;
 //    [button setTitle:title forState:UIControlStateNormal];
 //    [button setTitleColor:titleColor forState:UIControlStateNormal];
 //    button.titleLabel.font = [UIFont systemFontOfSize:titleFont];

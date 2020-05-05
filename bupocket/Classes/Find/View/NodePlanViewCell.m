@@ -162,7 +162,7 @@ static NSString * const NodeDetailID = @"NodeDetailID";
 {
     if (!_listBg) {
         _listBg = [[UIView alloc] init];
-        _listBg.backgroundColor = [UIColor whiteColor];
+        _listBg.backgroundColor = WHITE_BG_COLOR;
     }
     return _listBg;
 }
@@ -180,7 +180,7 @@ static NSString * const NodeDetailID = @"NodeDetailID";
     if (!_listImage) {
         _listImage = [[UIImageView alloc] init];
         _listImage.size = CGSizeMake(Margin_40, Margin_40);
-        _listImage.backgroundColor = [UIColor whiteColor];
+        _listImage.backgroundColor = WHITE_BG_COLOR;
         _listImage.contentMode = UIViewContentModeScaleAspectFill;
         [_listImage setViewSize:_listImage.size borderWidth:0 borderColor:nil borderRadius:Margin_20];
     }

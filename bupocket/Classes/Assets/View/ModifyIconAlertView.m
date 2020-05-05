@@ -35,7 +35,7 @@ static NSString * const ModifyIconCellID = @"ModifyIconCellID";
 }
 
 - (void)setupView {
-    self.backgroundColor = [UIColor whiteColor];
+    self.backgroundColor = WHITE_BG_COLOR;
     self.layer.cornerRadius = BG_CORNER;
     
     [self addSubview:self.titleLabel];
@@ -98,7 +98,7 @@ static NSString * const ModifyIconCellID = @"ModifyIconCellID";
     _collectView = [[UICollectionView alloc] initWithFrame:CGRectMake(0, 0, DEVICE_WIDTH - ScreenScale(90), itemW * 2 + Margin_15) collectionViewLayout:layout];
     _collectView.delegate = self;
     _collectView.dataSource = self;
-    _collectView.backgroundColor = [UIColor whiteColor];
+    _collectView.backgroundColor = WHITE_BG_COLOR;
     [_collectView registerClass:[ModifyIconCollectionViewCell class] forCellWithReuseIdentifier:ModifyIconCellID];
     [self addSubview:_collectView];
 }

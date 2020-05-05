@@ -158,7 +158,7 @@
         CGFloat btnW = (DEVICE_WIDTH - Margin_40) / 2;
         CGSize btnSize = CGSizeMake(btnW, ScreenScale(80));
         for (NSInteger i = 0; i < array.count; i ++) {
-            UIButton * btn = [UIButton createButtonWithTitle:array[i][0] TextFont:FONT_Bold(18) TextNormalColor:[UIColor whiteColor] TextSelectedColor:[UIColor whiteColor] Target:self Selector:@selector(btnAction:)];
+            UIButton * btn = [UIButton createButtonWithTitle:array[i][0] TextFont:FONT_Bold(18) TextNormalColor:WHITE_BG_COLOR TextSelectedColor:WHITE_BG_COLOR Target:self Selector:@selector(btnAction:)];
             btn.backgroundColor = array[i][1];
             btn.contentEdgeInsets = UIEdgeInsetsMake(0, Margin_15, 0, Margin_15);
             btn.contentHorizontalAlignment = UIControlContentHorizontalAlignmentLeft;

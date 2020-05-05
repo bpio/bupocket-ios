@@ -146,8 +146,8 @@
     self.wallet.contentHorizontalAlignment = UIControlContentHorizontalAlignmentRight;
     self.navigationItem.rightBarButtonItem = [[UIBarButtonItem alloc]initWithCustomView:self.wallet];
     self.navAlpha = 0;
-    self.navBackgroundColor = [UIColor whiteColor];
-    self.navTitleColor = self.navTintColor = [UIColor whiteColor];
+    self.navBackgroundColor = WHITE_BG_COLOR;
+    self.navTitleColor = self.navTintColor = WHITE_BG_COLOR;
 }
 - (void)viewDidAppear:(BOOL)animated
 {
@@ -227,7 +227,7 @@
         } else {
             NSString * currencyUnit = [AssetCurrencyModel getCurrencyUnitWithAssetCurrency:[[[NSUserDefaults standardUserDefaults] objectForKey:Current_Currency] integerValue]];
             NSString * amountString = [NSString stringWithFormat:@"≈%@%@", amountStr, currencyUnit];
-            NSMutableAttributedString * attr = [Encapsulation attrWithString:amountString preFont:FONT(36) preColor:[UIColor whiteColor] index:amountString.length - currencyUnit.length sufFont:FONT(18) sufColor:[UIColor whiteColor] lineSpacing:0];
+            NSMutableAttributedString * attr = [Encapsulation attrWithString:amountString preFont:FONT(36) preColor:WHITE_BG_COLOR index:amountString.length - currencyUnit.length sufFont:FONT(18) sufColor:WHITE_BG_COLOR lineSpacing:0];
             [attr addAttribute:NSBaselineOffsetAttributeName value:@((FONT(18).lineHeight)/2) range:NSMakeRange(amountString.length - currencyUnit.length, currencyUnit.length)];
             self.totalAssets.attributedText = attr;
         }
@@ -462,7 +462,7 @@
     
         _totalAssets = [[UILabel alloc] init];
         _totalAssets.font = FONT(36);
-        _totalAssets.textColor = [UIColor whiteColor];
+        _totalAssets.textColor = WHITE_BG_COLOR;
         [_headerViewBg addSubview:_totalAssets];
         
         
@@ -574,7 +574,7 @@
         _statusBarStyle = UIStatusBarStyleDefault;
     } else {
         self.wallet.selected = NO;
-        self.navTitleColor = self.navTintColor = [UIColor whiteColor];
+        self.navTitleColor = self.navTintColor = WHITE_BG_COLOR;
         self.wallet.selected = NO;
         _statusBarStyle = UIStatusBarStyleLightContent;
     }
@@ -674,7 +674,7 @@
         }];
         
     }];
-    [scanner setTitleColor:[UIColor whiteColor] tintColor:MAIN_COLOR];
+    [scanner setTitleColor:WHITE_BG_COLOR tintColor:MAIN_COLOR];
     [self showDetailViewController:scanner sender:nil];
 }
 #pragma mark - wallet address
@@ -815,7 +815,7 @@
         NSUserDefaults * defaults = [NSUserDefaults standardUserDefaults];
         if (![defaults boolForKey:If_Backup]) {
             UIView * backupBg = [[UIView alloc] init];
-            backupBg.backgroundColor = [UIColor whiteColor];
+            backupBg.backgroundColor = WHITE_BG_COLOR;
             backupBg.layer.masksToBounds = YES;
             backupBg.layer.cornerRadius = BG_CORNER;
             [headerView addSubview:backupBg];

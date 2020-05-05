@@ -40,7 +40,7 @@
 
 - (void)setupView {
     
-    self.backgroundColor = [UIColor whiteColor];
+    self.backgroundColor = WHITE_BG_COLOR;
     self.frame = CGRectMake(0, 0, DEVICE_WIDTH, ScreenScale(460));
     
     [self addSubview:self.bgScrollView];
@@ -320,7 +320,7 @@
     if (!_details) {
         _details = [UIButton createButtonWithTitle:Localized(@"Details") TextFont:FONT_13 TextNormalColor:MAIN_COLOR TextSelectedColor:MAIN_COLOR Target:self Selector:@selector(detailAction)];
         _details.contentHorizontalAlignment = UIControlContentHorizontalAlignmentRight;
-        _details.backgroundColor = [UIColor whiteColor];
+        _details.backgroundColor = WHITE_BG_COLOR;
     }
     return _details;
 }
@@ -348,7 +348,7 @@
 - (UIButton *)confirm
 {
     if (!_confirm) {
-        _confirm = [UIButton createButtonWithTitle:Localized(@"Confirm") TextFont:FONT_BUTTON TextNormalColor:[UIColor whiteColor] TextSelectedColor:[UIColor whiteColor] Target:self Selector:@selector(sureBtnClick)];
+        _confirm = [UIButton createButtonWithTitle:Localized(@"Confirm") TextFont:FONT_BUTTON TextNormalColor:WHITE_BG_COLOR TextSelectedColor:WHITE_BG_COLOR Target:self Selector:@selector(sureBtnClick)];
         _confirm.backgroundColor = MAIN_COLOR;
         [_confirm setViewSize:CGSizeMake(DEVICE_WIDTH - Margin_40, MAIN_HEIGHT) borderRadius:MAIN_CORNER corners:UIRectCornerAllCorners];
     }

@@ -88,7 +88,7 @@
 #define DISABLED_COLOR COLOR(@"8CD7B5", @"73284a")
 //#define VIEWBG_COLOR COLOR(@"EFEFF4")
 #define VIEWBG_COLOR COLOR(@"F5F5F5", @"0A0A0A")
-#define LINE_COLOR COLOR(@"E3E3E3", @"1C1C1C")
+#define LINE_COLOR COLOR(@"E3E3E3", @"717171")
 #define TITLE_COLOR COLOR(@"333333", @"cccccc")
 #define COLOR_6 COLOR(@"666666", @"999999")
 #define COLOR_9 COLOR(@"999999", @"C8C8C8")
@@ -129,6 +129,7 @@
 #define NAV_BAR_BG_COLOR COLOR(@"FFFFFF", @"1c1c1e")
 #define NAV_BAR_FG_COLOR COLOR(@"000000", @"FFFFFF")
 #define LIST_BG_COLOR COLOR(@"FFFFFF", @"1c1c1e")
+#define WHITE_BG_COLOR COLOR(@"FFFFFF", @"1c1c1e")
 
 // Current Wallet Address
 #define Current_WalletAddress @"CurrentWalletAddress"

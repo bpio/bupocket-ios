@@ -30,7 +30,7 @@
  }];
  
  // 设置导航标题样式
- [scanner setTitleColor:[UIColor whiteColor] tintColor:[UIColor greenColor]];
+ [scanner setTitleColor:WHITE_BG_COLOR tintColor:[UIColor greenColor]];
  
  // 展现扫描控制器
  [self showDetailViewController:scanner sender:nil];

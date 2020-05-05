@@ -55,7 +55,7 @@
     if (![self.walletModel.walletAddress isEqualToString:[[[AccountTool shareTool] account] walletAddress]]) {
         UIButton * deleteBtn = [UIButton createFooterViewWithTitle:Localized(@"DeleteWallet") isEnabled:YES Target:self Selector:@selector(deleteAction)];
         [deleteBtn setTitleColor:WARNING_COLOR forState:UIControlStateNormal];
-        deleteBtn.backgroundColor = [UIColor whiteColor];
+        deleteBtn.backgroundColor = WHITE_BG_COLOR;
         deleteBtn.superview.backgroundColor = self.tableView.backgroundColor;
     }
 }
@@ -93,7 +93,7 @@
         CGSize btnSize = CGSizeMake(DEVICE_WIDTH - Margin_30, MAIN_HEIGHT);
         UIButton * deleteBtn = [UIButton createButtonWithTitle:Localized(@"DeleteWallet") isEnabled:YES Target:self Selector:@selector(deleteAction)];
         [deleteBtn setTitleColor:WARNING_COLOR forState:UIControlStateNormal];
-        deleteBtn.backgroundColor = [UIColor whiteColor];
+        deleteBtn.backgroundColor = WHITE_BG_COLOR;
         [footerView addSubview:deleteBtn];
         [deleteBtn mas_makeConstraints:^(MASConstraintMaker *make) {
             make.top.equalTo(footerView.mas_top).offset(ScreenScale(90));

@@ -202,7 +202,7 @@ static NSString * const VoucherCellID = @"VoucherCellID";
     self.tableView.dataSource = self;
     self.tableView.separatorStyle = UITableViewCellSeparatorStyleSingleLine;
     [self.view addSubview:self.tableView];
-    self.tableView.backgroundColor = [UIColor whiteColor];
+    self.tableView.backgroundColor = WHITE_BG_COLOR;
     self.tableView.tableHeaderView = [[UIView alloc] initWithFrame:CGRectMake(0, 0, 0, CGFLOAT_MIN)];
 //    self.tableView.tableFooterView = self.noData;
     
@@ -212,7 +212,7 @@ static NSString * const VoucherCellID = @"VoucherCellID";
     if (!_noData) {
         CGFloat noDataH = self.tableView.height;
         _noData = [[UIView alloc] initWithFrame:CGRectMake(0, 0, DEVICE_WIDTH, self.tableView.height - self.headerTitleH)];
-//        _noData.backgroundColor = [UIColor whiteColor];
+//        _noData.backgroundColor = WHITE_BG_COLOR;
 //        UIButton * noDataBtn = [Encapsulation showNoDataWithTitle:Localized(@"VoucherNoData") imageName:@"no_data_voucher" superView:_noData frame:CGRectMake(0, (noDataH - ScreenScale(220)) / 2, DEVICE_WIDTH, ScreenScale(220))];
         UIButton * noDataBtn = [Encapsulation showNoDataWithTitle:Localized(@"VoucherNoData") imageName:@"no_data_voucher" superView:_noData frame:CGRectMake(0, (noDataH - ScreenScale(220) - MAIN_HEIGHT - Margin_15) / 2 - Margin_50, DEVICE_WIDTH, ScreenScale(220))];
         [_noData addSubview:noDataBtn];

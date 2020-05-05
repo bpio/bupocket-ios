@@ -142,7 +142,7 @@
 {
     if (!_updateBg) {
         _updateBg = [[UIView alloc] init];
-        _updateBg.backgroundColor = [UIColor whiteColor];
+        _updateBg.backgroundColor = WHITE_BG_COLOR;
         _updateBg.layer.masksToBounds = YES;
         _updateBg.layer.cornerRadius = BG_CORNER;
     }
@@ -153,7 +153,7 @@
 {
     if (!_lineView) {
         _lineView = [[UIView alloc] init];
-        _lineView.backgroundColor = [UIColor whiteColor];
+        _lineView.backgroundColor = WHITE_BG_COLOR;
     }
     return _lineView;
 }

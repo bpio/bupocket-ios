@@ -49,7 +49,7 @@
             make.bottom.equalTo(self.view.mas_bottom).offset(- SafeAreaBottomH);
             make.size.mas_equalTo(CGSizeMake(ScreenScale(230), ScreenScale(55)));
         }];
-        self.continueBtn = [UIButton createButtonWithTitle:Localized(@"Continue") TextFont:FONT_BUTTON TextNormalColor:[UIColor whiteColor] TextSelectedColor:[UIColor whiteColor] Target:self Selector:@selector(continueAction:)];
+        self.continueBtn = [UIButton createButtonWithTitle:Localized(@"Continue") TextFont:FONT_BUTTON TextNormalColor:WHITE_BG_COLOR TextSelectedColor:WHITE_BG_COLOR Target:self Selector:@selector(continueAction:)];
         self.continueBtn.backgroundColor = DISABLED_COLOR;
         self.continueBtn.enabled = NO;
         [self.view addSubview:self.continueBtn];

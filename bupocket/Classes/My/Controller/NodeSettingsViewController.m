@@ -86,7 +86,7 @@
     [addNodesBtn setTitleColor:MAIN_COLOR forState:UIControlStateNormal];
     [addNodesBtn setImage:[UIImage imageNamed:@"import"] forState:UIControlStateNormal];
     [self.view addSubview:addNodesBtn];
-    addNodesBtn.backgroundColor = [UIColor whiteColor];
+    addNodesBtn.backgroundColor = WHITE_BG_COLOR;
     [addNodesBtn addTarget:self action:@selector(addNodesAction) forControlEvents:UIControlEventTouchUpInside];
     [addNodesBtn mas_makeConstraints:^(MASConstraintMaker *make) {
         make.bottom.equalTo(self.view.mas_bottom).offset(-SafeAreaBottomH);

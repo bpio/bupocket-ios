@@ -109,7 +109,7 @@
     
     self.navTitle = [[UILabel alloc] init];
     self.navTitle.font = FONT_Bold(17);
-    self.navTitle.textColor = [UIColor whiteColor];
+    self.navTitle.textColor = WHITE_BG_COLOR;
     self.navTitle.text = Localized(@"Receive");
     [self.imageViewBg addSubview:self.navTitle];
     [self.navTitle mas_makeConstraints:^(MASConstraintMaker *make) {
@@ -187,7 +187,7 @@
 {
     if (!_addressBg) {
         _addressBg = [[UIView alloc] init];
-        _addressBg.backgroundColor = [UIColor whiteColor];
+        _addressBg.backgroundColor = WHITE_BG_COLOR;
     }
     return _addressBg;
 }
@@ -264,7 +264,7 @@
         [_icon setImage:[UIImage imageNamed:@"logo_receive"] forState:UIControlStateNormal];
         [_icon setTitle:Localized(@"BUPocket") forState:UIControlStateNormal];
         _icon.titleLabel.font = FONT(12);
-        [_icon setTitleColor:[[UIColor whiteColor] colorWithAlphaComponent:0.25] forState:UIControlStateNormal];
+        [_icon setTitleColor:[WHITE_BG_COLOR colorWithAlphaComponent:0.25] forState:UIControlStateNormal];
         _icon.userInteractionEnabled = NO;
     }
     return _icon;

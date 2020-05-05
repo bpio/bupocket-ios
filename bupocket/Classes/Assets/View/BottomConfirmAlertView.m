@@ -68,7 +68,7 @@
 
 - (void)setupView {
     
-    self.backgroundColor = [UIColor whiteColor];
+    self.backgroundColor = WHITE_BG_COLOR;
     self.frame = CGRectMake(0, 0, DEVICE_WIDTH, ScreenScale(460));
     
     [self addSubview:self.bgScrollView];
@@ -182,7 +182,7 @@
     tableView.delegate = self;
     tableView.dataSource = self;
     tableView.separatorStyle = UITableViewCellSeparatorStyleSingleLine;
-    tableView.backgroundColor = [UIColor whiteColor];
+    tableView.backgroundColor = WHITE_BG_COLOR;
     return tableView;
 }
 
@@ -237,7 +237,7 @@
     if (!_details) {
         _details = [UIButton createButtonWithTitle:Localized(@"Details") TextFont:FONT_13 TextNormalColor:MAIN_COLOR TextSelectedColor:MAIN_COLOR Target:self Selector:@selector(detailAction)];
         _details.contentHorizontalAlignment = UIControlContentHorizontalAlignmentRight;
-        _details.backgroundColor = [UIColor whiteColor];
+        _details.backgroundColor = WHITE_BG_COLOR;
     }
     return _details;
 }

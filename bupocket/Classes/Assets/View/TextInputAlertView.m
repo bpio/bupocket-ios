@@ -102,7 +102,7 @@
 }
 
 - (void)setupView {
-    self.backgroundColor = [UIColor whiteColor];
+    self.backgroundColor = WHITE_BG_COLOR;
     self.layer.cornerRadius = BG_CORNER;
     CGFloat marginX = Margin_20;
     [self addSubview:self.titleLabel];

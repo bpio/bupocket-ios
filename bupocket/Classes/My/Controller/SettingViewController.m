@@ -40,7 +40,7 @@
     self.tableView.dataSource = self;
     self.tableView.separatorInset = UIEdgeInsetsZero;
     self.tableView.separatorStyle = UITableViewCellSeparatorStyleSingleLine;
-    self.tableView.backgroundColor = [UIColor whiteColor];
+    self.tableView.backgroundColor = WHITE_BG_COLOR;
     [self.view addSubview:self.tableView];
     self.tableView.bounces = NO;
 }

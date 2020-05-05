@@ -75,7 +75,7 @@
     
     UIButton * exitID = [UIButton createButtonWithTitle:Localized(@"ExitCurrentIdentity") isEnabled:YES Target:self Selector:@selector(exitIDAction)];
     [exitID setTitleColor:WARNING_COLOR forState:UIControlStateNormal];
-    exitID.backgroundColor = [UIColor whiteColor];
+    exitID.backgroundColor = WHITE_BG_COLOR;
     [footerView addSubview:exitID];
     [exitID mas_makeConstraints:^(MASConstraintMaker *make) {
         make.top.equalTo(backupIdentity.mas_bottom).offset(Margin_20);
@@ -166,7 +166,7 @@
         popupMenu.dismissOnTouchOutside = YES;
         popupMenu.dismissOnSelected = NO;
         popupMenu.fontSize = FONT_TITLE;
-        popupMenu.textColor = [UIColor whiteColor];
+        popupMenu.textColor = WHITE_BG_COLOR;
         popupMenu.backColor = COLOR_POPUPMENU;
         popupMenu.tableView.separatorStyle = UITableViewCellSeparatorStyleSingleLine;
         popupMenu.tableView.scrollEnabled = NO;

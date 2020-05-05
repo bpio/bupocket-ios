@@ -57,7 +57,7 @@
 }
 
 - (void)setupView {
-    self.backgroundColor = [UIColor whiteColor];
+    self.backgroundColor = WHITE_BG_COLOR;
     
     [self addSubview:self.scrollView];
     
@@ -172,7 +172,7 @@
 {
     if (!_QRCode) {
         _QRCode = [[UIImageView alloc] init];
-        _QRCode.backgroundColor = [UIColor whiteColor];
+        _QRCode.backgroundColor = WHITE_BG_COLOR;
         _QRCode.layer.masksToBounds = YES;
         _QRCode.layer.cornerRadius = TAG_CORNER;
         _QRCode.image = [UIImage imageNamed:@"placeholderBg"];

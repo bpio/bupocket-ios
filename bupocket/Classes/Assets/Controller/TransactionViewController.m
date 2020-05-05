@@ -129,7 +129,7 @@ static NSString * const ChooseVoucherCellID = @"ChooseVoucherCellID";
     self.tableView.delegate = self;
     self.tableView.dataSource = self;
     self.tableView.separatorStyle = UITableViewCellSeparatorStyleSingleLine;
-    self.tableView.backgroundColor = [UIColor whiteColor];
+    self.tableView.backgroundColor = WHITE_BG_COLOR;
     [self.view addSubview:self.tableView];
     if (self.transferType == TransferTypeVoucher) {
         [self setupHeaderView];
@@ -375,7 +375,7 @@ static NSString * const ChooseVoucherCellID = @"ChooseVoucherCellID";
             VoucherViewCell * cell = [VoucherViewCell cellWithTableView:tableView identifier:VoucherCellID];
             cell.voucherModel = self.voucherModel;
             cell.number.hidden = YES;
-            cell.contentView.backgroundColor = [UIColor whiteColor];
+            cell.contentView.backgroundColor = WHITE_BG_COLOR;
             cell.selectionStyle = UITableViewCellSelectionStyleNone;
             return cell;
         } else {
@@ -529,7 +529,7 @@ static NSString * const ChooseVoucherCellID = @"ChooseVoucherCellID";
             [weakself IsActivatedWithAddress:stringValue];
         }];
     }];
-    [scanner setTitleColor:[UIColor whiteColor] tintColor:MAIN_COLOR];
+    [scanner setTitleColor:WHITE_BG_COLOR tintColor:MAIN_COLOR];
     [self showDetailViewController:scanner sender:nil];
 }
 - (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath

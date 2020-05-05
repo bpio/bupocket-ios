@@ -117,7 +117,7 @@ static NSString * const SearchID = @"SearchID";
     self.tableView = [[UITableView alloc] initWithFrame:CGRectMake(0, MAIN_HEIGHT, DEVICE_WIDTH, DEVICE_HEIGHT - SafeAreaBottomH - NavBarH - MAIN_HEIGHT) style:UITableViewStyleGrouped];
     self.tableView.delegate = self;
     self.tableView.dataSource = self;
-    self.tableView.backgroundColor = [UIColor whiteColor];
+    self.tableView.backgroundColor = WHITE_BG_COLOR;
     self.tableView.separatorStyle = UITableViewCellSeparatorStyleSingleLine;
     [self.view addSubview:self.tableView];
 //    self.tableView.contentInset = UIEdgeInsetsMake(MAIN_HEIGHT, 0, 0, 0);
@@ -126,7 +126,7 @@ static NSString * const SearchID = @"SearchID";
 - (void)setupHeaderView
 {
     UIView * headerView = [[UIView alloc] initWithFrame:CGRectMake(0, 0, DEVICE_WIDTH, MAIN_HEIGHT)];
-    headerView.backgroundColor = [UIColor whiteColor];
+    headerView.backgroundColor = WHITE_BG_COLOR;
     [self.view addSubview:headerView];
 //    self.tableView.tableHeaderView = headerView;
     _searchTextField = [[UITextField alloc] init];

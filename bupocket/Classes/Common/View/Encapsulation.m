@@ -111,7 +111,7 @@
     UIAlertAction * confirmAction = [UIAlertAction actionWithTitle:Localized(@"Confirm") style:UIAlertActionStyleDefault handler:confirmHandler];
     [alertController addAction:confirmAction];
     UIView * alertBg = alertController.view.subviews[0].subviews[0].subviews[0];
-    alertBg.backgroundColor = [UIColor whiteColor];
+    alertBg.backgroundColor = WHITE_BG_COLOR;
     alertBg.layer.cornerRadius = BG_CORNER;
     if (title.length > 0) {
         UILabel * titleLabel = alertBg.subviews[0].subviews[0].subviews[1];
@@ -140,7 +140,7 @@
     UIAlertAction * confirmAction = [UIAlertAction actionWithTitle:Localized(@"UpdateImmediately") style:UIAlertActionStyleDefault handler:confirmHandler];
     [alertController addAction:confirmAction];
     UIView * alertBg = alertController.view.subviews[0].subviews[0].subviews[0];
-    alertBg.backgroundColor = [UIColor whiteColor];
+    alertBg.backgroundColor = WHITE_BG_COLOR;
     alertBg.layer.cornerRadius = BG_CORNER;
     UILabel * messageLabel = alertBg.subviews[0].subviews[0].subviews[2];
     [alertController setValue:messageAttr forKey:@"attributedMessage"];
@@ -157,7 +157,7 @@
     /*
     UIAlertController * alertController = [UIAlertController alertControllerWithTitle:nil message:message preferredStyle:UIAlertControllerStyleAlert];
     UIView * alertBg = alertController.view.subviews[0].subviews[0].subviews[0];
-    alertBg.backgroundColor = [UIColor whiteColor];
+    alertBg.backgroundColor = WHITE_BG_COLOR;
     alertBg.layer.cornerRadius = BG_CORNER;
     UIAlertAction * cancelAction = [UIAlertAction actionWithTitle:Localized(@"IGotIt") style:UIAlertActionStyleCancel handler:handle];
     [cancelAction setValue:MAIN_COLOR forKey:@"titleTextColor"];
@@ -173,7 +173,7 @@
     /*
     UIAlertController * alertController = [UIAlertController alertControllerWithTitle:Localized(@"ErrorPrompt") message:message preferredStyle:UIAlertControllerStyleAlert];
     UIView * alertBg = alertController.view.subviews[0].subviews[0].subviews[0];
-    alertBg.backgroundColor = [UIColor whiteColor];
+    alertBg.backgroundColor = WHITE_BG_COLOR;
     alertBg.layer.cornerRadius = BG_CORNER;
     
     UILabel * titleLabel = alertBg.subviews[0].subviews[0].subviews[1];
@@ -204,7 +204,7 @@
     UIAlertAction * confirmAction = [UIAlertAction actionWithTitle:Localized(@"IGotIt") style:UIAlertActionStyleDefault handler:confirmHandler];
     [alertController addAction:confirmAction];
     UIView * alertBg = alertController.view.subviews[0].subviews[0].subviews[0];
-    alertBg.backgroundColor = [UIColor whiteColor];
+    alertBg.backgroundColor = WHITE_BG_COLOR;
     alertBg.layer.cornerRadius = BG_CORNER;
     if (title.length > 0) {
         UILabel * titleLabel = alertBg.subviews[0].subviews[0].subviews[1];
@@ -246,7 +246,7 @@
 + (UIView *)showNoNetWorkWithSuperView:(UIView *)superView target:(id)target action:(SEL)action
 {
     UIView * noNetWork = [[UIView alloc] init];
-    noNetWork.backgroundColor = [UIColor whiteColor];
+    noNetWork.backgroundColor = WHITE_BG_COLOR;
     [superView addSubview:noNetWork];
     [noNetWork mas_makeConstraints:^(MASConstraintMaker *make) {
         make.edges.equalTo(superView);
@@ -271,7 +271,7 @@
         make.top.equalTo(noNetWorkImage.mas_bottom).offset(ScreenScale(50));
     }];
     
-//    UIButton * reloadBtn = [UIButton createButtonWithTitle:Localized(@"Reload") TextFont:FONT_BUTTON TextNormalColor:[UIColor whiteColor] TextSelectedColor:[UIColor whiteColor] Target:target Selector:action];
+//    UIButton * reloadBtn = [UIButton createButtonWithTitle:Localized(@"Reload") TextFont:FONT_BUTTON TextNormalColor:WHITE_BG_COLOR TextSelectedColor:WHITE_BG_COLOR Target:target Selector:action];
 //    reloadBtn.layer.masksToBounds = YES;
 //    reloadBtn.clipsToBounds = YES;
 //    reloadBtn.layer.cornerRadius = MAIN_CORNER;

@@ -139,7 +139,7 @@
 - (UIButton *)stateBtn
 {
     if (!_stateBtn) {
-        _stateBtn = [UIButton createButtonWithTitle:Localized(@"InProgress") TextFont:FONT_TITLE TextNormalColor:[UIColor whiteColor] TextSelectedColor:[UIColor whiteColor] NormalBackgroundImage:@"cooperate_state" SelectedBackgroundImage:@"cooperate_state" Target:nil Selector:nil];
+        _stateBtn = [UIButton createButtonWithTitle:Localized(@"InProgress") TextFont:FONT_TITLE TextNormalColor:WHITE_BG_COLOR TextSelectedColor:WHITE_BG_COLOR NormalBackgroundImage:@"cooperate_state" SelectedBackgroundImage:@"cooperate_state" Target:nil Selector:nil];
         _stateBtn.hidden = YES;
     }
     return _stateBtn;

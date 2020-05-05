@@ -31,7 +31,7 @@ static NSString * const VoucherDetailCellID = @"VoucherDetailCellID";
 - (void)setupView
 {
 //    self.contentView.backgroundColor = VIEWBG_COLOR;
-//    self.contentView.backgroundColor = [UIColor whiteColor];
+//    self.contentView.backgroundColor = WHITE_BG_COLOR;
     [self.contentView addSubview:self.listBg];
     [self.listBg addSubview:self.checked];
     [self.listBg addSubview:self.icon];

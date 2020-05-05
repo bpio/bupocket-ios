@@ -139,7 +139,7 @@ static void *WkwebBrowserContext = &WkwebBrowserContext;
         self.navigationController.navigationBarHidden = YES;
         //创建一个高20的假状态栏
         UIView *statusBarView = [[UIView alloc] initWithFrame:CGRectMake(0, 0, self.view.bounds.size.width, 20)];
-        statusBarView.backgroundColor = [UIColor whiteColor];
+        statusBarView.backgroundColor = WHITE_BG_COLOR;
         // 添加到 navigationBar 上
         [self.view addSubview:statusBarView];
     }else{

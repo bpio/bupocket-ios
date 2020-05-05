@@ -236,7 +236,7 @@ static NSString * const DetailSubtitleCellID = @"DetailSubtitleCellID";
 - (UIButton *)currentUse
 {
     if (!_currentUse) {
-        _currentUse = [UIButton createButtonWithTitle:Localized(@"CurrentUse") TextFont:FONT_13 TextNormalColor:[UIColor whiteColor] TextSelectedColor:[UIColor whiteColor] Target:nil Selector:nil];
+        _currentUse = [UIButton createButtonWithTitle:Localized(@"CurrentUse") TextFont:FONT_13 TextNormalColor:WHITE_BG_COLOR TextSelectedColor:WHITE_BG_COLOR Target:nil Selector:nil];
         _currentUse.layer.masksToBounds = YES;
         _currentUse.clipsToBounds = YES;
         _currentUse.layer.cornerRadius = MAIN_CORNER;

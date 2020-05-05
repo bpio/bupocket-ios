@@ -70,7 +70,7 @@ static NSString *_title;
     UIButton * button = [UIButton buttonWithType:UIButtonTypeCustom];
     [button setTitle:title forState:UIControlStateNormal];
     button.titleLabel.font = FONT(18);
-    [button setTitleColor:[UIColor whiteColor] forState:UIControlStateNormal];
+    [button setTitleColor:WHITE_BG_COLOR forState:UIControlStateNormal];
     [button addTarget:target action:selector forControlEvents:UIControlEventTouchUpInside];
     button.layer.masksToBounds = YES;
     button.clipsToBounds = YES;
@@ -86,7 +86,7 @@ static NSString *_title;
 + (UIButton *)createCornerRadiusButtonWithTitle:(NSString *)title isEnabled:(BOOL)isEnabled Target:(id)target Selector:(SEL)selector
 {
     UIButton * button = [UIButton createButtonWithTitle:title isEnabled:isEnabled Target:target Selector:selector];
-    button.backgroundColor = [UIColor whiteColor];
+    button.backgroundColor = WHITE_BG_COLOR;
     button.layer.borderColor = MAIN_COLOR.CGColor;
     button.layer.borderWidth = LINE_WIDTH;
     [button setTitleColor:MAIN_COLOR forState:UIControlStateNormal];
@@ -134,7 +134,7 @@ static NSString *_title;
     NSString * titleStr = [NSString stringWithFormat:@"|  %@", title];
     UIButton * button = [UIButton buttonWithType:UIButtonTypeCustom];
     [button setAttributedTitle:[Encapsulation attrWithString:titleStr preFont:FONT_Bold(14) preColor:MAIN_COLOR index:1 sufFont:FONT_TITLE sufColor:TITLE_COLOR lineSpacing:0] forState:UIControlStateNormal];
-    button.backgroundColor = [UIColor whiteColor];
+    button.backgroundColor = WHITE_BG_COLOR;
     button.contentEdgeInsets = UIEdgeInsetsMake(0, Margin_Main, 0, Margin_Main);
     button.contentHorizontalAlignment = UIControlContentHorizontalAlignmentLeft;
     return button;
@@ -148,7 +148,7 @@ static NSString *_title;
 {
     UIView * footerView = [[UIView alloc] init];
     //                           WithFrame:CGRectMake(0, DEVICE_HEIGHT - ContentInset_Bottom - NavBarH, DEVICE_WIDTH, ContentInset_Bottom)];
-    footerView.backgroundColor = [UIColor whiteColor];
+    footerView.backgroundColor = WHITE_BG_COLOR;
     UIButton * button = [UIButton createButtonWithTitle:title isEnabled:isEnabled Target:target Selector:selector];
     [footerView addSubview:button];
     [button mas_makeConstraints:^(MASConstraintMaker *make) {
@@ -191,7 +191,7 @@ static NSString *_title;
     [[NSRunLoop mainRunLoop] addTimer:_countTimer forMode:NSRunLoopCommonModes];
     self.userInteractionEnabled = NO;
     
-    //    [self setTitleColor:[UIColor whiteColor] forState:UIControlStateNormal];
+    //    [self setTitleColor:WHITE_BG_COLOR forState:UIControlStateNormal];
     //    self.backgroundColor = [UIColor lightGrayColor];
     //    self.layer.borderColor = [UIColor clearColor].CGColor;
     //    self.clipsToBounds = YES;

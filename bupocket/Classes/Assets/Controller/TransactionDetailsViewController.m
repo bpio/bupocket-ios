@@ -190,7 +190,7 @@ static NSInteger const TxInfoNormalCount = 6;
 {
     if (!_headerView) {
         UIView * headerView = [[UIView alloc] initWithFrame:CGRectMake(0, -_headerViewH, DEVICE_WIDTH, _headerViewH)];
-        headerView.backgroundColor = [UIColor whiteColor];
+        headerView.backgroundColor = WHITE_BG_COLOR;
         
         _headerViewBg = [[UIView alloc] initWithFrame:CGRectMake(0, 0, DEVICE_WIDTH, _headerViewH)];
         [headerView addSubview:_headerViewBg];
@@ -264,7 +264,7 @@ static NSInteger const TxInfoNormalCount = 6;
         UIButton * header = [UIButton createHeaderButtonWithTitle:titleArray[section - 1]];
         header.titleLabel.font = FONT(16);
         [header setTitleColor:TITLE_COLOR forState:UIControlStateNormal];
-        header.backgroundColor = [UIColor whiteColor];
+        header.backgroundColor = WHITE_BG_COLOR;
         [headerView addSubview:header];
         [header mas_makeConstraints:^(MASConstraintMaker *make) {
             make.top.equalTo(headerView.mas_top).offset(Margin_10);
@@ -272,7 +272,7 @@ static NSInteger const TxInfoNormalCount = 6;
         }];
         /*
         UIView * headerBg = [[UIView alloc] init];
-        headerBg.backgroundColor = [UIColor whiteColor];
+        headerBg.backgroundColor = WHITE_BG_COLOR;
         [headerView addSubview:headerBg];
         [headerBg mas_makeConstraints:^(MASConstraintMaker *make) {
             make.top.equalTo(headerView.mas_top).offset(Margin_10);

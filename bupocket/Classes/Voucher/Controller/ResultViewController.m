@@ -37,7 +37,7 @@
     self.tableView.separatorStyle = UITableViewCellSeparatorStyleSingleLine;
     [self.view addSubview:self.tableView];
     UIView * headerView = [[UIView alloc] init];
-    headerView.backgroundColor = [UIColor whiteColor];
+    headerView.backgroundColor = WHITE_BG_COLOR;
     CustomButton * results = [[CustomButton alloc] init];
     results.layoutMode = VerticalNormal;
     results.titleLabel.numberOfLines = 0;

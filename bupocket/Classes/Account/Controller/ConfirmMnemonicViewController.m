@@ -106,7 +106,7 @@
 //    CGFloat tagBgH = Margin_30 + (tagH + Margin_Main) * (self.randomArray.count / 4);
     for (NSInteger i = 0; i < self.randomArray.count; i ++) {
         UIButton * tagBtn = [UIButton createButtonWithTitle:self.randomArray[i] TextFont:FONT_15 TextNormalColor:MAIN_COLOR TextSelectedColor:MAIN_COLOR Target:self Selector:@selector(tagAction:)];
-        [tagBtn setTitleColor:[UIColor whiteColor] forState:UIControlStateSelected];
+        [tagBtn setTitleColor:WHITE_BG_COLOR forState:UIControlStateSelected];
         tagBtn.backgroundColor = VIEWBG_COLOR;
         tagBtn.layer.cornerRadius = TAG_CORNER;
         tagBtn.tag = i;

@@ -19,7 +19,7 @@
 {
     UINavigationBar * bar = [UINavigationBar appearance];
     bar.shadowImage = [[UIImage alloc] init];
-    bar.barTintColor = [UIColor whiteColor];
+    bar.barTintColor = WHITE_BG_COLOR;
     NSMutableDictionary * attr = [NSMutableDictionary dictionary];
 //    attr[NSFontAttributeName] = FONT(18);
     attr[NSForegroundColorAttributeName] = NAV_BAR_FG_COLOR;

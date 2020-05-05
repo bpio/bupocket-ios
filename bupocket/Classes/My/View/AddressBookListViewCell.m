@@ -64,7 +64,7 @@ static NSString * const WalletCellID = @"WalletCellID";
 {
     if (!_listBg) {
         _listBg = [[UIView alloc] init];
-        _listBg.backgroundColor = [UIColor whiteColor];
+        _listBg.backgroundColor = WHITE_BG_COLOR;
         _listBg.layer.masksToBounds = YES;
         _listBg.layer.cornerRadius = BG_CORNER;
     }

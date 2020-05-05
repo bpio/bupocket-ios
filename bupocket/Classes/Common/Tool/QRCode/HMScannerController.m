@@ -27,7 +27,7 @@
     if (self) {
         HMScannerViewController *scanner = [[HMScannerViewController alloc] initWithCardName:cardName avatar:avatar completion:completion];
         
-        [self setTitleColor:[UIColor whiteColor] tintColor:[UIColor greenColor]];
+        [self setTitleColor:WHITE_BG_COLOR tintColor:[UIColor greenColor]];
         
         [self pushViewController:scanner animated:NO];
     }

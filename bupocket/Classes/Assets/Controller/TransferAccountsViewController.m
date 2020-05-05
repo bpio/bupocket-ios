@@ -395,7 +395,7 @@
             [weakself IsActivatedWithAddress:stringValue];
         }];
     }];
-    [scanner setTitleColor:[UIColor whiteColor] tintColor:MAIN_COLOR];
+    [scanner setTitleColor:WHITE_BG_COLOR tintColor:MAIN_COLOR];
     [self showDetailViewController:scanner sender:nil];
 }
 

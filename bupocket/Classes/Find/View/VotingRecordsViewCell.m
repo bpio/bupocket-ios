@@ -94,7 +94,7 @@ static NSString * const NodeRecordsCellID = @"NodeRecordsCellID";
 {
     if (!_listBg) {
         _listBg = [[UIView alloc] init];
-        _listBg.backgroundColor = [UIColor whiteColor];
+        _listBg.backgroundColor = WHITE_BG_COLOR;
         [_listBg setViewSize:CGSizeMake(View_Width_Main, ScreenScale(105)) borderRadius:BG_CORNER corners:UIRectCornerAllCorners];
     }
     return _listBg;
@@ -102,7 +102,7 @@ static NSString * const NodeRecordsCellID = @"NodeRecordsCellID";
 - (UIButton *)recordType
 {
     if (!_recordType) {
-        _recordType = [UIButton createButtonWithTitle:Localized(@"Throw") TextFont:FONT_13 TextNormalColor:[UIColor whiteColor] TextSelectedColor:[UIColor whiteColor] Target:nil Selector:nil];
+        _recordType = [UIButton createButtonWithTitle:Localized(@"Throw") TextFont:FONT_13 TextNormalColor:WHITE_BG_COLOR TextSelectedColor:WHITE_BG_COLOR Target:nil Selector:nil];
         _recordType.backgroundColor = MAIN_COLOR;
         [_recordType setTitle:Localized(@"withdraw") forState:UIControlStateSelected];
         _recordType.layer.masksToBounds = YES;

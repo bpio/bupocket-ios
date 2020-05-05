@@ -53,7 +53,7 @@
 }
 
 - (void)setupView {
-    self.backgroundColor = [UIColor whiteColor];
+    self.backgroundColor = WHITE_BG_COLOR;
     
     [self addSubview:self.titleLabel];
     
@@ -234,7 +234,7 @@
 {
     if (!_total) {
         _total = [UIButton buttonWithType:UIButtonTypeCustom];
-        _total.backgroundColor = [UIColor whiteColor];
+        _total.backgroundColor = WHITE_BG_COLOR;
         _total.layer.shadowOffset = CGSizeMake(-ScreenScale(12), 0);
         _total.layer.shadowOpacity = 0.1;
         _total.layer.shadowColor = COLOR(@"656565").CGColor;
@@ -281,7 +281,7 @@
 {
     if (!_confirm) {
         _confirm = [UIButton createButtonWithTitle:Localized(@"ConfirmVote") isEnabled:NO Target:self Selector:@selector(sureBtnClick)];
-//        [UIButton createButtonWithTitle:Localized(@"ConfirmVote") TextFont:FONT_16 TextNormalColor:[UIColor whiteColor] TextSelectedColor:[UIColor whiteColor] Target:self Selector:@selector(sureBtnClick)];
+//        [UIButton createButtonWithTitle:Localized(@"ConfirmVote") TextFont:FONT_16 TextNormalColor:WHITE_BG_COLOR TextSelectedColor:WHITE_BG_COLOR Target:self Selector:@selector(sureBtnClick)];
 //        _confirm.enabled = NO;
 //        _confirm.backgroundColor = DISABLED_COLOR;
     }

@@ -64,7 +64,7 @@ static NSString * const VoucherDetailCellID = @"VoucherDetailCellID";
     self.navigationItem.title = Localized(@"VoucherDetail");
     self.navAlpha = 0;
     self.navBackgroundColor = VOUCHER_NAV_BG_COLOR;
-    self.navTitleColor = self.navTintColor = [UIColor whiteColor];
+    self.navTitleColor = self.navTintColor = WHITE_BG_COLOR;
     self.holdingQuantity = self.voucherModel.balance;
     [self setupView];
     [self getCacheData];
@@ -103,7 +103,7 @@ static NSString * const VoucherDetailCellID = @"VoucherDetailCellID";
         if ([self.dataDic count]) {
             [MBProgressHUD showTipMessageInWindow:Localized(@"NoNetWork")];
         } else {
-            self.navBackgroundColor = [UIColor whiteColor];
+            self.navBackgroundColor = WHITE_BG_COLOR;
             self.navTitleColor = self.navTintColor = TITLE_COLOR;
         }
         self.noNetWork.hidden = ([self.dataDic count] > 0);
@@ -139,7 +139,7 @@ static NSString * const VoucherDetailCellID = @"VoucherDetailCellID";
     self.tableView.mj_footer.hidden = (self.listArray.count == 0);
     self.noNetWork.hidden = YES;
     self.navBackgroundColor = VOUCHER_NAV_BG_COLOR;
-    self.navTitleColor = self.navTintColor = [UIColor whiteColor];
+    self.navTitleColor = self.navTintColor = WHITE_BG_COLOR;
 }
 - (void)reloadData
 {
@@ -314,9 +314,9 @@ static NSString * const VoucherDetailCellID = @"VoucherDetailCellID";
     CGFloat y = scrollView.contentOffset.y;
     self.navAlpha = y / 80;
     self.navBackgroundColor = VOUCHER_NAV_BG_COLOR;
-//    self.navTitleColor = self.navTintColor = [UIColor whiteColor];
+//    self.navTitleColor = self.navTintColor = WHITE_BG_COLOR;
 //    if (y > 80) {
-//        self.navTitleColor = self.navTintColor = [UIColor whiteColor];
+//        self.navTitleColor = self.navTintColor = WHITE_BG_COLOR;
 //    } else {
 //        self.navTitleColor = self.navTintColor = TITLE_COLOR;
 //        self.navTitleColor = y < 0 ? [UIColor clearColor] : TITLE_COLOR;

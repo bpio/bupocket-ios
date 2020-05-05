@@ -79,7 +79,7 @@
 - (void)setupFooterView
 {
     self.footerView = [[UIView alloc] init];
-    self.next = [UIButton createButtonWithTitle:Localized(@"Enable") TextFont:FONT_BUTTON TextNormalColor:[UIColor whiteColor] TextSelectedColor:WARNING_COLOR Target:self Selector:@selector(nextAction:)];
+    self.next = [UIButton createButtonWithTitle:Localized(@"Enable") TextFont:FONT_BUTTON TextNormalColor:WHITE_BG_COLOR TextSelectedColor:WARNING_COLOR Target:self Selector:@selector(nextAction:)];
     self.next.backgroundColor = MAIN_COLOR;
     [self.next setTitle:Localized(@"Prohibit") forState:UIControlStateSelected];
     self.next.layer.masksToBounds = YES;
@@ -110,7 +110,7 @@
     NSString * notesStr;
     if (isCustom) {
         notesStr = [NSString stringWithFormat:@"%@\n%@", Localized(@"Notes"), Localized(@"ProhibitNotes")];
-        self.next.backgroundColor = [UIColor whiteColor];
+        self.next.backgroundColor = WHITE_BG_COLOR;
     } else {
         notesStr = [NSString stringWithFormat:@"%@\n%@", Localized(@"Notes"), Localized(@"EnableNotes")];
         self.next.backgroundColor = MAIN_COLOR;

@@ -51,7 +51,7 @@
     self.tableView.dataSource = self;
     self.tableView.separatorStyle = UITableViewCellSeparatorStyleSingleLine;
     [self.view addSubview:self.tableView];
-    self.tableView.backgroundColor = [UIColor whiteColor];
+    self.tableView.backgroundColor = WHITE_BG_COLOR;
     self.confirm = [UIButton createFooterViewWithTitle:Localized(@"ConfirmModify") isEnabled:NO Target:self Selector:@selector(confirmAction)];
 }
 
@@ -75,7 +75,7 @@
 - (UIView *)tableView:(UITableView *)tableView viewForHeaderInSection:(NSInteger)section
 {
     UIView * headerView = [[UIView alloc] init];
-    headerView.backgroundColor = (section == 1) ? VIEWBG_COLOR : [UIColor whiteColor];
+    headerView.backgroundColor = (section == 1) ? VIEWBG_COLOR : WHITE_BG_COLOR;
     return headerView;
     /*
     NSArray * titleArray = @[Localized(@"WalletInformation"), Localized(@"ModifyPW")];
@@ -97,7 +97,7 @@
         UIView * footerView = [[UIView alloc] initWithFrame:CGRectMake(0, 0, DEVICE_WIDTH, ScreenScale(150))];
  
         UIView * bottomBg = [[UIView alloc] init];
-        bottomBg.backgroundColor = [UIColor whiteColor];
+        bottomBg.backgroundColor = WHITE_BG_COLOR;
         [footerView addSubview:bottomBg];
         CGSize bottomBgSize = CGSizeMake(DEVICE_WIDTH - Margin_20, Margin_30);
         [bottomBg mas_makeConstraints:^(MASConstraintMaker *make) {
